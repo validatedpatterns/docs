@@ -1,4 +1,4 @@
-# edge-ai-ml
+# Industrial Edge
 
 Lots of really compelling content here
 
