@@ -2,8 +2,8 @@ remote_theme: pmarsceill/just-the-docs
 
 #title: Medik8s
 #description: Highly Available Kubernetes
-#baseurl: "/just-the-docs" # the subpath of your site, e.g. /blog
-#url: "https://www.medik8s.io" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/docs" # the subpath of your site, e.g. /blog
+url: "https://dagger-refuse-cool.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 #logo: images/medik8s-logo.png
 
@@ -19,7 +19,7 @@ last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https:/
 
 # Footer "Edit this page on GitHub" link text
 gh_edit_link: true # show or hide edit this page link
-gh_edit_link_text: "Edit this page on GitHub"
+gh_edit_link_text: "Edit on GitHub"
 gh_edit_repository: "https://github.com/dagger-refuse-cool/docs" # the github URL for your repo
 gh_edit_branch: "master" # the branch that your docs is served from
 # gh_edit_source: docs # the source that your files originate from
