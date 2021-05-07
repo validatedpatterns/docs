@@ -1,7 +1,7 @@
 remote_theme: pmarsceill/just-the-docs
 
-#title: Medik8s
-#description: Highly Available Kubernetes
+title: Daggers
+description: Daggers that refuse to be cool
 baseurl: "/docs" # the subpath of your site, e.g. /blog
 url: "https://dagger-refuse-cool.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
