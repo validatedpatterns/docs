@@ -1,3 +1,9 @@
-# My cool site
+---
+layout: default
+title: Solution Atlases
+nav_order: 1
+---
 
-What are we doing here
+# Solution Atlases
+
+Elevator pitch for SAs

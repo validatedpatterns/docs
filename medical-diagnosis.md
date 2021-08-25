@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Industrial Edge
+title: Medical Diagnosis
 parent: Atlases
-nav_order: 1
+nav_order: 2
 ---
 
-# Industrial Edge Atlas
+# Medical Diagnosis Atlas
 {: .no_toc }
 
 ## Table of contents
