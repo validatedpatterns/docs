@@ -56,7 +56,9 @@ industrial setting, but it could easily be applicable to other verticals.
 
 ## Initial Deployment
 
-Follow the instructions at https://github.com/dagger-refuse-cool/blueprints/tree/main/manufacturing-edge-ai-ml
+Follow the instructions in the [Git
+repo](https://github.com/dagger-refuse-cool/blueprints/tree/main/manufacturing-edge-ai-ml)
+containing the complete configuration.
 
 ### Atlas Structure
 
