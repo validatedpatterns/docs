@@ -60,7 +60,7 @@ industrial setting, but it could easily be applicable to other verticals.
 ## Initial Deployment
 
 Follow the instructions in the [Git
-repo](https://github.com/dagger-refuse-cool/blueprints/tree/main/manufacturing-edge-ai-ml)
+repo](https://github.com/dagger-refuse-cool/blueprints/tree/main/manufacturing-edge-ai-ml#how-to-use)
 containing the complete configuration.
 
 ### Atlas Structure
@@ -94,3 +94,10 @@ containing the complete configuration.
 - Infrastructure operator development [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-infrastructure-operator-development.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-infrastructure-operator-development.md#Demo-execution)
 - Enterprise Container [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-enterprise-container.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-enterprise-container.md#Demo-execution)
 - Multi Cluster Management [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-multicluster.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-multicluster.md#Demo-execution)
+
+
+## Uninstalling
+
+Follow the instructions in the [Git
+repo](https://github.com/dagger-refuse-cool/blueprints#uninstalling)
+containing the complete configuration.
