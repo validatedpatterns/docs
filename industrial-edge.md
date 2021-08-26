@@ -49,8 +49,31 @@ industrial setting, but it could easily be applicable to other verticals.
 
 ## Prerequisties
 
+1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create )
+1. (Optional) A second OpenShift cluster
+1. A github account
+1. A quay account
+
 ## Initial Deployment
 
+Follow the instructions at https://github.com/dagger-refuse-cool/blueprints/tree/main/manufacturing-edge-ai-ml
+
 ## Validating the Environment
+
+1. Check to see that all Operators have been deployed
+
+  `UI -> Installed Operators`
+
+1. Check all ArgoCD applications are synchronised
+
+  a. Obtain the ArgoCD url
+
+  `oc get -n openshift-gitops routes/openshift-gitops-server`
+
+  a. Obtain the ArgoCD admin password
+
+  `oc -n openshift-gitops extract secrets/openshift-gitops-cluster --to=-`
+
+  a. Log in, and check for green applications
 
 ## What Next
