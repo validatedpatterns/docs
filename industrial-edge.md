@@ -58,6 +58,10 @@ industrial setting, but it could easily be applicable to other verticals.
 
 Follow the instructions at https://github.com/dagger-refuse-cool/blueprints/tree/main/manufacturing-edge-ai-ml
 
+### Atlas Structure
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSfbN_TbjfYnw-B6hHs-uUQ-8rRzUX27AW4eSxT7dVmBERiBgHS_FWWkgyg5fTsEWL2hj6RYyJqYi7_/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
 ## Validating the Environment
 
 1. Check to see that all Operators have been deployed
