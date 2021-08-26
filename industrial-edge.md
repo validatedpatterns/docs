@@ -43,7 +43,7 @@ industrial setting, but it could easily be applicable to other verticals.
 
 ## Architecture
 
-
+![Industrial Edge Architecture](images/Architecture.png)
 
 ## Recorded Demo
 
