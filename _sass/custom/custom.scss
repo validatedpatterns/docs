@@ -1,0 +1,18 @@
+// Print-only styles.
+@media print {
+  .side-bar, .page-header { display: none; }
+  .main-content { max-width: auto; margin: 1em;}
+}
+
+// The default style does not put a maximum on the amount of
+// space given to the side bar and looks wrong on really wide screens
+@media (min-width: 66.5rem) {
+    .side-bar {
+        width: calc((100% - 1064px) / 6 + 264px);
+        max-width:300px;
+        min-width:264px;
+    }
+    .main {
+      margin-left: calc((100% - 1064px) / 6 + 264px);
+    }
+}
