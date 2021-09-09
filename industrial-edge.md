@@ -46,7 +46,29 @@ industrial setting, but it could easily be applicable to other verticals.
 
 ## Architecture
 
+The following diagram explains how different roles have different concerns and focus when working with this distributed AL/ML architecture. 
+
 ![Industrial Edge Architecture](images/Architecture.png)
+
+
+### Logical Architecture
+
+In the Industrial Edge architecture there are two logical sites.
+
+- The datacenter. This is where the data scientist, developers and operations personnel apply the changes to their models, application code and configurations.
+- The factory. This is where new applications, updates and operational changes are deployed to improve quality and efficency in the factory.
+
+![Industrial Edge Logical Architecture](images/manufacturing-logical.png)
+
+### Physical Schema 
+
+The diagram below shows the components that are deployed in the datacenter and the factory and the networking between those components.
+
+![Industrial Edge Physical Network Architecture](images/manufacturing-schema-netw.png)
+
+The diagram below shows the components are are deployed in the datacenter and the factory and the dataflows between those components across the various networks.
+
+![Industrial Edge Physical Dataflow Architecture](images/manufacturing-schema-df.png)
 
 ## Recorded Demo
 
