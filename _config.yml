@@ -5,7 +5,7 @@ description: It's patterns all the way down
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "http://hybrid-cloud-patterns.io" # the base hostname & protocol for your site, e.g. http://example.com
 
-logo: images/atlas-logo-png--320.png
+logo: images/mandelbrot.png
 
 permalink: pretty
 exclude: [ "node_modules/", "*.gemspec", "cheat.md", "LICENSE.txt", "README.md" ]
