@@ -1,7 +1,7 @@
 remote_theme: pmarsceill/just-the-docs
 
 title: Hybrid Cloud Patterns
-description: Patterns all the way down
+description: It's patterns all the way down
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "http://hybrid-cloud-patterns.io" # the base hostname & protocol for your site, e.g. http://example.com
 
