@@ -6,7 +6,7 @@ nav_order: 9
 
 # FAQ
 
-## What is a Solution Atlas?
+## What is a Cloud Pattern?
 
 ## How are they different from XYZ?
 

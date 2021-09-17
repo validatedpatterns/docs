@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Solution Atlases
+title: Cloud Patterns
 nav_order: 1
 ---
 
-# Solution Atlases
+# Cloud Patterns
 
-Solution Atlases are natural progression from reference architectures with
+Cloud Patterns are natural progression from reference architectures with
 additional value.
 
 This effort is focused on customer solutions that involve multiple Red Hat

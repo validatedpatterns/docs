@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Medical Diagnosis
-parent: Atlases
+parent: Patternes
 nav_order: 2
 ---
 
-# Medical Diagnosis Atlas
+# Medical Diagnosis Pattern
 {: .no_toc }
 
 ## Table of contents

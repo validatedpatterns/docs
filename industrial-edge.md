@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Industrial Edge
-parent: Atlases
+parent: Patternes
 nav_order: 1
 ---
 
-# Industrial Edge Atlas
+# Industrial Edge Pattern
 {: .no_toc }
 
 ## Table of contents
@@ -16,7 +16,7 @@ nav_order: 1
 
 ## Background
 
-With this Atlas, we demonstrate a horizontal solution for IoT Edge use cases.
+With this Pattern, we demonstrate a horizontal solution for IoT Edge use cases.
 
 It is derived from the [work](https://github.com/sa-mw-dach/manuela) done by Red
 Hat Middleware Solution Architects in Germany in 2019/20.
@@ -85,7 +85,7 @@ Follow the instructions in the [Git
 repo](https://github.com/dagger-refuse-cool/blueprints/tree/main/manufacturing-edge-ai-ml#how-to-use)
 containing the complete configuration.
 
-### Atlas Structure
+### Pattern Structure
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSfbN_TbjfYnw-B6hHs-uUQ-8rRzUX27AW4eSxT7dVmBERiBgHS_FWWkgyg5fTsEWL2hj6RYyJqYi7_/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 

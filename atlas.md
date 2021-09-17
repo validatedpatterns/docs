@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Atlases
+title: Patternes
 nav_order: 2
 has_children: true
 ---
 
-# Atlas List
+# Pattern List
 {: .no_toc }
 
 ## Table of contents
