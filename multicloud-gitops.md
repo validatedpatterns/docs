@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Medical Diagnosis
+title: Multi-cloud GitOps
 parent: Patternes
-nav_order: 3
+nav_order: 1
 ---
 
-# Medical Diagnosis Pattern
+# Multi-cloud GitOps
 {: .no_toc }
 
 ## Table of contents
