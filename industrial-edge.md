@@ -82,7 +82,7 @@ The diagram below shows the components are are deployed in the datacenter and th
 ## Initial Deployment
 
 Follow the instructions in the [Git
-repo](https://github.com/dagger-refuse-cool/blueprints/tree/main/manufacturing-edge-ai-ml#how-to-use)
+repo](https://github.com/hybrid-cloud-patterns/manufacturing-edge-ai-ml/#how-to-use)
 containing the complete configuration.
 
 ### Pattern Structure
@@ -121,5 +121,5 @@ containing the complete configuration.
 ## Uninstalling
 
 Follow the instructions in the [Git
-repo](https://github.com/dagger-refuse-cool/blueprints#uninstalling)
+repo](https://github.com/hybrid-cloud-patterns/manufacturing-edge-ai-ml#uninstalling)
 containing the complete configuration.
