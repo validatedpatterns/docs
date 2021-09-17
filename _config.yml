@@ -3,7 +3,7 @@ remote_theme: pmarsceill/just-the-docs
 title: Hybrid Cloud Patterns
 description: Patterns all the way down
 baseurl: "/" # the subpath of your site, e.g. /blog
-url: "https://hybrid-cloud-patterns.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "http://hybrid-cloud-patterns.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 logo: images/atlas-logo-png--320.png
 
@@ -20,9 +20,9 @@ last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https:/
 # Footer "Edit this page on GitHub" link text
 gh_edit_link: true # show or hide edit this page link
 gh_edit_link_text: "Edit on GitHub"
-gh_edit_repository: "https://github.com/dagger-refuse-cool/docs" # the github URL for your repo
-gh_edit_branch: "master" # the branch that your docs is served from
-# gh_edit_source: docs # the source that your files originate from
+gh_edit_repository: "https://github.com/hybrid-cloud-patterns/docs" # the github URL for your repo
+gh_edit_branch: "gh_pages" # the branch that your docs is served from
+gh_edit_source: docs # the source that your files originate from
 gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
 
 
