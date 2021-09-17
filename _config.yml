@@ -1,9 +1,9 @@
 remote_theme: pmarsceill/just-the-docs
 
-title: Solution Atlases
-description: Daggers that refuse to be cool
-baseurl: "/docs" # the subpath of your site, e.g. /blog
-url: "https://dagger-refuse-cool.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+title: Hybrid Cloud Patterns
+description: Patterns all the way down
+baseurl: "/" # the subpath of your site, e.g. /blog
+url: "https://hybrid-cloud-patterns.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 logo: images/atlas-logo-png--320.png
 
@@ -28,4 +28,4 @@ gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into t
 
 aux_links:
   "Images":
-    - "https://quay.io/organization/daggerrefusecool"
+    - "https://quay.io/organization/hybridcloudpatterns"
