@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Industrial Edge
-parent: Patternes
+parent: Patterns
 nav_order: 2
 ---
 

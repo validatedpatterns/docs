@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Medical Diagnosis
-parent: Patternes
+parent: Patterns
 nav_order: 3
 ---
 
