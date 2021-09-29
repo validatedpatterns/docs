@@ -2,6 +2,7 @@
 layout: default
 title: Industrial Edge
 parent: Patterns
+has_children: true
 nav_order: 2
 ---
 
