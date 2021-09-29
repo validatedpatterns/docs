@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Troubleshooting
-parent: Patterns
-grand_parent: Industrial Edge
+grand_parent: Patterns
+parent: Industrial Edge
 nav_order: 2
 ---
 
