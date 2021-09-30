@@ -47,19 +47,20 @@ workflows) and will be easier to make upstream, if you wish.  Contributions from
 1. Commits made by Tekton and other automated processes that will be particular to your installation
 
 To isolate changes for upstreaming:
-	```
-	git remote add hcp https://github.com/hybrid-cloud-patterns/manufacturing-edge-ai-ml
-	git fetch --all
-	git branch -b hcp-main -t hcp/main
-	<make changes on the hcp-main branch>
-	git push origin hcp-main
-	```
+
+   ```
+   git remote add hcp https://github.com/hybrid-cloud-patterns/manufacturing-edge-ai-ml
+   git fetch --all
+   git branch -b hcp-main -t hcp/main
+   <make changes on the hcp-main branch>
+   git push origin hcp-main
+   ```
 
 To update hcp-main with upstream changes:
-	```
-	git checkout hcp-main
-	git pull --rebase 
-	```
+   ```
+   git checkout hcp-main
+   git pull --rebase 
+   ```
 
 To reflect these changes in your forked repo (such as if you would like to submit a PR later):
 	```
