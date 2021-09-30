@@ -46,7 +46,8 @@ workflows) and will be easier to make upstream, if you wish.  Contributions from
 1. Customizations to `values-global.yaml` and other files that are particular to your installation
 1. Commits made by Tekton and other automated processes that will be particular to your installation
 
-To isolate changes for upstreaming:
+To isolate changes for upstreaming (`hcp` is "Hybrid Cloud Patterns", you can use a different remote and/or branch name
+if you want):
 
    ```
    git remote add hcp https://github.com/hybrid-cloud-patterns/manufacturing-edge-ai-ml
@@ -56,25 +57,25 @@ To isolate changes for upstreaming:
    git push origin hcp-main
    ```
 
-To update hcp-main with upstream changes:
+To update branch `hcp-main` with upstream changes:
    ```
    git checkout hcp-main
    git pull --rebase 
    ```
 
 To reflect these changes in your forked repo (such as if you would like to submit a PR later):
-	```
-	git push origin hcp-main
-	```
+   ```
+   git push origin hcp-main
+   ```
 
 If you want to integrate upstream pattern changes into your local GitOps process:
-	```
-	git checkout main
-	git merge hcp-main
-	git push origin main
-	```
+   ```
+   git checkout main
+   git merge hcp-main
+   git push origin main
+   ```
 
-Using this workflow, the hcp-main branch will:
+Using this workflow, the `hcp-main` branch will:
 
 1. Be isolated from any changes that are being made by your local GitOps processes
 1. Be merge-able (or cherry-pick-able) into your local main branch to be used by your local GitOps processes 
@@ -89,23 +90,23 @@ particular to each pattern, and standard usage conventions emerge.  This common 
 
 The most straightforward use of submodules is to track the version that the upstream repository is using.  This can be
 done by cloning the repository initially with the `--recurse-submodules` option:
-	```
-	git clone --recurse-submodules https://github.com/<your-workspace>/manufacturing-edge-ai-ml
-	```
+   ```
+   git clone --recurse-submodules https://github.com/<your-workspace>/manufacturing-edge-ai-ml
+   ```
 
 If you want to track a different fork of a submodule (and push use it in your GitOps environment):
-	```
-	git submodule set-url common https://github.com/<your-workspace>/common
-	git commit -m "Changing URL for common submodule"
-	git push origin main
-	```
+   ```
+   git submodule set-url common https://github.com/<your-workspace>/common
+   git commit -m "Changing URL for common submodule"
+   git push origin main
+   ```
 
 If you want to track a different branch of the forked submodule (other than the default, `main`):
-	```
-	git submodule set-branch --branch <target-branch> common
-	git commit -m "Changing branch to <target-branch> for common submodule"
-	git push origin main
-	```
+   ```
+   git submodule set-branch --branch <target-branch> common
+   git commit -m "Changing branch to <target-branch> for common submodule"
+   git push origin main
+   ```
 
 Since the GitOps workflows do not touch the common/ subdirectory of the patterns, changing the URL and tracking `main`
 should be acceptable for tracking upstream and proposing changes.
