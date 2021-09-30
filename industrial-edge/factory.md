@@ -15,6 +15,39 @@ nav_order: 1
 1. TOC
 {:toc}
 
+## Allow ACM to deploy the factory application to a subset of clusters
+
+By default the `factory` applications are deployed on all clusters that ACM knows about.
+
+```
+  managedSites:
+  - name: factory
+    clusterSelector:
+      matchExpressions:
+      - key: vendor
+        operator: In
+        values:
+          - OpenShift
+```
+
+This is useful for cost-effective demos, but is hardly realistic.
+
+To deploy the `factory` applications only on managed clusters with the label
+`site=factory`, change the site definition in `values-datacenter.yaml` to:
+
+```
+  managedSites:
+  - name: factory
+    clusterSelector:
+      matchLabels:
+        site: factory
+```
+
+Remember to commit the changes and push to GitHub so that GitOps can see
+your changes and apply them.
+
+## Deploy a factory cluster
+
 Rather than provide instructions on creating a factory cluster it is assumed
 that an OpenShift cluster has already been created. Use the `openshift-install` program provided at [cloud.redhat.com](https://console.redhat.com/openshift/create "Create an OpenShift cluster")
 
@@ -81,37 +114,6 @@ You can also use `clusteradm` to join a cluster. The folloing instructions expla
 Skip to the next section, [Factory is joined](#factory-is-joined)
 
 ## Factory is joined
-
-### Allow ACM to deploy the factory application to a subset of clusters
-
-By default the `factory` applications are deployed on all clusters that ACM knows about.
-
-```
-  managedSites:
-  - name: factory
-    clusterSelector:
-      matchExpressions:
-      - key: vendor
-        operator: In
-        values:
-          - OpenShift
-```
-
-This is useful for cost-effective demos, but is hardly realistic.
-
-To deploy the `factory` applications only on managed clusters with the label
-`site=factory`, change the site definition in `values-datacenter.yaml` to:
-
-```
-  managedSites:
-  - name: factory
-    clusterSelector:
-      matchLabels:
-        site: factory
-```
-
-Remember to commit the changes and push to GitHub so that GitOps can see
-your changes and apply them.
 
 ### Designate the new cluster as a factory site
 
