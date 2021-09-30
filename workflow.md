@@ -86,7 +86,7 @@ Using this workflow, the `hcp-main` branch will:
 
 Our patterns use the git submodules feature as a mechanism to promote modularity, so that multiple patterns can use the
 same common basis.  Over time we will move more functionality into common, to isolate the components that are 
-particular to each pattern, and standard usage conventions emerge.  This common make common more powerful and featureful, and make it easier to develop new patterns.
+particular to each pattern, and standard usage conventions emerge.  This will make the tools in common more powerful and featureful, and make it easier to develop new patterns.
 
 The most straightforward use of submodules is to track the version that the upstream repository is using.  This can be
 done by cloning the repository initially with the `--recurse-submodules` option:
