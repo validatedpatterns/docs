@@ -88,7 +88,7 @@ containing the complete configuration.
 
 ### Pattern Structure
 
-<iframe src="https://slides.com/beekhof/a/embed" width="720" height="525" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<iframe src="https://slides.com/beekhof/a/embed" width="800" height="600" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 ## Validating the Environment
 
