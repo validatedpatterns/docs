@@ -81,4 +81,52 @@ You can also use `clusteradm` to join a cluster. The folloing instructions expla
 Skip to the next section, [Factory is joined](#factory-is-joined)
 
 ## Factory is joined
+
+### Allow ACM to deploy the factory application to a subset of clusters
+
+By default the `factory` applications are deployed on all clusters that ACM knows about.
+
+```
+  managedSites:
+  - name: factory
+    clusterSelector:
+      matchExpressions:
+      - key: vendor
+        operator: In
+        values:
+          - OpenShift
+```
+
+This is useful for cost-effective demos, but is hardly realistic.
+
+To deploy the `factory` applications only on managed clusters with the label
+`site=factory`, change the site definition in `values-datacenter.yaml` to:
+
+```
+  managedSites:
+  - name: factory
+    clusterSelector:
+      matchLabels:
+        site: factory
+```
+
+Remember to commit the changes and push to GitHub so that GitOps can see
+your changes and apply them.
+
+### Designate the new cluster as a factory site
+
+Now that ACM is no longer deploying the factory applications everywhere, we need 
+to explicitly indicate that the new cluster has the factory role.
+
+We do this by adding the label referenced in the managedSite's `clusterSelector`.
+
+1. Find the new cluster
+
+   `oc get managedclusters.cluster.open-cluster-management.io`
+
+1. Apply the label
+
+   `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER site=factory`
+
+### You're done
 That's it! Go to your factory (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACm agent and agent-addons to launch. After that, the operator OpenShifdt GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console. 
