@@ -28,15 +28,15 @@ There are a three ways to join the factory to the datacenter.
 
 1. From the datacenter openshift console select ACM from the top right
 
-![](docs/images/launch-acm-console.png "Launch ACM console")
+![](/images/launch-acm-console.png "Launch ACM console")
 
 2. Select the "Import cluster" option beside the highleded Create Cluster button.
 
-![](docs/images/import-cluster.png "Select Import cluster")
+![](/images/import-cluster.png "Select Import cluster")
 
 3. On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". After pressiming import you will be asked to copy a command that will be used on the factory cluster.
 
-![](docs/images/import-with-kubeconfig.png "Import using kubeconfig")
+![](/images/import-with-kubeconfig.png "Import using kubeconfig")
 
 Skip to the section [Factory is joined](#factory-is-joined)
 
