@@ -94,13 +94,17 @@ containing the complete configuration.
 
 1. Check to see that all Operators have been deployed
 
-  `UI -> Installed Operators`
+  ```
+  UI -> Installed Operators
+  ```
 
 1. Check all ArgoCD applications are synchronised
 
   a. Obtain the ArgoCD urls and passwords
 
-  `for name in openshift datacenter factory; do oc -n $name-gitops get route $name-gitops-server -o jsonpath='{.spec.host}'; echo ; oc -n $name-gitops extract secrets/$name-gitops-cluster --to=-; done`
+  ```
+  for name in openshift datacenter factory; do oc -n $name-gitops get route $name-gitops-server -o jsonpath='{.spec.host}'; echo ; oc -n $name-gitops extract secrets/$name-gitops-cluster --to=-; done
+  ```
 
   a. Log in, and check for green applications
 
