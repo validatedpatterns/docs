@@ -47,7 +47,6 @@ workflows) and will be easier to make upstream, if you wish.  Contributions from
 1. Commits made by Tekton and other automated processes that will be particular to your installation
 
 To isolate changes for upstreaming:
-
 	```
 	git remote add hcp https://github.com/hybrid-cloud-patterns/manufacturing-edge-ai-ml
 	git fetch --all
@@ -57,20 +56,17 @@ To isolate changes for upstreaming:
 	```
 
 To update hcp-main with upstream changes:
-
 	```
 	git checkout hcp-main
 	git pull --rebase 
 	```
 
 To reflect these changes in your forked repo (such as if you would like to submit a PR later):
-
 	```
 	git push origin hcp-main
 	```
 
 If you want to integrate upstream pattern changes into your local GitOps process:
-
 	```
 	git checkout main
 	git merge hcp-main
@@ -92,13 +88,11 @@ particular to each pattern, and standard usage conventions emerge.  This common 
 
 The most straightforward use of submodules is to track the version that the upstream repository is using.  This can be
 done by cloning the repository initially with the `--recurse-submodules` option:
-
 	```
 	git clone --recurse-submodules https://github.com/<your-workspace>/manufacturing-edge-ai-ml
 	```
 
 If you want to track a different fork of a submodule (and push use it in your GitOps environment):
-
 	```
 	git submodule set-url common https://github.com/<your-workspace>/common
 	git commit -m "Changing URL for common submodule"
@@ -106,7 +100,6 @@ If you want to track a different fork of a submodule (and push use it in your Gi
 	```
 
 If you want to track a different branch of the forked submodule (other than the default, `main`):
-
 	```
 	git submodule set-branch --branch <target-branch> common
 	git commit -m "Changing branch to <target-branch> for common submodule"
