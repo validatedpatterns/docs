@@ -7,7 +7,7 @@ nav_order: 3
 # Workflow
 
 These patterns are designed to be composed of multiple components, and for those components to be used in gitops
-workflows by consumers and contributors.  To use the first pattern as an example, we maintain the [Industrial Edge][industrial-edge] pattern, which uses a [repo][https://github.com/hybrid-cloud-patterns/manufacturing-edge-ai-ml] with pattern-specific logic and configuration as well as a [common repo][https://github.com/hybrid-cloud-patterns/common] which has elements common to multiple patterns.  The common repo is included in each pattern repo as a submodule.  This allows
+workflows by consumers and contributors.  To use the first pattern as an example, we maintain the [Industrial Edge][industrial-edge] pattern, which uses a [repo][https://github.com/hybrid-cloud-patterns/industrial-edge] with pattern-specific logic and configuration as well as a [common repo][https://github.com/hybrid-cloud-patterns/common] which has elements common to multiple patterns.  The common repo is included in each pattern repo as a submodule.  This allows
 consumers of the pattern flexibility to in both repos, or neither, as it suits their needs.
 
 ## Consuming a pattern 
@@ -18,7 +18,7 @@ consumers of the pattern flexibility to in both repos, or neither, as it suits t
 
 1. Clone the forked copy
 
-   `git clone --recurse-submodules git@github.com:your-username/manufacturing-edge-ai-ml.git`
+   `git clone --recurse-submodules git@github.com:your-username/industrial-edge.git`
 
 1. Create a local copy of the Helm values file that can safely include credentials
 
@@ -50,7 +50,7 @@ To isolate changes for upstreaming (`hcp` is "Hybrid Cloud Patterns", you can us
 if you want):
 
    ```
-   git remote add hcp https://github.com/hybrid-cloud-patterns/manufacturing-edge-ai-ml
+   git remote add hcp https://github.com/hybrid-cloud-patterns/industrial-edge
    git fetch --all
    git branch -b hcp-main -t hcp/main
    <make changes on the hcp-main branch>
@@ -91,7 +91,7 @@ particular to each pattern, and standard usage conventions emerge.  This will ma
 The most straightforward use of submodules is to track the version that the upstream repository is using.  This can be
 done by cloning the repository initially with the `--recurse-submodules` option:
    ```
-   git clone --recurse-submodules https://github.com/<your-workspace>/manufacturing-edge-ai-ml
+   git clone --recurse-submodules https://github.com/<your-workspace>/industrial-edge
    ```
 
 If you want to track a different fork of a submodule (and push use it in your GitOps environment):
