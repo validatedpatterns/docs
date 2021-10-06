@@ -56,9 +56,9 @@ fails for any reason.
 
 ### Pipeline Failures
 
-####Symptom: "User not found" error in first stage of pipeline run
-####Cause: Despite the message, the error is most likely that you don't have a fork of [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev).
-####Resolution: Fork [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) into your namespace in GitHub and run `make seed`.
+#### Symptom: "User not found" error in first stage of pipeline run
+#### Cause: Despite the message, the error is most likely that you don't have a fork of [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev).
+#### Resolution: Fork [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) into your namespace in GitHub and run `make seed`.
 
 Symptom: Intermittent failures in Pipeline stages.  Some sample errors:
 ```
