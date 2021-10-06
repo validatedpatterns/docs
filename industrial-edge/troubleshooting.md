@@ -29,7 +29,7 @@ It is safe to exit the loop (via Ctrl-C, for example) and run the operations sep
 
 The industrial edge pattern runs two post-install operations after creating the main ArgoCD applications: 
 
-- Extracting the secret from the datacenter ArgoCD instance for use in the Pipelines
+__Extracting the secret from the datacenter ArgoCD instance for use in the Pipelines__
 
 This depends on the installation of both the cluster-wide GitOps operator, and the installation of an instance in the datacenter namespace.  The logic is controlled [here](https://github.com/hybrid-cloud-patterns/industrial-edge/blob/main/Makefile) (where the parameters are set) and [here](https://github.com/hybrid-cloud-patterns/common/blob/main/Makefile), which does the interactions with the cluster (to extract the secret and create a resource in manuela-ci).
 
@@ -42,19 +42,17 @@ You can attempt to run the extraction outside of `make install`.  Ensure that yo
 
 - Run `make argosecret` in the base directory of your industrial-edge repo fork.
 
-*Running the "seed" pipeline to populate the image registries for the manuela-tst-all namespace and the edge/factory
-namespaces (manuela-stormshift-messaging, manuela-line-dashboard etc.).*
+__Running the "seed" pipeline to populate the image registries for the manuela-tst-all namespace and the edge/factory
+namespaces (manuela-stormshift-messaging, manuela-line-dashboard etc.).__
 
 It is important that the seed pipeline run and complete because the applications will be "degraded" until they can deploy the images, and seed is what populates the images in the local cluster registries and instructs the applications to use them.
 
-The seed pipeline depends on the Pipelines operator to be installed, as well as the `tkn` Task.  The script checks for
-both.  (`make install` calls the `sleep-seed` target, which checks for the resources before trying to kick off a seed pipeline run.
+The seed pipeline depends on the Pipelines operator to be installed, as well as the `tkn` Task (in the manuela-ci namespace).  The script checks for both.  (`make install` calls the `sleep-seed` target, which checks for the resources before trying to kick off a seed pipeline run.
 
 - Run `make seed` in the base directory of your industrial edge repo fork.  This kicks off the pipeline without checking for its dependencies.
 
 This target does *not* ensure that the seed pipeline completes.  See below on how to re-run seed if the seed pipeline
 fails for any reason.  It is safe to run the seed pipeline multiple times - each time it runs it will update the image targets for each of the images in both test (manuela-tst-all) and production (manuela-stormshift-messaging etc).
-
 
 ### Subscriptions not being installed
 
