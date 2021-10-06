@@ -23,7 +23,7 @@ nav_order: 2
 
 #### Cause: One of the conditions for installation has not been completed.  See below for details.
 
-#### Resolution:
+#### Resolution: Re-run the failing step outside the loop.  See below for how.
 
 It is safe to exit the loop (via Ctrl-C, for example) and run the operations separately.
 
@@ -42,9 +42,10 @@ You can attempt to run the extraction outside of `make install`.  Ensure that yo
 
 - Run `make argosecret` in the base directory of your industrial-edge repo fork.
 
-- Running the "seed" pipeline to populate the image registries for the manuela-tst-all namespace and the edge/factory
-namespaces (manuela-stormshift-messaging, manuela-line-dashboard etc.).  It is important that the seed pipeline run and complete because the applications will be "degraded" until they can deploy the images, and seed is what populates the
-images in the local cluster registries and instructs the applications to use them.
+*Running the "seed" pipeline to populate the image registries for the manuela-tst-all namespace and the edge/factory
+namespaces (manuela-stormshift-messaging, manuela-line-dashboard etc.).*
+
+It is important that the seed pipeline run and complete because the applications will be "degraded" until they can deploy the images, and seed is what populates the images in the local cluster registries and instructs the applications to use them.
 
 The seed pipeline depends on the Pipelines operator to be installed, as well as the `tkn` Task.  The script checks for
 both.  (`make install` calls the `sleep-seed` target, which checks for the resources before trying to kick off a seed pipeline run.
@@ -52,7 +53,7 @@ both.  (`make install` calls the `sleep-seed` target, which checks for the resou
 - Run `make seed` in the base directory of your industrial edge repo fork.  This kicks off the pipeline without checking for its dependencies.
 
 This target does *not* ensure that the seed pipeline completes.  See below on how to re-run seed if the seed pipeline
-fails for any reason.
+fails for any reason.  It is safe to run the seed pipeline multiple times - each time it runs it will update the image targets for each of the images in both test (manuela-tst-all) and production (manuela-stormshift-messaging etc).
 
 ### Pipeline Failures
 
