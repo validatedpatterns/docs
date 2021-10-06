@@ -15,7 +15,7 @@ nav_order: 2
 1. TOC
 {:toc}
 
-## Failed Installation
+## Installation-phase Failures
 
 ### Install loop does not complete
 
@@ -55,6 +55,17 @@ both.  (`make install` calls the `sleep-seed` target, which checks for the resou
 This target does *not* ensure that the seed pipeline completes.  See below on how to re-run seed if the seed pipeline
 fails for any reason.  It is safe to run the seed pipeline multiple times - each time it runs it will update the image targets for each of the images in both test (manuela-tst-all) and production (manuela-stormshift-messaging etc).
 
+
+### Subscriptions not being installed
+
+#### Symptom: Install seems to "freeze" at a specific point.  Expected operators do not install in the cluster.
+#### Cause: It is possible an operator was requested to be installed that isn't allowed to be installed on this version of OpenShift.
+#### Resolution:
+
+In general, use the project-supplied `global.options.UseCSV` setting of `False`.  This requests the current, best version of the operator available.  If a specific CSV (Cluster Service Version) is requested but unavailable, that operator will not be able to install at all, and when an operator fails to install, that may have a cascading effect on other operators.
+
+## Potential Operational Issues
+
 ### Pipeline Failures
 
 #### Symptom: "User not found" error in first stage of pipeline run
@@ -82,32 +93,17 @@ the root of the repo OR re-run the entire failed pipeline segment (e.g. seed-iot
 
 #### Resolution: Re-run the failed pipeline segement OR run `make seed` from the root of your fork of the industrial-edge repo.
 
+### Pipelines application not in sync
+#### Symptom:
+#### Cause:
+#### Resolution:
+
 ### ArgoCD not syncing
+#### Symptom:
+#### Cause:
+#### Resolution:
 
 #### Symptom:  Applications show "not in sync" status in ArgoCD
 #### Cause: There is a discrepancy between what the git repo says the application should have, and how that state is realized in ArgoCD.
 #### Resolution:
 
-Symptom:
-Cause:
-Resolution:
-
-Symptom:
-Cause:
-Resolution:
-
-### Subscriptions not being installed
-
-#### Symptom: Install seems to "freeze" at a specific point.  Expected operators do not install in the cluster.
-#### Cause: It is possible an operator was requested to be installed that isn't allowed to be installed on this version of OpenShift.
-#### Resolution:
-
-In general, use the project-supplied `global.options.UseCSV` setting of `False`.  This requests the current, best version of the operator available.  If a specific CSV (Cluster Service Version) is requested but unavailable, that operator will not be able to install at all, and when an operator fails to install, that may have a cascading effect on other operators.
-
-## Broken functionality
-
-### Pipelines application not in sync
-
-Symptom:
-Cause:
-Resolution:
