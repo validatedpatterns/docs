@@ -40,7 +40,7 @@ This task runs first, and if it does not complete, the seed pipeline will not st
 
 You can attempt to run the extraction outside of `make install`.  Ensure that you have logged in to the cluster (via `oc login` or by exporting a suitable KUBECONFIG:
 
-- Run `make argosecret` in the base directory of your industrial-edge repo fork.
+- Run `make secret` in the base directory of your industrial-edge repo fork.
 
 __Running the "seed" pipeline to populate the image registries for the manuela-tst-all namespace and the edge/factory
 namespaces (manuela-stormshift-messaging, manuela-line-dashboard etc.).__
