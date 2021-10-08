@@ -23,7 +23,7 @@ nav_order: 2
 
 #### Symptom: `make install` does not complete in a timely fashion (~10 minutes from start).  Status messages keep scrolling.
 
-**Cause:**: One of the conditions for installation has not been completed.  See below for details.
+**Cause:** One of the conditions for installation has not been completed.  See below for details.
 
 **Resolution:** Re-run the failing step outside the loop.  See below for how.
 
@@ -59,7 +59,7 @@ fails for any reason.  It is safe to run the seed pipeline multiple times - each
 ### Subscriptions not being installed
 
 #### Symptom: Install seems to "freeze" at a specific point.  Expected operators do not install in the cluster.
-**Cause:**: It is possible an operator was requested to be installed that isn't allowed to be installed on this version of OpenShift.
+**Cause:** It is possible an operator was requested to be installed that isn't allowed to be installed on this version of OpenShift.
 
 **Resolution:**
 In general, use the project-supplied `global.options.UseCSV` setting of `False`.  This requests the current, best version of the operator available.  If a specific CSV (Cluster Service Version) is requested but unavailable, that operator will not be able to install at all, and when an operator fails to install, that may have a cascading effect on other operators.
@@ -100,28 +100,32 @@ desirable to do so, since multiple pipelines attempting to change the repo at th
 
 **Resolution:** Run `make seed` in the root of the repo OR re-run the failed pipeline segment (e.g. seed-iot-frontend or seed-iot-consumer).
 
-We're looking into better long-term fixes for a number of the situations that can cause these situations.
+We're looking into better long-term fixes for a number of the situations that can cause these situations as #40.
 
 #### Symptom: Error in "push-*" pipeline tasks
 
-**Cause:**: Multiple processes or people were trying to make changes to the repo at the same time.  The state of the repo changed in the middle of the process in such a way that the update was not a "fast-forward" in git terms.
+**Cause:** Multiple processes or people were trying to make changes to the repo at the same time.  The state of the repo changed in the middle of the process in such a way that the update was not a "fast-forward" in git terms.
 
 **Resolution:** Re-run the failed pipeline segement OR run `make seed` from the root of your fork of the industrial-edge repo.
 
 It is also possible that multiple pipelines were running at the same time and were making conflicting changes. We recommend running one pipeline at a time.
 
-#### Symptom: Pipelines application perpetually "progressing" and not showing green/healthy
+#### Symptom: Pipelines application perpetually "progressing" and not showing green/healthy. May show "degraded".
+
+**Cause:** Most likely the application is missing the images that are built by the seed pipeline.
+
+**Resolution:** Run `make seed` from the root of your forked repo directory, which will build the images and deploy them to both test and production.
 
 #### Symptom: There is a "spinny" next to one of the resources in the app that never resolves.
 
-**Cause:**: There's an unclaimed PersistentVolumeClaim owned by the application
+**Cause:** Check for a PersistentVolumeClaim that is not in use.
 
 **Resolution:** Delete the unused PVC
 
 ### ArgoCD not syncing
 #### Symptom: ArgoCD shows an error and "Unknown" sync status
 
-**Cause:**: A change has been made in the repo that renders invalid YAML
+**Cause:** A change has been made in the repo that renders invalid YAML
 
 **Resolution:** Fix the issue as identified by the error message, and commit and push the fix OR revert the last one.
 
