@@ -6,7 +6,7 @@ parent: Industrial Edge
 nav_order: 2
 ---
 
-# Troubleshooting (Also see our [issue tracker](https://github.com/hybrid-cloud-patterns/industrial-edge/issues))
+# Troubleshooting
 {: .no_toc }
 
 ## Table of contents
@@ -14,6 +14,8 @@ nav_order: 2
 
 1. TOC
 {:toc}
+
+## Our [Issue Tracker](https://github.com/hybrid-cloud-patterns/industrial-edge/issues)
 
 ## Installation-phase Failures
 
@@ -27,7 +29,7 @@ nav_order: 2
 
 It is safe to exit the loop (via Ctrl-C, for example) and run the operations separately.
 
-The industrial edge pattern runs two post-install operations after creating the main ArgoCD applications: 
+The industrial edge pattern runs two post-install operations after creating the main ArgoCD applications:
 
 __Extracting the secret from the datacenter ArgoCD instance for use in the Pipelines__
 
@@ -58,16 +60,17 @@ fails for any reason.  It is safe to run the seed pipeline multiple times - each
 
 #### Symptom: Install seems to "freeze" at a specific point.  Expected operators do not install in the cluster.
 **Cause:**: It is possible an operator was requested to be installed that isn't allowed to be installed on this version of OpenShift.
-**Resolution:**
 
+**Resolution:**
 In general, use the project-supplied `global.options.UseCSV` setting of `False`.  This requests the current, best version of the operator available.  If a specific CSV (Cluster Service Version) is requested but unavailable, that operator will not be able to install at all, and when an operator fails to install, that may have a cascading effect on other operators.
 
-## Potential Operational Issues
+## Potential (Known) Operational Issues
 
 ### Pipeline Failures
 
 #### Symptom: "User not found" error in first stage of pipeline run
-**Cause:**: Despite the message, the error is most likely that you don't have a fork of [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev).
+**Cause:** Despite the message, the error is most likely that you don't have a fork of [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev).
+
 **Resolution:** Fork [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) into your namespace in GitHub and run `make seed`.
 
 #### Symptom: Intermittent failures in Pipeline stages.  Some sample errors:
@@ -92,7 +95,7 @@ k8s.io/apimachinery/pkg/util/runtime.HandleCrash(0x0, 0x0, 0x0)
 panic(0x1b40ee0, 0x1fe47b0)
 ```
 
-When this happens, the pipeline may not entirely stop running.  It is safe to stop/cancel the pipeline run, and 
+When this happens, the pipeline may not entirely stop running.  It is safe to stop/cancel the pipeline run, and
 desirable to do so, since multiple pipelines attempting to change the repo at the same time could cause more failures.
 
 **Resolution:** Run `make seed` in the root of the repo OR re-run the failed pipeline segment (e.g. seed-iot-frontend or seed-iot-consumer).
@@ -112,12 +115,14 @@ It is also possible that multiple pipelines were running at the same time and we
 #### Symptom: There is a "spinny" next to one of the resources in the app that never resolves.
 
 **Cause:**: There's an unclaimed PersistentVolumeClaim owned by the application
+
 **Resolution:** Delete the unused PVC
 
 ### ArgoCD not syncing
 #### Symptom: ArgoCD shows an error and "Unknown" sync status
 
-**Cause:**: A change has been made in the repo that renders invalid YAML 
+**Cause:**: A change has been made in the repo that renders invalid YAML
+
 **Resolution:** Fix the issue as identified by the error message, and commit and push the fix OR revert the last one.
 
 Certain changes might invalidate objects in ArgoCD, and this will prevent ArgoCD from deploying the change related to
@@ -130,5 +135,6 @@ rpc error: code = Unknown desc = Manifest generation error (cached): `/bin/bash 
 #### Symptom:  Applications show "not in sync" status in ArgoCD
 
 **Cause:**: There is a discrepancy between what the git repo says the application should have, and how that state is realized in ArgoCD.
+
 **Resolution:**
 
