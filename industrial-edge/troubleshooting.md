@@ -6,7 +6,7 @@ parent: Industrial Edge
 nav_order: 2
 ---
 
-# Troubleshooting
+# Troubleshooting (Also see our [issue tracker](https://github.com/hybrid-cloud-patterns/industrial-edge/issues))
 {: .no_toc }
 
 ## Table of contents
