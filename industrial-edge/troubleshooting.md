@@ -142,8 +142,4 @@ This is a byproduct of the way the pattern installs applications at the moment. 
 
 **Cause:** There is a discrepancy between what the git repo says the application should have, and how that state is realized in ArgoCD.
 
-**Resolution:**
-
-The installation mechanism currently installs operators as parts of multiple applications when running on the same cluster, so it is a race condition in ArgoCD to see which one "wins."  This is a problem with the way we are installing the patterns.
-
-There are
+The installation mechanism currently installs operators as parts of multiple applications when running on the same cluster, so it is a race condition in ArgoCD to see which one "wins."  This is a problem with the way we are installing the patterns. We are tracking this as #38.
