@@ -100,7 +100,7 @@ desirable to do so, since multiple pipelines attempting to change the repo at th
 
 **Resolution:** Run `make seed` in the root of the repo OR re-run the failed pipeline segment (e.g. seed-iot-frontend or seed-iot-consumer).
 
-We're looking into better long-term fixes for a number of the situations that can cause these situations as #40.
+We're looking into better long-term fixes for a number of the situations that can cause these situations as [#40](https://github.com/hybrid-cloud-patterns/industrial-edge/issues/40).
 
 #### Symptom: Error in "push-*" pipeline tasks
 
@@ -140,10 +140,10 @@ rpc error: code = Unknown desc = Manifest generation error (cached): `/bin/bash 
 
 **Cause:**
 
-This is a byproduct of the way the pattern installs applications at the moment. We are tracking this as #39.
+This is a byproduct of the way the pattern installs applications at the moment. We are tracking this as [#39](https://github.com/hybrid-cloud-patterns/industrial-edge/issues/39).
 
 #### Symptom:  Applications show "not in sync" status in ArgoCD
 
 **Cause:** There is a discrepancy between what the git repo says the application should have, and how that state is realized in ArgoCD.
 
-The installation mechanism currently installs operators as parts of multiple applications when running on the same cluster, so it is a race condition in ArgoCD to see which one "wins."  This is a problem with the way we are installing the patterns. We are tracking this as #38.
+The installation mechanism currently installs operators as parts of multiple applications when running on the same cluster, so it is a race condition in ArgoCD to see which one "wins."  This is a problem with the way we are installing the patterns. We are tracking this as [#38](https://github.com/hybrid-cloud-patterns/industrial-edge/issues/38).
