@@ -35,15 +35,15 @@ industrial setting, but it could easily be applicable to other verticals.
 
 ### Red Hat Technologies
 
-- OpenShift
-- OpenShift GitOps (ArgoCD)
-- OpenShift Pipelines (Tekton)
-- OpenShift Container Storage
-- Advanced Cluster Management
+- Red Hat OpenShift Container Platform (Kubernetes++)
+- Red Hat Advanced Cluster Management (Open Clutser Management)
+- Red Hat OpenShift GitOps (ArgoCD)
+- Red Hat OpenShift Pipelines (Tekton)
+- Red Hat Quay (Container image registry)
+- Red Hat AMQ (Apache ActiveMQ)
+- Red Hat AMQ Streams (Apache Kafka Event Broker)
+- Red Hat Integration (Apache Camel-K)
 - Open Data Hub
-- AMQ (MQTT Message broker)
-- AMQ Streams (Kafka Event Broker)
-- Camel-K Integrations
 
 ## Architecture
 
@@ -71,12 +71,16 @@ The diagram below shows the components are are deployed in the datacenter and th
 
 ![Industrial Edge Physical Dataflow Architecture](/images/manufacturing-schema-df.png)
 
+While the above diagrams show the components involved on the DevOps side dealing with the application and the AI/ML models, there are other components to conside when dealing with operational side using GitOps.
+
+[Industrial Edge Physical GitOps Architecture](/images/manufacturing-schema-gitops.png)
+
 ## Recorded Demo
 
 ## Prerequisties
 
 1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create )
-1. (Optional) A second OpenShift cluster
+1. (Optional) A second OpenShift cluster for the factory (edge).
 1. A github account
 1. A quay account
 
@@ -95,18 +99,20 @@ containing the complete configuration.
 1. Check to see that all Operators have been deployed
 
   ```
-  UI -> Installed Operators
+  OpenShift UI -> Installed Operators
   ```
+The entire deployment involves several OpenShift GitOps applications. It takes time to deploy everything. You may have to go back and forth between this step and the next step to make sure
+that all the operators are deployed. 
 
-1. Check all ArgoCD applications are synchronised
+1. Check all OpenShift GitOps applications are synchronised
 
-  a. Obtain the ArgoCD urls and passwords
+  a. Obtain the ArgoCD console urls and passwords
 
   ```
   for name in openshift datacenter factory; do oc -n $name-gitops get route $name-gitops-server -o jsonpath='{.spec.host}'; echo ; oc -n $name-gitops extract secrets/$name-gitops-cluster --to=-; done
   ```
 
-  a. Log in, and check for green applications
+  a. Log in using the userid `admin` and the provided generated passowrd. There will be a number and check for green applications
 
 ## What Next
 
