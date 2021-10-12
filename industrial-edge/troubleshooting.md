@@ -27,7 +27,7 @@ The applications deployment for the main data center are as follows. First OpenS
 
 - Advanced Cluster Management operator in the application `acm`. this will manage the edge clusters
 - Open Data Hub in the application `odh` for the data science components. 
-- OpenShift Pipelines is deployed in the application pipelines
+- OpenShift Pipelines is deployed in the application `pipelines`
 - AMQ Streams is deployed to manage data coming from factories and stored in a data lake. 
 - The data lake uses S3 based storage and is deployed in the `central-s3` application
 - Testing at the data center is managed by the `manuela-test` application  
