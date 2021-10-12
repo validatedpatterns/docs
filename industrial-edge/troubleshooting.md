@@ -19,6 +19,30 @@ nav_order: 2
 
 ## Installation-phase Failures
 
+There framework for deploying the applications and their operators has been made very for the user 
+by using OpenShift GitOps for continuous deployment (Argo CD). It takes time to deploy everything. 
+You may have to go back and forth between the OpenShift cluster console and the OpenShift GitOps console to check on applications and operators being up and in a ready state. 
+
+The applications deployment for the main data center are as follows. First OpenShift GitOps operator will deploy. See the OpenShift Console to see that it is running. Then OpenShift GitOps takes over the rest of the deployment. It deploys the following applications
+
+- Advanced Cluster Management operator in the application `acm`. this will manage the edge clusters
+- Open Data Hub in the application `odh` for the data science components. 
+- OpenShift Pipelines is deployed in the application pipelines
+- AMQ Streams is deployed to manage data coming from factories and stored in a data lake. 
+- The data lake uses S3 based storage and is deployed in the `central-s3` application
+- Testing at the data center is managed by the `manuela-test` application  
+
+Make sure that all these applications are `Healthy` 💚 and `Synced` ✅ in the OpenShift GitOps console. If in a state other than `Healthy` (`Progressing, Degraded, Missing, Unknown'`) then it's time to dive deeper into that application and see what has happened.
+
+
+The applications deployed on the factory (edge) cluster are as follows. After a successful importing [1] a factory cluster to the main ACM hub, you should check in the factory cluster's OpenShift UI to see if the projects `open-cluster-manager-agent` and `open-cluster-manager-agent-addons` are running. When these are deployed then OpenShift GitOps operator will be deployed on the cluster. From there OpenShift GitOps deploys the following applications:
+
+- `datalake` application sets streams to the data center.
+- `stormshift` sets up application and AMQ integration components
+- `odh` sets up the AI/ML models that have been developed by the data scientists. 
+
+[1] ACM has different ways of describing this process based on which tool you are using. Attach, Join, Import are terms associated with bringing a cluster under the management of a hub cluster. 
+
 ### Install loop does not complete
 
 #### Symptom: `make install` does not complete in a timely fashion (~10 minutes from start).  Status messages keep scrolling.
