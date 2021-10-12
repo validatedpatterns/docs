@@ -19,7 +19,7 @@ nav_order: 2
 
 ## Installation-phase Failures
 
-There framework for deploying the applications and their operators has been made very for the user 
+The framework for deploying the applications and their operators has been made easy for the user 
 by using OpenShift GitOps for continuous deployment (Argo CD). It takes time to deploy everything. 
 You may have to go back and forth between the OpenShift cluster console and the OpenShift GitOps console to check on applications and operators being up and in a ready state. 
 
