@@ -43,7 +43,8 @@ Here's an inventory of what gets deployed by the **Industrial-Edge** pattern on 
 | messaging | Application | manuela-tst-all | Data subscriber 
 | mqtt2kafka-integration | Application | manuela-tst-all | Kafka Integration
 | anomaly-detection-predictor-0-anomaly-detection | Application | manuela-tst-all | Anomaly detection application
-| manuela-kafka-cluster-entity-operator | Operator | manuela-tst-all | Kafka| RH ACM | Operator | open-cluster-management | Advance Cluster Management
+| manuela-kafka-cluster-entity-operator | Operator | manuela-tst-all | Kafka
+| Red Hat Advanced Cluster Management | Operator | open-cluster-management | Advance Cluster Management
 | Red Hat Integration - AMQ Broker | Operator | manuela-tst-all | AMQ Broker
 | Red Hat Integration - AMQ Streams | Operator | manuela-tst-all | AMQ Streams
 | Open Data Hub | Operator | openshift-operators | Open Data Hub
@@ -116,7 +117,7 @@ Below you can find a list of the AWS instance types that can be used to deploy t
 | :------: | :-----: | :-----: | :----: | :----:
 | | | | 3x3 OCP Cluster | 3 Node OCP Cluster
 | m4.xlarge   | 4  | 16 | N | N
-| **m4.2xlarge**  | 8  | 32 | Y | ?
+| **m4.2xlarge**  | 8  | 32 | Y | Y
 | m4.4xlarge  | 16 | 64 | Y | Y
 | m4.10xlarge | 40 | 160 | Y | Y
 | m4.16xlarge | 64 | 256 | Y | Y
