@@ -1,3 +1,11 @@
+---
+layout: default
+title: OpenShift General Sizing
+grand_parent: Patterns
+parent: Industrial Edge
+nav_order: 3
+---
+
 # OpenShift General Sizing 
 
 ## Table of contents

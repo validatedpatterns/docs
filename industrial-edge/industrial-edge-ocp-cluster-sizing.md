@@ -1,3 +1,10 @@
+---
+layout: default
+title: Industrial Edge Pattern Cluster Sizing
+grand_parent: Patterns
+parent: Industrial Edge
+nav_order: 4
+---
 # Industrial-Edge Pattern 
 
 ## Table of contents
