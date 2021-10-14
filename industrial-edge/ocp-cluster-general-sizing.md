@@ -3,7 +3,7 @@ layout: default
 title: OpenShift General Sizing
 grand_parent: Patterns
 parent: Industrial Edge
-nav_order: 3
+nav_order: 1
 ---
 
 # OpenShift General Sizing 

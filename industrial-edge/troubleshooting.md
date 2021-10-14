@@ -3,7 +3,7 @@ layout: default
 title: Troubleshooting
 grand_parent: Patterns
 parent: Industrial Edge
-nav_order: 2
+nav_order: 4
 ---
 
 # Troubleshooting
