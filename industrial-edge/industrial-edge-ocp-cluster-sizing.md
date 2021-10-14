@@ -88,6 +88,7 @@ The OpenShift cluster is made of 3 Nodes combining Master/Workers for the Edge/F
 #### Factory/Edge Cluster Utilization
 
 **GCP**
+
 This is a snapshot of a Google Cloud Factory Edge cluster running the production **Industrial-Edge** pattern.
 
 | CPU | Memory |  File System |  Network | Pod Count
@@ -96,14 +97,17 @@ This is a snapshot of a Google Cloud Factory Edge cluster running the production
 
 
 **AWS**
+
 This is a snapshot of a Amazon Web Services Factory Edge cluster running the production **Industrial-Edge** pattern.
 
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
 | `5.1` **18.9 available of 24** |`42.91` **GiB 49.27 GiB available of 92.18 GiB** | `51.54` **GiB 308 GiB available of 359.5 GiB** | `9.41` **MBps in** `10.38` **MBps out** | 194 **pods**
 
-***Azure**
+**Azure**
+
 This is a snapshot of an Azure Factory Edge cluster running the production **Industrial-Edge** pattern.
+
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
 | `7.86` **15.65 available of 24** | `42.76` **Gib used 51.15 GiB available of 94.2 GiB** | `71.29` **GiB used 2.93 TiB available of 3 TiB** | `8.98` **MBps in** `9.64` **MBps out** | 192 **pods*
