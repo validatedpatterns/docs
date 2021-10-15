@@ -12,13 +12,11 @@ consumers of the pattern flexibility to in both repos, or neither, as it suits t
 
 ## Consuming a pattern 
 
-* Fork the pattern into your namespace
-
-1. Fork the pattern repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes, and the main branch (by default) will be used in the automated workflows.
+1. Fork the pattern repo on GitHub to your workspace (GitHub user or organization). It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes, and the main branch (by default) will be used in the automated workflows.
 
 1. Clone the forked copy
 
-   `git clone --recurse-submodules git@github.com:your-username/industrial-edge.git`
+   `git clone --recurse-submodules git@github.com:<your-workspace>/industrial-edge.git`
 
 1. Create a local copy of the Helm values file that can safely include credentials
 
