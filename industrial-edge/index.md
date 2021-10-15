@@ -49,7 +49,7 @@ industrial setting, but it could easily be applicable to other verticals.
 
 The following diagram explains how different roles have different concerns and focus when working with this distributed AL/ML architecture. 
 
-[![Industrial Edge Architecture](/images/Architecture.png){ .img-thumbnail  }](/images/Architecture.png)
+[![Industrial Edge Architecture](/images/Architecture.png)](/images/Architecture.png)
 
 
 ### Logical Architecture
@@ -65,15 +65,15 @@ In the Industrial Edge architecture there are two logical sites.
 
 The diagram below shows the components that are deployed in the datacenter and the factory and the networking between those components.
 
-[![Industrial Edge Physical Network Architecture](/images/manufacturing-schema-netw.png){ .img-thumbnail  }](/images/manufacturing-schema-netw.png)
+[![Industrial Edge Physical Network Architecture](/images/manufacturing-schema-netw.png)](/images/manufacturing-schema-netw.png)
 
 The diagram below shows the components are are deployed in the datacenter and the factory and the dataflows between those components across the various networks.
 
-[![Industrial Edge Physical Dataflow Architecture](/images/manufacturing-schema-df.png){ .img-thumbnail  }](/images/manufacturing-schema-df.png)
+[![Industrial Edge Physical Dataflow Architecture](/images/manufacturing-schema-df.png)](/images/manufacturing-schema-df.png)
 
 While the above diagrams show the components involved on the DevOps side dealing with the application and the AI/ML models, there are other components to conside when dealing with operational side using GitOps.
 
-[![Industrial Edge Physical GitOps Architecture](/images/manufacturing-schema-gitops.png){ .img-thumbnail  }](/images/manufacturing-schema-gitops.png)
+[![Industrial Edge Physical GitOps Architecture](/images/manufacturing-schema-gitops.png)](/images/manufacturing-schema-gitops.png)
 
 
 ## Recorded Demo
