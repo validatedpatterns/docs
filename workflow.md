@@ -7,7 +7,7 @@ nav_order: 3
 # Workflow
 
 These patterns are designed to be composed of multiple components, and for those components to be used in gitops
-workflows by consumers and contributors.  To use the first pattern as an example, we maintain the [Industrial Edge][industrial-edge] pattern, which uses a [repo][https://github.com/hybrid-cloud-patterns/industrial-edge] with pattern-specific logic and configuration as well as a [common repo][https://github.com/hybrid-cloud-patterns/common] which has elements common to multiple patterns.  The common repo is included in each pattern repo as a submodule.  This allows
+workflows by consumers and contributors.  To use the first pattern as an example, we maintain the [Industrial Edge](industrial-edge) pattern, which uses a [repo](https://github.com/hybrid-cloud-patterns/industrial-edge) with pattern-specific logic and configuration as well as a [common repo](https://github.com/hybrid-cloud-patterns/common) which has elements common to multiple patterns.  The common repo is included in each pattern repo as a submodule.  This allows
 consumers of the pattern flexibility to in both repos, or neither, as it suits their needs.
 
 ## Consuming a pattern 
