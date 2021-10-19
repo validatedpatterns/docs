@@ -110,7 +110,12 @@ Check all OpenShift GitOps applications are synchronised
   a. Obtain the ArgoCD console urls and passwords
 
   ```
-  for name in openshift datacenter factory; do oc -n $name-gitops get route $name-gitops-server -o jsonpath='{.spec.host}'; echo ; oc -n $name-gitops extract secrets/$name-gitops-cluster --to=-; done
+  for name in openshift datacenter factory;
+  do
+    oc -n $name-gitops get route $name-gitops-server -o jsonpath='{.spec.host}'
+    echo
+    oc -n $name-gitops extract secrets/$name-gitops-cluster --to=-
+  done
   ```
 
   a. Log in using the userid `admin` and the provided generated passowrd. There will be a number and check for green applications
