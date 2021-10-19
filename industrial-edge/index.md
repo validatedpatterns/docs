@@ -80,10 +80,10 @@ While the above diagrams show the components involved on the DevOps side dealing
 
 ## Prerequisties
 
-1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create )
+1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create](https://console.redhat.com/openshift/create) )
 1. (Optional) A second OpenShift cluster for the factory (edge).
-1. A github account
-1. A quay account
+1. A [GitHub](https://github.com) account
+1. A [quay.io](https://quay.io) account
 
 ## Initial Deployment
 
