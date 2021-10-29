@@ -16,3 +16,13 @@
       margin-left: calc((100% - 1064px) / 6 + 264px);
     }
 }
+
+.pattern_logo {
+  width: 72px;
+  height: 72px;
+
+  img {
+    max-width: 110px;
+    border-radius: 30%;
+  }
+}

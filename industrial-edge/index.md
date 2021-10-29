@@ -6,6 +6,10 @@ has_children: true
 nav_order: 2
 ---
 
+<div class="pattern_logo">
+  <img src="/images/logos/industrial-edge.png" class="pattern_logo" alt="Points">
+</div>
+
 # Industrial Edge Pattern
 {: .no_toc }
 
@@ -20,7 +24,8 @@ nav_order: 2
 With this Pattern, we demonstrate a horizontal solution for Industrial Edge use cases.
 
 It is derived from the [work](https://github.com/sa-mw-dach/manuela) done by Red
-Hat Middleware Solution Architects in Germany in 2019/20. It has been updated with an advanced GitOps framework.
+Hat Middleware Solution Architects in Germany in 2019/20. It has been updated
+with an advanced GitOps framework.
 
 The specific example is live defect detection based on sensor data in an
 industrial setting, but it could easily be applicable to other verticals.
