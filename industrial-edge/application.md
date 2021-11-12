@@ -93,6 +93,52 @@ There is only one more step to see the change. Unfortunately your browser knows 
 
 ## Application changes using DevOps
 
+The `line-dashboard` application has temprature sensors. In this demonstation we are going to make a simple chnage to that application, rebuild and redeploy it. In the `manuela-dev` repository there is a file `components/iot-consumer/index.js`. This Javascript program consumes message data coming from the line servers and one of functions it performs is to check the temprature to see if it has exceeded a threshold. There is three lines of code in there that does some Celsius to Fahrenheit conversion.
+
+Depending on the state of your `manuela-dev` repository this may or may not be commented out. Ideally for the demonstration you would want it  uncommented andd therefore effective.  What this means is that while the labels on the front-end application are showing Celsius, the data is actually in Fahrenheit. This is a good place to start because that data won't make any sense.  
+
+[![](/images/fahrenheit-temp.png)](/images/fahrenheit-temp.png)
+
+Machines running over 120C is not normal.  However examining the code explains why. There is an erroneous conversion taking place. What must happen is we remove or comment out this code. 
+
+[![](/images/uncommented-code.png)](/images/uncommented-code.png)
+
+If you haven't deployed the uncommneted code it might be best to prepare that before the demonstration. After pointing out the problem, comment out the code.
+
+[![](/images/commented-code.png)](/images/commented-code.png)
+
+Now that the erroneous conversion code has been commented out it is is time rebuild and redeploy. First commit and push the code to the repository. While in the directory for your `manuela-dev` repository run the following commands. The `components/iot-consumer/index.js` file should be the only chnaged file.
+
+
+```
+git commit -a -m "commented out C to F temp conversion"
+git push
+```
+
+Then we must kick off the pipeline. Due to the need for GitHub secrets and Quay secrets as part of this process, we currently can't use the OpenShift console's Pipelines to kick this off. Instead we are going to sue the command line. While you in the `industrial-edge` repository directory, run
+
+
+```
+make build-and-test
+```
+
+*NOTE TO VP team: This will change after Monday November 15th when two new micro pipelines will be deployed for the pattern for: iot-consumer and iot-anomoly-detection. I will change this section then*
+
+This build takes some time because the pipeline is rebuilding all the images. You can monitor the pipeline's progress in the Openshift console's pipelines section.
+
+[![](/images/build-and-test-pipeline.png)](/images/build-and-test-pipeline.png)
+
+You can also see some updates happening in the `manuela-tst` application in OpenShift GitOps (ArgoCD).
+
+When the pipeline is complete check the `lines-dashboard` application again in the browser. More resonal, Celsius, tempratures are displayed. (Compare with above.)
+
+[![](/images/celsius-temp.png)](/images/celsius-temp.png)
+
+
+
+
+
+
 
 
 
