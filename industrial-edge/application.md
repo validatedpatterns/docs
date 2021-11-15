@@ -107,15 +107,16 @@ If you haven't deployed the uncommneted code it might be best to prepare that be
 
 [![](/images/commented-code.png)](/images/commented-code.png)
 
-Now that the erroneous conversion code has been commented out it is is time rebuild and redeploy. First commit and push the code to the repository. While in the directory for your `manuela-dev` repository run the following commands. The `components/iot-consumer/index.js` file should be the only chnaged file.
+Now that the erroneous conversion code has been commented out it is is time rebuild and redeploy. First commit and push the code to the repository. While in the directory for your `manuela-dev` repository run the following commands. The `components/iot-consumer/index.js` file should be the only changed file.
 
 
 ```
-git commit -a -m "commented out C to F temp conversion"
+git add components/iot-consumer/index.js
+git commit -m "commented out C to F temp conversion"
 git push
 ```
 
-Then we must kick off the pipeline. Due to the need for GitHub secrets and Quay secrets as part of this process, we currently can't use the OpenShift console's Pipelines to kick this off. Instead we are going to sue the command line. While you in the `industrial-edge` repository directory, run
+Now its time to kick off the CI pipeline. Due to the need for GitHub secrets and Quay secrets as part of this process, we currently can't use the OpenShift console's Pipelines to kick off the pipeline in the demo environment. Instead, use the command line. While in the `industrial-edge` repository directory, run the following:
 
 
 ```
@@ -135,9 +136,16 @@ When the pipeline is complete check the `lines-dashboard` application again in t
 [![](/images/celsius-temp.png)](/images/celsius-temp.png)
 
 
+The steps above have successfully applied the change to the Manuela test environment at the data center. In order for these changes to be pushed out to the factories it must be accepted and pushed to the Git repository. Examine the project in GitHub. There is a new Pull Request (PR) called **Pull request created by Tekton task github-add-pull-request**. Select that PR and merge the pull request.  
+
+[![](/images/celsius-temp.png)](/images/celsius-temp.png)
 
 
+OpenShift GitOps will see the new change and apply it out to the factories. 
 
+## Application AI model changes with DevOps
+
+To make changes to the AI model .... 
 
 
 
