@@ -1,0 +1,21 @@
+---
+layout: default
+---
+
+{% include base_path %}
+
+<h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts }}</h3>
+
+<!-- This loops through the paginated posts -->
+{% for post in paginator.posts %}
+  <h1><a href="{{ post.url }}">{{ post.title }}</a></h1>
+  <p class="author">
+    <span class="date">{{ post.date }}</span>
+  </p>
+  <!--div class="content">
+    {{ post.content }}
+  </div-->
+  {% include archive-single.html %}
+{% endfor %}
+
+{% include paginator.html %}

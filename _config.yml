@@ -1,9 +1,11 @@
 remote_theme: pmarsceill/just-the-docs
+#theme: just-the-docs
 
 title: Hybrid Cloud Patterns
 description: It's patterns all the way down
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "http://hybrid-cloud-patterns.io" # the base hostname & protocol for your site, e.g. http://example.com
+#url: "http://localhost:4000" # the base hostname & protocol for your site, e.g. http://example.com
 
 logo: images/logos/animated-100.gif
 
@@ -31,3 +33,26 @@ gh_edit_view_mode: "blob" # "tree" or "edit" if you want the user to jump into t
 aux_links:
   "Images":
     - "https://quay.io/organization/hybridcloudpatterns"
+
+# Plugins
+plugins:
+  - jekyll-paginate
+  
+gems:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+
+# mimic GitHub Pages with --safe
+whitelist:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jemoji
+
+#permalink: /blog/:year/:day/:title #/:categories/:title/
+paginate: 5 # amount of posts to show
+paginate_path: /blog/page:num/
+timezone: Australia/Melbourne # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
