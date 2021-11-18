@@ -138,7 +138,7 @@ When the pipeline is complete check the `lines-dashboard` application again in t
 
 The steps above have successfully applied the change to the Manuela test environment at the data center. In order for these changes to be pushed out to the factories it must be accepted and pushed to the Git repository. Examine the project in GitHub. There is a new Pull Request (PR) called **Pull request created by Tekton task github-add-pull-request**. Select that PR and merge the pull request.  
 
-[![](/images/celsius-temp.png)](/images/celsius-temp.png)
+[![](/images/tekton-pull-request.png)](/images/tekton-pull-request.png)
 
 
 OpenShift GitOps will see the new change and apply it out to the factories. 
