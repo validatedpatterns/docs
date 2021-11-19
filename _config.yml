@@ -33,6 +33,10 @@ gh_edit_view_mode: "blob" # "tree" or "edit" if you want the user to jump into t
 aux_links:
   "Images":
     - "https://quay.io/organization/hybridcloudpatterns"
+#  "Blog":
+#    - "/blog"
+
+## Blog
 
 # Plugins
 plugins:
@@ -56,3 +60,23 @@ whitelist:
 paginate: 5 # amount of posts to show
 paginate_path: /blog/page:num/
 timezone: Australia/Melbourne # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+
+words_per_minute: 200
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: true
+      header:
+        overlay_image: blue-yellow-banner-thin.jpg
+        caption: "Photo credit: [WeGraphics](http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/)"
+      sidebar:
+        tagcloud: true
