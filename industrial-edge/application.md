@@ -123,7 +123,7 @@ Now its time to kick off the CI pipeline. Due to the need for GitHub secrets and
 make build-and-test
 ```
 
-*NOTE TO VP team: This will change after Monday November 15th when two new micro pipelines will be deployed for the pattern for: iot-consumer and iot-anomoly-detection. I will change this section then*
+*NOTE TO VP team: This will change after Monday November 15th when two new micro pipelines will be deployed for the pattern for: iot-consumer and iot-anomaly-detection. I will change this section then*
 
 This build takes some time because the pipeline is rebuilding all the images. You can monitor the pipeline's progress in the Openshift console's pipelines section.
 
@@ -145,8 +145,33 @@ OpenShift GitOps will see the new change and apply it out to the factories.
 
 ## Application AI model changes with DevOps
 
-To make changes to the AI model .... 
+After a successful deployment of Industrial Edge 2.0, check to see that Jupyter Hub is running. To do this go to project `manuela-ml-workspace` check that a `jupyterhub` pods are up and running. 
+
+[![](/images/jupyterhub-pods.png)](/images/jupyterhub-pods.png)
+
+Then, in the same Project `manuela-ml-namespace` select Networking/Routes and click on the URL associated with `jupyterhub`. 
+
+[![](/images/jupyterhub-url.png)](/images/jupyterhub-url.png)
 
 
+This will bring you to a web page at an address in the following format:
+
+* jupyterhub-manuela-ml-workspace.apps.*clustername*.*your-domain*
+
+At the bottom of the screen there is a start server. Just use the default values and start the jupyter server.
+
+[![](/images/jupyterhub-init-console.png)](/images/jupyterhub-init-console.png)
+
+On the next screen upload the following files:
+
+* Anomoloy Detection-using-TF-and-Deep-Learning.ipynb
+* raw-data.cvs 
+
+[![](/images/upload-ml-files.png)](/images/upload-ml-files.png)
+
+
+Open the Anomaly Detection notebook by double clicking.
+
+[![](/images/anomaly-detection-notebook.png)](/images/anomaly-detection-notebook.png)
 
 
