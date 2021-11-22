@@ -55,13 +55,13 @@ You will need to login into GitHub and be able to fork two repositories.
 
 There will may be times where you need to change the configuration of some of the edge devices in one or more of your factories. In our example, we have various sensors at the factory. Modification can be made to these sensors using `ConfigMaps`. 
 
- [![](/images/highleveldemodiagram.png)](/images/highleveldemodiagram.png)
+ [![](/images/industrial-edge/highleveldemodiagram.png)](/images/industrial-edge/highleveldemodiagram.png)
 
 In this demonstration we will turn on a temperature sensor for sensor #2. We will first do this in the data center because this will demonstrate the power of GitOps without having to involve the edge/factory.  However if you do have an factory joined using Advanced Cluster Management, then the changes will make their way out to the factory. But it is not necessary for the demo as we have a complete test environment on the data center.
 
 Make sure you are able to see the dashboard application in a tab on your browser. You can find the URL for the dashboard application by looking at the following in your OpenShift console. 
 
-[![](/images/network-routing-line-dashboard.png)](/images/network-routing-line-dashboard.png)
+[![](/images/industrial-edge/network-routing-line-dashboard.png)](/images/industrial-edge/network-routing-line-dashboard.png)
 
 Select Networking->Routes on the lefthand side of the console. Using the Projects pull-down, select `manuela-tst-all`. Click on the URL under the Location column for the route Name `line-dashboard`. this will launch the line-dashboard monitoring application in a browser tab. The URL will look like:  
 
@@ -85,11 +85,11 @@ git push
 
 You can track the progress of this commit/push in your OpenShift GitOps console in the `manuela-test-all` application. You will notice components regarding machine-sensor-2 getting sync-ed.
 
-[![](/images/argocd-line-dashboard.png)](/images/argocd-line-dashboard.png)
+[![](/images/industrial-edge/argocd-line-dashboard.png)](/images/industrial-edge/argocd-line-dashboard.png)
 
 There is only one more step to see the change. Unfortunately your browser knows little about GitOps and therefore the dashboard application may need to have it's page/tab refreshed. 
 
-[![](/images/app-line-dashboard.png)](/images/app-line-dashboard.png)
+[![](/images/industrial-edge/app-line-dashboard.png)](/images/industrial-edge/app-line-dashboard.png)
 
 ## Application changes using DevOps
 
@@ -97,15 +97,15 @@ The `line-dashboard` application has temprature sensors. In this demonstation we
 
 Depending on the state of your `manuela-dev` repository this may or may not be commented out. Ideally for the demonstration you would want it  uncommented andd therefore effective.  What this means is that while the labels on the front-end application are showing Celsius, the data is actually in Fahrenheit. This is a good place to start because that data won't make any sense.  
 
-[![](/images/fahrenheit-temp.png)](/images/fahrenheit-temp.png)
+[![](/images/industrial-edge/fahrenheit-temp.png)](/images/industrial-edge/fahrenheit-temp.png)
 
 Machines running over 120C is not normal.  However examining the code explains why. There is an erroneous conversion taking place. What must happen is we remove or comment out this code. 
 
-[![](/images/uncommented-code.png)](/images/uncommented-code.png)
+[![](/images/industrial-edge/uncommented-code.png)](/images/industrial-edge/uncommented-code.png)
 
 If you haven't deployed the uncommneted code it might be best to prepare that before the demonstration. After pointing out the problem, comment out the code.
 
-[![](/images/commented-code.png)](/images/commented-code.png)
+[![](/images/industrial-edge/commented-code.png)](/images/industrial-edge/commented-code.png)
 
 Now that the erroneous conversion code has been commented out it is is time rebuild and redeploy. First commit and push the code to the repository. While in the directory for your `manuela-dev` repository run the following commands. The `components/iot-consumer/index.js` file should be the only changed file.
 
@@ -127,18 +127,18 @@ make build-and-test
 
 This build takes some time because the pipeline is rebuilding all the images. You can monitor the pipeline's progress in the Openshift console's pipelines section.
 
-[![](/images/build-and-test-pipeline.png)](/images/build-and-test-pipeline.png)
+[![](/images/industrial-edge/build-and-test-pipeline.png)](/images/industrial-edge/build-and-test-pipeline.png)
 
 You can also see some updates happening in the `manuela-tst` application in OpenShift GitOps (ArgoCD).
 
 When the pipeline is complete check the `lines-dashboard` application again in the browser. More resonal, Celsius, tempratures are displayed. (Compare with above.)
 
-[![](/images/celsius-temp.png)](/images/celsius-temp.png)
+[![](/images/industrial-edge/celsius-temp.png)](/images/industrial-edge/celsius-temp.png)
 
 
 The steps above have successfully applied the change to the Manuela test environment at the data center. In order for these changes to be pushed out to the factories it must be accepted and pushed to the Git repository. Examine the project in GitHub. There is a new Pull Request (PR) called **Pull request created by Tekton task github-add-pull-request**. Select that PR and merge the pull request.  
 
-[![](/images/tekton-pull-request.png)](/images/tekton-pull-request.png)
+[![](/images/industrial-edge/tekton-pull-request.png)](/images/industrial-edge/tekton-pull-request.png)
 
 
 OpenShift GitOps will see the new change and apply it out to the factories. 
@@ -147,11 +147,11 @@ OpenShift GitOps will see the new change and apply it out to the factories.
 
 After a successful deployment of Industrial Edge 2.0, check to see that Jupyter Hub is running. To do this go to project `manuela-ml-workspace` check that a `jupyterhub` pods are up and running. 
 
-[![](/images/jupyterhub-pods.png)](/images/jupyterhub-pods.png)
+[![](/images/industrial-edge/jupyterhub-pods.png)](/images/industrial-edge/jupyterhub-pods.png)
 
 Then, in the same Project `manuela-ml-namespace` select Networking/Routes and click on the URL associated with `jupyterhub`. 
 
-[![](/images/jupyterhub-url.png)](/images/jupyterhub-url.png)
+[![](/images/industrial-edge/jupyterhub-url.png)](/images/industrial-edge/jupyterhub-url.png)
 
 
 This will bring you to a web page at an address in the following format:
@@ -160,18 +160,18 @@ This will bring you to a web page at an address in the following format:
 
 At the bottom of the screen there is a start server. Just use the default values and start the jupyter server.
 
-[![](/images/jupyterhub-init-console.png)](/images/jupyterhub-init-console.png)
+[![](/images/industrial-edge/jupyterhub-init-console.png)](/images/industrial-edge/jupyterhub-init-console.png)
 
 On the next screen upload the following files:
 
 * Anomoloy Detection-using-TF-and-Deep-Learning.ipynb
 * raw-data.cvs 
 
-[![](/images/upload-ml-files.png)](/images/upload-ml-files.png)
+[![](/images/industrial-edge/upload-ml-files.png)](/images/industrial-edge/upload-ml-files.png)
 
 
 Open the Anomaly Detection notebook by double clicking.
 
-[![](/images/anomaly-detection-notebook.png)](/images/anomaly-detection-notebook.png)
+[![](/images/industrial-edge/anomaly-detection-notebook.png)](/images/industrial-edge/anomaly-detection-notebook.png)
 
 
