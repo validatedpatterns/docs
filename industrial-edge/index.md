@@ -80,6 +80,10 @@ While the above diagrams show the components involved on the DevOps side dealing
 
 [![Industrial Edge Physical GitOps Architecture](/images/industrial-edge/manufacturing-schema-gitops.png)](/images/industrial-edge/manufacturing-schema-gitops.png)
 
+## Editing the diagrams.
+
+To edit the diagrams in `Draw.io` you can load them [here](https://redhatdemocentral.gitlab.io/portfolio-architecture-tooling/index.html?#/portfolio-architecture-examples/projects/industrial-edge-v2.drawio) and save a local copy. You can then edit the diagram to better reflect the spoecific implementation you are working on.
+
 
 ## Recorded Demo
 
@@ -122,7 +126,7 @@ Check all OpenShift GitOps applications are synchronised
 
   a. Log in using the userid `admin` and the provided generated passowrd. There will be a number and check for green applications
 
-## What Next
+## What's Next
 
 - Add a dedicated cluster to [deploy the factory pieces using ACM](factory) 
 - Making [configuration changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
