@@ -44,7 +44,7 @@ service](https://console.redhat.com/openshift/create).
 
 1. Clone the forked copy of this repo.
 
-   ```
+   ```sh
    git clone --recurse-submodules git@github.com:your-username/industrial-edge.git
    ```
 
@@ -53,14 +53,14 @@ service](https://console.redhat.com/openshift/create).
   DO NOT COMMIT THIS FILE
 
   You do not want to push personal credentials to GitHub.
-   ```
+   ```sh
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
    ```
 
 1. Customize the deployment for your cluster
 
-   ```
+   ```sh
    vi values-global.yaml
    git add values-global.yaml
    git commit values-global.yaml
@@ -68,25 +68,25 @@ service](https://console.redhat.com/openshift/create).
    ```
 
 1. Preview the changes
-   ```
+   ```sh
    make show
    ```
 
 1. Login to your cluster using oc login or exporting the KUBECONFIG
 
-   ```
+   ```sh
    oc login
    ```
 
    or
 
-   ```
+   ```sh
    export KUBECONFIG=~/my-ocp-env/datacenter
    ```
 
 1. Apply the changes to your cluster
 
-   ```
+   ```sh
    make install
    ```
 
@@ -105,7 +105,7 @@ service](https://console.redhat.com/openshift/create).
    Display the fully qualified domain names, and matching login credentials, for
    all ArgoCD instances:
 
-   ```
+   ```sh
    ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
    CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
    eval $CMD
@@ -114,7 +114,7 @@ service](https://console.redhat.com/openshift/create).
 
    The result should look something like:
 
-   ```
+   ```sh
    NAME                       HOST/PORT                                                                                         PATH      SERVICES                   PORT    TERMINATION            WILDCARD
    datacenter-gitops-server   datacenter-gitops-server-industrial-edge-datacenter.apps.mycluster.mydomain.com          datacenter-gitops-server   https   passthrough/Redirect   None
    # admin.password

@@ -69,7 +69,7 @@ line-dashboard-manuela-tst-all.apps.*cluster-name*.*domain*
 
 Using you favorite editor, edit the following file:
 
-```
+```sh
 industrial-edge-charts/data/center/manuela-test/templates/machine-sensor/machine-sensor-2-configmap.yaml
 ```
 
@@ -77,7 +77,7 @@ Change `SENSOR_TEMPERATURE_ENABLED: "false"` to `SENSOR_TEMPERATURE_ENABLED: "tr
 
 Then change and commit this to your git repository so that the change will be picked up by OpenShift GitOps (ArgoCD). 
 
-```
+```sh
 git add industrial-edge-charts/data/center/manuela-test/templates/machine-sensor/machine-sensor-2-configmap.yaml
 git commit -m "Turned on temprature sensor for machine sensor #2"
 git push
@@ -110,7 +110,7 @@ If you haven't deployed the uncommneted code it might be best to prepare that be
 Now that the erroneous conversion code has been commented out it is is time rebuild and redeploy. First commit and push the code to the repository. While in the directory for your `manuela-dev` repository run the following commands. The `components/iot-consumer/index.js` file should be the only changed file.
 
 
-```
+```sh
 git add components/iot-consumer/index.js
 git commit -m "commented out C to F temp conversion"
 git push
@@ -119,7 +119,7 @@ git push
 Now its time to kick off the CI pipeline. Due to the need for GitHub secrets and Quay secrets as part of this process, we currently can't use the OpenShift console's Pipelines to kick off the pipeline in the demo environment. Instead, use the command line. While in the `industrial-edge` repository directory, run the following:
 
 
-```
+```sh
 make build-and-test
 ```
 
