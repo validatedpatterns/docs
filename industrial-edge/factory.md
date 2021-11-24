@@ -19,7 +19,7 @@ nav_order: 4
 
 By default the `factory` applications are deployed on all clusters that ACM knows about.
 
-```
+```json
   managedSites:
   - name: factory
     clusterSelector:
@@ -35,7 +35,7 @@ This is useful for cost-effective demos, but is hardly realistic.
 To deploy the `factory` applications only on managed clusters with the label
 `site=factory`, change the site definition in `values-datacenter.yaml` to:
 
-```
+```json
   managedSites:
   - name: factory
     clusterSelector:
@@ -82,7 +82,7 @@ Skip to the section [Factory is joined](#factory-is-joined)
 1. On the command line login into the hub/datacenter cluster (use `oc login` or export the KUBECONFIG).
 
 1. Run the following command:
-```
+```sh
 cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-KUBECONFIG>
 ``` 
 
