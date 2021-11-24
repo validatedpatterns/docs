@@ -115,12 +115,9 @@ Check all OpenShift GitOps applications are synchronised
   a. Obtain the ArgoCD console urls and passwords
 
   ```
-  for name in openshift datacenter factory;
-  do
-    oc -n $name-gitops get route $name-gitops-server -o jsonpath='{.spec.host}'
-    echo
-    oc -n $name-gitops extract secrets/$name-gitops-cluster --to=-
-  done
+   ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
+   CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
+   eval $CMD
   ```
 
   a. Log in using the userid `admin` and the provided generated passowrd. There will be a number and check for green applications
@@ -128,6 +125,12 @@ Check all OpenShift GitOps applications are synchronised
 ## What Next
 
 - Add a dedicated cluster to [deploy the factory pieces using ACM](factory) 
+- Making [configuration changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
+- Making [application changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
+- Making [AI/ML model changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#application-ai-model-changes-with-devops) with DevOps
+
+### Other links for more information
+
 - Code change [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-code-change.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-code-change.md#demo-execution)
 -  CI/CD pipeline & GitOps staging [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-ci-cd-pipeline.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-ci-cd-pipeline.md#Demo-execution)
 - Event streaming from edge to core & filling the data lake [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-event-streaming.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-event-streaming.md#Demo-execution)
@@ -136,9 +139,7 @@ Check all OpenShift GitOps applications are synchronised
 - Enterprise Container [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-enterprise-container.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-enterprise-container.md#Demo-execution)
 - Multi Cluster Management [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-multicluster.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-multicluster.md#Demo-execution)
 
-
 ## Uninstalling
 
-Follow the instructions in the [Git
-repo](https://github.com/hybrid-cloud-patterns/industrial-edge#uninstalling)
+Follow the instructions in the [Gitrepo](https://github.com/hybrid-cloud-patterns/industrial-edge#uninstalling)
 containing the complete configuration.
