@@ -3,7 +3,7 @@ layout: default
 title: Application Demos
 grand_parent: Patterns
 parent: Industrial Edge
-nav_order: 4
+nav_order: 5
 ---
 
 # Demonstrating Industrial Edge example applications  
@@ -123,9 +123,9 @@ Now its time to kick off the CI pipeline. Due to the need for GitHub secrets and
 make build-and-test
 ```
 
-*NOTE TO VP team: This will change after Monday November 15th when two new micro pipelines will be deployed for the pattern for: iot-consumer and iot-anomaly-detection. I will change this section then*
-
 This build takes some time because the pipeline is rebuilding all the images. You can monitor the pipeline's progress in the Openshift console's pipelines section.
+
+Alternatively you can can try and run the shorter build-iot-consumer pipeline run in the OpenShift console. This should just run and test the specific application.  
 
 [![](/images/industrial-edge/build-and-test-pipeline.png)](/images/industrial-edge/build-and-test-pipeline.png)
 
@@ -164,7 +164,7 @@ At the bottom of the screen there is a start server. Just use the default values
 
 On the next screen upload the following files:
 
-* Anomoloy Detection-using-TF-and-Deep-Learning.ipynb
+* Data-Analyses.ipynb
 * raw-data.cvs 
 
 [![](/images/industrial-edge/upload-ml-files.png)](/images/industrial-edge/upload-ml-files.png)
@@ -173,5 +173,9 @@ On the next screen upload the following files:
 Open the Anomaly Detection notebook by double clicking.
 
 [![](/images/industrial-edge/anomaly-detection-notebook.png)](/images/industrial-edge/anomaly-detection-notebook.png)
+
+After opening sucessfully walk through the demonstration by pressing play and iterating through the commands in the playbook. Jupyter playbooks are interactive and you may make changes and save them.
+
+[![](/images/industrial-edge/play-the-notebook.png)](/images/industrial-edge/play-the-notebook.png)
 
 
