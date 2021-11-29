@@ -158,19 +158,25 @@ This will bring you to a web page at an address in the following format:
 
 * jupyterhub-manuela-ml-workspace.apps.*clustername*.*your-domain*
 
-At the bottom of the screen there is a start server. Just use the default values and start the jupyter server.
+Options for different types of Jupyter servers are shown. There are two options that are useful for this demo.
+
+* Standard Data Science. Select this Notebook image for simpler notebooks like `Data Analyses.ipynb`
+* Tensorflow Notebook Image. Select Notebook image for more complex notebooks that require Tensorflow. E.g. `Anomaly Detextion-using-TF-and-Deep-Learning.ipynb` 
+
+At the bottom of the screen there is a `Start server` button. Select the type of Notebook server image and press `Start server`.
 
 [![](/images/industrial-edge/jupyterhub-init-console.png)](/images/industrial-edge/jupyterhub-init-console.png)
 
-On the next screen upload the following files:
+On the next screen upload the following files from `manuela-dev/ml-models/anomaly-detection`:
 
-* Data-Analyses.ipynb
+* One of the Jupyter notebooks
+  * `Data-Analyses.ipynb` for a somewhat simpler demo
+  * `Anomaly Detextion-using-TF-and-Deep-Learning.ipynb` for a Tensorflow demo.
 * raw-data.cvs 
 
 [![](/images/industrial-edge/upload-ml-files.png)](/images/industrial-edge/upload-ml-files.png)
 
-
-Open the Anomaly Detection notebook by double clicking.
+Open the Anomaly Detection notebook by double clicking onm the notebook file.
 
 [![](/images/industrial-edge/anomaly-detection-notebook.png)](/images/industrial-edge/anomaly-detection-notebook.png)
 
