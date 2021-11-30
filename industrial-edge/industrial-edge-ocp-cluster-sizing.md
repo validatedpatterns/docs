@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Industrial Edge Pattern Cluster Sizing
+title: Sizing a Deployment Cluster
 grand_parent: Patterns
 parent: Industrial Edge
 nav_order: 2
