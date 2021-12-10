@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Factory Sites
+title: Multicloud Managed Cluster Sites
 grand_parent: Patterns
-parent: Industrial Edge
-nav_order: 4
+parent: Multicloud GitOps
+nav_order: 3
 ---
 
 # Having a factory (edge) cluster join the datacenter (hub) 
@@ -73,7 +73,7 @@ There are a three ways to join the factory to the datacenter.
 
 Using this menthod, you are done. Skip to the section [Managed cluster is joined](#managed-cluster-is-joined) but ignore the part about adding the site tag.
 
-## Factory setup using `cm` tool
+## Managed cluster setup using `cm` tool
 
 1. Install the `cm` (cluster management) CLI tool. See details [here](https://github.com/open-cluster-management/cm-cli/#installation)
 
@@ -88,7 +88,7 @@ cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-KUBECON
 
 Skip to the section [Managed cluster is joined](#managed-cluster-is-joined)
 
-## Factory setup using `clusteradm` tool
+## Managed cluster setup using `clusteradm` tool
 
 You can also use `clusteradm` to join a cluster. The folloing instructions explain what needs to be done. `clusteradm` is still in testing.
 
