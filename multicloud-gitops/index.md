@@ -2,6 +2,7 @@
 layout: default
 title: Multi-cloud GitOps
 parent: Patterns
+has_children: true
 nav_order: 1
 ---
 

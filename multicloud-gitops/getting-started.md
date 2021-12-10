@@ -2,7 +2,7 @@
 layout: default
 title: Getting Started
 grand_parent: Patterns
-parent: Industrial Edge
+parent: Multicloud GitOps
 nav_order: 3
 ---
 
