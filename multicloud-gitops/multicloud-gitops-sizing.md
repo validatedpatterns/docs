@@ -2,7 +2,7 @@
 layout: default
 title: Multicloud GitOps Pattern Cluster Sizing
 grand_parent: Patterns
-parent: Muilticloud GitOps
+parent: Multicloud GitOps
 nav_order: 2
 ---
 # Multicloud GitOps Pattern 
