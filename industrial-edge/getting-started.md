@@ -175,6 +175,10 @@ https://slides.com/beekhof/hybrid-cloud-patterns
 
 1. Check all namespaces and operators have been removed
 
+## Next up
+
+Add a dedicated cluster to [deploy the factory pieces using ACM](factory)
+
 # More reading
 
 ## General Hybrid Cloud Patterns reading
@@ -185,22 +189,3 @@ For more general patterns documentation please refer to the hybrid cloud pattern
 
 Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](http://hybrid-cloud-patterns.io/industrial-edge/application/) 
 
-# Diagrams
-
-The following diagrams show the different components deployed on the datacenter and the factory.
-
-## Logical
-
-![Logical](docs/images/manufacturing-logical.png)
-
-## Schematic with Networks
-
-![Schema - Networks](docs/images/manufacturing-schema-netw.png)
-
-## Schematic with Dataflows
-
-![Schema - Dataflow](docs/images/manufacturing-schema-df.png)
-
-## Editing the diagrams.
-
-To edit the diagrams in Draw.io you can load them [here](https://redhatdemocentral.gitlab.io/portfolio-architecture-tooling/index.html?#/portfolio-architecture-examples/projects/Mfg-AI-ML-0928.drawio) and save a local copy

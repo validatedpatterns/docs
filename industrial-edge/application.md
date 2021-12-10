@@ -145,11 +145,11 @@ OpenShift GitOps will see the new change and apply it out to the factories.
 
 ## Application AI model changes with DevOps
 
-After a successful deployment of Industrial Edge 2.0, check to see that Jupyter Hub is running. To do this go to project `manuela-ml-workspace` check that a `jupyterhub` pods are up and running. 
+After a successful deployment of Industrial Edge 2.0, check to see that Jupyter Hub is running. To do this go to project `manuela-ml-workspace` check that `jupyterhub` pods are up and running. 
 
 [![](/images/industrial-edge/jupyterhub-pods.png)](/images/industrial-edge/jupyterhub-pods.png)
 
-Then, in the same Project `manuela-ml-namespace` select Networking/Routes and click on the URL associated with `jupyterhub`. 
+Then, in the same project `manuela-ml-namespace`, select Networking/Routes and click on the URL associated with `jupyterhub` in the Locationo column. 
 
 [![](/images/industrial-edge/jupyterhub-url.png)](/images/industrial-edge/jupyterhub-url.png)
 
@@ -158,24 +158,47 @@ This will bring you to a web page at an address in the following format:
 
 * jupyterhub-manuela-ml-workspace.apps.*clustername*.*your-domain*
 
-At the bottom of the screen there is a start server. Just use the default values and start the jupyter server.
+Options for different types of Jupyter servers are shown. There are two options that are useful for this demo.
+
+* Standard Data Science. Select this notebook image for simpler notebooks like `Data Analyses.ipynb`
+* Tensorflow Notebook Image. Select this notebook image for more a complex notebook that require Tensorflow. E.g. `Anomaly Detection-using-TF-and-Deep-Learning.ipynb` 
+
+At the bottom of the screen there is a `Start server` button. Select the type of Notebook server image and press `Start server`.
 
 [![](/images/industrial-edge/jupyterhub-init-console.png)](/images/industrial-edge/jupyterhub-init-console.png)
 
-On the next screen upload the following files:
+Selecting Tensorflow notebook image:
 
-* Data-Analyses.ipynb
+[![](/images/industrial-edge/jupyter-tf-server.png)](/images/industrial-edge/jupyter-tf-server.png)
+
+On the next screen upload the following files from `manuela-dev/ml-models/anomaly-detection`:
+
+* One of the Jupyter notebooks
+  * `Data-Analyses.ipynb` for a somewhat simpler demo
+  * `Anomaly Detection-using-TF-and-Deep-Learning.ipynb` for a Tensorflow demo.
 * raw-data.cvs 
 
 [![](/images/industrial-edge/upload-ml-files.png)](/images/industrial-edge/upload-ml-files.png)
 
-
-Open the Anomaly Detection notebook by double clicking.
+Open the notebook by double clicking on the notebook file (ending in `.ipynb`)
 
 [![](/images/industrial-edge/anomaly-detection-notebook.png)](/images/industrial-edge/anomaly-detection-notebook.png)
 
-After opening sucessfully walk through the demonstration by pressing play and iterating through the commands in the playbook. Jupyter playbooks are interactive and you may make changes and save them.
+After opening the notebook successfully, walk through the demonstration by pressing play and iterating through the commands in the playbook. Jupyter playbooks are interactive and you may make changes and also save those changes. Also, some steps in the notebook take milliseconds, however, other steps can take a long time (up to an hour), so check on the completion of steps. 
 
-[![](/images/industrial-edge/play-the-notebook.png)](/images/industrial-edge/play-the-notebook.png)
+Remember that changes to the notebook will require downloading, committing, and pushing that notebook to the git repository so that it gets redeployed to the factories. 
 
+## Turning on event streaming between the edge and the datacenter
 
+There is one other area that has not been completed for the overall validated pattern. The unfinished part is the streaming of events from the factory back to the datacenter and adding that data to the data lake for data scientists to apply their "magic".
+
+The automation for this is complete. However, there are certificates and/or keys that need to be replaced in the following files for the datacenter and factory templates:
+```
+industrial-edge/charts/datacenter/kafka/templates/kafka-tls-certificate-and-key.yaml
+industrial-edge/charts/factory/templates/factory-kafka-cluster/kafka-tls-certificate-and-key.yaml
+industrial-edge/charts/factory/templates/factory-mirror-maker/kafka-tls-certificate.yaml
+```
+
+See the Yaml files for more details.
+
+After updating these files with the proper certs/keys, apply the changes to the OpenShift cluster using `oc apply`.
