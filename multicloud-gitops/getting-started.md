@@ -113,7 +113,7 @@ service](https://console.redhat.com/openshift/create).
    2F6kgITU3DsparWyC
 
    NAME                    HOST/PORT                                                                                   PATH   SERVICES                PORT    TERMINATION            WILDCARD
-   factory-gitops-server   factory-gitops-server-industrial-edge-factory.apps.mycluster.mydomain.com          factory-gitops-server   https   passthrough/Redirect   None
+   edge-gitops-server   edge-gitops-server-industrial-edge-edge.apps.mycluster.mydomain.com          edge-gitops-server   https   passthrough/Redirect   None
    # admin.password
    K4ctDIm3fH7ldhs8p
 
@@ -134,7 +134,7 @@ service](https://console.redhat.com/openshift/create).
 
 Once the management hub has been setup correctly and confirmed to be working, it is time to attach one or more managed clusters to the architecture (see diagrams below).
 
-For instructions on deploying the factory please read the following [document](http://hybrid-cloud-patterns.io/industrial-edge/managed-cluster/).
+For instructions on deploying the edge please read the following [document](http://hybrid-cloud-patterns.io/industrial-edge/managed-cluster/).
 
 # Pattern Layout and Structure
 
@@ -154,7 +154,7 @@ For more general patterns documentation please refer to the hybrid cloud pattern
 
 # Diagrams
 
-The following diagrams show the different components deployed on the datacenter and the factory.
+The following diagrams show the different components deployed on the management hub and the managed cluster (edge).
 
 ## Logical
 

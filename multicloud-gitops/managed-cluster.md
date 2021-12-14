@@ -3,10 +3,10 @@ layout: default
 title: Multicloud Managed Cluster Sites
 grand_parent: Patterns
 parent: Multicloud GitOps
-nav_order: 3
+nav_order: 4
 ---
 
-# Having a factory (edge) cluster join the datacenter (hub) 
+# Having a managed cluster (edge) join the management hub 
 {: .no_toc }
 
 ## Table of contents
@@ -15,7 +15,7 @@ nav_order: 3
 1. TOC
 {:toc}
 
-## Allow ACM to deploy the factory application to a subset of clusters
+## Allow ACM to deploy the managed cluster application to a subset of clusters
 
 By default the `managed-cluster` applications are deployed on all clusters that ACM knows about.
 
@@ -48,10 +48,10 @@ your changes and apply them.
 
 ## Deploy a managed cluster
 
-Rather than provide instructions on creating a factory cluster it is assumed
+Rather than provide instructions on creating a managed cluster it is assumed
 that an OpenShift cluster has already been created. Use the `openshift-install` program provided at [cloud.redhat.com](https://console.redhat.com/openshift/create "Create an OpenShift cluster")
 
-There are a three ways to join the factory to the datacenter.
+There are a three ways to join the managed cluster to the management hub.
 
 * Using the ACM user interface
 * Using the `cm` tool
@@ -59,7 +59,7 @@ There are a three ways to join the factory to the datacenter.
 
 ## Managed cluster setup using the ACM UI
 
-1. From the datacenter openshift console select ACM from the top right
+1. From the management hub openshift console select ACM from the top right
 
 ![](/images/launch-acm-console.png "Launch ACM console")
 
@@ -79,7 +79,7 @@ Using this menthod, you are done. Skip to the section [Managed cluster is joined
 
 1. Obtain the KUBECONFIG file from the managed-cluster cluster.
 
-1. On the command line login into the hub/datacenter cluster (use `oc login` or export the KUBECONFIG).
+1. On the command line login into the management hub cluster (use `oc login` or export the KUBECONFIG).
 
 1. Run the following command:
 ```sh
@@ -92,18 +92,18 @@ Skip to the section [Managed cluster is joined](#managed-cluster-is-joined)
 
 You can also use `clusteradm` to join a cluster. The folloing instructions explain what needs to be done. `clusteradm` is still in testing.
 
-1. To deploy a edge cluster you will need to get the datacenter (or hub) cluster's token. You will need to install `clusteradm`.  On the existing *datacenter cluster*:
+1. To deploy a edge cluster you will need to get the management hub cluster's token. You will need to install `clusteradm`.  On the existing *management hub cluster*:
 
    `clusteradm get token`
 
-1. When you run the `clusteradm` command above it replies with the token and also shows you the command to use on the factory. So first you must login to the factory cluster
+1. When you run the `clusteradm` command above it replies with the token and also shows you the command to use on the managed cluster. So first you must login to the managed cluster
 
    `oc login`
    or
    
    `export KUBECONFIG=~/my-ocp-env/managed-cluster`
 
-1. Then request to that the factory join the datacenter hub
+1. Then request to that the managed cluster join the management hub
 
    `clusteradm join --hub-token <token from clusteradm get token command > <managed cluster name>`
 
@@ -117,8 +117,8 @@ Skip to the section [Managed cluster is joined](#managed-cluster-is-joined)
 
 ### Designate the new cluster as a managed cluster site
 
-Now that ACM is no longer deploying the factory applications everywhere, we need 
-to explicitly indicate that the new cluster has the factory role. **If you haven't tagged the cluster** as `site=managed-cluster` then we can that here.
+Now that ACM is no longer deploying the managed cluster applications everywhere, we need 
+to explicitly indicate that the new cluster has the managed cluster role. **If you haven't tagged the cluster** as `site=managed-cluster` then we can that here.
 
 We do this by adding the label referenced in the managedSite's `clusterSelector`.
 

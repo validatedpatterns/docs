@@ -1,8 +1,7 @@
 ---
 layout: default
 title: OpenShift General Sizing
-grand_parent: Patterns
-parent: Industrial Edge
+parent: Infrastructure
 nav_order: 1
 ---
 
