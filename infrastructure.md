@@ -20,7 +20,3 @@ Each validated pattern has infrastructure requirements. The majority of the vali
 ## Sizing
 
 In this section we provide general minimum sizing requirements for such infrastructure but it is important to review specific requirements for a specific validated pattern. For example, [Industrial Edge 2.0](industrial-edge/index.md) employs AI/Ml technology that requires large machine instances to support the applications deployed on OpenShift at the datacenter.
-
-* [OpenShift Cluster General Sizing](infrastructure/ocp-cluster-general-sizing.md)
-* [RHEL for Edge](infrastructure/rhel-for-edge-general-sizing.md)
-
