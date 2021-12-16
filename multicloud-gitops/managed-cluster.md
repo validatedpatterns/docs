@@ -17,30 +17,41 @@ nav_order: 4
 
 ## Allow ACM to deploy the managed cluster application to a subset of clusters
 
-By default the `managed-cluster` applications are deployed on all clusters that ACM knows about.
+By default the `clusterGroup` applications are deployed on all clusters that ACM knows about. In you `value-hub.yaml` file add a `managedClusterCgroup` for each cluster or group of clusters that you want to manage was one. 
 
 ```json
-  managedSites:
-  - name: managed-cluster
-    clusterSelector:
-      matchExpressions:
-      - key: vendor
-        operator: In
-        values:
-          - OpenShift
-```
-
-This is useful for cost-effective demos, but is hardly realistic.
-
-To deploy the `managed-cluster` applications only on managed clusters with the label
-`site=managed-cluster`, change the site definition in `values-datacenter.yaml` to:
-
-```json
-  managedSites:
-  - name: managed-cluster
+  managedClusterGroups:
+  - name: region-one
+    helmOverrides:
+    - name: clusterGroup.isHubCluster
+      value: false
     clusterSelector:
       matchLabels:
-        site: managed-cluster
+        clusterGroup: region-one
+```
+
+The above yaml segment will deploy the `clusterGroup` applications on managed clusters with the label
+`clusterGroup=region-one`.  Specific subscriptions and Operators, applications and projects for that `clusterGroup` are then managed in a `value-region-one.yaml` file. E.g. 
+
+```
+  namespaces:
+    - multicloud-gitops-region-one
+    - ansible-automation-platform
+
+  subscriptions:
+    - name: ansible-automation-platform-operator
+      namespace: ansible-automation-platform
+      channel: stable-2.1
+      csv: aap-operator.v2.1.0-0.1639138915
+
+
+  projects:
+    - ansible-automation-platform
+
+  applications:
+    - name: ansible
+      project: ansible-automation-platform
+      path: region/aap
 ```
 
 Remember to commit the changes and push to GitHub so that GitOps can see
@@ -67,7 +78,7 @@ There are a three ways to join the managed cluster to the management hub.
 
 ![](/images/import-cluster.png "Select Import cluster")
 
-3. On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `site=managed-cluster`. Press import. Done.
+3. On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=region-one`. Press import. Done.
 
 ![](/images/import-with-kubeconfig.png "Import using kubeconfig")
 
@@ -118,17 +129,17 @@ Skip to the section [Managed cluster is joined](#managed-cluster-is-joined)
 ### Designate the new cluster as a managed cluster site
 
 Now that ACM is no longer deploying the managed cluster applications everywhere, we need 
-to explicitly indicate that the new cluster has the managed cluster role. **If you haven't tagged the cluster** as `site=managed-cluster` then we can that here.
+to explicitly indicate that the new cluster has the managed cluster role. **If you haven't tagged the cluster** as `clusterGroup=region-one` then we can that here.
 
 We do this by adding the label referenced in the managedSite's `clusterSelector`.
 
 1. Find the new cluster
 
-   `oc get managedclusters.cluster.open-cluster-management.io`
+   `oc get region-one.cluster.open-cluster-management.io`
 
 1. Apply the label
 
-   `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster`
+   `oc label region-one.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster`
 
 ### You're done
 That's it! Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShifdt GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console. 

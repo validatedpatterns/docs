@@ -42,7 +42,7 @@ service](https://console.redhat.com/openshift/create).
 1. Fork the [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) repo on GitHub.  It is necessary to fork this repo because the GitOps framework will push tags to this repo that match the versions of software that it will deploy.
 1. Fork this repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 
-1. Clone the forked copy of this repo.
+1. Clone the forked copy of this repo. Use branch `stable-2.0`. 
 
    ```sh
    git clone --recurse-submodules git@github.com:your-username/industrial-edge.git

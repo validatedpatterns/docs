@@ -70,10 +70,10 @@ service](https://console.redhat.com/openshift/create).
    oc login
    ```
 
-   or
+   or set KUBECONFIG to the path to your `kubeconfig` file. For example:
 
    ```sh
-   export KUBECONFIG=~/my-ocp-env/datacenter
+   export KUBECONFIG=~/my-ocp-env/hub/auth/kubconfig
    ```
 
 1. Apply the changes to your cluster
@@ -108,12 +108,12 @@ service](https://console.redhat.com/openshift/create).
 
    ```sh
    NAME                       HOST/PORT                                                                                         PATH      SERVICES                   PORT    TERMINATION            WILDCARD
-   datacenter-gitops-server   datacenter-gitops-server-industrial-edge-datacenter.apps.mycluster.mydomain.com          datacenter-gitops-server   https   passthrough/Redirect   None
+   hub-gitops-server          hub-gitops-server-industrial-edge-hub.apps.mycluster.mydomain.com          hub-gitops-server   https   passthrough/Redirect   None
    # admin.password
    2F6kgITU3DsparWyC
 
    NAME                    HOST/PORT                                                                                   PATH   SERVICES                PORT    TERMINATION            WILDCARD
-   edge-gitops-server   edge-gitops-server-industrial-edge-edge.apps.mycluster.mydomain.com          edge-gitops-server   https   passthrough/Redirect   None
+   region-one-gitops-server      region-one-gitops-server-industrial-edge-region-one.apps.mycluster.mydomain.com          region-one-gitops-server   https   passthrough/Redirect   None
    # admin.password
    K4ctDIm3fH7ldhs8p
 
