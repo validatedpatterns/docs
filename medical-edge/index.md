@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Multicloud GitOps
+title: Medical Edge
 parent: Patterns
 has_children: true
 nav_order: 1
@@ -10,7 +10,7 @@ nav_order: 1
   <img src="/images/logos/multicloud-gitops.png" class="pattern_logo" alt="Points">
 </div>
 
-# Multicloud GitOps
+# Medical Edge
 {: .no_toc }
 
 ## Table of contents
@@ -24,17 +24,21 @@ Organizations are looking for a way to develop and deploy applications on open h
 
 ### Solution elements
 
-- How to use a GitOps approach to manage multiple cloud dpeloyments in both public and private clouds.
-- How to centrally manage multiple clusters, including workloads.
-- How to securely manage secrets across multi-cloud deployments.
+- How to use a GitOps approach to keep in control of configuration and operations
+- How to centrally manage multiple clusters, including workloads
+- How to build and deploy workloads across clusters using modern CI/CD
+- How to train AI/ML models in the public cloud with data from the private cloud, and bring the executable model back to on prem.
 
 ### Red Hat Technologies
 
 - Red Hat OpenShift Container Platform (Kubernetes++)
 - Red Hat Advanced Cluster Management (Open Clutser Management)
 - Red Hat OpenShift GitOps (ArgoCD)
-- Hasicorp Vault
-- [TBD]
+- Red Hat OpenShift Pipelines (Tekton)
+- Red Hat Quay (Container image registry)
+- Red Hat AMQ Streams (Apache Kafka Event Broker)
+- Open Data Hub
+- S3 storage
 
 ## Architecture
 At a high level this requires a management hub, for DevOps and GitOps, and and infrastructure that extends to more than one managed clusters running on private or public clouds.
@@ -43,7 +47,7 @@ At a high level this requires a management hub, for DevOps and GitOps, and and i
 
 ### Logical Diagram
 
-In the Multicloud Gitops architecture there are two logical sites.
+In the Medical Edge architecture there are two logical sites.
 
 - The Management Hub. This is where the multiple managed clusters deployed on clouds (public or private) are managed. Application and configuration code is workied on here and deployed to the other managed clusters. There is one management hub.
 - The Managed Cluster. This is where new applications, updates and operational changes are deployed for the business. There are more than one managed clusters.
@@ -51,10 +55,6 @@ In the Multicloud Gitops architecture there are two logical sites.
 [![Multi-Cloud Logical Architecture](/images/multicloud-gitops/logical-diagram.png)](/images/multicloud-gitops/logical-diagram.png)
 
 ### Physical Schema 
-
-The diagram below shows the components that are deployed and the interaction between clusters for GitOps. The main components for GitOps are Red Hat Advanced Cluster Management (ACM) and OpenShift GitOps (ArgoCD)
-
-[![GitOps Architecture](/images/multicloud-gitops/schema-gitops.png)](/images/multicloud-gitops/schema-gitops.png)
 
 The diagram below shows the components that are deployed in the management hub and the managed cluster for monitoring and logging.
 
