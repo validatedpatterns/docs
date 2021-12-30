@@ -37,7 +37,7 @@ The Validated Pattern includes:
 
 This pipeline is showcased [in this video](https://www.youtube.com/watch?v=zja83FVsm14).
 
-![Pipeline dashboard](doc/dashboard.png)
+[![Pipeline dashboard](/images/medical-edge/dashboard.png)](/images/medical-edge/dashboard.png)
 
 
 This validated pattern is still being developed.  More to come in the next few weeks. Any questions or concerns
@@ -99,4 +99,5 @@ The diagram below shows the components that are deployed with the the data flows
 
 ## What Next
 - Getting started [deploy the management hub using Helm and GitOps](getting-started) 
-- Add a managed cluster to [deploy the  managed cluster piece using ACM](managed cluster) 
+- Add a managed cluster to [deploy the  managed cluster piece using ACM](managed cluster)
+- Visit the [repo](https://github.com/hybrid-cloud-patterns/medical-diagnosis)  
