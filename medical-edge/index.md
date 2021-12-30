@@ -20,21 +20,40 @@ nav_order: 1
 {:toc}
 
 ## Background
-Organizations are looking for a way to develop and deploy applications on open hybrid cloud in a stable, simple, and secure way. This hybrid approach includes multi-cloud deployments where workloads may be running on different clusters on different clouds - private or public. This also requires an infrastructutre-as-code approach that manages versions and being able to deploy based on specific deloyment configurations. 
+This Validated Pattern is based on a demo implemetation of an automated data pipeline for chest Xray
+analysis previously developed by Red Hat.  The original demo can be found [here](https://github.com/red-hat-data-services/jumpstart-library]). It was developed for the US Department of Veteran Affairs.
+
+This validated pattern includes the same functionality as the original demonstration. The difference is
+that we use the *GitOps* to deploy most of the components which includes operators, creation of namespaces,
+and cluster configuration. Using GitOps provides a much more efficient means of doing continuous deployment.
+
+The Validated Pattern includes:
+
+* Ingest chest Xrays into an object store based on Ceph.
+* The Object store sends notifications to a Kafka topic.
+* A KNative Eventing Listener to the topic triggers a KNative Serving function.
+* An ML-trained model running in a container makes a risk of Pneumonia assessment for incoming images.
+* A Grafana dashboard displays the pipeline in real time, along with images incoming, processed and anonymized, as well as full metrics.
+
+This pipeline is showcased [in this video](https://www.youtube.com/watch?v=zja83FVsm14).
+
+![Pipeline dashboard](doc/dashboard.png)
+
+
+This validated pattern is still being developed.  More to come in the next few weeks. Any questions or concerns
+please contact [Jonny Rickard](jrickard@redhat.com) or [Lester Claudio](claudiol@redhat.com).
 
 ### Solution elements
 
 - How to use a GitOps approach to keep in control of configuration and operations
-- How to centrally manage multiple clusters, including workloads
-- How to build and deploy workloads across clusters using modern CI/CD
-- How to train AI/ML models in the public cloud with data from the private cloud, and bring the executable model back to on prem.
+- How to centrally manage multiple medical diagnosis facilities using GitOps.
+- How to deploy AI/ML technologies for medical diagnosis using GitOps from data center to the edge.
 
 ### Red Hat Technologies
 
 - Red Hat OpenShift Container Platform (Kubernetes++)
 - Red Hat Advanced Cluster Management (Open Clutser Management)
 - Red Hat OpenShift GitOps (ArgoCD)
-- Red Hat OpenShift Pipelines (Tekton)
 - Red Hat Quay (Container image registry)
 - Red Hat AMQ Streams (Apache Kafka Event Broker)
 - Open Data Hub
@@ -43,7 +62,7 @@ Organizations are looking for a way to develop and deploy applications on open h
 ## Architecture
 At a high level this requires a management hub, for DevOps and GitOps, and and infrastructure that extends to more than one managed clusters running on private or public clouds.
 
-[![Multi-Cloud Architecture](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)
+[![Multi-Cloud Architecture](/images/medical-edge/edge-medical-diagnosis-marketing-slide.png)](/images/medical-edge/edge-medical-diagnosis-marketing-slide.png)
 
 ### Logical Diagram
 
@@ -52,13 +71,17 @@ In the Medical Edge architecture there are two logical sites.
 - The Management Hub. This is where the multiple managed clusters deployed on clouds (public or private) are managed. Application and configuration code is workied on here and deployed to the other managed clusters. There is one management hub.
 - The Managed Cluster. This is where new applications, updates and operational changes are deployed for the business. There are more than one managed clusters.
 
-[![Multi-Cloud Logical Architecture](/images/multicloud-gitops/logical-diagram.png)](/images/multicloud-gitops/logical-diagram.png)
+[![Multi-Cloud Logical Architecture](/images/medical-edge/logical-diagram.png)](/images/medical-edge/logical-diagram.png)
 
 ### Physical Schema 
 
-The diagram below shows the components that are deployed in the management hub and the managed cluster for monitoring and logging.
+The diagram below shows the components that are deployed with the various networks that connect them.
 
-[![Monitoring and Logging Architecture](/images/multicloud-gitops/schema-monitoring.png)](/images/multicloud-gitops/schema-monitoring.png)
+[![Network architecture](/images/mmedical-edge/physical-network.png)](/images/medical-edge/physical-network.png)
+
+The diagram below shows the components that are deployed with the the data flows and API calls between them.
+
+[![Data flow and API call architecture](/images/mmedical-edge/physical-dataflow.png)](/images/medical-edge/physical-dataflow.png)
 
 ## Recorded Demo
 
