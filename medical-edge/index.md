@@ -56,13 +56,16 @@ please contact [Jonny Rickard](jrickard@redhat.com) or [Lester Claudio](claudiol
 - Red Hat OpenShift GitOps (ArgoCD)
 - Red Hat Quay (Container image registry)
 - Red Hat AMQ Streams (Apache Kafka Event Broker)
+- Grafana dashboard (OpenShift Grafana Operator)
 - Open Data Hub
 - S3 storage
 
 ## Architecture
-At a high level this requires a management hub, for DevOps and GitOps, and and infrastructure that extends to more than one managed clusters running on private or public clouds.
+At a high level this requires a management hub, for the applications and GitOps management, and infrastructure that extends to more than one managed clusters running for medical facilities on private or public clouds.
 
 [![Multi-Cloud Architecture](/images/medical-edge/edge-medical-diagnosis-marketing-slide.png)](/images/medical-edge/edge-medical-diagnosis-marketing-slide.png)
+
+Components are running on OpenShift either at the data center or at the medical facility (or public cloud running OpenShift).
 
 ### Logical Diagram
 
@@ -77,11 +80,11 @@ In the Medical Edge architecture there are two logical sites.
 
 The diagram below shows the components that are deployed with the various networks that connect them.
 
-[![Network architecture](/images/mmedical-edge/physical-network.png)](/images/medical-edge/physical-network.png)
+[![Network architecture](/images/medical-edge/physical-network.png)](/images/medical-edge/physical-network.png)
 
 The diagram below shows the components that are deployed with the the data flows and API calls between them.
 
-[![Data flow and API call architecture](/images/mmedical-edge/physical-dataflow.png)](/images/medical-edge/physical-dataflow.png)
+[![Data flow and API call architecture](/images/medical-edge/physical-dataflow.png)](/images/medical-edge/physical-dataflow.png)
 
 ## Recorded Demo
 
