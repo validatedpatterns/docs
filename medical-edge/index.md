@@ -88,6 +88,8 @@ The diagram below shows the components that are deployed with the the data flows
 
 ## Recorded Demo
 
+[![asciicast](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/xray-deployment.svg)](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/xray-deployment.svg)
+
 ## Prerequisties
 1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create](https://console.redhat.com/openshift/create) )
 1. (Optional) One or more extra OpenShift clusters for the managed clusters (edge).
