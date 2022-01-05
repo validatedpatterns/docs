@@ -88,7 +88,7 @@ The diagram below shows the components that are deployed with the the data flows
 
 ## Recorded Demo
 
-[![Demo](https://github.com/hybrid-cloud-patterns/medical-diagnosis/doc/xray-deployment.svg)](https://github.com/hybrid-cloud-patterns/medical-diagnosis/doc/xray-deployment.svg)
+[![Demo](videos/xray-deployment.svg)](videos/xray-deployment.svg)
 
 ## Prerequisties
 1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create](https://console.redhat.com/openshift/create) )
