@@ -21,7 +21,7 @@ nav_order: 1
 
 ## Background
 This Validated Pattern is based on a demo implemetation of an automated data pipeline for chest Xray
-analysis previously developed by Red Hat.  The original demo can be found [here](https://github.com/red-hat-data-services/jumpstart-library]). It was developed for the US Department of Veteran Affairs.
+analysis previously developed by Red Hat.  The original demo can be found [here](https://github.com/red-hat-data-services/jumpstart-library). It was developed for the US Department of Veteran Affairs.
 
 This validated pattern includes the same functionality as the original demonstration. The difference is
 that we use the *GitOps* to deploy most of the components which includes operators, creation of namespaces,
