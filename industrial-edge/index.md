@@ -24,11 +24,12 @@ nav_order: 2
 With this Pattern, we demonstrate a horizontal solution for Industrial Edge use cases.
 
 It is derived from the [work](https://github.com/sa-mw-dach/manuela) done by Red
-Hat Middleware Solution Architects in Germany in 2019/20. It has been updated
-with an advanced GitOps framework.
+Hat Middleware Solution Architects in Germany in 2019/20. The name MANUela stands for MANUfacturing Edge Lightweight Accelerator, you will see this ancronym in a lot of artefacts. It was developed on a Platform called [stormshift](https://github.com/stormshift/documentation), another name you will see here and there.
 
-The specific example is live defect detection based on sensor data in an
-industrial setting, but it could easily be applicable to other verticals.
+It has been updated 2021 with an advanced GitOps framework.
+
+The specific example is machine condition monitoring based on sensor data in an
+industrial setting, using AI/ML. It could be easily extended to other use cases, e.g. predictive maintenance, or other verticals.
 
 ### Solution elements
 
@@ -50,9 +51,25 @@ industrial setting, but it could easily be applicable to other verticals.
 - Red Hat Integration (Apache Camel-K)
 - Open Data Hub
 
+### Context of Industrial Edge Computing
+With Industrial Edge computing, it’s all about two major streams:
+[![Industrial Edge Computing](/images/industrial-edge/manufacturing-edge-computing.png.png)](/images/industrial-edge/manufacturing-edge-computing.png)
+
+1. Moving sensor data, events etc. from the operational/shopfloor edge level towards the core. The idea is to centralize as much as possible, but keep decentralized as needed. For example, sensitive production data  might not be allowed to leave premises. Think of a temperature curve of an industrial oven which reflects crucial intellection property of the customer. Or the sheer amount of raw data (10k events per second) is too expensive to move to a cloud datacenter. In the above diagram, this is from left to right. In other diagrams the edge / operational level is usually at the bottom and the enterprise/cloud level at the top. Thus, this is also referred to as northbound traffic.
+1. Push code, configuration, master data, machine learning models from the core (where development / testing is happening) towards the edge / shop floors. As there might be 100 of plants with 1000s of lines, automation and consistency is key.  In the above diagram, this is from right to left, in a top/down view, it is call southbound traffic.
+
+### Demo Scenario
+The Industrial Edge Validated Pattern / Demo Scenario reflects this by having 3 layers:
+- Line Data Server - the far edge, at the shop floor level
+- Factory Data Center - the near edge, at the plant, but in a more controlled environment.
+- Central Data Ceneter - the cloud/core, where ML Model Training, AppDev, Testing etc. is happening (and ERP systems of course, not part of the demo).
+[![Demo Scenario](/images/industrial-edge/highleveldemodiagram.png)](/images/industrial-edge/highleveldemodiagram.png)
+
+The northbound traffic of sensor data is clearly visible from the Sensor via MQTT to the Factory, where it is split into two streams: one to be fed into a ML Model for anomaly detection, an another one to be stream to the central data center via Event Streaming (Kafka) to be stored for model training.
+
 ## Architecture
 
-The following diagram explains how different roles have different concerns and focus when working with this distributed AL/ML architecture. 
+The following diagram explains how different roles have different concerns and focus when working with this distributed AL/ML architecture.
 
 [![Industrial Edge Architecture](/images/ai-ml-architecture.png)](/images/ai-ml-architecture.png)
 
@@ -66,7 +83,7 @@ In the Industrial Edge architecture there are two logical sites.
 
 [![Industrial Edge Logical Architecture](/images/industrial-edge/manufacturing-logical.png)](/images/industrial-edge/manufacturing-logical.png)
 
-### Physical Schema 
+### Physical Schema
 
 The diagram below shows the components that are deployed in the datacenter and the factory and the networking between those components.
 
@@ -112,7 +129,7 @@ Check to see that all Operators have been deployed
   OpenShift UI -> Installed Operators
   ```
 The entire deployment involves several OpenShift GitOps applications. It takes time to deploy everything. You may have to go back and forth between this step and the next step to make sure
-that all the operators are deployed. 
+that all the operators are deployed.
 
 Check all OpenShift GitOps applications are synchronised
 
@@ -128,7 +145,7 @@ Check all OpenShift GitOps applications are synchronised
 
 ## What's Next
 
-- Add a dedicated cluster to [deploy the factory pieces using ACM](factory) 
+- Add a dedicated cluster to [deploy the factory pieces using ACM](factory)
 - Making [configuration changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
 - Making [application changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
 - Making [AI/ML model changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#application-ai-model-changes-with-devops) with DevOps
