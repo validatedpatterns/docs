@@ -53,7 +53,7 @@ industrial setting, using AI/ML. It could be easily extended to other use cases,
 
 ### Context of Industrial Edge Computing
 With Industrial Edge computing, it’s all about two major streams:
-[![Industrial Edge Computing](/images/industrial-edge/manufacturing-edge-computing.png.png)](/images/industrial-edge/manufacturing-edge-computing.png)
+[![Industrial Edge Computing](/images/industrial-edge/manufacturing-edge-computing.png)](/images/industrial-edge/manufacturing-edge-computing.png)
 
 1. Moving sensor data, events etc. from the operational/shopfloor edge level towards the core. The idea is to centralize as much as possible, but keep decentralized as needed. For example, sensitive production data  might not be allowed to leave premises. Think of a temperature curve of an industrial oven which reflects crucial intellection property of the customer. Or the sheer amount of raw data (10k events per second) is too expensive to move to a cloud datacenter. In the above diagram, this is from left to right. In other diagrams the edge / operational level is usually at the bottom and the enterprise/cloud level at the top. Thus, this is also referred to as northbound traffic.
 1. Push code, configuration, master data, machine learning models from the core (where development / testing is happening) towards the edge / shop floors. As there might be 100 of plants with 1000s of lines, automation and consistency is key.  In the above diagram, this is from right to left, in a top/down view, it is call southbound traffic.
