@@ -6,7 +6,7 @@ parent: Medical Edge
 nav_order: 3
 ---
 
-# Demonstrating Industrial Edge example applications  
+# Demonstrating Medical Diagnosis at the edge example application deployment  
 {: .no_toc }
 
 ## Table of contents
@@ -77,7 +77,7 @@ There is some key information you will need to take note of that is required by 
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
    ```
-When you edit the file you can make changes to the various DB passwords if you wish. 
+  When you edit the file you can make changes to the various DB passwords if you wish. 
 
 1. Customize the deployment for your cluster. Remember to use the data optained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlightiung what what chnages need to be made.
 
@@ -88,7 +88,7 @@ When you edit the file you can make changes to the various DB passwords if you w
    git push
    ```
 
-1. Preview the changes
+1. Preview the changes that will be made to the Helm charts.
    ```sh
    make show
    ```
@@ -111,19 +111,21 @@ When you edit the file you can make changes to the various DB passwords if you w
    make install
    ```
 
-If the install fails and you go back over the instructions and see what was missed and change it, then run `make upgrade` to continue the installation.
+   If the install fails and you go back over the instructions and see what was missed and change it, then run `make update` to continue the installation.
 
-1. This takes seom time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The make install script does a lot of this for you. Compare your `make install` run progress with the following. 
+1. This takes some time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The `make install` provides some progress updates during the install. It can take up to twentry minutes. Compare your `make install` run progress with the following video showing a successful install. 
 
 [![Demo](/videos/xray-deployment.svg)](/videos/xray-deployment.svg)
 
-1. Check the operators have been installed
+1. Check that the operators have been installed in the UI.
 
    ```
-   UI -> Installed Operators
+   OpenShift UI -> Installed Operators
    ```
+   The main operator to watch is the OpenShift Data Foundation.
 
-1. Obtain the ArgoCD urls and passwords
+1. You can also check on the progress OpenShift GitOps. Obtain the ArgoCD urls 
+   and passwords. 
 
    The URLs and login credentials for ArgoCD change depending on the pattern
    name and the site names they control.  Follow the instructions below to find
@@ -178,7 +180,21 @@ Make sure that you see some XML and not an access denied message.
 
 [![Storage Routes](/images/medical-edge/grafana-routes.png)](/images/medical-edge/grafana-routes.png))
 
-1. Turn on the image file flow. Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project xraylab-1. Click on `image-generator` and increase the pod count to 1.
+1. Turn on the image file flow. There are two ways to go about this.
+
+   Go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the `xraylab-1` project.
+
+[![Xraylab-1 Topology](/images/medical-edge/dev-topology.png)](/images/medical-edge/dev-topology.png))
+
+   Right click on the `image-generator` pod icon and select `Edit Pod count`. 
+
+ [![Pod menu](/images/medical-edge/dev-topology-menu.png)](/images/medical-edge/dev-topology-menu.png))
+ 
+   Up the pod count from `0` to `1` and save.  
+
+ [![Pod count](/images/medical-edge/dev-topology-pod-count.png)](/images/medical-edge/dev-topology-pod-count.png))
+
+   Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project xraylab-1. Click on `image-generator` and increase the pod count to 1.
 
 [![Image Pod](/images/medical-edge/start-image-flow.png)](/images/medical-edge/start-image-flow.png))
 
@@ -188,20 +204,6 @@ Make sure that you see some XML and not an access denied message.
 
 For more general patterns documentation please refer to the hybrid cloud patterns docs [here](http://hybrid-cloud-patterns.io/).
 
-## Multicloud GitOps application demos
-
-# Diagrams
-
-The following diagrams show the different components deployed on the management hub and the managed cluster (edge).
-
-## Logical
-
-![Logical](docs/images/)
-
-## Schematic with Networks
-
-## Schematic with Dataflows
-
 ## Editing the diagrams.
 
-To edit the diagrams in Draw.io you can load them [here](https://redhatdemocentral.gitlab.io/portfolio-architecture-tooling/index.html?#/portfolio-architecture-examples/projects/spi-multi-cloud-gitops.drawio) and save a local copy
+To edit the diagrams in Draw.io you can load them [here](https://redhatdemocentral.gitlab.io/portfolio-architecture-tooling/index.html?#/portfolio-architecture-examples/projects/edge-medical-diagnosis.drawio) and save a local copy
