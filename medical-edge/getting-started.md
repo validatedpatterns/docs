@@ -70,14 +70,14 @@ There is some key information you will need to take note of that is required by 
 
 1. Create a local copy of the Helm values file that can safely include credentials
 
-  DO NOT COMMIT THIS FILE
+   DO NOT COMMIT THIS FILE
 
-  You do not want to push personal credentials to GitHub.
+   You do not want to push personal credentials to GitHub.
    ```sh
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
    ```
-  When you edit the file you can make changes to the various DB passwords if you wish. 
+   When you edit the file you can make changes to the various DB passwords if you wish. 
 
 1. Customize the deployment for your cluster. Remember to use the data optained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlightiung what what chnages need to be made.
 
@@ -115,7 +115,7 @@ There is some key information you will need to take note of that is required by 
 
 1. This takes some time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The `make install` provides some progress updates during the install. It can take up to twentry minutes. Compare your `make install` run progress with the following video showing a successful install. 
 
-[![Demo](/videos/xray-deployment.svg)](/videos/xray-deployment.svg)
+   [![Demo](/videos/xray-deployment.svg)](/videos/xray-deployment.svg)
 
 1. Check that the operators have been installed in the UI.
 
@@ -124,8 +124,10 @@ There is some key information you will need to take note of that is required by 
    ```
    The main operator to watch is the OpenShift Data Foundation.
 
-1. You can also check on the progress OpenShift GitOps. Obtain the ArgoCD urls 
-   and passwords. 
+## Using OpenShift GitOps to check on Application progress
+You can also check on the progress using OpenShift GitOps to check on the various applications deployed. 
+
+1. Obtain the ArgoCD urls and passwords. 
 
    The URLs and login credentials for ArgoCD change depending on the pattern
    name and the site names they control.  Follow the instructions below to find
@@ -144,61 +146,91 @@ There is some key information you will need to take note of that is required by 
    The result should look something like:
 
    ```sh
-   NAME                       HOST/PORT                                                                                         PATH      SERVICES                   PORT    TERMINATION            WILDCARD
-   hub-gitops-server          hub-gitops-server-industrial-edge-hub.apps.mycluster.mydomain.com          hub-gitops-server   https   passthrough/Redirect   None
+   NAME                       HOST/PORT                                                                                      PATH   SERVICES                   PORT    TERMINATION            WILDCARD
+   datacenter-gitops-server   datacenter-gitops-server-medical-diagnosis-datacenter.apps.wh-medctr.blueprints.rhecoeng.com          datacenter-gitops-server   https   passthrough/Redirect   None
    # admin.password
-   2F6kgITU3DsparWyC
-
-   NAME                    HOST/PORT                                                                                   PATH   SERVICES                PORT    TERMINATION            WILDCARD
-   region-one-gitops-server      region-one-gitops-server-industrial-edge-region-one.apps.mycluster.mydomain.com          region-one-gitops-server   https   passthrough/Redirect   None
+   xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH
+   NAME                      HOST/PORT                                                                         PATH   SERVICES                  PORT    TERMINATION            WILDCARD
+   cluster                   cluster-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com                          cluster                   8080    reencrypt/Allow        None
+   kam                       kam-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com                              kam                       8443    passthrough/None       None
+   openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com          openshift-gitops-server   https   passthrough/Redirect   None
    # admin.password
-   K4ctDIm3fH7ldhs8p
-
-   NAME                      HOST/PORT                                                                              PATH   SERVICES                  PORT    TERMINATION            WILDCARD
-   cluster                   cluster-openshift-gitops.apps.mycluster.mydomain.com                          cluster                   8080    reencrypt/Allow        None
-   kam                       kam-openshift-gitops.apps.mycluster.mydomain.com                              kam                       8443    passthrough/None       None
-   openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.mycluster.mydomain.com          openshift-gitops-server   https   passthrough/Redirect   None
-   # admin.password
-   WNklRCD8EFg2zK034
+   FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6
    ```
 
    The most important ArgoCD instance to examine at this point is `multicloud-gitops-hub`. This is where all the applications for the hub can be tracked.
 
 
-1. Check all applications are synchronised
+1. Check all applications are synchronised. There are eleven different ArgoCD "applications" deployed as part of this pattern.
 
 ## Viewing the Grafana based dashboard.
 
-1. First we need to accept SSL certificates on the browser for the dashboard. In the OpenShift console go to the Routes for project openshift-stroage. Click on the URL for the s3-rgw. 
-[![Storage Routes](/images/medical-edge/storage-route.png)](/images/medical-edge/storage-route.png))
+1. First we need to accept SSL certificates on the browser for the dashboard. In the OpenShift console go to the Routes for project openshift-storage. Click on the URL for the s3-rgw. 
 
-Make sure that you see some XML and not an access denied message.
+   [![Storage Routes](/images/medical-edge/storage-route.png)](/images/medical-edge/storage-route.png))
 
-[![Storage Routes](/images/medical-edge/storage-rgw-route.png)](/images/medical-edge/storage-rgw-route.png))
+   Make sure that you see some XML and not an access denied message.
+
+   [![Storage Routes](/images/medical-edge/storage-rgw-route.png)](/images/medical-edge/storage-rgw-route.png))
 
 1. While still looking at Routes, change the project to `xraylab-1`. Click on the URL for the `image-server`. Make sure you do not see an access denied message. You ought to see a `Hello World` message.
 
-[![Storage Routes](/images/medical-edge/grafana-routes.png)](/images/medical-edge/grafana-routes.png))
+   [![Storage Routes](/images/medical-edge/grafana-routes.png)](/images/medical-edge/grafana-routes.png))
 
-1. Turn on the image file flow. There are two ways to go about this.
+1. Turn on the image file flow. There are three ways to go about this.
 
-   Go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the `xraylab-1` project.
+   You can go to the command line (maje sure you have KUBECONFIG set, or are logged into the cluster. 
 
-[![Xraylab-1 Topology](/images/medical-edge/dev-topology.png)](/images/medical-edge/dev-topology.png))
+   ```
+   oc scale deploymentconfig/image-generator --replicas=1
+   ```
+
+   Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the `xraylab-1` project.
+
+   [![Xraylab-1 Topology](/images/medical-edge/dev-topology.png)](/images/medical-edge/dev-topology.png))
 
    Right click on the `image-generator` pod icon and select `Edit Pod count`. 
 
- [![Pod menu](/images/medical-edge/dev-topology-menu.png)](/images/medical-edge/dev-topology-menu.png))
+   [![Pod menu](/images/medical-edge/dev-topology-menu.png)](/images/medical-edge/dev-topology-menu.png))
  
    Up the pod count from `0` to `1` and save.  
 
- [![Pod count](/images/medical-edge/dev-topology-pod-count.png)](/images/medical-edge/dev-topology-pod-count.png))
+   [![Pod count](/images/medical-edge/dev-topology-pod-count.png)](/images/medical-edge/dev-topology-pod-count.png))
+
+
+   Alternatively, you can have the same outcome on the Administrator console.
 
    Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project xraylab-1. Click on `image-generator` and increase the pod count to 1.
 
-[![Image Pod](/images/medical-edge/start-image-flow.png)](/images/medical-edge/start-image-flow.png))
+   [![Image Pod](/images/medical-edge/start-image-flow.png)](/images/medical-edge/start-image-flow.png))
 
-# More reading
+## Making some changes on the dashboard
+
+You can change some of the parameters and watch how the changes effect the dashboard.
+
+1. You can increase or decrease the number of image generators.
+
+   ```
+   oc scale deploymentconfig/image-generator --replicas=2
+   ```
+
+   Check the dashboard.
+
+   ```
+   oc scale deploymentconfig/image-generator --replicas=0
+   ```
+
+   Watch the dashboard stop processing images. 
+
+1. You can also simulate the change of the AI model version - as it's only an environment variable in the Serverless Service configuration.
+
+   ```
+   oc patch service.serving.knative.dev/risk-assessment --type=json -p '[{"op":"replace","path":"/spec/template/metadata/annotations/revisionTimestamp","value":"'"$(date +%F_%T)"'"},{"op":"replace","path":"/spec/template/spec/containers/0/env/0/value","value":"v2"}]'
+   ```
+
+   This changes the model version value, as well as the revisionTimestamp in the annotations, which triggers a redeployment of the service.
+
+# More reading and other assests
 
 ## General Hybrid Cloud Patterns reading
 
