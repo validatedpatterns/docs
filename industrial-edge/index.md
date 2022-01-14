@@ -23,10 +23,10 @@ nav_order: 2
 
 With this Pattern, we demonstrate a horizontal solution for Industrial Edge use cases.
 
-It is derived from the [work](https://github.com/sa-mw-dach/manuela) done by Red
-Hat Middleware Solution Architects in Germany in 2019/20. The name MANUela stands for MANUfacturing Edge Lightweight Accelerator, you will see this ancronym in a lot of artefacts. It was developed on a Platform called [stormshift](https://github.com/stormshift/documentation), another name you will see here and there.
+It is derived from the [MANUela work](https://github.com/sa-mw-dach/manuela) done by Red
+Hat Middleware Solution Architects in Germany in 2019/20. The name MANUela stands for MANUfacturing Edge Lightweight Accelerator, you will see this acronym in a lot of artefacts. It was developed on a platform called [stormshift](https://github.com/stormshift/documentation) - another name you will see here and there.
 
-It has been updated 2021 with an advanced GitOps framework.
+The demo has been updated 2021 with an advanced GitOps framework.
 
 The specific example is machine condition monitoring based on sensor data in an
 industrial setting, using AI/ML. It could be easily extended to other use cases, e.g. predictive maintenance, or other verticals.
@@ -51,7 +51,7 @@ industrial setting, using AI/ML. It could be easily extended to other use cases,
 - Red Hat Integration (Apache Camel-K)
 - Open Data Hub
 
-### Context of Industrial Edge Computing
+### Context on Industrial Edge Computing
 With Industrial Edge computing, it’s all about two major streams:
 [![Industrial Edge Computing](/images/industrial-edge/manufacturing-edge-computing.png)](/images/industrial-edge/manufacturing-edge-computing.png)
 
@@ -65,7 +65,9 @@ The Industrial Edge Validated Pattern / Demo Scenario reflects this by having 3 
 - Central Data Ceneter - the cloud/core, where ML Model Training, AppDev, Testing etc. is happening (and ERP systems of course, not part of the demo).
 [![Demo Scenario](/images/industrial-edge/highleveldemodiagram.png)](/images/industrial-edge/highleveldemodiagram.png)
 
-The northbound traffic of sensor data is clearly visible from the Sensor via MQTT to the Factory, where it is split into two streams: one to be fed into a ML Model for anomaly detection, an another one to be stream to the central data center via Event Streaming (Kafka) to be stored for model training.
+The northbound traffic of sensor data is clearly visible in this diagram: from the Sensor at the bottom via MQTT to the Factory, where it is split into two streams: one to be fed into a ML Model for anomaly detection, an another one to be streamed up to the central data center via event streaming (Kafka) to be stored for model training.
+
+The southbound traffic is abstracted avoid in the App-Dev / Pipeline box at the top - that is where e.g. gitops kick in, to push config or version changes down into the factories.
 
 ## Architecture
 
