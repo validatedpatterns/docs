@@ -2,7 +2,7 @@
 layout: default
 title: Medical Diagnosis Pattern Cluster Sizing
 grand_parent: Patterns
-parent: Medical Edge
+parent: Medical Diagnosis
 nav_order: 2
 ---
 # Medical Diagnosis Pattern 

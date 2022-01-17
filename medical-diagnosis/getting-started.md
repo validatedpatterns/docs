@@ -2,7 +2,7 @@
 layout: default
 title: Getting Started
 grand_parent: Patterns
-parent: Medical Edge
+parent: Medical Diagnosis
 nav_order: 3
 ---
 
@@ -113,7 +113,7 @@ There is some key information you will need to take note of that is required by 
 
    If the install fails and you go back over the instructions and see what was missed and change it, then run `make update` to continue the installation.
 
-1. This takes some time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The `make install` provides some progress updates during the install. It can take up to twentry minutes. Compare your `make install` run progress with the following video showing a successful install. 
+1. This takes some time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The `make install` provides some progress updates during the install. It can take up to twentry minutes. Compare your `make install` run progress with the following video showing a successful install.
 
    [![Demo](/videos/xray-deployment.svg)](/videos/xray-deployment.svg)
 
@@ -158,7 +158,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
    FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6
    ```
 
-   The most important ArgoCD instance to examine at this point is `multicloud-gitops-hub`. This is where all the applications for the hub can be tracked.
+   The most important ArgoCD instance to examine at this point is `datacenter-gitops-server`. This is where all the applications for the hub can be tracked.
 
 
 1. Check all applications are synchronised. There are eleven different ArgoCD "applications" deployed as part of this pattern.

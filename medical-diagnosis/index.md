@@ -1,16 +1,16 @@
 ---
 layout: default
-title: Medical Edge
+title: Medical Diagnosis
 parent: Patterns
 has_children: true
 nav_order: 1
 ---
 
 <div class="pattern_logo">
-  <img src="/images/logos/multicloud-gitops.png" class="pattern_logo" alt="Points">
+  <img src="/images/logos/medical-diagnosis.png" class="pattern_logo" alt="Points">
 </div>
 
-# Medical Edge
+# Medical Diagnosis
 {: .no_toc }
 
 ## Table of contents
@@ -69,7 +69,7 @@ Components are running on OpenShift either at the data center or at the medical 
 
 ### Logical Diagram
 
-In the Medical Edge architecture there are two logical sites.
+In the Medical Diagnosis architecture there are two logical sites.
 
 - The Management Hub. This is where the multiple managed clusters deployed on clouds (public or private) are managed. Application and configuration code is workied on here and deployed to the other managed clusters. There is one management hub.
 - The Managed Cluster. This is where new applications, updates and operational changes are deployed for the business. There are more than one managed clusters.
