@@ -9,7 +9,7 @@ nav_order: 1
 Hybrid Cloud Patterns are a natural progression from reference architectures with additional value.
 
 This effort is focused on customer solutions that involve multiple Red Hat
-products. The patterns include one or more appications that are based on successfully deployed customer examples. Example application code is provided as a demonstration along with the various open source projects and Red Hat products required to for the deployment to work. Users can then modify the pattern for their own specific application.
+products. The patterns include one or more applications that are based on successfully deployed customer examples. Example application code is provided as a demonstration along with the various open source projects and Red Hat products required to for the deployment to work. Users can then modify the pattern for their own specific application.
 
 How do we select and produce a pattern? We look for novel customer use cases, obtain an open source demonstration of the use case, validate the pattern with its components with the relevant product engineering teams, and create GitOps based automation to make them easily repeatable and extendable.
 
