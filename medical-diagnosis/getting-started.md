@@ -2,11 +2,11 @@
 layout: default
 title: Getting Started
 grand_parent: Patterns
-parent: Medical Edge
+parent: Medical Diagnosis
 nav_order: 3
 ---
 
-# Demonstrating Medical Diagnosis at the edge example application deployment  
+# Deploying Medical Diagnosis pattern  
 {: .no_toc }
 
 ## Table of contents
