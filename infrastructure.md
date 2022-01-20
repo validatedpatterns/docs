@@ -5,7 +5,7 @@ nav_order: 2
 has_children: true
 ---
 
-# Pattern List
+# Infrastructure
 {: .no_toc }
 
 ## Table of contents
