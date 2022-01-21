@@ -22,6 +22,8 @@ nav_order: 1
 ## Background
 Organizations are looking for a way to develop and deploy applications on open hybrid cloud in a stable, simple, and secure way. This hybrid approach includes multi-cloud deployments where workloads may be running on different clusters on different clouds - private or public. This also requires an infrastructutre-as-code approach that manages versions and being able to deploy based on specific deloyment configurations. 
 
+The pattern is derived from work done by the [Red Hat Portfolio Architecture team](https://gitlab.com/redhatdemocentral/portfolio-architecture-examples/-/blob/main/spi-multi-cloud-gitops.adoc)
+
 ### Solution elements
 
 - How to use a GitOps approach to manage multiple cloud dpeloyments in both public and private clouds.
@@ -41,27 +43,10 @@ At a high level this requires a management hub, for DevOps and GitOps, and and i
 
 [![Multi-Cloud Architecture](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)
 
-### Logical Diagram
-
-In the Multicloud Gitops architecture there are two logical sites.
-
-- The Management Hub. This is where the multiple managed clusters deployed on clouds (public or private) are managed. Application and configuration code is workied on here and deployed to the other managed clusters. There is one management hub.
-- The Managed Cluster. This is where new applications, updates and operational changes are deployed for the business. There are more than one managed clusters.
-
-[![Multi-Cloud Logical Architecture](/images/multicloud-gitops/logical-diagram.png)](/images/multicloud-gitops/logical-diagram.png)
-
-### Physical Schema 
-
-The diagram below shows the components that are deployed and the interaction between clusters for GitOps. The main components for GitOps are Red Hat Advanced Cluster Management (ACM) and OpenShift GitOps (ArgoCD)
-
-[![GitOps Architecture](/images/multicloud-gitops/schema-gitops.png)](/images/multicloud-gitops/schema-gitops.png)
-
-The diagram below shows the components that are deployed in the management hub and the managed cluster for monitoring and logging.
-
-[![Monitoring and Logging Architecture](/images/multicloud-gitops/schema-monitoring.png)](/images/multicloud-gitops/schema-monitoring.png)
+For additional logical, physical and dataflow diagrams, please see excellent work done by the [Red Hat Portfolio Architecture team](https://gitlab.com/redhatdemocentral/portfolio-architecture-examples/-/blob/main/spi-multi-cloud-gitops.adoc)
 
 ## Recorded Demo
 
 ## What Next
-- Getting started [deploy the management hub using Helm and GitOps](getting-started) 
+- [Deploy the management hub](getting-started)  using Helm 
 - Add a managed cluster to [deploy the  managed cluster piece using ACM](managed cluster) 

@@ -75,29 +75,12 @@ The following diagram explains how different roles have different concerns and f
 
 [![Industrial Edge Architecture](/images/ai-ml-architecture.png)](/images/ai-ml-architecture.png)
 
-
-### Logical Architecture
-
-In the Industrial Edge architecture there are two logical sites.
+In the Industrial Edge architecture there are two logical types of sites.
 
 - The datacenter. This is where the data scientist, developers and operations personnel apply the changes to their models, application code and configurations.
-- The factory. This is where new applications, updates and operational changes are deployed to improve quality and efficency in the factory.
+- The factories. This is where new applications, updates and operational changes are deployed to improve quality and efficency in the factory.
 
-[![Industrial Edge Logical Architecture](/images/industrial-edge/manufacturing-logical.png)](/images/industrial-edge/manufacturing-logical.png)
-
-### Physical Schema
-
-The diagram below shows the components that are deployed in the datacenter and the factory and the networking between those components.
-
-[![Industrial Edge Physical Network Architecture](/images/industrial-edge/manufacturing-schema-netw.png)](/images/industrial-edge/manufacturing-schema-netw.png)
-
-The diagram below shows the components are are deployed in the datacenter and the factory and the dataflows between those components across the various networks.
-
-[![Industrial Edge Physical Dataflow Architecture](/images/industrial-edge/manufacturing-schema-df.png)](/images/industrial-edge/manufacturing-schema-df.png)
-
-While the above diagrams show the components involved on the DevOps side dealing with the application and the AI/ML models, there are other components to conside when dealing with operational side using GitOps.
-
-[![Industrial Edge Physical GitOps Architecture](/images/industrial-edge/manufacturing-schema-gitops.png)](/images/industrial-edge/manufacturing-schema-gitops.png)
+For logical, physical and dataflow diagrams, please see excellent work done by the [Red Hat Portfolio Architecture team](https://gitlab.com/redhatdemocentral/portfolio-architecture-examples/-/blob/main/manufacturing.adoc)
 
 ### Pattern Structure
 
