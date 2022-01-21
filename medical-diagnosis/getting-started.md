@@ -54,7 +54,7 @@ python s3-sync-buckets.py -s com.validated-patterns.xray-source -t mytest-bucket
 
 The output should look similar to this edited/compressed output.
 
-![Bucket setup](/videos/bucket-setup.svg)](/videos/bucket-setup.svg)
+![Bucket setup](/videos/bucket-setup.svg)]
 
 There is some key information you will need to take note of that is required by the 'values-global.yaml' file. You will need the URL for the buckeyt and it's name. At the very end of the `values-global.yaml` file you will see a section for `s3:` were these values need to be changed.
 
