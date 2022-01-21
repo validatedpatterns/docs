@@ -136,19 +136,10 @@ Once the management hub has been setup correctly and confirmed to be working, it
 
 For instructions on deploying the edge please read the following [document](http://hybrid-cloud-patterns.io/industrial-edge/managed-cluster/).
 
-# Pattern Layout and Structure
-
-
-# Uninstalling
-
-**Probably wont work**
-
-
-# More reading
-
-## General Hybrid Cloud Patterns reading
-
-For more general patterns documentation please refer to the hybrid cloud patterns docs [here](http://hybrid-cloud-patterns.io/).
-
 ## Multicloud GitOps application demos
+
+# Next Steps
+
+<a href="https://groups.google.com/u/1/g/hybrid-cloud-patterns" class="btn"> Help & Feedback </a>
+<a href="https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues" class="btn" style="background-color:red;"> Report Bugs </a>
 
