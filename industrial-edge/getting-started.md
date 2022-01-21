@@ -141,7 +141,10 @@ service](https://console.redhat.com/openshift/create).
 
 1. Check all applications are synchronised
 
-## Next up
+## Next Steps
+
+<a href="https://groups.google.com/u/1/g/hybrid-cloud-patterns" class="btn"> Help & Feedback </a>
+<a href="https://github.com/hybrid-cloud-patterns/industrial-edge/issues" class="btn" style="background-color:red;"> Report Bugs </a>
 
 Once the data center has been setup correctly and confirmed to be working, you can:
 
@@ -151,11 +154,6 @@ Once the data center has been setup correctly and confirmed to be working, you c
    a. Making [configuration changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
    a. Making [application changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
    a. Making [AI/ML model changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#application-ai-model-changes-with-devops) with DevOps
-
-# More reading
-
-For more general patterns documentation please refer to the hybrid cloud patterns docs [here](http://hybrid-cloud-patterns.io/).
-
 
 # Uninstalling
 
