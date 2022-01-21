@@ -58,7 +58,7 @@ The output should look similar to this edited/compressed output.
 
 There is some key information you will need to take note of that is required by the 'values-global.yaml' file. You will need the URL for the buckeyt and it's name. At the very end of the `values-global.yaml` file you will see a section for `s3:` were these values need to be changed.
 
-# How to deploy
+# Preparation
 
 1. Fork this repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 
@@ -104,6 +104,27 @@ There is some key information you will need to take note of that is required by 
    ```sh
    export KUBECONFIG=~/my-ocp-env/auth/kubconfig
    ```
+   
+## Check the values files before deployment
+
+You can run a check before deployment to make sure that you have the required variables to deploy the 
+Medical Diagnosis Validated Pattern.  
+
+You can run `make predeploy` to check your values. This will allow you to review your values and changed them in
+the case there are typos or old values.  The values files that should be reviewed prior to deploying the
+Medical Diagnosis Validated Pattern are:
+
+| Values File | Description |
+| ----------- | ----------- |
+| values-secret.yaml | This is the values file that will include the xraylab section with all the database secrets |
+| values-global.yaml | File that is used to contain all the global values used by Helm |
+
+Make sure you have the correct domain, clustername, externalUrl, targetBucket and bucketSource values.
+ 
+[![asciicast](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)
+
+## Deploy
+
 
 1. Apply the changes to your cluster
 
