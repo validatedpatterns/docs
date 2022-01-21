@@ -54,6 +54,7 @@ industrial setting, using AI/ML. It could be easily extended to other use cases,
 - Red Hat AMQ Streams (Apache Kafka Event Broker)
 - Red Hat Integration (Apache Camel-K)
 - Open Data Hub
+- Seldon Core
 
 ### Context on Industrial Edge Computing
 With Industrial Edge computing, it’s all about two major streams:
