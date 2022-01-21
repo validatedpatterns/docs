@@ -123,8 +123,7 @@ Make sure you have the correct domain, clustername, externalUrl, targetBucket an
  
 [![asciicast](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)
 
-## Deploy
-
+# Deploy
 
 1. Apply the changes to your cluster
 
@@ -251,3 +250,7 @@ You can change some of the parameters and watch how the changes effect the dashb
 
    This changes the model version value, as well as the revisionTimestamp in the annotations, which triggers a redeployment of the service.
 
+# Next Steps
+
+<a href="https://groups.google.com/u/1/g/hybrid-cloud-patterns" class="btn"> Help & Feedback </a>
+<a href="https://github.com/hybrid-cloud-patterns/medical-diagnosis/issues" class="btn" style="background-color:red;"> Report Bugs </a>
