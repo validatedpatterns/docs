@@ -62,15 +62,6 @@ The diagram below shows the components that are deployed in the management hub a
 
 ## Recorded Demo
 
-## Prerequisties
-1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create](https://console.redhat.com/openshift/create) )
-1. (Optional) One or more extra OpenShift clusters for the managed clusters (edge).
-1. A [GitHub](https://github.com) account
-
-## Initial Deployment
-
-## Validating the Environment
-
 ## What Next
 - Getting started [deploy the management hub using Helm and GitOps](getting-started) 
 - Add a managed cluster to [deploy the  managed cluster piece using ACM](managed cluster) 

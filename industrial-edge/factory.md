@@ -3,7 +3,7 @@ layout: default
 title: Factory Sites
 grand_parent: Patterns
 parent: Industrial Edge
-nav_order: 4
+nav_order: 2
 ---
 
 # Having a factory (edge) cluster join the datacenter (hub) 

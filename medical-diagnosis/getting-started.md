@@ -3,10 +3,10 @@ layout: default
 title: Getting Started
 grand_parent: Patterns
 parent: Medical Diagnosis
-nav_order: 3
+nav_order: 1
 ---
 
-# Deploying Medical Diagnosis pattern  
+# Deploying the Medical Diagnosis pattern  
 {: .no_toc }
 
 ## Table of contents
@@ -17,7 +17,7 @@ nav_order: 3
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create )
+1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create ).  See also [sizing your cluster](../cluster-sizing).
 1. A github account (and a token for it with repos permissions, to read from and write to your forks)
 1. Storage set up in your public/private cloud for the x-ray images
 1. The helm binary, see https://helm.sh/docs/intro/install/
@@ -230,12 +230,3 @@ You can change some of the parameters and watch how the changes effect the dashb
 
    This changes the model version value, as well as the revisionTimestamp in the annotations, which triggers a redeployment of the service.
 
-# More reading and other assests
-
-## General Hybrid Cloud Patterns reading
-
-For more general patterns documentation please refer to the hybrid cloud patterns docs [here](http://hybrid-cloud-patterns.io/).
-
-## Editing the diagrams.
-
-To edit the diagrams in Draw.io you can load them [here](https://redhatdemocentral.gitlab.io/portfolio-architecture-tooling/index.html?#/portfolio-architecture-examples/projects/edge-medical-diagnosis.drawio) and save a local copy

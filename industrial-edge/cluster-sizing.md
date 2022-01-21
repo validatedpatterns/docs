@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Sizing a Deployment Cluster
+title: Cluster Sizing
 grand_parent: Patterns
 parent: Industrial Edge
-nav_order: 2
+nav_order: 5
 ---
-# Industrial-Edge Pattern 
+# OpenShift Cluster Sizing for the Industrial Edge Pattern 
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -13,7 +13,16 @@ nav_order: 2
 1. TOC
 {:toc}
 
-## Industrial-Edge Pattern Deployment 
+## Tested Platforms
+The **Medical Diagnosis** pattern has been tested in the following Certified Cloud Providers.
+
+| **Certified Cloud Providers** | 4.8 | 4.9 |
+| :---- | :---- | :----
+| Amazon Web Services | Tested | Not Supported
+| Google Compute |   |  
+| Microsoft Azure |   |  
+
+## General OpenShift Minimum Requirements 
 OpenShift 4 has the following minimum requirements for sizing of nodes:
 
 * **Minimum 4 vCPU** (additional are strongly recommended). 
@@ -25,12 +34,6 @@ There are several applications that comprise the **industrial-edge** pattern.  I
 
 ### Tested Platforms
 The **Industrial-Edge** pattern has been tested in the following Certified Cloud Providers.
-
-| **Certified Cloud Providers** | 4.7 | 4.8 |
-| :---- | :---- | :----
-| Amazon Web Services | Tested | Tested
-| Google Compute | Tested | Tested
-| Microsoft Azure | Tested | Tested
 
 ### **Industrial-Edge** Pattern Components
 Here's an inventory of what gets deployed by the **Industrial-Edge** pattern on the Datacenter/Hub OpenShift cluster:

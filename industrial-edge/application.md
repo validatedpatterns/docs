@@ -3,7 +3,7 @@ layout: default
 title: Application Demos
 grand_parent: Patterns
 parent: Industrial Edge
-nav_order: 5
+nav_order: 3
 ---
 
 # Demonstrating Industrial Edge example applications  

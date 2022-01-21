@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Multicloud Managed Cluster Sites
+title: Managed Cluster Sites
 grand_parent: Patterns
 parent: Multicloud GitOps
-nav_order: 4
+nav_order: 2
 ---
 
 # Having a managed cluster (edge) join the management hub 

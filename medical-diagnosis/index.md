@@ -3,7 +3,7 @@ layout: default
 title: Medical Diagnosis
 parent: Patterns
 has_children: true
-nav_order: 1
+nav_order: 3
 ---
 
 <div class="pattern_logo">
@@ -89,15 +89,6 @@ The diagram below shows the components that are deployed with the the data flows
 ## Recorded Demo
 
 [![Demo](/videos/xray-deployment.svg)](/videos/xray-deployment.svg)
-
-## Prerequisties
-1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create](https://console.redhat.com/openshift/create) )
-1. (Optional) One or more extra OpenShift clusters for the managed clusters (edge).
-1. A [GitHub](https://github.com) account
-
-## Initial Deployment
-
-## Validating the Environment
 
 ## What Next
 - Getting started [deploy the management hub using Helm and GitOps](getting-started) 
