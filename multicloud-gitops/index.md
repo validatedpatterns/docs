@@ -13,6 +13,10 @@ nav_order: 1
 # Multicloud GitOps
 {: .no_toc }
 
+<a href="getting-started" class="btn" style="background-color:green;"> Install </a>
+<a href="https://groups.google.com/u/1/g/hybrid-cloud-patterns" class="btn"> Help & Feedback </a>
+<a href="https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues" class="btn" style="background-color:red;"> Report Bugs </a>
+
 ## Table of contents
 {: .no_toc .text-delta }
 
