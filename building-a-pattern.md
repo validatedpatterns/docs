@@ -97,9 +97,9 @@ There are two approaches to secret handling with validated:
 Some of the validated patterns use configuration files (for now), while others, like the [Multicloud GitOps](https://hybrid-cloud-patterns.io/multicloud-gitops/) uses Vault. *TBD add a link to the Vault set up page here when completed*
 
 ## Policy
-While many enterprise Cloud Native applications use open source, many of the products used require licenses or subscriptions. Policies help enforce license and subscription management and the channels needed to get access to those licesnes or subscriptions. 
+While many enterprise Cloud Native applications use open source, many of the products used require licenses or subscriptions. Policies help enforce license and subscription management and the channels needed to get access to those licenses or subscriptions. 
 
-Similarliy in a multicloud deployments anc complex edge deployments policies can help define and select the correct GitOps workflows that need to be managed for various sites. E.g. defining an OpenShift Cluster as a "Factory" in the Industrial Edge validated pattern provides a simple trigger to rollout the entire Factory deployment. Policy is a very powerful tool in automation.
+Similarliy in a multicloud deployments and complex edge deployments policies can help define and select the correct GitOps workflows that need to be managed for various sites or clusters. E.g. defining an OpenShift Cluster as a "Factory" in the [Industrial Edge](https://hybrid-cloud-patterns.io/industrial-edge/factory/) validated pattern provides a simple trigger to rollout the entire Factory deployment. Policy is a very powerful tool in automation.
 
 Validated patterns uses [Red Hat Advanced Cluster Management for Kubernetes](https://www.redhat.com/en/technologies/management/advanced-cluster-management) to control clusters and applications from a single console, with built in security policies. 
 
