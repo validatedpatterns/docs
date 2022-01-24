@@ -8,6 +8,7 @@ The project colors are:
 - Grey #2D3B44
 - Orange #C77038
 - Blue #1D639D
+
 and an animated logo of the Sierpinski triangle.
 
 Individual patterns have a Sierpinski triangle logo with their own color scheme, and the number of triangles represents the number of major revisions.
