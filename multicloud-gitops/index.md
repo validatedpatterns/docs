@@ -53,4 +53,4 @@ For additional logical, physical and dataflow diagrams, please see excellent wor
 
 ## What Next
 - [Deploy the management hub](getting-started)  using Helm 
-- Add a managed cluster to [deploy the  managed cluster piece using ACM](managed cluster) 
+- Add a managed cluster to [deploy the  managed cluster piece using ACM](managed-cluster) 
