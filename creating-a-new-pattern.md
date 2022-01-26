@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Building a Pattern
+title: Creating a new pattern
 nav_order: 5
 has_children: true
 ---
 
-# Building a Pattern
+# Creating a new pattern
 {: .no_toc }
 
 ## Table of contents
@@ -14,9 +14,9 @@ has_children: true
 1. TOC
 {:toc}
 
-## Introduction to pattern building
+## Introduction to pattern creation
 
-This section provides the details on how to build a pattern using the validated patterns framework. Building may be from scratch or it maybe from an existing deployment that would benefit from a repeatable framework based on GitOps. 
+This section provides the details on how to create a new pattern using the validated patterns framework. Creating a new pattern might start from scratch or it maybe be from an existing deployment that would benefit from a repeatable framework based on GitOps. 
 
 This introduction explains some of framework design decisions and why they were chosen. There are some high level concepts that are required for the framework. While those concepts can be implemented using a variety of open source projects, this framework is prescriptive and so mentions the project and also (down stream) product that was used. E.g. For development builds we us Tekton (project) and specifically OpenShift Pipelines (product). 
 
@@ -24,9 +24,9 @@ The framework uses popular Cloud Native Computing Foundation (CNCF) [projects](h
 
 There is no desire to replicate efforts already in CNCF. If new a open source project comes out of this framework, the plan would be to contribute that to CNCF. 
 
-## Who builds patterns?
+## Who creates patterns?
 
-Many enterprise class Cloud Native applications are complex and require man different application services integrated together. Organizations can learn from each other on how to build robust, scalable and maintainable systems. When you find a pattern that seems to work, it makes sense to promote best practices to others in order for them to not repeat the many failures you probably made while getting to your killer pattern.
+Many enterprise class Cloud Native applications are complex and require man different application services integrated together. Organizations can learn from each other on how to create robust, scalable and maintainable systems. When you find a pattern that seems to work, it makes sense to promote best practices to others in order for them to not repeat the many failures you probably made while getting to your killer pattern.
 
 In the world of DevOps (including DevSecOps and GitOps) teams should include personnel from development, operations, security, and architects. What makes DevOps work is the collaboration of all these IT personnel and the business owners and others. As DevOps practices move through your organization, best practices are shared and standards evolve. 
 
