@@ -74,7 +74,7 @@ Once the the application is open in your browser, click on the â€œRealtime Dataâ
 Now let's turn on the temperature sensor. Using you favorite editor, edit the following file:
 
 ```sh
-industrial-edge-charts/data/center/manuela-test/templates/machine-sensor/machine-sensor-2-configmap.yaml
+industrial-edge/charts/data-center/manuela-test/templates/machine-sensor/machine-sensor-2-configmap.yaml
 ```
 
 Change `SENSOR_TEMPERATURE_ENABLED: "false"` to `SENSOR_TEMPERATURE_ENABLED: "true"`.
@@ -98,9 +98,9 @@ Sometimes a page/tab refreshed is needed for the change to be picked up.
 
 ## Application changes using DevOps
 
-The `line-dashboard` application has temprature sensors. In this demonstation we are going to make a simple chnage to that application, rebuild and redeploy it. In the `manuela-dev` repository there is a file `components/iot-consumer/index.js`. This Javascript program consumes message data coming from the line servers and one of functions it performs is to check the temprature to see if it has exceeded a threshold. There is three lines of code in there that does some Celsius to Fahrenheit conversion.
+The `line-dashboard` application has temprature sensors. In this demonstation we are going to make a simple change to that application, rebuild and redeploy it. In the `manuela-dev` repository there is a file `components/iot-consumer/index.js`. This Javascript program consumes message data coming from the line servers and one of functions it performs is to check the temprature to see if it has exceeded a threshold. There is three lines of code in there that does some Celsius to Fahrenheit conversion.
 
-Depending on the state of your `manuela-dev` repository this may or may not be commented out. Ideally for the demonstration you would want it  uncommented andd therefore effective.  What this means is that while the labels on the front-end application are showing Celsius, the data is actually in Fahrenheit. This is a good place to start because that data won't make any sense.  
+Depending on the state of your `manuela-dev` repository this may or may not be commented out. Ideally for the demonstration you would want it  uncommented and therefore effective.  What this means is that while the labels on the front-end application are showing Celsius, the data is actually in Fahrenheit. This is a good place to start because that data won't make any sense.  
 
 [![](/images/industrial-edge/fahrenheit-temp.png)](/images/industrial-edge/fahrenheit-temp.png)
 
@@ -130,13 +130,13 @@ make build-and-test
 
 This build takes some time because the pipeline is rebuilding all the images. You can monitor the pipeline's progress in the Openshift console's pipelines section.
 
-Alternatively you can can try and run the shorter build-iot-consumer pipeline run in the OpenShift console. This should just run and test the specific application.  
+Alternatively you can can try and run the shorter `build-iot-consumer` pipeline run in the OpenShift console. This should just run and test the specific application.  
 
 [![](/images/industrial-edge/build-and-test-pipeline.png)](/images/industrial-edge/build-and-test-pipeline.png)
 
 You can also see some updates happening in the `manuela-tst` application in OpenShift GitOps (ArgoCD).
 
-When the pipeline is complete check the `lines-dashboard` application again in the browser. More resonal, Celsius, tempratures are displayed. (Compare with above.)
+When the pipeline is complete check the `lines-dashboard` application again in the browser. More reasonable, Celsius, tempratures are displayed. (Compare with above.)
 
 [![](/images/industrial-edge/celsius-temp.png)](/images/industrial-edge/celsius-temp.png)
 

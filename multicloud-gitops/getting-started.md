@@ -6,7 +6,7 @@ parent: Multicloud GitOps
 nav_order: 3
 ---
 
-# Demonstrating Industrial Edge example applications  
+# Building Multicloud GitOps applications  
 {: .no_toc }
 
 ## Table of contents
