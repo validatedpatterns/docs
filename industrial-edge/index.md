@@ -13,6 +13,10 @@ nav_order: 2
 # Industrial Edge Pattern
 {: .no_toc }
 
+<a href="getting-started" class="btn" style="background-color:green;"> Install </a>
+<a href="https://groups.google.com/u/1/g/hybrid-cloud-patterns" class="btn"> Help & Feedback </a>
+<a href="https://github.com/hybrid-cloud-patterns/industrial-edge/issues" class="btn" style="background-color:red;"> Report Bugs </a>
+
 ## Table of contents
 {: .no_toc .text-delta }
 
@@ -50,6 +54,7 @@ industrial setting, using AI/ML. It could be easily extended to other use cases,
 - Red Hat AMQ Streams (Apache Kafka Event Broker)
 - Red Hat Integration (Apache Camel-K)
 - Open Data Hub
+- Seldon Core
 
 ### Context on Industrial Edge Computing
 With Industrial Edge computing, it’s all about two major streams:
@@ -75,94 +80,13 @@ The following diagram explains how different roles have different concerns and f
 
 [![Industrial Edge Architecture](/images/ai-ml-architecture.png)](/images/ai-ml-architecture.png)
 
-
-### Logical Architecture
-
-In the Industrial Edge architecture there are two logical sites.
+In the Industrial Edge architecture there are two logical types of sites.
 
 - The datacenter. This is where the data scientist, developers and operations personnel apply the changes to their models, application code and configurations.
-- The factory. This is where new applications, updates and operational changes are deployed to improve quality and efficency in the factory.
+- The factories. This is where new applications, updates and operational changes are deployed to improve quality and efficency in the factory.
 
-[![Industrial Edge Logical Architecture](/images/industrial-edge/manufacturing-logical.png)](/images/industrial-edge/manufacturing-logical.png)
-
-### Physical Schema
-
-The diagram below shows the components that are deployed in the datacenter and the factory and the networking between those components.
-
-[![Industrial Edge Physical Network Architecture](/images/industrial-edge/manufacturing-schema-netw.png)](/images/industrial-edge/manufacturing-schema-netw.png)
-
-The diagram below shows the components are are deployed in the datacenter and the factory and the dataflows between those components across the various networks.
-
-[![Industrial Edge Physical Dataflow Architecture](/images/industrial-edge/manufacturing-schema-df.png)](/images/industrial-edge/manufacturing-schema-df.png)
-
-While the above diagrams show the components involved on the DevOps side dealing with the application and the AI/ML models, there are other components to conside when dealing with operational side using GitOps.
-
-[![Industrial Edge Physical GitOps Architecture](/images/industrial-edge/manufacturing-schema-gitops.png)](/images/industrial-edge/manufacturing-schema-gitops.png)
-
-## Editing the diagrams.
-
-To edit the diagrams in `Draw.io` you can load them [here](https://redhatdemocentral.gitlab.io/portfolio-architecture-tooling/index.html?#/portfolio-architecture-examples/projects/industrial-edge-v2.drawio) and save a local copy. You can then edit the diagram to better reflect the spoecific implementation you are working on.
-
-
-## Recorded Demo
-
-## Prerequisties
-
-1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create](https://console.redhat.com/openshift/create) )
-1. (Optional) A second OpenShift cluster for the factory (edge).
-1. A [GitHub](https://github.com) account
-1. A [quay.io](https://quay.io) account
-
-## Initial Deployment
-
-Follow the instructions in the [Git
-repo](https://github.com/hybrid-cloud-patterns/industrial-edge/#how-to-use)
-containing the complete configuration.
+For logical, physical and dataflow diagrams, please see excellent work done by the [Red Hat Portfolio Architecture team](https://gitlab.com/redhatdemocentral/portfolio-architecture-examples/-/blob/main/manufacturing.adoc)
 
 ### Pattern Structure
 
 <iframe src="https://slides.com/beekhof/hybrid-cloud-patterns/embed" width="800" height="600" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-## Validating the Environment
-
-Check to see that all Operators have been deployed
-
-  ```
-  OpenShift UI -> Installed Operators
-  ```
-The entire deployment involves several OpenShift GitOps applications. It takes time to deploy everything. You may have to go back and forth between this step and the next step to make sure
-that all the operators are deployed.
-
-Check all OpenShift GitOps applications are synchronised
-
-  a. Obtain the ArgoCD console urls and passwords
-
-  ```sh
-   ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
-   CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
-   eval $CMD
-  ```
-
-  a. Log in using the userid `admin` and the provided generated passowrd. There will be a number and check for green applications
-
-## What's Next
-
-- Add a dedicated cluster to [deploy the factory pieces using ACM](factory)
-- Making [configuration changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
-- Making [application changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
-- Making [AI/ML model changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#application-ai-model-changes-with-devops) with DevOps
-
-### Other links for more information
-
-- Code change [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-code-change.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-code-change.md#demo-execution)
--  CI/CD pipeline & GitOps staging [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-ci-cd-pipeline.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-ci-cd-pipeline.md#Demo-execution)
-- Event streaming from edge to core & filling the data lake [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-event-streaming.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-event-streaming.md#Demo-execution)
-- Machine learning [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-machine-learning.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-machine-learning.md#Demo-execution)
-- Infrastructure operator development [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-infrastructure-operator-development.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-infrastructure-operator-development.md#Demo-execution)
-- Enterprise Container [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-enterprise-container.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-enterprise-container.md#Demo-execution)
-- Multi Cluster Management [preparation](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-multicluster.md#Demo-preparation) - [demo execution](https://github.com/sa-mw-dach/manuela/blob/master/docs/module-multicluster.md#Demo-execution)
-
-## Uninstalling
-
-Follow the instructions in the [Gitrepo](https://github.com/hybrid-cloud-patterns/industrial-edge#uninstalling)
-containing the complete configuration.

@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Multicloud GitOps Pattern Cluster Sizing
+title: Cluster Sizing
 grand_parent: Patterns
-parent: Multicloud GitOps
+parent: Medical Diagnosis
 nav_order: 2
 ---
-# Multicloud GitOps Pattern 
+# OpenShift Cluster Sizing for the Medical Diagnosis Pattern 
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -13,7 +13,17 @@ nav_order: 2
 1. TOC
 {:toc}
 
-## Multicloud GitOps Pattern Deployment 
+## Tested Platforms
+The **Medical Diagnosis** pattern has been tested in the following Certified Cloud Providers.
+
+| **Certified Cloud Providers** | 4.8 | 4.9 |
+| :---- | :---- | :----
+| Amazon Web Services | Tested | Tested
+| Google Compute |   |  
+| Microsoft Azure |   |  
+
+
+## General OpenShift Minimum Requirements 
 OpenShift 4 has the following minimum requirements for sizing of nodes:
 
 * **Minimum 4 vCPU** (additional are strongly recommended). 
@@ -21,48 +31,39 @@ OpenShift 4 has the following minimum requirements for sizing of nodes:
 * **Minimum 40 GB** hard disk space for the file system containing /var/. 
 * **Minimum 1 GB** hard disk space for the file system containing /usr/local/bin/.
 
-There is one application that comprises the **Multicloud-GitOps** pattern.  In addition, the **Multicloud-GitOps** pattern also includes the Advanced Cluster Management (ACM) supporting operator that is installed by **OpenShift GitOps** using ArgoCD.  
+There is one application that comprises the **Medical Diagnosis** pattern.  In addition, the **Medical Diagnosis** pattern also includes the Advanced Cluster Management (ACM) supporting operator that is installed by **OpenShift GitOps** using ArgoCD.  
 
-### Tested Platforms
-The **Multicloud-GitOps** pattern has been tested in the following Certified Cloud Providers.
-
-| **Certified Cloud Providers** | 4.7 | 4.8 |
-| :---- | :---- | :----
-| Amazon Web Services | Tested | Tested
-| Google Compute | Tested | Tested
-| Microsoft Azure | Tested | Tested
-
-### **Multicloud-GitOps** Pattern Components
-Here's an inventory of what gets deployed by the **Multicloud-GitOps** pattern on the Datacenter/Hub OpenShift cluster:
+### **Medical Diagnosis** Pattern Components
+Here's an inventory of what gets deployed by the **Medical Diagnosis** pattern on the Datacenter/Hub OpenShift cluster:
 
 | Name | Kind | Namespace | Description
 | :---- | :---- | :---- | :----
-| multicloud-gitops-hub | Application | multicloud-gitops-hub | Hub GitOps management
+| Medical Diagnosis-hub | Application | Medical Diagnosis-hub | Hub GitOps management
 | Red Hat Advanced Cluster Management | Operator | open-cluster-management | Advance Cluster Management
 | Red Hat OpenShift GitOps | Operator | openshift-operators | OpenShift GitOps
 
 
-### Multicloud GitOps Pattern OpenShift Datacenter HUB Cluster Size
+### Medical Diagnosis Pattern OpenShift Datacenter HUB Cluster Size
 
-The Multicloud GitOps pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
+The Medical Diagnosis pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
 
 The Datacenter HUB OpenShift Cluster is made up of the the following on the AWS deployment tested:
 
 | Node Type | Number of nodes | Cloud Provider | Instance Type 
 | :---- | :----: | :---- | :----
-| Control Plane | 4 | Amazon Web Services | m5.xlarge
-| Worker | 3 | Amazon Web Services | m5.xlarge
+| Control Plane | 3 | Amazon Web Services | m5.xlarge
+| Worker | 5 | Amazon Web Services | m5.4xlarge
 
-The Datacenter HUB OpenShift cluster needs to be a bit bigger than the Factory/Edge clusters because this is where the developers will be running pipelines to build and deploy the **Multicloud GitOps** pattern on the cluster.  The above cluster sizing is close to a **minimum** size for a Datacenter HUB cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Multicloud GitOps** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications. 
+The Datacenter HUB OpenShift cluster needs to be a bit bigger than the edge based medical facilities clusters because this is where the developers will be running pipelines to build and deploy the **Medical Diagnosis** pattern on the cluster. The pattern on the data center also requires extra storageand computet o handle the large number of images to be processed. The above cluster sizing is close to a **minimum** size for a Datacenter HUB cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Medical Diagnosis** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications. 
 
 #### Datacenter Cluster utilization 
-Below is a snapshot of the OpenShift cluster utilization while running the **Multicloud GitOps** pattern: 
+Below is a snapshot of the OpenShift cluster utilization while running the **Medical Diagnosis** pattern: 
 
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
 
 
-### Multicloud GitOps Pattern OpenShift Managed Datacenter Cluster Size
+### Medical Diagnosis Pattern OpenShift Managed Datacenter Cluster Size
 
 The OpenShift cluster is a standard datacenter deployment of 3 control plane nodes and 3 or more worker nodes. 
 
@@ -76,7 +77,7 @@ The OpenShift cluster is a standard datacenter deployment of 3 control plane nod
 
 **GCP**
 
-This is a snapshot of a Google Cloud managed data center cluster running the production **Multicloud GitOps** pattern.
+This is a snapshot of a Google Cloud managed data center cluster running the production **Medical Diagnosis** pattern.
 
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
@@ -84,14 +85,14 @@ This is a snapshot of a Google Cloud managed data center cluster running the pro
 
 **AWS**
 
-This is a snapshot of a Amazon Web Services managed data center cluster running the production **Multicloud GitOps** pattern.
+This is a snapshot of a Amazon Web Services managed data center cluster running the production **Medical Diagnosis** pattern.
 
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
 
 **Azure**
 
-This is a snapshot of an Azure managed data center cluster running the production **Multicloud GitOps** pattern.
+This is a snapshot of an Azure managed data center cluster running the production **Medical Diagnosis** pattern.
 
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
@@ -99,14 +100,14 @@ This is a snapshot of an Azure managed data center cluster running the productio
 
 ### AWS Instance Types
 
-The **Multicloud GitOps** pattern was tested with the highlighted AWS instances in **bold**.   The OpenShift installer will let you know if the instance type meets the minimum requirements for a cluster.  
+The **Medical Diagnosis** pattern was tested with the highlighted AWS instances in **bold**.   The OpenShift installer will let you know if the instance type meets the minimum requirements for a cluster.  
 
 The message that the openshift installer will give you will be similar to this message
 ```
 INFO Credentials loaded from default AWS environment variables 
 FATAL failed to fetch Metadata: failed to load asset "Install Config": [controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 4 vCPUs, controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 16384 MiB Memory] 
 ```
-Below you can find a list of the AWS instance types that can be used to deploy the **Multicloud GitOps** pattern.
+Below you can find a list of the AWS instance types that can be used to deploy the **Medical Diagnosis** pattern.
 
 | Instance type | Default vCPUs | Memory (GiB) | Datacenter | Factory/Edge
 | :------: | :-----: | :-----: | :----: | :----:
@@ -124,13 +125,13 @@ Below you can find a list of the AWS instance types that can be used to deploy t
 | m5.16xlarge | 64 | 256 | Y | Y
 | m5.24xlarge | 96 | 384 | Y | Y
 
-The OpenShift cluster is made of 4 Control Plane nodes and 3 Workers for the Datacenter and the Edge/managed data center cluster are made of 3 Control Plane and 3 Worker nodes.  For the node sizes we used the **m5.xlarge** on AWS and this instance type met the minimum requirements to deploy the **Multicloud GitOps** pattern successfully on the Datacenter hub.  On the managed data center cluster we used the **m5.xlarge** since the minimum cluster was comprised of 3 nodes.  .
+The OpenShift cluster is made of 4 Control Plane nodes and 3 Workers for the Datacenter and the Edge/managed data center cluster are made of 3 Control Plane and 3 Worker nodes.  For the node sizes we used the **m5.xlarge** on AWS and this instance type met the minimum requirements to deploy the **Medical Diagnosis** pattern successfully on the Datacenter hub.  On the managed data center cluster we used the **m5.xlarge** since the minimum cluster was comprised of 3 nodes.  .
 
 To understand better what types of nodes you can use on other Cloud Providers we provide some of the details below.
 
 ### Azure Instance Types
 
-The **Multicloud GitOps** pattern was also deployed on Azure using the **Standard_D8s_v3** VM size.  Below is a table of different VM sizes available for Azure.  Keep in mind that due to limited access to Azure we only used the **Standard_D8s_v3** VM size.
+The **Medical Diagnosis** pattern was also deployed on Azure using the **Standard_D8s_v3** VM size.  Below is a table of different VM sizes available for Azure.  Keep in mind that due to limited access to Azure we only used the **Standard_D8s_v3** VM size.
 
 The OpenShift cluster is made of 3 Control Plane nodes and 3 Workers for the Datacenter cluster. 
 
@@ -149,7 +150,7 @@ For more information please refer to the [Azure VM Size Page](https://docs.micro
 
 ### Google Cloud (GCP) Instance Types
 
-The **Multicloud GitOps** pattern was also deployed on GCP using the **n1-standard-8** VM size.  Below is a table of different VM sizes available for GCP.  Keep in mind that due to limited access to GCP we only used the **n1-standard-8** VM size.
+The **Medical Diagnosis** pattern was also deployed on GCP using the **n1-standard-8** VM size.  Below is a table of different VM sizes available for GCP.  Keep in mind that due to limited access to GCP we only used the **n1-standard-8** VM size.
 
 The OpenShift cluster is made of 3 Control Plane and 3 Workers for the Datacenter cluster. 
 

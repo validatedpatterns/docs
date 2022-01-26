@@ -3,7 +3,7 @@ layout: default
 title: Medical Diagnosis
 parent: Patterns
 has_children: true
-nav_order: 1
+nav_order: 3
 ---
 
 <div class="pattern_logo">
@@ -12,6 +12,10 @@ nav_order: 1
 
 # Medical Diagnosis
 {: .no_toc }
+
+<a href="getting-started" class="btn" style="background-color:green;"> Install </a>
+<a href="https://groups.google.com/u/1/g/hybrid-cloud-patterns" class="btn"> Help & Feedback </a>
+<a href="https://github.com/hybrid-cloud-patterns/medical-diagnosis/issues" class="btn" style="background-color:red;"> Report Bugs </a>
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -89,15 +93,6 @@ The diagram below shows the components that are deployed with the the data flows
 ## Recorded Demo
 
 [![Demo](/videos/xray-deployment.svg)](/videos/xray-deployment.svg)
-
-## Prerequisties
-1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create](https://console.redhat.com/openshift/create) )
-1. (Optional) One or more extra OpenShift clusters for the managed clusters (edge).
-1. A [GitHub](https://github.com) account
-
-## Initial Deployment
-
-## Validating the Environment
 
 ## What Next
 - Getting started [deploy the management hub using Helm and GitOps](getting-started) 

@@ -3,10 +3,10 @@ layout: default
 title: Getting Started
 grand_parent: Patterns
 parent: Medical Diagnosis
-nav_order: 3
+nav_order: 1
 ---
 
-# Deploying Medical Diagnosis pattern  
+# Deploying the Medical Diagnosis pattern  
 {: .no_toc }
 
 ## Table of contents
@@ -17,7 +17,7 @@ nav_order: 3
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create )
+1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create ).  See also [sizing your cluster](../cluster-sizing).
 1. A github account (and a token for it with repos permissions, to read from and write to your forks)
 1. Storage set up in your public/private cloud for the x-ray images
 1. The helm binary, see https://helm.sh/docs/intro/install/
@@ -54,11 +54,11 @@ python s3-sync-buckets.py -s com.validated-patterns.xray-source -t mytest-bucket
 
 The output should look similar to this edited/compressed output.
 
-![Bucket setup](/videos/bucket-setup.svg)](/videos/bucket-setup.svg)
+![Bucket setup](/videos/bucket-setup.svg)]
 
 There is some key information you will need to take note of that is required by the 'values-global.yaml' file. You will need the URL for the buckeyt and it's name. At the very end of the `values-global.yaml` file you will see a section for `s3:` were these values need to be changed.
 
-# How to deploy
+# Preparation
 
 1. Fork this repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 
@@ -104,6 +104,26 @@ There is some key information you will need to take note of that is required by 
    ```sh
    export KUBECONFIG=~/my-ocp-env/auth/kubconfig
    ```
+   
+## Check the values files before deployment
+
+You can run a check before deployment to make sure that you have the required variables to deploy the 
+Medical Diagnosis Validated Pattern.  
+
+You can run `make predeploy` to check your values. This will allow you to review your values and changed them in
+the case there are typos or old values.  The values files that should be reviewed prior to deploying the
+Medical Diagnosis Validated Pattern are:
+
+| Values File | Description |
+| ----------- | ----------- |
+| values-secret.yaml | This is the values file that will include the xraylab section with all the database secrets |
+| values-global.yaml | File that is used to contain all the global values used by Helm |
+
+Make sure you have the correct domain, clustername, externalUrl, targetBucket and bucketSource values.
+ 
+[![asciicast](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)
+
+# Deploy
 
 1. Apply the changes to your cluster
 
@@ -230,12 +250,7 @@ You can change some of the parameters and watch how the changes effect the dashb
 
    This changes the model version value, as well as the revisionTimestamp in the annotations, which triggers a redeployment of the service.
 
-# More reading and other assests
+# Next Steps
 
-## General Hybrid Cloud Patterns reading
-
-For more general patterns documentation please refer to the hybrid cloud patterns docs [here](http://hybrid-cloud-patterns.io/).
-
-## Editing the diagrams.
-
-To edit the diagrams in Draw.io you can load them [here](https://redhatdemocentral.gitlab.io/portfolio-architecture-tooling/index.html?#/portfolio-architecture-examples/projects/edge-medical-diagnosis.drawio) and save a local copy
+<a href="https://groups.google.com/u/1/g/hybrid-cloud-patterns" class="btn"> Help & Feedback </a>
+<a href="https://github.com/hybrid-cloud-patterns/medical-diagnosis/issues" class="btn" style="background-color:red;"> Report Bugs </a>

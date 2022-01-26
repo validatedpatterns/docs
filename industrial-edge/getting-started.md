@@ -3,10 +3,10 @@ layout: default
 title: Getting Started
 grand_parent: Patterns
 parent: Industrial Edge
-nav_order: 3
+nav_order: 1
 ---
 
-# Demonstrating Industrial Edge example applications  
+# Deploying the Industrial Edge Pattern  
 {: .no_toc }
 
 ## Table of contents
@@ -17,7 +17,7 @@ nav_order: 3
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create )
+1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create ).  See also [sizing your cluster](../cluster-sizing).
 1. (Optional) A second OpenShift cluster for edge/factory
 1. A github account (and a token for it with repos permissions, to read from and write to your forks)
 1. A quay account with the following repos set as public:
@@ -90,6 +90,9 @@ service](https://console.redhat.com/openshift/create).
    make install
    ```
 
+# Validating the Environment
+
+
 1. Check the operators have been installed
 
    ```
@@ -138,15 +141,19 @@ service](https://console.redhat.com/openshift/create).
 
 1. Check all applications are synchronised
 
-# Deploying the factory applications
+## Next Steps
 
-Once the data center has been setup correctly and confirmed to be working, it is time to attach one or more factories to the architecture (see diagrams below).
+<a href="https://groups.google.com/u/1/g/hybrid-cloud-patterns" class="btn"> Help & Feedback </a>
+<a href="https://github.com/hybrid-cloud-patterns/industrial-edge/issues" class="btn" style="background-color:red;"> Report Bugs </a>
 
-For instructions on deploying the factory please read the following [document](http://hybrid-cloud-patterns.io/industrial-edge/factory/).
+Once the data center has been setup correctly and confirmed to be working, you can:
 
-# Pattern Layout and Structure
+1. Add a dedicated cluster to [deploy the factory pieces using ACM](factory)
+2. Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](../application/) 
 
-https://slides.com/beekhof/hybrid-cloud-patterns
+   a. Making [configuration changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
+   a. Making [application changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
+   a. Making [AI/ML model changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#application-ai-model-changes-with-devops) with DevOps
 
 # Uninstalling
 
@@ -174,18 +181,4 @@ https://slides.com/beekhof/hybrid-cloud-patterns
    `helm delete manuela`
 
 1. Check all namespaces and operators have been removed
-
-## Next up
-
-Add a dedicated cluster to [deploy the factory pieces using ACM](factory)
-
-# More reading
-
-## General Hybrid Cloud Patterns reading
-
-For more general patterns documentation please refer to the hybrid cloud patterns docs [here](http://hybrid-cloud-patterns.io/).
-
-## Industrial Edge application demos
-
-Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](http://hybrid-cloud-patterns.io/industrial-edge/application/) 
 

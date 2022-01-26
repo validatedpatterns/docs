@@ -3,10 +3,10 @@ layout: default
 title: Getting Started
 grand_parent: Patterns
 parent: Multicloud GitOps
-nav_order: 3
+nav_order: 1
 ---
 
-# Building Multicloud GitOps applications  
+# Deploying the Multicloud GitOps Pattern  
 {: .no_toc }
 
 ## Table of contents
@@ -17,7 +17,7 @@ nav_order: 3
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create )
+1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create ). See also [sizing your cluster](../cluster-sizing).
 1. (Optional) A second OpenShift cluster for mulitcloud demonstration or testing
 1. A github account (and a token for it with repos permissions, to read from and write to your forks)
 1. The helm binary, see https://helm.sh/docs/intro/install/
@@ -37,7 +37,7 @@ service](https://console.redhat.com/openshift/create).
 1. Clone the forked copy of this repo.
 
    ```sh
-   git clone --recurse-submodules git@github.com:your-username/industrial-edge.git
+   git clone git@github.com:your-username/multicloud-gitops.git
    ```
 
 1. (TBD UPDATE WITH VAULT OR CONJUR INFO) Create a local copy of the Helm values file that can safely include credentials
@@ -136,34 +136,10 @@ Once the management hub has been setup correctly and confirmed to be working, it
 
 For instructions on deploying the edge please read the following [document](http://hybrid-cloud-patterns.io/industrial-edge/managed-cluster/).
 
-# Pattern Layout and Structure
-
-
-# Uninstalling
-
-**Probably wont work**
-
-
-# More reading
-
-## General Hybrid Cloud Patterns reading
-
-For more general patterns documentation please refer to the hybrid cloud patterns docs [here](http://hybrid-cloud-patterns.io/).
-
 ## Multicloud GitOps application demos
 
-# Diagrams
+# Next Steps
 
-The following diagrams show the different components deployed on the management hub and the managed cluster (edge).
+<a href="https://groups.google.com/u/1/g/hybrid-cloud-patterns" class="btn"> Help & Feedback </a>
+<a href="https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues" class="btn" style="background-color:red;"> Report Bugs </a>
 
-## Logical
-
-![Logical](docs/images/)
-
-## Schematic with Networks
-
-## Schematic with Dataflows
-
-## Editing the diagrams.
-
-To edit the diagrams in Draw.io you can load them [here](https://redhatdemocentral.gitlab.io/portfolio-architecture-tooling/index.html?#/portfolio-architecture-examples/projects/spi-multi-cloud-gitops.drawio) and save a local copy
