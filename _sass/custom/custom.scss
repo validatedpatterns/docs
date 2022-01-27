@@ -63,3 +63,8 @@
 @import "font-awesome/font-awesome";
 @import "magnific-popup/magnific-popup";
 @import "print";
+
+.btn-red {
+  @include btn-color($white, $red-300);
+}
+

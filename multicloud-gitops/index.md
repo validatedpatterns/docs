@@ -13,9 +13,9 @@ nav_order: 1
 # Multicloud GitOps
 {: .no_toc }
 
-<a href="getting-started" class="btn" style="background-color:green;"> Install </a>
-<a href="https://groups.google.com/u/1/g/hybrid-cloud-patterns" class="btn"> Help & Feedback </a>
-<a href="https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues" class="btn" style="background-color:red;"> Report Bugs </a>
+[Install](getting-started){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Help & Feedback](https://groups.google.com/u/1/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Report Bugs](https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 ## Table of contents
 {: .no_toc .text-delta }
