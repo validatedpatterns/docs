@@ -31,9 +31,9 @@ But first the user must create a fork of the pattern repository. This allows cha
 
 ![GitOps for Datacenter](./images/gitops-datacenter.png)
 
-1. Make a copy of the values file. There may be one or more values files. E.g. `values-global.yaml` and/or `values-datacenter.yaml`. While most of these values allow you to specify subscriptions, operators, applications and other application specifics, there are also *secrets* which may include encrypted keys or user IDs and passwords. It is important that you make a copy and **do not push your personal values file to a repository accessible to others!**
+	1. Make a copy of the values file. There may be one or more values files. E.g. `values-global.yaml` and/or `values-datacenter.yaml`. While most of these values allow you to specify subscriptions, operators, applications and other application specifics, there are also *secrets* which may include encrypted keys or user IDs and passwords. It is important that you make a copy and **do not push your personal values file to a repository accessible to others!**
 
-2. Deploy the application as specified by the pattern. This may include a Helm command (`helm install`) or a make command (`make deploy`).
+	2. Deploy the application as specified by the pattern. This may include a Helm command (`helm install`) or a make command (`make deploy`).
 
 When the workload is deployed the pattern first deploys OpenShift GitOps. OpenShift GitOps will then take over and make sure that all application and the components of the pattern are deployed. This includes required operators and applicatioon code. 
 
@@ -45,7 +45,7 @@ Some patterns include both a data center and one or more edge clusters. The diag
 
 ![GitOps for Edge](./images/gitops-edge.png)
 
-3. Import/join the cluster to the hub/data center. Instructions for importing the cluster can be found [here]. Your done.
+	3. Import/join the cluster to the hub/data center. Instructions for importing the cluster can be found [here]. Your done.
 
 When the cluster is imported, ACM on the datacenter will deploy an ACM agent and and agent-addon pod into the edge cluster. Once installed and running ACM will then deploy OpenShift GitOps onto the cluster. Then OpenShift GitOps will deploy whatever applications are required for that cluster based on a label.
 

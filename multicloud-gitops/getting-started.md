@@ -129,6 +129,9 @@ service](https://console.redhat.com/openshift/create).
 
 
 1. Check all applications are synchronised
+   Under the project `multicloud-gitops-hub` click on the URL for the `hub`gitops`server`. The Vault application is not synched. 
+
+[![Multicloud GitOps Hub](/images/multicloud-gitops/multicloud-gitops-argocd.png)](/images/multicloud-gitops/multicloud-gitops-argocd.png)   
 
 # Deploying the managed cluster applications
 
