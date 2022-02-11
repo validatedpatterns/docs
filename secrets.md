@@ -33,6 +33,5 @@ All of these services require credentials. (Or should do!) And keeping those cre
 
 While using a file based secret management can work if done correctly, most organizations opt for a more enterprise soutiono using a secret management product or project. The Cloud Native Computing Foundation (CNCF) has many such [projects](https://radar.cncf.io/2021-02-secrets-management). The Hybrid Cloud Patterns project has started with Hashicorp Vault secret management product but we look forward to other project contributions.
 
-## Next
+## What's next?
 [Getting started with Vault](secrets/vault.md)
-
