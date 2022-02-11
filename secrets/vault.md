@@ -1,10 +1,8 @@
-
 ---
 layout: default
-title: HashiCorp Vault
-grand_parent: Patterns
 parent: Secrets
-nav_order: 1
+title: HashiCorp Vault
+nav_order: 1 
 ---
 
 # Deploying HashiCorp Vault in a validated pattern  
@@ -17,11 +15,9 @@ nav_order: 1
 {:toc}
 
 # Prerequisites
-
 You have deployed/installed a validated pattern using the instructions provided for that pattern. This should include setting having logged into the cluster using `oc login` or setting you `KUBECONFIG` environment variable and running a `make install`.
 
 # Setting up HashiCorp Vault 
-
 Any validated pattern that uses HashiCorp Vault already has deployed Vault as part of the `make install`.  To verify that Vault is installed you can first see that the `vault` project exists and then select the Workloads/Pods:
 
 [![Vault Pods](/images/secrets/vault-pods.png)](/images/secrets/vault-pods.png)
