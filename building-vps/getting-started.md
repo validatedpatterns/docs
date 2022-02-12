@@ -1,9 +1,8 @@
 ---
 layout: default
 title: Getting Started
-grand_parent: Patterns
 parent: Creating a new pattern
-nav_order: 1
+nav_order: 2
 ---
 
 # Getting started creating a new pattern  
@@ -16,24 +15,21 @@ nav_order: 1
 {:toc}
 
 # Prerequisites
+Please make sure you ave read the [introduction section](/creating-a-new-pattern.md) and the [structure](building-vps/structure.md) section of this documentation.
 
-1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create )
-1. (Optional) A second OpenShift cluster for mulitcloud/multi-cluster demonstration or testing
-1. A github account (and a token for it with repos permissions, to read from and write to your forks)
-1. The helm binary, see https://helm.sh/docs/intro/install/
+# You're probably no starting from scratch
+The validated patterns community has relied on existing architectures that have been succesfully deployed in an enterprise. The architecture itself is a best practice in assembling technologies and projects to provide a working solution. How that solution is deployed and managed is a different matter. It may have evolved over time and may have grown in its deployment such that ongoing maintenance is not sustainable. 
 
-The use of this blueprint depends on having at least one running Red Hat OpenShift cluster. The validated patterns framework for Cloud Native applications depends on using Red Hat OpenShift.
+The validated patterns framework is much more of a best practice of structuring the various configuration assets and integrating with GitOps and DevOps tools.
 
-If you do not have a running Red Hat OpenShift cluster you can start one on a public or private cloud by using [Red Hat's cloud service](https://console.redhat.com/openshift/create).
+Therefore the question really is: how do I move my successful architecture solution into a sustainable GitOps/DevOps framework? And that is what we are going to do in this section.
 
-The validated patterns framework uses GitOps and therefore a Git repository. While the framework defaults to GitHub it is not difficult to change to use other Git repositories. Changes can be made to the `values-secrets.yaml` file that is used for injecting Git repo. variables into the framework.
+# Moving to the validated patterns framework
 
-# Getting to know the framework
-
-<TBD>
+*TBD This area will cover the strategies and tactics of moving to the framework with lessons learned from experts.
 
 
-# Environment values and Helm
+# Lessons learned
 
 
 

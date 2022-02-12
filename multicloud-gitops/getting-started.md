@@ -134,12 +134,12 @@ service](https://console.redhat.com/openshift/create).
 [![Multicloud GitOps Hub](/images/multicloud-gitops/multicloud-gitops-argocd.png)](/images/multicloud-gitops/multicloud-gitops-argocd.png)   
 
 # Deploying the managed cluster applications
-
 Once the management hub has been setup correctly and confirmed to be working, it is time to attach one or more managed clusters to the architecture (see diagrams below).
 
-For instructions on deploying the edge please read the following [document](http://hybrid-cloud-patterns.io/industrial-edge/managed-cluster/).
+For instructions on deploying the edge please read the following [document](multicloud-gitops/managed-cluster.md).
 
 ## Multicloud GitOps application demos
+As part of this pattern HashiCorp Vault has been installed. Refer to the section on [Vault](secrets/vault.md). 
 
 # Next Steps
 
