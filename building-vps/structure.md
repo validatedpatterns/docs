@@ -101,13 +101,23 @@ We see the same or similar files in the Industrial Edge pattern above.
 ## The `charts` directory
 This is where validated patterns keep the helm charts for a pattern. The helm charts are used deploy and manage the various components of the apllications deployed at a site. By convention, the charts are broken out by site location. So you may see `datacenter` or `hub` or `factory` or other site names in there.
 
-Each site has sub-directories based on application component groupings. These groupings are used by OpenShift GitOps as separate Applications for that cluster. The  configurations for each of the components inside an application are synced every three minutes (or manually) to make sure that the site is up to date.
+Each site has sub-directories based on application or library component groupings. 
+
+From [Helm documentation:](https://helm.sh/docs/chart_template_guide/getting_started/)
+*Application charts* are a collection of templates that can be packaged into versioned archives to be deployed. 
+
+*Library charts* provide useful utilities or functions for the chart developer. They're included as a dependency of application charts to inject those utilities and functions into the rendering
+pipeline. Library charts do not define any templates and therefore cannot be deployed. 
+
+These groupings are used by OpenShift GitOps to deploy into the cluster. The  configurations for each of the components inside an application are synced every three minutes by OpenShift GitOps to make sure that the site is up to date. The configuration can also be synced manually if you do not wish to wait up to three minutes.
 
 [![Charts Dir](/images/framework/dir-ie-charts.png)](/images/framework/dir-ie-charts.png)
 
 The configuration YAML for each of the component of the application is stored in the templates sub-directory. For example the Industrial Edge `datacenter` has a application called Kafka. The configuration for Kafka is stored in `kafka/templates`.
 
 [![Charts Dir](/images/framework/dir-ie-kafka-charts.png)](/images/framework/dir-ie-kafka-charts.png)
+
+
 
 ## The `common` directoy
 There are many common components that are in use across the validated patterns that exist today. E.g. AMQ Streams (Kafka) and ACM. We expect these common components to grow. Rather than duplicating the configuration in each pattern, common technologies are moved into a common directory.  If there are pattern specific post deployment configurations to be applied then those woul dbe added to the Helm charts in `charts` directory structure. 
@@ -116,7 +126,14 @@ There are many common components that are in use across the validated patterns t
 Sometimes an Operator and/or the Helm charts still leave some work to be done with regard to final configuration. When extra code is needed to deploy then that extra code is placed in the `scripts` directory. The majority of the time a consumer of a validated pattern will only use this code through the existing automation. i.e. The `Makefile` or OpenShift GitOps will make use of these scripts. So if there is extra *massaging* required for your application, but the scripts in here and try to run them from within the automation.
 
 ## Applications and `values-` files
-This section is meant as an introduction to the `values-` files. In the Getting Started pages there will be more specific usage details.
+Helm uses `values.yaml` files to pass values into charts. Values in the `values.yaml` file can be overriden in the following ways:
+1. By a `values.yaml` file in the parent directory
+1. By a values file passed into the `helm <install/upgrade>` command using `-f`
+1. By specifying an override individual value in the the `helm` command with `--set`
+
+For more information on values files and their usage see the [values files section](https://helm.sh/docs/chart_template_guide/values_files/) of the Helm documentaion.
+
+This section is meant as an introduction to the `values-` files that the framework uses to override values int he chart templates. In the Getting Started pages there will be more specific usage details.
 
 There are three types of `value-` files.
 1. `values-global.yaml`
