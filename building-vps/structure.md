@@ -27,22 +27,79 @@ Many Cloud Native Computing Foundation (CNCF) projects use [Operators](https://o
 Examining any of the existing patterns reveals the important organizational part of the validated patterns framework. Let's take a look at a couple of the existing validated patterns: Multicluster GitOps and Industrial Edge. 
 
 ```
-~/g/multicloud-gitops on main ◦ ls
-charts  common  Makefile  README.md  scripts  values-global.yaml  values-hub.yaml  values-region-one.yaml
+~/g/multicloud-gitops on main ◦ tree -L 2                                                                                                          12:32:12
+.
+├── charts
+│   └── region
+├── common
+│   ├── acm
+│   ├── clustergroup
+│   ├── common -> .
+│   ├── examples
+│   ├── install
+│   ├── Makefile
+│   ├── Makefile.toplevel
+│   ├── pattern-vault.init
+│   ├── reference-output.yaml
+│   ├── scripts
+│   ├── tests
+│   └── values-global.yaml
+├── Makefile
+├── README.md
+├── scripts
+│   └── make_common_subtree.sh
+├── values-global.yaml
+├── values-hub.yaml
+└── values-region-one.yaml
+
+11 directories, 11 files
+
 ```
 
 First we notice some `values-` yaml files and subdirectories: charts, common and scripts.
 
 ```
-~/g/industrial-edge on stable-2.0 ◦ ls
-charts  docs    Makefile   scripts               values-datacenter.yaml  values-global.yaml
-common  images  README.md  SUPPORT_AGREEMENT.md  values-factory.yaml     values-secret.yaml.template
+~/g/industrial-edge on stable-2.0 ◦ tree -L 2                                                                                                      12:35:32
+.
+├── charts
+│   ├── datacenter
+│   └── factory
+├── common
+│   ├── acm
+│   ├── common -> .
+│   ├── examples
+│   ├── install
+│   ├── Makefile
+│   ├── Makefile.toplevel
+│   ├── scripts
+│   ├── site
+│   ├── values-datacenter.yaml
+│   └── values-global.yaml
+├── docs
+│   ├── images
+│   └── old-deployment-map.txt
+├── images
+│   ├── import-cluster.png
+│   ├── import-with-kubeconfig.png
+│   └── launch-acm-console.png
+├── Makefile
+├── README.md
+├── scripts
+│   └── sleep-seed.sh
+├── SUPPORT_AGREEMENT.md
+├── values-datacenter.yaml
+├── values-factory.yaml
+├── values-global.yaml
+└── values-secret.yaml.template
+
+14 directories, 16 files
+
 ```
 
 We see the same or similar files in the Industrial Edge pattern above.
 
 ## The `charts` directory
-This is where validated patterns keep the helm charts for a pattern. The helm charts are used deploy and manage the various components of the apllications deployed at a site. The charts are broken out by site location. So you may see `datacenter` or `hub` or `factory` or other site names in there.
+This is where validated patterns keep the helm charts for a pattern. The helm charts are used deploy and manage the various components of the apllications deployed at a site. By convention, the charts are broken out by site location. So you may see `datacenter` or `hub` or `factory` or other site names in there.
 
 Each site has sub-directories based on application component groupings. These groupings are used by OpenShift GitOps as separate Applications for that cluster. The  configurations for each of the components inside an application are synced every three minutes (or manually) to make sure that the site is up to date.
 
@@ -68,6 +125,9 @@ There are three types of `value-` files.
 	Each specific site requires information regarding what applications and subscriptions are required for that site. So this file contains a list of namespaces, applications, subscriptions, the operator versions etc. for that site. 
 1. `values-secret.yaml.template`
 	Some patterns are not using a [secrets management](/secrets.md) service like [Hashicorp Vault](/secrets/vault.md). As you create a new pattern you may need to get it up and going quickly and hard code some secrets that you DO NOT want to share or push to a Git repo. This template file can be copied to your homne directory, the secret values applied, and the validated pattern will go look for `values-secrets.yaml` in your home directory. Do not leave a `values-secrets.yaml` file in your cloned git directory or it may end up in your (often public) Git repo, like GitHub.  
+
+## Applications & subscriptions
+
 
 ## Environment values and Helm
 The reason the above values files exist is to take advantage of Helms ability to use templates and substitute values into your charts. This makes the pattern very portable.
