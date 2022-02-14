@@ -25,8 +25,21 @@ The validated patterns framework is much more of a best practice of structuring 
 Therefore the question really is: how do I move my successful architecture solution into a sustainable GitOps/DevOps framework? And that is what we are going to do in this section.
 
 # Moving to the validated patterns framework
+*TBD This area will cover the strategies and tactics of moving to the framework with lessons learned from experts.*
 
-*TBD This area will cover the strategies and tactics of moving to the framework with lessons learned from experts.
+## Operators to framework
+
+## Scripts to framework
+
+## Ansible to Framework
+
+## Kubernetes YAML to framework
+
+## Kustomize to framework
+
+## When and how to use `values-` files. 
+
+
 
 
 # Lessons learned
