@@ -153,7 +153,7 @@ service](https://console.redhat.com/openshift/create).
    * **secret/hub/imageregistry** Quay or DockerHub *username* & *password*
    * **secret/hub/aws** - base64 encoded value (see below)
 
-   For AWS S3 secret, create a file, say, s3secrets, with two lines:
+   For AWS S3 secret, create a file, say, s3-secrets, with two lines:
    ```
    s3.accessKey: <accessKey>
    s3.secretKey: <secret key>
