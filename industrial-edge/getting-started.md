@@ -45,14 +45,23 @@ service](https://console.redhat.com/openshift/create).
 1. Clone the forked copy of the `industrial-edge` repo. Use branch `stable-2.0`. 
 
    ```sh
-   git clone --recurse-submodules git@github.com:your-username/industrial-edge.git
+   git clone git@github.com:{your-username}/industrial-edge.git
+   cd industrial-edge
    ```
 
-1. Create a local copy of the Helm values file that can safely include credentials
+1. There are a number of common  components used in validated patterns. These are kept in a common sub-directory. In order to use them we need to use the subtree feature of git.
 
-  DO NOT COMMIT THIS FILE
+   ```
+   scripts/make_common_subtree.sh  
+   ```
 
-  You do not want to push personal credentials to GitHub.
+1. A `values-secret.yaml` file is used to automate setup of secrets needed for:
+
+   * A Git repository (E.g. Github, GitLab etc.)
+   * A container image registry (E.g. Quay)
+   * S3 storage (E.g. AWS) 
+
+   DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub.
    ```sh
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
@@ -138,6 +147,29 @@ service](https://console.redhat.com/openshift/create).
 
    The most important ArgoCD instance to examine at this point is `data-center-gitops-server`. This is where all the applications for the datacenter, including the test environment, can be tracked.
 
+1. Apply the secrets from the `values-secret.yaml` to the secrets management Vault. This can be done through Vault's UI - manually without the file. The required secrets and scopes are:
+
+   * **secret/hub/git** git *username* & *password* (github token)
+   * **secret/hub/imageregistry** Quay or DockerHub *username* & *password*
+   * **secret/hub/aws** - base64 encoded value (see below)
+
+   For AWS S3 secret, create a file, say, s3secrets, with two lines:
+   ```
+   s3.accessKey: <accessKey>
+   s3.secretKey: <secret key>
+   ```
+   Then encode this with base64 using
+   ```
+   cat s3-secrets | base64 -w 0
+   ```
+   Or you can set up the secrets using the command line by running the following (Ansible) playbook.
+
+   ```sh
+   $ scripts/setup-secrets.yaml
+   ```
+   Using the Vault UI check that the secrets have been setup.
+
+   For more information on secrets management see [here](/secrets). For information on Hashicorp's Vault see [here](/secrets/vault.md)
 
 1. Check all applications are synchronised
 
