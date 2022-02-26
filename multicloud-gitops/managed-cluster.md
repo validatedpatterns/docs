@@ -19,7 +19,7 @@ nav_order: 2
 
 By default the `clusterGroup` applications are deployed on all clusters that ACM knows about. In you `value-hub.yaml` file add a `managedClusterCgroup` for each cluster or group of clusters that you want to manage was one. 
 
-```json
+```yaml
   managedClusterGroups:
   - name: region-one
     helmOverrides:
@@ -33,7 +33,7 @@ By default the `clusterGroup` applications are deployed on all clusters that ACM
 The above yaml segment will deploy the `clusterGroup` applications on managed clusters with the label
 `clusterGroup=region-one`.  Specific subscriptions and Operators, applications and projects for that `clusterGroup` are then managed in a `value-region-one.yaml` file. E.g. 
 
-```
+```yaml
   namespaces:
     - multicloud-gitops-region-one
     - ansible-automation-platform
