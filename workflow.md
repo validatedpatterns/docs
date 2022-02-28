@@ -16,7 +16,7 @@ consumers of the pattern flexibility to in both repos, or neither, as it suits t
 
 1. Clone the forked copy
 
-   `git clone --recurse-submodules git@github.com:<your-workspace>/industrial-edge.git`
+   `git clone git@github.com:<your-workspace>/industrial-edge.git`
 
 1. Create a local copy of the Helm values file that can safely include credentials
 

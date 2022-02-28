@@ -39,6 +39,16 @@ service](https://console.redhat.com/openshift/create).
 
 # How to deploy
 
+1. Install the installation tooling dependencies.  You will need:
+- `make` - the well-known software build tool
+- `sh` - a POSIX-compatible shell
+- `sed` - the "stream editor", commonly used in shell scripting
+- `oc` - the OpenShift client
+- `jq` - The swiss army knife for JSON
+- `git` - The well known version control utility
+- `ansible` - The well-known automation tool
+- The `kubernetes.core` collection for ansible
+
 1. Fork the [industrial-edge](https://github.com/hybrid-cloud-patterns/industrial-edge) repo on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 1. Fork the [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) repo on GitHub.  It is necessary to fork this repo because the GitOps framework will push tags to this repo that match the versions of software that it will deploy.
 
@@ -47,12 +57,6 @@ service](https://console.redhat.com/openshift/create).
    ```sh
    git clone git@github.com:{your-username}/industrial-edge.git
    cd industrial-edge
-   ```
-
-1. There are a number of common  components used in validated patterns. These are kept in a common sub-directory. In order to use them we need to use the subtree feature of git.
-
-   ```
-   scripts/make_common_subtree.sh  
    ```
 
 1. A `values-secret.yaml` file is used to automate setup of secrets needed for:
