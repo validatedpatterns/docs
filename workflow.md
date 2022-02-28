@@ -7,8 +7,7 @@ nav_order: 4
 # Workflow
 
 These patterns are designed to be composed of multiple components, and for those components to be used in gitops
-workflows by consumers and contributors.  To use the first pattern as an example, we maintain the [Industrial Edge](industrial-edge) pattern, which uses a [repo](https://github.com/hybrid-cloud-patterns/industrial-edge) with pattern-specific logic and configuration as well as a [common repo](https://github.com/hybrid-cloud-patterns/common) which has elements common to multiple patterns.  The common repo is included in each pattern repo as a submodule.  This allows
-consumers of the pattern flexibility to in both repos, or neither, as it suits their needs.
+workflows by consumers and contributors.  To use the first pattern as an example, we maintain the [Industrial Edge](industrial-edge) pattern, which uses a [repo](https://github.com/hybrid-cloud-patterns/industrial-edge) with pattern-specific logic and configuration as well as a [common repo](https://github.com/hybrid-cloud-patterns/common) which has elements common to multiple patterns.  The common repo is included in each pattern repo as a subtree; t
 
 ## Consuming a pattern 
 
@@ -80,31 +79,82 @@ Using this workflow, the `hcp-main` branch will:
 (this is especially useful for tracking when any submodules, like common, update)
 1. Be a good basis for submitting Pull Requests to be integrated upstream, since it will not contain your local configuration differences or your local GitOps commits
 
-## Working with submodules
 
-Our patterns use the git submodules feature as a mechanism to promote modularity, so that multiple patterns can use the
+## Changing subtrees
+
+Our patterns use the git subtree feature as a mechanism to promote modularity, so that multiple patterns can use the
 same common basis.  Over time we will move more functionality into common, to isolate the components that are 
-particular to each pattern, and standard usage conventions emerge.  This will make the tools in common more powerful and featureful, and make it easier to develop new patterns.
+particular to each pattern, and standard usage conventions emerge.  This will make the tools in common more powerful and featureful, and make it easier to develop new patterns.  Normally, we will maintain the common subtree in the normal course of updates, and pulling changes from upstream will include any changes from common.
 
-The most straightforward use of submodules is to track the version that the upstream repository is using.  This can be
-done by cloning the repository initially with the `--recurse-submodules` option:
-   ```
-   git clone --recurse-submodules https://github.com/<your-workspace>/industrial-edge
-   ```
+You only need to change subtrees if you want to test changes in the common/ area of the pattern repositories, or if you wish to contribute to the common/ repo itself in conjunction with one of the patterns. Using the pattern by itself _does not_ require changing subtrees.
 
-If you want to track a different fork of a submodule (and push use it in your GitOps environment):
+For the common cases (use and consumption of the pattern), users do not need to be aware that the pattern uses a subtree at all.
+
    ```
-   git submodule set-url common https://github.com/<your-workspace>/common
-   git commit -m "Changing URL for common submodule"
-   git push origin main
+   git clone https://github.com/<your-workspace>/industrial-edge
    ```
 
-If you want to track a different branch of the forked submodule (other than the default, `main`):
+If you want to change and track your own version of common, you should fork and clone our common repo separately:
+
    ```
-   git submodule set-branch --branch <target-branch> common
-   git commit -m "Changing branch to <target-branch> for common submodule"
-   git push origin main
+   git clone https://github.com/<your-workspace>/common
    ```
 
-Since the GitOps workflows do not touch the common/ subdirectory of the patterns, changing the URL and tracking `main`
-should be acceptable for tracking upstream and proposing changes.
+Now, you can make changes in your fork's main branch, or else make a new branch and make changes there.
+
+If you want to track these changes in your fork of the *pattern* repository (industrial-edge in this case), you will need to swap out the subtree in industrial-edge for the version of common you forked.  We have provided a script to make this a bit easier:
+
+   ```
+   common/scripts/make_common_subtree.sh <subtree_repo> <subtree_branch> <subtree_remote_name>
+   ```
+
+This script will set up a new remote in your local working directory with the repository you specify. It will replace the common directory with a new common from the fork and branch you specify, and commit it.  The script will *not* push the result.
+
+For example:
+
+   ```
+   common/scripts/make_common_subtree.sh https://github.com/mhjacks/common.git wip-main common-subtree
+   ```
+
+This will replace common in the current repository with the wip-main branch from the common in mhjacks's common repo, and call the remote common-subtree.
+
+From that point, changes from mhjacks's wip-main branch on mhjacks's fork of common can be pulled in this way:
+
+   ```
+   git subtree pull --prefix common common-subtree wip-main
+   ```
+
+When run without arguments, the script will run as if it had been given the following arguments:
+
+   ```
+   common/scripts/make_common_subtree.sh https://github.com/hybrid-cloud-patterns/common.git main common-subtree
+   ```
+
+Which are the defaults the repository is normally configured with.
+
+## Subtree vs. Submodule
+
+It has always been important to us to be have a substrate for patterns that is as easy as possible to share amongst
+multiple patterns. While it is possible to share changes between multiple unrelated git repositories, it is an almost
+entirely manual process, prone to error. We feel it is important to be able to provide a "pull" experience (i.e. one git "pull" type action) to update the shared components of a pattern. Two strategies exist for repo sharing in this way: submodule and subtree. We started with submodules but have since moved to subtree.
+
+Atlassian has some good documentation on what subtree is [here](https://blog.developer.atlassian.com/the-power-of-git-subtree/) and [here](https://www.atlassian.com/git/tutorials/git-subtree). In short, a subtree integrates another repository's history into a parent repository, which allows for most of the benefits of a submodule workflow, without most of the caveats.
+
+Earlier versions of this document described the usage of patterns with submodules instead of subtrees. In the earliest stages of pattern development, we used submodules because the developers of the project were familiar with submodules and had used them previously, but we had not used subtrees. User feedback, as well as some of the unavoidable complexities of submodules, convinced us to try subtrees and we believe we will stick with that strategy. Some of the unavoidable complexities of submodules include:
+
+- Having to remember to checkout repositories with `--recurse-submdules`, or else doing `git submodule init && git submodule sync`. Experienced developers asked in several of our support channels early on why common was empty.
+- Hoping that other tools that are interacting with the repository are compatible with the submodule approach. (To be fair, tools like ArgoCD and Tekton Pipelines did this very well; their support of submodules was one of the key reasons we started with submodules)
+- When changing branches on a submoduled repository, if the branch you were changing to was pointed to a different revision of the submoduled repository, the repo would show out of sync. While this behavior is correct, it can be surprising and difficult to navigate.
+- In disconnected environments, submodules require mirroring more repositories.
+- Developing with a fork of the submoduled repository means maintaining two forked repos and multiple branches in both.
+
+Subtrees have some pitfalls as well. In the subtree strategy, it is easier to diverge from the upstream version of the subtree repo, and in fact with a typical `git clone`, the user may not be aware that a subtree is in use at all. This can be considered a feature, but could become problematic if the user/consumer later wants to update to a newer version of the subtree but local changes might conflict. Additionally, since subtrees are not as well understood generally, there can be some surprising effects. In practice, we have run into the following:
+
+- Cherry picking from a subtree commit into the parent puts the change in the parent location, not the subtree
+
+## Contributing to Patterns using Common Subtrees
+
+Once you have forked common and changed your subtree for testing, changes from your fork can then be proposed to https://github.com/hybrid-cloud-patterns/common.git and can then be integrated into other patterns. A change to upstream common for a particular upstream pattern would have to be done in two stages:
+
+1. PR the change into upstream's common
+1. PR the updated common into the pattern repository
