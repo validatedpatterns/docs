@@ -40,7 +40,7 @@ service](https://console.redhat.com/openshift/create).
    git clone git@github.com:your-username/multicloud-gitops.git
    ```
 
-1. (TBD UPDATE WITH VAULT OR CONJUR INFO) Create a local copy of the Helm values file that can safely include credentials
+1. Create a local copy of the Helm values file that can safely include credentials
 
   DO NOT COMMIT THIS FILE
 
@@ -58,6 +58,7 @@ service](https://console.redhat.com/openshift/create).
    git commit values-global.yaml
    git push
    ```
+1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/#patterns-quickstart). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes
    ```sh

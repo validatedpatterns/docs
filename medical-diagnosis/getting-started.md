@@ -88,6 +88,8 @@ There is some key information you will need to take note of that is required by 
    git push
    ```
 
+1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/#patterns-quickstart). If you do use the operator then skip to Validating the Environment below.
+
 1. Preview the changes that will be made to the Helm charts.
    ```sh
    make show
