@@ -1,9 +1,9 @@
 # Validated Pattern: Medical Diagnosis
 ---
-layout: post
-date: 2021-12-31
-title: Medical Diagnosis
-published: true
+layout: post <br>
+date: 2021-12-31 <br>
+title: Medical Diagnosis <br>
+published: true <br> 
 tags:
 - medical-diagnosis
 - xray
