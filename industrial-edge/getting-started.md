@@ -179,7 +179,7 @@ service](https://console.redhat.com/openshift/create).
 
 ## Next Steps
 
-[Help & Feedback](https://groups.google.com/u/1/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/hybrid-cloud-patterns/industrial-edge/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 Once the data center has been setup correctly and confirmed to be working, you can:
