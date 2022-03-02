@@ -9,7 +9,9 @@ tags:
 - xray
 - validated-pattern
 ---
-Our team recently completed the development of a validated pattern that showcases the capabilities we have at our fingertips when we combine OpenShift and other cutting edge Red Hat technologies to deliver a solution. We've taken an application written completely in Ansible and converted the kubernetes resources into manifests to be deployed, managed and monitored through ArgoCD. Using the validated pattern framework we are able to deploy, manage and integrate with multiple cutting edge Red Hat technologies, and provide a capability that the initial deployment strategy didn't have available to it: a lifecycle. Everything you need to take this pattern for a spin is in [git](https://github.com/hybrid-cloud-patterns/medical-diagnosis).
+Our team recently completed the development of a validated pattern that showcases the capabilities we have at our fingertips when we combine OpenShift and other cutting edge Red Hat technologies to deliver a solution. 
+
+We've taken an application defined imperatively in an Ansible playbook and converted it into GitOps style declarative kubernetes resources. Using the validated pattern framework we are able to deploy, manage and integrate with multiple cutting edge Red Hat technologies, and provide a capability that the initial deployment strategy didn't have available to it: a lifecycle. Everything you need to take this pattern for a spin is in [git](https://github.com/hybrid-cloud-patterns/medical-diagnosis).
 
 For a recorded demo deploying the pattern and seeing the dashboards available to the user, check out our [docs page](https://hybrid-cloud-patterns.io/medical-diagnosis/)!
 
