@@ -33,8 +33,8 @@ gh_edit_view_mode: "blob" # "tree" or "edit" if you want the user to jump into t
 aux_links:
   "Validated Patterns":
     - "https://redhat-gitops-patterns.io"
-#  "Blog":
-#    - "/blog"
+  "Blog":
+    - "/blog"
 
 ## Blog
 
