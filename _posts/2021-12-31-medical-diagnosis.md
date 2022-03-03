@@ -24,36 +24,8 @@ For a recorded demo deploying the pattern and seeing the dashboards available to
 
 #### Pattern Deployment
 ---
-Before getting started, you need to install the following packages and collections.
-**PREREQUISITES** <br>
 
-| Packages |
-|:--------:|
-| git |
-| make |
-| ansible |
-
-example: `sudo dnf install <package> -y`
-
-| pip Packages |
-|:-----------:|
-| openshift |
-| kubernetes |
-
-example: `pip3 install <package> --user`
-
-| Ansible Collections |
-|:-------------------:|
-| kubernetes.core |
-
-example: `ansible-galaxy collection install <collection_name>`
-
-1. clone the repository
-The deployment is split into two phases: `bootstrap` and `deployment`:
-
-2. make install
-
-3. profit
+To deploy this pattern, follow the instructions outlined on the [getting-started](https://hybrid-cloud-patterns.io/medical-diagnosis/getting-started/) page.
 
 ##### What's happening? 
 ---
