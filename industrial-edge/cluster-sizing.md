@@ -54,7 +54,7 @@ Here's an inventory of what gets deployed by the **Industrial-Edge** pattern on 
 | Red Hat OpenShift GitOps | Operator | openshift-operators | OpenShift GitOps
 | Red Hat Integration - Camel K | Operator | manuela-tst-all | Integration Platform, Kamelet Binding, Kamelet
 | Red Hat OpenShift Pipelines | Operator | All Namespaces | Tekton Config, Pipelines, Triggers, Addons
-| Seldon Operator | Operator | manuela-tst-all | Seldon Delpoyment
+| Seldon Operator | Operator | manuela-tst-all | Seldon Deployment
 
 
 ### Industrial-Edge Pattern OpenShift Datacenter HUB Cluster Size

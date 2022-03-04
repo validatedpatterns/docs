@@ -17,15 +17,15 @@ The automation also enables the solution to be added to Continuous Integration (
 
 ## Who should use these patterns?
 
-It is recommended that architects or advanced developers with knowledge of Kubernetes and Red Hat OpenShift Container Platform use these patterns. There are advanced [Cloud Native](https://www.cncf.io/projects/) concepts and projects deployed as part of the pattern framework. These include, but are not limited to, OpenShift Gitops ([ArgoCD](https://argoproj.github.io/argo-cd/)), Advanced Cluster Management ([Open Cluster Management](https://open-cluster-management.io/)), and OpenShift Pipelines ([Tekton](https://tekton.dev/)) 
+It is recommended that architects or advanced developers with knowledge of Kubernetes and Red Hat OpenShift Container Platform use these patterns. There are advanced [Cloud Native](https://www.cncf.io/projects/) concepts and projects deployed as part of the pattern framework. These include, but are not limited to, OpenShift Gitops ([ArgoCD](https://argoproj.github.io/argo-cd/)), Advanced Cluster Management ([Open Cluster Management](https://open-cluster-management.io/)), and OpenShift Pipelines ([Tekton](https://tekton.dev/))
 
 ## General Structure
 
-All patterns assume an OpenShift cluster is available to deploy the application(s) that are part of the pattern. If you do not have an openshift cluster you can use [cloud.redhat.com](https://console.redhat.com/openshift). 
+All patterns assume an OpenShift cluster is available to deploy the application(s) that are part of the pattern. If you do not have an openshift cluster you can use [cloud.redhat.com](https://console.redhat.com/openshift).
 
 The documentation will use the `oc` command syntax but `kubectl` can be used interchangeably. For each deployment it is assumed that the user is logged into a cluster using the `oc login` command or by exporting the `KUBECONFIG` path.
 
-The diagram below outlines the general deployment flow of a datacenter application. 
+The diagram below outlines the general deployment flow of a datacenter application.
 
 But first the user must create a fork of the pattern repository. This allows changes to be made to operational elements (configurations etc.) and to application code that can then be successfully made to the forked repository for DevOps continuous integration (CI). Clone the directory to your laptop/desktop. Future changes can be pushed to your fork.
 
@@ -35,13 +35,13 @@ But first the user must create a fork of the pattern repository. This allows cha
 
 	2. Deploy the application as specified by the pattern. This may include a Helm command (`helm install`) or a make command (`make deploy`).
 
-When the workload is deployed the pattern first deploys OpenShift GitOps. OpenShift GitOps will then take over and make sure that all application and the components of the pattern are deployed. This includes required operators and applicatioon code. 
+When the workload is deployed the pattern first deploys OpenShift GitOps. OpenShift GitOps will then take over and make sure that all application and the components of the pattern are deployed. This includes required operators and application code.
 
-Most patterns will have an Advanced Cluster Management operator deployed so that multi-cluster deployments can be managed. 
+Most patterns will have an Advanced Cluster Management operator deployed so that multi-cluster deployments can be managed.
 
 ## Edge Patterns
 
-Some patterns include both a data center and one or more edge clusters. The diagram below outlines the general deployment flow of applications on an edge application. The edge OpenShift cluster is often deployed on a smaller cluster than the datacenter. Sometimes this might be a three node cluster that allows workloads to be deployed on the master nodes. The edge cluster might be a single node cluster (SN0). It might be deployed on bare metal, on local virtual machines or in a public/private cloud. Provision the cluster (see above) 
+Some patterns include both a data center and one or more edge clusters. The diagram below outlines the general deployment flow of applications on an edge application. The edge OpenShift cluster is often deployed on a smaller cluster than the datacenter. Sometimes this might be a three node cluster that allows workloads to be deployed on the master nodes. The edge cluster might be a single node cluster (SN0). It might be deployed on bare metal, on local virtual machines or in a public/private cloud. Provision the cluster (see above)
 
 ![GitOps for Edge](./images/gitops-edge.png)
 
@@ -51,4 +51,4 @@ When the cluster is imported, ACM on the datacenter will deploy an ACM agent and
 
 ## OpenShift GitOps (a.k.a ArgoCD)
 
-When OpenShift GitOps is deployed and running in a cluster (datacenter or edge) you can launch it's console by  choosing ArgoCD in the upper left part of the OpenShift Console (TO-DO whenry to add an image and clearer instructions here)  
+When OpenShift GitOps is deployed and running in a cluster (datacenter or edge) you can launch it's console by  choosing ArgoCD in the upper left part of the OpenShift Console (TO-DO whenry to add an image and clearer instructions here)

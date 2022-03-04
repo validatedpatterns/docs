@@ -31,7 +31,7 @@ nav_order: 1
 
 The use of this blueprint depends on having at least one running Red Hat
 OpenShift cluster. It is desirable to have a cluster for deploying the data
-center assets and a seperate cluster(s) for the factory assets.
+center assets and a separate cluster(s) for the factory assets.
 
 If you do not have a running Red Hat OpenShift cluster you can start one on a
 public or private cloud by using [Red Hat's cloud

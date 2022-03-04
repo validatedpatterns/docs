@@ -6,7 +6,7 @@ parent: Industrial Edge
 nav_order: 2
 ---
 
-# Having a factory (edge) cluster join the datacenter (hub) 
+# Having a factory (edge) cluster join the datacenter (hub)
 {: .no_toc }
 
 ## Table of contents
@@ -63,7 +63,7 @@ There are a three ways to join the factory to the datacenter.
 
 ![](/images/launch-acm-console.png "Launch ACM console")
 
-2. Select the "Import cluster" option beside the highleded Create Cluster button.
+2. Select the "Import cluster" option beside the highlighted Create Cluster button.
 
 ![](/images/import-cluster.png "Select Import cluster")
 
@@ -71,7 +71,7 @@ There are a three ways to join the factory to the datacenter.
 
 ![](/images/import-with-kubeconfig.png "Import using kubeconfig")
 
-Using this menthod, you are done. Skip to the section [Factory is joined](#factory-is-joined) but ignore the part about adding the site tag.
+Using this method, you are done. Skip to the section [Factory is joined](#factory-is-joined) but ignore the part about adding the site tag.
 
 ## Factory setup using `cm` tool
 
@@ -84,13 +84,13 @@ Using this menthod, you are done. Skip to the section [Factory is joined](#facto
 1. Run the following command:
 ```sh
 cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-KUBECONFIG>
-``` 
+```
 
 Skip to the section [Factory is joined](#factory-is-joined)
 
 ## Factory setup using `clusteradm` tool
 
-You can also use `clusteradm` to join a cluster. The folloing instructions explain what needs to be done. `clusteradm` is still in testing.
+You can also use `clusteradm` to join a cluster. The following instructions explain what needs to be done. `clusteradm` is still in testing.
 
 1. To deploy a edge cluster you will need to get the datacenter (or hub) cluster's token. You will need to install `clusteradm`.  On the existing *datacenter cluster*:
 
@@ -100,14 +100,14 @@ You can also use `clusteradm` to join a cluster. The folloing instructions expla
 
    `oc login`
    or
-   
+
    `export KUBECONFIG=~/my-ocp-env/factory`
 
 1. Then request to that the factory join the datacenter hub
 
    `clusteradm join --hub-token <token from clusteradm get token command > <factory cluster name>`
 
-1. Back on the hub cluster accept the join reguest 
+1. Back on the hub cluster accept the join request
 
    `clusteradm accept --clusters <factory-cluster-name>`
 
@@ -117,7 +117,7 @@ Skip to the next section, [Factory is joined](#factory-is-joined)
 
 ### Designate the new cluster as a factory site
 
-Now that ACM is no longer deploying the factory applications everywhere, we need 
+Now that ACM is no longer deploying the factory applications everywhere, we need
 to explicitly indicate that the new cluster has the factory role. If you haven't tagged the cluster as `site=managed-cluster` then we can that here.
 
 We do this by adding the label referenced in the managedSite's `clusterSelector`.
@@ -131,7 +131,7 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
    `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER site=factory`
 
 ### You're done
-That's it! Go to your factory (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShifdt GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console. 
+That's it! Go to your factory (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
 
 ## Next up
 

@@ -8,7 +8,7 @@ nav_order: 9
 
 ## What is a Hybrid Cloud Pattern?
 
-Hybrid Cloud Patterns are collections of applications (in the ArgoCD sense) that demonstrate aspects of hub/edge computing that seem interesting and useful.  Hybrid Cloud Patterns will generall have a hub or centralized component, and an edge component.  These will interact in different ways.
+Hybrid Cloud Patterns are collections of applications (in the ArgoCD sense) that demonstrate aspects of hub/edge computing that seem interesting and useful.  Hybrid Cloud Patterns will generally have a hub or centralized component, and an edge component.  These will interact in different ways.
 
 Many things have changed in the IT landscape in the last few years - containers and kubernetes have taken the industry by storm, but they introduce many technologies and concepts.  It is not always clear how these technologies and concepts play together - and Hybrid Cloud Patterns is our effort to show these technologies working together on non-trivial applications in ways that make sense for real customers and partners to use.
 
@@ -41,7 +41,7 @@ Hybrid Cloud Patterns come in parts - we have a [common](https://github.com/hybr
 
 The common repo is primarily concerned with how to deploy the GitOps operator, and to create the namespaces that will be necessary to manage the pattern applications.
 
-The pattern repo has the application-specific layout, and determines which components are installed in which places - hub or edge.  The pattern repo also defines the hub and edge locations.  Both the hub and edge are expected to have multiple components each - the hub will have pipelines and the CI/CD framework, as well as any centralization components or data analysis componenets.  Edge components are designed to be smaller as we do not need to deploy Pipelines or the test and staging areas to the Edge.
+The pattern repo has the application-specific layout, and determines which components are installed in which places - hub or edge.  The pattern repo also defines the hub and edge locations.  Both the hub and edge are expected to have multiple components each - the hub will have pipelines and the CI/CD framework, as well as any centralization components or data analysis components.  Edge components are designed to be smaller as we do not need to deploy Pipelines or the test and staging areas to the Edge.
 
 Each application is described as a series of resources that are rendered into GitOps (ArgoCD) via Helm and Kustomize.  The values for these charts are set by values files that need to be "personalized" (with your local cluster values) as the first step of installation.  Subsequent pushes to the gitops repo will be reflected in the clusters running the applications.
 
