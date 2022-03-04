@@ -55,4 +55,4 @@ Excited or intrigued by what you see here?  We'd love to hear your thoughts and 
 
 Try out what we've done and submit issues to our [issue trackers](https://github.com/hybrid-cloud-patterns/industrial-edge/issues).
 
-We will review pull requests to our [pattern](https://github.com/hybrid-cloud-patterns/common) [repositories](https://hybrid-cloud-patterns/industrial-edge).
+We will review pull requests to our [pattern](https://github.com/hybrid-cloud-patterns/common) [repositories](https://hybrid-cloud-patterns.io/industrial-edge).
