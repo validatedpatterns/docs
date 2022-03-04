@@ -6,7 +6,7 @@ parent: Industrial Edge
 nav_order: 3
 ---
 
-# Demonstrating Industrial Edge example applications  
+# Demonstrating Industrial Edge example applications
 {: .no_toc }
 
 ## Table of contents
@@ -21,7 +21,7 @@ Up until now the Industrial Edge 2.0 validated patterns has focused primarily on
 
 If you have already deployed the data center and optionally a factory (edge) cluster, then you have already seen several applications deployed in the OpenShift GitOps console. If you haven't done this then we recommend you deploy the data center after you have setup the Quay repositories described below.
 
-## Prerequiste preparation
+## Prerequisite preparation
 
 ### Quay public registry setup
 
@@ -30,7 +30,7 @@ In the [Quay.io](https://quay.io) registry please ensure you have the following 
 * _your-org_/iot-software-sensor
 * _your-org_/iot-consumer
 * _your-org_/iot-frontend
-* _your-org_/iot-anomoloy-detection
+* _your-org_/iot-anomaly-detection
 * _your-org_/http-ionic
 
 These repositories are needed in order to provide container images built at the data center to be consumed by the factories (edge).
@@ -63,7 +63,7 @@ Make sure you are able to see the dashboard application in a tab on your browser
 
 [![](/images/industrial-edge/network-routing-line-dashboard.png)](/images/industrial-edge/network-routing-line-dashboard.png)
 
-Select Networking->Routes on the lefthand side of the console. Using the Projects pull-down, select `manuela-tst-all`. Click on the URL under the Location column for the route Name `line-dashboard`. this will launch the line-dashboard monitoring application in a browser tab. The URL will look like:  
+Select Networking->Routes on the left-hand side of the console. Using the Projects pull-down, select `manuela-tst-all`. Click on the URL under the Location column for the route Name `line-dashboard`. this will launch the line-dashboard monitoring application in a browser tab. The URL will look like:
 
 line-dashboard-manuela-tst-all.apps.*cluster-name*.*domain*
 
@@ -98,9 +98,9 @@ Sometimes a page/tab refreshed is needed for the change to be picked up.
 
 ## Application changes using DevOps
 
-The `line-dashboard` application has temprature sensors. In this demonstation we are going to make a simple change to that application, rebuild and redeploy it. In the `manuela-dev` repository there is a file `components/iot-consumer/index.js`. This Javascript program consumes message data coming from the line servers and one of functions it performs is to check the temprature to see if it has exceeded a threshold. There is three lines of code in there that does some Celsius to Fahrenheit conversion.
+The `line-dashboard` application has temperature sensors. In this demonstration we are going to make a simple change to that application, rebuild and redeploy it. In the `manuela-dev` repository there is a file `components/iot-consumer/index.js`. This Javascript program consumes message data coming from the line servers and one of functions it performs is to check the temperature to see if it has exceeded a threshold. There is three lines of code in there that does some Celsius to Fahrenheit conversion.
 
-Depending on the state of your `manuela-dev` repository this may or may not be commented out. Ideally for the demonstration you would want it  uncommented and therefore effective.  What this means is that while the labels on the front-end application are showing Celsius, the data is actually in Fahrenheit. This is a good place to start because that data won't make any sense.  
+Depending on the state of your `manuela-dev` repository this may or may not be commented out. Ideally for the demonstration you would want it  uncommented and therefore effective.  What this means is that while the labels on the front-end application are showing Celsius, the data is actually in Fahrenheit. This is a good place to start because that data won't make any sense.
 
 [![](/images/industrial-edge/fahrenheit-temp.png)](/images/industrial-edge/fahrenheit-temp.png)
 
@@ -108,7 +108,7 @@ Machines running over 120C is not normal.  However examining the code explains w
 
 [![](/images/industrial-edge/uncommented-code.png)](/images/industrial-edge/uncommented-code.png)
 
-If you haven't deployed the uncommneted code it might be best to prepare that before the demonstration. After pointing out the problem, comment out the code.
+If you haven't deployed the uncommented code it might be best to prepare that before the demonstration. After pointing out the problem, comment out the code.
 
 [![](/images/industrial-edge/commented-code.png)](/images/industrial-edge/commented-code.png)
 
@@ -130,18 +130,18 @@ make build-and-test
 
 This build takes some time because the pipeline is rebuilding all the images. You can monitor the pipeline's progress in the Openshift console's pipelines section.
 
-Alternatively you can can try and run the shorter `build-iot-consumer` pipeline run in the OpenShift console. This should just run and test the specific application.  
+Alternatively you can can try and run the shorter `build-iot-consumer` pipeline run in the OpenShift console. This should just run and test the specific application.
 
 [![](/images/industrial-edge/build-and-test-pipeline.png)](/images/industrial-edge/build-and-test-pipeline.png)
 
 You can also see some updates happening in the `manuela-tst` application in OpenShift GitOps (ArgoCD).
 
-When the pipeline is complete check the `lines-dashboard` application again in the browser. More reasonable, Celsius, tempratures are displayed. (Compare with above.)
+When the pipeline is complete check the `lines-dashboard` application again in the browser. More reasonable, Celsius, temperatures are displayed. (Compare with above.)
 
 [![](/images/industrial-edge/celsius-temp.png)](/images/industrial-edge/celsius-temp.png)
 
 
-The steps above have successfully applied the change to the Manuela test environment at the data center. In order for these changes to be pushed out to the factories it must be accepted and pushed to the Git repository. Examine the project in GitHub. There is a new Pull Request (PR) called **Pull request created by Tekton task github-add-pull-request**. Select that PR and merge the pull request.  
+The steps above have successfully applied the change to the Manuela test environment at the data center. In order for these changes to be pushed out to the factories it must be accepted and pushed to the Git repository. Examine the project in GitHub. There is a new Pull Request (PR) called **Pull request created by Tekton task github-add-pull-request**. Select that PR and merge the pull request.
 
 [![](/images/industrial-edge/tekton-pull-request.png)](/images/industrial-edge/tekton-pull-request.png)
 
@@ -154,7 +154,7 @@ After a successful deployment of Industrial Edge 2.0, check to see that Jupyter 
 
 [![](/images/industrial-edge/jupyterhub-pods.png)](/images/industrial-edge/jupyterhub-pods.png)
 
-Then, in the same project `manuela-ml-namespace`, select Networking/Routes and click on the URL associated with `jupyterhub` in the Locationo column.
+Then, in the same project `manuela-ml-namespace`, select Networking/Routes and click on the URL associated with `jupyterhub` in the Location column.
 
 [![](/images/industrial-edge/jupyterhub-url.png)](/images/industrial-edge/jupyterhub-url.png)
 

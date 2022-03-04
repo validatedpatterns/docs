@@ -6,7 +6,7 @@ parent: Medical Diagnosis
 nav_order: 1
 ---
 
-# Deploying the Medical Diagnosis pattern  
+# Deploying the Medical Diagnosis pattern
 {: .no_toc }
 
 ## Table of contents
@@ -22,7 +22,7 @@ nav_order: 1
 1. Storage set up in your public/private cloud for the x-ray images
 1. The helm binary, see https://helm.sh/docs/intro/install/
 
-The use of this blueprint depends on having at least one running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a seperate cluster(s) for the medical egde facilities.
+The use of this blueprint depends on having at least one running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the medical edge facilities.
 
 If you do not have a running Red Hat OpenShift cluster you can start one on a
 public or private cloud by using [Red Hat's cloud
@@ -30,12 +30,12 @@ service](https://console.redhat.com/openshift/create).
 
 ## Setting up the storage for OpenShift Data Foundation
 
-Red Hat OpenShift Data Foundation relies on underlying object based storage provided by cloud providers. This storage will need to be public. The following links provide information on how to create the cloud storage required for this validated pattern on several cloud providers. 
+Red Hat OpenShift Data Foundation relies on underlying object based storage provided by cloud providers. This storage will need to be public. The following links provide information on how to create the cloud storage required for this validated pattern on several cloud providers.
 * [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html)
-* [Azure Blob Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) 
+* [Azure Blob Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal)
 * [GCP Cloud Storage](https://cloud.google.com/storage/docs/quickstart-console)
 
-There are some utilities that have been created for the validated patterns effort to speed the process. 
+There are some utilities that have been created for the validated patterns effort to speed the process.
 
 If you are using the utilities then you first you need to set some environment variables for your cloud provider keys.
 
@@ -45,7 +45,7 @@ export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-Then we need to create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or use the scripts provided on `validated-patterns-utilities` repo.  
+Then we need to create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or use the scripts provided on `validated-patterns-utilities` repo.
 
 ```
 python s3-create.py -b mytest-bucket -r us-west-2 -p
@@ -56,7 +56,7 @@ The output should look similar to this edited/compressed output.
 
 ![Bucket setup](/videos/bucket-setup.svg)]
 
-There is some key information you will need to take note of that is required by the 'values-global.yaml' file. You will need the URL for the buckeyt and it's name. At the very end of the `values-global.yaml` file you will see a section for `s3:` were these values need to be changed.
+There is some key information you will need to take note of that is required by the 'values-global.yaml' file. You will need the URL for the bucket and it's name. At the very end of the `values-global.yaml` file you will see a section for `s3:` were these values need to be changed.
 
 # Preparation
 
@@ -77,9 +77,9 @@ There is some key information you will need to take note of that is required by 
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
    ```
-   When you edit the file you can make changes to the various DB passwords if you wish. 
+   When you edit the file you can make changes to the various DB passwords if you wish.
 
-1. Customize the deployment for your cluster. Remember to use the data optained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlightiung what what chnages need to be made.
+1. Customize the deployment for your cluster. Remember to use the data obtained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlighting what what changes need to be made.
 
    ```sh
    vi values-global.yaml
@@ -106,11 +106,11 @@ There is some key information you will need to take note of that is required by 
    ```sh
    export KUBECONFIG=~/my-ocp-env/auth/kubconfig
    ```
-   
+
 ## Check the values files before deployment
 
-You can run a check before deployment to make sure that you have the required variables to deploy the 
-Medical Diagnosis Validated Pattern.  
+You can run a check before deployment to make sure that you have the required variables to deploy the
+Medical Diagnosis Validated Pattern.
 
 You can run `make predeploy` to check your values. This will allow you to review your values and changed them in
 the case there are typos or old values.  The values files that should be reviewed prior to deploying the
@@ -122,7 +122,7 @@ Medical Diagnosis Validated Pattern are:
 | values-global.yaml | File that is used to contain all the global values used by Helm |
 
 Make sure you have the correct domain, clustername, externalUrl, targetBucket and bucketSource values.
- 
+
 [![asciicast](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)
 
 # Deploy
@@ -135,7 +135,7 @@ Make sure you have the correct domain, clustername, externalUrl, targetBucket an
 
    If the install fails and you go back over the instructions and see what was missed and change it, then run `make update` to continue the installation.
 
-1. This takes some time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The `make install` provides some progress updates during the install. It can take up to twentry minutes. Compare your `make install` run progress with the following video showing a successful install. 
+1. This takes some time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The `make install` provides some progress updates during the install. It can take up to twenty minutes. Compare your `make install` run progress with the following video showing a successful install.
 
    [![Demo](/videos/xray-deployment.svg)](/videos/xray-deployment.svg)
 
@@ -147,9 +147,9 @@ Make sure you have the correct domain, clustername, externalUrl, targetBucket an
    The main operator to watch is the OpenShift Data Foundation.
 
 ## Using OpenShift GitOps to check on Application progress
-You can also check on the progress using OpenShift GitOps to check on the various applications deployed. 
+You can also check on the progress using OpenShift GitOps to check on the various applications deployed.
 
-1. Obtain the ArgoCD urls and passwords. 
+1. Obtain the ArgoCD urls and passwords.
 
    The URLs and login credentials for ArgoCD change depending on the pattern
    name and the site names they control.  Follow the instructions below to find
@@ -187,7 +187,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
 
 ## Viewing the Grafana based dashboard.
 
-1. First we need to accept SSL certificates on the browser for the dashboard. In the OpenShift console go to the Routes for project openshift-storage. Click on the URL for the s3-rgw. 
+1. First we need to accept SSL certificates on the browser for the dashboard. In the OpenShift console go to the Routes for project openshift-storage. Click on the URL for the s3-rgw.
 
    [![Storage Routes](/images/medical-edge/storage-route.png)](/images/medical-edge/storage-route.png))
 
@@ -201,7 +201,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
 
 1. Turn on the image file flow. There are three ways to go about this.
 
-   You can go to the command line (maje sure you have KUBECONFIG set, or are logged into the cluster. 
+   You can go to the command line (make sure you have KUBECONFIG set, or are logged into the cluster.
 
    ```
    oc scale deploymentconfig/image-generator --replicas=1
@@ -211,11 +211,11 @@ You can also check on the progress using OpenShift GitOps to check on the variou
 
    [![Xraylab-1 Topology](/images/medical-edge/dev-topology.png)](/images/medical-edge/dev-topology.png))
 
-   Right click on the `image-generator` pod icon and select `Edit Pod count`. 
+   Right click on the `image-generator` pod icon and select `Edit Pod count`.
 
    [![Pod menu](/images/medical-edge/dev-topology-menu.png)](/images/medical-edge/dev-topology-menu.png))
- 
-   Up the pod count from `0` to `1` and save.  
+
+   Up the pod count from `0` to `1` and save.
 
    [![Pod count](/images/medical-edge/dev-topology-pod-count.png)](/images/medical-edge/dev-topology-pod-count.png))
 
@@ -242,7 +242,7 @@ You can change some of the parameters and watch how the changes effect the dashb
    oc scale deploymentconfig/image-generator --replicas=0
    ```
 
-   Watch the dashboard stop processing images. 
+   Watch the dashboard stop processing images.
 
 1. You can also simulate the change of the AI model version - as it's only an environment variable in the Serverless Service configuration.
 

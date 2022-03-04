@@ -54,7 +54,7 @@ The Datacenter HUB OpenShift Cluster is made up of the the following on the AWS 
 | Control Plane | 3 | Amazon Web Services | m5.xlarge
 | Worker | 5 | Amazon Web Services | m5.4xlarge
 
-The Datacenter HUB OpenShift cluster needs to be a bit bigger than the edge based medical facilities clusters because this is where the developers will be running pipelines to build and deploy the **Medical Diagnosis** pattern on the cluster. The pattern on the data center also requires extra storageand computet o handle the large number of images to be processed. The above cluster sizing is close to a **minimum** size for a Datacenter HUB cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Medical Diagnosis** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications. 
+The Datacenter HUB OpenShift cluster needs to be a bit bigger than the edge based medical facilities clusters because this is where the developers will be running pipelines to build and deploy the **Medical Diagnosis** pattern on the cluster. The pattern on the data center also requires extra storage and compute to handle the large number of images to be processed. The above cluster sizing is close to a **minimum** size for a Datacenter HUB cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Medical Diagnosis** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications. 
 
 #### Datacenter Cluster utilization 
 Below is a snapshot of the OpenShift cluster utilization while running the **Medical Diagnosis** pattern: 

@@ -28,7 +28,7 @@ nav_order: 2
 With this Pattern, we demonstrate a horizontal solution for Industrial Edge use cases.
 
 It is derived from the [MANUela work](https://github.com/sa-mw-dach/manuela) done by Red
-Hat Middleware Solution Architects in Germany in 2019/20. The name MANUela stands for MANUfacturing Edge Lightweight Accelerator, you will see this acronym in a lot of artefacts. It was developed on a platform called [stormshift](https://github.com/stormshift/documentation) - another name you will see here and there.
+Hat Middleware Solution Architects in Germany in 2019/20. The name MANUela stands for MANUfacturing Edge Lightweight Accelerator, you will see this acronym in a lot of artifacts. It was developed on a platform called [stormshift](https://github.com/stormshift/documentation) - another name you will see here and there.
 
 The demo has been updated 2021 with an advanced GitOps framework.
 
@@ -45,8 +45,8 @@ industrial setting, using AI/ML. It could be easily extended to other use cases,
 
 ### Red Hat Technologies
 
-- Red Hat OpenShift Container Platform (Kubernetes++)
-- Red Hat Advanced Cluster Management (Open Clutser Management)
+- Red Hat OpenShift Container Platform (Kubernetes)
+- Red Hat Advanced Cluster Management (Open Cluster Management)
 - Red Hat OpenShift GitOps (ArgoCD)
 - Red Hat OpenShift Pipelines (Tekton)
 - Red Hat Quay (Container image registry)
@@ -67,7 +67,7 @@ With Industrial Edge computing, it’s all about two major streams:
 The Industrial Edge Validated Pattern / Demo Scenario reflects this by having 3 layers:
 - Line Data Server - the far edge, at the shop floor level
 - Factory Data Center - the near edge, at the plant, but in a more controlled environment.
-- Central Data Ceneter - the cloud/core, where ML Model Training, AppDev, Testing etc. is happening (and ERP systems of course, not part of the demo).
+- Central Data Center - the cloud/core, where ML Model Training, AppDev, Testing etc. is happening (and ERP systems of course, not part of the demo).
 [![Demo Scenario](/images/industrial-edge/highleveldemodiagram.png)](/images/industrial-edge/highleveldemodiagram.png)
 
 The northbound traffic of sensor data is clearly visible in this diagram: from the Sensor at the bottom via MQTT to the Factory, where it is split into two streams: one to be fed into a ML Model for anomaly detection, an another one to be streamed up to the central data center via event streaming (Kafka) to be stored for model training.
@@ -83,7 +83,7 @@ The following diagram explains how different roles have different concerns and f
 In the Industrial Edge architecture there are two logical types of sites.
 
 - The datacenter. This is where the data scientist, developers and operations personnel apply the changes to their models, application code and configurations.
-- The factories. This is where new applications, updates and operational changes are deployed to improve quality and efficency in the factory.
+- The factories. This is where new applications, updates and operational changes are deployed to improve quality and efficiency in the factory.
 
 For logical, physical and dataflow diagrams, please see excellent work done by the [Red Hat Portfolio Architecture team](https://gitlab.com/redhatdemocentral/portfolio-architecture-examples/-/blob/main/manufacturing.adoc)
 

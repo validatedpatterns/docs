@@ -130,7 +130,7 @@ We're looking into better long-term fixes for a number of the situations that ca
 
 **Cause:** Multiple processes or people were trying to make changes to the repo at the same time.  The state of the repo changed in the middle of the process in such a way that the update was not a "fast-forward" in git terms.
 
-**Resolution:** Re-run the failed pipeline segement OR run `make seed` from the root of your fork of the industrial-edge repo.
+**Resolution:** Re-run the failed pipeline segment OR run `make seed` from the root of your fork of the industrial-edge repo.
 
 It is also possible that multiple pipelines were running at the same time and were making conflicting changes. We recommend running one pipeline at a time.
 

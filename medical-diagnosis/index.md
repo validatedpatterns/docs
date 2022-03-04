@@ -24,7 +24,7 @@ nav_order: 3
 {:toc}
 
 ## Background
-This Validated Pattern is based on a demo implemetation of an automated data pipeline for chest Xray
+This Validated Pattern is based on a demo implementation of an automated data pipeline for chest Xray
 analysis previously developed by Red Hat.  The original demo can be found [here](https://github.com/red-hat-data-services/jumpstart-library). It was developed for the US Department of Veteran Affairs.
 
 This validated pattern includes the same functionality as the original demonstration. The difference is
@@ -55,8 +55,8 @@ please contact [Jonny Rickard](jrickard@redhat.com) or [Lester Claudio](claudiol
 
 ### Red Hat Technologies
 
-- Red Hat OpenShift Container Platform (Kubernetes++)
-- Red Hat Advanced Cluster Management (Open Clutser Management)
+- Red Hat OpenShift Container Platform (Kubernetes)
+- Red Hat Advanced Cluster Management (Open Cluster Management)
 - Red Hat OpenShift GitOps (ArgoCD)
 - Red Hat Quay (Container image registry)
 - Red Hat AMQ Streams (Apache Kafka Event Broker)
@@ -75,7 +75,7 @@ Components are running on OpenShift either at the data center or at the medical 
 
 In the Medical Diagnosis architecture there are two logical sites.
 
-- The Management Hub. This is where the multiple managed clusters deployed on clouds (public or private) are managed. Application and configuration code is workied on here and deployed to the other managed clusters. There is one management hub.
+- The Management Hub. This is where the multiple managed clusters deployed on clouds (public or private) are managed. Application and configuration code is worked on here and deployed to the other managed clusters. There is one management hub.
 - The Managed Cluster. This is where new applications, updates and operational changes are deployed for the business. There are more than one managed clusters.
 
 [![Multi-Cloud Logical Architecture](/images/medical-edge/logical-diagram.png)](/images/medical-edge/logical-diagram.png)
