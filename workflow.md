@@ -105,13 +105,13 @@ If you want to change and track your own version of common, you should fork and 
 
 Now, you can make changes in your fork's main branch, or else make a new branch and make changes there.
 
-If you want to track these changes in your fork of the *pattern* repository (industrial-edge in this case), you will need to swap out the subtree in industrial-edge for the version of common you forked.  We have provided a script to make this a bit easier:
+If you want to track these changes in your fork of the _pattern_ repository (industrial-edge in this case), you will need to swap out the subtree in industrial-edge for the version of common you forked.  We have provided a script to make this a bit easier:
 
    ```sh
    common/scripts/make_common_subtree.sh <subtree_repo> <subtree_branch> <subtree_remote_name>
    ```
 
-This script will set up a new remote in your local working directory with the repository you specify. It will replace the common directory with a new common from the fork and branch you specify, and commit it.  The script will *not* push the result.
+This script will set up a new remote in your local working directory with the repository you specify. It will replace the common directory with a new common from the fork and branch you specify, and commit it.  The script will _not_ push the result.
 
 For example:
 

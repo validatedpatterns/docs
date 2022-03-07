@@ -66,7 +66,7 @@ Make sure you are able to see the dashboard application in a tab on your browser
 
 Select Networking->Routes on the left-hand side of the console. Using the Projects pull-down, select `manuela-tst-all`. Click on the URL under the Location column for the route Name `line-dashboard`. this will launch the line-dashboard monitoring application in a browser tab. The URL will look like:
 
-line-dashboard-manuela-tst-all.apps.*cluster-name*.*domain*
+`line-dashboard-manuela-tst-all.apps.*cluster-name*.*domain*`
 
 Once the the application is open in your browser, click on the “Realtime Data” Navigation on the left and wait a bit. Data should be visualized as received. Note that there is only vibration data shown! If you wait a bit more (usually every 2-3 minutes), you will see an anomaly and alert on it.
 
@@ -157,7 +157,7 @@ Then, in the same project `manuela-ml-namespace`, select Networking/Routes and c
 
 This will bring you to a web page at an address in the following format:
 
-* jupyterhub-manuela-ml-workspace.apps.*clustername*.*your-domain*
+* `jupyterhub-manuela-ml-workspace.apps.*clustername*.*your-domain*`
 
 Options for different types of Jupyter servers are shown. There are two options that are useful for this demo.
 
