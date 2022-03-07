@@ -143,11 +143,11 @@ This section is meant as an introduction to the `values-` files that the framewo
 There are three types of `value-` files.
 
 1. `values-global.yaml`
-	This is used to set variables for helm charts across the pattern. It contains the name of the pattern and sets some other variables for artifacts like, image registry, Git repositories, GitOps syncPolicy etc.
+   This is used to set variables for helm charts across the pattern. It contains the name of the pattern and sets some other variables for artifacts like, image registry, Git repositories, GitOps syncPolicy etc.
 1. `values-<site>.yaml`
-	Each specific site requires information regarding what applications and subscriptions are required for that site. So this file contains a list of namespaces, applications, subscriptions, the operator versions etc. for that site.
+   Each specific site requires information regarding what applications and subscriptions are required for that site. So this file contains a list of namespaces, applications, subscriptions, the operator versions etc. for that site.
 1. `values-secret.yaml.template`
-	Some patterns are not using a [secrets management](/secrets.md) service like [Hashicorp Vault](/secrets/vault.md). As you create a new pattern you may need to get it up and going quickly and hard code some secrets that you DO NOT want to share or push to a Git repo. This template file can be copied to your home directory, the secret values applied, and the validated pattern will go look for `values-secrets.yaml` in your home directory. Do not leave a `values-secrets.yaml` file in your cloned git directory or it may end up in your (often public) Git repo, like GitHub.
+   Some patterns are not using a [secrets management](/secrets.md) service like [Hashicorp Vault](/secrets/vault.md). As you create a new pattern you may need to get it up and going quickly and hard code some secrets that you DO NOT want to share or push to a Git repo. This template file can be copied to your home directory, the secret values applied, and the validated pattern will go look for `values-secrets.yaml` in your home directory. Do not leave a `values-secrets.yaml` file in your cloned git directory or it may end up in your (often public) Git repo, like GitHub.
 
 ## Applications & subscriptions
 

@@ -118,9 +118,9 @@ Waiting for logs to be available...
 E1006 22:08:27.106369      14 runtime.go:78] Observed a panic: "send on closed channel" (send on closed channel)
 goroutine 487 [running]:
 k8s.io/apimachinery/pkg/util/runtime.logPanic(0x1b40ee0, 0x1fe47b0)
-	/workspace/pkg/mod/k8s.io/apimachinery@v0.19.7/pkg/util/runtime/runtime.go:74 +0x95
+ /workspace/pkg/mod/k8s.io/apimachinery@v0.19.7/pkg/util/runtime/runtime.go:74 +0x95
 k8s.io/apimachinery/pkg/util/runtime.HandleCrash(0x0, 0x0, 0x0)
-	/workspace/pkg/mod/k8s.io/apimachinery@v0.19.7/pkg/util/runtime/runtime.go:48 +0x89
+ /workspace/pkg/mod/k8s.io/apimachinery@v0.19.7/pkg/util/runtime/runtime.go:48 +0x89
 panic(0x1b40ee0, 0x1fe47b0)
 ```
 
