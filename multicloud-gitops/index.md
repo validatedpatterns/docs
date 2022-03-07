@@ -11,6 +11,7 @@ nav_order: 1
 </div>
 
 # Multicloud GitOps
+
 {: .no_toc }
 
 [Install](getting-started){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 .mr-2 }
@@ -18,12 +19,14 @@ nav_order: 1
 [Report Bugs](https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
 
 ## Background
+
 Organizations are looking for a way to develop and deploy applications on open hybrid cloud in a stable, simple, and secure way. This hybrid approach includes multi-cloud deployments where workloads may be running on different clusters on different clouds - private or public. This also requires an infrastructure-as-code approach that manages versions and being able to deploy based on specific deployment configurations.
 
 The pattern is derived from work done by the [Red Hat Portfolio Architecture team](https://gitlab.com/redhatdemocentral/portfolio-architecture-examples/-/blob/main/spi-multi-cloud-gitops.adoc)
@@ -42,6 +45,7 @@ The pattern is derived from work done by the [Red Hat Portfolio Architecture tea
 - Hashicorp Vault
 
 ## Architecture
+
 At a high level this requires a management hub, for DevOps and GitOps, and and infrastructure that extends to more than one managed clusters running on private or public clouds.
 
 [![Multi-Cloud Architecture](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)

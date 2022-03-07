@@ -6,10 +6,12 @@ parent: Multicloud GitOps
 nav_order: 1
 ---
 
-# Deploying the Multicloud GitOps Pattern  
+# Deploying the Multicloud GitOps Pattern
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
@@ -135,12 +137,14 @@ service](https://console.redhat.com/openshift/create).
 [![Multicloud GitOps Hub](/images/multicloud-gitops/multicloud-gitops-argocd.png)](/images/multicloud-gitops/multicloud-gitops-argocd.png)   
 
 # Deploying the managed cluster applications
+
 Once the management hub has been setup correctly and confirmed to be working, it is time to attach one or more managed clusters to the architecture (see diagrams below).
 
 For instructions on deploying the edge please read the following [document](https://hybrid-cloud-patterns.io/multicloud-gitops/managed-cluster/).
 
 ## Multicloud GitOps application demos
-As part of this pattern HashiCorp Vault has been installed. Refer to the section on [Vault](https://hybrid-cloud-patterns.io/secrets/vault/). 
+
+As part of this pattern HashiCorp Vault has been installed. Refer to the section on [Vault](https://hybrid-cloud-patterns.io/secrets/vault/).
 
 # Next Steps
 

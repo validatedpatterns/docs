@@ -7,9 +7,11 @@ nav_order: 4
 ---
 
 # Troubleshooting
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
@@ -147,6 +149,7 @@ It is also possible that multiple pipelines were running at the same time and we
 **Resolution:** Delete the unused PVC
 
 ### ArgoCD not syncing
+
 #### Symptom: ArgoCD shows an error and "Unknown" sync status
 
 **Cause:** A change has been made in the repo that renders invalid YAML

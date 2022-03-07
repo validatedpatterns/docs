@@ -8,6 +8,7 @@ nav_order: 1
 # OpenShift General Sizing 
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
@@ -95,4 +96,3 @@ Etcd writes data to disk, so its performance strongly depends on disk performanc
 Some of the key metrics to monitor on a deployed OpenShift Container Platform cluster are p99 of etcd disk write ahead log duration and the number of etcd leader changes. Use Prometheus to track these metrics.  `etcd_disk_wal_fsync_duration_seconds_bucket`  reports the etcd disk fsync duration,  `etcd_server_leader_changes_seen_total`  reports the leader changes. To rule out a slow disk and confirm that the disk is reasonably fast, 99th percentile of the  `etcd_disk_wal_fsync_duration_seconds_bucket`  should be less than 10ms.
 
 For more information about sizing and Red Hat standard host practices see the [Official OpenShift Documentation Page](https://docs.openshift.com/container-platform/4.8/scalability_and_performance/recommended-host-practices.html) for recommended host practices.
-

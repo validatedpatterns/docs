@@ -6,15 +6,18 @@ has_children: true
 ---
 
 # Pattern List
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
 
 ## Patterns quick-start
+
 Each pattern can be deployed using the command line. Check the `values-` for changes that are needed before deployment. After changing the `values-` files where needed, you can run `make install` from your local repository directory and that will deploy the datacenter/hub cluster for a pattern. Edge clusters are deployed by joining/importing them into ACM on the hub. 
  
 Alternatively to the `make install` you can use the [validated pattern operator](https://operatorhub.io/operator/patterns-operator) available in the OpenShift console.

@@ -8,12 +8,14 @@ nav_order: 2
 # OpenShift Cluster Sizing for the Medical Diagnosis Pattern 
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
 
 ## Tested Platforms
+
 The **Medical Diagnosis** pattern has been tested in the following Certified Cloud Providers.
 
 | **Certified Cloud Providers** | 4.8 | 4.9 |
@@ -24,6 +26,7 @@ The **Medical Diagnosis** pattern has been tested in the following Certified Clo
 
 
 ## General OpenShift Minimum Requirements 
+
 OpenShift 4 has the following minimum requirements for sizing of nodes:
 
 * **Minimum 4 vCPU** (additional are strongly recommended). 
@@ -34,6 +37,7 @@ OpenShift 4 has the following minimum requirements for sizing of nodes:
 There is one application that comprises the **Medical Diagnosis** pattern.  In addition, the **Medical Diagnosis** pattern also includes the Advanced Cluster Management (ACM) supporting operator that is installed by **OpenShift GitOps** using ArgoCD.  
 
 ### **Medical Diagnosis** Pattern Components
+
 Here's an inventory of what gets deployed by the **Medical Diagnosis** pattern on the Datacenter/Hub OpenShift cluster:
 
 | Name | Kind | Namespace | Description
@@ -57,6 +61,7 @@ The Datacenter HUB OpenShift Cluster is made up of the the following on the AWS 
 The Datacenter HUB OpenShift cluster needs to be a bit bigger than the edge based medical facilities clusters because this is where the developers will be running pipelines to build and deploy the **Medical Diagnosis** pattern on the cluster. The pattern on the data center also requires extra storage and compute to handle the large number of images to be processed. The above cluster sizing is close to a **minimum** size for a Datacenter HUB cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Medical Diagnosis** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications. 
 
 #### Datacenter Cluster utilization 
+
 Below is a snapshot of the OpenShift cluster utilization while running the **Medical Diagnosis** pattern: 
 
 | CPU | Memory |  File System |  Network | Pod Count
@@ -165,5 +170,3 @@ The following table provides VM recommendations for different workloads.
 Day-to-day computing at a lower cost | Balanced price/performance across a wide range of VM shapes | Best performance/cost for scale-out workloads | Ultra high-memory workloads | Ultra high performance for compute-intensive workloads | Optimized for high performance computing workloads
 
 For more information please refer to the [GCP VM Size Page](https://cloud.google.com/compute/docs/machine-types).
-
-

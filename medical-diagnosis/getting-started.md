@@ -7,9 +7,11 @@ nav_order: 1
 ---
 
 # Deploying the Medical Diagnosis pattern
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
@@ -148,6 +150,7 @@ Make sure you have the correct domain, clustername, externalUrl, targetBucket an
    The main operator to watch is the OpenShift Data Foundation.
 
 ## Using OpenShift GitOps to check on Application progress
+
 You can also check on the progress using OpenShift GitOps to check on the various applications deployed.
 
 1. Obtain the ArgoCD urls and passwords.

@@ -7,9 +7,11 @@ nav_order: 2
 ---
 
 # Having a factory (edge) cluster join the datacenter (hub)
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
@@ -132,6 +134,7 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
    `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER site=factory`
 
 ### You're done
+
 That's it! Go to your factory (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
 
 ## Next up

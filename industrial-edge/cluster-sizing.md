@@ -8,12 +8,14 @@ nav_order: 5
 # OpenShift Cluster Sizing for the Industrial Edge Pattern 
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
 
 ## Tested Platforms
+
 The **Medical Diagnosis** pattern has been tested in the following Certified Cloud Providers.
 
 | **Certified Cloud Providers** | 4.8 | 4.9 |
@@ -23,6 +25,7 @@ The **Medical Diagnosis** pattern has been tested in the following Certified Clo
 | Microsoft Azure |   |  
 
 ## General OpenShift Minimum Requirements 
+
 OpenShift 4 has the following minimum requirements for sizing of nodes:
 
 * **Minimum 4 vCPU** (additional are strongly recommended). 
@@ -33,9 +36,11 @@ OpenShift 4 has the following minimum requirements for sizing of nodes:
 There are several applications that comprise the **industrial-edge** pattern.  In addition, the **industrial-edge** pattern also includes a number of supporting operators that are installed by **OpenShift GitOps** using ArgoCD.  
 
 ### Tested Platforms
+
 The **Industrial-Edge** pattern has been tested in the following Certified Cloud Providers.
 
 ### **Industrial-Edge** Pattern Components
+
 Here's an inventory of what gets deployed by the **Industrial-Edge** pattern on the Datacenter/Hub OpenShift cluster:
 
 | Name | Kind | Namespace | Description
@@ -71,6 +76,7 @@ The Datacenter HUB OpenShift Cluster is made up of the the following on the AWS 
 The Datacenter HUB OpenShift cluster needs to be a bit bigger than the Factory/Edge clusters because this is where the developers will be running pipelines to build and deploy the **Industrial Edge** pattern on the cluster.  The above cluster sizing is close to a **minimum** size for a Datacenter HUB cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Industrial Edge** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications. 
 
 #### Datacenter Cluster utilization 
+
 Below is a snapshot of the OpenShift cluster utilization while running the **Industrial-Edge** pattern: 
 
 | CPU | Memory |  File System |  Network | Pod Count

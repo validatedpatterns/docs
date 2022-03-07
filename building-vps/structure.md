@@ -6,15 +6,18 @@ nav_order: 1
 ---
 
 # Validated pattern structure
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
 
 ## Framework fundamentals
+
 The validated patterns framework uses [OpenShift GitOps](https://docs.openshift.com/container-platform/4.9/cicd/gitops/understanding-openshift-gitops.html) (ArgoCD) as the primary driver for deploying patterns and keeping them up to date. Validated patterns use Helm charts as the primary artifacts for GitOps. [Helm charts](https://helm.sh/) provide a mechanism for templating that is very powerful when building repeatable, automated deployments across different deployment environments (i.e. clouds, data centers, edge, etc.)
 
 Many Cloud Native Computing Foundation (CNCF) projects use [Operators](https://operatorframework.io/) to manage the lifecycle of their service. Whenever possible the validated patterns will make use of these Operators to deploy the application service.
@@ -24,6 +27,7 @@ Many Cloud Native Computing Foundation (CNCF) projects use [Operators](https://o
 [OpenShift Pipelines](https://docs.openshift.com/container-platform/4.9/cicd/pipelines/understanding-openshift-pipelines.html) is used to automate builds and keep image repositories up to date.
 
 ## Pattern directories tour
+
 Examining any of the existing patterns reveals the important organizational part of the validated patterns framework. Let's take a look at a couple of the existing validated patterns: Multicluster GitOps and Industrial Edge.
 
 ```
@@ -99,6 +103,7 @@ First we notice some `values-` yaml files and subdirectories: charts, common and
 We see the same or similar files in the Industrial Edge pattern above.
 
 ## The `charts` directory
+
 This is where validated patterns keep the helm charts for a pattern. The helm charts are used deploy and manage the various components of the applications deployed at a site. By convention, the charts are broken out by site location. So you may see `datacenter` or `hub` or `factory` or other site names in there.
 
 Each site has sub-directories based on application or library component groupings.
@@ -120,12 +125,15 @@ The configuration YAML for each of the component of the application is stored in
 
 
 ## The `common` directory
+
 There are many common components that are in use across the validated patterns that exist today. E.g. AMQ Streams (Kafka) and ACM. We expect these common components to grow. Rather than duplicating the configuration in each pattern, common technologies are moved into a common directory.  If there are pattern specific post deployment configurations to be applied then those would be added to the Helm charts in `charts` directory structure.
 
 ## The `scripts` directory
+
 Sometimes an Operator and/or the Helm charts still leave some work to be done with regard to final configuration. When extra code is needed to deploy then that extra code is placed in the `scripts` directory. The majority of the time a consumer of a validated pattern will only use this code through the existing automation. i.e. The `Makefile` or OpenShift GitOps will make use of these scripts. So if there is extra *massaging* required for your application, but the scripts in here and try to run them from within the automation.
 
 ## Applications and `values-` files
+
 Helm uses `values.yaml` files to pass values into charts. Values in the `values.yaml` file can be overridden in the following ways:
 
 1. By a `values.yaml` file in the parent directory
@@ -149,6 +157,7 @@ There are three types of `value-` files.
 
 
 ## Environment values and Helm
+
 The reason the above values files exist is to take advantage of Helms ability to use templates and substitute values into your charts. This makes the pattern very portable.
 
 The following `messaging-route.yaml` example shows how the AMQ messaging service is using values set in the `values-global.yaml` file for Industrial Edge.

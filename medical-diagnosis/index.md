@@ -11,6 +11,7 @@ nav_order: 3
 </div>
 
 # Medical Diagnosis
+
 {: .no_toc }
 
 [Install](getting-started){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 .mr-2 }
@@ -18,12 +19,14 @@ nav_order: 3
 [Report Bugs](https://github.com/hybrid-cloud-patterns/medical-diagnosis/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
 
 ## Background
+
 This Validated Pattern is based on a demo implementation of an automated data pipeline for chest Xray
 analysis previously developed by Red Hat.  The original demo can be found [here](https://github.com/red-hat-data-services/jumpstart-library). It was developed for the US Department of Veteran Affairs.
 
@@ -65,6 +68,7 @@ please contact [Jonny Rickard](jrickard@redhat.com) or [Lester Claudio](claudiol
 - S3 storage
 
 ## Architecture
+
 At a high level this requires a management hub, for the applications and GitOps management, and infrastructure that extends to more than one managed clusters running for medical facilities on private or public clouds.
 
 [![Multi-Cloud Architecture](/images/medical-edge/edge-medical-diagnosis-marketing-slide.png)](/images/medical-edge/edge-medical-diagnosis-marketing-slide.png)

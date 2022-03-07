@@ -6,10 +6,12 @@ parent: Industrial Edge
 nav_order: 1
 ---
 
-# Deploying the Industrial Edge Pattern  
+# Deploying the Industrial Edge Pattern
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
@@ -220,4 +222,3 @@ Once the data center has been setup correctly and confirmed to be working, you c
    `helm delete manuela`
 
 1. Check all namespaces and operators have been removed
-

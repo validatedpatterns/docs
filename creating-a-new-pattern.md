@@ -6,9 +6,11 @@ has_children: true
 ---
 
 # Creating a new pattern
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
@@ -45,11 +47,13 @@ The framework depends on Red Hat OpenShift Container Platform (OCP). Once you ha
 If you are reading this chances are you are already familiar with Linux containers. But there is more to containers than Linus containers in the Cloud Native environment.
 
 ### Containers
+
 Containers allow you to encapsulate your program/process, and all its dependencies in one package called a container image. The container runtime starts an instance of this container using only the Linux kernel and the directory structure, with program and dependencies, provided in the container image. This ensures that the program is running isolated from any other packages, programs or files loaded on the host system.
 
 Kubernetes, and the Cloud Native community of services, use Linux containers as their basic building block.
 
 ### Operators
+
 While Linux containers provide an incredibly useful way to isolate the dependencies for an application or application service, containers also require some life cycle management. For example, at start up a container my need to set up access to networks, or extra storage. This type of set up usually happens with a human operator decided on how the container will connect networks or host storage. The operator may also have to do routine maintenance. For example if the container contains a database, the human operator may need to do a backup or routine scrubbing of the database.
 
 Kubernetes [Operators](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/) is an extension to Kubernetes *"that make sue of custom resources to manage applications and their components."* I.e. it provides and extra layer of encapsulation on top of containers that packages up some operation automation with the container. It puts what the human operator would do into an Operator pattern for the service or set of services.
@@ -59,6 +63,7 @@ Many software providers/vendors have created operators to manage their applicati
 
 
 ### Validated patterns
+
 Assembling operators into a common pattern provides another layer of encapsulation. As with an Operator, where the developer can take advantage of the best practices from a experienced human operator, a validated pattern provides a way of taking advantage of best practices for deploying operators and other assets for a particular type of solution. Rather than starting from scratch to figure out how to deploy and manage a complex set of integrated and dependent containerized services, a developer can take a validated pattern and know that a lot of experience has been put into it.
 
 [![Validated pattern stack](/images/framework/validated-patterns-stack.png)](/images/framework/validated-patterns-stack.png)
@@ -74,9 +79,11 @@ As mentioned above gaining consistency and robustness for deploying complex Clou
 But which automation tool should be used? Or which automation tools, plural? During the development of the validated patterns framework we learned important lessons on the different areas of automation.
 
 ### Automation for building application code
+
 When developing container based Cloud Native applications a developer needs build executable code and create a new container image for deployment into their Kubernetes test environment. Once tested, that container image needs to be moved through the continuous integration and continuous deployment (CI/CD) pipeline until it ends up in production. [Tekton](https://tekton.dev/) is a Cloud Native CI/CD project that is build for hybrid-cloud. [OpenShift Pipelines](https://cloud.redhat.com/learn/topics/ci-cd) is a Red Hat product based on Tekton.
 
 ### Automation for application operations
+
 There are two aspects to consider for operations when doing automation. First you must be able to package up much of the configuration that is required for deploying Operators and pods. The validated patterns framework started with a project called Kustomize which allows you to assemble complex deployment YAML to apply to your Kubernetes cluster. Kustomize is a powerful tool, and almost achieved what we needed. However it fell short when we needed to propagate variable data into our deployment YAML. Instead we chose [Helm](https://cloud.redhat.com/learn/topics/helm) because it provides templating and can therefore handle the injection of variable data into the deployment package. See more on templating [here]().
 
 The second aspect of automation for application automation deals with both workflow and GitOps. Validated patterns requires that a workflow deploys various components of the complex application. Visibility into the success or failure of those application components is really important. After the initial deployment it is important to role out configuration changes in an automated way using a code repository. This is achieved using GitOps. i.e. Using a Git repository as a mechanism to change configuration that triggers the automatic roll-out of those changes.
@@ -86,6 +93,7 @@ The second aspect of automation for application automation deals with both workf
 OpenShift GitOps is based on the [Argo CD](https://argo-cd.readthedocs.io/en/stable/) project. It is a GitOps continuous delivery tool for Kubernetes.
 
 ## Secret handling
+
 Validated patterns often depend on resources that require certificates or keys. These secrets need to be handled carefully. And while it's tempting to focus on just the deployment of the pattern and "handle security later", that's a really bad idea. In the spirit of DevSecOps the validated patterns effort has decided to "shift security left". i.e. build security in early in the life cycle.
 
 When it comes to security, the approach requires patience and care to set up. There is no avoiding some manual steps but validated patterns tries to automate as much as possible while at the same time taking the lid off so developers can see what was and needs to be done.
@@ -98,15 +106,9 @@ There are two approaches to secret handling with validated:
 Some of the validated patterns use configuration files (for now), while others, like the [Multicloud GitOps](https://hybrid-cloud-patterns.io/multicloud-gitops/) uses Vault. *TBD add a link to the Vault set up page here when completed*
 
 ## Policy
+
 While many enterprise Cloud Native applications use open source, many of the products used require licenses or subscriptions. Policies help enforce license and subscription management and the channels needed to get access to those licenses or subscriptions.
 
 Similarly in a multicloud deployments and complex edge deployments policies can help define and select the correct GitOps workflows that need to be managed for various sites or clusters. E.g. defining an OpenShift Cluster as a "Factory" in the [Industrial Edge](https://hybrid-cloud-patterns.io/industrial-edge/factory/) validated pattern provides a simple trigger to roll-out the entire Factory deployment. Policy is a very powerful tool in automation.
 
 Validated patterns uses [Red Hat Advanced Cluster Management for Kubernetes](https://www.redhat.com/en/technologies/management/advanced-cluster-management) to control clusters and applications from a single console, with built in security policies.
-
-
-
-
-
-
-

@@ -5,19 +5,23 @@ title: HashiCorp Vault
 nav_order: 1 
 ---
 
-# Deploying HashiCorp Vault in a validated pattern  
+# Deploying HashiCorp Vault in a validated pattern
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
 
 # Prerequisites
+
 You have deployed/installed a validated pattern using the instructions provided for that pattern. This should include setting having logged into the cluster using `oc login` or setting you `KUBECONFIG` environment variable and running a `make install`.
 
-# Setting up HashiCorp Vault 
+# Setting up HashiCorp Vault
+
 Any validated pattern that uses HashiCorp Vault already has deployed Vault as part of the `make install`.  To verify that Vault is installed you can first see that the `vault` project exists and then select the Workloads/Pods:
 
 [![Vault Pods](/images/secrets/vault-pods.png)](/images/secrets/vault-pods.png)
@@ -71,8 +75,9 @@ After signing in you will see the secrets that have been created.
 [![Vault Secrets Engine](/images/secrets/vault-secrets-engine.png)](/images/secrets/secrets-engine.png)
 
 # Unseal
+
 If you don't see the sign in page but instead see an unseal page, something may have happened the cluster and you need to unseal it again. Instead of using `make vault-init` you should run `make vault-unseal`.
 
 # What's next?
-Check with the validated pattern instructions to see if there are further steps you need to perform. Sometimes this might be deploying a pattern on an edge cluster and checking to see if the correct Vault handshaking and updating occurs.
 
+Check with the validated pattern instructions to see if there are further steps you need to perform. Sometimes this might be deploying a pattern on an edge cluster and checking to see if the correct Vault handshaking and updating occurs.
