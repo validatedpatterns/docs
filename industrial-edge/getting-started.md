@@ -178,7 +178,7 @@ service](https://console.redhat.com/openshift/create).
    Or you can set up the secrets using the command line by running the following (Ansible) playbook.
 
    ```sh
-   $ scripts/setup-secrets.yaml
+   scripts/setup-secrets.yaml
    ```
 
    Using the Vault UI check that the secrets have been setup.
