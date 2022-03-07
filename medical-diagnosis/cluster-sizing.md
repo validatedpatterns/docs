@@ -104,7 +104,7 @@ The **Medical Diagnosis** pattern was tested with the highlighted AWS instances 
 
 The message that the openshift installer will give you will be similar to this message
 
-```
+```text
 INFO Credentials loaded from default AWS environment variables 
 FATAL failed to fetch Metadata: failed to load asset "Install Config": [controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 4 vCPUs, controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 16384 MiB Memory] 
 ```

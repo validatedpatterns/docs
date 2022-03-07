@@ -114,7 +114,7 @@ service](https://console.redhat.com/openshift/create).
 
 1. Check the operators have been installed
 
-   ```
+   ```text
    UI -> Installed Operators
    ```
 
@@ -135,7 +135,7 @@ service](https://console.redhat.com/openshift/create).
 
    The result should look something like:
 
-   ```sh
+   ```text
    NAME                       HOST/PORT                                                                                         PATH      SERVICES                   PORT    TERMINATION            WILDCARD
    datacenter-gitops-server   datacenter-gitops-server-industrial-edge-datacenter.apps.mycluster.mydomain.com          datacenter-gitops-server   https   passthrough/Redirect   None
    # admin.password
@@ -164,14 +164,14 @@ service](https://console.redhat.com/openshift/create).
 
    For AWS S3 secret, create a file, say, s3-secrets, with two lines:
 
-   ```
+   ```text
    s3.accessKey: <accessKey>
    s3.secretKey: <secret key>
    ```
 
    Then encode this with base64 using
 
-   ```
+   ```sh
    cat s3-secrets | base64 -w 0
    ```
 

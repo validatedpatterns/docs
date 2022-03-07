@@ -90,7 +90,7 @@ service](https://console.redhat.com/openshift/create).
 
 1. Check the operators have been installed
 
-   ```
+   ```text
    UI -> Installed Operators
    ```
 
@@ -111,7 +111,7 @@ service](https://console.redhat.com/openshift/create).
 
    The result should look something like:
 
-   ```sh
+   ```text
    NAME                       HOST/PORT                                                                                         PATH      SERVICES                   PORT    TERMINATION            WILDCARD
    hub-gitops-server          hub-gitops-server-industrial-edge-hub.apps.mycluster.mydomain.com          hub-gitops-server   https   passthrough/Redirect   None
    # admin.password

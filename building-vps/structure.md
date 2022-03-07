@@ -30,8 +30,8 @@ Many Cloud Native Computing Foundation (CNCF) projects use [Operators](https://o
 
 Examining any of the existing patterns reveals the important organizational part of the validated patterns framework. Let's take a look at a couple of the existing validated patterns: Multicluster GitOps and Industrial Edge.
 
-```
-~/g/multicloud-gitops on main ◦ tree -L 2                                                                                                          12:32:12
+```text
+~/g/multicloud-gitops on main ◦ tree -L 2
 .
 ├── charts
 │   └── region
@@ -57,13 +57,12 @@ Examining any of the existing patterns reveals the important organizational part
 └── values-region-one.yaml
 
 11 directories, 11 files
-
 ```
 
 First we notice some `values-` yaml files and subdirectories: charts, common and scripts.
 
-```
-~/g/industrial-edge on stable-2.0 ◦ tree -L 2                                                                                                      12:35:32
+```text
+~/g/industrial-edge on stable-2.0 ◦ tree -L 2
 .
 ├── charts
 │   ├── datacenter
@@ -97,7 +96,6 @@ First we notice some `values-` yaml files and subdirectories: charts, common and
 └── values-secret.yaml.template
 
 14 directories, 16 files
-
 ```
 
 We see the same or similar files in the Industrial Edge pattern above.
@@ -159,7 +157,7 @@ The reason the above values files exist is to take advantage of Helms ability to
 
 The following `messaging-route.yaml` example shows how the AMQ messaging service is using values set in the `values-global.yaml` file for Industrial Edge.
 
-```
+```yaml
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
@@ -179,7 +177,7 @@ spec:
 
 The values in the `values-global.yaml` will be substituted when the YAML is applied to the cluster.
 
-```
+```yaml
 global:
   pattern: industrial-edge
 

@@ -195,7 +195,7 @@ There is one other area that has not been completed for the overall validated pa
 
 The automation for this is complete. However, there are certificates and/or keys that need to be replaced in the following files for the datacenter and factory templates:
 
-```
+```text
 industrial-edge/charts/datacenter/kafka/templates/kafka-tls-certificate-and-key.yaml
 industrial-edge/charts/factory/templates/factory-kafka-cluster/kafka-tls-certificate-and-key.yaml
 industrial-edge/charts/factory/templates/factory-mirror-maker/kafka-tls-certificate.yaml

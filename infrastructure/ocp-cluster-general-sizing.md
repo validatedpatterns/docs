@@ -30,7 +30,7 @@ In Kubernetes, a pod that is holding a single container actually uses two contai
 
 **podsPerCore** sets the number of pods the node can run based on the number of processor cores on the node. For example, if  **podsPerCore**  is set to  `10`  on a node with 4 processor cores, the maximum number of pods allowed on the node will be  `40`.
 
-```
+```yaml
 kubeletConfig:
   podsPerCore: 10
 ```
@@ -39,7 +39,7 @@ Setting  **podsPerCore**  to  `0`  disables this limit. The default is  `0`.  **
 
 **maxPods**  sets the number of pods the node can run to a fixed value, regardless of the properties of the node.
 
-```
+```yaml
  kubeletConfig:
     maxPods: 250
 ```

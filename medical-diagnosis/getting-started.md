@@ -44,14 +44,14 @@ If you are using the utilities then you first you need to set some environment v
 
 For AWS (replace with your keys):
 
-```
+```sh
 export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
 Then we need to create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or use the scripts provided on `validated-patterns-utilities` repo.
 
-```
+```sh
 python s3-create.py -b mytest-bucket -r us-west-2 -p
 python s3-sync-buckets.py -s com.validated-patterns.xray-source -t mytest-bucket -r us-west-2
 ```
@@ -148,7 +148,7 @@ Make sure you have the correct domain, clustername, externalUrl, targetBucket an
 
 1. Check that the operators have been installed in the UI.
 
-   ```
+   ```text
    OpenShift UI -> Installed Operators
    ```
 
@@ -175,7 +175,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
 
    The result should look something like:
 
-   ```sh
+   ```text
    NAME                       HOST/PORT                                                                                      PATH   SERVICES                   PORT    TERMINATION            WILDCARD
    datacenter-gitops-server   datacenter-gitops-server-medical-diagnosis-datacenter.apps.wh-medctr.blueprints.rhecoeng.com          datacenter-gitops-server   https   passthrough/Redirect   None
    # admin.password
@@ -210,7 +210,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
 
    You can go to the command line (make sure you have KUBECONFIG set, or are logged into the cluster.
 
-   ```
+   ```sh
    oc scale deploymentconfig/image-generator --replicas=1
    ```
 
@@ -238,13 +238,13 @@ You can change some of the parameters and watch how the changes effect the dashb
 
 1. You can increase or decrease the number of image generators.
 
-   ```
+   ```sh
    oc scale deploymentconfig/image-generator --replicas=2
    ```
 
    Check the dashboard.
 
-   ```
+   ```sh
    oc scale deploymentconfig/image-generator --replicas=0
    ```
 
@@ -252,7 +252,7 @@ You can change some of the parameters and watch how the changes effect the dashb
 
 1. You can also simulate the change of the AI model version - as it's only an environment variable in the Serverless Service configuration.
 
-   ```
+   ```sh
    oc patch service.serving.knative.dev/risk-assessment --type=json -p '[{"op":"replace","path":"/spec/template/metadata/annotations/revisionTimestamp","value":"'"$(date +%F_%T)"'"},{"op":"replace","path":"/spec/template/spec/containers/0/env/0/value","value":"v2"}]'
    ```
 

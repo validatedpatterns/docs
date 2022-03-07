@@ -22,14 +22,14 @@ workflows by consumers and contributors.  To use the first pattern as an example
   DO NOT COMMIT THIS FILE
   You do not want to push personal credentials to GitHub.
 
-   ```
+   ```sh
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
    ```
 
 1. Customize the deployment for your cluster
 
-   ```
+   ```sh
    vi values-global.yaml
    git commit values-global.yaml
    git push
@@ -47,7 +47,7 @@ workflows) and will be easier to make upstream, if you wish.  Contributions from
 To isolate changes for upstreaming (`hcp` is "Hybrid Cloud Patterns", you can use a different remote and/or branch name
 if you want):
 
-   ```
+   ```sh
    git remote add hcp https://github.com/hybrid-cloud-patterns/industrial-edge
    git fetch --all
    git branch -b hcp-main -t hcp/main
@@ -57,20 +57,20 @@ if you want):
 
 To update branch `hcp-main` with upstream changes:
 
-   ```
+   ```sh
    git checkout hcp-main
    git pull --rebase 
    ```
 
 To reflect these changes in your forked repo (such as if you would like to submit a PR later):
 
-   ```
+   ```sh
    git push origin hcp-main
    ```
 
 If you want to integrate upstream pattern changes into your local GitOps process:
 
-   ```
+   ```sh
    git checkout main
    git merge hcp-main
    git push origin main
@@ -93,13 +93,13 @@ You only need to change subtrees if you want to test changes in the common/ area
 
 For the common cases (use and consumption of the pattern), users do not need to be aware that the pattern uses a subtree at all.
 
-   ```
+   ```sh
    git clone https://github.com/<your-workspace>/industrial-edge
    ```
 
 If you want to change and track your own version of common, you should fork and clone our common repo separately:
 
-   ```
+   ```sh
    git clone https://github.com/<your-workspace>/common
    ```
 
@@ -107,7 +107,7 @@ Now, you can make changes in your fork's main branch, or else make a new branch 
 
 If you want to track these changes in your fork of the *pattern* repository (industrial-edge in this case), you will need to swap out the subtree in industrial-edge for the version of common you forked.  We have provided a script to make this a bit easier:
 
-   ```
+   ```sh
    common/scripts/make_common_subtree.sh <subtree_repo> <subtree_branch> <subtree_remote_name>
    ```
 
@@ -115,7 +115,7 @@ This script will set up a new remote in your local working directory with the re
 
 For example:
 
-   ```
+   ```sh
    common/scripts/make_common_subtree.sh https://github.com/mhjacks/common.git wip-main common-subtree
    ```
 
@@ -123,13 +123,13 @@ This will replace common in the current repository with the wip-main branch from
 
 From that point, changes from mhjacks's wip-main branch on mhjacks's fork of common can be pulled in this way:
 
-   ```
+   ```sh
    git subtree pull --prefix common common-subtree wip-main
    ```
 
 When run without arguments, the script will run as if it had been given the following arguments:
 
-   ```
+   ```sh
    common/scripts/make_common_subtree.sh https://github.com/hybrid-cloud-patterns/common.git main common-subtree
    ```
 

@@ -102,16 +102,16 @@ In general, use the project-supplied `global.options.UseCSV` setting of `False`.
 
 #### Symptom: Intermittent failures in Pipeline stages.  Some sample errors:
 
-```
+```text
 level=error msg="Error while applying layer: ApplyLayer io: read/write on closed pipe stdout: {\"layerSize\":7301}\n stderr: "
 error creating build container: Error committing the finished image: error adding layer with blob
 ```
 
-```
+```text
 time="2021-09-29T18:48:27Z" level=fatal msg="Error trying to reuse blob sha256:235f9e6f3559c04d5ee09b613dcab06dbc03ceb93b65ce364afe35c03fd53574 at destination: failed to read from destination repository martjack/iot-software-sensor: 500 (Internal Server Error)
 ```
 
-```
+```text
 I1006 22:07:47.908257      14 request.go:645] Throttling request took 1.195150708s, request: GET:https://172.30.0.1:443/apis/autoscaling.openshift.io/v1?timeout=32s
 PipelineRun started: seed-iot-software-sensor-run-cpzzv
 Waiting for logs to be available...
@@ -162,7 +162,7 @@ It is also possible that multiple pipelines were running at the same time and we
 Certain changes might invalidate objects in ArgoCD, and this will prevent ArgoCD from deploying the change related to
 that commit.  The error message for that situation might look like this (this particular change removed the Image details from the kustomization.yaml file, and we resolved it by re-adding the image entries:
 
-```
+```text
 rpc error: code = Unknown desc = Manifest generation error (cached): `/bin/bash -c helm template . --name-template ${ARGOCD_APP_NAME:0:52} -f https://github.com/claudiol/industrial-edge/raw/deployment/values-global.yaml -f https://github.com/claudiol/industrial-edge/raw/deployment/values-datacenter.yaml --set global.repoURL=$ARGOCD_APP_SOURCE_REPO_URL --set global.targetRevision=$ARGOCD_APP_SOURCE_TARGET_REVISION --set global.namespace=$ARGOCD_APP_NAMESPACE --set global.pattern=industrial-edge --set global.valuesDirectoryURL=https://github.com/claudiol/industrial-edge/raw/deployment --post-renderer ./kustomize` failed exit status 1: Error: error while running post render on files: error while running command /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst/kustomize. error output: ++ dirname /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst/kustomize + BASE=/tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst + '[' /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst = /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst ']' + BASE=./ + cat + echo / /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst / /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst + ls -al total 44 drwxr-xr-x. 3 default root 166 Oct 6 20:59 . drwxr-xr-x. 7 default root 98 Oct 6 20:28 .. -rw-r--r--. 1 default root 1105 Oct 6 20:28 Chart.yaml -rw-r--r--. 1 default root 22393 Oct 6 20:59 helm.yaml -rw-r--r--. 1 default root 98 Oct 6 20:59 kustomization.yaml -rwxr-xr-x. 1 default root 316 Oct 6 20:28 kustomize -rw-r--r--. 1 default root 348 Oct 6 20:28 system-image-builder-role-binding.yaml drwxr-xr-x. 7 default root 115 Oct 6 20:28 templates -rw-r--r--. 1 default root 585 Oct 6 20:28 values.yaml + kubectl kustomize ./ Error: json: cannot unmarshal object into Go struct field Kustomization.images of type []image.Image : exit status 1 Use --debug flag to render out invalid YAML
 ```
 

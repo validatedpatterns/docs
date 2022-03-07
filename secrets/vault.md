@@ -30,7 +30,7 @@ In order to setup HashiCorp Vault there are a number of different steps. Fist yo
 
 From the shell you ran `make install` run:
 
-```
+```sh
 make vault-init
 ```
 
@@ -38,8 +38,8 @@ The `Makefile` includes a call out to the script to do the unseal and setup the 
 
 You can check the secrets were set up by examining the Vault user interface. But in order to do so you will need to get some data from the `common/pattern-vault.init` file generated from the `make vault-init` command. 
 
-```
-~/g/multicloud-gitops on main ◦ cat common/pattern-vault.init                                                                                      11:27:02
+```text
+~/g/multicloud-gitops on main ◦ cat common/pattern-vault.init
 Unseal Key 1: jJvLf7Pv+BDo0d39ofvBu58srGpUrhVZbnzXXXXXXXXX
 Unseal Key 2: XMQtBDB3WGdBnWFt3jIb8IZ8wyr4RxPM2oB7XXXXXXXX
 Unseal Key 3: sStLSI0ejUAt4kno2ArPTN3kzwzqiBmYnhrXXXXXXXXX
