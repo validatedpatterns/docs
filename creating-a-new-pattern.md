@@ -98,8 +98,8 @@ When it comes to security, the approach requires patience and care to set up. Th
 
 There are two approaches to secret handling with validated:
 
-   - Using special configuration files. This is fine for initial development but not for production.
-   - Using a Cloud Native secrets handling tool e.g. [Vault](https://www.vaultproject.io/docs/platform/k8s) or [Conjur](https://www.conjur.org/solutions/secrets-management/)
+- Using special configuration files. This is fine for initial development but not for production.
+- Using a Cloud Native secrets handling tool e.g. [Vault](https://www.vaultproject.io/docs/platform/k8s) or [Conjur](https://www.conjur.org/solutions/secrets-management/)
 
 Some of the validated patterns use configuration files (for now), while others, like the [Multicloud GitOps](https://hybrid-cloud-patterns.io/multicloud-gitops/) uses Vault. *TBD add a link to the Vault set up page here when completed*
 
