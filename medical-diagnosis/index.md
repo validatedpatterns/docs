@@ -36,11 +36,11 @@ and cluster configuration. Using GitOps provides a much more efficient means of 
 
 The Validated Pattern includes:
 
-* Ingest chest Xrays into an object store based on Ceph.
-* The Object store sends notifications to a Kafka topic.
-* A KNative Eventing Listener to the topic triggers a KNative Serving function.
-* An ML-trained model running in a container makes a risk of Pneumonia assessment for incoming images.
-* A Grafana dashboard displays the pipeline in real time, along with images incoming, processed and anonymized, as well as full metrics.
+- Ingest chest Xrays into an object store based on Ceph.
+- The Object store sends notifications to a Kafka topic.
+- A KNative Eventing Listener to the topic triggers a KNative Serving function.
+- An ML-trained model running in a container makes a risk of Pneumonia assessment for incoming images.
+- A Grafana dashboard displays the pipeline in real time, along with images incoming, processed and anonymized, as well as full metrics.
 
 This pipeline is showcased [in this video](https://www.youtube.com/watch?v=zja83FVsm14).
 

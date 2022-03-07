@@ -66,9 +66,9 @@ service](https://console.redhat.com/openshift/create).
 
 1. A `values-secret.yaml` file is used to automate setup of secrets needed for:
 
-   * A Git repository (E.g. Github, GitLab etc.)
-   * A container image registry (E.g. Quay)
-   * S3 storage (E.g. AWS)
+   - A Git repository (E.g. Github, GitLab etc.)
+   - A container image registry (E.g. Quay)
+   - S3 storage (E.g. AWS)
 
    DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub.
 
@@ -158,9 +158,9 @@ service](https://console.redhat.com/openshift/create).
 
 1. Apply the secrets from the `values-secret.yaml` to the secrets management Vault. This can be done through Vault's UI - manually without the file. The required secrets and scopes are:
 
-   * **secret/hub/git** git *username* & *password* (github token)
-   * **secret/hub/imageregistry** Quay or DockerHub *username* & *password*
-   * **secret/hub/aws** - base64 encoded value (see below)
+   - **secret/hub/git** git *username* & *password* (github token)
+   - **secret/hub/imageregistry** Quay or DockerHub *username* & *password*
+   - **secret/hub/aws** - base64 encoded value (see below)
 
    For AWS S3 secret, create a file, say, s3-secrets, with two lines:
 
