@@ -16,7 +16,7 @@ nav_order: 5
 
 ## Tested Platforms
 
-The **Medical Diagnosis** pattern has been tested in the following Certified Cloud Providers.
+The **Industrial-Edge** pattern has been tested in the following Certified Cloud Providers.
 
 | **Certified Cloud Providers** | 4.8 | 4.9 |
 | :---- | :---- | :----
@@ -34,10 +34,6 @@ OpenShift 4 has the following minimum requirements for sizing of nodes:
 * **Minimum 1 GB** hard disk space for the file system containing /usr/local/bin/.
 
 There are several applications that comprise the **industrial-edge** pattern.  In addition, the **industrial-edge** pattern also includes a number of supporting operators that are installed by **OpenShift GitOps** using ArgoCD.
-
-### Tested Platforms
-
-The **Industrial-Edge** pattern has been tested in the following Certified Cloud Providers.
 
 ### **Industrial-Edge** Pattern Components
 
