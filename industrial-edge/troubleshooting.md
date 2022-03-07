@@ -47,7 +47,7 @@ The applications deployed on the factory (edge) cluster are as follows. After a 
 
 ### Install loop does not complete
 
-#### Symptom: `make install` does not complete in a timely fashion (~10 minutes from start).  Status messages keep scrolling.
+#### Symptom: `make install` does not complete in a timely fashion (~10 minutes from start).  Status messages keep scrolling
 
 **Cause:** One of the conditions for installation has not been completed.  See below for details.
 
@@ -84,7 +84,8 @@ fails for any reason.  It is safe to run the seed pipeline multiple times - each
 
 ### Subscriptions not being installed
 
-#### Symptom: Install seems to "freeze" at a specific point.  Expected operators do not install in the cluster.
+#### Symptom: Install seems to "freeze" at a specific point.  Expected operators do not install in the cluster
+
 **Cause:** It is possible an operator was requested to be installed that isn't allowed to be installed on this version of OpenShift.
 
 **Resolution:**
@@ -95,6 +96,7 @@ In general, use the project-supplied `global.options.UseCSV` setting of `False`.
 ### Pipeline Failures
 
 #### Symptom: "User not found" error in first stage of pipeline run
+
 **Cause:** Despite the message, the error is most likely that you don't have a fork of [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev).
 
 **Resolution:** Fork [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) into your namespace in GitHub and run `make seed`.
@@ -136,13 +138,13 @@ We're looking into better long-term fixes for a number of the situations that ca
 
 It is also possible that multiple pipelines were running at the same time and were making conflicting changes. We recommend running one pipeline at a time.
 
-#### Symptom: Pipelines application perpetually "progressing" and not showing green/healthy. May show "degraded".
+#### Symptom: Pipelines application perpetually "progressing" and not showing green/healthy. May show "degraded"
 
 **Cause:** Most likely the application is missing the images that are built by the seed pipeline.
 
 **Resolution:** Run `make seed` from the root of your forked repo directory, which will build the images and deploy them to both test and production.
 
-#### Symptom: There is a "spinny" next to one of the resources in the app that never resolves.
+#### Symptom: There is a "spinny" next to one of the resources in the app that never resolves
 
 **Cause:** Check for a PersistentVolumeClaim that is not in use.
 

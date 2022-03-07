@@ -189,7 +189,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
 
 1. Check all applications are synchronised. There are eleven different ArgoCD "applications" deployed as part of this pattern.
 
-## Viewing the Grafana based dashboard.
+## Viewing the Grafana based dashboard
 
 1. First we need to accept SSL certificates on the browser for the dashboard. In the OpenShift console go to the Routes for project openshift-storage. Click on the URL for the s3-rgw.
 

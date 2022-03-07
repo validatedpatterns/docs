@@ -32,7 +32,7 @@ Therefore the question really is: how do I move my successful architecture solut
 
 One of the first things that you should do is look at your current implementation of your workload and identify the kubernetes manifests that are involved in order to run the workloads.
 
-## When and how to use `values-` files.
+## When and how to use `values-` files
 
 There are 4 values files that make up any Validated Pattern.  The values files are:
 
