@@ -106,9 +106,11 @@ In general, use the project-supplied `global.options.UseCSV` setting of `False`.
 level=error msg="Error while applying layer: ApplyLayer io: read/write on closed pipe stdout: {\"layerSize\":7301}\n stderr: "
 error creating build container: Error committing the finished image: error adding layer with blob
 ```
+
 ```
 time="2021-09-29T18:48:27Z" level=fatal msg="Error trying to reuse blob sha256:235f9e6f3559c04d5ee09b613dcab06dbc03ceb93b65ce364afe35c03fd53574 at destination: failed to read from destination repository martjack/iot-software-sensor: 500 (Internal Server Error)
 ```
+
 ```
 I1006 22:07:47.908257      14 request.go:645] Throttling request took 1.195150708s, request: GET:https://172.30.0.1:443/apis/autoscaling.openshift.io/v1?timeout=32s
 PipelineRun started: seed-iot-software-sensor-run-cpzzv

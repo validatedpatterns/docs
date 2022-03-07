@@ -71,6 +71,7 @@ service](https://console.redhat.com/openshift/create).
    * S3 storage (E.g. AWS) 
 
    DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub.
+
    ```sh
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
@@ -86,6 +87,7 @@ service](https://console.redhat.com/openshift/create).
    ```
 
 1. Preview the changes
+
    ```sh
    make show
    ```
@@ -129,7 +131,6 @@ service](https://console.redhat.com/openshift/create).
    ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
    CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
    eval $CMD
-
    ```
 
    The result should look something like:
@@ -162,19 +163,24 @@ service](https://console.redhat.com/openshift/create).
    * **secret/hub/aws** - base64 encoded value (see below)
 
    For AWS S3 secret, create a file, say, s3-secrets, with two lines:
+
    ```
    s3.accessKey: <accessKey>
    s3.secretKey: <secret key>
    ```
+
    Then encode this with base64 using
+
    ```
    cat s3-secrets | base64 -w 0
    ```
+
    Or you can set up the secrets using the command line by running the following (Ansible) playbook.
 
    ```sh
    $ scripts/setup-secrets.yaml
    ```
+
    Using the Vault UI check that the secrets have been setup.
 
    For more information on secrets management see [here](/secrets). For information on Hashicorp's Vault see [here](/secrets/vault.md)

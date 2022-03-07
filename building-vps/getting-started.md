@@ -46,6 +46,7 @@ There are 4 values files that make up any Validated Pattern.  The values files a
 We begin our journey by identifying what application services are needed to run the workload.  The Cloud Native Operator framework provides a way of managing the lifecycle of application services that are needed by the application workload.  The validated pattern framework gives you a way to describe these Operators in a values file that is specific to your pattern and the site type.
 
 So for example if we wish deploy Advanced Cluster Management, AMQ (messaging) and AMQ Streams (Kafka) in our datacenter, we would make the following subscription entries in our `values-datacenter.yaml` file:
+
 ```yaml
 namespaces:
   - open-cluster-management
@@ -68,6 +69,7 @@ subscriptions:
     channel: 7.8.x
     csv: amq-broker-operator.v7.8.1-opr-3
 ```
+
 This tells the framework which Operators are needed and what namespace they should be deployed in.
 
 ## Grouping applications for OpenShift GitOps
@@ -75,6 +77,7 @@ This tells the framework which Operators are needed and what namespace they shou
 In the same values- file we need to inform OpenShift GitOps (ArgoCD) what applications to deploy and where the Helm Charts are so that they can be applied to the deployment and watched for future changes.
 
 When using GitOps and specifically OpenShift GitOps (ArgoCD) it makes sense to break up applications into different areas of concern, i.e. projects. For example the main applications for the datacenter might be grouped separately from some storage components
+
 ```yaml
 projects:
 - datacenter
@@ -120,6 +123,7 @@ applications:
     plugin:
       name: helm-with-kustomize
 ```
+
 In the above example `acm` (ACM) is part of the main `datacenter` deployment, as is `cool-app`. However `central-kafka` is part of `backend-storage`.
 
 The `path:` tag tells OpenShift GitOps where to find the Helm charts needed to deploy this application (refer back to the [charts directory description](https://hybrid-cloud-patterns.io/building-vps/structure/#the-charts-directory) for more details). OpenShift GitOps will continuously monitor for changes to artifacts in that location for updates to apply.
@@ -135,6 +139,7 @@ Each different site type would have it's own values- file listing subscriptions 
 Kustomize can still be used within the framework but it will be driven by Helm. If you have a lot of `kustomization.yaml` you may not need to refactor all of it. However you will need a Helm chart to drive it and you will need to check for names and paths etc. that you may need to parameterize using the Helm templates capabilities.
 
 For example the original ArgoCD subscription YAML from one of the patterns looked like this:
+
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -149,6 +154,7 @@ spec:
   sourceNamespace: openshift-marketplace
   startingCSV: argocd-operator.v0.0.11
 ```
+
 While we could have continued to use the ArgoCD community operator we transitioned to using OpenShift GitOps, the Red Hat supported product. But this static subscription would not allow updates for continuous integration of new versions. And you'll remember from the Operators section above that we specify channel names as part of the subscription of operators. So we can instead using something like this (understanding the move to openshift-gitops-operator instead of ArgoCD).
 
 ```yaml

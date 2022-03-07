@@ -21,6 +21,7 @@ workflows by consumers and contributors.  To use the first pattern as an example
 
   DO NOT COMMIT THIS FILE
   You do not want to push personal credentials to GitHub.
+
    ```
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
@@ -55,17 +56,20 @@ if you want):
    ```
 
 To update branch `hcp-main` with upstream changes:
+
    ```
    git checkout hcp-main
    git pull --rebase 
    ```
 
 To reflect these changes in your forked repo (such as if you would like to submit a PR later):
+
    ```
    git push origin hcp-main
    ```
 
 If you want to integrate upstream pattern changes into your local GitOps process:
+
    ```
    git checkout main
    git merge hcp-main

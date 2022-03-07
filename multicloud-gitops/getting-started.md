@@ -47,6 +47,7 @@ service](https://console.redhat.com/openshift/create).
   DO NOT COMMIT THIS FILE
 
   You do not want to push personal credentials to GitHub.
+
    ```sh
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
@@ -60,9 +61,11 @@ service](https://console.redhat.com/openshift/create).
    git commit values-global.yaml
    git push
    ```
+
 1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/#patterns-quickstart). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes
+
    ```sh
    make show
    ```
@@ -104,7 +107,6 @@ service](https://console.redhat.com/openshift/create).
    ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
    CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
    eval $CMD
-
    ```
 
    The result should look something like:

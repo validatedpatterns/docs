@@ -103,10 +103,12 @@ This is a snapshot of an Azure managed data center cluster running the productio
 The **Medical Diagnosis** pattern was tested with the highlighted AWS instances in **bold**.   The OpenShift installer will let you know if the instance type meets the minimum requirements for a cluster.  
 
 The message that the openshift installer will give you will be similar to this message
+
 ```
 INFO Credentials loaded from default AWS environment variables 
 FATAL failed to fetch Metadata: failed to load asset "Install Config": [controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 4 vCPUs, controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 16384 MiB Memory] 
 ```
+
 Below you can find a list of the AWS instance types that can be used to deploy the **Medical Diagnosis** pattern.
 
 | Instance type | Default vCPUs | Memory (GiB) | Datacenter | Factory/Edge

@@ -43,6 +43,7 @@ There are some utilities that have been created for the validated patterns effor
 If you are using the utilities then you first you need to set some environment variables for your cloud provider keys.
 
 For AWS (replace with your keys):
+
 ```
 export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -76,10 +77,12 @@ There is some key information you will need to take note of that is required by 
    DO NOT COMMIT THIS FILE
 
    You do not want to push personal credentials to GitHub.
+
    ```sh
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
    ```
+
    When you edit the file you can make changes to the various DB passwords if you wish.
 
 1. Customize the deployment for your cluster. Remember to use the data obtained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlighting what what changes need to be made.
@@ -94,6 +97,7 @@ There is some key information you will need to take note of that is required by 
 1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/#patterns-quickstart). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes that will be made to the Helm charts.
+
    ```sh
    make show
    ```
@@ -147,6 +151,7 @@ Make sure you have the correct domain, clustername, externalUrl, targetBucket an
    ```
    OpenShift UI -> Installed Operators
    ```
+
    The main operator to watch is the OpenShift Data Foundation.
 
 ## Using OpenShift GitOps to check on Application progress
@@ -166,7 +171,6 @@ You can also check on the progress using OpenShift GitOps to check on the variou
    ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
    CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
    eval $CMD
-
    ```
 
    The result should look something like:

@@ -194,6 +194,7 @@ Remember that changes to the notebook will require downloading, committing, and 
 There is one other area that has not been completed for the overall validated pattern. The unfinished part is the streaming of events from the factory back to the datacenter and adding that data to the data lake for data scientists to apply their "magic".
 
 The automation for this is complete. However, there are certificates and/or keys that need to be replaced in the following files for the datacenter and factory templates:
+
 ```
 industrial-edge/charts/datacenter/kafka/templates/kafka-tls-certificate-and-key.yaml
 industrial-edge/charts/factory/templates/factory-kafka-cluster/kafka-tls-certificate-and-key.yaml
