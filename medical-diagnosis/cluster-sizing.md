@@ -24,7 +24,6 @@ The **Medical Diagnosis** pattern has been tested in the following Certified Clo
 | Google Compute |   |  
 | Microsoft Azure |   |  
 
-
 ## General OpenShift Minimum Requirements 
 
 OpenShift 4 has the following minimum requirements for sizing of nodes:
@@ -46,7 +45,6 @@ Here's an inventory of what gets deployed by the **Medical Diagnosis** pattern o
 | Red Hat Advanced Cluster Management | Operator | open-cluster-management | Advance Cluster Management
 | Red Hat OpenShift GitOps | Operator | openshift-operators | OpenShift GitOps
 
-
 ### Medical Diagnosis Pattern OpenShift Datacenter HUB Cluster Size
 
 The Medical Diagnosis pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
@@ -67,7 +65,6 @@ Below is a snapshot of the OpenShift cluster utilization while running the **Med
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
 
-
 ### Medical Diagnosis Pattern OpenShift Managed Datacenter Cluster Size
 
 The OpenShift cluster is a standard datacenter deployment of 3 control plane nodes and 3 or more worker nodes. 
@@ -87,7 +84,6 @@ This is a snapshot of a Google Cloud managed data center cluster running the pro
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
 
-
 **AWS**
 
 This is a snapshot of a Amazon Web Services managed data center cluster running the production **Medical Diagnosis** pattern.
@@ -101,7 +97,6 @@ This is a snapshot of an Azure managed data center cluster running the productio
 
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
-
 
 ### AWS Instance Types
 

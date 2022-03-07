@@ -68,7 +68,6 @@ The control plane node resource requirements depend on the number of nodes in th
     
 -   10 config maps, 2 of which are mounted by the previous deployments
     
-
 | Number of worker nodes |  Cluster load (namespaces) |  CPU cores |  Memory (GB)
 | :-------- | :---------- | :------------ | :------------- |
 | 25  | 500  | 4  | 16

@@ -130,7 +130,6 @@ service](https://console.redhat.com/openshift/create).
 
    The most important ArgoCD instance to examine at this point is `multicloud-gitops-hub`. This is where all the applications for the hub can be tracked.
 
-
 1. Check all applications are synchronised
    Under the project `multicloud-gitops-hub` click on the URL for the `hub`gitops`server`. The Vault application is not synched. 
 
@@ -150,4 +149,3 @@ As part of this pattern HashiCorp Vault has been installed. Refer to the section
 
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
-

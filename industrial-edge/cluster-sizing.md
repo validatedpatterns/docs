@@ -61,7 +61,6 @@ Here's an inventory of what gets deployed by the **Industrial-Edge** pattern on 
 | Red Hat OpenShift Pipelines | Operator | All Namespaces | Tekton Config, Pipelines, Triggers, Addons
 | Seldon Operator | Operator | manuela-tst-all | Seldon Deployment
 
-
 ### Industrial-Edge Pattern OpenShift Datacenter HUB Cluster Size
 
 The Industrial-Edge pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
@@ -83,7 +82,6 @@ Below is a snapshot of the OpenShift cluster utilization while running the **Ind
 | :----: | :-----: | :----: | :----: | :----:
 | `13.84` **Used 42.16 available of 56** | `73.5 GiB` **146.3 GiB available of 219.8 GiB** | `106 GiB` **732.9 GiB available of 838.9 GiB** | `20.65` **MBps in** `22.84` **MBps out** | `354` **pods**
 
-
 ### Industrial-Edge Pattern OpenShift Factory Edge Cluster Size
 
 The OpenShift cluster is made of 3 Nodes combining Master/Workers for the Edge/Factory cluster. 
@@ -103,7 +101,6 @@ This is a snapshot of a Google Cloud Factory Edge cluster running the production
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
 | `6.55` **17.45 available of 24** | `43.19 GiB` usage **45.09 GiB available of 88.28 GiB** | 48.45 GiB usage **334 GiB available of 382.5 GiB** | 9.64 **MBps in15.79 MBps out** | 187 **pods**
-
 
 **AWS**
 
@@ -188,5 +185,3 @@ The following table provides VM recommendations for different workloads.
 Day-to-day computing at a lower cost | Balanced price/performance across a wide range of VM shapes | Best performance/cost for scale-out workloads | Ultra high-memory workloads | Ultra high performance for compute-intensive workloads | Optimized for high performance computing workloads
 
 For more information please refer to the [GCP VM Size Page](https://cloud.google.com/compute/docs/machine-types).
-
-

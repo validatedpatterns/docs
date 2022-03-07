@@ -186,7 +186,6 @@ You can also check on the progress using OpenShift GitOps to check on the variou
 
    The most important ArgoCD instance to examine at this point is `multicloud-gitops-hub`. This is where all the applications for the hub can be tracked.
 
-
 1. Check all applications are synchronised. There are eleven different ArgoCD "applications" deployed as part of this pattern.
 
 ## Viewing the Grafana based dashboard
@@ -222,7 +221,6 @@ You can also check on the progress using OpenShift GitOps to check on the variou
    Up the pod count from `0` to `1` and save.
 
    [![Pod count](/images/medical-edge/dev-topology-pod-count.png)](/images/medical-edge/dev-topology-pod-count.png))
-
 
    Alternatively, you can have the same outcome on the Administrator console.
 

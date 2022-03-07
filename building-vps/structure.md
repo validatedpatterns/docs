@@ -122,8 +122,6 @@ The configuration YAML for each of the component of the application is stored in
 
 [![Charts Dir](/images/framework/dir-ie-kafka-charts.png)](/images/framework/dir-ie-kafka-charts.png)
 
-
-
 ## The `common` directory
 
 There are many common components that are in use across the validated patterns that exist today. E.g. AMQ Streams (Kafka) and ACM. We expect these common components to grow. Rather than duplicating the configuration in each pattern, common technologies are moved into a common directory.  If there are pattern specific post deployment configurations to be applied then those would be added to the Helm charts in `charts` directory structure.
@@ -154,7 +152,6 @@ There are three types of `value-` files.
 	Some patterns are not using a [secrets management](/secrets.md) service like [Hashicorp Vault](/secrets/vault.md). As you create a new pattern you may need to get it up and going quickly and hard code some secrets that you DO NOT want to share or push to a Git repo. This template file can be copied to your home directory, the secret values applied, and the validated pattern will go look for `values-secrets.yaml` in your home directory. Do not leave a `values-secrets.yaml` file in your cloned git directory or it may end up in your (often public) Git repo, like GitHub.
 
 ## Applications & subscriptions
-
 
 ## Environment values and Helm
 

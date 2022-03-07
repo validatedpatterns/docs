@@ -41,7 +41,6 @@ There are 4 values files that make up any Validated Pattern.  The values files a
 * values-global.yaml
 * values-secrets.yaml
 
-
 ## Operators into framework
 
 We begin our journey by identifying what application services are needed to run the workload.  The Cloud Native Operator framework provides a way of managing the lifecycle of application services that are needed by the application workload.  The validated pattern framework gives you a way to describe these Operators in a values file that is specific to your pattern and the site type.

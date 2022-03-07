@@ -110,7 +110,6 @@ service](https://console.redhat.com/openshift/create).
 
 # Validating the Environment
 
-
 1. Check the operators have been installed
 
    ```

@@ -36,7 +36,6 @@ The applications deployment for the main data center are as follows. First OpenS
 
 Make sure that all these applications are `Healthy` 💚 and `Synced` ✅ in the OpenShift GitOps console. If in a state other than `Healthy` (`Progressing, Degraded, Missing, Unknown'`) then it's time to dive deeper into that application and see what has happened.
 
-
 The applications deployed on the factory (edge) cluster are as follows. After a successful importing [1] a factory cluster to the main ACM hub, you should check in the factory cluster's OpenShift UI to see if the projects `open-cluster-manager-agent` and `open-cluster-manager-agent-addons` are running. When these are deployed then OpenShift GitOps operator will be deployed on the cluster. From there OpenShift GitOps deploys the following applications:
 
 - `datalake` application sets streams to the data center.

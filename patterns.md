@@ -34,13 +34,11 @@ On the Install Operator page leave the defaults and select install.
 
 [![Install Operator form](/images/operator/install-operator-form.png)](/images/operator/install-operator-form.png))
 
-
 [![Installing Operator](/images/operator/installing-operator.png)](/images/operator/installing-operator.png))
 
 When the operator has completed installation click on `View Operator`.
 
 [![Operator Installed](/images/operator/operator-installed.png)](/images/operator/operator-installed.png))
-
 
 Select the `Create instance` and start filling out the Create a Pattern form.
 

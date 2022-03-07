@@ -52,7 +52,6 @@ You will need to login into GitHub and be able to fork two repositories.
 * hybrid-cloud-patterns/industrial-edge
 * hybrid-cloud-patterns/manuela-dev
 
-
 ## Configuration changes with GitOps
 
 There will may be times where you need to change the configuration of some of the edge devices in one or more of your factories. In our example, we have various sensors at the factory. Modification can be made to these sensors using `ConfigMaps`.
@@ -116,7 +115,6 @@ If you haven't deployed the uncommented code it might be best to prepare that be
 
 Now that the erroneous conversion code has been commented out it is is time rebuild and redeploy. First commit and push the code to the repository. While in the directory for your `manuela-dev` repository run the following commands. The `components/iot-consumer/index.js` file should be the only changed file.
 
-
 ```sh
 git add components/iot-consumer/index.js
 git commit -m "commented out C to F temp conversion"
@@ -124,7 +122,6 @@ git push
 ```
 
 Now its time to kick off the CI pipeline. Due to the need for GitHub secrets and Quay secrets as part of this process, we currently can't use the OpenShift console's Pipelines to kick off the pipeline in the demo environment. Instead, use the command line. While in the `industrial-edge` repository directory, run the following:
-
 
 ```sh
 make build-and-test
@@ -142,11 +139,9 @@ When the pipeline is complete check the `lines-dashboard` application again in t
 
 [![](/images/industrial-edge/celsius-temp.png)](/images/industrial-edge/celsius-temp.png)
 
-
 The steps above have successfully applied the change to the Manuela test environment at the data center. In order for these changes to be pushed out to the factories it must be accepted and pushed to the Git repository. Examine the project in GitHub. There is a new Pull Request (PR) called **Pull request created by Tekton task github-add-pull-request**. Select that PR and merge the pull request.
 
 [![](/images/industrial-edge/tekton-pull-request.png)](/images/industrial-edge/tekton-pull-request.png)
-
 
 OpenShift GitOps will see the new change and apply it out to the factories.
 
@@ -159,7 +154,6 @@ After a successful deployment of Industrial Edge 2.0, check to see that Jupyter 
 Then, in the same project `manuela-ml-namespace`, select Networking/Routes and click on the URL associated with `jupyterhub` in the Location column.
 
 [![](/images/industrial-edge/jupyterhub-url.png)](/images/industrial-edge/jupyterhub-url.png)
-
 
 This will bring you to a web page at an address in the following format:
 

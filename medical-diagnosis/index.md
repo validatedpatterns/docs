@@ -46,7 +46,6 @@ This pipeline is showcased [in this video](https://www.youtube.com/watch?v=zja83
 
 [![Pipeline dashboard](/images/medical-edge/dashboard.png)](/images/medical-edge/dashboard.png)
 
-
 This validated pattern is still being developed.  More to come in the next few weeks. Any questions or concerns
 please contact [Jonny Rickard](jrickard@redhat.com) or [Lester Claudio](claudiol@redhat.com).
 

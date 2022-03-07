@@ -79,7 +79,6 @@ Using this workflow, the `hcp-main` branch will:
 (this is especially useful for tracking when any submodules, like common, update)
 1. Be a good basis for submitting Pull Requests to be integrated upstream, since it will not contain your local configuration differences or your local GitOps commits
 
-
 ## Changing subtrees
 
 Our patterns use the git subtree feature as a mechanism to promote modularity, so that multiple patterns can use the

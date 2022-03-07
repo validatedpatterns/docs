@@ -60,8 +60,6 @@ Kubernetes [Operators](https://kubernetes.io/docs/concepts/extend-kubernetes/ope
 
 Many software providers/vendors have created operators to manage their application or service lifecycle. Red Hat OpenShift provides a a [catalog of certified Operators](https://catalog.redhat.com/software/operators/search) that application develops can consume as part of their overall application. The validated patterns makes use of these certified Operators as much as possible. Having a common platform like Red Hat OpenShift helps reduce risk by using certified Operators.
 
-
-
 ### Validated patterns
 
 Assembling operators into a common pattern provides another layer of encapsulation. As with an Operator, where the developer can take advantage of the best practices from a experienced human operator, a validated pattern provides a way of taking advantage of best practices for deploying operators and other assets for a particular type of solution. Rather than starting from scratch to figure out how to deploy and manage a complex set of integrated and dependent containerized services, a developer can take a validated pattern and know that a lot of experience has been put into it.
