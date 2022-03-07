@@ -127,6 +127,7 @@ Sometimes an Operator and/or the Helm charts still leave some work to be done wi
 
 ## Applications and `values-` files
 Helm uses `values.yaml` files to pass values into charts. Values in the `values.yaml` file can be overridden in the following ways:
+
 1. By a `values.yaml` file in the parent directory
 1. By a values file passed into the `helm <install/upgrade>` command using `-f`
 1. By specifying an override individual value in the the `helm` command with `--set`
@@ -136,6 +137,7 @@ For more information on values files and their usage see the [values files secti
 This section is meant as an introduction to the `values-` files that the framework uses to override values int he chart templates. In the Getting Started pages there will be more specific usage details.
 
 There are three types of `value-` files.
+
 1. `values-global.yaml`
 	This is used to set variables for helm charts across the pattern. It contains the name of the pattern and sets some other variables for artifacts like, image registry, Git repositories, GitOps syncPolicy etc.
 1. `values-<site>.yaml`

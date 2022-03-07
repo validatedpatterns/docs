@@ -31,6 +31,7 @@ service](https://console.redhat.com/openshift/create).
 ## Setting up the storage for OpenShift Data Foundation
 
 Red Hat OpenShift Data Foundation relies on underlying object based storage provided by cloud providers. This storage will need to be public. The following links provide information on how to create the cloud storage required for this validated pattern on several cloud providers.
+
 * [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html)
 * [Azure Blob Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal)
 * [GCP Cloud Storage](https://cloud.google.com/storage/docs/quickstart-console)

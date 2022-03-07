@@ -29,6 +29,7 @@ One of the first things that you should do is look at your current implementatio
 
 ## When and how to use `values-` files.
 There are 4 values files that make up any Validated Pattern.  The values files are:
+
 * values-<main-hub>.yaml  (e.g. values-datacenter.yaml)
 * values-<edge>.yaml (e.g. values-edge-site.yaml or values-factory.yaml)
 * values-global.yaml

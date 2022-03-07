@@ -93,6 +93,7 @@ Using this method, you are done. Skip to the section [Managed cluster is joined]
 1. On the command line login into the management hub cluster (use `oc login` or export the KUBECONFIG).
 
 1. Run the following command:
+
 ```sh
 cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-KUBECONFIG>
 ```

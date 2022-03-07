@@ -24,6 +24,7 @@ While the DevOps model of development strongly encourages *shifting security to 
 ## Secret Management
 
 One area that has been impacted by a more automated approach to security is in the secret management. DevOps (and DevSecOps) environments require the use of many different services:
+
 1. Code repositories
 1. GitOps tools
 1. Image repositories

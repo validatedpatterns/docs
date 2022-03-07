@@ -91,6 +91,7 @@ Validated patterns often depend on resources that require certificates or keys. 
 When it comes to security, the approach requires patience and care to set up. There is no avoiding some manual steps but validated patterns tries to automate as much as possible while at the same time taking the lid off so developers can see what was and needs to be done.
 
 There are two approaches to secret handling with validated:
+
    - Using special configuration files. This is fine for initial development but not for production.
    - Using a Cloud Native secrets handling tool e.g. [Vault](https://www.vaultproject.io/docs/platform/k8s) or [Conjur](https://www.conjur.org/solutions/secrets-management/)
 

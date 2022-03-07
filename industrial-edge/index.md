@@ -65,6 +65,7 @@ With Industrial Edge computing, it’s all about two major streams:
 
 ### Demo Scenario
 The Industrial Edge Validated Pattern / Demo Scenario reflects this by having 3 layers:
+
 - Line Data Server - the far edge, at the shop floor level
 - Factory Data Center - the near edge, at the plant, but in a more controlled environment.
 - Central Data Center - the cloud/core, where ML Model Training, AppDev, Testing etc. is happening (and ERP systems of course, not part of the demo).

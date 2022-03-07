@@ -21,12 +21,14 @@ nav_order: 1
 1. (Optional) A second OpenShift cluster for edge/factory
 1. A github account (and a token for it with repos permissions, to read from and write to your forks)
 1. A quay account with the following repos set as public:
+
 - http-ionic
 - httpd-ionic
 - iot-anomaly-detection
 - iot-consumer
 - iot-frontend
 - iot-software-sensor
+
 5. The helm binary, see https://helm.sh/docs/intro/install/
 
 The use of this blueprint depends on having at least one running Red Hat
@@ -40,6 +42,7 @@ service](https://console.redhat.com/openshift/create).
 # How to deploy
 
 1. Install the installation tooling dependencies.  You will need:
+
 - `make` - the well-known software build tool
 - `sh` - a POSIX-compatible shell
 - `sed` - the "stream editor", commonly used in shell scripting

@@ -82,6 +82,7 @@ Using this method, you are done. Skip to the section [Factory is joined](#factor
 1. On the command line login into the hub/datacenter cluster (use `oc login` or export the KUBECONFIG).
 
 1. Run the following command:
+
 ```sh
 cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-KUBECONFIG>
 ```

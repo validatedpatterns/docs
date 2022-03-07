@@ -95,6 +95,7 @@ The diagram below shows the components that are deployed with the the data flows
 [![Demo](/videos/xray-deployment.svg)](/videos/xray-deployment.svg)
 
 ## What Next
+
 - Getting started [deploy the management hub using Helm and GitOps](getting-started) 
 - Add a managed cluster to [deploy the  managed cluster piece using ACM](managed cluster)
 - Visit the [repo](https://github.com/hybrid-cloud-patterns/medical-diagnosis)  
