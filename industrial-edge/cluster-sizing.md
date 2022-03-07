@@ -5,7 +5,7 @@ grand_parent: Patterns
 parent: Industrial Edge
 nav_order: 5
 ---
-# OpenShift Cluster Sizing for the Industrial Edge Pattern 
+# OpenShift Cluster Sizing for the Industrial Edge Pattern
 
 ## Table of contents
 
@@ -21,19 +21,19 @@ The **Medical Diagnosis** pattern has been tested in the following Certified Clo
 | **Certified Cloud Providers** | 4.8 | 4.9 |
 | :---- | :---- | :----
 | Amazon Web Services | Tested | Not Supported
-| Google Compute |   |  
-| Microsoft Azure |   |  
+| Google Compute |   |
+| Microsoft Azure |   |
 
-## General OpenShift Minimum Requirements 
+## General OpenShift Minimum Requirements
 
 OpenShift 4 has the following minimum requirements for sizing of nodes:
 
-* **Minimum 4 vCPU** (additional are strongly recommended). 
-* **Minimum 16 GB RAM** (additional memory is strongly recommended, especially if etcd is co-located on masters). 
-* **Minimum 40 GB** hard disk space for the file system containing /var/. 
+* **Minimum 4 vCPU** (additional are strongly recommended).
+* **Minimum 16 GB RAM** (additional memory is strongly recommended, especially if etcd is co-located on masters).
+* **Minimum 40 GB** hard disk space for the file system containing /var/.
 * **Minimum 1 GB** hard disk space for the file system containing /usr/local/bin/.
 
-There are several applications that comprise the **industrial-edge** pattern.  In addition, the **industrial-edge** pattern also includes a number of supporting operators that are installed by **OpenShift GitOps** using ArgoCD.  
+There are several applications that comprise the **industrial-edge** pattern.  In addition, the **industrial-edge** pattern also includes a number of supporting operators that are installed by **OpenShift GitOps** using ArgoCD.
 
 ### Tested Platforms
 
@@ -46,9 +46,9 @@ Here's an inventory of what gets deployed by the **Industrial-Edge** pattern on 
 | Name | Kind | Namespace | Description
 | :---- | :---- | :---- | :----
 | line-dashboard | Application | manuela-tst-all | Front end application
-| machine-sensor-1 | Application | manuela-tst-all | Data publisher  
-| machine-sensor-2 | Application | manuela-tst-all | Data publisher 
-| messaging | Application | manuela-tst-all | Data subscriber 
+| machine-sensor-1 | Application | manuela-tst-all | Data publisher
+| machine-sensor-2 | Application | manuela-tst-all | Data publisher
+| messaging | Application | manuela-tst-all | Data subscriber
 | mqtt2kafka-integration | Application | manuela-tst-all | Kafka Integration
 | anomaly-detection-predictor-0-anomaly-detection | Application | manuela-tst-all | Anomaly detection application
 | manuela-kafka-cluster-entity-operator | Operator | manuela-tst-all | Kafka
@@ -67,16 +67,16 @@ The Industrial-Edge pattern has been tested with a defined set of specifically t
 
 The Datacenter HUB OpenShift Cluster is made up of the the following on the AWS deployment tested:
 
-| Node Type | Number of nodes | Cloud Provider | Instance Type 
+| Node Type | Number of nodes | Cloud Provider | Instance Type
 | :---- | :----: | :---- | :----
 | Master | 4 | Amazon Web Services | m5.xlarge
 | Worker | 3 | Amazon Web Services | m5.xlarge
 
-The Datacenter HUB OpenShift cluster needs to be a bit bigger than the Factory/Edge clusters because this is where the developers will be running pipelines to build and deploy the **Industrial Edge** pattern on the cluster.  The above cluster sizing is close to a **minimum** size for a Datacenter HUB cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Industrial Edge** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications. 
+The Datacenter HUB OpenShift cluster needs to be a bit bigger than the Factory/Edge clusters because this is where the developers will be running pipelines to build and deploy the **Industrial Edge** pattern on the cluster.  The above cluster sizing is close to a **minimum** size for a Datacenter HUB cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Industrial Edge** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications.
 
-#### Datacenter Cluster utilization 
+#### Datacenter Cluster utilization
 
-Below is a snapshot of the OpenShift cluster utilization while running the **Industrial-Edge** pattern: 
+Below is a snapshot of the OpenShift cluster utilization while running the **Industrial-Edge** pattern:
 
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
@@ -84,9 +84,9 @@ Below is a snapshot of the OpenShift cluster utilization while running the **Ind
 
 ### Industrial-Edge Pattern OpenShift Factory Edge Cluster Size
 
-The OpenShift cluster is made of 3 Nodes combining Master/Workers for the Edge/Factory cluster. 
+The OpenShift cluster is made of 3 Nodes combining Master/Workers for the Edge/Factory cluster.
 
-| Node Type | Number of nodes | Cloud Provider | Instance Type 
+| Node Type | Number of nodes | Cloud Provider | Instance Type
 | :----: | :----: | :----: | :----:
 | Master/Worker | 3 | Google Cloud | n1-standard-8
 | Master/Worker | 3 | Amazon Cloud Services | m5.2xlarge
@@ -120,13 +120,13 @@ This is a snapshot of an Azure Factory Edge cluster running the production **Ind
 
 ### AWS Instance Types
 
-The **industrial-edge** pattern was tested with the highlighted AWS instances in **bold**.   The OpenShift installer will let you know if the instance type meets the minimum requirements for a cluster.  
+The **industrial-edge** pattern was tested with the highlighted AWS instances in **bold**.   The OpenShift installer will let you know if the instance type meets the minimum requirements for a cluster.
 
 The message that the openshift installer will give you will be similar to this message
 
 ```text
-INFO Credentials loaded from default AWS environment variables 
-FATAL failed to fetch Metadata: failed to load asset "Install Config": [controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 4 vCPUs, controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 16384 MiB Memory] 
+INFO Credentials loaded from default AWS environment variables
+FATAL failed to fetch Metadata: failed to load asset "Install Config": [controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 4 vCPUs, controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 16384 MiB Memory]
 ```
 
 Below you can find a list of the AWS instance types that can be used to deploy the **industrial-edge** pattern.
@@ -155,9 +155,9 @@ To understand better what types of nodes you can use on other Cloud Providers we
 
 The **industrial-edge** pattern was also deployed on Azure using the **Standard_D8s_v3** VM size.  Below is a table of different VM sizes available for Azure.  Keep in mind that due to limited access to Azure we only used the **Standard_D8s_v3** VM size.
 
-The OpenShift cluster is made of 3 Master and 3 Workers for the Datacenter cluster. 
+The OpenShift cluster is made of 3 Master and 3 Workers for the Datacenter cluster.
 
-The OpenShift cluster is made of 3 Nodes combining Master/Workers for the Edge/Factory cluster. 
+The OpenShift cluster is made of 3 Nodes combining Master/Workers for the Edge/Factory cluster.
 
 | Type |  Sizes | Description
 | :---- | :---- | :----
@@ -174,16 +174,16 @@ For more information please refer to the [Azure VM Size Page](https://docs.micro
 
 The **industrial-edge** pattern was also deployed on GCP using the **n1-standard-8** VM size.  Below is a table of different VM sizes available for GCP.  Keep in mind that due to limited access to GCP we only used the **n1-standard-8** VM size.
 
-The OpenShift cluster is made of 3 Master and 3 Workers for the Datacenter cluster. 
+The OpenShift cluster is made of 3 Master and 3 Workers for the Datacenter cluster.
 
-The OpenShift cluster is made of 3 Nodes combining Master/Workers for the Edge/Factory cluster. 
+The OpenShift cluster is made of 3 Nodes combining Master/Workers for the Edge/Factory cluster.
 
 The following table provides VM recommendations for different workloads.
 
 | **General purpose** | **Workload optimized**
 | Cost-optimized | Balanced | Scale-out optimized |  Memory-optimized  |Compute-optimized |  Accelerator-optimized
-| :---- | :---- | :---- |  :---- | :---- | :----  
-| E2 | N2, N2D, N1 |  T2D |  M2, M1 | C2 |  A2 
+| :---- | :---- | :---- |  :---- | :---- | :----
+| E2 | N2, N2D, N1 |  T2D |  M2, M1 | C2 |  A2
 Day-to-day computing at a lower cost | Balanced price/performance across a wide range of VM shapes | Best performance/cost for scale-out workloads | Ultra high-memory workloads | Ultra high performance for compute-intensive workloads | Optimized for high performance computing workloads
 
 For more information please refer to the [GCP VM Size Page](https://cloud.google.com/compute/docs/machine-types).

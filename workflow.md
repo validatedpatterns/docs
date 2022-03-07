@@ -9,7 +9,7 @@ nav_order: 4
 These patterns are designed to be composed of multiple components, and for those components to be used in gitops
 workflows by consumers and contributors.  To use the first pattern as an example, we maintain the [Industrial Edge](industrial-edge) pattern, which uses a [repo](https://github.com/hybrid-cloud-patterns/industrial-edge) with pattern-specific logic and configuration as well as a [common repo](https://github.com/hybrid-cloud-patterns/common) which has elements common to multiple patterns.  The common repo is included in each pattern repo as a subtree.
 
-## Consuming a pattern 
+## Consuming a pattern
 
 1. Fork the pattern repo on GitHub to your workspace (GitHub user or organization). It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes, and the main branch (by default) will be used in the automated workflows.
 
@@ -59,7 +59,7 @@ To update branch `hcp-main` with upstream changes:
 
    ```sh
    git checkout hcp-main
-   git pull --rebase 
+   git pull --rebase
    ```
 
 To reflect these changes in your forked repo (such as if you would like to submit a PR later):
@@ -79,14 +79,14 @@ If you want to integrate upstream pattern changes into your local GitOps process
 Using this workflow, the `hcp-main` branch will:
 
 1. Be isolated from any changes that are being made by your local GitOps processes
-1. Be merge-able (or cherry-pick-able) into your local main branch to be used by your local GitOps processes 
+1. Be merge-able (or cherry-pick-able) into your local main branch to be used by your local GitOps processes
 (this is especially useful for tracking when any submodules, like common, update)
 1. Be a good basis for submitting Pull Requests to be integrated upstream, since it will not contain your local configuration differences or your local GitOps commits
 
 ## Changing subtrees
 
 Our patterns use the git subtree feature as a mechanism to promote modularity, so that multiple patterns can use the
-same common basis.  Over time we will move more functionality into common, to isolate the components that are 
+same common basis.  Over time we will move more functionality into common, to isolate the components that are
 particular to each pattern, and standard usage conventions emerge.  This will make the tools in common more powerful and featureful, and make it easier to develop new patterns.  Normally, we will maintain the common subtree in the normal course of updates, and pulling changes from upstream will include any changes from common.
 
 You only need to change subtrees if you want to test changes in the common/ area of the pattern repositories, or if you wish to contribute to the common/ repo itself in conjunction with one of the patterns. Using the pattern by itself _does not_ require changing subtrees.

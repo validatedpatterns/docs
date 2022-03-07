@@ -18,9 +18,9 @@ has_children: true
 
 ## Background
 
-Enterprise applications require security, especially in multi-cluster and multi-site environments. Applications require trust and use certificates and other secrets in order to establish and maintain trust. In this section we will look at various was of managing secrets. 
+Enterprise applications require security, especially in multi-cluster and multi-site environments. Applications require trust and use certificates and other secrets in order to establish and maintain trust. In this section we will look at various was of managing secrets.
 
-When you start developing distributed enterprise applications there is a strong temptation to ignore security during development and add it at the end. This is proven to be a very bad practice that accumulates technical debt that sometimes never gets resolved. 
+When you start developing distributed enterprise applications there is a strong temptation to ignore security during development and add it at the end. This is proven to be a very bad practice that accumulates technical debt that sometimes never gets resolved.
 
 While the DevOps model of development strongly encourages *shifting security to the left* many developers didn't really take notice and so the more explicit term DevSecOps was created. Essentially, "pay attention and consider and implement security as early as possible in the lifecycle". (i.e. shift left on the time line).
 

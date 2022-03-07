@@ -5,7 +5,7 @@ parent: Infrastructure
 nav_order: 2
 ---
 
-# RHEL for Edge General Sizing 
+# RHEL for Edge General Sizing
 
 ## Table of contents
 

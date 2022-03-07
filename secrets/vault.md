@@ -2,7 +2,7 @@
 layout: default
 parent: Secrets
 title: HashiCorp Vault
-nav_order: 1 
+nav_order: 1
 ---
 
 # Deploying HashiCorp Vault in a validated pattern
@@ -26,7 +26,7 @@ Any validated pattern that uses HashiCorp Vault already has deployed Vault as pa
 
 [![Vault Pods](/images/secrets/vault-pods.png)](/images/secrets/vault-pods.png)
 
-In order to setup HashiCorp Vault there are a number of different steps. Fist you must *unseal* the vault and then you must create the secrets assets needed. Fortunately the validated patterns effort has automated this for you by providing a script. 
+In order to setup HashiCorp Vault there are a number of different steps. Fist you must *unseal* the vault and then you must create the secrets assets needed. Fortunately the validated patterns effort has automated this for you by providing a script.
 
 From the shell you ran `make install` run:
 
@@ -36,7 +36,7 @@ make vault-init
 
 The `Makefile` includes a call out to the script to do the unseal and setup the secrets.
 
-You can check the secrets were set up by examining the Vault user interface. But in order to do so you will need to get some data from the `common/pattern-vault.init` file generated from the `make vault-init` command. 
+You can check the secrets were set up by examining the Vault user interface. But in order to do so you will need to get some data from the `common/pattern-vault.init` file generated from the `make vault-init` command.
 
 ```text
 ~/g/multicloud-gitops on main ◦ cat common/pattern-vault.init
@@ -66,7 +66,7 @@ In the OpenShift console under the project `vault` navigate to Networking/Routes
 
 [![Vault Route](/images/secrets/vault-route.png)](/images/secrets/vault-route.png)
 
-On the Vault page paste the copied token from the `pattern-vault-init` file. 
+On the Vault page paste the copied token from the `pattern-vault-init` file.
 
 [![Vault Sign In](/images/secrets/vault-signin.png)](/images/secrets/vault-signin.png)
 

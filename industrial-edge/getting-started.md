@@ -57,7 +57,7 @@ service](https://console.redhat.com/openshift/create).
 1. Fork the [industrial-edge](https://github.com/hybrid-cloud-patterns/industrial-edge) repo on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 1. Fork the [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) repo on GitHub.  It is necessary to fork this repo because the GitOps framework will push tags to this repo that match the versions of software that it will deploy.
 
-1. Clone the forked copy of the `industrial-edge` repo. Use branch `stable-2.0`. 
+1. Clone the forked copy of the `industrial-edge` repo. Use branch `stable-2.0`.
 
    ```sh
    git clone git@github.com:{your-username}/industrial-edge.git
@@ -68,7 +68,7 @@ service](https://console.redhat.com/openshift/create).
 
    * A Git repository (E.g. Github, GitLab etc.)
    * A container image registry (E.g. Quay)
-   * S3 storage (E.g. AWS) 
+   * S3 storage (E.g. AWS)
 
    DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub.
 
@@ -195,7 +195,7 @@ service](https://console.redhat.com/openshift/create).
 Once the data center has been setup correctly and confirmed to be working, you can:
 
 1. Add a dedicated cluster to [deploy the factory pieces using ACM](factory)
-2. Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](../application/) 
+2. Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](../application/)
 
    a. Making [configuration changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
    a. Making [application changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps

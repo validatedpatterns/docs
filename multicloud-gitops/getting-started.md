@@ -25,7 +25,7 @@ nav_order: 1
 1. The helm binary, see https://helm.sh/docs/intro/install/
 
 The use of this blueprint depends on having at least one running Red Hat
-OpenShift cluster. It is desirable to have a cluster for deploying the GitOps 
+OpenShift cluster. It is desirable to have a cluster for deploying the GitOps
 management hub assets and a separate cluster(s) for the managed cluster(s).
 
 If you do not have a running Red Hat OpenShift cluster you can start one on a
@@ -133,9 +133,9 @@ service](https://console.redhat.com/openshift/create).
    The most important ArgoCD instance to examine at this point is `multicloud-gitops-hub`. This is where all the applications for the hub can be tracked.
 
 1. Check all applications are synchronised
-   Under the project `multicloud-gitops-hub` click on the URL for the `hub`gitops`server`. The Vault application is not synched. 
+   Under the project `multicloud-gitops-hub` click on the URL for the `hub`gitops`server`. The Vault application is not synched.
 
-[![Multicloud GitOps Hub](/images/multicloud-gitops/multicloud-gitops-argocd.png)](/images/multicloud-gitops/multicloud-gitops-argocd.png)   
+[![Multicloud GitOps Hub](/images/multicloud-gitops/multicloud-gitops-argocd.png)](/images/multicloud-gitops/multicloud-gitops-argocd.png)
 
 # Deploying the managed cluster applications
 

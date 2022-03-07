@@ -83,7 +83,7 @@ In the Medical Diagnosis architecture there are two logical sites.
 
 [![Multi-Cloud Logical Architecture](/images/medical-edge/logical-diagram.png)](/images/medical-edge/logical-diagram.png)
 
-### Physical Schema 
+### Physical Schema
 
 The diagram below shows the components that are deployed with the various networks that connect them.
 
@@ -99,6 +99,6 @@ The diagram below shows the components that are deployed with the the data flows
 
 ## What Next
 
-- Getting started [deploy the management hub using Helm and GitOps](getting-started) 
+- Getting started [deploy the management hub using Helm and GitOps](getting-started)
 - Add a managed cluster to [deploy the  managed cluster piece using ACM](managed cluster)
-- Visit the [repo](https://github.com/hybrid-cloud-patterns/medical-diagnosis)  
+- Visit the [repo](https://github.com/hybrid-cloud-patterns/medical-diagnosis)
