@@ -157,7 +157,7 @@ Subtrees have some pitfalls as well. In the subtree strategy, it is easier to di
 
 ## Contributing to Patterns using Common Subtrees
 
-Once you have forked common and changed your subtree for testing, changes from your fork can then be proposed to https://github.com/hybrid-cloud-patterns/common.git and can then be integrated into other patterns. A change to upstream common for a particular upstream pattern would have to be done in two stages:
+Once you have forked common and changed your subtree for testing, changes from your fork can then be proposed to [https://github.com/hybrid-cloud-patterns/common.git] and can then be integrated into other patterns. A change to upstream common for a particular upstream pattern would have to be done in two stages:
 
 1. PR the change into upstream's common
 1. PR the updated common into the pattern repository

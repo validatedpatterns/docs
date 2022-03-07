@@ -19,7 +19,7 @@ nav_order: 1
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to https://console.redhat.com/openshift/create ).  See also [sizing your cluster](../cluster-sizing).
+1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create]).  See also [sizing your cluster](../cluster-sizing).
 1. (Optional) A second OpenShift cluster for edge/factory
 1. A github account (and a token for it with repos permissions, to read from and write to your forks)
 1. A quay account with the following repos set as public:
@@ -31,7 +31,7 @@ nav_order: 1
 - iot-frontend
 - iot-software-sensor
 
-5. The helm binary, see https://helm.sh/docs/intro/install/
+5. The helm binary, see [https://helm.sh/docs/intro/install/]
 
 The use of this blueprint depends on having at least one running Red Hat
 OpenShift cluster. It is desirable to have a cluster for deploying the data
