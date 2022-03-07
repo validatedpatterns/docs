@@ -100,7 +100,9 @@ In general, use the project-supplied `global.options.UseCSV` setting of `False`.
 
 **Resolution:** Fork [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) into your namespace in GitHub and run `make seed`.
 
-#### Symptom: Intermittent failures in Pipeline stages.  Some sample errors:
+#### Symptom: Intermittent failures in Pipeline stages
+
+Some sample errors:
 
 ```text
 level=error msg="Error while applying layer: ApplyLayer io: read/write on closed pipe stdout: {\"layerSize\":7301}\n stderr: "
