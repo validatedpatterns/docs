@@ -2,5 +2,6 @@
     "default": true,
     "MD013": false,      # https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md#md013---line-length
     "MD025": false,      # https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md#md025---multiple-top-level-headings-in-the-same-document
-    "MD033": false       # https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md#md033---inline-html
+    "MD033": false,      # https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md#md033---inline-html
+    "MD045": false       # https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md#md045---images-should-have-alternate-text-alt-text
 }
