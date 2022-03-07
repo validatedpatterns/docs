@@ -18,7 +18,7 @@ has_children: true
 
 ## Patterns quick-start
 
-Each pattern can be deployed using the command line. Check the `values-` for changes that are needed before deployment. After changing the `values-` files where needed, you can run `make install` from your local repository directory and that will deploy the datacenter/hub cluster for a pattern. Edge clusters are deployed by joining/importing them into ACM on the hub.
+Each pattern can be deployed using the command-line. Check the `values-` for changes that are needed before deployment. After changing the `values-` files where needed, you can run `make install` from your local repository directory and that will deploy the datacenter/hub cluster for a pattern. Edge clusters are deployed by joining/importing them into ACM on the hub.
 
 Alternatively to the `make install` you can use the [validated pattern operator](https://operatorhub.io/operator/patterns-operator) available in the OpenShift console.
 
@@ -47,7 +47,7 @@ Select the `Create instance` and start filling out the Create a Pattern form.
 * You can change the name and apply labels and a cluster group name.
 * Select the `Git Spec` drop down on the form and change the `Target Repo` URL to your forked repository URL. E.g. From `https://github.com/hybrid-cloud-patterns/pattern-name` to `https://github.com/my-git-user/pattern-name`
 * You may need to change the `Target Revision` sometimes it's marked `stable` with a version number, or it may simply be `main`.
-* Make sure to make any necessary changes to your `values-` files locally and push them to your forked repo. For a quick start you shouldn't need to make changes.
+* Make sure to make any necessary changes to your `values-` files locally and push them to your forked repository. For a quick start you shouldn't need to make changes.
 
 Review the rest of the form fields and check if they require changes. For first time pattern deployments you probably don't need any further changes. Select `Create` and the bottom of the form. The OpenShift GitOps operator should show up in `Installed Operators` momentarily.
 

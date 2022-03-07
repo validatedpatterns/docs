@@ -29,7 +29,7 @@ The **Industrial-Edge** pattern has been tested in the following Certified Cloud
 OpenShift 4 has the following minimum requirements for sizing of nodes:
 
 * **Minimum 4 vCPU** (additional are strongly recommended).
-* **Minimum 16 GB RAM** (additional memory is strongly recommended, especially if etcd is co-located on masters).
+* **Minimum 16 GB RAM** (additional memory is strongly recommended, especially if etcd is colocated on masters).
 * **Minimum 40 GB** hard disk space for the file system containing /var/.
 * **Minimum 1 GB** hard disk space for the file system containing /usr/local/bin/.
 
@@ -41,7 +41,7 @@ Here's an inventory of what gets deployed by the **Industrial-Edge** pattern on 
 
 | Name | Kind | Namespace | Description
 | :---- | :---- | :---- | :----
-| line-dashboard | Application | manuela-tst-all | Front end application
+| line-dashboard | Application | manuela-tst-all | Frontend application
 | machine-sensor-1 | Application | manuela-tst-all | Data publisher
 | machine-sensor-2 | Application | manuela-tst-all | Data publisher
 | messaging | Application | manuela-tst-all | Data subscriber

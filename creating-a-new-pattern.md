@@ -54,7 +54,7 @@ Kubernetes, and the Cloud Native community of services, use Linux containers as 
 
 ### Operators
 
-While Linux containers provide an incredibly useful way to isolate the dependencies for an application or application service, containers also require some life cycle management. For example, at start up a container my need to set up access to networks, or extra storage. This type of set up usually happens with a human operator decided on how the container will connect networks or host storage. The operator may also have to do routine maintenance. For example if the container contains a database, the human operator may need to do a backup or routine scrubbing of the database.
+While Linux containers provide an incredibly useful way to isolate the dependencies for an application or application service, containers also require some lifecycle management. For example, at start up a container my need to set up access to networks, or extra storage. This type of set up usually happens with a human operator decided on how the container will connect networks or host storage. The operator may also have to do routine maintenance. For example if the container contains a database, the human operator may need to do a backup or routine scrubbing of the database.
 
 Kubernetes [Operators](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/) is an extension to Kubernetes *"that make sue of custom resources to manage applications and their components."* I.e. it provides and extra layer of encapsulation on top of containers that packages up some operation automation with the container. It puts what the human operator would do into an Operator pattern for the service or set of services.
 
@@ -66,7 +66,7 @@ Assembling operators into a common pattern provides another layer of encapsulati
 
 [![Validated pattern stack](/images/framework/validated-patterns-stack.png)](/images/framework/validated-patterns-stack.png)
 
-A validated pattern has been tested and continues to be tested as the life cycle of individual parts (Operators) change through release cycles. Red Hat's Quality Engineering team provides Continuous Integration of the pattern for new releases of Red Hat products (Operators).
+A validated pattern has been tested and continues to be tested as the lifecycle of individual parts (Operators) change through release cycles. Red Hat's Quality Engineering team provides Continuous Integration of the pattern for new releases of Red Hat products (Operators).
 
 The validated patterns framework takes advantage of automation technology. It uses Cloud Native automation technology as much as possible. Occasionally the framework resorts to some scripts in order to get a pattern up and running faster.
 
@@ -92,7 +92,7 @@ OpenShift GitOps is based on the [Argo CD](https://argo-cd.readthedocs.io/en/sta
 
 ## Secret handling
 
-Validated patterns often depend on resources that require certificates or keys. These secrets need to be handled carefully. And while it's tempting to focus on just the deployment of the pattern and "handle security later", that's a really bad idea. In the spirit of DevSecOps the validated patterns effort has decided to "shift security left". i.e. build security in early in the life cycle.
+Validated patterns often depend on resources that require certificates or keys. These secrets need to be handled carefully. And while it's tempting to focus on just the deployment of the pattern and "handle security later", that's a really bad idea. In the spirit of DevSecOps the validated patterns effort has decided to "shift security left". i.e. build security in early in the lifecycle.
 
 When it comes to security, the approach requires patience and care to set up. There is no avoiding some manual steps but validated patterns tries to automate as much as possible while at the same time taking the lid off so developers can see what was and needs to be done.
 
@@ -109,4 +109,4 @@ While many enterprise Cloud Native applications use open source, many of the pro
 
 Similarly in a multicloud deployments and complex edge deployments policies can help define and select the correct GitOps workflows that need to be managed for various sites or clusters. E.g. defining an OpenShift Cluster as a "Factory" in the [Industrial Edge](https://hybrid-cloud-patterns.io/industrial-edge/factory/) validated pattern provides a simple trigger to roll-out the entire Factory deployment. Policy is a very powerful tool in automation.
 
-Validated patterns uses [Red Hat Advanced Cluster Management for Kubernetes](https://www.redhat.com/en/technologies/management/advanced-cluster-management) to control clusters and applications from a single console, with built in security policies.
+Validated patterns uses [Red Hat Advanced Cluster Management for Kubernetes](https://www.redhat.com/en/technologies/management/advanced-cluster-management) to control clusters and applications from a single console, with built-in security policies.

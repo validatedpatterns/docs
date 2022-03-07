@@ -39,7 +39,7 @@ These repositories are needed in order to provide container images built at the 
 
 ### Local laptop/workstation
 
-Make sure you have `git` and OpenShift's `oc` command line clients.
+Make sure you have `git` and OpenShift's `oc` command-line clients.
 
 ### OpenShift Cluster
 
@@ -99,9 +99,9 @@ Sometimes a page/tab refreshed is needed for the change to be picked up.
 
 ## Application changes using DevOps
 
-The `line-dashboard` application has temperature sensors. In this demonstration we are going to make a simple change to that application, rebuild and redeploy it. In the `manuela-dev` repository there is a file `components/iot-consumer/index.js`. This Javascript program consumes message data coming from the line servers and one of functions it performs is to check the temperature to see if it has exceeded a threshold. There is three lines of code in there that does some Celsius to Fahrenheit conversion.
+The `line-dashboard` application has temperature sensors. In this demonstration we are going to make a simple change to that application, rebuild and redeploy it. In the `manuela-dev` repository there is a file `components/iot-consumer/index.js`. This JavaScript program consumes message data coming from the line servers and one of functions it performs is to check the temperature to see if it has exceeded a threshold. There is three lines of code in there that does some Celsius to Fahrenheit conversion.
 
-Depending on the state of your `manuela-dev` repository this may or may not be commented out. Ideally for the demonstration you would want it  uncommented and therefore effective.  What this means is that while the labels on the front-end application are showing Celsius, the data is actually in Fahrenheit. This is a good place to start because that data won't make any sense.
+Depending on the state of your `manuela-dev` repository this may or may not be commented out. Ideally for the demonstration you would want it  uncommented and therefore effective.  What this means is that while the labels on the frontend application are showing Celsius, the data is actually in Fahrenheit. This is a good place to start because that data won't make any sense.
 
 [![](/images/industrial-edge/fahrenheit-temp.png)](/images/industrial-edge/fahrenheit-temp.png)
 
@@ -121,7 +121,7 @@ git commit -m "commented out C to F temp conversion"
 git push
 ```
 
-Now its time to kick off the CI pipeline. Due to the need for GitHub secrets and Quay secrets as part of this process, we currently can't use the OpenShift console's Pipelines to kick off the pipeline in the demo environment. Instead, use the command line. While in the `industrial-edge` repository directory, run the following:
+Now its time to kick off the CI pipeline. Due to the need for GitHub secrets and Quay secrets as part of this process, we currently can't use the OpenShift console's Pipelines to kick off the pipeline in the demo environment. Instead, use the command-line. While in the `industrial-edge` repository directory, run the following:
 
 ```sh
 make build-and-test

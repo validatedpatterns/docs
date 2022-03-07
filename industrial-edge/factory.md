@@ -77,11 +77,11 @@ Using this method, you are done. Skip to the section [Factory is joined](#factor
 
 ## Factory setup using `cm` tool
 
-1. Install the `cm` (cluster management) CLI tool. See details [here](https://github.com/open-cluster-management/cm-cli/#installation)
+1. Install the `cm` (cluster management) command-line tool. See details [here](https://github.com/open-cluster-management/cm-cli/#installation)
 
 1. Obtain the KUBECONFIG file from the edge/factory cluster.
 
-1. On the command line login into the hub/datacenter cluster (use `oc login` or export the KUBECONFIG).
+1. On the command-line login into the hub/datacenter cluster (use `oc login` or export the KUBECONFIG).
 
 1. Run the following command:
 

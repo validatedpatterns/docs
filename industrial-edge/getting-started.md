@@ -21,8 +21,8 @@ nav_order: 1
 
 1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create]).  See also [sizing your cluster](../cluster-sizing).
 1. (Optional) A second OpenShift cluster for edge/factory
-1. A github account (and a token for it with repos permissions, to read from and write to your forks)
-1. A quay account with the following repos set as public:
+1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
+1. A quay account with the following repositories set as public:
 
 - http-ionic
 - httpd-ionic
@@ -54,10 +54,10 @@ service](https://console.redhat.com/openshift/create).
 - `ansible` - The well-known automation tool
 - The `kubernetes.core` collection for ansible
 
-1. Fork the [industrial-edge](https://github.com/hybrid-cloud-patterns/industrial-edge) repo on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
-1. Fork the [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) repo on GitHub.  It is necessary to fork this repo because the GitOps framework will push tags to this repo that match the versions of software that it will deploy.
+1. Fork the [industrial-edge](https://github.com/hybrid-cloud-patterns/industrial-edge) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+1. Fork the [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) repository on GitHub.  It is necessary to fork this repository because the GitOps framework will push tags to this repository that match the versions of software that it will deploy.
 
-1. Clone the forked copy of the `industrial-edge` repo. Use branch `stable-2.0`.
+1. Clone the forked copy of the `industrial-edge` repository. Use branch `stable-2.0`.
 
    ```sh
    git clone git@github.com:{your-username}/industrial-edge.git
@@ -118,7 +118,7 @@ service](https://console.redhat.com/openshift/create).
    UI -> Installed Operators
    ```
 
-1. Obtain the ArgoCD urls and passwords
+1. Obtain the ArgoCD URLs and passwords
 
    The URLs and login credentials for ArgoCD change depending on the pattern
    name and the site names they control.  Follow the instructions below to find
@@ -158,7 +158,7 @@ service](https://console.redhat.com/openshift/create).
 
 1. Apply the secrets from the `values-secret.yaml` to the secrets management Vault. This can be done through Vault's UI - manually without the file. The required secrets and scopes are:
 
-   - **secret/hub/git** git *username* & *password* (github token)
+   - **secret/hub/git** git *username* & *password* (GitHub token)
    - **secret/hub/imageregistry** Quay or DockerHub *username* & *password*
    - **secret/hub/aws** - base64 encoded value (see below)
 
@@ -175,7 +175,7 @@ service](https://console.redhat.com/openshift/create).
    cat s3-secrets | base64 -w 0
    ```
 
-   Or you can set up the secrets using the command line by running the following (Ansible) playbook.
+   Or you can set up the secrets using the command-line by running the following (Ansible) playbook.
 
    ```sh
    scripts/setup-secrets.yaml

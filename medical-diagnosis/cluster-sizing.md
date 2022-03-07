@@ -29,7 +29,7 @@ The **Medical Diagnosis** pattern has been tested in the following Certified Clo
 OpenShift 4 has the following minimum requirements for sizing of nodes:
 
 * **Minimum 4 vCPU** (additional are strongly recommended).
-* **Minimum 16 GB RAM** (additional memory is strongly recommended, especially if etcd is co-located on Control Planes).
+* **Minimum 16 GB RAM** (additional memory is strongly recommended, especially if etcd is colocated on Control Planes).
 * **Minimum 40 GB** hard disk space for the file system containing /var/.
 * **Minimum 1 GB** hard disk space for the file system containing /usr/local/bin/.
 

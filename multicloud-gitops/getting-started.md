@@ -21,7 +21,7 @@ nav_order: 1
 
 1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create]). See also [sizing your cluster](../cluster-sizing).
 1. (Optional) A second OpenShift cluster for multicloud demonstration or testing
-1. A github account (and a token for it with repos permissions, to read from and write to your forks)
+1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 1. The helm binary, see [https://helm.sh/docs/intro/install/]
 
 The use of this blueprint depends on having at least one running Red Hat
@@ -34,9 +34,9 @@ service](https://console.redhat.com/openshift/create).
 
 # How to deploy
 
-1. Fork this repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+1. Fork this repository on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 
-1. Clone the forked copy of this repo.
+1. Clone the forked copy of this repository.
 
    ```sh
    git clone git@github.com:your-username/multicloud-gitops.git
@@ -94,7 +94,7 @@ service](https://console.redhat.com/openshift/create).
    UI -> Installed Operators
    ```
 
-1. Obtain the ArgoCD urls and passwords
+1. Obtain the ArgoCD URLs and passwords
 
    The URLs and login credentials for ArgoCD change depending on the pattern
    name and the site names they control.  Follow the instructions below to find

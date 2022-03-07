@@ -20,7 +20,7 @@ nav_order: 1
 # Prerequisites
 
 1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create]).  See also [sizing your cluster](../cluster-sizing).
-1. A github account (and a token for it with repos permissions, to read from and write to your forks)
+1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 1. Storage set up in your public/private cloud for the x-ray images
 1. The helm binary, see [https://helm.sh/docs/intro/install/]
 
@@ -49,7 +49,7 @@ export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-Then we need to create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or use the scripts provided on `validated-patterns-utilities` repo.
+Then we need to create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or use the scripts provided on `validated-patterns-utilities` repository.
 
 ```sh
 python s3-create.py -b mytest-bucket -r us-west-2 -p
@@ -64,9 +64,9 @@ There is some key information you will need to take note of that is required by 
 
 # Preparation
 
-1. Fork this repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+1. Fork this repository on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 
-1. Clone the forked copy of this repo.
+1. Clone the forked copy of this repository.
 
    ```sh
    git clone git@github.com:<your-username>/medical-diagnosis.git
@@ -158,7 +158,7 @@ Make sure you have the correct domain, clustername, externalUrl, targetBucket an
 
 You can also check on the progress using OpenShift GitOps to check on the various applications deployed.
 
-1. Obtain the ArgoCD urls and passwords.
+1. Obtain the ArgoCD URLs and passwords.
 
    The URLs and login credentials for ArgoCD change depending on the pattern
    name and the site names they control.  Follow the instructions below to find
@@ -208,7 +208,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
 
 1. Turn on the image file flow. There are three ways to go about this.
 
-   You can go to the command line (make sure you have KUBECONFIG set, or are logged into the cluster.
+   You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster.
 
    ```sh
    oc scale deploymentconfig/image-generator --replicas=1

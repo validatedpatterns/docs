@@ -101,4 +101,4 @@ The diagram below shows the components that are deployed with the the data flows
 
 - Getting started [deploy the management hub using Helm and GitOps](getting-started)
 - Add a managed cluster to [deploy the  managed cluster piece using ACM](managed cluster)
-- Visit the [repo](https://github.com/hybrid-cloud-patterns/medical-diagnosis)
+- Visit the [repository](https://github.com/hybrid-cloud-patterns/medical-diagnosis)

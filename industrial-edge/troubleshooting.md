@@ -67,7 +67,7 @@ This task runs first, and if it does not complete, the seed pipeline will not st
 
 You can attempt to run the extraction outside of `make install`.  Ensure that you have logged in to the cluster (via `oc login` or by exporting a suitable KUBECONFIG:
 
-- Run `make secret` in the base directory of your industrial-edge repo fork.
+- Run `make secret` in the base directory of your industrial-edge repository fork.
 
 **Running the "seed" pipeline to populate the image registries for the manuela-tst-all namespace and the edge/factory
 namespaces (manuela-stormshift-messaging, manuela-line-dashboard etc.).**
@@ -76,7 +76,7 @@ It is important that the seed pipeline run and complete because the applications
 
 The seed pipeline depends on the Pipelines operator to be installed, as well as the `tkn` Task (in the manuela-ci namespace).  The script checks for both.  (`make install` calls the `sleep-seed` target, which checks for the resources before trying to kick off a seed pipeline run.
 
-- Run `make seed` in the base directory of your industrial edge repo fork.  This kicks off the pipeline without checking for its dependencies.
+- Run `make seed` in the base directory of your industrial edge repository fork.  This kicks off the pipeline without checking for its dependencies.
 
 This target does *not* ensure that the seed pipeline completes.  See below on how to re-run seed if the seed pipeline
 fails for any reason.  It is safe to run the seed pipeline multiple times - each time it runs it will update the image targets for each of the images in both test (manuela-tst-all) and production (manuela-stormshift-messaging etc).
@@ -127,17 +127,17 @@ panic(0x1b40ee0, 0x1fe47b0)
 ```
 
 When this happens, the pipeline may not entirely stop running.  It is safe to stop/cancel the pipeline run, and
-desirable to do so, since multiple pipelines attempting to change the repo at the same time could cause more failures.
+desirable to do so, since multiple pipelines attempting to change the repository at the same time could cause more failures.
 
-**Resolution:** Run `make seed` in the root of the repo OR re-run the failed pipeline segment (e.g. seed-iot-frontend or seed-iot-consumer).
+**Resolution:** Run `make seed` in the root of the repository OR re-run the failed pipeline segment (e.g. seed-iot-frontend or seed-iot-consumer).
 
 We're looking into better long-term fixes for a number of the situations that can cause these situations as [#40](https://github.com/hybrid-cloud-patterns/industrial-edge/issues/40).
 
 #### Symptom: Error in "push-*" pipeline tasks
 
-**Cause:** Multiple processes or people were trying to make changes to the repo at the same time.  The state of the repo changed in the middle of the process in such a way that the update was not a "fast-forward" in git terms.
+**Cause:** Multiple processes or people were trying to make changes to the repository at the same time.  The state of the repository changed in the middle of the process in such a way that the update was not a "fast-forward" in git terms.
 
-**Resolution:** Re-run the failed pipeline segment OR run `make seed` from the root of your fork of the industrial-edge repo.
+**Resolution:** Re-run the failed pipeline segment OR run `make seed` from the root of your fork of the industrial-edge repository.
 
 It is also possible that multiple pipelines were running at the same time and were making conflicting changes. We recommend running one pipeline at a time.
 
@@ -145,7 +145,7 @@ It is also possible that multiple pipelines were running at the same time and we
 
 **Cause:** Most likely the application is missing the images that are built by the seed pipeline.
 
-**Resolution:** Run `make seed` from the root of your forked repo directory, which will build the images and deploy them to both test and production.
+**Resolution:** Run `make seed` from the root of your forked repository directory, which will build the images and deploy them to both test and production.
 
 #### Symptom: There is a "spinny" next to one of the resources in the app that never resolves
 
@@ -157,7 +157,7 @@ It is also possible that multiple pipelines were running at the same time and we
 
 #### Symptom: ArgoCD shows an error and "Unknown" sync status
 
-**Cause:** A change has been made in the repo that renders invalid YAML
+**Cause:** A change has been made in the repository that renders invalid YAML
 
 **Resolution:** Fix the issue as identified by the error message, and commit and push the fix OR revert the last one.
 
@@ -176,6 +176,6 @@ This is a byproduct of the way the pattern installs applications at the moment. 
 
 #### Symptom:  Applications show "not in sync" status in ArgoCD
 
-**Cause:** There is a discrepancy between what the git repo says the application should have, and how that state is realized in ArgoCD.
+**Cause:** There is a discrepancy between what the git repository says the application should have, and how that state is realized in ArgoCD.
 
 The installation mechanism currently installs operators as parts of multiple applications when running on the same cluster, so it is a race condition in ArgoCD to see which one "wins."  This is a problem with the way we are installing the patterns. We are tracking this as [#38](https://github.com/hybrid-cloud-patterns/industrial-edge/issues/38).
