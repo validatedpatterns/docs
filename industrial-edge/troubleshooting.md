@@ -56,7 +56,7 @@ It is safe to exit the loop (via Ctrl-C, for example) and run the operations sep
 
 The industrial edge pattern runs two post-install operations after creating the main ArgoCD applications:
 
-__Extracting the secret from the datacenter ArgoCD instance for use in the Pipelines__
+**Extracting the secret from the datacenter ArgoCD instance for use in the Pipelines**
 
 This depends on the installation of both the cluster-wide GitOps operator, and the installation of an instance in the datacenter namespace.  The logic is controlled [here](https://github.com/hybrid-cloud-patterns/industrial-edge/blob/main/Makefile) (where the parameters are set) and [here](https://github.com/hybrid-cloud-patterns/common/blob/main/Makefile), which does the interactions with the cluster (to extract the secret and create a resource in manuela-ci).
 
@@ -69,8 +69,8 @@ You can attempt to run the extraction outside of `make install`.  Ensure that yo
 
 - Run `make secret` in the base directory of your industrial-edge repo fork.
 
-__Running the "seed" pipeline to populate the image registries for the manuela-tst-all namespace and the edge/factory
-namespaces (manuela-stormshift-messaging, manuela-line-dashboard etc.).__
+**Running the "seed" pipeline to populate the image registries for the manuela-tst-all namespace and the edge/factory
+namespaces (manuela-stormshift-messaging, manuela-line-dashboard etc.).**
 
 It is important that the seed pipeline run and complete because the applications will be "degraded" until they can deploy the images, and seed is what populates the images in the local cluster registries and instructs the applications to use them.
 
