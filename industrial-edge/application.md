@@ -7,9 +7,11 @@ nav_order: 3
 ---
 
 # Demonstrating Industrial Edge example applications
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
@@ -37,7 +39,7 @@ These repositories are needed in order to provide container images built at the 
 
 ### Local laptop/workstation
 
-Make sure you have `git` and OpenShift's `oc` command line clients.
+Make sure you have `git` and OpenShift's `oc` command-line clients.
 
 ### OpenShift Cluster
 
@@ -49,7 +51,6 @@ You will need to login into GitHub and be able to fork two repositories.
 
 * hybrid-cloud-patterns/industrial-edge
 * hybrid-cloud-patterns/manuela-dev
-
 
 ## Configuration changes with GitOps
 
@@ -65,7 +66,7 @@ Make sure you are able to see the dashboard application in a tab on your browser
 
 Select Networking->Routes on the left-hand side of the console. Using the Projects pull-down, select `manuela-tst-all`. Click on the URL under the Location column for the route Name `line-dashboard`. this will launch the line-dashboard monitoring application in a browser tab. The URL will look like:
 
-line-dashboard-manuela-tst-all.apps.*cluster-name*.*domain*
+`line-dashboard-manuela-tst-all.apps.*cluster-name*.*domain*`
 
 Once the the application is open in your browser, click on the “Realtime Data” Navigation on the left and wait a bit. Data should be visualized as received. Note that there is only vibration data shown! If you wait a bit more (usually every 2-3 minutes), you will see an anomaly and alert on it.
 
@@ -98,9 +99,9 @@ Sometimes a page/tab refreshed is needed for the change to be picked up.
 
 ## Application changes using DevOps
 
-The `line-dashboard` application has temperature sensors. In this demonstration we are going to make a simple change to that application, rebuild and redeploy it. In the `manuela-dev` repository there is a file `components/iot-consumer/index.js`. This Javascript program consumes message data coming from the line servers and one of functions it performs is to check the temperature to see if it has exceeded a threshold. There is three lines of code in there that does some Celsius to Fahrenheit conversion.
+The `line-dashboard` application has temperature sensors. In this demonstration we are going to make a simple change to that application, rebuild and redeploy it. In the `manuela-dev` repository there is a file `components/iot-consumer/index.js`. This JavaScript program consumes message data coming from the line servers and one of functions it performs is to check the temperature to see if it has exceeded a threshold. There is three lines of code in there that does some Celsius to Fahrenheit conversion.
 
-Depending on the state of your `manuela-dev` repository this may or may not be commented out. Ideally for the demonstration you would want it  uncommented and therefore effective.  What this means is that while the labels on the front-end application are showing Celsius, the data is actually in Fahrenheit. This is a good place to start because that data won't make any sense.
+Depending on the state of your `manuela-dev` repository this may or may not be commented out. Ideally for the demonstration you would want it  uncommented and therefore effective.  What this means is that while the labels on the frontend application are showing Celsius, the data is actually in Fahrenheit. This is a good place to start because that data won't make any sense.
 
 [![](/images/industrial-edge/fahrenheit-temp.png)](/images/industrial-edge/fahrenheit-temp.png)
 
@@ -114,15 +115,13 @@ If you haven't deployed the uncommented code it might be best to prepare that be
 
 Now that the erroneous conversion code has been commented out it is is time rebuild and redeploy. First commit and push the code to the repository. While in the directory for your `manuela-dev` repository run the following commands. The `components/iot-consumer/index.js` file should be the only changed file.
 
-
 ```sh
 git add components/iot-consumer/index.js
 git commit -m "commented out C to F temp conversion"
 git push
 ```
 
-Now its time to kick off the CI pipeline. Due to the need for GitHub secrets and Quay secrets as part of this process, we currently can't use the OpenShift console's Pipelines to kick off the pipeline in the demo environment. Instead, use the command line. While in the `industrial-edge` repository directory, run the following:
-
+Now its time to kick off the CI pipeline. Due to the need for GitHub secrets and Quay secrets as part of this process, we currently can't use the OpenShift console's Pipelines to kick off the pipeline in the demo environment. Instead, use the command-line. While in the `industrial-edge` repository directory, run the following:
 
 ```sh
 make build-and-test
@@ -140,11 +139,9 @@ When the pipeline is complete check the `lines-dashboard` application again in t
 
 [![](/images/industrial-edge/celsius-temp.png)](/images/industrial-edge/celsius-temp.png)
 
-
 The steps above have successfully applied the change to the Manuela test environment at the data center. In order for these changes to be pushed out to the factories it must be accepted and pushed to the Git repository. Examine the project in GitHub. There is a new Pull Request (PR) called **Pull request created by Tekton task github-add-pull-request**. Select that PR and merge the pull request.
 
 [![](/images/industrial-edge/tekton-pull-request.png)](/images/industrial-edge/tekton-pull-request.png)
-
 
 OpenShift GitOps will see the new change and apply it out to the factories.
 
@@ -158,10 +155,9 @@ Then, in the same project `manuela-ml-namespace`, select Networking/Routes and c
 
 [![](/images/industrial-edge/jupyterhub-url.png)](/images/industrial-edge/jupyterhub-url.png)
 
-
 This will bring you to a web page at an address in the following format:
 
-* jupyterhub-manuela-ml-workspace.apps.*clustername*.*your-domain*
+* `jupyterhub-manuela-ml-workspace.apps.*clustername*.*your-domain*`
 
 Options for different types of Jupyter servers are shown. There are two options that are useful for this demo.
 
@@ -198,7 +194,8 @@ Remember that changes to the notebook will require downloading, committing, and 
 There is one other area that has not been completed for the overall validated pattern. The unfinished part is the streaming of events from the factory back to the datacenter and adding that data to the data lake for data scientists to apply their "magic".
 
 The automation for this is complete. However, there are certificates and/or keys that need to be replaced in the following files for the datacenter and factory templates:
-```
+
+```text
 industrial-edge/charts/datacenter/kafka/templates/kafka-tls-certificate-and-key.yaml
 industrial-edge/charts/factory/templates/factory-kafka-cluster/kafka-tls-certificate-and-key.yaml
 industrial-edge/charts/factory/templates/factory-mirror-maker/kafka-tls-certificate.yaml

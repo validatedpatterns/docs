@@ -7,9 +7,11 @@ nav_order: 2
 ---
 
 # Having a managed cluster (edge) join the management hub
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
@@ -86,13 +88,14 @@ Using this method, you are done. Skip to the section [Managed cluster is joined]
 
 ## Managed cluster setup using `cm` tool
 
-1. Install the `cm` (cluster management) CLI tool. See details [here](https://github.com/open-cluster-management/cm-cli/#installation)
+1. Install the `cm` (cluster management) command-line tool. See details [here](https://github.com/open-cluster-management/cm-cli/#installation)
 
 1. Obtain the KUBECONFIG file from the managed-cluster cluster.
 
-1. On the command line login into the management hub cluster (use `oc login` or export the KUBECONFIG).
+1. On the command-line login into the management hub cluster (use `oc login` or export the KUBECONFIG).
 
 1. Run the following command:
+
 ```sh
 cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-KUBECONFIG>
 ```
@@ -142,4 +145,5 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
    `oc label region-one.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster`
 
 ### You're done
+
 That's it! Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.

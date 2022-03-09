@@ -11,6 +11,7 @@ nav_order: 2
 </div>
 
 # Industrial Edge Pattern
+
 {: .no_toc }
 
 [Install](getting-started){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 .mr-2 }
@@ -18,6 +19,7 @@ nav_order: 2
 [Report Bugs](https://github.com/hybrid-cloud-patterns/industrial-edge/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
@@ -57,6 +59,7 @@ industrial setting, using AI/ML. It could be easily extended to other use cases,
 - Seldon Core
 
 ### Context on Industrial Edge Computing
+
 With Industrial Edge computing, it’s all about two major streams:
 [![Industrial Edge Computing](/images/industrial-edge/manufacturing-edge-computing.png)](/images/industrial-edge/manufacturing-edge-computing.png)
 
@@ -64,7 +67,9 @@ With Industrial Edge computing, it’s all about two major streams:
 1. Push code, configuration, master data, machine learning models from the core (where development / testing is happening) towards the edge / shop floors. As there might be 100 of plants with 1000s of lines, automation and consistency is key.  In the above diagram, this is from right to left, in a top/down view, it is call southbound traffic.
 
 ### Demo Scenario
+
 The Industrial Edge Validated Pattern / Demo Scenario reflects this by having 3 layers:
+
 - Line Data Server - the far edge, at the shop floor level
 - Factory Data Center - the near edge, at the plant, but in a more controlled environment.
 - Central Data Center - the cloud/core, where ML Model Training, AppDev, Testing etc. is happening (and ERP systems of course, not part of the demo).

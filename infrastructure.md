@@ -6,15 +6,18 @@ has_children: true
 ---
 
 # Infrastructure
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
 
 ## Background
+
 Each validated pattern has infrastructure requirements. The majority of the validated patterns will run Red Hat OpenShift while some parts will run directly on Red Hat Enterprise Linux or (RHEL), more likely, a version of RHEL called RHEL for Edge. It is expected that consumers of validated patterns already have the infrastructure in place using existing reliable and supported deployment tools. For more information and tools head over to [console.redhat.com](https://console.redhat.com/)
 
 ## Sizing
