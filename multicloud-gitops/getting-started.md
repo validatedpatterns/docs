@@ -38,102 +38,102 @@ service](https://console.redhat.com/openshift/create).
 
 1. Clone the forked copy of this repository.
 
-   ```sh
-   git clone git@github.com:your-username/multicloud-gitops.git
-   ```
+    ```sh
+    git clone git@github.com:your-username/multicloud-gitops.git
+    ```
 
 1. Create a local copy of the Helm values file that can safely include credentials
 
-  DO NOT COMMIT THIS FILE
+    DO NOT COMMIT THIS FILE
 
-  You do not want to push personal credentials to GitHub.
+    You do not want to push personal credentials to GitHub.
 
-   ```sh
-   cp values-secret.yaml.template ~/values-secret.yaml
-   vi ~/values-secret.yaml
-   ```
+    ```sh
+    cp values-secret.yaml.template ~/values-secret.yaml
+    vi ~/values-secret.yaml
+    ```
 
 1. Customize the deployment for your cluster
 
-   ```sh
-   vi values-global.yaml
-   git add values-global.yaml
-   git commit values-global.yaml
-   git push
-   ```
+    ```sh
+    vi values-global.yaml
+    git add values-global.yaml
+    git commit values-global.yaml
+    git push
+    ```
 
 1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/#patterns-quickstart). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes
 
-   ```sh
-   make show
-   ```
+    ```sh
+    make show
+    ```
 
 1. Login to your cluster using oc login or exporting the KUBECONFIG
 
-   ```sh
-   oc login
-   ```
+    ```sh
+    oc login
+    ```
 
-   or set KUBECONFIG to the path to your `kubeconfig` file. For example:
+    or set KUBECONFIG to the path to your `kubeconfig` file. For example:
 
-   ```sh
-   export KUBECONFIG=~/my-ocp-env/hub/auth/kubconfig
-   ```
+    ```sh
+    export KUBECONFIG=~/my-ocp-env/hub/auth/kubconfig
+    ```
 
 1. Apply the changes to your cluster
 
-   ```sh
-   make install
-   ```
+    ```sh
+    make install
+    ```
 
 1. Check the operators have been installed
 
-   ```text
-   UI -> Installed Operators
-   ```
+    ```text
+    UI -> Installed Operators
+    ```
 
 1. Obtain the ArgoCD URLs and passwords
 
-   The URLs and login credentials for ArgoCD change depending on the pattern
-   name and the site names they control.  Follow the instructions below to find
-   them, however you choose to deploy the pattern.
+    The URLs and login credentials for ArgoCD change depending on the pattern
+    name and the site names they control.  Follow the instructions below to find
+    them, however you choose to deploy the pattern.
 
-   Display the fully qualified domain names, and matching login credentials, for
-   all ArgoCD instances:
+    Display the fully qualified domain names, and matching login credentials, for
+    all ArgoCD instances:
 
-   ```sh
-   ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
-   CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
-   eval $CMD
-   ```
+    ```sh
+    ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
+    CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
+    eval $CMD
+    ```
 
-   The result should look something like:
+    The result should look something like:
 
-   ```text
-   NAME                       HOST/PORT                                                                                         PATH      SERVICES                   PORT    TERMINATION            WILDCARD
-   hub-gitops-server          hub-gitops-server-industrial-edge-hub.apps.mycluster.mydomain.com          hub-gitops-server   https   passthrough/Redirect   None
-   # admin.password
-   2F6kgITU3DsparWyC
+    ```text
+    NAME                       HOST/PORT                                                                                         PATH      SERVICES                   PORT    TERMINATION            WILDCARD
+    hub-gitops-server          hub-gitops-server-industrial-edge-hub.apps.mycluster.mydomain.com          hub-gitops-server   https   passthrough/Redirect   None
+    # admin.password
+    2F6kgITU3DsparWyC
 
-   NAME                    HOST/PORT                                                                                   PATH   SERVICES                PORT    TERMINATION            WILDCARD
-   region-one-gitops-server      region-one-gitops-server-industrial-edge-region-one.apps.mycluster.mydomain.com          region-one-gitops-server   https   passthrough/Redirect   None
-   # admin.password
-   K4ctDIm3fH7ldhs8p
+    NAME                    HOST/PORT                                                                                   PATH   SERVICES                PORT    TERMINATION            WILDCARD
+    region-one-gitops-server      region-one-gitops-server-industrial-edge-region-one.apps.mycluster.mydomain.com          region-one-gitops-server   https   passthrough/Redirect   None
+    # admin.password
+    K4ctDIm3fH7ldhs8p
 
-   NAME                      HOST/PORT                                                                              PATH   SERVICES                  PORT    TERMINATION            WILDCARD
-   cluster                   cluster-openshift-gitops.apps.mycluster.mydomain.com                          cluster                   8080    reencrypt/Allow        None
-   kam                       kam-openshift-gitops.apps.mycluster.mydomain.com                              kam                       8443    passthrough/None       None
-   openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.mycluster.mydomain.com          openshift-gitops-server   https   passthrough/Redirect   None
-   # admin.password
-   WNklRCD8EFg2zK034
-   ```
+    NAME                      HOST/PORT                                                                              PATH   SERVICES                  PORT    TERMINATION            WILDCARD
+    cluster                   cluster-openshift-gitops.apps.mycluster.mydomain.com                          cluster                   8080    reencrypt/Allow        None
+    kam                       kam-openshift-gitops.apps.mycluster.mydomain.com                              kam                       8443    passthrough/None       None
+    openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.mycluster.mydomain.com          openshift-gitops-server   https   passthrough/Redirect   None
+    # admin.password
+    WNklRCD8EFg2zK034
+    ```
 
-   The most important ArgoCD instance to examine at this point is `multicloud-gitops-hub`. This is where all the applications for the hub can be tracked.
+    The most important ArgoCD instance to examine at this point is `multicloud-gitops-hub`. This is where all the applications for the hub can be tracked.
 
 1. Check all applications are synchronised
-   Under the project `multicloud-gitops-hub` click on the URL for the `hub`gitops`server`. The Vault application is not synched.
+    Under the project `multicloud-gitops-hub` click on the URL for the `hub`gitops`server`. The Vault application is not synched.
 
 [![Multicloud GitOps Hub](/images/multicloud-gitops/multicloud-gitops-argocd.png)](/images/multicloud-gitops/multicloud-gitops-argocd.png)
 
