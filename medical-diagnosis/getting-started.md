@@ -19,10 +19,10 @@ nav_order: 1
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to [https://console.redhat.com/openshift/create]).  See also [sizing your cluster](../cluster-sizing).
+1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing).
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 1. Storage set up in your public/private cloud for the x-ray images
-1. The helm binary, see [https://helm.sh/docs/intro/install/]
+1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
 
 The use of this blueprint depends on having at least one running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the medical edge facilities.
 
