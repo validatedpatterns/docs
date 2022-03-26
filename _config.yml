@@ -14,6 +14,9 @@ exclude: [ "node_modules/", "*.gemspec", "cheat.md", "LICENSE.txt", "README.md",
 
 color_scheme: patterns
 
+kramdown:
+  auto_ids: true
+
 # Enable or disable heading anchors
 heading_anchors: true
 
@@ -76,7 +79,7 @@ defaults:
       share: true
       related: true
       header:
-        overlay_image: blue-yellow-banner-thin.jpg
+        overlay_image: /images/blue-yellow-banner-thin.jpg
         caption: "Photo credit: [WeGraphics](http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/)"
       sidebar:
         tagcloud: true
