@@ -183,7 +183,7 @@ service](https://console.redhat.com/openshift/create).
 
    Using the Vault UI check that the secrets have been setup.
 
-   For more information on secrets management see [here](/secrets). For information on Hashicorp's Vault see [here](/secrets/vault.md)
+   For more information on secrets management see [here](/secrets). For information on Hashicorp's Vault see [here](/secrets/vault)
 
 1. Check all applications are synchronised
 
@@ -194,7 +194,7 @@ service](https://console.redhat.com/openshift/create).
 
 Once the data center has been setup correctly and confirmed to be working, you can:
 
-1. Add a dedicated cluster to [deploy the factory pieces using ACM](factory)
+1. Add a dedicated cluster to [deploy the factory pieces using ACM](/industrial-edge/factory)
 2. Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](../application/)
 
    a. Making [configuration changes](http://hybrid-cloud-patterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps

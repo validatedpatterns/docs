@@ -18,7 +18,7 @@ nav_order: 2
 
 # Prerequisites
 
-Please make sure you ave read the [introduction section](/creating-a-new-pattern.md) and the [structure](building-vps/structure.md) section of this documentation.
+Please make sure you ave read the [introduction section](/creating-a-new-pattern) and the [structure](/building-vps/structure) section of this documentation.
 
 # You're probably not starting from scratch
 

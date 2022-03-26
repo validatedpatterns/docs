@@ -74,15 +74,15 @@ There are a three ways to join the managed cluster to the management hub.
 
 1. From the management hub openshift console select ACM from the top right
 
-![](/images/launch-acm-console.png "Launch ACM console")
+![launch-acm-console](/images/launch-acm-console.png "Launch ACM console")
 
 2. Select the "Import cluster" option beside the highlighted Create Cluster button.
 
-![](/images/import-cluster.png "Select Import cluster")
+![import-cluster](/images/import-cluster.png "Select Import cluster")
 
 3. On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=region-one`. Press import. Done.
 
-![](/images/import-with-kubeconfig.png "Import using kubeconfig")
+![import-with-kubeconfig](/images/import-with-kubeconfig.png "Import using kubeconfig")
 
 Using this method, you are done. Skip to the section [Managed cluster is joined](#managed-cluster-is-joined) but ignore the part about adding the site tag.
 
