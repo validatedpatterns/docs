@@ -14,7 +14,7 @@ nav_order: 3
 
 {: .no_toc }
 
-[Install](getting-started){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Install](/medical-diagnosis/getting-started){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/hybrid-cloud-patterns/medical-diagnosis/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
@@ -47,7 +47,7 @@ This pipeline is showcased [in this video](https://www.youtube.com/watch?v=zja83
 [![Pipeline dashboard](/images/medical-edge/dashboard.png)](/images/medical-edge/dashboard.png)
 
 This validated pattern is still being developed.  More to come in the next few weeks. Any questions or concerns
-please contact [Jonny Rickard](jrickard@redhat.com) or [Lester Claudio](claudiol@redhat.com).
+please contact [Jonny Rickard](mailto:jrickard@redhat.com) or [Lester Claudio](mailto:claudiol@redhat.com).
 
 ### Solution elements
 
@@ -100,5 +100,5 @@ The diagram below shows the components that are deployed with the the data flows
 ## What Next
 
 - Getting started [deploy the management hub using Helm and GitOps](getting-started)
-- Add a managed cluster to [deploy the  managed cluster piece using ACM](managed cluster)
+- Add a managed cluster to [deploy the  managed cluster piece using ACM](/multicloud-gitops/managed-cluster)
 - Visit the [repository](https://github.com/hybrid-cloud-patterns/medical-diagnosis)

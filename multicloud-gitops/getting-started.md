@@ -62,7 +62,7 @@ service](https://console.redhat.com/openshift/create).
     git push
     ```
 
-1. You can deploy the pattern using the [validated pattern operator]({% link patterns.md %}#patterns-quickstart). If you do use the operator then skip to Validating the Environment below.
+1. You can deploy the pattern using the [validated pattern operator]({% link patterns.md %}#patterns-quick-start). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes
 

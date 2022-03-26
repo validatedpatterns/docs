@@ -63,15 +63,15 @@ There are a three ways to join the factory to the datacenter.
 
 1. From the datacenter openshift console select ACM from the top right
 
-![](/images/launch-acm-console.png "Launch ACM console")
+![launch-acm-console](/images/launch-acm-console.png "Launch ACM console")
 
 2. Select the "Import cluster" option beside the highlighted Create Cluster button.
 
-![](/images/import-cluster.png "Select Import cluster")
+![import-cluster](/images/import-cluster.png "Select Import cluster")
 
 3. On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `site=factory` Press import. Done.
 
-![](/images/import-with-kubeconfig.png "Import using kubeconfig")
+![import-with-kubeconfig](/images/import-with-kubeconfig.png "Import using kubeconfig")
 
 Using this method, you are done. Skip to the section [Factory is joined](#factory-is-joined) but ignore the part about adding the site tag.
 
@@ -139,4 +139,4 @@ That's it! Go to your factory (edge) OpenShift console and check for the open-cl
 
 ## Next up
 
-Work your way through the Industrial Edge 2.0 [GitOps/DevOps demos](application)
+Work your way through the Industrial Edge 2.0 [GitOps/DevOps demos](/industrial-edge/application)
