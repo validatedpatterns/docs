@@ -24,25 +24,25 @@ Alternatively to the `make install` you can use the [validated pattern operator]
 
 Navigate to Operators/OperatorHub on the left. In the `Filter by keyword` box type the word `validated`. The validated patterns operator will appear. Select it. At this time it is a community operator and is not officially supported. A Community Operator information pop-up appears. Click `Continue`.
 
-[![VP Operator](/images/operator/select-vp-operator.png)](/images/operator/select-vp-operator.png))
+[![VP Operator](/images/operator/select-vp-operator.png)](/images/operator/select-vp-operator.png)
 
 On the following pop-up page select `Install`.
 
-[![Install Operator](/images/operator/install-operator.png)](/images/operator/install-operator.png))
+[![Install Operator](/images/operator/install-operator.png)](/images/operator/install-operator.png)
 
 On the Install Operator page leave the defaults and select install.
 
-[![Install Operator form](/images/operator/install-operator-form.png)](/images/operator/install-operator-form.png))
+[![Install Operator form](/images/operator/install-operator-form.png)](/images/operator/install-operator-form.png)
 
-[![Installing Operator](/images/operator/installing-operator.png)](/images/operator/installing-operator.png))
+[![Installing Operator](/images/operator/installing-operator.png)](/images/operator/installing-operator.png)
 
 When the operator has completed installation click on `View Operator`.
 
-[![Operator Installed](/images/operator/operator-installed.png)](/images/operator/operator-installed.png))
+[![Operator Installed](/images/operator/operator-installed.png)](/images/operator/operator-installed.png)
 
 Select the `Create instance` and start filling out the Create a Pattern form.
 
-[![Operator YAML](/images/operator/create-a-pattern.png)](/images/operator/create-a-pattern.png))
+[![Operator YAML](/images/operator/create-a-pattern.png)](/images/operator/create-a-pattern.png)
 
 * You can change the name and apply labels and a cluster group name.
 * Select the `Git Spec` drop down on the form and change the `Target Repo` URL to your forked repository URL. E.g. From `https://github.com/hybrid-cloud-patterns/pattern-name` to `https://github.com/my-git-user/pattern-name`
