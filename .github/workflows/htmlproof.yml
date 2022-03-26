@@ -30,6 +30,7 @@ jobs:
         with:
           directory: ./_site
           enforce_https: false
+          check_favicon: false
           tokens: |
             {"https://github.com": "${{ secrets.GITHUB_TOKEN }}"}
           url_ignore: |
