@@ -15,12 +15,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
       - run: |
-          echo "source 'https://rubygems.org'" > Gemfile
-          echo "gem 'jekyll'" >> Gemfile
-          echo "gem 'bundler'" >> Gemfile
-          echo "gem 'jekyll-paginate'" >> Gemfile
-          echo "gem 'just-the-docs'" >> Gemfile
-          echo "gem 'github-pages'" >> Gemfile
+          {
+            echo "source 'https://rubygems.org'"
+            echo "gem 'jekyll'"
+            echo "gem 'bundler'"
+            echo "gem 'jekyll-paginate'"
+            echo "gem 'just-the-docs'"
+            echo "gem 'github-pages'"
+          } > Gemfile
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
       - run: bundle exec jekyll build
