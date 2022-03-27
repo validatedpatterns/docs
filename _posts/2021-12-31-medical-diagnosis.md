@@ -2,6 +2,7 @@
 layout: post
 date: 2021-12-31
 title: Medical Diagnosis
+excerpt: A validated pattern for the medical field
 published: true
 tags:
 - medical-diagnosis
