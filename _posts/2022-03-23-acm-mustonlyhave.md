@@ -8,8 +8,6 @@ tags:
 - acm
 ---
 
-# To musthave or to mustonlyhave
-
 Recently a user reported an issue when using the multicloud-gitops pattern: Namely, after testing changes in a feature branch (adding a helm application), said changes were not appearing on the remote clusters.
 
 ## Preamble
