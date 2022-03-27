@@ -29,7 +29,7 @@ jobs:
       - uses: anishathalye/proof-html@v1
         with:
           directory: ./_site
-          enforce_https: false
+          enforce_https: true
           check_favicon: false
           tokens: |
             {"https://github.com": "${{ secrets.GITHUB_TOKEN }}"}
