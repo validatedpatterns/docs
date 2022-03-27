@@ -79,7 +79,7 @@ defaults:
       share: true
       related: true
       header:
-        overlay_image: /images/blue-yellow-banner-thin.jpg
+        overlay_image: blue-yellow-banner-thin.jpg
         caption: "Photo credit: [WeGraphics](http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/)"
       sidebar:
         tagcloud: true
