@@ -32,7 +32,7 @@ The problem manifested itself in the following way: The user deployed the patter
 After a short investigation, it was clear that something was off when ACM was pushing the `common/clustergroup` Argo Application on to the regional cluster. We could observe the following yaml:
 
 ```sh
-$ oc oc get -n openshift-gitops application multicloud-gitops-region-one -o yaml
+$ oc get -n openshift-gitops application multicloud-gitops-region-one -o yaml
 ...
 project: default
 source:
