@@ -25,6 +25,7 @@ bucketsource
 ceph
 claudiol
 clustergroup
+clustergroups
 clustername
 cncf
 colocated
@@ -70,8 +71,12 @@ etcd
 ev
 eventing
 externalurl
+facto
 featureful
 fh
+fqdn
+fqdns
+fromsecret
 frontend
 fs
 fsv
@@ -92,6 +97,7 @@ hbv
 hc
 httpd
 https
+hubclusterdomain
 ignoredifferences
 ilkka
 imageregistry
@@ -124,6 +130,8 @@ latencies
 ldhs
 lhipbabbledummyhykhq
 lifecycle
+localclusterdomain
+localdomaincluster
 loggingca
 lsv
 makefile
@@ -186,14 +194,18 @@ redhat
 reencrypt
 rekey
 repo
+repos
 revisiontimestamp
 rgw
+rhacm
 rhecoeng
 rhel
 rickard
 runtime
+runnable
 rxpm
 scalable
+scalability
 seldon
 serverless
 shopfloor
@@ -226,6 +238,7 @@ tst
 txt
 ui
 uncommented
+unencrypted
 upstreaming
 upstream's
 usr
