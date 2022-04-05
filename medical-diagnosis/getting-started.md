@@ -98,7 +98,19 @@ There is some key information you will need to take note of that is required by 
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
    ```
-
+**values-secret.yaml example**
+```yaml
+secrets:
+  xraylab:
+    db:
+      db_user: ""
+      db_passwd: ""
+      db_root_passwd: ""
+      db_host: xraylabdb
+      db_dbname: xraylabdb
+      db_master_user: ""
+      db_master_password: ""
+```
    When you edit the file you can make changes to the various DB passwords if you wish.
 
 1. Customize the deployment for your cluster. Remember to use the data obtained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlighting what what changes need to be made.
