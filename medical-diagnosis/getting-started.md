@@ -24,6 +24,21 @@ nav_order: 1
 1. Storage set up in your public/private cloud for the x-ray images
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
 
+The following packages will need to be installed on your local system to seed the pattern correctly:
+```bash
+dnf install -y git make python3-pip
+```
+
+Use pip3 to install the following python packages required for ansible:
+```bash
+pip3 install --user --upgrade pip ansible kubernetes openshift awscli
+```
+
+Install the ansible-galaxy collection:
+```bash
+ansible-galaxy collection install kubernetes.core
+```
+
 The use of this blueprint depends on having at least one running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the medical edge facilities.
 
 If you do not have a running Red Hat OpenShift cluster you can start one on a
