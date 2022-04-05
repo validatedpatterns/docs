@@ -32,12 +32,13 @@ service](https://console.redhat.com/openshift/create).
 
 ## Setting up the storage for OpenShift Data Foundation
 
-Red Hat OpenShift Data Foundation relies on underlying object based storage provided by cloud providers. This storage will need to be public. The following links provide information on how to create the cloud storage required for this validated pattern on several cloud providers.
+Red Hat OpenShift Data Foundation relies on underlying object based storage provided by cloud providers. This storage will need to be public. A S3 bucket is required for image processing. Please see the [Utilities](#utilities) section below for creating a bucket in AWS S3. The following links provide information on how to create the cloud storage required for this validated pattern on several cloud providers.
 
 * [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html)
 * [Azure Blob Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal)
 * [GCP Cloud Storage](https://cloud.google.com/storage/docs/quickstart-console)
 
+# Utilities
 There are some utilities that have been created for the validated patterns effort to speed the process.
 
 If you are using the utilities then you first you need to set some environment variables for your cloud provider keys.
@@ -49,7 +50,7 @@ export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-Then we need to create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or use the scripts provided on `validated-patterns-utilities` repository.
+Then we need to create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or use the scripts provided on [validated-patterns-utilities](https://github.com/hybrid-cloud-patterns/utilities) repository.
 
 ```sh
 python s3-create.py -b mytest-bucket -r us-west-2 -p
@@ -87,8 +88,25 @@ There is some key information you will need to take note of that is required by 
 
 1. Customize the deployment for your cluster. Remember to use the data obtained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlighting what what changes need to be made.
 
+   `vi values-global.yaml`
+**Replace instances of PROVIDE_ with your specific configuration**
+   ```yaml
+   ...omitted
+   datacenter:
+     region: PROVIDE_CLOUD_REGION #us-east-1
+     clustername: PROVIDE_CLUSTER_NAME #OpenShift clusterName
+     domain: PROVIDE_DNS_DOMAIN #blueprints.rhecoeng.com
+   
+    s3:
+      # Values for S3 bucket access
+      # Replace <region> with AWS region where S3 bucket was created
+      # Replace <cluster-name> and <domain> with your OpenShift cluster values
+      # bucketSource: "https://s3.<region>.amazonaws.com/com.redhat.claudiol.xray-source"
+      bucketSource: PROVIDE_BUCKET_SOURCE #"https://s3.us-east-2.amazonaws.com/com.redhat.jrickard.xray-source"
+      # Bucket base name used for xray images
+   ```
+
    ```sh
-   vi values-global.yaml
    git add values-global.yaml
    git commit values-global.yaml
    git push
