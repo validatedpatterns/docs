@@ -25,16 +25,19 @@ nav_order: 1
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
 
 The following packages will need to be installed on your local system to seed the pattern correctly:
+
 ```bash
 dnf install -y git make python3-pip
 ```
 
 Use pip3 to install the following python packages required for ansible:
+
 ```bash
 pip3 install --user --upgrade pip ansible kubernetes openshift awscli
 ```
 
 Install the ansible-galaxy collection:
+
 ```bash
 ansible-galaxy collection install kubernetes.core
 ```
@@ -54,6 +57,7 @@ Red Hat OpenShift Data Foundation relies on underlying object based storage prov
 * [GCP Cloud Storage](https://cloud.google.com/storage/docs/quickstart-console)
 
 # Utilities
+
 There are some utilities that have been created for the validated patterns effort to speed the process.
 
 If you are using the utilities then you first you need to set some environment variables for your cloud provider keys.
@@ -99,6 +103,7 @@ There is some key information you will need to take note of that is required by 
    vi ~/values-secret.yaml
    ```
 **values-secret.yaml example**
+
 ```yaml
 secrets:
   xraylab:
@@ -117,6 +122,7 @@ secrets:
 
    `vi values-global.yaml`
 **Replace instances of PROVIDE_ with your specific configuration**
+
    ```yaml
    ...omitted
    datacenter:
