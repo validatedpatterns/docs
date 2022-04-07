@@ -53,6 +53,7 @@ deploymentconfigs
 dev
 devops
 devsecops
+dns
 dockerhub
 dsparwyc
 dsv

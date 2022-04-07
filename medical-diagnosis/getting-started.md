@@ -24,6 +24,24 @@ nav_order: 1
 1. Storage set up in your public/private cloud for the x-ray images
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
 
+The following packages will need to be installed on your local system to seed the pattern correctly:
+
+```bash
+dnf install -y git make python3-pip
+```
+
+Use pip3 to install the following python packages required for ansible:
+
+```bash
+pip3 install --user --upgrade pip ansible kubernetes openshift awscli
+```
+
+Install the ansible-galaxy collection:
+
+```bash
+ansible-galaxy collection install kubernetes.core
+```
+
 The use of this blueprint depends on having at least one running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the medical edge facilities.
 
 If you do not have a running Red Hat OpenShift cluster you can start one on a
@@ -32,11 +50,13 @@ service](https://console.redhat.com/openshift/create).
 
 ## Setting up the storage for OpenShift Data Foundation
 
-Red Hat OpenShift Data Foundation relies on underlying object based storage provided by cloud providers. This storage will need to be public. The following links provide information on how to create the cloud storage required for this validated pattern on several cloud providers.
+Red Hat OpenShift Data Foundation relies on underlying object based storage provided by cloud providers. This storage will need to be public. A S3 bucket is required for image processing. Please see the [Utilities](#utilities) section below for creating a bucket in AWS S3. The following links provide information on how to create the cloud storage required for this validated pattern on several cloud providers.
 
 * [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html)
 * [Azure Blob Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal)
 * [GCP Cloud Storage](https://cloud.google.com/storage/docs/quickstart-console)
+
+# Utilities
 
 There are some utilities that have been created for the validated patterns effort to speed the process.
 
@@ -49,7 +69,7 @@ export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-Then we need to create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or use the scripts provided on `validated-patterns-utilities` repository.
+Then we need to create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or use the scripts provided on [validated-patterns-utilities](https://github.com/hybrid-cloud-patterns/utilities) repository.
 
 ```sh
 python s3-create.py -b mytest-bucket -r us-west-2 -p
@@ -83,12 +103,45 @@ There is some key information you will need to take note of that is required by 
    vi ~/values-secret.yaml
    ```
 
+**values-secret.yaml example**
+
+```yaml
+secrets:
+  xraylab:
+    db:
+      db_user: ""
+      db_passwd: ""
+      db_root_passwd: ""
+      db_host: xraylabdb
+      db_dbname: xraylabdb
+      db_master_user: ""
+      db_master_password: ""
+```
+
    When you edit the file you can make changes to the various DB passwords if you wish.
 
 1. Customize the deployment for your cluster. Remember to use the data obtained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlighting what what changes need to be made.
 
+   `vi values-global.yaml`
+**Replace instances of PROVIDE_ with your specific configuration**
+
+   ```yaml
+   ...omitted
+   datacenter:
+     region: PROVIDE_CLOUD_REGION #us-east-1
+     clustername: PROVIDE_CLUSTER_NAME #OpenShift clusterName
+     domain: PROVIDE_DNS_DOMAIN #blueprints.rhecoeng.com
+   
+    s3:
+      # Values for S3 bucket access
+      # Replace <region> with AWS region where S3 bucket was created
+      # Replace <cluster-name> and <domain> with your OpenShift cluster values
+      # bucketSource: "https://s3.<region>.amazonaws.com/com.redhat.claudiol.xray-source"
+      bucketSource: PROVIDE_BUCKET_SOURCE #"https://s3.us-east-2.amazonaws.com/com.redhat.jrickard.xray-source"
+      # Bucket base name used for xray images
+   ```
+
    ```sh
-   vi values-global.yaml
    git add values-global.yaml
    git commit values-global.yaml
    git push
