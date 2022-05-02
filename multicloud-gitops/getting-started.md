@@ -32,7 +32,7 @@ service](https://console.redhat.com/openshift/create).
 
 # How to deploy
 
-1. Fork this repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+1. Fork the [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops) repo on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 
 1. Clone the forked copy of this repo.
 
@@ -53,12 +53,13 @@ service](https://console.redhat.com/openshift/create).
 1. Customize the deployment for your cluster
 
    ```sh
+   git checkout -b my-branch
    vi values-global.yaml
    git add values-global.yaml
    git commit values-global.yaml
-   git push
+   git push origin my-branch
    ```
-1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/#patterns-quickstart). If you do use the operator then skip to Validating the Environment below.
+1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/infrastructure/using-the-validated-pattern-operator.md). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes
    ```sh

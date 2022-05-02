@@ -68,7 +68,7 @@ On the Vault page paste the copied token from the `pattern-vault-init` file.
 
 After signing in you will see the secrets that have been created.
 
-[![Vault Secrets Engine](/images/secrets/vault-secrets-engine.png)](/images/secrets/secrets-engine.png)
+[![Vault Secrets Engine](/images/secrets/vault-secrets-engine.png)](/images/secrets/vault-secrets-engine-screen.png)
 
 # Unseal
 If you don't see the sign in page but instead see an unseal page, something may have happened the cluster and you need to unseal it again. Instead of using `make vault-init` you should run `make vault-unseal`.

@@ -42,13 +42,17 @@ service](https://console.redhat.com/openshift/create).
 1. Fork the [industrial-edge](https://github.com/hybrid-cloud-patterns/industrial-edge) repo on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 1. Fork the [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) repo on GitHub.  It is necessary to fork this repo because the GitOps framework will push tags to this repo that match the versions of software that it will deploy.
 
-1. Clone the forked copy of the `industrial-edge` repo. Use branch `stable-2.0`. 
+1. Clone the forked copy of the `industrial-edge` repo. Use branch `v2.1.1`. 
 
    ```sh
    git clone git@github.com:{your-username}/industrial-edge.git
    cd industrial-edge
+   git checkout v2.1.1
    ```
-
+1. You could create your own branch where you specific values will be pushed to:
+   ```sh
+   git checkout -b my-branch
+   ``` 
 1. There are a number of common  components used in validated patterns. These are kept in a common sub-directory. In order to use them we need to use the subtree feature of git.
 
    ```
@@ -67,14 +71,16 @@ service](https://console.redhat.com/openshift/create).
    vi ~/values-secret.yaml
    ```
 
-1. Customize the deployment for your cluster
+1. Customize the deployment for your cluster. Change the appropriate values in `values-global.yaml`
 
    ```sh
    vi values-global.yaml
    git add values-global.yaml
    git commit values-global.yaml
-   git push
+   git push origin my-branch
    ```
+
+1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/infrastructure/using-the-validated-pattern-operator.md). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes
    ```sh

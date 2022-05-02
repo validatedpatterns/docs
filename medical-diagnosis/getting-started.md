@@ -60,7 +60,7 @@ There is some key information you will need to take note of that is required by 
 
 # Preparation
 
-1. Fork this repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+1. Fork the [medical-diagnosis](https://github.com/hybrid-cloud-patterns/medical-diagnosis) repo on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 
 1. Clone the forked copy of this repo.
 
@@ -82,13 +82,14 @@ There is some key information you will need to take note of that is required by 
 1. Customize the deployment for your cluster. Remember to use the data optained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlightiung what what chnages need to be made.
 
    ```sh
+   git checkout -b my-branch
    vi values-global.yaml
    git add values-global.yaml
    git commit values-global.yaml
-   git push
+   git push origin my-branch
    ```
 
-1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/#patterns-quickstart). If you do use the operator then skip to Validating the Environment below.
+1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/infrastructure/using-the-validated-pattern-operator.md). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes that will be made to the Helm charts.
    ```sh
