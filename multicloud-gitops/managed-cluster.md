@@ -6,10 +6,12 @@ parent: Multicloud GitOps
 nav_order: 2
 ---
 
-# Having a managed cluster (edge) join the management hub 
+# Having a managed cluster (edge) join the management hub
+
 {: .no_toc }
 
 ## Table of contents
+
 {: .no_toc .text-delta }
 
 1. TOC
@@ -17,7 +19,7 @@ nav_order: 2
 
 ## Allow ACM to deploy the managed cluster application to a subset of clusters
 
-By default the `clusterGroup` applications are deployed on all clusters that ACM knows about. In you `value-hub.yaml` file add a `managedClusterCgroup` for each cluster or group of clusters that you want to manage was one. 
+By default the `clusterGroup` applications are deployed on all clusters that ACM knows about. In you `value-hub.yaml` file add a `managedClusterCgroup` for each cluster or group of clusters that you want to manage was one.
 
 ```yaml
   managedClusterGroups:
@@ -31,7 +33,7 @@ By default the `clusterGroup` applications are deployed on all clusters that ACM
 ```
 
 The above yaml segment will deploy the `clusterGroup` applications on managed clusters with the label
-`clusterGroup=region-one`.  Specific subscriptions and Operators, applications and projects for that `clusterGroup` are then managed in a `value-region-one.yaml` file. E.g. 
+`clusterGroup=region-one`.  Specific subscriptions and Operators, applications and projects for that `clusterGroup` are then managed in a `value-region-one.yaml` file. E.g.
 
 ```yaml
   namespaces:
@@ -72,36 +74,37 @@ There are a three ways to join the managed cluster to the management hub.
 
 1. From the management hub openshift console select ACM from the top right
 
-![](/images/launch-acm-console.png "Launch ACM console")
+![launch-acm-console](/images/launch-acm-console.png "Launch ACM console")
 
-2. Select the "Import cluster" option beside the highleded Create Cluster button.
+2. Select the "Import cluster" option beside the highlighted Create Cluster button.
 
-![](/images/import-cluster.png "Select Import cluster")
+![import-cluster](/images/import-cluster.png "Select Import cluster")
 
 3. On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=region-one`. Press import. Done.
 
-![](/images/import-with-kubeconfig.png "Import using kubeconfig")
+![import-with-kubeconfig](/images/import-with-kubeconfig.png "Import using kubeconfig")
 
-Using this menthod, you are done. Skip to the section [Managed cluster is joined](#managed-cluster-is-joined) but ignore the part about adding the site tag.
+Using this method, you are done. Skip to the section [Managed cluster is joined](#managed-cluster-is-joined) but ignore the part about adding the site tag.
 
 ## Managed cluster setup using `cm` tool
 
-1. Install the `cm` (cluster management) CLI tool. See details [here](https://github.com/open-cluster-management/cm-cli/#installation)
+1. Install the `cm` (cluster management) command-line tool. See details [here](https://github.com/open-cluster-management/cm-cli/#installation)
 
 1. Obtain the KUBECONFIG file from the managed-cluster cluster.
 
-1. On the command line login into the management hub cluster (use `oc login` or export the KUBECONFIG).
+1. On the command-line login into the management hub cluster (use `oc login` or export the KUBECONFIG).
 
 1. Run the following command:
+
 ```sh
 cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-KUBECONFIG>
-``` 
+```
 
 Skip to the section [Managed cluster is joined](#managed-cluster-is-joined)
 
 ## Managed cluster setup using `clusteradm` tool
 
-You can also use `clusteradm` to join a cluster. The folloing instructions explain what needs to be done. `clusteradm` is still in testing.
+You can also use `clusteradm` to join a cluster. The following instructions explain what needs to be done. `clusteradm` is still in testing.
 
 1. To deploy a edge cluster you will need to get the management hub cluster's token. You will need to install `clusteradm`.  On the existing *management hub cluster*:
 
@@ -111,14 +114,14 @@ You can also use `clusteradm` to join a cluster. The folloing instructions expla
 
    `oc login`
    or
-   
+
    `export KUBECONFIG=~/my-ocp-env/managed-cluster`
 
 1. Then request to that the managed cluster join the management hub
 
    `clusteradm join --hub-token <token from clusteradm get token command > <managed cluster name>`
 
-1. Back on the hub cluster accept the join reguest 
+1. Back on the hub cluster accept the join request
 
    `clusteradm accept --clusters <managed-cluster-name>`
 
@@ -128,7 +131,7 @@ Skip to the section [Managed cluster is joined](#managed-cluster-is-joined)
 
 ### Designate the new cluster as a managed cluster site
 
-Now that ACM is no longer deploying the managed cluster applications everywhere, we need 
+Now that ACM is no longer deploying the managed cluster applications everywhere, we need
 to explicitly indicate that the new cluster has the managed cluster role. **If you haven't tagged the cluster** as `clusterGroup=region-one` then we can that here.
 
 We do this by adding the label referenced in the managedSite's `clusterSelector`.
@@ -142,4 +145,5 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
    `oc label region-one.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster`
 
 ### You're done
-That's it! Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShifdt GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console. 
+
+That's it! Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.

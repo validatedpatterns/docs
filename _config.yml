@@ -4,15 +4,18 @@ remote_theme: pmarsceill/just-the-docs
 title: Hybrid Cloud Patterns
 description: It's patterns all the way down
 baseurl: "/" # the subpath of your site, e.g. /blog
-url: "http://hybrid-cloud-patterns.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://hybrid-cloud-patterns.io" # the base hostname & protocol for your site, e.g. http://example.com
 #url: "http://localhost:4000" # the base hostname & protocol for your site, e.g. http://example.com
 
-logo: images/logos/animated-100.gif
+logo: images/logos/medical-diagnosis-clear.png
 
 permalink: pretty
-exclude: [ "node_modules/", "*.gemspec", "cheat.md", "LICENSE.txt", "README.md" ]
+exclude: [ "node_modules/", "*.gemspec", "cheat.md", "LICENSE.txt", "README.md", vendor ]
 
 color_scheme: patterns
+
+kramdown:
+  auto_ids: true
 
 # Enable or disable heading anchors
 heading_anchors: true
@@ -33,8 +36,8 @@ gh_edit_view_mode: "blob" # "tree" or "edit" if you want the user to jump into t
 aux_links:
   "Validated Patterns":
     - "https://redhat-gitops-patterns.io"
-#  "Blog":
-#    - "/blog"
+  "Blog":
+    - "/blog"
 
 ## Blog
 
@@ -77,6 +80,6 @@ defaults:
       related: true
       header:
         overlay_image: blue-yellow-banner-thin.jpg
-        caption: "Photo credit: [WeGraphics](http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/)"
+        caption: "Photo credit: [WeGraphics](https://wegraphics.net/downloads/free-ultimate-blurred-background-pack/)"
       sidebar:
         tagcloud: true
