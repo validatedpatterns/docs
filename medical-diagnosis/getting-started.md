@@ -150,7 +150,7 @@ secrets:
    git push origin my-branch
    ```
 
-1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/infrastructure/using-validated-pattern-operator.md). If you do use the operator then skip to Validating the Environment below.
+1. You can deploy the pattern using the [validated pattern operator](/infrastructure/using-validated-pattern-operator.md). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes that will be made to the Helm charts.
 
@@ -186,7 +186,7 @@ Medical Diagnosis Validated Pattern are:
 
 Make sure you have the correct domain, clustername, externalUrl, targetBucket and bucketSource values.
 
-[![Predeploy](videos/predeploy.svg)](videos/predeploy.svg)
+[![Predeploy](/videos/predeploy.svg)](/videos/predeploy.svg)
 
 # Deploy
 
