@@ -63,7 +63,7 @@ service](https://console.redhat.com/openshift/create).
    git push origin my-branch
    ```
 
-1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/infrastructure//using-validated-pattern-operator/). If you do use the operator then skip to Validating the Environment below.
+1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/infrastructure/using-validated-pattern-operator/). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes
 

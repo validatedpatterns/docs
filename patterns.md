@@ -22,7 +22,7 @@ Each pattern can be deployed using the command line. Check the `values-*.yaml` f
  
 Alternatively to the `make install` you can use the [validated pattern operator](https://operatorhub.io/operator/patterns-operator) available in the OpenShift console.
 
-For information on using the Validated Patterns Operator please see [Using the Validated Pattern Operator](https://hybrid-cloud-patterns.io/infrastructure//using-validated-pattern-operator/)
+For information on using the Validated Patterns Operator please see [Using the Validated Pattern Operator](https://hybrid-cloud-patterns.io/infrastructure/using-validated-pattern-operator/)
 
 
 Please follow any other post-install instructions for the pattern on that pattern's Getting started page.
