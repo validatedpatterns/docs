@@ -15,7 +15,7 @@ nav_order: 3
 
 ## Background
 
-The Validated Pattern Operator was developed in order to take advantage of the autoamtion provided with the validated pattern framework. It allows users to deploy validated patterns using the Red Hat OpenShift console. The idea is to point it at a validated pattern repo and let the operator do the work of deploying OpenShift Gitops and then all the parts and applications revquired for the pattern. 
+The Validated Pattern Operator was developed in order to take advantage of the automation provided with the validated pattern framework. It allows users to deploy validated patterns using the Red Hat OpenShift console. The idea is to point it at a validated pattern repo and let the operator do the work of deploying OpenShift Gitops and then all the parts and applications required for the pattern. 
 
 ## Installing the operator
 
@@ -48,7 +48,7 @@ Select the `Create instance` and start filling out the Create a Pattern form.
 
 * Choose a name for the pattern deployment. This name will be used in the projects created.
 * Apply any arbitrary labels to this deployment
-* Choose a cluster group name. This is important because it dientifies the type of cluster that this pattern will be deployed on. For example if this is `Industrial Edge` then it should be `datacenter`. If it's `multicloud-gitops` then it should be `hub`. Please check with the validated pattern to figure out which cluter group is right for this pattern.   
+* Choose a cluster group name. This is important because it identifies the type of cluster that this pattern will be deployed on. For example if this is `Industrial Edge` then it should be `datacenter`. If it's `multicloud-gitops` then it should be `hub`. Please check with the validated pattern to figure out which cluster group is right for this pattern.   
 * Select the `Git Spec` drop down on the form and change the `Target Repo` URL to your forked repository URL. E.g. From `https://github.com/hybrid-cloud-patterns/pattern-name` to `https://github.com/my-git-user/pattern-name` 
 * You may need to change the `Target Revision` sometimes it's marked `stable` or has a specific a version number e.g. `v2.1`, it may simply be `main`, or it might be a new branch you've created, `my-branch`. 
 * Make sure to make any necessary changes to your `values-*.yaml` files locally and push them to your forked repo. on the correct branch/target chosen above. For a quick start you shouldn't need to make changes.  

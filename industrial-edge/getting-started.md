@@ -67,13 +67,16 @@ service](https://console.redhat.com/openshift/create).
    cd industrial-edge
    git checkout v2.1.1
    ```
+
 1. You could create your own branch where you specific values will be pushed to:
+
    ```sh
    git checkout -b my-branch
    ``` 
+
 1. There are a number of common  components used in validated patterns. These are kept in a common sub-directory. In order to use them we need to use the subtree feature of git.
 
-   ```
+   ```sh
    scripts/make_common_subtree.sh  
    ```
 
@@ -99,7 +102,7 @@ service](https://console.redhat.com/openshift/create).
    git push origin my-branch
    ```
 
-1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/infrastructure/using-the-validated-pattern-operator.md). If you do use the operator then skip to Validating the Environment below.
+1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/infrastructure/using-validated-pattern-operator.md). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes
 

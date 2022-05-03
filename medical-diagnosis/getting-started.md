@@ -122,7 +122,14 @@ secrets:
 
 1. Customize the deployment for your cluster. Remember to use the data obtained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlighting what what changes need to be made.
 
-   `vi values-global.yaml`
+   ```sh
+   git checkout -b my-branch
+   vi values-global.yaml
+   git add values-global.yaml
+   git commit values-global.yaml
+   git push origin my-branch
+   ```
+
 **Replace instances of PROVIDE_ with your specific configuration**
 
    ```yaml
@@ -141,15 +148,7 @@ secrets:
       # Bucket base name used for xray images
    ```
 
-   ```sh
-   git checkout -b my-branch
-   vi values-global.yaml
-   git add values-global.yaml
-   git commit values-global.yaml
-   git push origin my-branch
-   ```
-
-1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/infrastructure/using-the-validated-pattern-operator.md). If you do use the operator then skip to Validating the Environment below.
+1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/infrastructure/using-validated-pattern-operator.md). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes that will be made to the Helm charts.
 
