@@ -44,7 +44,7 @@ When the operator has completed installation click on `View Operator`.
 
 Select the `Create instance` and start filling out the Create a Pattern form.
 
-[![Operator YAML](/images/operator/create-a-pattern-0,3.png)](/images/operator/create-a-pattern-0.3.png))
+[![Operator YAML](/images/operator/create-a-pattern-0.3.png)](/images/operator/create-a-pattern-0.3.png))
 
 * Choose a name for the pattern deployment. This name will be used in the projects created.
 * Apply any arbitrary labels to this deployment

@@ -125,11 +125,7 @@ secrets:
    ```sh
    git checkout -b my-branch
    vi values-global.yaml
-   git add values-global.yaml
-   git commit values-global.yaml
-   git push origin my-branch
    ```
-
 **Replace instances of PROVIDE_ with your specific configuration**
 
    ```yaml
@@ -146,6 +142,12 @@ secrets:
       # bucketSource: "https://s3.<region>.amazonaws.com/com.redhat.claudiol.xray-source"
       bucketSource: PROVIDE_BUCKET_SOURCE #"https://s3.us-east-2.amazonaws.com/com.redhat.jrickard.xray-source"
       # Bucket base name used for xray images
+   ```
+
+   ```sh
+   git add values-global.yaml
+   git commit values-global.yaml
+   git push origin my-branch
    ```
 
 1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/infrastructure/using-validated-pattern-operator.md). If you do use the operator then skip to Validating the Environment below.
@@ -184,7 +186,7 @@ Medical Diagnosis Validated Pattern are:
 
 Make sure you have the correct domain, clustername, externalUrl, targetBucket and bucketSource values.
 
-[![asciicast](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)
+[![Predeploy](videos/predeploy.svg)](videos/predeploy.svg)
 
 # Deploy
 

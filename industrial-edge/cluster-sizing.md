@@ -65,8 +65,8 @@ The Datacenter HUB OpenShift Cluster is made up of the the following on the AWS 
 
 | Node Type | Number of nodes | Cloud Provider | Instance Type
 | :---- | :----: | :---- | :----
-| Master | 4 | Amazon Web Services | m5.xlarge
-| Worker | 3 | Amazon Web Services | m5.xlarge
+| Master | 3 | Amazon Web Services | m5.xlarge
+| Worker | 4 | Amazon Web Services | m5.xlarge
 
 The Datacenter HUB OpenShift cluster needs to be a bit bigger than the Factory/Edge clusters because this is where the developers will be running pipelines to build and deploy the **Industrial Edge** pattern on the cluster.  The above cluster sizing is close to a **minimum** size for a Datacenter HUB cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Industrial Edge** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications.
 
