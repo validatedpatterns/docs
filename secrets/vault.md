@@ -72,7 +72,7 @@ On the Vault page paste the copied token from the `pattern-vault-init` file.
 
 After signing in you will see the secrets that have been created.
 
-[![Vault Secrets Engine](/images/secrets/vault-secrets-engine.png)](/images/secrets/vault-secrets-engine.png)
+[![Vault Secrets Engine](/images/secrets/vault-secrets-engine-screen.png)](/images/secrets/vault-secrets-engine-screen.png)
 
 # Unseal
 

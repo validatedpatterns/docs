@@ -84,7 +84,7 @@ There is some key information you will need to take note of that is required by 
 
 # Preparation
 
-1. Fork this repository on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+1. Fork the [medical-diagnosis](https://github.com/hybrid-cloud-patterns/medical-diagnosis) repo on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 
 1. Clone the forked copy of this repository.
 
@@ -122,7 +122,11 @@ secrets:
 
 1. Customize the deployment for your cluster. Remember to use the data obtained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlighting what what changes need to be made.
 
-   `vi values-global.yaml`
+   ```sh
+   git checkout -b my-branch
+   vi values-global.yaml
+   ```
+
 **Replace instances of PROVIDE_ with your specific configuration**
 
    ```yaml
@@ -144,10 +148,10 @@ secrets:
    ```sh
    git add values-global.yaml
    git commit values-global.yaml
-   git push
+   git push origin my-branch
    ```
 
-1. You can deploy the pattern using the [validated pattern operator](https://hybrid-cloud-patterns.io/patterns/#patterns-quick-start). If you do use the operator then skip to Validating the Environment below.
+1. You can deploy the pattern using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes that will be made to the Helm charts.
 
@@ -183,7 +187,7 @@ Medical Diagnosis Validated Pattern are:
 
 Make sure you have the correct domain, clustername, externalUrl, targetBucket and bucketSource values.
 
-[![asciicast](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)](https://github.com/claudiol/medical-diagnosis/blob/claudiol-xray-deployment/doc/predeploy.svg)
+[![Predeploy](/videos/predeploy.svg)](/videos/predeploy.svg)
 
 # Deploy
 
