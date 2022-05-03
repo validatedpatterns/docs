@@ -45,9 +45,7 @@ service](https://console.redhat.com/openshift/create).
 
 1. Install the installation tooling dependencies.  You will need:
 
-<<<<<<< HEAD
 1. Clone the forked copy of the `industrial-edge` repo. Use branch `v2.1.1`. 
-=======
     - `make` - the well-known software build tool
     - `sh` - a POSIX-compatible shell
     - `sed` - the "stream editor", commonly used in shell scripting
@@ -58,6 +56,7 @@ service](https://console.redhat.com/openshift/create).
     - The `kubernetes.core` collection for ansible
 
 1. Fork the [industrial-edge](https://github.com/hybrid-cloud-patterns/industrial-edge) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+
 1. Fork the [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) repository on GitHub.  It is necessary to fork this repository because the GitOps framework will push tags to this repository that match the versions of software that it will deploy.
 
 1. Clone the forked copy of the `industrial-edge` repository. Use branch `v2.1.1`.
@@ -72,7 +71,7 @@ service](https://console.redhat.com/openshift/create).
 
    ```sh
    git checkout -b my-branch
-   ``` 
+   ```
 
 1. There are a number of common  components used in validated patterns. These are kept in a common sub-directory. In order to use them we need to use the subtree feature of git.
 

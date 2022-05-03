@@ -126,6 +126,7 @@ secrets:
    git checkout -b my-branch
    vi values-global.yaml
    ```
+
 **Replace instances of PROVIDE_ with your specific configuration**
 
    ```yaml
