@@ -45,7 +45,8 @@ service](https://console.redhat.com/openshift/create).
 
 1. Install the installation tooling dependencies.  You will need:
 
-1. Clone the forked copy of the `industrial-edge` repo. Use branch `v2.1.1`. 
+1. Clone the forked copy of the `industrial-edge` repo. Use branch `v2.1.1`.
+
     - `make` - the well-known software build tool
     - `sh` - a POSIX-compatible shell
     - `sed` - the "stream editor", commonly used in shell scripting
