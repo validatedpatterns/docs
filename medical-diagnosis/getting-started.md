@@ -150,7 +150,7 @@ secrets:
    git push origin my-branch
    ```
 
-1. You can deploy the pattern using the [validated pattern operator](https://github.com/hybrid-cloud-patterns/docs/infrastructure/using-validated-pattern-operator.md). If you do use the operator then skip to Validating the Environment below.
+1. You can deploy the pattern using the [validated pattern operator](https://github.com/hybrid-cloud-patterns/docs/infrastructure/using-validated-pattern-operator). If you do use the operator then skip to Validating the Environment below.
 
 1. Preview the changes that will be made to the Helm charts.
 
