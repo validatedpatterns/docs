@@ -56,6 +56,7 @@ That list under the `valueFiles` attribute was wrong. It still contained referen
 
 The problem turned out to be in how we pushed out the ArgoCD Application via ACM. We did this:
 
+{% raw %}
 ```sh
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
@@ -106,6 +107,7 @@ spec:
                         value: $ARGOCD_APP_SOURCE_REPO_URL
 ...
 ```
+{% endraw %}
 
 The problem was entirely into the `complianceType: musthave`. Quoting the docs at <https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.4/html-single/governance/index#configuration-policy-yaml-table> we have three possibilities:
 
