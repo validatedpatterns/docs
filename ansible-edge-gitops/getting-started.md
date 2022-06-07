@@ -19,11 +19,13 @@ nav_order: 1
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing).
+1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing). Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern.
 1. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks)
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
+1. Ansible, which is used in the bootstrap and provisioning phases of the pattern install (and to configure Ansible Automation Platform).
+1. Please note that when run on AWS, this pattern will provision an additional worker node, which will be a metal instance (c5n.metal) to run the Edge Virtual Machines. This worker is provisioned through the OpenShift MachineAPI and will be automatically cleaned up when the cluster is destroyed.
 
-The use of this blueprint depends on having at least one running Red Hat
+The use of this pattern depends on having at least one running Red Hat
 OpenShift cluster. It is desirable to have a cluster for deploying the GitOps
 management hub assets and a separate cluster(s) for the managed cluster(s).
 
@@ -33,12 +35,12 @@ service](https://console.redhat.com/openshift/create).
 
 # How to deploy
 
-1. Fork the [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops) repo on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+1. Fork the [ansible-edge-gitops](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops) repo on GitHub.  It is necessary to fork to preserve customizations you make to the default configuration files.
 
 1. Clone the forked copy of this repository.
 
     ```sh
-    git clone git@github.com:your-username/multicloud-gitops.git
+    git clone git@github.com:your-username/ansible-edge-gitops.git
     ```
 
 1. Create a local copy of the Helm values file that can safely include credentials
@@ -95,21 +97,13 @@ service](https://console.redhat.com/openshift/create).
     ```
 
 1. Check all applications are synchronised
-    Under the project `multicloud-gitops-hub` click on the URL for the `hub`gitops`server`. The Vault application is not synched.
+    Under the project `ansible-edge-gitops-hub` click on the URL for the `hub`gitops`server`. All applications will sync, but this takes time as ODF has to completely install, and OpenShift Virtualization cannot provision VMs until the metal node has been fully provisioned and ready.
 
-[![Multicloud GitOps Hub](/images/multicloud-gitops/multicloud-gitops-argocd.png)](/images/multicloud-gitops/multicloud-gitops-argocd.png)
-
-# Deploying the managed cluster applications
-
-Once the management hub has been setup correctly and confirmed to be working, it is time to attach one or more managed clusters to the architecture (see diagrams below).
-
-For instructions on deploying the edge please read the following [document](https://hybrid-cloud-patterns.io/multicloud-gitops/managed-cluster/).
-
-## Multicloud GitOps application demos
+## GitOps application demos
 
 As part of this pattern HashiCorp Vault has been installed. Refer to the section on [Vault](https://hybrid-cloud-patterns.io/secrets/vault/).
 
 # Next Steps
 
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
