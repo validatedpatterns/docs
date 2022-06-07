@@ -10,13 +10,13 @@ nav_order: 1
   <img src="/images/logos/multicloud-gitops.png" class="pattern_logo" alt="Points">
 </div>
 
-# Multicloud GitOps
+# Ansible Edge GitOps
 
 {: .no_toc }
 
 [Install](getting-started){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 ## Table of contents
 
@@ -49,8 +49,6 @@ This pattern uses OpenShift Virtualization (the productization of Kubevirt) to s
 ## Architecture
 
 Similar to other patterns, this pattern starts with a central management hub, which hosts the AAP and Vault components.
-
-[![Multi-Cloud Architecture](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)
 
 ### Logical architecture
 
