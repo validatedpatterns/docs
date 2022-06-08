@@ -40,7 +40,7 @@ This pattern uses OpenShift Virtualization (the productization of Kubevirt) to s
 ### Red Hat Technologies
 
 - Red Hat OpenShift Container Platform (Kubernetes)
-- Red Hat Ansible Automation Platform (AWX upstream, formerly known as "Ansible Tower")
+- Red Hat Ansible Automation Platform (formerly known as "Ansible Tower")
 - Red Hat OpenShift GitOps (ArgoCD)
 - OpenShift Virtualization (Kubevirt)
 - Hashicorp Vault
@@ -52,7 +52,7 @@ Similar to other patterns, this pattern starts with a central management hub, wh
 
 ### Logical architecture
 
-TBD
+![Ansible-Edge-Gitops-Architecture](../images/ansible-edge-gitops/ansible-edge-gitops-arch.png)
 
 ### Physical Architecture
 
