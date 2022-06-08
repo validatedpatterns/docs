@@ -10,7 +10,7 @@ nav_order: 4
   <img src="/images/logos/devsecops.png" class="pattern_logo" alt="Points">
 </div>
 
-# Secure Suply Chain (aka Multi-Cluster DevSecops)
+# Secure Supply Chain (aka Multi-Cluster DevSecops)
 
 {: .no_toc }
 
@@ -85,8 +85,8 @@ The following diagram explains how different roles have different concerns and f
 In the Multi-Cluster DevSecOps architecture there are three logical types of sites.
 
 - The Hub. This is where the cloud native infrastructure is monitored and managed. It performs cluster management, advanced cluster security and a secure image registry.  
-- Devel. This is where the development pipeline is hosted. Developers submit code builds to the pipeline and various security tools are uysed in the pipeline to mitigate the risk of harmful applications or code being deployed in production. 
-- Secured Production. This is where applications are securely dpeloed and monitored.
+- Devel. This is where the development pipeline is hosted. Developers submit code builds to the pipeline and various security tools are used in the pipeline to mitigate the risk of harmful applications or code being deployed in production. 
+- Secured Production. This is where applications are securely deployed and monitored.
 
 For logical, physical and dataflow diagrams, please see excellent work done by the [Red Hat Portfolio Architecture team](https://gitlab.com/redhatdemocentral/portfolio-architecture-examples/-/blob/main/devsecops.adoc)
 
