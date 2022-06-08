@@ -52,7 +52,7 @@ Similar to other patterns, this pattern starts with a central management hub, wh
 
 ### Logical architecture
 
-TBD
+![Ansible-Edge-Gitops-Architecture](../images/ansible-edge-gitops/ansible-edge-gitops-arch.png)
 
 ### Physical Architecture
 
