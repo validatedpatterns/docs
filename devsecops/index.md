@@ -52,7 +52,7 @@ It is derived from the multi-cloud GitOps pattern with added products to provide
 
 - Hashicorp Vault community edition (secrets management)
 
-### Context on Multicluster DevSecOps
+## Context on Multicluster DevSecOps
 
 Effective cloud native DevSecOps is about securing both the platform and the applications deployed to the platform. Securing the applications deployed is also about securing the supply chain. Not all applications are built in-house. Confidence in external applications and technologies is critical. OpenShift Platform Plus enables DevSecOps for both platform and supply chain. 
 
@@ -64,7 +64,7 @@ The Hub cluster is where lifecycle, deployment, security, compliance and risk ma
 
 Policy based deployment also specifies which admission controllers should be deployed to which clusters, including the ACS admission controller. The Hub also provides a unified view of health, security, risk and compliance across your fleet. We have many of these capabilities in place today, however, they each have their own UI. Over the next few releases, we will be working to provide an integrated multi-cluster user experience for admin, security and developer persona in the OpenShift Console. 
 
-### Demo Scenario
+## Demo Scenario
 
 The Multi-Cluster DevSecOps Pattern / Demo Scenario reflects this by having 3 layers:
 
@@ -76,7 +76,7 @@ The Multi-Cluster DevSecOps Pattern / Demo Scenario reflects this by having 3 la
 
 There are ways of combing these three clusters into a two cluster (hub/devel and secured/edge) and single cluster (all in one). The documentation provides instructions (TBD Link).
 
-## Architecture
+### Pattern Architecture
 
 The following diagram explains how different roles have different concerns and focus when working with this distributed AL/ML architecture.
 
@@ -88,8 +88,5 @@ In the Multi-Cluster DevSecOps architecture there are three logical types of sit
 - Devel. This is where the development pipeline is hosted. Developers submit code builds to the pipeline and various security tools are used in the pipeline to mitigate the risk of harmful applications or code being deployed in production. 
 - Secured Production. This is where applications are securely deployed and monitored.
 
-For logical, physical and dataflow diagrams, please see excellent work done by the [Red Hat Portfolio Architecture team](https://gitlab.com/redhatdemocentral/portfolio-architecture-examples/-/blob/main/devsecops.adoc)
 
-### Pattern Structure
 
-<iframe src="https://slides.com/ipbabble/hybrid-cloud-patterns/embed" width="800" height="600" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
