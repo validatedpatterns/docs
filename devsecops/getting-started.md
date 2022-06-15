@@ -2,11 +2,11 @@
 layout: default
 title: Getting Started
 grand_parent: Patterns
-parent: Secure Supply Chain
+parent: Secure Supply Chain (DevSecOps)
 nav_order: 1
 ---
 
-# Deploying the Industrial Edge Pattern
+# Deploying the Multicluster DevSecOps Pattern
 
 {: .no_toc }
 
@@ -20,14 +20,12 @@ nav_order: 1
 # Prerequisites
 
 1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing).
-1. (Optional) A second OpenShift cluster for production
-1. A third OpenShift cluster for secure CI pipelines
+1. A second OpenShift cluster for production (optional but desirable)
+1. A third OpenShift cluster for secure CI pipelines (optional but desirable)
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
 
-The use of this validated pattern depends on having at least two running Red Hat OpenShift cluster for the hub and for devel.
-
-If you do not have a running Red Hat OpenShift cluster you can start one on a
+If you do not have running Red Hat OpenShift clusters you can start one on a
 public or private cloud by using [Red Hat's cloud
 service](https://console.redhat.com/openshift/create).
 
@@ -48,7 +46,7 @@ service](https://console.redhat.com/openshift/create).
 
 1. Fork the [Multi-Cluster DevSecOps](https://github.com/hybrid-cloud-patterns/multicluster-devsecops) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevSecOps processes.
 
-1. Fork the [demo](https://github.com/hybrid-cloud-patterns/devsecops-dev) repository on GitHub.  It is necessary to fork this repository because the GitOps framework will push tags to this repository that match the versions of software that it will deploy.
+1. Fork the [TBD demo](https://github.com/hybrid-cloud-patterns/TBD) repository on GitHub.  It is necessary to fork this repository because the GitOps framework will push tags to this repository that match the versions of software that it will deploy.
 
 1. Clone the forked copy of the `multicluster-devsecops` repository. Use branch `v1.0`.
 
@@ -62,12 +60,6 @@ service](https://console.redhat.com/openshift/create).
 
    ```sh
    git checkout -b my-branch
-   ```
-
-1. There are a number of common  components used in validated patterns. These are kept in a common sub-directory. In order to use them we need to use the subtree feature of git.
-
-   ```sh
-   scripts/make_common_subtree.sh  
    ```
 
 1. A `values-secret.yaml` file is used to automate setup of secrets needed for:
@@ -128,7 +120,7 @@ service](https://console.redhat.com/openshift/create).
 
 1. Navigate to the OpenShift GitOps instances using the links on the top right hand side of the screen. 
 
-   The most important ArgoCD instance to examine at this point is `data-center-gitops-server`. This is where all the applications for the datacenter, including the test environment, can be tracked.
+   The most important ArgoCD instance to examine at this point is `hub-gitops-server`. This is where all the applications for the hub (datacenter), including the test environment, can be tracked.
 
 1. Apply the secrets from the `values-secret.yaml` to the secrets management Vault. This can be done through Vault's UI - manually without the file. The required secrets and scopes are:
 
@@ -159,17 +151,20 @@ service](https://console.redhat.com/openshift/create).
 
    For more information on secrets management see [here](/secrets). For information on Hashicorp's Vault see [here](/secrets/vault)
 
-1. Check all applications are synchronised
+1. Check all applications are synchronized in OpenShift GitOps
+
+[![Multicluster DevSecOps GitOps overview](/images/devsecops/gitops-hub-cluster.png)](/images/devsecops/gitops-hub-cluster.png)
 
 ## Next Steps
 
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/hybrid-cloud-patterns/multicluster-devsecops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
-Once the data center has been setup correctly and confirmed to be working, you can:
+Once the hub has been setup correctly and confirmed to be working, you can:
 
-1. Add a dedicated cluster to [deploy the CI pipelines using ACM](/multicluster-devsecops/devel)
-2. Once the data center and the factory have been deployed you will want to check out and test the Multi-Cluster DevSecOps demo code. You can find that [here](../here)
+1. Add a dedicated development cluster to [deploy the CI pipelines using ACM](/multicluster-devsecops/devel)
+1. Add a dedicated production cluster to [deploy production using ACM](/multicluster-devsecops/secured)
+1. Once the hub, production and devel clusters have been deployed you will want to check out and test the Multi-Cluster DevSecOps demo code. You can find that [TBD](../TBD)
 
    a. Making [configuration changes](https://hybrid-cloud-patterns.io/multicluster-devsecops/application/#config-changes) with GitOps
    a. Making [application changes](https://hybrid-cloud-patterns.io/multicluster-devsecops/application/#application-changes-using-devops) using DevOps
