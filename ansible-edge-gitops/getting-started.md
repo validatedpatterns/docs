@@ -25,9 +25,17 @@ nav_order: 1
 1. Ansible, which is used in the bootstrap and provisioning phases of the pattern install (and to configure Ansible Automation Platform).
 1. Please note that when run on AWS, this pattern will provision an additional worker node, which will be a metal instance (c5n.metal) to run the Edge Virtual Machines. This worker is provisioned through the OpenShift MachineAPI and will be automatically cleaned up when the cluster is destroyed.
 
-The use of this pattern depends on having at least one running Red Hat
+The use of this pattern depends on having a running Red Hat
 OpenShift cluster. It is desirable to have a cluster for deploying the GitOps
 management hub assets and a separate cluster(s) for the managed cluster(s).
+
+In addition to the openshift cluster, you will need to prepare a number of secrets, or credentials, which will be used
+in the pattern in various ways:
+
+1. An SSH Keypair (private key and public key).  These will be used to provide access to the Kiosk VMs in the demo.
+1. A Red Hat Subscription Management username and password. These will be used to register Kiosk VM templates to the Red Hat Content Delivery Network and install content on the Kiosk VMs to run the demo.
+1. Container "extra" arguments which will set the admin password for the ignition application when it's running.
+1. A manifest file with an entitlement to run Ansible Automation Platform. This file (which will be a .zip file) will be posted to to Ansible Automation Platform instance to enable its use.  Instructions for creating a manifest file can be found [here](https://www.redhat.com/en/blog/how-create-and-use-red-hat-satellite-manifest#:~:text=Click%20the%20Subscription%20Allocations%20tab,that%20will%20use%20the%20manifest.).
 
 If you do not have a running Red Hat OpenShift cluster you can start one on a
 public or private cloud by using [Red Hat's cloud
@@ -54,7 +62,7 @@ service](https://console.redhat.com/openshift/create).
     vi ~/values-secret.yaml
     ```
 
-1. Customize the deployment for your cluster
+1. Customize the deployment for your cluster (Optional - the defaults in values-global.yaml are designed to work in AWS):
 
    ```sh
    git checkout -b my-branch
@@ -95,12 +103,32 @@ service](https://console.redhat.com/openshift/create).
     ```text
     OpenShift Console Web UI -> Installed Operators
     ```
+![ansible-edge-gitops-operators](/images/ansible-edge-gitops/aeg-operators.png "Ansible Edge GitOps Operators")
 
 1. Check all applications are synchronised
     Under the project `ansible-edge-gitops-hub` click on the URL for the `hub`gitops`server`. All applications will sync, but this takes time as ODF has to completely install, and OpenShift Virtualization cannot provision VMs until the metal node has been fully provisioned and ready.
 
+![ansible-edge-gitops-applications](/images/ansible-edge-gitops/aeg-applications.png "Ansible Edge GitOps Operators")
+
+1. The VM Consoles will show the Ignition application running:
+
+![ansible-edge-gitops-vmlist](/images/ansible-edge-gitops/aeg-openshift-vm-screen.png "Ansible Edge GitOps VM List")
+
+![ansible-edge-gitops-vmconsole](/images/ansible-edge-gitops/aeg-openshift-vm-console.png "Ansible Edge GitOps VM Console")
+
+You should be able to login to the application with the userid "admin" and the password you specified as the GATEWAY_ADMIN_PASSWORD in `container_extra_params` in your values-secret.yaml file.
+
+Please see [Installation Details](/ansible-edge-gitops/installation-details/) for more information on the steps of installation.
+
+Please see [Ansible Automation Platform](/ansible-edge-gitops/ansible-automation-platform/) for more information on how this pattern uses the Ansible Automation Platform Operator for OpenShift.
+
+Please see [OpenShift Virtualization](/ansible-edge-gitops/openshift-virtualization/) for more information on how this pattern uses OpenShift Virtualization.
+
 ## GitOps application demos
 
+# Vault
+
+Vault is used as the authoritative source for the Kiosk ssh pubkey via the External Secrets Operator.
 As part of this pattern HashiCorp Vault has been installed. Refer to the section on [Vault](https://hybrid-cloud-patterns.io/secrets/vault/).
 
 # Next Steps

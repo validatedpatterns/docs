@@ -45,6 +45,8 @@ This pattern uses OpenShift Virtualization (the productization of Kubevirt) to s
 - OpenShift Virtualization (Kubevirt)
 - Hashicorp Vault
 - External Secrets Operator
+- Red Hat Enterprise Linux 8
+- Ignition
 
 ## Architecture
 
