@@ -39,7 +39,7 @@ The script will update secrets in vault if re-run.
 
 This script is another Ansible playbook that deploys a node to run the Virtual Machines for the demo. The playbook uses the OpenShift machineset API to provision the node in the first availability zone it finds. Currently, AWS is the only major public cloud provider that offers the deployment of a metal node through the normal provisioning process. We hope that Azure and GCP will support this functionality soon as well.
 
-Please be aware that the metal node is rather more expensive in compute costs than most other AWS machine types. The trafeoff is that running the demo without hardware acceleration would take ~4x as long.
+Please be aware that the metal node is rather more expensive in compute costs than most other AWS machine types. The trade-off is that running the demo without hardware acceleration would take ~4x as long.
 
 It takes about 30 minutes for the metal node to become available to run VMs.
 

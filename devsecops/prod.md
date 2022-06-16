@@ -19,7 +19,7 @@ nav_order: 3
 
 ## Introduction
 
-Production clusters need to be secured and so one part of the deplloyment is Advanced Cluster Security with a secured configuration. This allows ACS to monitor and report on security issues on the cluster. ACS secured sites report to an ACS Central application that is deployed on the hub.
+Production clusters need to be secured and so one part of the deployment is Advanced Cluster Security with a secured configuration. This allows ACS to monitor and report on security issues on the cluster. ACS secured sites report to an ACS Central application that is deployed on the hub.
 
 ## Allow ACM to deploy the production application to a subset of secured clusters
 

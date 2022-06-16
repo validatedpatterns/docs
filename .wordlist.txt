@@ -1,5 +1,6 @@
 aap
 acm
+acs
 activemq
 addon
 addons
@@ -51,6 +52,7 @@ defragmentation
 deploymentconfig
 deploymentconfigs
 dev
+devel
 devops
 devsecops
 dns
@@ -118,12 +120,15 @@ jsonpointers
 jupyter
 kam
 kamelet
+keypair
+keypairs
 keyspace
 kgitu
 knative
 kno
 kubeconfig
 kubernetes
+kubevirt
 kustomization
 kustomize
 kzwzqibmynhrxxxxxxxxx
@@ -135,6 +140,8 @@ localclusterdomain
 localdomaincluster
 loggingca
 lsv
+machineapi
+machineset
 makefile
 managedclusterinfo
 managedsite's
@@ -186,6 +193,8 @@ podspercore
 posix
 pre
 prem
+productization
+pubkey
 pv
 rabbitmq
 rdma
@@ -202,11 +211,11 @@ rhacm
 rhecoeng
 rhel
 rickard
-runtime
 runnable
+runtime
 rxpm
-scalable
 scalability
+scalable
 seldon
 serverless
 shopfloor
@@ -242,11 +251,13 @@ uncommented
 unencrypted
 upstreaming
 upstream's
+userid
 usr
 vcpu
 vcpus
 vdvkgdtuxkeqf
 vm
+vms
 wgdbnwft
 whenry
 wip
