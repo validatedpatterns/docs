@@ -1,4 +1,7 @@
+HOWTO
 HyperConverged
+VirtualMachine
+VirtualMachines
 aap
 acm
 acs
@@ -196,6 +199,7 @@ posix
 pre
 prem
 productization
+programmatically
 pubkey
 pv
 rabbitmq
@@ -235,6 +239,7 @@ submoduled
 submodules
 subtree
 subtrees
+sudo
 synched
 syncpolicy
 targetbucket
