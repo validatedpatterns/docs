@@ -1,3 +1,4 @@
+HyperConverged
 aap
 acm
 acs
@@ -46,6 +47,7 @@ dav
 dcv
 ddsv
 ddv
+declaratively
 defragging
 defragment
 defragmentation
