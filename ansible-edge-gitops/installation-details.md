@@ -41,7 +41,24 @@ This script is another Ansible playbook that deploys a node to run the Virtual M
 
 Please be aware that the metal node is rather more expensive in compute costs than most other AWS machine types. The trade-off is that running the demo without hardware acceleration would take ~4x as long.
 
-It takes about 30 minutes for the metal node to become available to run VMs.
+It takes about 20-30 minutes for the metal node to become available to run VMs. If you would like to see the current status of the metal node, you can check it this way (assuming your kubeconfig is currently set up to point to your cluster):
+
+```shell
+oc get -A machineset
+```
+
+You will be looking for a machineset with `metal-worker` in its name:
+
+```
+NAMESPACE               NAME                                        DESIRED   CURRENT   READY   AVAILABLE   AGE
+openshift-machine-api   mhjacks-aeg-qx25w-metal-worker-us-west-2a   1         1         1       1           19m
+openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2a         1         1         1       1           47m
+openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2b         1         1         1       1           47m
+openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2c         1         1         1       1           47m
+openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2d         0         0                             47m
+```
+
+When the `metal-worker` is showing "READY" and "AVAILABLE", the virtual machines will begin provisioning on it.
 
 The metal node will be destroyed when the cluster is destroyed. The script is idempotent and will create at most one metal node per cluster.
 
@@ -60,6 +77,8 @@ The script waits until AAP is ready, and then proceeds to:
 1. Configure an Execution environment for the Demo
 1. Configure Job Templates for the Demo
 1. Configure Schedules for the jobs that need to repeat
+
+*Note:* This script has defaults that it overrides when run as part of `make install` that it derives from the environment (the repo that it is attached to and the branch that it is on). So if you need to re-run it, the most straightforward way to do this is to run `make upgrade` when using the make-based installation process.
 
 # OpenShift GitOps (ArgoCD)
 
