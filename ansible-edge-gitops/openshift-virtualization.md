@@ -286,7 +286,7 @@ While the pubkey is not truly a "secret", the availability of the External Secre
 
 ### The VirtualMachine definition
 
-The VirtualMachine definition is the biggest part of the template. 
+The VirtualMachine definition is the biggest part of the template.
 
 ### The Service definition
 
