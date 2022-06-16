@@ -82,6 +82,8 @@ The script waits until AAP is ready, and then proceeds to:
 
 # OpenShift GitOps (ArgoCD)
 
+OpenShift GitOps is central to this pattern as it is responsible for installing all of the other components. The installation process is driven through the installation of the [clustergroup](https://github.com/hybrid-cloud-patterns/common/tree/main/clustergroup) chart. This in turn reads the repo's [global values file](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/values-global.yaml), which instructs it to read the [hub values file](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/values-hub.yaml). This is how the pattern knows to apply the Subscriptions and Applications listed further in the pattern.
+
 # ODF (OpenShift Data Foundations)
 
 # OpenShift Virtualization (KubeVirt)
