@@ -50,6 +50,7 @@ The metal node will be destroyed when the cluster is destroyed. The script is id
 The ansible-load-controller script uses the [controller configuration](https://github.com/redhat-cop/controller_configuration) framework to configure the Ansible Automation Platform instance that is installed by the helm chart.
 
 The script waits until AAP is ready, and then proceeds to:
+
 1. Install the manifest to entitle AAP
 1. Configure the custom Credential Types the demo needs
 1. Define an Organization for the Demo

@@ -19,7 +19,7 @@ nav_order: 2
 
 ## Introduction
 
-Development clusters are responsible for building applications and delivering the applications to a secured registry. The development cluster defines a secure pipeline that includes code and image scans and image signing before delivering them to the registry. OpenShift Pipelines is used for the continuous intgration (CI). The Quay registry is deployed on the hub and therefore integration is required for the development pipeline to push images to the registry. 
+Development clusters are responsible for building applications and delivering the applications to a secured registry. The development cluster defines a secure pipeline that includes code and image scans and image signing before delivering them to the registry. OpenShift Pipelines is used for the continuous intgration (CI). The Quay registry is deployed on the hub and therefore integration is required for the development pipeline to push images to the registry.
 
 Development clusters also need to be secured and so one part of the deplloyment is Advanced Cluster Security with a secured configuration. This allows ACS to monitor and report on security issues on the cluster. ACS secured sites report to an ACS Central application that is deployed on the hub.
 
