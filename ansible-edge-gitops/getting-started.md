@@ -103,6 +103,7 @@ service](https://console.redhat.com/openshift/create).
     ```text
     OpenShift Console Web UI -> Installed Operators
     ```
+
 ![ansible-edge-gitops-operators](/images/ansible-edge-gitops/aeg-operators.png "Ansible Edge GitOps Operators")
 
 1. Check all applications are synchronised

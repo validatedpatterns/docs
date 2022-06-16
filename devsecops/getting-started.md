@@ -118,7 +118,7 @@ service](https://console.redhat.com/openshift/create).
    UI -> Installed Operators
    ```
 
-1. Navigate to the OpenShift GitOps instances using the links on the top right hand side of the screen. 
+1. Navigate to the OpenShift GitOps instances using the links on the top right hand side of the screen.
 
    The most important ArgoCD instance to examine at this point is `hub-gitops-server`. This is where all the applications for the hub (datacenter), including the test environment, can be tracked.
 
@@ -168,7 +168,7 @@ Once the hub has been setup correctly and confirmed to be working, you can:
 
    a. Making [configuration changes](https://hybrid-cloud-patterns.io/multicluster-devsecops/application/#config-changes) with GitOps
    a. Making [application changes](https://hybrid-cloud-patterns.io/multicluster-devsecops/application/#application-changes-using-devops) using DevOps
-   
+
 # Uninstalling
 
 **Probably wont work**

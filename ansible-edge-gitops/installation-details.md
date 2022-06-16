@@ -39,7 +39,7 @@ The script will update secrets in vault if re-run.
 
 This script is another Ansible playbook that deploys a node to run the Virtual Machines for the demo. The playbook uses the OpenShift machineset API to provision the node in the first availability zone it finds. Currently, AWS is the only major public cloud provider that offers the deployment of a metal node through the normal provisioning process. We hope that Azure and GCP will support this functionality soon as well.
 
-Please be aware that the metal node is rather more expensive in compute costs than most other AWS machine types. The trafeoff is that running the demo without hardware acceleration would take ~4x as long.
+Please be aware that the metal node is rather more expensive in compute costs than most other AWS machine types. The trade-off is that running the demo without hardware acceleration would take ~4x as long.
 
 It takes about 30 minutes for the metal node to become available to run VMs.
 
@@ -50,6 +50,7 @@ The metal node will be destroyed when the cluster is destroyed. The script is id
 The ansible-load-controller script uses the [controller configuration](https://github.com/redhat-cop/controller_configuration) framework to configure the Ansible Automation Platform instance that is installed by the helm chart.
 
 The script waits until AAP is ready, and then proceeds to:
+
 1. Install the manifest to entitle AAP
 1. Configure the custom Credential Types the demo needs
 1. Define an Organization for the Demo
