@@ -49,7 +49,7 @@ oc get -A machineset
 
 You will be looking for a machineset with `metal-worker` in its name:
 
-```
+```text
 NAMESPACE               NAME                                        DESIRED   CURRENT   READY   AVAILABLE   AGE
 openshift-machine-api   mhjacks-aeg-qx25w-metal-worker-us-west-2a   1         1         1       1           19m
 openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2a         1         1         1       1           47m
