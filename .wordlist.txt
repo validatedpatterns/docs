@@ -205,6 +205,7 @@ reencrypt
 rekey
 repo
 repos
+repo's
 revisiontimestamp
 rgw
 rhacm
