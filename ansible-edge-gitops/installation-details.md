@@ -86,9 +86,39 @@ OpenShift GitOps is central to this pattern as it is responsible for installing 
 
 # ODF (OpenShift Data Foundations)
 
+ODF is the storage framework that is needed to provide resilient storage for OpenShift Virtualization.  It is managed via the helm chart [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/charts/hub/odf). This is basically the same chart that our Medical Diagnosis pattern uses (see [here](/medical-diagnosis/getting-started/#setting-up-the-storage-for-openshift-data-foundation) for detaails).
+
+Please note that this chart will create a Noobaa S3 bucket named nb.epoch_timestamp.cluster-domain which will not be destroyed when the cluster is destroyed.
+
 # OpenShift Virtualization (KubeVirt)
 
+OpenShift Virtualization is a framework for running virtual machines as native Kubernetes resources. While it can run without hardware acceleration, the performance of virtual machines will suffer terribly; some testing on a similar workload indicated a 4-6x delay running without hardware acceleration, so at present this pattern requires hardware acceleration. The pattern provides a script [deploy-kubevirt-worker.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/deploy_kubevirt_worker.sh) which will provision a metal worker to run virtual machines for the pattern.
+
+OpenShift Virtualization currently supports only AWS and on-prem clusters; this is because of the way that baremetal resources are provisioned in GCP and Azure. We hope that OpenShift Virtualization can support GCP and Azure soon.
+
+The installation of the OpenShift Virtualization HyperConverged deployment is controlled by the chart [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/charts/hub/cnv).
+
+OpenShift Virtualization was chosen in this pattern to avoid dealing with the differences in galleries and templates of images between the different public cloud providers. The important thing from this pattern's standpoint is the availability of machine instances to manage (since we are simulating an Edge deployment scenario, which could either be bare metal instances or virtual machines); OpenShift Virtualization was the easiest and most portable way to spin up machine instances. It also provides mechanisms for defining the desired machine set declaratively.
+
+The creation of virtual machines is controlled by the chart [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/charts/hub/edge-gitops-vms).
+
+More details about the way we use OpenShift Virtualization are available [here](/ansible-edge-gitops/openshift-virtualization).
+
 # Ansible Automation Platform (AAP, formerly known as Ansible Tower)
+
+The use of Ansible Automation Platform is really the centerpiece of this pattern. We have recognized for some time that the notion and design principles of GitOps should apply to things outside of Kubernetes, and we believe this pattern
+gives us a way to do that.
+
+All of the Ansible interactions are defined in a Git Repository; the Ansible jobs that configure the VMs are designed
+to be idempotent (and are scheduled to run every 10 minutes on those VMs).
+
+The installation of AAP itself is governed by the chart [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/charts/hub/ansible-automation-platform).  The post-installation configuration of AAP is done via the [ansible-load-controller.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh) script.
+
+It is very much the intention of this pattern to make it easy to replace the specific Edge management use case with another one. Some ideas on how to do that can be found [here](/ansible-edge-gitops/ideas-for-customization/).
+
+Specifics of the Ansible content for this pattern can be seen [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/ansible).
+
+More details of the specifics of how AAP is configured are available [here](/ansible-edge-gitops/ansible-automation-platform/).
 
 # Next Steps
 

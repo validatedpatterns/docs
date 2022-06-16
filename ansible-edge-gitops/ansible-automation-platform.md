@@ -23,11 +23,15 @@ nav_order: 3
 
 # Organizations
 
-# Templates
+# Inventory
+
+# Templates (key playbooks in the pattern)
 
 # Schedules
 
 # Execution Environment
+
+# Roles included in the pattern
 
 # Extra Playbooks in the Pattern
 
