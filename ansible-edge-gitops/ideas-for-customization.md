@@ -238,8 +238,8 @@ $ oc process -n openshift rhel8-desktop-medium
 
 And to use the template to create a VM:
 
-```text
-$ oc process -n openshift rhel8-desktop-medium | oc apply -f -
+```shell
+oc process -n openshift rhel8-desktop-medium | oc apply -f -
 virtualmachine.kubevirt.io/rhel8-q63yuvxpjdvy18l7 created
 ```
 
@@ -247,8 +247,8 @@ In just a few minutes, you will have a blank rhel8 VM running, which you can the
 
 1. Get the details of this template as a local YAML file:
 
-```text
-$ oc get template -n openshift rhel8-desktop-medium -o yaml > my-template.yaml
+```shell
+oc get template -n openshift rhel8-desktop-medium -o yaml > my-template.yaml
 ```
 
 Once you have this local template, you can view the elements you want to customize, possibly using [this](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml) as an example.

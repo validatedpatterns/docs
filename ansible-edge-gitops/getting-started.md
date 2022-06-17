@@ -127,7 +127,6 @@ Please see [OpenShift Virtualization](/ansible-edge-gitops/openshift-virtualizat
 
 ## GitOps application demos
 
-
 # [Ansible Automation Platform](https://www.redhat.com/en/technologies/management/ansible)
 
 A fully functional installation of the Ansible Automation Platform operator is installed on your OpenShift cluster to configure and maintain the VMs for this demo. AAP maintains a dynamic inventory of kiosk machines and can configure a VM from template to fully functional kiosk in about 10 minutes.
