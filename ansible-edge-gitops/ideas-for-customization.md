@@ -17,6 +17,12 @@ nav_order: 5
 1. TOC
 {:toc}
 
+# Why change it?
+
+One of the major goals of the Red Hat patterns development process is to create modular, customizable demos. Maybe you are not interested in Ignition as an application, or you do not have kiosks...but you do have other use cases that involve running containers on edge devices. Maybe you want to experiment with different releases of RHEL, or you want to do something different with Ansible Automation Platform.
+
+This demo in particular can be customized in a number of ways that might be very interesting - and here are some starter ideas with some instructions on exactly what and where changes would need to be made in the pattern to accomodate those changes.
+
 # HOWTO define your own VM sets using the chart
 
 1. Either fork the repo or copy the edge-gitops-vms chart out of it.
@@ -257,9 +263,15 @@ Once you have this local template, you can view the elements you want to customi
 
 The [ansible_load_controller.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh) is designed to be relatively easy to customize with a new controller configuration. Structurally, it is principally based on [configure_controller.yml](https://github.com/redhat-cop/controller_configuration/blob/devel/playbooks/configure_controller.yml) from the Red Hat Community of Practice [controller_configuration](https://github.com/redhat-cop/controller_configuration) collection. The order and specific list of  roles invoked is taken from there.
 
-To customize it, the main thing would be to replace the different variables in the role tasks with the your own. The script includes the roles for variable types that this pattern does not manage in order to make that part straightforward.
+To customize it, the main thing would be to replace the different variables in the role tasks with the your own. The script includes the roles for variable types that this pattern does not manage in order to make that part straightforward. Feel free to add your own roles and playbooks (and add them to the controller configuration script).
 
 The reason this pattern ships with a script as it does instead of invoking the referenced playbook directly is that several of the configuration elements depend on each other, and there was not a super-convenient place to put things like the controller credentials as the playbook suggests.
+
+# HOWTO substitute your own container application (instead of ignition)
+
+1. Adjust the query in the [inventory_preplay.yml](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/inventory_preplay.yml) either by overriding the vars for the play, or forking the repo and replacing the vars with your own query terms. (That is, use your own label(s) and namespace to discover the services you want to connect to.
+
+1. Adjust or override the vars in the [provision_kiosk.yml](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/provision_kiosk.yml) playbook to suitable values for your own container application. The roles it calls are fairly generic, so changing the vars is all you should need to do.
 
 # Next Steps
 
