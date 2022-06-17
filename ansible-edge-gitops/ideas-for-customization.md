@@ -255,7 +255,7 @@ Once you have this local template, you can view the elements you want to customi
 
 # HOWTO Define your own Ansible Controller Configuration
 
-The [ansible_load_controller.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh) is designed to be relatively easy to customize with a new controller configuration. Structurally, it is principally based on [configure_controller.yml](https://github.com/redhat-cop/controller_configuration/blob/devel/playbooks/configure_controller.yml) from the Red Hat Community of Practice [controller_configution](https://github.com/redhat-cop/controller_configuration) collection. The order and specific list of  roles invoked is taken from there.
+The [ansible_load_controller.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh) is designed to be relatively easy to customize with a new controller configuration. Structurally, it is principally based on [configure_controller.yml](https://github.com/redhat-cop/controller_configuration/blob/devel/playbooks/configure_controller.yml) from the Red Hat Community of Practice [controller_configuration](https://github.com/redhat-cop/controller_configuration) collection. The order and specific list of  roles invoked is taken from there.
 
 To customize it, the main thing would be to replace the different variables in the role tasks with the your own. The script includes the roles for variable types that this pattern does not manage in order to make that part straightforward.
 
