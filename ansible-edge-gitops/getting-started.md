@@ -35,7 +35,7 @@ in the pattern in various ways:
 1. An SSH Keypair (private key and public key).  These will be used to provide access to the Kiosk VMs in the demo.
 1. A Red Hat Subscription Management username and password. These will be used to register Kiosk VM templates to the Red Hat Content Delivery Network and install content on the Kiosk VMs to run the demo.
 1. Container "extra" arguments which will set the admin password for the ignition application when it's running.
-1. A manifest file with an entitlement to run Ansible Automation Platform. This file (which will be a .zip file) will be posted to to Ansible Automation Platform instance to enable its use.  Instructions for creating a manifest file can be found [here](https://www.redhat.com/en/blog/how-create-and-use-red-hat-satellite-manifest#:~:text=Click%20the%20Subscription%20Allocations%20tab,that%20will%20use%20the%20manifest.).
+1. A manifest file with an entitlement to run Ansible Automation Platform. This file (which will be a .zip file) will be posted to to Ansible Automation Platform instance to enable its use.  Instructions for creating a manifest file can be found [here](https://www.redhat.com/en/blog/how-create-and-use-red-hat-satellite-manifest)
 
 If you do not have a running Red Hat OpenShift cluster you can start one on a
 public or private cloud by using [Red Hat's cloud
@@ -127,7 +127,19 @@ Please see [OpenShift Virtualization](/ansible-edge-gitops/openshift-virtualizat
 
 ## GitOps application demos
 
-# Vault
+# [Ansible Automation Platform](https://www.redhat.com/en/technologies/management/ansible)
+
+A fully functional installation of the Ansible Automation Platform operator is installed on your OpenShift cluster to configure and maintain the VMs for this demo. AAP maintains a dynamic inventory of kiosk machines and can configure a VM from template to fully functional kiosk in about 10 minutes.
+
+# OpenShift [Virtualization](https://docs.openshift.com/container-platform/4.10/virt/about-virt.html)
+
+OpenShift Virtualization is a Kubernetes-native way to run virtual machine workloads. It is used in this pattern to host VMs simulating an Edge environment; the chart that configures the VMs is designed to be flexible to allow easy customization to model different VM sizes, mixes, versions and profiles for future pattern development.
+
+# Inductive Automation [Ignition](https://inductiveautomation.com/)
+
+The goal of this pattern is to configure 2 VMs running Firefox in Kiosk mode displaying the demo version of the Ignition application running in a podman container. Ignition is a popular tool in use with Oil and Gas companies; it is included as a real-world example and as an item to spark imagination about what other applications could be installed and managed this way.
+
+# HashiCorp [Vault](https://www.vaultproject.io/)
 
 Vault is used as the authoritative source for the Kiosk ssh pubkey via the External Secrets Operator.
 As part of this pattern HashiCorp Vault has been installed. Refer to the section on [Vault](https://hybrid-cloud-patterns.io/secrets/vault/).

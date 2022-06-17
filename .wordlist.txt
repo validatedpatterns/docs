@@ -34,9 +34,13 @@ cakephp
 centos
 ceph
 claudiol
+cloudInit
+cloudInitPassword
+cloudInitUser
 clustergroup
 clustergroups
 clustername
+ClusterSecretStore
 cncf
 colocated
 compliancetype
@@ -60,6 +64,8 @@ ddsv
 ddv
 decisionserver
 declaratively
+defaultPassword
+defaultUser
 defragging
 defragment
 defragmentation
@@ -111,6 +117,7 @@ gitops
 gpus
 grafana
 gz
+hardcoded
 hashicorp
 hashicorp's
 hb
@@ -138,6 +145,8 @@ integrations
 intellection
 interna
 iot
+iotgateway
+iotsensor
 ipbabble
 iz
 jboss
@@ -228,6 +237,7 @@ passthrough
 persistentvolumeclaim
 pgsql
 png
+podman
 podspercore
 posix
 pre
@@ -237,6 +247,7 @@ productization
 programmatically
 psql
 pubkey
+publickey
 pv
 quickstart
 rabbitmq
@@ -262,6 +273,7 @@ runtime
 rxpm
 scalability
 scalable
+secretStore
 seldon
 ser
 serverless
@@ -270,6 +282,8 @@ shopflor
 spinny
 srgpurhvzbnzxxxxxxxxx
 ssd
+sshpubkeyfield
+sshsecret
 ssl
 sso
 sstlsi
@@ -282,9 +296,12 @@ submodules
 subtree
 subtrees
 sudo
+superset
+svc
 synched
 syncpolicy
 targetbucket
+targetPort
 tbd
 tcp
 tekron
@@ -296,7 +313,9 @@ tengvall
 thi
 tib
 toc
+toh
 toplevel
+toPrettyJson
 transactional
 tst
 txt
@@ -316,6 +335,7 @@ virtualmachine
 virtualmachines
 vm
 vms
+VNC
 wgdbnwft
 whenry
 wip
@@ -324,6 +344,7 @@ wyr
 xlarge
 xmqtbdb
 xp
+xpq
 xray
 xraylab
 xrays
