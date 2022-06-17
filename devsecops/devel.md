@@ -137,4 +137,4 @@ That's it! Go to your devel (edge) OpenShift console and check for the open-clus
 
 ## Next up
 
-Deploy the the Multicluster DevSecOps [secured production cluster](/multiclustr-devsecops/prod)
+Deploy the the Multicluster DevSecOps [secured production cluster](/devsecops/prod)
