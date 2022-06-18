@@ -16,4 +16,4 @@ lint:
 		-e VALIDATE_CSS=false -e VALIDATE_HTML=false -e VALIDATE_JSCPD=false \
 		-e VALIDATE_GITLEAKS=false -e VALIDATE_NATURAL_LANGUAGE=false -e VALIDATE_JAVASCRIPT_ES=false \
 		-e VALIDATE_JAVASCRIPT_STANDARD=false \
-		-v $(PWD):/tmp/lint:rw,z docker.io/github/super-linter
+		-v $(PWD):/tmp/lint:rw,z docker.io/github/super-linter:slim-latest
