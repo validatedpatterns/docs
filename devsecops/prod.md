@@ -134,4 +134,4 @@ That's it! Go to your production OpenShift console and check for the open-cluste
 
 ## Next up
 
-Work your way through the Multicluster DevSecOps [GitOps/DevOps demos](/multiclustr-devsecops/application)
+Work your way through the Multicluster DevSecOps [GitOps/DevOps demos](/devsecops/) TBD

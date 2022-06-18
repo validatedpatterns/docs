@@ -46,7 +46,7 @@ service](https://console.redhat.com/openshift/create).
 
 1. Fork the [Multi-Cluster DevSecOps](https://github.com/hybrid-cloud-patterns/multicluster-devsecops) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevSecOps processes.
 
-1. Fork the [TBD demo](https://github.com/hybrid-cloud-patterns/TBD) repository on GitHub.  It is necessary to fork this repository because the GitOps framework will push tags to this repository that match the versions of software that it will deploy.
+1. Fork the [TBD demo](https://github.com/hybrid-cloud-patterns/) repository on GitHub.  It is necessary to fork this repository because the GitOps framework will push tags to this repository that match the versions of software that it will deploy.
 
 1. Clone the forked copy of the `multicluster-devsecops` repository. Use branch `v1.0`.
 
@@ -164,10 +164,10 @@ Once the hub has been setup correctly and confirmed to be working, you can:
 
 1. Add a dedicated development cluster to [deploy the CI pipelines using ACM](/devsecops/devel)
 1. Add a dedicated production cluster to [deploy production using ACM](/devsecops/prod)
-1. Once the hub, production and devel clusters have been deployed you will want to check out and test the Multi-Cluster DevSecOps demo code. You can find that [TBD](../TBD)
+1. Once the hub, production and devel clusters have been deployed you will want to check out and test the Multi-Cluster DevSecOps demo code. You can find that here TBD
 
-   a. Making [configuration changes](https://hybrid-cloud-patterns.io/multicluster-devsecops/application/#config-changes) with GitOps
-   a. Making [application changes](https://hybrid-cloud-patterns.io/multicluster-devsecops/application/#application-changes-using-devops) using DevOps
+   a. Making [configuration changes](https://hybrid-cloud-patterns.io/devsecops/) with GitOps TBD
+   a. Making [application changes](https://hybrid-cloud-patterns.io/devsecops/) using DevOps TBD
 
 # Uninstalling
 

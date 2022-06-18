@@ -6,9 +6,12 @@ has_children: true
 nav_order: 4
 ---
 
+{% comment %}
+FIXME: uncomment once this exists
 <div class="pattern_logo">
   <img src="/images/logos/devsecops.png" class="pattern_logo" alt="Points">
 </div>
+{% endcomment %}
 
 # Secure Supply Chain (aka Multi-Cluster DevSecops)
 
@@ -72,7 +75,10 @@ The Multi-Cluster DevSecOps Pattern / Demo Scenario reflects this by having 3 la
 - Devel - where AppDev, Testing etc. is happening
 - Central Data Center / Hub - the cloud/core, (and ERP systems of course, not part of the demo).
 
+{% comment %}
+FIXME: uncomment once the image actually exists
 [![Demo Scenario](/images/WH-TO-DO)](/images/WH-TO-DO)
+{% endcomment %}
 
 There are ways of combing these three clusters into a two cluster (hub/devel and secured/edge) and single cluster (all in one). The documentation provides instructions (TBD Link).
 
