@@ -8,6 +8,9 @@ serve-container:
 	@echo "Serving via container. Browse to http://localhost:4000"
 	podman run -it --net=host -v $(PWD):/site:z --entrypoint "make" $(JEKYLL_CONTAINER)
 
+test: spellcheck lint htmlproof
+	@echo "Ran all tests"
+
 spellcheck:
 	@echo "Running spellchecking on the tree"
 	podman run -it -v $(PWD):/tmp:rw,z docker.io/jonasbn/github-action-spellcheck:latest
@@ -28,3 +31,7 @@ htmlproof:
 		-e INPUT_URL_IGNORE="http://www.example.com/\nhttps://en.wikipedia.org/wiki/Main_Page" \
 		-e INPUT_URL_IGNORE_RE="^https://twitter.com/" \
 		$(JEKYLL_CONTAINER) /usr/local/bin/proof-html.rb
+
+lintwordlist:
+	@sort .wordlist.txt | tr '[:upper:]' '[:lower:]' | uniq > /tmp/.wordlist.txt
+	@mv -v /tmp/.wordlist.txt .wordlist.txt

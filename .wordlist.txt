@@ -34,13 +34,13 @@ cakephp
 centos
 ceph
 claudiol
-cloudInit
-cloudInitPassword
-cloudInitUser
+cloudinit
+cloudinitpassword
+cloudinituser
 clustergroup
 clustergroups
 clustername
-ClusterSecretStore
+clustersecretstore
 cncf
 colocated
 compliancetype
@@ -64,8 +64,8 @@ ddsv
 ddv
 decisionserver
 declaratively
-defaultPassword
-defaultUser
+defaultpassword
+defaultuser
 defragging
 defragment
 defragmentation
@@ -88,6 +88,7 @@ edsv
 edv
 efg
 ejuat
+endcomment
 endraw
 envi
 ep
@@ -101,6 +102,7 @@ externalurl
 facto
 featureful
 fh
+fixme
 fqdn
 fqdns
 fromsecret
@@ -241,8 +243,8 @@ podman
 podspercore
 posix
 pre
-preplay
 prem
+preplay
 processserver
 productization
 programmatically
@@ -274,7 +276,7 @@ runtime
 rxpm
 scalability
 scalable
-secretStore
+secretstore
 seldon
 ser
 serverless
@@ -302,7 +304,7 @@ svc
 synched
 syncpolicy
 targetbucket
-targetPort
+targetport
 tbd
 tcp
 tekron
@@ -316,13 +318,14 @@ tib
 toc
 toh
 toplevel
-toPrettyJson
+toprettyjson
 transactional
 tst
 txt
 ubi
 udp
 ui
+uncomment
 uncommented
 unencrypted
 upstreaming
@@ -336,7 +339,7 @@ virtualmachine
 virtualmachines
 vm
 vms
-VNC
+vnc
 wgdbnwft
 whenry
 wip
