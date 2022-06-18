@@ -51,5 +51,7 @@ jobs:
           VALIDATE_CSS: false
           VALIDATE_HTML: false
           VALIDATE_JSCPD: false
+          VALIDATE_JAVASCRIPT_ES: false
+          VALIDATE_JAVASCRIPT_STANDARD: false
           VALIDATE_GITLEAKS: false
           VALIDATE_NATURAL_LANGUAGE: false
