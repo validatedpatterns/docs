@@ -8,6 +8,9 @@ serve-container:
 	@echo "Serving via container. Browse to http://localhost:4000"
 	podman run -it --net=host -v $(PWD):/site:z --entrypoint "make" $(JEKYLL_CONTAINER)
 
+test: spellcheck lint htmlproof
+	@echo "Ran all tests"
+
 spellcheck:
 	@echo "Running spellchecking on the tree"
 	podman run -it -v $(PWD):/tmp:rw,z docker.io/jonasbn/github-action-spellcheck:latest
