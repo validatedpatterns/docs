@@ -19,7 +19,7 @@ nav_order: 2
 
 ## Allow ACM to deploy the managed cluster application to a subset of clusters
 
-By default the `clusterGroup` applications are deployed on all clusters that ACM knows about. In you `value-hub.yaml` file add a `managedClusterCgroup` for each cluster or group of clusters that you want to manage was one.
+By default the `clusterGroup` applications are deployed on all clusters that ACM knows about. In your `value-hub.yaml` file add a `managedClusterCgroup` for each cluster or group of clusters that you want to manage as one.
 
 ```yaml
   managedClusterGroups:
