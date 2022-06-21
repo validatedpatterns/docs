@@ -130,6 +130,7 @@ hb
 hbv
 hc
 highperformance
+hmi
 hostname
 howto
 httpd

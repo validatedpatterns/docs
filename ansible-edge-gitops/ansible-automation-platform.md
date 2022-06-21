@@ -115,6 +115,12 @@ This CredentialType is considered "secret" because it includes the admin login p
 
 ## Inventory
 
+The pattern installs an Inventory (HMI Demo), but no inventory sources. This is due to the way that OpenShift Virtualization provides access to virtual machines. The IP address associated with the SSH service that a given VM is running is associated with the Service object on the VM. This is not the way the Kubernetes inventory plugin expects to work. So to make inventory dynamic, we are instead using a play to discover VMs and add them to inventory "on the fly". What is unusual about DNS inside a Kubernetes cluster is that resources outside the namespace must use the cluster FQDN - which is `resource-name.resource-namespace.svc`.
+
+It is also possible to define a static inventory - an example of how this would like is preserved in the pattern repository as [hosts](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/inventory/hosts).
+
+A standard dynamic inventory script is available [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/inventory/openshift_cluster.yml). This will retrieve the object names, but it will not (currently) map the FQDN properly. Because of this limitation, we moved to using the inventory pre-play method.
+
 ## Templates (key playbooks in the pattern)
 
 ## Schedules
