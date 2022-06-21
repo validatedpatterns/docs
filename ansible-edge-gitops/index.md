@@ -43,9 +43,12 @@ This pattern uses OpenShift Virtualization (the productization of Kubevirt) to s
 - Red Hat Ansible Automation Platform (formerly known as "Ansible Tower")
 - Red Hat OpenShift GitOps (ArgoCD)
 - OpenShift Virtualization (Kubevirt)
+- Red Hat Enterprise Linux 8
+
+### Other Technologies this Pattern Uses
+
 - Hashicorp Vault
 - External Secrets Operator
-- Red Hat Enterprise Linux 8
 - Ignition
 
 ## Architecture
