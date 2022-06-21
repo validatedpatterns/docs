@@ -1,19 +1,29 @@
 JEKYLL_CONTAINER ?= quay.io/hybridcloudpatterns/jekyll-container:latest
 
+# Do not use selinux labeling when we are using nfs
+FSTYPE=$(shell df -Th . | grep -v Type | awk '{ print $$2 }')
+ifeq ($(FSTYPE), nfs)
+	ATTRS = "rw"
+else ifeq ($(FSTYPE), nfs4)
+	ATTRS = "rw"
+else
+	ATTRS = "rw,z"
+endif
+
 serve:
 	@echo "Next browse to: http://localhost:4000"
 	jekyll serve -w --trace --config _config.yml,_local.yml --host 127.0.0.1
 
 serve-container:
-	@echo "Serving via container. Browse to http://localhost:4000"
-	podman run -it --net=host -v $(PWD):/site:z --entrypoint "make" $(JEKYLL_CONTAINER)
+	@echo "Serving via container. Browse to http://localhost:4000. Filesystem type: $(FSTYPE)"
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint "make" $(JEKYLL_CONTAINER)
 
 test: spellcheck lint htmlproof
 	@echo "Ran all tests"
 
 spellcheck:
 	@echo "Running spellchecking on the tree"
-	podman run -it -v $(PWD):/tmp:rw,z docker.io/jonasbn/github-action-spellcheck:latest
+	podman run -it -v $(PWD):/tmp:$(ATTRS) docker.io/jonasbn/github-action-spellcheck:latest
 
 lint:
 	@echo "Running linter on the tree"
@@ -21,12 +31,12 @@ lint:
 		-e VALIDATE_CSS=false -e VALIDATE_HTML=false -e VALIDATE_JSCPD=false \
 		-e VALIDATE_GITLEAKS=false -e VALIDATE_NATURAL_LANGUAGE=false -e VALIDATE_JAVASCRIPT_ES=false \
 		-e VALIDATE_JAVASCRIPT_STANDARD=false \
-		-v $(PWD):/tmp/lint:rw,z docker.io/github/super-linter:slim-latest
+		-v $(PWD):/tmp/lint:$(ATTRS) docker.io/github/super-linter:slim-latest
 
 htmlproof:
 	@echo "Running html proof to check links"
-	podman run -it --net=host -v $(PWD):/site:rw,z --entrypoint jekyll $(JEKYLL_CONTAINER) build
-	podman run -it --net=host -v $(PWD):/site:z --entrypoint ruby -e INPUT_DIRECTORY=_site/ \
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint jekyll $(JEKYLL_CONTAINER) build
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint ruby -e INPUT_DIRECTORY=_site/ \
 		-e INPUT_FORCE_HTTPS=1 -e INPUT_CHECK_FAVICON=0 \
 		-e INPUT_URL_IGNORE="http://www.example.com/\nhttps://en.wikipedia.org/wiki/Main_Page" \
 		-e INPUT_URL_IGNORE_RE="^https://twitter.com/" \
