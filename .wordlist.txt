@@ -6,6 +6,7 @@ acs
 activemq
 addon
 addons
+aeg
 afnmju
 amq
 amqstreams
@@ -33,6 +34,7 @@ bucketsource
 cakephp
 centos
 ceph
+ckollujlir
 claudiol
 cloudinit
 cloudinitpassword
@@ -48,6 +50,7 @@ config
 configur
 conjur
 containerimage
+credentialtype
 csv
 ctdim
 ctrl
@@ -87,6 +90,7 @@ eav
 edsv
 edv
 efg
+efrqurrkuojrlsqhi
 ejuat
 endcomment
 endraw
@@ -126,6 +130,8 @@ hb
 hbv
 hc
 highperformance
+hmi
+hostname
 howto
 httpd
 https
@@ -167,8 +173,10 @@ keyspace
 kgitu
 kie
 kieserver
+kioskextraparams
 knative
 kno
+kube
 kubeconfig
 kubernetes
 kubevirt
@@ -182,6 +190,7 @@ lhipbabbledummyhykhq
 lifecycle
 localclusterdomain
 localdomaincluster
+localhost
 loggingca
 lsv
 machineapi
@@ -226,6 +235,7 @@ oc
 ocp
 odf
 ofvbu
+okd
 onfg
 opendatahub
 openjdk
@@ -235,7 +245,9 @@ openshiftsdn
 operatorhub
 opr
 overcommitting
+params
 passthrough
+pathed
 persistentvolumeclaim
 pgsql
 png
@@ -270,6 +282,8 @@ rhdm
 rhecoeng
 rhel
 rhpam
+rhsm
+rhsmcredential
 rickard
 runnable
 runtime
@@ -290,6 +304,7 @@ sshsecret
 ssl
 sso
 sstlsi
+stackrox
 standal
 stormshift
 stackrox
