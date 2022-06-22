@@ -2,7 +2,7 @@
 layout: default
 title: Getting Started
 grand_parent: Patterns
-parent: Secure Supply Chain (DevSecOps)
+parent: Secure Supply Chain
 nav_order: 1
 ---
 
