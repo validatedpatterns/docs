@@ -33,7 +33,7 @@ Vault requires extra setup in the form of unseal keys and configuration of secre
 
 This script is actually an Ansible playbook that reads the values-secret.yaml file and stores the data it finds there in vault as keypairs. These values are then usable in the kubernetes cluster. This pattern uses the ssh pubkey for the kiosk VMs via the external secrets operator.
 
-The script will update secrets in vault if re-run.
+The script will update secrets in vault if re-run; it is safe to re-run if the secret values have not changed as well.
 
 ## [deploy-kubevirt-worker.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/deploy_kubevirt_worker.sh)
 
