@@ -22,6 +22,8 @@ argocd
 arptn
 atlassian
 auditable
+awk
+awx
 backend
 baremetal
 baremetal integrations
@@ -257,6 +259,7 @@ posix
 pre
 prem
 preplay
+privatekey
 processserver
 productization
 programmatically
@@ -291,6 +294,7 @@ rxpm
 scalability
 scalable
 secretstore
+sed
 seldon
 ser
 serverless
@@ -307,7 +311,6 @@ sstlsi
 stackrox
 standal
 stormshift
-stackrox
 subdirectories
 submodule
 submoduled
