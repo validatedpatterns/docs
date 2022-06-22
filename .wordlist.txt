@@ -176,6 +176,7 @@ kieserver
 kioskextraparams
 knative
 kno
+kube
 kubeconfig
 kubernetes
 kubevirt
@@ -234,6 +235,7 @@ oc
 ocp
 odf
 ofvbu
+okd
 onfg
 opendatahub
 openjdk
@@ -302,9 +304,9 @@ sshsecret
 ssl
 sso
 sstlsi
+stackrox
 standal
 stormshift
-stackrox
 subdirectories
 submodule
 submoduled

@@ -123,25 +123,78 @@ A standard dynamic inventory script is available [here](https://github.com/hybri
 
 ## Templates (key playbooks in the pattern)
 
+### [Dynamic Provision Kiosk Playbook](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/dynamic_kiosk_provision.yml)
+
+This combines all three key workflows in this pattern:
+
+* Dynamic inventory (inventory preplay)
+* Kiosk Mode
+* Podman Playbook
+
+It is safe to run multiple times on the same system. It is run on a schedule, every 10 minutes, to demonstrate this.
+
+### [Kiosk Mode Playbook](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/kiosk_playbook.yml)
+
+This playbook runs the [kiosk_mode role](/ansible-edge-gitops/ansible-automation-platform/#kiosk_mode).
+
+### [Podman Playbook](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/podman_playbook.yml)
+
+This playbook runs the [container_lifecycle role](/ansible-edge-gitops/ansible-automation-platform/#container_lifecycle) with overrides suitable for the Ignition application container.
+
+### [Ping Playbook](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/ping.yml)
+
+This playbook is for testing basic connectivity - making sure that you can reach the nodes you wish to manage, and that the credentials you have given will work on them. It will not change anything on the VMs - just gather facts from them (which requires elevating to root).
+
 ## Schedules
 
-## Execution Environment
+### Update Project AEG GitOps
+
+This job runs every 5 minutes to update the GitOps repository associated with the project. This is necessary when any of the Ansible code (for example, the playbooks or roles associated with the pattern) changes, so that the new code is available to the AAP instance.
+
+### Dynamic Provision Kiosk Playbook
+
+This job runs every 10 minutes to provision and configure any kiosks it finds to run the Ignition application in a podman container, and configure firefox in kiosk mode to display that application. The playbook is designed to be idempotent, so it is safe to run multiple times on the same targets; it will not make user-visible changes to those targets unless it must.
+
+This playbook combines the [inventory_preplay](/ansible-edge-gitops/ansible-automation-platform/#inventory_preplayyml) and the [Provision Kiosk Playbook](/ansible-edge-gitops/ansible-automation-platform/#provision-kiosk-playbook).
+
+## [Execution Environment](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/ansible/execution_environment)
+
+The execution environment includes some additional collections beyond what is provided in the Default execution environment, including:
+
+* [fedora.linux_system_roles](https://linux-system-roles.github.io/)
+* [containers.podman](https://galaxy.ansible.com/containers/podman)
+* [community.okd](https://docs.ansible.com/ansible/latest/collections/community/okd/index.html)
+
+The execution environment definition is provided if you want to customize or change it; if so, you should also change the Execution Environment attributes of the Templates (in the [load script](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh), those attributes are set by the variables `aap_execution_environment` and `aap_execution_environment_image`).
 
 ## Roles included in the pattern
 
 ### [kiosk_mode](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/ansible/roles/kiosk_mode)
 
+This role is responsible does the following:
+
+* RHEL node registration
+* Installation of GUI packages
+* Installation of Firefox
+* Configuration of Firefox kiosk mode
+
 ### [container_lifecycle](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/ansible/roles/container_lifecycle)
 
-### [podman_ignition](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/ansible/roles/podman_ignition)
+This role is responsible for:
+
+* Downloading and running a podman image on the system (and configure it to auto-update)
+* Setting the container up to run at boot time
+* Passing any other runtime arguments to the container. In this container's case, that includes specifying an admin password override.
 
 ## Extra Playbooks in the Pattern
 
-### [ping.yml](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/ping.yml)
-
-This playbook is for testing basic connectivity - making sure that you can reach the nodes you wish to manage, and that the credentials you have given will work on them. It will not change anything on the VMs - just gather facts from them (which requires elevating to root).
-
 ### [inventory_preplay.yml](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/inventory_preplay.yml)
+
+This playbook is designed to be included in other plays; its purpose is to discover the desired inventory and add those hosts to inventory at runtime. It uses a kubernetes query via the cluster-admin kube config file.
+
+### [Provision Kiosk Playbook](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/provision_kiosk.yml)
+
+This does the work of provisioning the kiosk, which configures kiosk mode, and also installs Ignition and configures it to start at boot. It runs the [kiosk_mode](/ansible-edge-gitops/ansible-automation-platform/#kiosk_mode) and [container_lifecycle](/ansible-edge-gitops/ansible-automation-platform/#container_lifecycle) roles.
 
 # Next Steps
 
