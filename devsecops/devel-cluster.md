@@ -64,7 +64,7 @@ Click on the "Refresh web console" link.
 
 ![update-web-console](/images/web-console-update-message.png "Update web console")
 
-On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pulldown.
+On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down.
 This will navigate to the ACM console and to its "Clusters" section
 
 ![launch-acm-console](/images/local-all-cluster-pulldown.png "Launch ACM console")
@@ -157,7 +157,7 @@ There are a number of steps you can do to check that the components have deploye
 
 1. You should be able to select the route to the demo application in the test environment.
 
-1. The devel cluster (e.g. wh-devel) should show up in the ACS Central console.
+1. The development cluster name should show up in the ACS Central console.
 
 [![acs-central-with-devel](/images/devsecops/acs-dashboard-2node.png)](/images/devsecops/acs-dashboard-2node.png)
 
