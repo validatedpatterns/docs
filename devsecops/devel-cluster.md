@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Production Sites
+title: Secured Development Cluster
 grand_parent: Patterns
-parent: Secure Supply Chain (DevSecOps)
+parent: Secure Supply Chain
 nav_order: 2
 ---
 
-# Having a development cluster join the hub
+# Having a development cluster (devel) join the hub
 
 {: .no_toc }
 
@@ -59,17 +59,23 @@ There are a three ways to join the devel cluster to the hub.
 
 ## Devel setup using the ACM UI
 
-1. From the datacenter openshift console select ACM from the top right
+After ACM is installed a message regarding a "Web console update is available" may be displayed.
+Click on the "Refresh web console" link.
 
-![launch-acm-console](/images/launch-acm-console.png "Launch ACM console")
+![update-web-console](/images/web-console-update-message.png "Update web console")
 
-2. Select the "Import cluster" option beside the highlighted Create Cluster button.
+On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down.
+This will navigate to the ACM console and to its "Clusters" section
+
+![launch-acm-console](/images/local-all-cluster-pulldown.png "Launch ACM console")
+
+Select the "Import cluster" option beside the highlighted Create Cluster button.
 
 ![import-cluster](/images/import-cluster.png "Select Import cluster")
 
-3. On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clustergroup=devel` Press import. Done.
+On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clustergroup=devel` Press import. Done.
 
-![import-with-kubeconfig](/images/import-with-kubeconfig.png "Import using kubeconfig")
+![import-with-kubeconfig](/images/devsecops/import-devel-cluster.png "Import using kubeconfig")
 
 Using this method, you are done. Skip to the section [Devel is joined](#devel-is-joined) but ignore the part about adding the site tag.
 
@@ -133,8 +139,28 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
 
 ### You're done
 
-That's it! Go to your devel (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
+That's it! Go to your devel (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it's finished check that all applications have synced in OpenShift GitOps. Select "Devel Argo CD" from the OpenShift Applications menu.
+
+[![GitOps Devel app](/images/devsecops/ocp-devel-argocd-menu.png)](/images/devsecops/ocp-devel-argocd-menu.png)
+
+Then look at the GitOps applications and make sure they have synced completely.
+
+[![GitOps Dashboard Devel](/images/devsecops/gitops-devel-cluster.png)](/images/devsecops/gitops-devel-cluster.png)
+
+## Confirming successful deployment
+
+There are a number of steps you can do to check that the components have deployed:
+
+1. Pipelines should be available in the console on the left hand side.
+
+1. Run a pipeline and check the build and if the image gets updated in the Quay registry on the Hub.
+
+1. You should be able to select the route to the demo application in the test environment.
+
+1. The development cluster name should show up in the ACS Central console.
+
+[![acs-central-with-devel](/images/devsecops/acs-dashboard-2node.png)](/images/devsecops/acs-dashboard-2node.png)
 
 ## Next up
 
-Deploy the the Multicluster DevSecOps [secured production cluster](/devsecops/prod)
+Deploy the the Multicluster DevSecOps [secured production cluster](/devsecops/production-cluster)

@@ -2,7 +2,7 @@
 layout: default
 title: Getting Started
 grand_parent: Patterns
-parent: Secure Supply Chain (DevSecOps)
+parent: Secure Supply Chain
 nav_order: 1
 ---
 
@@ -162,8 +162,8 @@ service](https://console.redhat.com/openshift/create).
 
 Once the hub has been setup correctly and confirmed to be working, you can:
 
-1. Add a dedicated development cluster to [deploy the CI pipelines using ACM](/devsecops/devel)
-1. Add a dedicated production cluster to [deploy production using ACM](/devsecops/prod)
+1. Add a dedicated development cluster to [deploy the CI pipelines using ACM](/devsecops/devel-cluster)
+1. Add a dedicated production cluster to [deploy production using ACM](/devsecops/production-cluster)
 1. Once the hub, production and devel clusters have been deployed you will want to check out and test the Multi-Cluster DevSecOps demo code. You can find that here TBD
 
    a. Making [configuration changes](https://hybrid-cloud-patterns.io/devsecops/) with GitOps TBD

@@ -292,6 +292,7 @@ sso
 sstlsi
 standal
 stormshift
+stackrox
 subdirectories
 submodule
 submoduled

@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Secured Production Sites
+title: Secured Production Clusters
 grand_parent: Patterns
-parent: Secure Supply Chain (DevSecOps)
+parent: Secure Supply Chain
 nav_order: 3
 ---
 
@@ -54,17 +54,23 @@ There are a three ways to join the production to the datacenter.
 * Using the `cm` tool
 * Using the `clusteradm` tool
 
-## production setup using the ACM UI
+## Production cluster setup using the ACM UI
 
-1. From the datacenter openshift console select ACM from the top right
+After ACM is installed a message regarding a "Web console update is available" may be displayed.
+Click on the "Refresh web console" link.
 
-![launch-acm-console](/images/launch-acm-console.png "Launch ACM console")
+![update-web-console](/images/web-console-update-message.png "Update web console")
 
-2. Select the "Import cluster" option beside the highlighted Create Cluster button.
+On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down.
+This will navigate to the ACM console and to its "Clusters" section
+
+![launch-acm-console](/images/local-all-cluster-pulldown.png "Launch ACM console")
+
+Select the "Import cluster" option beside the highlighted Create Cluster button.
 
 ![import-cluster](/images/import-cluster.png "Select Import cluster")
 
-3. On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clustergroup=secured` Press import. Done.
+On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clustergroup=secured` Press import. Done.
 
 ![import-with-kubeconfig](/images/import-with-kubeconfig.png "Import using kubeconfig")
 
@@ -74,7 +80,7 @@ Using this method, you are done. Skip to the section [Production is joined](#pro
 
 1. Install the `cm` (cluster management) command-line tool. See details [here](https://github.com/open-cluster-management/cm-cli/#installation)
 
-1. Obtain the KUBECONFIG file from the edge/secured cluster.
+1. Obtain the KUBECONFIG file from the managed secured cluster.
 
 1. On the command-line login into the hub/datacenter cluster (use `oc login` or export the KUBECONFIG).
 
@@ -132,6 +138,8 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
 
 That's it! Go to your production OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
 
+[![GitOps Dashboard Secured](/images/devsecops/gitops-secured-cluster.png)](/images/devsecops/gitops-secured-cluster.png)
+
 ## Next up
 
-Work your way through the Multicluster DevSecOps [GitOps/DevOps demos](/devsecops/) TBD
+Work your way through the Multicluster DevSecOps GitOps/DevOps demos (TBD)
