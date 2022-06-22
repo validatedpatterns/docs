@@ -153,7 +153,7 @@ There are a number of steps you can do to check that the components have deploye
 
 1. Pipelines should be available in the console on the left hand side.
 
-1. Run a pipeline and check the build and if the image gets updated in the Quay registry on the Hub. 
+1. Run a pipeline and check the build and if the image gets updated in the Quay registry on the Hub.
 
 1. You should be able to select the route to the demo application in the test environment.
 
@@ -163,4 +163,4 @@ There are a number of steps you can do to check that the components have deploye
 
 ## Next up
 
-Deploy the the Multicluster DevSecOps [secured production cluster](/multicluster-devsecops/prod)
+Deploy the the Multicluster DevSecOps [secured production cluster](/devsecops/production-cluster)
