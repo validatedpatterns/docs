@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Secure Supply Chain (DevSecOps)
+title: Secure Supply Chain
 parent: Patterns
 has_children: true
-nav_order: 4
+nav_order: 5
 ---
 
 {% comment %}
@@ -13,7 +13,7 @@ FIXME: uncomment once this exists
 </div>
 {% endcomment %}
 
-# Secure Supply Chain (aka Multi-Cluster DevSecops)
+# Secure Supply Chain (aka Multicluster DevSecOps)
 
 {: .no_toc }
 
