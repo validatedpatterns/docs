@@ -1,8 +1,6 @@
 JEKYLL_CONTAINER ?= quay.io/hybridcloudpatterns/jekyll-container:latest
 
-build:
-	@echo "Check the html content in _site"
-	podman run -it --net=host -v $(PWD):/site:rw,z --entrypoint "jekyll" $(JEKYLL_CONTAINER) build
+default: serve
 
 serve:
 	@echo "Next browse to: http://localhost:4000"
@@ -42,3 +40,7 @@ lintwordlist:
 
 clean:
 	@rm -rvf ./.jekyll-cache ./_site ./tmp super-linter.log dictionary.dic
+
+build:
+	@echo "Check the html content in _site"
+	podman run -it --net=host -v $(PWD):/site:rw,z --entrypoint "jekyll" $(JEKYLL_CONTAINER) build
