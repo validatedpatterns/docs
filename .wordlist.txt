@@ -348,6 +348,7 @@ ui
 uncomment
 uncommented
 unencrypted
+unschedulable
 upstreaming
 upstream's
 userid
