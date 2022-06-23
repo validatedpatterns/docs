@@ -27,7 +27,7 @@ nav_order: 1
 
 ## Background
 
-Organizations are looking for a way to develop and deploy applications on open hybrid cloud in a stable, simple, and secure way. This hybrid approach includes multi-cloud deployments where workloads may be running on different clusters on different clouds - private or public. This also requires an infrastructure-as-code approach that manages versions and being able to deploy based on specific deployment configurations.
+Organizations are looking for a way to develop and deploy applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid approach includes multi-cloud deployments where workloads may be running on different clusters on different clouds - private or public. This also requires an infrastructure-as-code approach that manages versions and being able to deploy based on specific deployment configurations.
 
 The pattern is derived from work done by the [Red Hat Portfolio Architecture team](https://gitlab.com/redhatdemocentral/portfolio-architecture-examples/-/blob/main/spi-multi-cloud-gitops.adoc)
 

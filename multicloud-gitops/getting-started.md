@@ -19,7 +19,7 @@ nav_order: 1
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing).
+1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing).
 1. (Optional) A second OpenShift cluster for multicloud demonstration or testing
 1. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks)
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
@@ -28,7 +28,7 @@ The use of this blueprint depends on having at least one running Red Hat
 OpenShift cluster. It is desirable to have a cluster for deploying the GitOps
 management hub assets and a separate cluster(s) for the managed cluster(s).
 
-If you do not have a running Red Hat OpenShift cluster you can start one on a
+If you do not have a running Red Hat OpenShift cluster, you can start one on a
 public or private cloud by using [Red Hat's cloud
 service](https://console.redhat.com/openshift/create).
 
@@ -102,9 +102,9 @@ service](https://console.redhat.com/openshift/create).
 
 # Deploying the managed cluster applications
 
-Once the management hub has been setup correctly and confirmed to be working, it is time to attach one or more managed clusters to the architecture (see diagrams below).
+Once the management hub has been set up correctly and confirmed to be working, it is time to attach one or more managed clusters to the architecture (see diagrams below).
 
-For instructions on deploying the edge please read the following [document](https://hybrid-cloud-patterns.io/multicloud-gitops/managed-cluster/).
+For instructions on deploying the edge, please read the following [document](https://hybrid-cloud-patterns.io/multicloud-gitops/managed-cluster/).
 
 ## Multicloud GitOps application demos
 
