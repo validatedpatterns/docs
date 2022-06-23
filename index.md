@@ -47,7 +47,7 @@ Some patterns include both a data center and one or more edge clusters. The diag
 
  3. Import/join the cluster to the hub/data center. Instructions for importing the cluster can be found [here]. You're done.
 
-When the cluster is imported, ACM on the datacenter will deploy an ACM agent and and agent-addon pod into the edge cluster. Once installed and running ACM will then deploy OpenShift GitOps onto the cluster. Then OpenShift GitOps will deploy whatever applications are required for that cluster based on a label.
+When the cluster is imported, ACM on the datacenter will deploy an ACM agent and agent-addon pod into the edge cluster. Once installed and running ACM will then deploy OpenShift GitOps onto the cluster. Then OpenShift GitOps will deploy whatever applications are required for that cluster based on a label.
 
 ## OpenShift GitOps (a.k.a ArgoCD)
 
