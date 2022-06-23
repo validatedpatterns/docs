@@ -46,7 +46,7 @@ The pattern is derived from work done by the [Red Hat Portfolio Architecture tea
 
 ## Architecture
 
-At a high level this requires a management hub, for DevOps and GitOps, and and infrastructure that extends to more than one managed clusters running on private or public clouds.
+At a high level this requires a management hub, for DevOps and GitOps, and infrastructure that extends to more than one managed clusters running on private or public clouds.
 
 [![Multi-Cloud Architecture](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)
 
