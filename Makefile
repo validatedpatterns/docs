@@ -35,3 +35,6 @@ htmlproof:
 lintwordlist:
 	@sort .wordlist.txt | tr '[:upper:]' '[:lower:]' | uniq > /tmp/.wordlist.txt
 	@mv -v /tmp/.wordlist.txt .wordlist.txt
+
+clean:
+	@rm -rvf ./.jekyll-cache ./_site ./tmp super-linter.log dictionary.dic
