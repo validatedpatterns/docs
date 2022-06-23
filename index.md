@@ -9,7 +9,7 @@ nav_order: 1
 Hybrid Cloud Patterns are a natural progression from reference architectures with additional value.
 
 This effort is focused on customer solutions that involve multiple Red Hat
-products. The patterns include one or more applications that are based on successfully deployed customer examples. Example application code is provided as a demonstration along with the various open source projects and Red Hat products required to for the deployment to work. Users can then modify the pattern for their own specific application.
+products. The patterns include one or more applications that are based on successfully deployed customer examples. Example application code is provided as a demonstration, along with the various open source projects and Red Hat products required to for the deployment to work. Users can then modify the pattern for their own specific application.
 
 How do we select and produce a pattern? We look for novel customer use cases, obtain an open source demonstration of the use case, validate the pattern with its components with the relevant product engineering teams, and create GitOps based automation to make them easily repeatable and extendable.
 
@@ -21,7 +21,7 @@ It is recommended that architects or advanced developers with knowledge of Kuber
 
 ## General Structure
 
-All patterns assume an OpenShift cluster is available to deploy the application(s) that are part of the pattern. If you do not have an openshift cluster you can use [cloud.redhat.com](https://console.redhat.com/openshift).
+All patterns assume an OpenShift cluster is available to deploy the application(s) that are part of the pattern. If you do not have an OpenShift cluster, you can use [cloud.redhat.com](https://console.redhat.com/openshift).
 
 The documentation will use the `oc` command syntax but `kubectl` can be used interchangeably. For each deployment it is assumed that the user is logged into a cluster using the `oc login` command or by exporting the `KUBECONFIG` path.
 
@@ -51,4 +51,4 @@ When the cluster is imported, ACM on the datacenter will deploy an ACM agent and
 
 ## OpenShift GitOps (a.k.a ArgoCD)
 
-When OpenShift GitOps is deployed and running in a cluster (datacenter or edge) you can launch it's console by  choosing ArgoCD in the upper left part of the OpenShift Console (TO-DO whenry to add an image and clearer instructions here)
+When OpenShift GitOps is deployed and running in a cluster (datacenter or edge) you can launch its console by choosing ArgoCD in the upper left part of the OpenShift Console (TO-DO whenry to add an image and clearer instructions here)
