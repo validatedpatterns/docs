@@ -1,5 +1,9 @@
 JEKYLL_CONTAINER ?= quay.io/hybridcloudpatterns/jekyll-container:latest
 
+build:
+	@echo "Check the html content in _site"
+	podman run -it --net=host -v $(PWD):/site:rw,z --entrypoint "jekyll" $(JEKYLL_CONTAINER) build
+
 serve:
 	@echo "Next browse to: http://localhost:4000"
 	jekyll serve -w --trace --config _config.yml,_local.yml --host 127.0.0.1
