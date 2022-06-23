@@ -33,7 +33,7 @@ If you do not have a running Red Hat OpenShift cluster you can start one on a
 public or private cloud by using [Red Hat's cloud
 service](https://console.redhat.com/openshift/create).
 
-# Secrets to Prepare
+# Credentials Required in Pattern
 
 In addition to the openshift cluster, you will need to prepare a number of secrets, or credentials, which will be used
 in the pattern in various ways. To do this, copy the [values-secret.yaml template](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/values-secret.yaml.template) to your home directory as `values-secret.yaml` and replace the explanatory text as follows:
@@ -177,11 +177,17 @@ The installation process will take between 45-60 minutes to complete. If you wan
 
 Under the project `ansible-edge-gitops-hub` click on the URL for the `hub`gitops`server`. All applications will sync, but this takes time as ODF has to completely install, and OpenShift Virtualization cannot provision VMs until the metal node has been fully provisioned and ready. Additionally, the Dynamic Provision Kiosk Template in AAP must complete; it can only start once the VMs have provisioned and are running:
 
-![ansible-edge-gitops-applications](/images/ansible-edge-gitops/aeg-applications.png "Ansible Edge GitOps Operators")
+![ansible-edge-gitops-applications](/images/ansible-edge-gitops/aeg-applications.png "Ansible Edge GitOps Applications")
 
-* Finally, the VM Consoles will show the Ignition application running:
+* While the metal node is building, the VMs in OpenShift console will show as "Unschedulable." This is normal and expected, as the VMs themselves cannot run until the metal node completes provisioning and is ready.
+
+![ansible-edge-vms-unschedulable](/images/ansible-edge-gitops/aeg-vm-unschedulable.png "Ansible Edge GitOps Unschedulable VMs")
+
+* Under Virtualization > Virtual Machines, the virtual machines will eventually show as "Running." Once they are in "Running" state the Provisioning workflow will run on them, and install Firefox, Kiosk mode, and the Ignition application on them:
 
 ![ansible-edge-gitops-vmlist](/images/ansible-edge-gitops/aeg-openshift-vm-screen.png "Ansible Edge GitOps VM List")
+
+* Finally, the VM Consoles will show the Ignition application running
 
 * You should be able to login to the application with the userid "admin" and the password you specified as the GATEWAY_ADMIN_PASSWORD in `container_extra_params` in your values-secret.yaml file.
 
