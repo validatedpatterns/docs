@@ -90,9 +90,6 @@ And the following ansible collections:
 
 * community.okd
 * redhat_cop.controller_configuration
-
-The following collections must also be present. They are dependencies of collections listed above so should not need to be installed separately:
-
 * awx.awx
 * core.kubernetes
 
