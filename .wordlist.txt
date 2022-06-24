@@ -94,6 +94,7 @@ efg
 ejuat
 endcomment
 endraw
+entrypoint
 envi
 ep
 erp
