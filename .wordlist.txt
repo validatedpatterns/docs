@@ -222,6 +222,8 @@ nosql
 nvme
 nvv
 nzrxxxxxxxx
+objectStore
+objectstore
 oc
 ocp
 odf
@@ -351,6 +353,7 @@ xp
 xpq
 xray
 xraylab
+xraylabdb
 xrays
 xxxxxxxx
 xyz
