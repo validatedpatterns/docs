@@ -109,11 +109,11 @@ secrets:
   xraylab:
     database-user: xraylab
     database-password: xraylab
-    database-root-password: ## Insert your custom passowrd here ##
+    database-root-password: ## Insert your custom password here ##
     database-host: xraylabdb
     database-db: xraylabdb
     database-master-user: xraylab
-    database-master-password: ## Insert your custom passowrd here ##
+    database-master-password: ## Insert your custom password here ##
 
   grafana:
     GF_DATASRC_USER: xraylab
