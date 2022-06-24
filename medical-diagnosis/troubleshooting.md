@@ -13,7 +13,7 @@ nav_order: 4
 
 ### Understanding the Makefile
 The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern 
-to the cluster. After the inital bootstrapping of the pattern, the Makefile isn't required as much anymore. Sometimes it is necessary to run a `make upgrade` which allows us to refresh the bootstrap resources without having to tear down the cluster.
+to the cluster. After the initial bootstrapping of the pattern, the Makefile isn't required as much anymore. Sometimes it is necessary to run a `make upgrade` which allows us to refresh the bootstrap resources without having to tear down the cluster.
 
 #### make install / make deploy
 Executing `make install` within the pattern application will trigger a `make deploy` from `<pattern_directory>/common`. This initializes the **common** components of the pattern framework and will install a helm chart in the `default` namespace. At this point cluster services such as **Red Hat Advanced Cluster Management** and **OpenShift Gitops** are deployed. 
@@ -26,7 +26,7 @@ This pattern is integrated with **HashiCorp Vault** and **External Secrets** ser
 If **values-secret.yaml** does not exist, make will exit with an error saying so. Furthermore, if the **values-secret.yaml** file does exist but is improperly formatted, ansible will exit with an error about being improperly formatted. If you are not sure how format the secret, please refer to [Getting Started](../getting-started#preparation).
 
 #### make bootstrap / make upgrade
-`make bootstrap` is the target used for deploying the application specific components of the pattern. It is the final step in the inital `make install` target. Running `make bootstrap` directly should typically not be necessary, instead you are encouraged to run `make upgrade`. 
+`make bootstrap` is the target used for deploying the application specific components of the pattern. It is the final step in the initial `make install` target. Running `make bootstrap` directly should typically not be necessary, instead you are encouraged to run `make upgrade`. 
 
 Generally, executing `make upgrade` should only be required when something goes wrong with the application pattern deployment. For instance, if a value was missed, and the chart wasn't rendered correctly, executing `make upgrade` after fixing the value would be necessary.
 
@@ -82,7 +82,7 @@ Ensure that the prometheus datasource exists and that the status is available. T
 
 **Problem**: The image-generator is scaled correctly, but nothing is happening in the dashboard.
 
-**Solution**: This could be that the sererless eventing function isn't picking up the notifications from ODF and therefore, not triggering the knative-serving function to scale up. In this situation there are a number of things to check, the first thing is to check the logs of the `rgw` pod in the `openshift-storage` namespace. 
+**Solution**: This could be that the serverless eventing function isn't picking up the notifications from ODF and therefore, not triggering the knative-serving function to scale up. In this situation there are a number of things to check, the first thing is to check the logs of the `rgw` pod in the `openshift-storage` namespace. 
 
 ```sh
 oc logs -n openshift-storage -f <pod> -c rgw

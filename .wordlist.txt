@@ -40,6 +40,7 @@ cloudinituser
 clustergroup
 clustergroups
 clustername
+cloudProvider
 clustersecretstore
 cncf
 colocated
@@ -57,6 +58,9 @@ dasv
 datacenter
 dataflow
 datagrid
+datasource
+Datasource
+DATASRC
 datavirt
 dav
 dcv
@@ -198,6 +202,7 @@ mhjacks
 mhjacks's
 middleware
 millicore
+misconfigured
 mkzxbs
 modularity
 mor
@@ -231,6 +236,7 @@ oc
 ocp
 odf
 ofvbu
+OLM
 onfg
 opendatahub
 openjdk
@@ -284,6 +290,7 @@ scalable
 secretstore
 seldon
 ser
+serviceaccount
 serverless
 shopfloor
 shopflor
@@ -296,6 +303,9 @@ ssl
 sso
 sstlsi
 standal
+storageclass
+STORAGECLASS
+storageClassName
 stormshift
 subdirectories
 submodule
@@ -333,6 +343,7 @@ ui
 uncomment
 uncommented
 unencrypted
+untrusted
 upstreaming
 upstream's
 userid
