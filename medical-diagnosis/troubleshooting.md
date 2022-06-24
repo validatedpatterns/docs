@@ -76,7 +76,7 @@ Ensure that the prometheus datasource exists and that the status is available. T
 
 **Problem**: The dashboard is showing red in the corners of the dashboard panes.
 
-**Solution**: This is most likely due to the **xraylab** database not being availabe or misconfigured. Please check the database and ensure that it is functioning properly.
+**Solution**: This is most likely due to the **xraylab** database not being available or misconfigured. Please check the database and ensure that it is functioning properly.
 
 ---
 

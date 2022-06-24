@@ -168,6 +168,9 @@ kgitu
 kie
 kieserver
 knative
+kafkasource
+kservice
+kafkatopics
 kno
 kubeconfig
 kubernetes
