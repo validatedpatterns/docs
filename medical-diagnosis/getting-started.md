@@ -108,7 +108,7 @@ Keep note of the name of the bucket you created, as you will need it for further
 secrets:
   xraylab:
     database-user: xraylab
-    database-password: xraylab
+    database-password: ## Insert your custom password here ##
     database-root-password: ## Insert your custom password here ##
     database-host: xraylabdb
     database-db: xraylabdb
@@ -117,7 +117,7 @@ secrets:
 
   grafana:
     GF_DATASRC_USER: xraylab
-    GF_DATASRC_PASSWORD: xraylab
+    GF_DATASRC_PASSWORD: ## Insert your custom password here ##
     GF_DATASRC_DB: xraylabdb
     GF_DATASRC_URL: xraylabdb
     GF_SECURITY_ADMIN_PASSWORD: ## Insert your custom password here ##
