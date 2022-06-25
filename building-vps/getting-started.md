@@ -18,7 +18,7 @@ nav_order: 2
 
 # Prerequisites
 
-Please make sure you ave read the [introduction section](/creating-a-new-pattern) and the [structure](/building-vps/structure) section of this documentation.
+Please make sure you have read the [introduction section](/creating-a-new-pattern) and the [structure](/building-vps/structure) section of this documentation.
 
 # You're probably not starting from scratch
 
@@ -128,7 +128,7 @@ In the above example `acm` (ACM) is part of the main `datacenter` deployment, as
 
 The `path:` tag tells OpenShift GitOps where to find the Helm charts needed to deploy this application (refer back to the [charts directory description](https://hybrid-cloud-patterns.io/building-vps/structure/#the-charts-directory) for more details). OpenShift GitOps will continuously monitor for changes to artifacts in that location for updates to apply.
 
-Each different site type would have it's own values- file listing subscriptions and applications.
+Each different site type would have its own values- file listing subscriptions and applications.
 
 ## Scripts to framework
 

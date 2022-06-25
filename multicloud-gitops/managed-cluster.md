@@ -72,15 +72,21 @@ There are a three ways to join the managed cluster to the management hub.
 
 ## Managed cluster setup using the ACM UI
 
-1. From the management hub openshift console select ACM from the top right
+After ACM is installed a message regarding a "Web console update is available" may be displayed.
+Click on the "Refresh web console" link.
 
-![launch-acm-console](/images/launch-acm-console.png "Launch ACM console")
+![update-web-console](/images/web-console-update-message.png "Update web console")
 
-2. Select the "Import cluster" option beside the highlighted Create Cluster button.
+On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down.
+This will navigate to the ACM console and to its "Clusters" section
+
+![launch-acm-console](/images/local-all-cluster-pulldown.png "Launch ACM console")
+
+Select the "Import cluster" option beside the highlighted Create Cluster button.
 
 ![import-cluster](/images/import-cluster.png "Select Import cluster")
 
-3. On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=region-one`. Press import. Done.
+On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=region-one`. Press import. Done.
 
 ![import-with-kubeconfig](/images/import-with-kubeconfig.png "Import using kubeconfig")
 

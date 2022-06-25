@@ -6,6 +6,7 @@ acs
 activemq
 addon
 addons
+aeg
 afnmju
 amq
 amqstreams
@@ -21,6 +22,8 @@ argocd
 arptn
 atlassian
 auditable
+awk
+awx
 backend
 baremetal
 baremetal integrations
@@ -33,6 +36,7 @@ bucketsource
 cakephp
 centos
 ceph
+ckollujlir
 claudiol
 cloudinit
 cloudinitpassword
@@ -48,6 +52,7 @@ config
 configur
 conjur
 containerimage
+credentialtype
 csv
 ctdim
 ctrl
@@ -57,6 +62,7 @@ dasv
 datacenter
 dataflow
 datagrid
+datasheet
 datavirt
 dav
 dcv
@@ -87,6 +93,7 @@ eav
 edsv
 edv
 efg
+efrqurrkuojrlsqhi
 ejuat
 endcomment
 endraw
@@ -126,6 +133,8 @@ hb
 hbv
 hc
 highperformance
+hmi
+hostname
 howto
 httpd
 https
@@ -167,8 +176,10 @@ keyspace
 kgitu
 kie
 kieserver
+kioskextraparams
 knative
 kno
+kube
 kubeconfig
 kubernetes
 kubevirt
@@ -182,6 +193,7 @@ lhipbabbledummyhykhq
 lifecycle
 localclusterdomain
 localdomaincluster
+localhost
 loggingca
 lsv
 machineapi
@@ -226,6 +238,7 @@ oc
 ocp
 odf
 ofvbu
+okd
 onfg
 opendatahub
 openjdk
@@ -235,7 +248,9 @@ openshiftsdn
 operatorhub
 opr
 overcommitting
+params
 passthrough
+pathed
 persistentvolumeclaim
 pgsql
 png
@@ -245,6 +260,7 @@ posix
 pre
 prem
 preplay
+privatekey
 processserver
 productization
 programmatically
@@ -270,6 +286,8 @@ rhdm
 rhecoeng
 rhel
 rhpam
+rhsm
+rhsmcredential
 rickard
 runnable
 runtime
@@ -277,6 +295,7 @@ rxpm
 scalability
 scalable
 secretstore
+sed
 seldon
 ser
 serverless
@@ -290,6 +309,7 @@ sshsecret
 ssl
 sso
 sstlsi
+stackrox
 standal
 stormshift
 subdirectories
@@ -328,6 +348,7 @@ ui
 uncomment
 uncommented
 unencrypted
+unschedulable
 upstreaming
 upstream's
 userid

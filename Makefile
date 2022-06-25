@@ -10,6 +10,8 @@ else
 	ATTRS = "rw,z"
 endif
 
+default: serve
+
 serve:
 	@echo "Next browse to: http://localhost:4000"
 	jekyll serve -w --trace --config _config.yml,_local.yml --host 127.0.0.1
@@ -45,3 +47,10 @@ htmlproof:
 lintwordlist:
 	@sort .wordlist.txt | tr '[:upper:]' '[:lower:]' | uniq > /tmp/.wordlist.txt
 	@mv -v /tmp/.wordlist.txt .wordlist.txt
+
+clean:
+	@rm -rvf ./.jekyll-cache ./_site ./tmp super-linter.log dictionary.dic
+
+build:
+	@echo "Check the html content in _site"
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint "jekyll" $(JEKYLL_CONTAINER) build
