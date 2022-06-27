@@ -12,8 +12,7 @@ nav_order: 4
 {:toc}
 
 ### Understanding the Makefile
-The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern 
-to the cluster. After the initial bootstrapping of the pattern, the Makefile isn't required as much anymore. Sometimes it is necessary to run a `make upgrade` which allows us to refresh the bootstrap resources without having to tear down the cluster.
+The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn't required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a `make upgrade` which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
 
 #### make install / make deploy
 Executing `make install` within the pattern application will trigger a `make deploy` from `<pattern_directory>/common`. This initializes the **common** components of the pattern framework and will install a helm chart in the `default` namespace. At this point cluster services such as **Red Hat Advanced Cluster Management** and **OpenShift Gitops** are deployed. 
@@ -40,6 +39,9 @@ oc get packagemanifests | grep <operator-name>
 ```
 When an issue occurs with the operator itself you can verify the status of the `subscription` and make sure that there are no warnings.An additional option is to log into the OpenShift Console, click on Operators, and check the status of the operator.
 
+Other issues encounted could be with a specific application within the pattern misbehaving. Most of the pattern is deployed into the `xraylab-1` namespace. Other components like ODF are deployed into `openshift-storage` and the OpenShift Serverless Operators are deployed into `knative-serving, knative-eventing` namespaces. 
+
+
 > **Use the grafana dashboard to assist with debugging and identifying the issue**
 
 ---
@@ -62,7 +64,7 @@ Or open the openshift-console, click on workloads, then click deploymentConfigs,
 
 ---
 
-**Problem**: In the dashboard there is no metrics data available.
+**Problem**: In the dashboard interface, no metrics data is available.
 
 **Solution**: There is likely something wrong with the Prometheus DataSource for the grafana dashboard. You can check the status of the datasource by executing the following:
 
@@ -76,25 +78,38 @@ Ensure that the prometheus datasource exists and that the status is available. T
 
 **Problem**: The dashboard is showing red in the corners of the dashboard panes.
 
+[![database](/images/medical-edge/medDiag-noDB.png)](/images/medical-edge/medDiag-noDB.png)
+
 **Solution**: This is most likely due to the **xraylab** database not being available or misconfigured. Please check the database and ensure that it is functioning properly.
 
 ---
 
 **Problem**: The image-generator is scaled correctly, but nothing is happening in the dashboard.
 
-**Solution**: This could be that the serverless eventing function isn't picking up the notifications from ODF and therefore, not triggering the knative-serving function to scale up. In this situation there are a number of things to check, the first thing is to check the logs of the `rgw` pod in the `openshift-storage` namespace. 
+**Solution**: This could be that the serverless eventing function isn't picking up the notifications from ODF and therefore, not triggering the knative-serving function to scale up. In this situation there are a number of things to check, the first thing is to check the logs of the `rook-ceph-rgw-ocs-storagecluster-cephobjectstore-a-<podGUID>` pod in the `openshift-storage` namespace. 
 
 ```sh
 oc logs -n openshift-storage -f <pod> -c rgw
 ```
-You should see the `PUT` statement with a status code of `200`
+**You should see the `PUT` statement with a status code of `200`**
 
 Next ensure that the `kafkasource` and `kafkservice` and `kafka topic` resources have been created:
 ```sh
 oc get -n xraylab-1 kafkasource
 
+NAME          TOPICS            BOOTSTRAPSERVERS                                      READY   REASON   AGE
+xray-images   ["xray-images"]   ["xray-cluster-kafka-bootstrap.xraylab-1.svc:9092"]   True             23m
+
 oc get -n xraylab-1 kservice
+NAME              URL                                                  LATESTCREATED           LATESTREADY             READY   REASON
+risk-assessment   https://risk-assessment-xraylab-1.apps.<SUBDOMAIN>   risk-assessment-00001   risk-assessment-00001   True 
 
 oc get -n xraylab-1 kafkatopics
+NAME                                                                                               CLUSTER        PARTITIONS   REPLICATION FACTOR   READY
+consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a                                        xray-cluster   50           1                    True
+strimzi-store-topic---effb8e3e057afce1ecf67c3f5d8e4e3ff177fc55                                     xray-cluster   1            3                    True
+strimzi-topic-operator-kstreams-topic-store-changelog---b75e702040b99be8a9263134de3507fc0cc4017b   xray-cluster   1            1                    True
+xray-images                                                                                        xray-cluster   1            1                    True
+
 ```
 ---
