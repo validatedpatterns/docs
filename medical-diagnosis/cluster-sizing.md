@@ -51,8 +51,6 @@ The Medical Diagnosis pattern has been tested with a defined set of specifically
 
 The OpenShift cluster for the **Medical Diagnosis** pattern needs to be sized a bit larger to support the compute and storage demands of OpenShift Data Foundations and other operators that make up the pattern. The above cluster sizing is close to a **minimum** size for an OpenShift cluster supporting this pattern.  In the next few sections we take some snapshots of the cluster utilization while the **Medical Diagnosis** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications.
 
-### Medical Diagnosis Pattern OpenShift Cluster Size
-
 The OpenShift cluster is a standard datacenter deployment of 3 control plane nodes and 3 or more worker nodes.
 
 | Node Type | Number of nodes | Cloud Provider | Instance Type

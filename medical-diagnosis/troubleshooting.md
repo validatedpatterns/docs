@@ -12,19 +12,23 @@ nav_order: 4
 {:toc}
 
 ### Understanding the Makefile
+
 The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn't required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a `make upgrade` which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
 
 #### make install / make deploy
+
 Executing `make install` within the pattern application will trigger a `make deploy` from `<pattern_directory>/common`. This initializes the **common** components of the pattern framework and will install a helm chart in the `default` namespace. At this point cluster services such as **Red Hat Advanced Cluster Management** and **OpenShift Gitops** are deployed. 
 
 Once **common** completes, the remaining tasks within the `make install` target will execute. 
 
 #### make vault-init / make load-secrets
+
 This pattern is integrated with **HashiCorp Vault** and **External Secrets** services for secrets management within the cluster. These targets install vault from a Helm chart and the load the secret `(values-secret.yaml)` you created during [Getting Started](../getting-started#preparation). 
 
 If **values-secret.yaml** does not exist, make will exit with an error saying so. Furthermore, if the **values-secret.yaml** file does exist but is improperly formatted, ansible will exit with an error about being improperly formatted. If you are not sure how format the secret, please refer to [Getting Started](../getting-started#preparation).
 
 #### make bootstrap / make upgrade
+
 `make bootstrap` is the target used for deploying the application specific components of the pattern. It is the final step in the initial `make install` target. Running `make bootstrap` directly should typically not be necessary, instead you are encouraged to run `make upgrade`. 
 
 Generally, executing `make upgrade` should only be required when something goes wrong with the application pattern deployment. For instance, if a value was missed, and the chart wasn't rendered correctly, executing `make upgrade` after fixing the value would be necessary.
@@ -32,6 +36,7 @@ Generally, executing `make upgrade` should only be required when something goes 
 If you have any further questions, please, feel free to review the `Makefile` for the **common** and **Medical Diagnosis** components. It is located in `common/Makefile` and `./Makefile` respectively. 
 
 ### Troubleshooting the Pattern Deployment
+
 Occasionally the pattern will encounter issues during the deployment. This can happen for any number of reasons, but most often it is because of either a change within the operator itself or something has changed/happened to the Operator Lifecycle Manager (OLM) which determines which operators are available in the operator catalog. Generally, when an issue occurs with the OLM, the operator is unavailable for installation. To ensure that the operator is in the catalog:
 
 ```sh
