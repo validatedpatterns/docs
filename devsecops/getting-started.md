@@ -205,7 +205,7 @@ This will navigate to the ACM console and to its "Clusters" section
 
 ## Checking the ACS deployment
 
-1. Select the `stackrox Project` (namespace). Navigate to the OCP Networking->Routes page. Click on the `central` route location URL. It might take a few minutes for this link to be active. When it does it will launch a new tab with the ACS Central login page. 
+1. Select the `stackrox Project` (namespace). Navigate to the OCP Networking->Routes page. Click on the `central` route location URL. It might take a few minutes for this link to be active. When it does it will launch a new tab with the ACS Central login page.
 
    [![ACS Central route](/images/devsecops/acs-console-link.png)](/images/devsecops/acs-console-link.png)
 
@@ -233,7 +233,7 @@ Return to this dashboard later after deploying the development and production cl
 
    [![Quay route](/images/devsecops/quay-enterprise-routes.png)](/images/devsecops/quay-enterprise-routes.png)
 
-1. An initial `quayadmin` account has already been created for you as part of the deployment. The password is `quayadmin123`. If you want to change initial admin user name and password you can do so by editing the `charts/hub/quay/values.yaml` or by adding those entries to the `values-global.yaml` file. Log in using the username and password. 
+1. An initial `quayadmin` account has already been created for you as part of the deployment. The password is `quayadmin123`. If you want to change initial admin user name and password you can do so by editing the `charts/hub/quay/values.yaml` or by adding those entries to the `values-global.yaml` file. Log in using the username and password.
 
 1. After logging in, the private Quay registry dashboard will be displayed.
 
