@@ -29,24 +29,49 @@ If you do not have running Red Hat OpenShift clusters you can start one on a
 public or private cloud by using [Red Hat's cloud
 service](https://console.redhat.com/openshift/create).
 
+# Credentials Required in Pattern
+
+In addition to the openshift cluster, you will need to prepare a number of secrets, or credentials, which will be used
+in the pattern in various ways. To do this, copy the [values-secret.yaml template](https://github.com/hybrid-cloud-patterns/multicluster-devsecops/blob/main/values-secret.yaml.template) to your home directory as `values-secret.yaml` and replace the explanatory text as follows:
+
+* Your git repository username and password. The password must be base64 encoded.
+
+```yaml
+---
+secrets:
+  # NEVER COMMIT THESE VALUES TO GIT
+  git:
+    # Go to: https://github.com/settings/tokens
+    # Then: echo -n 'your string value' | base64
+    username: USERNAME
+    password: 'encoded password in single quotes'
+```
+
+* You application secret.  TBD This may change when the application is changed.
+
+```yaml
+---
+secrets:
+  # NEVER COMMIT THESE VALUES TO GIT
+  config-demo:
+    # Secret used for demonstrating vault storage, external secrets, and ACM distribution
+    secret: PLAINTEXT
+```
+
 # How to deploy
 
 1. Install the installation tooling dependencies.  You will need:
 
-1. Clone the forked copy of the `multicluster-devsecops` repo. Use branch `v1.0`.
-
-    - `make` - the well-known software build tool
-    - `sh` - a POSIX-compatible shell
-    - `sed` - the "stream editor", commonly used in shell scripting
-    - `oc` - the OpenShift client
-    - `jq` - The swiss army knife for JSON
-    - `git` - The well known version control utility
-    - `ansible` - The well-known automation tool
-    - The `kubernetes.core` collection for ansible
+    * `make` - the well-known software build tool
+    * `sh` - a POSIX-compatible shell
+    * `sed` - the "stream editor", commonly used in shell scripting
+    * `oc` - the OpenShift client
+    * `jq` - The swiss army knife for JSON
+    * `git` - The well known version control utility
+    * `ansible` - The well-known automation tool
+    * The `kubernetes.core` collection for ansible
 
 1. Fork the [Multi-Cluster DevSecOps](https://github.com/hybrid-cloud-patterns/multicluster-devsecops) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevSecOps processes.
-
-1. Fork the [TBD demo](https://github.com/hybrid-cloud-patterns/) repository on GitHub.  It is necessary to fork this repository because the GitOps framework will push tags to this repository that match the versions of software that it will deploy.
 
 1. Clone the forked copy of the `multicluster-devsecops` repository. Use branch `v1.0`.
 
@@ -64,11 +89,10 @@ service](https://console.redhat.com/openshift/create).
 
 1. A `values-secret.yaml` file is used to automate setup of secrets needed for:
 
-   - A Git repository (E.g. Github, GitLab etc.)
-   - A container image registry (E.g. Quay)
-   - S3 storage (E.g. AWS)
+   * A Git repository (E.g. Github, GitLab etc.)
+   * Any application secrets that are needed.
 
-   DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub.
+   DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub. Instead copy the template file `values-secret.yaml.template` to your home directory.
 
    ```sh
    cp values-secret.yaml.template ~/values-secret.yaml
@@ -124,9 +148,9 @@ service](https://console.redhat.com/openshift/create).
 
 1. Apply the secrets from the `values-secret.yaml` to the secrets management Vault. This can be done through Vault's UI - manually without the file. The required secrets and scopes are:
 
-   - **secret/hub/git** git *username* & *password* (GitHub token)
-   - **secret/hub/imageregistry** Quay or DockerHub *username* & *password*
-   - **secret/hub/aws** - base64 encoded value (see below)
+   * **secret/hub/git** git *username* & *password* (GitHub token)
+   * **secret/hub/imageregistry** Quay or DockerHub *username* & *password*
+   * **secret/hub/aws** - base64 encoded value (see below)
 
    For AWS S3 secret, create a file, say, s3-secrets, with two lines:
 
@@ -153,9 +177,69 @@ service](https://console.redhat.com/openshift/create).
 
 1. Check all applications are synchronized in OpenShift GitOps
 
-[![Multicluster DevSecOps GitOps overview](/images/devsecops/gitops-hub-cluster.png)](/images/devsecops/gitops-hub-cluster.png)
+   [![Multicluster DevSecOps GitOps overview](/images/devsecops/gitops-hub-cluster.png)](/images/devsecops/gitops-hub-cluster.png)
 
-## Next Steps
+## Check the ACM policy deployment
+
+1. After ACM is installed a message regarding a "Web console update is available" may be displayed.
+Click on the "Refresh web console" link.
+
+   ![update-web-console](/images/web-console-update-message.png "Update web console")
+
+1. Navigate to the ACM hub console. On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down.
+This will navigate to the ACM console and to its "Clusters" section
+
+   ![launch-acm-console](/images/local-all-cluster-pulldown.png "Launch ACM console")
+
+1. The Governance dashboard shows high level information on Policy set violations and Policy violations.
+
+   ![acm-dashboard](/images/devsecops/acm-governance-dashboard.png "ACM Governance dashboard")
+
+1. Navigate to the Governance page and select the `Policy sets` Governance tab. There are two policy sets deployed, one for the hub and one for managed clusters.
+
+   ![acm-governance](/images/devsecops/acm-governance.png "ACM Governance Policy sets")
+
+1. Explore the Policies tab and select some policies to examine. The image below shows ACM policy status for a three cluster deployment.
+
+   ![acm-policies](/images/devsecops/acm-governance-policies.png "ACM Governance Policies")
+
+## Checking the ACS deployment
+
+1. Select the `stackrox Project` (namespace). Navigate to the OCP Networking->Routes page. Click on the `central` route location URL. It might take a few minutes for this link to be active. When it does it will launch a new tab with the ACS Central login page.
+
+   [![ACS Central route](/images/devsecops/acs-console-link.png)](/images/devsecops/acs-console-link.png)
+
+1. Return to the OCP console tab and navigate to the Workload->Secrets page. Find the `central-htpasswd` secret and select it.
+
+   [![ACS Central secret](/images/devsecops/acs-secrets.png)](/images/devsecops/acs-secrets.png)
+
+1. On the `central-htpasswd` page, scroll to the Data section and select the copy icon on the right in the `password` field.
+
+   [![ACS Central password](/images/devsecops/acs-central-htpasswd.png)](/images/devsecops/acs-central-htpasswd.png)
+
+1. Return to the ACS Central tab and paste the password into thee password field. Make sure that the Username is `admin`.
+
+   [![ACS Central password](/images/devsecops/acs-login-screen.png)](/images/devsecops/acs-login-screen.png)
+
+1. This will bring you to the ACS Central dashboard page. At first it may not show any clusters showing but as the ACS secured deployment on the hub syncs with ACS central on the hub then information will start to show.  
+
+   [![ACS Central dashboard](/images/devsecops/acs-dashboard.png)](/images/devsecops/acs-dashboard.png)
+
+Return to this dashboard later after deploying the development and production clusters so you can see their information in this dashboard. All clusters in this pattern are ACS secured and therefore ought to show up in this dashboard when those clusters join the hub and are fully deployed.
+
+## Check the Quay deployment
+
+1. Select the `quay-enterprise` project (namespace). Navigate to the OCP Networking->Routes page. Click on the `quay-registry-quay` route location URL (standard Quay naming apparently). It might take a few minutes for this link to be active. When it does it will launch a new tab with the Quay login page.
+
+   [![Quay route](/images/devsecops/quay-enterprise-routes.png)](/images/devsecops/quay-enterprise-routes.png)
+
+1. An initial `quayadmin` account has already been created for you as part of the deployment. The password is `quayadmin123`. If you want to change initial admin user name and password you can do so by editing the `charts/hub/quay/values.yaml` or by adding those entries to the `values-global.yaml` file. Log in using the username and password.
+
+1. After logging in, the private Quay registry dashboard will be displayed.
+
+   [![Quay dashboard](/images/devsecops/quay-dashboard.png)](/images/devsecops/quay-dashboard.png)
+
+# Next Steps
 
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/hybrid-cloud-patterns/multicluster-devsecops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
