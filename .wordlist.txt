@@ -253,6 +253,7 @@ passthrough
 pathed
 persistentvolumeclaim
 pgsql
+plaintext
 png
 podman
 podspercore
