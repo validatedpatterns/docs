@@ -39,7 +39,7 @@ oc get packagemanifests | grep <operator-name>
 ```
 When an issue occurs with the operator itself you can verify the status of the `subscription` and make sure that there are no warnings.An additional option is to log into the OpenShift Console, click on Operators, and check the status of the operator.
 
-Other issues encounted could be with a specific application within the pattern misbehaving. Most of the pattern is deployed into the `xraylab-1` namespace. Other components like ODF are deployed into `openshift-storage` and the OpenShift Serverless Operators are deployed into `knative-serving, knative-eventing` namespaces. 
+Other issues encounter could be with a specific application within the pattern misbehaving. Most of the pattern is deployed into the `xraylab-1` namespace. Other components like ODF are deployed into `openshift-storage` and the OpenShift Serverless Operators are deployed into `knative-serving, knative-eventing` namespaces. 
 
 
 > **Use the grafana dashboard to assist with debugging and identifying the issue**

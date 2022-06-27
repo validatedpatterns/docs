@@ -6,6 +6,7 @@ acs
 activemq
 addon
 addons
+afce
 afnmju
 amq
 amqstreams
@@ -24,15 +25,19 @@ auditable
 backend
 baremetal
 baremetal integrations
+bd
 bdo
 beekhof
+BOOTSTRAPSERVERS
 brms
 bt
 btn
 bucketsource
 cakephp
+cdd
 centos
 ceph
+changelog
 claudiol
 cloudinit
 cloudinitpassword
@@ -88,8 +93,11 @@ dv
 eap
 easv
 eav
+eb
+ecf
 edsv
 edv
+effb
 efg
 ejuat
 endcomment
@@ -105,6 +113,8 @@ eventing
 externaldb
 externalurl
 facto
+fadc
+fc
 featureful
 fh
 fixme
@@ -174,9 +184,10 @@ kie
 kieserver
 knative
 kafkasource
-kservice
 kafkatopics
 kno
+kservice
+kstreams
 kubeconfig
 kubernetes
 kubevirt
@@ -184,6 +195,8 @@ kustomization
 kustomize
 kzwzqibmynhrxxxxxxxxx
 latencies
+LATESTCREATED
+LATESTREADY
 ldap
 ldhs
 lhipbabbledummyhykhq
@@ -308,6 +321,7 @@ storageclass
 STORAGECLASS
 storageClassName
 stormshift
+strimzi
 subdirectories
 submodule
 submoduled
