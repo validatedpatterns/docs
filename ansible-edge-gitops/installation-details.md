@@ -37,6 +37,8 @@ The script will update secrets in vault if re-run; it is safe to re-run if the s
 
 ## [deploy-kubevirt-worker.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/deploy_kubevirt_worker.sh)
 
+The real code for this playbook (outside of a shell wrapper) is [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/deploy_kubevirt_worker.yml).
+
 This script is another Ansible playbook that deploys a node to run the Virtual Machines for the demo. The playbook uses the OpenShift machineset API to provision the node in the first availability zone it finds. Currently, AWS is the only major public cloud provider that offers the deployment of a metal node through the normal provisioning process. We hope that Azure and GCP will support this functionality soon as well.
 
 Please be aware that the metal node is rather more expensive in compute costs than most other AWS machine types. The trade-off is that running the demo without hardware acceleration would take ~4x as long.
@@ -64,7 +66,11 @@ The metal node will be destroyed when the cluster is destroyed. The script is id
 
 ## [ansible-load-controller.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh)
 
-The ansible-load-controller script uses the [controller configuration](https://github.com/redhat-cop/controller_configuration) framework to configure the Ansible Automation Platform instance that is installed by the helm chart.
+There are two parts to this script - the first part, with the code [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/ansible_get_credentials.yml), retrieves the admin credentials from OpenShift to enable login to the AAP Controller.
+
+The second part, which is the bulk of the ansible-load-controller process is [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/ansible_configure_controller.yml) and uses the [controller configuration](https://github.com/redhat-cop/controller_configuration) framework to configure the Ansible Automation Platform instance that is installed by the helm chart.
+
+This division is so that users can adapt this pattern more easily if they're running AAP, but not on OpenShift.
 
 The script waits until AAP is ready, and then proceeds to:
 
