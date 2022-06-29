@@ -212,6 +212,8 @@ OpenShift Virtualization is a Kubernetes-native way to run virtual machine workl
 
 The goal of this pattern is to configure 2 VMs running Firefox in Kiosk mode displaying the demo version of the Ignition application running in a podman container. Ignition is a popular tool in use with Oil and Gas companies; it is included as a real-world example and as an item to spark imagination about what other applications could be installed and managed this way.
 
+The container used for this pattern is the container [image](https://hub.docker.com/r/inductiveautomation/ignition) published by Inductive Automation.
+
 ## HashiCorp [Vault](https://www.vaultproject.io/)
 
 Vault is used as the authoritative source for the Kiosk ssh pubkey via the External Secrets Operator.
