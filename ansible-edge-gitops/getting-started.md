@@ -184,7 +184,9 @@ Under the project `ansible-edge-gitops-hub` click on the URL for the `hub`gitops
 
 ![ansible-edge-gitops-vmlist](/images/ansible-edge-gitops/aeg-openshift-vm-screen.png "Ansible Edge GitOps VM List")
 
-* Finally, the VM Consoles will show the Ignition application running
+* Finally, the VM Consoles will show the Ignition introduction screen. You can choose any of these options; this tutorial assumes you chose "Ignition":
+
+![ansible-edge-gitops-ignition-options](/images/ansible-edge-gitops/aeg-vm-ignition-intro.png "Ansible Edge GitOps Ignition Options")
 
 * You should be able to login to the application with the userid "admin" and the password you specified as the GATEWAY_ADMIN_PASSWORD in `container_extra_params` in your values-secret.yaml file.
 
