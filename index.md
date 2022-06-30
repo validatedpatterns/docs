@@ -6,7 +6,9 @@ nav_order: 1
 
 # Hybrid Cloud Patterns
 
-Hybrid Cloud Patterns are a natural progression from reference architectures with additional value.
+Hybrid Cloud Patterns and the downstream Validated Patterns are a natural progression from reference architectures with additional value. Here is a brief video to explain what patterns are all about:
+
+[![patterns-intro-video](https://img.youtube.com/vi/lI8TurakeG4/0.jpg)](https://www.youtube.com/watch?v=lI8TurakeG4)
 
 This effort is focused on customer solutions that involve multiple Red Hat
 products. The patterns include one or more applications that are based on successfully deployed customer examples. Example application code is provided as a demonstration, along with the various open source projects and Red Hat products required to for the deployment to work. Users can then modify the pattern for their own specific application.

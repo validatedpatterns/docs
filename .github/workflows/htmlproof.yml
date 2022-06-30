@@ -38,3 +38,4 @@ jobs:
             https://en.wikipedia.org/wiki/Main_Page
           url_ignore_re: |
             ^https://twitter.com/
+            ^https://hybrid-cloud-patterns.io//2022/
