@@ -8,6 +8,7 @@ addon
 addons
 aeg
 afnmju
+agentless
 amq
 amqstreams
 analytics
@@ -24,6 +25,7 @@ atlassian
 auditable
 awk
 awx
+azs
 backend
 baremetal
 baremetal integrations
@@ -34,8 +36,10 @@ bt
 btn
 bucketsource
 cakephp
+cdn
 centos
 ceph
+cfengine
 ckollujlir
 claudiol
 cloudinit
@@ -134,6 +138,7 @@ hbv
 hc
 highperformance
 hmi
+hoc
 hostname
 howto
 httpd

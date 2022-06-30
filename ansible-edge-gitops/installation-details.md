@@ -29,7 +29,7 @@ The deploy task installs the basic Validated Patterns framework elements, which 
 
 Vault requires extra setup in the form of unseal keys and configuration of secrets. The vault-init task does this. Note that it is safe to run vault-init as it will exit successfully if it can connect to a cluster with a running, unsealed vault.
 
-## [ansible-push-vault-secrets.sh](https://github.com/hybrid-cloud-patterns/common/blob/main/scripts/ansible-push-vault-secrets.sh)
+## [load-secrets](https://github.com/hybrid-cloud-patterns/common/blob/main/ansible/roles/vault_utils/tasks/push_secrets.yaml)
 
 This script is actually an Ansible playbook that reads the values-secret.yaml file and stores the data it finds there in vault as keypairs. These values are then usable in the kubernetes cluster. This pattern uses the ssh pubkey for the kiosk VMs via the external secrets operator.
 
