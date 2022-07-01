@@ -50,6 +50,7 @@ clustergroups
 clustername
 clustersecretstore
 cncf
+cnv
 colocated
 compliancetype
 config
@@ -104,6 +105,7 @@ endraw
 envi
 ep
 erp
+eso
 esv
 etcd
 ev
@@ -127,6 +129,7 @@ gf
 gib
 gitlab
 gitops
+golang
 gpus
 grafana
 gz
