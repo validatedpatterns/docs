@@ -58,6 +58,8 @@ configur
 conjur
 containerimage
 credentialtype
+cronjob
+cronjobs
 csv
 ctdim
 ctrl
