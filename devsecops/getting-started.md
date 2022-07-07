@@ -184,24 +184,24 @@ secrets:
 1. After ACM is installed a message regarding a "Web console update is available" may be displayed.
 Click on the "Refresh web console" link.
 
-   ![update-web-console](/images/web-console-update-message.png "Update web console")
+   [![update-web-console](/images/web-console-update-message.png "Update web console")](/images/web-console-update-message.png)
 
 1. Navigate to the ACM hub console. On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down.
 This will navigate to the ACM console and to its "Clusters" section
 
-   ![launch-acm-console](/images/local-all-cluster-pulldown.png "Launch ACM console")
+   [![launch-acm-console](/images/local-all-cluster-pulldown.png "Launch ACM console")](/images/local-all-cluster-pulldown.png)
 
 1. The Governance dashboard shows high level information on Policy set violations and Policy violations.
 
-   ![acm-dashboard](/images/devsecops/acm-governance-dashboard.png "ACM Governance dashboard")
+   [![acm-dashboard](/images/devsecops/acm-governance-dashboard.png "ACM Governance dashboard")](/images/devsecops/acm-governance-dashboard.png)
 
 1. Navigate to the Governance page and select the `Policy sets` Governance tab. There are two policy sets deployed, one for the hub and one for managed clusters.
 
-   ![acm-governance](/images/devsecops/acm-governance.png "ACM Governance Policy sets")
+   [![acm-governance](/images/devsecops/acm-governance.png "ACM Governance Policy sets")](/images/devsecops/acm-governance.png)
 
 1. Explore the Policies tab and select some policies to examine. The image below shows ACM policy status for a three cluster deployment.
 
-   ![acm-policies](/images/devsecops/acm-governance-policies.png "ACM Governance Policies")
+   [![acm-policies](/images/devsecops/acm-governance-policies.png "ACM Governance Policies")](/images/devsecops/acm-governance-policies.png)
 
 ## Checking the ACS deployment
 
@@ -238,6 +238,12 @@ Return to this dashboard later after deploying the development and production cl
 1. After logging in, the private Quay registry dashboard will be displayed.
 
    [![Quay dashboard](/images/devsecops/quay-dashboard.png)](/images/devsecops/quay-dashboard.png)
+
+# Getting Started Video
+
+Click on the image below to launch the video.
+
+[![pattern-intro-video](https://i9.ytimg.com/vi/5HF_T_u4nkY/mq3.jpg?sqp=CNignZYG&rs=AOn4CLBUa0DNfTKU1EomAJS_4wgBaAZOtA)](https://www.youtube.com/watch?v=5HF_T_u4nkY)
 
 # Next Steps
 
