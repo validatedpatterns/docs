@@ -243,7 +243,7 @@ Return to this dashboard later after deploying the development and production cl
 
 Click on the image below to launch the video.
 
-[![pattern-intro-video](https://i9.ytimg.com/vi/5HF_T_u4nkY/mq3.jpg?sqp=CNignZYG&rs=AOn4CLBUa0DNfTKU1EomAJS_4wgBaAZOtA)](https://www.youtube.com/watch?v=5HF_T_u4nkY)   
+[![pattern-intro-video](https://i9.ytimg.com/vi/5HF_T_u4nkY/mq3.jpg?sqp=CNignZYG&rs=AOn4CLBUa0DNfTKU1EomAJS_4wgBaAZOtA)](https://www.youtube.com/watch?v=5HF_T_u4nkY)
 
 # Next Steps
 
