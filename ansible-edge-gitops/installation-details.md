@@ -21,9 +21,13 @@ nav_order: 1
 
 These are the steps run by [make install](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/Makefile) and what each one does:
 
-## [deploy](https://github.com/hybrid-cloud-patterns/common/blob/main/Makefile)
+## [operator-deploy](https://github.com/hybrid-cloud-patterns/common/blob/main/Makefile)
 
-The deploy task installs the basic Validated Patterns framework elements, which includes adding a subscription for the OpenShift GitOps operator and installing both the cluster and hub instances of it. The clustergroup application will then read the values-global.yaml and values-hub.yaml files for other subscriptions and applications to install.
+The operator-deploy task installs the Validated Patterns Operator, which in turn creates a subscription for the OpenShift GitOps operator and installs both the cluster and hub instances of it. The clustergroup application will then read the values-global.yaml and values-hub.yaml files for other subscriptions and applications to install.
+
+The [legacy-install](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/Makefile) is still provided for users that cannot or do not want to use the Validated Patterns operator. Instead of installing the operator, it installs a helm chart that does the same thing - installs a subscription for OpenShift GitOps and installs a cluster-wide and hub instance of that operator. It then proceeds with installing the clustergroup application.
+
+Note that both the [upgrade](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/Makefile)  and [legacy-upgrade](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/Makefile) targets are now equivalent and interchangeable with `install` and `legacy-install`. This was not always the case, so they are still provided.
 
 ## [vault-init](https://github.com/hybrid-cloud-patterns/common/blob/main/scripts/vault-utils.sh)
 

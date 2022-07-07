@@ -168,6 +168,12 @@ The installation process will take between 45-60 minutes to complete. If you wan
     OpenShift Console Web UI -> Installed Operators
     ```
 
+If you installed with `make install` (the default), the screen should look like this:
+
+![ansible-edge-gitops-operators](/images/ansible-edge-gitops/aeg-new-operators.png "Ansible Edge GitOps Operators")
+
+If you installed with `make legacy-install`, the screen should look like this:
+
 ![ansible-edge-gitops-operators](/images/ansible-edge-gitops/aeg-operators.png "Ansible Edge GitOps Operators")
 
 * Check all applications are synchronised
