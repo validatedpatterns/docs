@@ -90,7 +90,7 @@ secrets:
 1. A `values-secret.yaml` file is used to automate setup of secrets needed for:
 
    * A Git repository (E.g. Github, GitLab etc.)
-   * Quay registry deployment secrets. 
+   * Quay registry deployment secrets.
    * Any application secrets that are needed.
 
    DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub. Instead copy the template file `values-secret.yaml.template` to your home directory. Change the values in that file to ones that fit your environment.
@@ -111,7 +111,7 @@ secrets:
 
 # Getting Started Video
 
-Make sure to set up the `values-secret.yaml` and `values-global.yaml` correctly (see above). For a demonstration of the deeployment, click on the image below to launch the video.
+Make sure to set up the `values-secret.yaml` and `values-global.yaml` correctly (see above). For a demonstration of the deployment, click on the image below to launch the video.
 
 [![pattern-intro-video](/images/devsecops/acm-governance-policies.png)](https://www.youtube.com/watch?v=5HF_T_u4nkY)
 
