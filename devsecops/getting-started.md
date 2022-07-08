@@ -58,7 +58,7 @@ secrets:
     secret: PLAINTEXT
 ```
 
-# How to deploy
+# Preparing to deploy
 
 1. Install the installation tooling dependencies.  You will need:
 
@@ -90,9 +90,10 @@ secrets:
 1. A `values-secret.yaml` file is used to automate setup of secrets needed for:
 
    * A Git repository (E.g. Github, GitLab etc.)
+   * Quay registry deployment secrets. 
    * Any application secrets that are needed.
 
-   DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub. Instead copy the template file `values-secret.yaml.template` to your home directory.
+   DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub. Instead copy the template file `values-secret.yaml.template` to your home directory. Change the values in that file to ones that fit your environment.
 
    ```sh
    cp values-secret.yaml.template ~/values-secret.yaml
@@ -107,6 +108,14 @@ secrets:
    git commit values-global.yaml
    git push origin my-branch
    ```
+
+# Getting Started Video
+
+Make sure to set up the `values-secret.yaml` and `values-global.yaml` correctly (see above). For a demonstration of the deeployment, click on the image below to launch the video.
+
+[![pattern-intro-video](/images/devsecops/acm-governance-policies.png)](https://www.youtube.com/watch?v=5HF_T_u4nkY)
+
+# How to deploy
 
 1. You can deploy the pattern using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you do use the operator then skip to Validating the Environment below.
 
@@ -148,22 +157,9 @@ secrets:
 
 1. Apply the secrets from the `values-secret.yaml` to the secrets management Vault. This can be done through Vault's UI - manually without the file. The required secrets and scopes are:
 
-   * **secret/hub/git** git *username* & *password* (GitHub token)
-   * **secret/hub/imageregistry** Quay or DockerHub *username* & *password*
-   * **secret/hub/aws** - base64 encoded value (see below)
-
-   For AWS S3 secret, create a file, say, s3-secrets, with two lines:
-
-   ```text
-   s3.accessKey: <accessKey>
-   s3.secretKey: <secret key>
-   ```
-
-   Then encode this with base64 using
-
-   ```sh
-   cat s3-secrets | base64 -w 0
-   ```
+   * **secret/git** git *username* & *password* (GitHub token)
+   * **secret/quay** The admin username and password and email.
+   * **secret/imageregistry** Quay.io or DockerHub *username* & *password*
 
    Or you can set up the secrets using the command-line by running the following (Ansible) playbook.
 
