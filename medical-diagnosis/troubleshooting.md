@@ -23,17 +23,17 @@ Once **common** completes, the remaining tasks within the `make install` target 
 
 #### make vault-init / make load-secrets
 
-This pattern is integrated with **HashiCorp Vault** and **External Secrets** services for secrets management within the cluster. These targets install vault from a Helm chart and the load the secret `(values-secret.yaml)` you created during [Getting Started](../getting-started#preparation). 
+This pattern is integrated with **HashiCorp Vault** and **External Secrets** services for secrets management within the cluster. These targets install vault from a Helm chart and the load the secret `(values-secret.yaml)` you created during [Getting Started](../getting-started#preparation).
 
 If **values-secret.yaml** does not exist, make will exit with an error saying so. Furthermore, if the **values-secret.yaml** file does exist but is improperly formatted, ansible will exit with an error about being improperly formatted. If you are not sure how format the secret, please refer to [Getting Started](../getting-started#preparation).
 
 #### make bootstrap / make upgrade
 
-`make bootstrap` is the target used for deploying the application specific components of the pattern. It is the final step in the initial `make install` target. Running `make bootstrap` directly should typically not be necessary, instead you are encouraged to run `make upgrade`. 
+`make bootstrap` is the target used for deploying the application specific components of the pattern. It is the final step in the initial `make install` target. Running `make bootstrap` directly should typically not be necessary, instead you are encouraged to run `make upgrade`.
 
 Generally, executing `make upgrade` should only be required when something goes wrong with the application pattern deployment. For instance, if a value was missed, and the chart wasn't rendered correctly, executing `make upgrade` after fixing the value would be necessary.
 
-If you have any further questions, please, feel free to review the `Makefile` for the **common** and **Medical Diagnosis** components. It is located in `common/Makefile` and `./Makefile` respectively. 
+If you have any further questions, please, feel free to review the `Makefile` for the **common** and **Medical Diagnosis** components. It is located in `common/Makefile` and `./Makefile` respectively.
 
 ### Troubleshooting the Pattern Deployment
 
@@ -44,7 +44,7 @@ oc get packagemanifests | grep <operator-name>
 ```
 When an issue occurs with the operator itself you can verify the status of the `subscription` and make sure that there are no warnings.An additional option is to log into the OpenShift Console, click on Operators, and check the status of the operator.
 
-Other issues encounter could be with a specific application within the pattern misbehaving. Most of the pattern is deployed into the `xraylab-1` namespace. Other components like ODF are deployed into `openshift-storage` and the OpenShift Serverless Operators are deployed into `knative-serving, knative-eventing` namespaces. 
+Other issues encounter could be with a specific application within the pattern misbehaving. Most of the pattern is deployed into the `xraylab-1` namespace. Other components like ODF are deployed into `openshift-storage` and the OpenShift Serverless Operators are deployed into `knative-serving, knative-eventing` namespaces.
 
 
 > **Use the grafana dashboard to assist with debugging and identifying the issue**
@@ -53,19 +53,19 @@ Other issues encounter could be with a specific application within the pattern m
 
 **Problem**: No information is being processed in the dashboard
 
-**Solution**: Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is **scaled to 0**; 
+**Solution**: Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is **scaled to 0**;
 
 ```sh
 oc scale -n xraylab-1 dc/image-generator --replicas=1
 ```
 
-Or open the openshift-console, click on workloads, then click deploymentConfigs, click image-generator, and scale the pod to 1 or more. 
+Or open the openshift-console, click on workloads, then click deploymentConfigs, click image-generator, and scale the pod to 1 or more.
 
 ---
 
-**Problem**: When browsing to the **xraylab** grafana dashboard and there are no images in the right-pane, only a security warning. 
+**Problem**: When browsing to the **xraylab** grafana dashboard and there are no images in the right-pane, only a security warning.
 
-**Solution**: The certificates for the openshift cluster are untrusted by your system. The easiest way to solve this is to open a browser and go to the s3-rgw route (oc get route -n openshift-storage), then acknowledge and accept the security warning. 
+**Solution**: The certificates for the openshift cluster are untrusted by your system. The easiest way to solve this is to open a browser and go to the s3-rgw route (oc get route -n openshift-storage), then acknowledge and accept the security warning.
 
 ---
 
@@ -91,7 +91,7 @@ Ensure that the prometheus datasource exists and that the status is available. T
 
 **Problem**: The image-generator is scaled correctly, but nothing is happening in the dashboard.
 
-**Solution**: This could be that the serverless eventing function isn't picking up the notifications from ODF and therefore, not triggering the knative-serving function to scale up. In this situation there are a number of things to check, the first thing is to check the logs of the `rook-ceph-rgw-ocs-storagecluster-cephobjectstore-a-<podGUID>` pod in the `openshift-storage` namespace. 
+**Solution**: This could be that the serverless eventing function isn't picking up the notifications from ODF and therefore, not triggering the knative-serving function to scale up. In this situation there are a number of things to check, the first thing is to check the logs of the `rook-ceph-rgw-ocs-storagecluster-cephobjectstore-a-<podGUID>` pod in the `openshift-storage` namespace.
 
 ```sh
 oc logs -n openshift-storage -f <pod> -c rgw
