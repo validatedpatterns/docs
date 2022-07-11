@@ -125,7 +125,7 @@ To install a collection that is not currently installed:
 
 1. Create a local copy of the Helm values file that can safely include credentials
 
-    DO NOT COMMIT THIS FILE
+    WARNING: DO NOT COMMIT THIS FILE
 
     You do not want to push personal credentials to GitHub.
 
