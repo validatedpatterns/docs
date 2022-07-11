@@ -7,6 +7,7 @@ activemq
 addon
 addons
 aeg
+afce
 afnmju
 agentless
 amq
@@ -29,17 +30,21 @@ azs
 backend
 baremetal
 baremetal integrations
+bd
 bdo
 beekhof
+BOOTSTRAPSERVERS
 brms
 bt
 btn
 bucketsource
 cakephp
+cdd
 cdn
 centos
 ceph
 cfengine
+changelog
 ckollujlir
 claudiol
 cloudinit
@@ -70,6 +75,8 @@ datacenter
 dataflow
 datagrid
 datasheet
+datasource
+DataSource
 datavirt
 dav
 dcv
@@ -95,15 +102,19 @@ dsparwyc
 dsv
 dv
 eap
+eb
 easv
 eav
+ecf
 edsv
 edv
+effb
 efg
 efrqurrkuojrlsqhi
 ejuat
 endcomment
 endraw
+entrypoint
 envi
 ep
 erp
@@ -115,6 +126,8 @@ eventing
 externaldb
 externalurl
 facto
+fadc
+fc
 featureful
 fh
 fixme
