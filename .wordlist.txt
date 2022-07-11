@@ -50,6 +50,7 @@ claudiol
 cloudinit
 cloudinitpassword
 cloudinituser
+cloudProvider
 clustergroup
 clustergroups
 clustername
@@ -77,6 +78,7 @@ datagrid
 datasheet
 datasource
 DataSource
+DATASRC
 datavirt
 dav
 dcv
