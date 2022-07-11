@@ -79,11 +79,8 @@ The output should look similar to this edited/compressed output.
 
 ![Bucket setup](/videos/bucket-setup.svg)]
 
-<<<<<<< HEAD
 Keep note of the name of the bucket you created, as you will need it for further pattern configuration.
-=======
 There is some key information you will need to take note of that is required by the 'values-global.yaml' file. You will need the URL for the bucket and its name. At the very end of the `values-global.yaml` file you will see a section for `s3:` were these values need to be changed.
->>>>>>> e7c91bf (Fix some its vs it's)
 
 # Preparation
 
