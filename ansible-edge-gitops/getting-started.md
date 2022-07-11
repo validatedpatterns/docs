@@ -103,6 +103,18 @@ To install a collection that is not currently installed:
 
 # How to deploy
 
+1. Login to your cluster using oc login or exporting the KUBECONFIG
+
+    ```sh
+    oc login
+    ```
+
+    or set KUBECONFIG to the path to your `kubeconfig` file. For example:
+
+    ```sh
+    export KUBECONFIG=~/my-ocp-env/hub/auth/kubconfig
+    ```
+
 1. Fork the [ansible-edge-gitops](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops) repo on GitHub.  It is necessary to fork to preserve customizations you make to the default configuration files.
 
 1. Clone the forked copy of this repository.
@@ -132,27 +144,13 @@ To install a collection that is not currently installed:
    git push origin my-branch
    ```
 
-1. You can deploy the pattern using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you do use the operator then skip to Validating the Environment below.
-
-1. Preview the changes
+1. (Optional) Preview the changes
 
     ```sh
     make show
     ```
 
-1. Login to your cluster using oc login or exporting the KUBECONFIG
-
-    ```sh
-    oc login
-    ```
-
-    or set KUBECONFIG to the path to your `kubeconfig` file. For example:
-
-    ```sh
-    export KUBECONFIG=~/my-ocp-env/hub/auth/kubconfig
-    ```
-
-1. Apply the changes to your cluster
+1. Apply the changes to your cluster. This will install the pattern via the Validated Patterns Operator, and then run any necessary follow-up steps.
 
     ```sh
     make install
@@ -168,13 +166,9 @@ The installation process will take between 45-60 minutes to complete. If you wan
     OpenShift Console Web UI -> Installed Operators
     ```
 
-If you installed with `make install` (the default), the screen should look like this:
+The screen should like this when installed via `make install`:
 
 ![ansible-edge-gitops-operators](/images/ansible-edge-gitops/aeg-new-operators.png "Ansible Edge GitOps Operators")
-
-If you installed with `make legacy-install`, the screen should look like this:
-
-![ansible-edge-gitops-operators](/images/ansible-edge-gitops/aeg-operators.png "Ansible Edge GitOps Operators")
 
 * Check all applications are synchronised
 
@@ -204,7 +198,7 @@ Please see [Ansible Automation Platform](/ansible-edge-gitops/ansible-automation
 
 Please see [OpenShift Virtualization](/ansible-edge-gitops/openshift-virtualization/) for more information on how this pattern uses OpenShift Virtualization.
 
-# GitOps application demos
+# Infrastructure Elements of this Pattern
 
 ## [Ansible Automation Platform](https://www.redhat.com/en/technologies/management/ansible)
 
