@@ -77,4 +77,4 @@ TBD
 
 ## What Next
 
-- [Deploy the management hub](getting-started)  using Helm
+- [Getting Started: Deploying and Validating the Pattern](getting-started)
