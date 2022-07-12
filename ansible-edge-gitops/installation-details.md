@@ -39,9 +39,11 @@ Specific processes that are called by post-install include:
 
 Vault requires extra setup in the form of unseal keys and configuration of secrets. The vault-init task does this. Note that it is safe to run vault-init as it will exit successfully if it can connect to a cluster with a running, unsealed vault.
 
-This process also calls an Ansible playbook that reads the values-secret.yaml file and stores the data it finds there in vault as keypairs. These values are then usable in the kubernetes cluster. This pattern uses the ssh pubkey for the kiosk VMs via the external secrets operator.
+### [load-secrets](https://github.com/hybrid-cloud-patterns/common/blob/main/scripts/vault-utils.sh)
 
-The script will update secrets in vault if re-run; it is safe to re-run if the secret values have not changed as well.
+This process (which calls push_secrets) calls an Ansible playbook that reads the values-secret.yaml file and stores the data it finds there in vault as keypairs. These values are then usable in the kubernetes cluster. This pattern uses the ssh pubkey for the kiosk VMs via the external secrets operator.
+
+This script will update secrets in vault if re-run; it is safe to re-run if the secret values have not changed as well.
 
 ### [deploy-kubevirt-worker.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/deploy_kubevirt_worker.sh)
 
