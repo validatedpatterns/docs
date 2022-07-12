@@ -3,7 +3,7 @@ layout: default
 title: Installation Details
 grand_parent: Patterns
 parent: Ansible Edge GitOps
-nav_order: 1
+nav_order: 2
 ---
 
 # Installation Details
@@ -27,19 +27,23 @@ The operator-deploy task installs the Validated Patterns Operator, which in turn
 
 The [legacy-install](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/Makefile) is still provided for users that cannot or do not want to use the Validated Patterns operator. Instead of installing the operator, it installs a helm chart that does the same thing - installs a subscription for OpenShift GitOps and installs a cluster-wide and hub instance of that operator. It then proceeds with installing the clustergroup application.
 
-Note that both the [upgrade](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/Makefile)  and [legacy-upgrade](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/Makefile) targets are now equivalent and interchangeable with `install` and `legacy-install`. This was not always the case, so they are still provided.
+Note that both the [upgrade](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/Makefile)  and [legacy-upgrade](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/Makefile) targets are now equivalent and interchangeable with `install` and `legacy-install` (respectively - `legacy-install/legacy-upgrade` are not compatible with standard `install/upgrade`. This was not always the case, so both install/upgrade targets are still provided).
 
-## [vault-init](https://github.com/hybrid-cloud-patterns/common/blob/main/scripts/vault-utils.sh)
+## [post-install](https://github.com/hybrid-cloud-patterns/common/blob/main/Makefile)
+
+Note that all the steps of `post-install` are idempotent. If you want or need to reconfigure vault or AAP, the recommended way to do so is to call `make post-install`. This may change as we move elements of this pattern into the new imperative framework in `common`.
+
+Specific processes that are called by post-install include:
+
+### [vault-init](https://github.com/hybrid-cloud-patterns/common/blob/main/scripts/vault-utils.sh)
 
 Vault requires extra setup in the form of unseal keys and configuration of secrets. The vault-init task does this. Note that it is safe to run vault-init as it will exit successfully if it can connect to a cluster with a running, unsealed vault.
 
-## [load-secrets](https://github.com/hybrid-cloud-patterns/common/blob/main/ansible/roles/vault_utils/tasks/push_secrets.yaml)
-
-This script is actually an Ansible playbook that reads the values-secret.yaml file and stores the data it finds there in vault as keypairs. These values are then usable in the kubernetes cluster. This pattern uses the ssh pubkey for the kiosk VMs via the external secrets operator.
+This process also calls an Ansible playbook that reads the values-secret.yaml file and stores the data it finds there in vault as keypairs. These values are then usable in the kubernetes cluster. This pattern uses the ssh pubkey for the kiosk VMs via the external secrets operator.
 
 The script will update secrets in vault if re-run; it is safe to re-run if the secret values have not changed as well.
 
-## [deploy-kubevirt-worker.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/deploy_kubevirt_worker.sh)
+### [deploy-kubevirt-worker.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/deploy_kubevirt_worker.sh)
 
 The real code for this playbook (outside of a shell wrapper) is [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/deploy_kubevirt_worker.yml).
 
@@ -68,7 +72,7 @@ When the `metal-worker` is showing "READY" and "AVAILABLE", the virtual machines
 
 The metal node will be destroyed when the cluster is destroyed. The script is idempotent and will create at most one metal node per cluster.
 
-## [ansible-load-controller.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh)
+### [configure-controller](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh)
 
 There are two parts to this script - the first part, with the code [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/ansible_get_credentials.yml), retrieves the admin credentials from OpenShift to enable login to the AAP Controller.
 
