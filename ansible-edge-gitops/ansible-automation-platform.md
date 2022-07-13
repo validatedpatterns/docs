@@ -3,7 +3,7 @@ layout: default
 title: Ansible Automation Platform
 grand_parent: Patterns
 parent: Ansible Edge GitOps
-nav_order: 3
+nav_order: 4
 ---
 
 # Ansible Automation Platform
