@@ -5,9 +5,7 @@ layout: table_wrappers
 <!DOCTYPE html>
 
 <html lang="{{ site.lang | default: 'en-US' }}">
-{% comment %}
 {% include head.html %}
-{% endcomment %}
 <body>
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="svg-link" viewBox="0 0 24 24">
@@ -44,7 +42,7 @@ layout: table_wrappers
 
   <div class="side-bar">
     <div class="site-header">
-      <a href="{{ '/' | absolute_url }}" class="site-title lh-tight">{% comment %}{% include title.html %}{% endcomment %}</a>
+      <a href="{{ '/' | absolute_url }}" class="site-title lh-tight">{% include title.html %}</a>
       <a href="#" id="menu-button" class="site-button">
         <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg>
       </a>
@@ -60,11 +58,11 @@ layout: table_wrappers
             {% if collections_size > 1 %}
               <div class="nav-category">{{ collection_value.name }}</div>
             {% endif %}
-            {% comment %}{% include nav.html pages=collection %}{% endcomment %}
+            {% include nav.html pages=collection %}
           {% endif %}
         {% endfor %}
       {% else %}
-      {% comment %}  {% include nav.html pages=site.html_pages %} {% endcomment %}
+        {% include nav.html pages=site.html_pages %}
       {% endif %}
       <ul class="nav-list">
         <li class="nav-list-item">
@@ -87,7 +85,7 @@ layout: table_wrappers
           <div id="search-results" class="search-results"></div>
         </div>
       {% endif %}
-      {% comment %}{% include header_custom.html %}{% endcomment %}
+      {% include header_custom.html %}
       {% if site.aux_links %}
         <nav aria-label="Auxiliary" class="aux-nav">
           <ul class="aux-nav-list">
@@ -139,7 +137,7 @@ layout: table_wrappers
       {% endunless %}
       <div id="main-content" class="main-content" role="main">
         {% if site.heading_anchors != false %}
-        {% comment %}{% include vendor/anchor_headings.html html=content beforeHeading="true" anchorBody="<svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><use xlink:href=\"#svg-link\"></use></svg>" anchorClass="anchor-heading" anchorAttrs="aria-labelledby=\"%html_id%\"" %}{% endcomment %}
+          {% include vendor/anchor_headings.html html=content beforeHeading="true" anchorBody="<svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><use xlink:href=\"#svg-link\"></use></svg>" anchorClass="anchor-heading" anchorAttrs="aria-labelledby=\"%html_id%\"" %}
         {% else %}
           {{ content }}
         {% endif %}
@@ -158,7 +156,7 @@ layout: table_wrappers
         {% endif %}
 
         {% capture footer_custom %}
-        {% comment %}{%- include footer_custom.html -%}{% endcomment %}
+          {%- include footer_custom.html -%}
         {% endcapture %}
         {% if footer_custom != "" or site.last_edit_timestamp or site.gh_edit_link %}
           <hr>
