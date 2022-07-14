@@ -10,15 +10,11 @@ else
 	ATTRS = "rw,z"
 endif
 
-default: serve
-
-serve:
-	@echo "Next browse to: http://localhost:4000"
-	jekyll serve -w --trace --config _config.yml,_local.yml --host 127.0.0.1
+default: serve-container
 
 serve-container:
 	@echo "Serving via container. Browse to http://localhost:4000. Filesystem type: $(FSTYPE)"
-	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint "make" $(JEKYLL_CONTAINER)
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint "bundle" $(JEKYLL_CONTAINER) exec jekyll serve --host 127.0.0.1
 
 test: spellcheck lint htmlproof
 	@echo "Ran all tests"
@@ -37,12 +33,12 @@ lint:
 
 htmlproof:
 	@echo "Running html proof to check links"
-	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint jekyll $(JEKYLL_CONTAINER) build
-	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint ruby -e INPUT_DIRECTORY=_site/ \
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint bundle $(JEKYLL_CONTAINER) exec jekyll build
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint bundle -e INPUT_DIRECTORY=_site/ \
 		-e INPUT_FORCE_HTTPS=1 -e INPUT_CHECK_FAVICON=0 \
 		-e INPUT_URL_IGNORE="http://www.example.com/\nhttps://en.wikipedia.org/wiki/Main_Page" \
 		-e INPUT_URL_IGNORE_RE="^https://twitter.com/" \
-		$(JEKYLL_CONTAINER) /usr/local/bin/proof-html.rb
+		$(JEKYLL_CONTAINER) exec ruby /usr/local/bin/proof-html.rb
 
 lintwordlist:
 	@sort .wordlist.txt | tr '[:upper:]' '[:lower:]' | uniq > /tmp/.wordlist.txt
@@ -53,4 +49,4 @@ clean:
 
 build:
 	@echo "Check the html content in _site"
-	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint "jekyll" $(JEKYLL_CONTAINER) build
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint "bundle" $(JEKYLL_CONTAINER) exec jekyll build
