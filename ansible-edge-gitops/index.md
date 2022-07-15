@@ -49,7 +49,7 @@ This pattern uses OpenShift Virtualization (the productization of Kubevirt) to s
 
 - Hashicorp Vault
 - External Secrets Operator
-- Inductive Autotmation Ignition
+- Inductive Automation Ignition
 
 ## Architecture
 
