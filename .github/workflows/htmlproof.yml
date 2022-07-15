@@ -32,3 +32,5 @@ jobs:
           url_ignore_re: |
             ^https://twitter.com/
             ^https://hybrid-cloud-patterns.io//2022/
+            ^https://hybrid-cloud-patterns.io/2022/
+            ^https://github.com/hybrid-cloud-patterns/docs/blob/gh-pages//_posts/2022
