@@ -150,6 +150,7 @@ httpd
 https
 hubclusterdomain
 hyperconverged
+idempotence
 ignoredifferences
 ilkka
 im
@@ -171,6 +172,7 @@ iotsensor
 ipbabble
 iz
 jboss
+jira
 jjvlf
 jonny
 js
@@ -213,6 +215,7 @@ managedclusterinfo
 managedsite's
 maxpods
 mbps
+mcollective
 mhjacks
 mhjacks's
 middleware
@@ -350,6 +353,8 @@ toc
 toh
 toplevel
 toprettyjson
+tradeoff
+tradeoffs
 transactional
 tst
 txt
