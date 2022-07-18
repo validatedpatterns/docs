@@ -21,10 +21,10 @@ nav_order: 1
 
 1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing).
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
-1. Storage set up in your public/private cloud for the x-ray images
+1. S3-capable Storage set up in your public/private cloud for the x-ray images
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
 
-The following packages will need to be installed on your local system to seed the pattern correctly:
+The following packages need to be installed on your local system to seed the pattern correctly:
 
 ```bash
 dnf install -y git make python3-pip
@@ -42,15 +42,16 @@ Install the ansible-galaxy collection:
 ansible-galaxy collection install kubernetes.core
 ```
 
-The use of this blueprint depends on having at least one running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the medical edge facilities.
+The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern
+there is no dedicated Hub / Edge cluster for the **Medical Diagnosis** pattern.
 
 If you do not have a running Red Hat OpenShift cluster you can start one on a
 public or private cloud by using [Red Hat's cloud
 service](https://console.redhat.com/openshift/create).
 
-## Setting up the storage for OpenShift Data Foundation
+## Setting up an S3 Bucket for the xray-images
 
-Red Hat OpenShift Data Foundation relies on underlying object based storage provided by cloud providers. This storage will need to be public. A S3 bucket is required for image processing. Please see the [Utilities](#utilities) section below for creating a bucket in AWS S3. The following links provide information on how to create the cloud storage required for this validated pattern on several cloud providers.
+ An S3 bucket is required for image processing. Please see the [Utilities](#utilities) section below for creating a bucket in AWS S3. The following links provide information on how to create the buckets required for this validated pattern on several cloud providers.
 
 * [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html)
 * [Azure Blob Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal)
@@ -58,9 +59,7 @@ Red Hat OpenShift Data Foundation relies on underlying object based storage prov
 
 # Utilities
 
-There are some utilities that have been created for the validated patterns effort to speed the process.
-
-If you are using the utilities then you first you need to set some environment variables for your cloud provider keys.
+A number of utilities have been built by the validated patterns team to lower the barrier to entry for using the community or Red Hat Validated Patterns. To use these utilities you will need to export some environment variables for your cloud provider:
 
 For AWS (replace with your keys):
 
@@ -69,7 +68,7 @@ export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-Then we need to create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or use the scripts provided on [validated-patterns-utilities](https://github.com/hybrid-cloud-patterns/utilities) repository.
+Then we need to create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or use the scripts provided on [validated-patterns-utilities](https://github.com/hybrid-cloud-patterns/utilities/) repository.
 
 ```sh
 python s3-create.py -b mytest-bucket -r us-west-2 -p
@@ -80,6 +79,7 @@ The output should look similar to this edited/compressed output.
 
 ![Bucket setup](/videos/bucket-setup.svg)]
 
+Keep note of the name of the bucket you created, as you will need it for further pattern configuration.
 There is some key information you will need to take note of that is required by the 'values-global.yaml' file. You will need the URL for the bucket and its name. At the very end of the `values-global.yaml` file you will see a section for `s3:` were these values need to be changed.
 
 # Preparation
@@ -94,33 +94,40 @@ There is some key information you will need to take note of that is required by 
 
 1. Create a local copy of the Helm values file that can safely include credentials
 
-   DO NOT COMMIT THIS FILE
+   **DO NOT COMMIT THIS FILE**
 
-   You do not want to push personal credentials to GitHub.
+   You do not want to push credentials to GitHub.
 
    ```sh
    cp values-secret.yaml.template ~/values-secret.yaml
    vi ~/values-secret.yaml
    ```
 
-**values-secret.yaml example**
+  **values-secret.yaml example**
 
 ```yaml
 secrets:
   xraylab:
-    db:
-      db_user: ""
-      db_passwd: ""
-      db_root_passwd: ""
-      db_host: xraylabdb
-      db_dbname: xraylabdb
-      db_master_user: ""
-      db_master_password: ""
+    database-user: xraylab
+    database-password: ## Insert your custom password here ##
+    database-root-password: ## Insert your custom password here ##
+    database-host: xraylabdb
+    database-db: xraylabdb
+    database-master-user: xraylab
+    database-master-password: ## Insert your custom password here ##
+
+  grafana:
+    GF_DATASRC_USER: xraylab
+    GF_DATASRC_PASSWORD: ## Insert your custom password here ##
+    GF_DATASRC_DB: xraylabdb
+    GF_DATASRC_URL: xraylabdb
+    GF_SECURITY_ADMIN_PASSWORD: ## Insert your custom password here ##
+    GF_SECURITY_ADMIN_USER: root
 ```
 
-   When you edit the file you can make changes to the various DB passwords if you wish.
+  When you edit the file you can make changes to the various DB and Grafana passwords if you wish.
 
-1. Customize the deployment for your cluster. Remember to use the data obtained from the cloud storage creation (S3, Blob Storage, Cloud Storage) as part of the data to be updated in the yaml file. There are comments in the file highlighting what what changes need to be made.
+1. Customize the `values-global.yaml` for your deployment
 
    ```sh
    git checkout -b my-branch
@@ -132,6 +139,8 @@ secrets:
    ```yaml
    ...omitted
    datacenter:
+     cloudProvider: PROVIDE_CLOUD_PROVIDER #aws, azure
+     storageClassName: PROVIDE_STORAGECLASS_NAME #gp2 (aws)
      region: PROVIDE_CLOUD_REGION #us-east-1
      clustername: PROVIDE_CLUSTER_NAME #OpenShift clusterName
      domain: PROVIDE_DNS_DOMAIN #blueprints.rhecoeng.com
@@ -140,9 +149,10 @@ secrets:
       # Values for S3 bucket access
       # Replace <region> with AWS region where S3 bucket was created
       # Replace <cluster-name> and <domain> with your OpenShift cluster values
-      # bucketSource: "https://s3.<region>.amazonaws.com/com.redhat.claudiol.xray-source"
-      bucketSource: PROVIDE_BUCKET_SOURCE #"https://s3.us-east-2.amazonaws.com/com.redhat.jrickard.xray-source"
+      # bucketSource: "https://s3.<region>.amazonaws.com/<s3_bucket_name>"
+      bucketSource: PROVIDE_BUCKET_SOURCE #"https://s3.us-east-2.amazonaws.com/com.validated-patterns.xray-source"
       # Bucket base name used for xray images
+      bucketBaseName: "xray-source" 
    ```
 
    ```sh
@@ -245,9 +255,9 @@ You can also check on the progress using OpenShift GitOps to check on the variou
    FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6
    ```
 
-   The most important ArgoCD instance to examine at this point is `multicloud-gitops-hub`. This is where all the applications for the hub can be tracked.
+   The most important ArgoCD instance to examine at this point is `multicloud-gitops-datacenter`. This is where all the applications for the pattern can be tracked.
 
-1. Check all applications are synchronised. There are eleven different ArgoCD "applications" deployed as part of this pattern.
+1. Check all applications are synchronised. There are thirteen different ArgoCD "applications" deployed as part of this pattern.
 
 ## Viewing the Grafana based dashboard
 
@@ -268,7 +278,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
    You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster.
 
    ```sh
-   oc scale deploymentconfig/image-generator --replicas=1
+   oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1
    ```
 
    Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the `xraylab-1` project.
