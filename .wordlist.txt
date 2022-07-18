@@ -97,6 +97,7 @@ dev
 devel
 devops
 devsecops
+differentiator
 dns
 dockerhub
 dsl
