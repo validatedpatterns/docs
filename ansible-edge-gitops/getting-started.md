@@ -70,9 +70,8 @@ secrets:
 
 ```yaml
 files:
-  ansible-automation-platform:
-    # Secret used for licensing Ansible Automation Platform
-    manifest: 'full pathname of file containing Manfiest for entitling Ansible Automation Platform'
+  # Secret used for licensing Ansible Automation Platform
+  aap-manifest: 'full pathname of file containing Manfiest for entitling Ansible Automation Platform'
 ```
 
 # Prerequisites for deployment via `make install`
