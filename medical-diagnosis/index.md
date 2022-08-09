@@ -15,6 +15,7 @@ nav_order: 3
 {: .no_toc }
 
 [Install](/medical-diagnosis/getting-started){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Portfolio Architecture](https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6){: .btn .btn-blue .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/hybrid-cloud-patterns/medical-diagnosis/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
