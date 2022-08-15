@@ -33,7 +33,7 @@ baremetal integrations
 bd
 bdo
 beekhof
-BOOTSTRAPSERVERS
+bootstrapservers
 brms
 bt
 btn
@@ -50,7 +50,7 @@ claudiol
 cloudinit
 cloudinitpassword
 cloudinituser
-cloudProvider
+cloudprovider
 clustergroup
 clustergroups
 clustername
@@ -77,8 +77,7 @@ dataflow
 datagrid
 datasheet
 datasource
-DataSource
-DATASRC
+datasrc
 datavirt
 dav
 dcv
@@ -105,9 +104,9 @@ dsparwyc
 dsv
 dv
 eap
-eb
 easv
 eav
+eb
 ecf
 edsv
 edv
@@ -196,6 +195,8 @@ json
 jsonpointers
 jupyter
 jws
+kafkasource
+kafkatopics
 kam
 kamelet
 keypair
@@ -206,8 +207,6 @@ kie
 kieserver
 kioskextraparams
 knative
-kafkasource
-kafkatopics
 kno
 kservice
 kstreams
@@ -219,8 +218,8 @@ kustomization
 kustomize
 kzwzqibmynhrxxxxxxxxx
 latencies
-LATESTCREATED
-LATESTREADY
+latestcreated
+latestready
 ldap
 ldhs
 lhipbabbledummyhykhq
@@ -270,14 +269,13 @@ nosql
 nvme
 nvv
 nzrxxxxxxxx
-objectStore
 objectstore
 oc
 ocp
 odf
 ofvbu
-OLM
 okd
+olm
 onfg
 opendatahub
 openjdk
@@ -309,6 +307,7 @@ psql
 pubkey
 publickey
 pv
+qe
 quickstart
 rabbitmq
 rdma
@@ -339,8 +338,8 @@ secretstore
 sed
 seldon
 ser
-serviceaccount
 serverless
+serviceaccount
 shopfloor
 shopflor
 spinny
@@ -354,12 +353,9 @@ sstlsi
 stackrox
 standal
 storageclass
-STORAGECLASS
-storageClassName
+storageclassname
 stormshift
 strimzi
-stackrox
-stackrox
 subdirectories
 submodule
 submoduled
@@ -368,6 +364,7 @@ subtree
 subtrees
 sudo
 superset
+supportmatrix
 svc
 synched
 syncpolicy
@@ -398,8 +395,8 @@ ui
 uncomment
 uncommented
 unencrypted
-untrusted
 unschedulable
+untrusted
 upstreaming
 upstream's
 userid
