@@ -18,13 +18,13 @@ nav_order: 3
 
 The **Multicloud-GitOps** pattern has been tested in the following Certified Cloud Providers.
 
-<!-- supportmatrix-qe-start -->
+{% comment %}supportmatrix-qe-start{% endcomment %}
 | **Certified Cloud Providers** | 4.8 | 4.9 | 4.10 |
 | :---- | :---- | :---- | :---- |
 | Amazon Web Services|     |:heavy_check_mark: |    |
 | Microsoft Azure|     |    |:heavy_check_mark: |
 | Google Cloud Platform| :heavy_check_mark: |    |    |
-<!-- supportmatrix-qe-end -->
+{% comment %}supportmatrix-qe-end{% endcomment %}
 
 ## General OpenShift Minimum Requirements
 

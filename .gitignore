@@ -6,3 +6,4 @@ _site
 dictionary.dic
 super-linter.log
 tmp/
+Gemfile.lock
