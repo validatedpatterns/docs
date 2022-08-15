@@ -19,11 +19,11 @@ nav_order: 5
 The **Industrial-Edge** pattern has been tested in the following Certified Cloud Providers.
 
 <!-- supportmatrix-qe-start -->
-| **Certified Cloud Providers** | 4.8 | 4.9 |
-| :---- | :---- | :----
-| Amazon Web Services | Tested | Not Supported
-| Google Compute |   |
-| Microsoft Azure |   |
+| **Certified Cloud Providers** | 4.8 | 4.9 | 4.10 |
+| :---- | :---- | :---- | :---- |
+| Amazon Web Services|     |    |:heavy_check_mark: |
+| Microsoft Azure| :heavy_check_mark: |    |    |
+| Google Cloud Platform|     |:heavy_check_mark: |    |
 <!-- supportmatrix-qe-end -->
 
 ## General OpenShift Minimum Requirements
