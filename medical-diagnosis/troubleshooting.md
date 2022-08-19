@@ -144,7 +144,6 @@ mysql -u xraylab -D xraylabdb -h xraylabdb -p
 If you are able to successfully login then your password has been configured correctly in vault,
 the external secrets operator and mounted to the database correctly.
 
-
 ---
 
 **Problem**: The image-generator is scaled correctly, but nothing is happening in the dashboard.
