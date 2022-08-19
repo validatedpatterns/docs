@@ -117,10 +117,6 @@ secrets:
     database-master-password: ## Insert your custom password here ##
 
   grafana:
-    GF_DATASRC_USER: xraylab
-    GF_DATASRC_PASSWORD: ## Insert your custom password here ##
-    GF_DATASRC_DB: xraylabdb
-    GF_DATASRC_URL: xraylabdb
     GF_SECURITY_ADMIN_PASSWORD: ## Insert your custom password here ##
     GF_SECURITY_ADMIN_USER: root
 ```
