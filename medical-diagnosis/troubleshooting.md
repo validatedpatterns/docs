@@ -91,6 +91,60 @@ Ensure that the prometheus datasource exists and that the status is available. T
 
 **Solution**: This is most likely due to the **xraylab** database not being available or misconfigured. Please check the database and ensure that it is functioning properly.
 
+**Step 1**: Ensure that the database is populated with the correct tables:
+
+```bash
+
+oc exec -it xraylabdb-1-<uuid> bash
+
+mysql -u root
+
+USE xraylabdb;
+
+SHOW tables;
+
+```
+
+The expected output is:
+
+```bash
+
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 75
+Server version: 10.3.32-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> USE xraylabdb;
+Database changed
+MariaDB [xraylabdb]> show tables;
++---------------------+
+| Tables_in_xraylabdb |
++---------------------+
+| images_anonymized   |
+| images_processed    |
+| images_uploaded     |
++---------------------+
+3 rows in set (0.000 sec)
+
+```
+
+**Step 2:** Verify the password set in the `values-secret.yaml` is working
+
+```bash
+oc exec -it xraylabdb-1-<uuid> bash
+
+mysql -u xraylab -D xraylabdb -h xraylabdb -p 
+<provide your password at the prompt>
+
+```
+
+If you are able to successfully login then your password has been configured correctly in vault,
+the external secrets operator and mounted to the database correctly.
+
+
 ---
 
 **Problem**: The image-generator is scaled correctly, but nothing is happening in the dashboard.
