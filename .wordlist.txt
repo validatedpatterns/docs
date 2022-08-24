@@ -21,6 +21,7 @@ apis
 appdev
 applicati
 argocd
+argocd's
 arptn
 atlassian
 auditable
@@ -163,6 +164,7 @@ hostname
 howto
 httpd
 https
+hubcluster
 hubclusterdomain
 hyperconverged
 idempotence
@@ -232,6 +234,7 @@ lsv
 machineapi
 machineset
 makefile
+managedclustergroups
 managedclusterinfo
 managedsite's
 maxpods
@@ -291,6 +294,7 @@ passthrough
 pathed
 persistentvolumeclaim
 pgsql
+pki
 plaintext
 png
 podman
@@ -429,7 +433,3 @@ yml
 zefrgjryxxxxxxxxx
 zj
 zk
-managedClusterGroups
-PKI
-ArgoCD's
-hubCluster
