@@ -47,7 +47,7 @@ Each application is described as a series of resources that are rendered into Gi
 
 ## Who is behind this?
 
-Today, a team of Red Hat engineers including Andrew Beekhof (@beekhof), Lester Claudio (@claudiol), Martin Jackson (@mhjacks), William Henry (@ipbabble) and others.
+Today, a team of Red Hat engineers including Andrew Beekhof (@beekhof), Lester Claudio (@claudiol), Martin Jackson (@mhjacks), William Henry (@ipbabble), Michele Baldessari (@mbaldessari), Jonny Rickard (@day0hero) and others.
 
 Excited or intrigued by what you see here?  We'd love to hear your thoughts and ideas!  Try the patterns contained here and see below for links to our repositories and issue trackers.
 
