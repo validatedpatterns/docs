@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2022-08-24
-title: using clusterGroups in the Validated Patterns Framework
+title: Using clusterGroups in the Validated Patterns Framework
 excerpt: Defining what we mean by clusterGroups in the Validated Pattern Framework (and how to use them)
 published: true
 tags:
