@@ -29,6 +29,7 @@ awk
 awx
 azs
 backend
+baldessari
 baremetal
 baremetal integrations
 bd
