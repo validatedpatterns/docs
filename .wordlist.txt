@@ -429,3 +429,7 @@ yml
 zefrgjryxxxxxxxxx
 zj
 zk
+managedClusterGroups
+PKI
+ArgoCD's
+hubCluster
