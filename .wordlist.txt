@@ -66,6 +66,7 @@ configur
 conjur
 containerimage
 credentialtype
+crohn's
 cronjob
 cronjobs
 csv
@@ -159,6 +160,7 @@ hb
 hbv
 hc
 highperformance
+HIPAA
 hmi
 hoc
 hostname
@@ -245,9 +247,11 @@ mcollective
 mhjacks
 mhjacks's
 middleware
+militaries
 millicore
 misconfigured
 mkzxbs
+mlops
 modularity
 mor
 mq
@@ -393,6 +397,7 @@ toprettyjson
 tradeoff
 tradeoffs
 transactional
+tsa
 tst
 txt
 ubi
