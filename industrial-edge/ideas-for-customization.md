@@ -43,7 +43,7 @@ As an operator you would first make changes to the staging first.  Here are the 
   * machine-sensor-1-configmap.yaml
   * machine-sensor-2-configmap.yaml
 * Change the following variable in *machine-sensor-1-configmap.yaml*
-  *  **SENSOR_TEMPERATURE_ENABLED: "true"**
+  * **SENSOR_TEMPERATURE_ENABLED: "true"**
 * Make sure you commit the changes to **git**
   * **git add machine-sensor-1-configmap.yaml**
   * **git commit -m "Changed SENSOR_TEMPERATURE_ENABLED to true"**
