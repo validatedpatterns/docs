@@ -32,7 +32,7 @@ To fork this repository, and deploy the Industrial Edge pattern, follow the step
 
 # HOWTO Enabling a sensor to send Temperature data
 
-Our sensors have been configured to send data relating to the vibration of the devices.  To show the power of GitOps, and keeping state in a git repository, we can make a change to the config map of one of the sensors to detect and report data on temperature. This is done via a variable called *SENSOR_TEMPERATURE_ENABLED* that is initially set to false.  Setting this variable to true will trigger the GitOps engine to resync, restart the machine sensor and apply the change.
+Our sensors have been configured to send data relating to the vibration of the devices.  To show the power of GitOps, and keeping state in a git repository, we can make a change to the config map of one of the sensors to detect and report data on temperature. This is done via a variable called *SENSOR_TEMPERATURE_ENABLED* that is initially set to false.  Setting this variable to true will trigger the GitOps engine to synchronize the application, restart the machine sensor and apply the change.
 
 There are two environments in the Industrial Edge demonstration:
 * The staging environment that lives in the *manuela-tst-all* namespace
@@ -40,7 +40,7 @@ There are two environments in the Industrial Edge demonstration:
 
 As an operator you would first make changes to the staging first.  Here are the steps to see how the GitOps engine does it's magic. These changes will be reflected in the staging environment Line Dashboard UI in the *manuela-tst-all* namespace.
 
-* The ConfigMaps in question live in the charts/datacenter/manuela-tst/templates/machine-sensor directory
+* The config maps in question live in the charts/datacenter/manuela-tst/templates/machine-sensor directory
 * There are two config maps that we can change:
   * machine-sensor-1-configmap.yaml
   * machine-sensor-2-configmap.yaml
