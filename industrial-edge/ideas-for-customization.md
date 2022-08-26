@@ -19,7 +19,7 @@ nav_order: 6
 
 # Why change it?
 
-One of the major goals of the Red Hat patterns development process is to create modular, customizable demos. The Industrial Edge demonstration includes multiple, simulated, IoT devices publishing their temperature and vibration telemetry to our data center and ultimately persisting the data into an AWS S3 storage service bucket which we call the Data Lake. All of this is done using our Red Hat certified products running on OpenShift. 
+One of the major goals of the Red Hat patterns development process is to create modular, customizable demos. The Industrial Edge demonstration includes multiple, simulated, IoT devices publishing their temperature and vibration telemetry to our data center and ultimately persisting the data into an AWS S3 storage service bucket which we call the Data Lake. All of this is done using our Red Hat certified products running on OpenShift.
 
 This demo in particular can be customized in a number of ways that might be very interesting - and here are some starter ideas with some instructions on exactly what and where changes would need to be made in the pattern to accommodate those changes.
 
