@@ -36,7 +36,6 @@ There are two environments in the Industrial Edge demonstration:
 * The production environment which lives in the *stormshift* namespaces
 
 As an operator you would first make changes to the staging first.  Here are the steps to see how the GitOps engine does it's magic. These changes will be reflected in the staging environment Line Dashboard UI in the *manuela-tst-all* namespace.
-
 * The config maps in question live in the charts/datacenter/manuela-tst/templates/machine-sensor directory
 * There are two config maps that we can change:
   * machine-sensor-1-configmap.yaml
