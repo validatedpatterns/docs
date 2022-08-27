@@ -33,7 +33,6 @@ jobs:
             ^https://twitter.com/
             ^https://hybrid-cloud-patterns.io//2022/
             ^https://hybrid-cloud-patterns.io/2022/
-            ^https://hybrid-cloud-patterns.io//blog/page2/
-            ^https://hybrid-cloud-patterns.io/blog/page2/
-            ^https://github.com/hybrid-cloud-patterns/docs/blob/gh-pages//_posts/2022
-            ^https://github.com/hybrid-cloud-patterns/docs/blob/gh-pages//blog/page
+            ^https://hybrid-cloud-patterns.io//blog/
+            ^https://hybrid-cloud-patterns.io/blog/
+            ^https://github.com/hybrid-cloud-patterns/docs/blob/gh-pages
