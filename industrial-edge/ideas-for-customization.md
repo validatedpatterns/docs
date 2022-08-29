@@ -68,7 +68,6 @@ If we take the Deliver Service use case, and apply it to this pattern, we would 
 
 The idea is that this pattern can be used for other use cases keeping the main components in place. The components that would be new to the pattern are: IoT device code, AI/ML models, and specific kafka/broker topics to keep track of.
 
-
 # Next Steps
 
 What ideas for customization do you have? Can you use this pattern for other use cases?  Let us know through our feedback link below.
