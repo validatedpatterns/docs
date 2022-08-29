@@ -53,13 +53,21 @@ As an operator you would first make changes to the staging first.  Here are the 
   * Navigate to Networking->Routes
   * Press on the Location link to see navigate to the UI.
 
-# HOWTO Adding a new iot-sensor to a line
+# HOWTO Applying the pattern to a new use case
 
-**COMING SOON**
+There are a lot of IoT devices that we could add to this pattern.  In todays world we have IoT devices that perform different functions and these devices are connected to a network where they have the ability of sending telemetry data to other devices or a central data center.  In this particular use case we address an Industrial sector but what about appying this use case to other sectors such as Automotive or Delivery service companies?
 
-# HOWTO Create a new Factory instance using ACM
+If we take the Deliver Service use case, and apply it to this pattern, we would have to take into account the following aspects:
 
-**COMING SOON**
+* The main components in the pattern architecture can be used as is.
+  * The broker and kafka components are the vehicles for the streaming data coming from the devices.
+* The IoT sensor software would have to be developed.  The IoT devices will now be mobile so that presents a few challenges tracking the devices in part due to spotty connectivity to send the data stream.
+* The number of IoT devices to be tracked will increase depending on the fleet of delivery trucks out in the field.
+  * Scalability will be an important aspect for the pattern to be able to handle.
+* A new AI/ML model would have to be developed to "learn" through the analysis of the data stream from the IoT devices.
+
+The idea is that this pattern can be used for other use cases keeping the main components in place. The components that would be new to the pattern are: IoT device code, AI/ML models, and specific kafka/broker topics to keep track of.
+
 
 # Next Steps
 
