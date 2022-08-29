@@ -62,6 +62,7 @@ cnv
 colocated
 compliancetype
 config
+configmap
 configur
 conjur
 containerimage
