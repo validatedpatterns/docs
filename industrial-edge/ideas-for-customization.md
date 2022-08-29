@@ -55,7 +55,7 @@ As an operator you would first make changes to the staging first.  Here are the 
 
 # HOWTO Applying the pattern to a new use case
 
-There are a lot of IoT devices that we could add to this pattern.  In todays world we have IoT devices that perform different functions and these devices are connected to a network where they have the ability of sending telemetry data to other devices or a central data center.  In this particular use case we address an Industrial sector but what about appying this use case to other sectors such as Automotive or Delivery service companies?
+There are a lot of IoT devices that we could add to this pattern.  In today's world we have IoT devices that perform different functions and these devices are connected to a network where they have the ability of sending telemetry data to other devices or a central data center.  In this particular use case we address an Industrial sector but what about applying this use case to other sectors such as Automotive or Delivery service companies?
 
 If we take the Deliver Service use case, and apply it to this pattern, we would have to take into account the following aspects:
 
