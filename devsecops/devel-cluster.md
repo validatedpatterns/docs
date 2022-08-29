@@ -35,7 +35,7 @@ By default the `devel` applications are deployed on any development clusters tha
       value: "false"
     clusterSelector:
       matchLabels:
-        clustergroup: devel
+        clusterGroup: devel
       matchExpressions:
       - key: vendor
         operator: In
@@ -73,7 +73,7 @@ Select the "Import cluster" option beside the highlighted Create Cluster button.
 
 ![import-cluster](/images/import-cluster.png "Select Import cluster")
 
-On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clustergroup=devel` Press import. Done.
+On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=devel` Press import. Done.
 
 ![import-with-kubeconfig](/images/devsecops/import-devel-cluster.png "Import using kubeconfig")
 
@@ -125,7 +125,7 @@ Skip to the next section, [Devel is joined](#devel-is-joined)
 ### Designate the new cluster as a devel site
 
 Now that ACM is no longer deploying the devel applications everywhere, we need
-to explicitly indicate that the new cluster has the devel role. If you haven't tagged the cluster as `clustergroup=devel` then we can do that here.
+to explicitly indicate that the new cluster has the devel role. If you haven't tagged the cluster as `clusterGroup=devel` then we can do that here.
 
 We do this by adding the label referenced in the managedSite's `clusterSelector`.
 
@@ -135,7 +135,7 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
 
 1. Apply the label
 
-   `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER clustergroup=devel`
+   `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER clusterGroup=devel`
 
 ### You're done
 

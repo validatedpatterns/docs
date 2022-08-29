@@ -32,7 +32,7 @@ By default the production applications are deployed on all `secured` clusters th
       value: "false"
     clusterSelector:
       matchLabels:
-        clustergroup: secured
+        clusterGroup: secured
       matchExpressions:
       - key: vendor
         operator: In
@@ -70,7 +70,7 @@ Select the "Import cluster" option beside the highlighted Create Cluster button.
 
 ![import-cluster](/images/import-cluster.png "Select Import cluster")
 
-On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clustergroup=secured` Press import. Done.
+On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=secured` Press import. Done.
 
 ![import-with-kubeconfig](/images/import-with-kubeconfig.png "Import using kubeconfig")
 
@@ -122,7 +122,7 @@ Skip to the next section, [Production is joined](#production-is-joined)
 ### Designate the new cluster as a production site
 
 Now that ACM is no longer deploying the production applications everywhere, we need
-to explicitly indicate that the new cluster has the production role. If you haven't tagged the cluster as `clustergroup=secured` then we can that here.
+to explicitly indicate that the new cluster has the production role. If you haven't tagged the cluster as `clusterGroup=secured` then we can that here.
 
 We do this by adding the label referenced in the managedSite's `clusterSelector`.
 
@@ -132,7 +132,7 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
 
 1. Apply the label
 
-   `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER clustergroup=secured`
+   `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER clusterGroup=secured`
 
 ### You're done
 
