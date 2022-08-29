@@ -21,6 +21,7 @@ apis
 appdev
 applicati
 argocd
+argocd's
 arptn
 atlassian
 auditable
@@ -28,6 +29,7 @@ awk
 awx
 azs
 backend
+baldessari
 baremetal
 baremetal integrations
 bd
@@ -164,6 +166,7 @@ hostname
 howto
 httpd
 https
+hubcluster
 hubclusterdomain
 hyperconverged
 idempotence
@@ -233,9 +236,11 @@ lsv
 machineapi
 machineset
 makefile
+managedclustergroups
 managedclusterinfo
 managedsite's
 maxpods
+mbaldessari
 mbps
 mcollective
 mhjacks
@@ -292,6 +297,7 @@ passthrough
 pathed
 persistentvolumeclaim
 pgsql
+pki
 plaintext
 png
 podman
