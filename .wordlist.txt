@@ -215,6 +215,7 @@ maxpods
 mbps
 mhjacks
 mhjacks's
+mib
 middleware
 millicore
 mkzxbs
@@ -244,6 +245,7 @@ nosql
 nvme
 nvv
 nzrxxxxxxxx
+oauth
 oc
 ocp
 odf

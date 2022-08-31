@@ -171,7 +171,7 @@ Currently there is a manual step to completing the
 
 1. Save/copy the generated access token.
 
-1. At a commandline prompt that has KUBECONFIG set to the central/hub cluster's `auth/kubeconfig` file, run the following command with the token that was saved/copied above.
+1. At a command line prompt that has KUBECONFIG set to the central/hub cluster's `auth/kubeconfig` file, run the following command with the token that was saved/copied above.
 
   `$ oc create secret -n openshift-operators generic quay-integration --from-literal=token=<access_token>`
 
