@@ -64,7 +64,6 @@ TBD
 | :----: | :-----: | :----: | :----: | :----:
 | 38 | 66 GiB | 226 MiB | 13 MB/s | 441
 
-
 ### Secure Supply Chain Pattern OpenShift Development (devel) Cluster Size
 
 Here's an inventory of what gets deployed by default the **Secure Supply Chain** pattern on the Development (devel) OpenShift cluster:

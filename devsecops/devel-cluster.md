@@ -155,13 +155,13 @@ Currently there is a manual step to completing the
 
 1. Select the following fields and press Generate Access Token at the bottom of the page:
 
-  * Administer Organization
-  * Administer Repositories
-  * Create Repositories
-  * View all visible repositories
-  * Read/Write to any accessible repositories
-  * Administer User
-  * Read User Information
+* Administer Organization
+* Administer Repositories
+* Create Repositories
+* View all visible repositories
+* Read/Write to any accessible repositories
+* Administer User
+* Read User Information
 
   [![GitOps Devel app](/images/devsecops/quay-generate-access-token.png)](/images/devsecops/quay-generate-access-token.png)
 
