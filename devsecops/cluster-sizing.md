@@ -20,13 +20,13 @@ The **Secure Supply Chain** pattern has been tested in the following Certified C
 in Advanced Cluster Management 2.5, this pattern does **not work**, "out-of-the-box", with earlier versions of OCP than 4.10.
 While it's possible that it could work with some changes, we do not recommend using a version less than 4.10.
 
-| **Certified Cloud Providers** | 4.9 | 4.10 | 4.x
+| **Certified Cloud Providers** | 4.10 | 4.11 | 4.x
 | :---- | :---- | :----
-| Amazon Web Services | Untested | Tested |
-| Google Compute | Untested | Tested |
-| Microsoft Azure | Untested | Tested |
+| Amazon Web Services | Tested | Untested |
+| Google Compute | Untested | Untested |
+| Microsoft Azure | Untested | Untested |
 
-### **Multicloud-GitOps** Pattern Components
+### **Secure Supply Chain / Multicluster-DevSecOps** Pattern Components
 
 Here's an inventory of what gets deployed by default the **Secure Supply Chain** pattern on the Hub OpenShift cluster:
 
@@ -37,6 +37,7 @@ Here's an inventory of what gets deployed by default the **Secure Supply Chain**
 | Red Hat Advanced Cluster Security | Operator | stackrox | Advanced cluster security, central and secured
 | Red Hat Quay | Operator | quay-enterprise | Secure container registry
 | Red Hat Open Data Foundation | Operator | openshift-storage | Highly available software-defined storage
+| Hashicorp Vault Community version | Operator | vault | Secrets Management
 
 The hub can be modified to deploy OpenShift Pipelines if needed. See Development cluster pattern components.
 
@@ -49,7 +50,7 @@ The Hub OpenShift Cluster is made up of the the following on the AWS deployment 
 | Node Type | Number of nodes | Cloud Provider | Instance Type
 | :---- | :----: | :---- | :----
 | Control Plane | 3 | Amazon Web Services | m5.xlarge
-| Worker | 4 | Amazon Web Services | m5.4xlarge
+| Worker | 3 | Amazon Web Services | m5.4xlarge
 
 The Hub OpenShift cluster needs to be a larger than the managed clusters for this demo because it deploys critical pattern infrastructure components like Red Hat Quay which requires Red Hat Open Data Foundation (ODF).  The above cluster sizing is close to a **minimum** size for a Hub cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Secure Supply Chain** pattern is running.  Keep in mind that resources will have to be added as more images and image versions are added to the Quay registry.
 
@@ -61,6 +62,7 @@ TBD
 
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
+| 38 | 66 GiB | 226 MiB | 13 MB/s | 441
 
 ### Secure Supply Chain Pattern OpenShift Development (devel) Cluster Size
 
