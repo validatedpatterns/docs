@@ -139,7 +139,7 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
 
 ### Completing the Quay Bridge with a bearer token
 
-Currently there is a manual step to completing the
+Currently there is a manual step to completing the Quay Bridge setup.
 
 1. Log in to Red Hat Quay through the web UI.
 
