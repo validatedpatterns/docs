@@ -18,7 +18,7 @@ has_children: true
 
 ## Background
 
-Enterprise applications require security, especially in multi-cluster and multi-site environments. Applications require trust and use certificates and other secrets in order to establish and maintain trust. In this section we will look at various was of managing secrets.
+Enterprise applications require security, especially in multi-cluster and multi-site environments. Applications require trust and use certificates and other secrets in order to establish and maintain trust. In this section we will look at various ways of managing secrets.
 
 When you start developing distributed enterprise applications there is a strong temptation to ignore security during development and add it at the end. This is proven to be a very bad practice that accumulates technical debt that sometimes never gets resolved.
 

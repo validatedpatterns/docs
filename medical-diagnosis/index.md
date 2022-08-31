@@ -15,6 +15,7 @@ nav_order: 3
 {: .no_toc }
 
 [Install](/medical-diagnosis/getting-started){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Portfolio Architecture](https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6){: .btn .btn-blue .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/hybrid-cloud-patterns/medical-diagnosis/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
@@ -31,57 +32,47 @@ This Validated Pattern is based on a demo implementation of an automated data pi
 analysis previously developed by Red Hat.  The original demo can be found [here](https://github.com/red-hat-data-services/jumpstart-library). It was developed for the US Department of Veteran Affairs.
 
 This validated pattern includes the same functionality as the original demonstration. The difference is
-that we use the *GitOps* to deploy most of the components which includes operators, creation of namespaces,
+that we use the *GitOps* framework to deploy the pattern including operators, creation of namespaces,
 and cluster configuration. Using GitOps provides a much more efficient means of doing continuous deployment.
 
-The Validated Pattern includes:
+What does this pattern do?:
 
-- Ingest chest Xrays into an object store based on Ceph.
-- The Object store sends notifications to a Kafka topic.
+- Ingest chest Xrays from a simulated Xray machine and puts them into an objectStore based on Ceph.
+- The objectStore sends a notification to a Kafka topic.
 - A KNative Eventing Listener to the topic triggers a KNative Serving function.
-- An ML-trained model running in a container makes a risk of Pneumonia assessment for incoming images.
-- A Grafana dashboard displays the pipeline in real time, along with images incoming, processed and anonymized, as well as full metrics.
+- An ML-trained model running in a container makes a risk assessment of Pneumonia for incoming images.
+- A Grafana dashboard displays the pipeline in real time, along with images incoming, processed and anonymized, as well as full metrics collected from Prometheus.
 
 This pipeline is showcased [in this video](https://www.youtube.com/watch?v=zja83FVsm14).
 
 [![Pipeline dashboard](/images/medical-edge/dashboard.png)](/images/medical-edge/dashboard.png)
 
-This validated pattern is still being developed.  More to come in the next few weeks. Any questions or concerns
+This validated pattern is still under development. Any questions or concerns
 please contact [Jonny Rickard](mailto:jrickard@redhat.com) or [Lester Claudio](mailto:claudiol@redhat.com).
 
 ### Solution elements
 
 - How to use a GitOps approach to keep in control of configuration and operations
-- How to centrally manage multiple medical diagnosis facilities using GitOps.
-- How to deploy AI/ML technologies for medical diagnosis using GitOps from data center to the edge.
+- How to deploy AI/ML technologies for medical diagnosis using GitOps.
 
 ### Red Hat Technologies
 
 - Red Hat OpenShift Container Platform (Kubernetes)
-- Red Hat Advanced Cluster Management (Open Cluster Management)
 - Red Hat OpenShift GitOps (ArgoCD)
-- Red Hat Quay (Container image registry)
 - Red Hat AMQ Streams (Apache Kafka Event Broker)
+- Red Hat OpenShift Serverless (Knative Eventing, Knative Serving)
+- Red Hat OpenShift Data Foundations (Cloud Native storage)
 - Grafana dashboard (OpenShift Grafana Operator)
 - Open Data Hub
 - S3 storage
 
 ## Architecture
 
-At a high level this requires a management hub, for the applications and GitOps management, and infrastructure that extends to more than one managed clusters running for medical facilities on private or public clouds.
+In this iteration of the pattern **there is no edge component** . Future releases have planned Edge deployment capabilities as part of the pattern architecture.
 
 [![Multi-Cloud Architecture](/images/medical-edge/edge-medical-diagnosis-marketing-slide.png)](/images/medical-edge/edge-medical-diagnosis-marketing-slide.png)
 
 Components are running on OpenShift either at the data center or at the medical facility (or public cloud running OpenShift).
-
-### Logical Diagram
-
-In the Medical Diagnosis architecture there are two logical sites.
-
-- The Management Hub. This is where the multiple managed clusters deployed on clouds (public or private) are managed. Application and configuration code is worked on here and deployed to the other managed clusters. There is one management hub.
-- The Managed Cluster. This is where new applications, updates and operational changes are deployed for the business. There are more than one managed clusters.
-
-[![Multi-Cloud Logical Architecture](/images/medical-edge/logical-diagram.png)](/images/medical-edge/logical-diagram.png)
 
 ### Physical Schema
 
@@ -99,6 +90,5 @@ The diagram below shows the components that are deployed with the the data flows
 
 ## What Next
 
-- Getting started [deploy the management hub using Helm and GitOps](getting-started)
-- Add a managed cluster to [deploy the  managed cluster piece using ACM](/multicloud-gitops/managed-cluster)
+- Getting started [Deploy the Pattern](getting-started)
 - Visit the [repository](https://github.com/hybrid-cloud-patterns/medical-diagnosis)
