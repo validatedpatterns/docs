@@ -35,7 +35,7 @@ By default the `devel` applications are deployed on any development clusters tha
       value: "false"
     clusterSelector:
       matchLabels:
-        clustergroup: devel
+        clusterGroup: devel
       matchExpressions:
       - key: vendor
         operator: In
@@ -73,7 +73,7 @@ Select the "Import cluster" option beside the highlighted Create Cluster button.
 
 ![import-cluster](/images/import-cluster.png "Select Import cluster")
 
-On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clustergroup=devel` Press import. Done.
+On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=devel` Press import. Done.
 
 ![import-with-kubeconfig](/images/devsecops/import-devel-cluster.png "Import using kubeconfig")
 
@@ -125,7 +125,7 @@ Skip to the next section, [Devel is joined](#devel-is-joined)
 ### Designate the new cluster as a devel site
 
 Now that ACM is no longer deploying the devel applications everywhere, we need
-to explicitly indicate that the new cluster has the devel role. If you haven't tagged the cluster as `clustergroup=devel` then we can do that here.
+to explicitly indicate that the new cluster has the devel role. If you haven't tagged the cluster as `clusterGroup=devel` then we can do that here.
 
 We do this by adding the label referenced in the managedSite's `clusterSelector`.
 
@@ -135,7 +135,47 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
 
 1. Apply the label
 
-   `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER clustergroup=devel`
+   `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER clusterGroup=devel`
+
+### Completing the Quay Bridge with a bearer token
+
+Currently there is a manual step to completing the
+
+1. Log in to Red Hat Quay through the web UI.
+
+1. Select the organization for which the external application will be configured.
+
+1. On the navigation pane, select Applications.
+
+1. Select Create New Application and enter a name for the new application, for example, openshift.
+
+1. On the OAuth Applications page, select your application, for example, `devel-automation`.
+
+1. On the navigation pane, select Generate Token.
+
+1. Select the following fields and press Generate Access Token at the bottom of the page:
+
+  * Administer Organization
+  * Administer Repositories
+  * Create Repositories
+  * View all visible repositories
+  * Read/Write to any accessible repositories
+  * Administer User
+  * Read User Information
+
+  [![GitOps Devel app](/images/devsecops/quay-generate-access-token.png)](/images/devsecops/quay-generate-access-token.png)
+
+1. Review the assigned permissions.
+
+1. Select Authorize Application and then confirm confirm the authorization by selecting Authorize Application at the bottom of the page.
+
+1. Save/copy the generated access token.
+
+1. At a commandline prompt that has KUBECONFIG set to the central/hub cluster's `auth/kubeconfig` file, run the following command with the token that was saved/copied above.
+
+  `$ oc create secret -n openshift-operators generic quay-integration --from-literal=token=<access_token>`
+
+There is a ACM policy that will make sure that this is copied out to the managed clusters. If there are any problems with the managed cluster's Quay Bridge `quay-integration` token, you can run the same command on the managed cluster.
 
 ### You're done
 
