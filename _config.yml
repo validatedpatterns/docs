@@ -50,6 +50,7 @@ gems:
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
+  - jemoji
 
 # mimic GitHub Pages with --safe
 whitelist:

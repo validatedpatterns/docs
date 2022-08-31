@@ -38,6 +38,9 @@ htmlproof:
 		-e INPUT_FORCE_HTTPS=1 -e INPUT_CHECK_FAVICON=0 \
 		-e INPUT_URL_IGNORE="http://www.example.com/\nhttps://en.wikipedia.org/wiki/Main_Page" \
 		-e INPUT_URL_IGNORE_RE="^https://twitter.com/" \
+		-e INPUT_URL_IGNORE_RE="^https://hybrid-cloud-patterns.io/2022/" \
+		-e INPUT_URL_IGNORE_RE="^https://hybrid-cloud-patterns.io/blog/" \
+		-e INPUT_URL_IGNORE_RE="^https://github.com/hybrid-cloud-patterns/docs/blob/gh-pages/.*" \
 		$(JEKYLL_CONTAINER) exec ruby /usr/local/bin/proof-html.rb
 
 lintwordlist:
