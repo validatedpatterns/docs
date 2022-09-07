@@ -235,6 +235,58 @@ Return to this dashboard later after deploying the development and production cl
 
    [![Quay dashboard](/images/devsecops/quay-dashboard.png)](/images/devsecops/quay-dashboard.png)
 
+### Completing the Quay Bridge with a bearer token
+
+Managed clusters use a Quay Bridge in order to provide integration between the cluster and Quay Enterprise running on the hub/central cluster. The Quay Bridge looks like a local OpenShift registry but acts as a proxy to the Quay Enterprise registry. Currently there is a manual step to completing the Quay Bridge setup for managed clusters.
+
+1. Log in to Red Hat Quay through the web UI.
+
+1. Select the organization for which the external application will be configured.
+
+1. On the navigation pane, select Applications.
+
+1. Select Create New Application and enter a name for the new application, for example, openshift.
+
+1. On the OAuth Applications page, select your application, for example, `devel-automation`.
+
+1. On the navigation pane, select Generate Token.
+
+1. Select the following fields and press Generate Access Token at the bottom of the page:
+
+* Administer Organization
+* Administer Repositories
+* Create Repositories
+* View all visible repositories
+* Read/Write to any accessible repositories
+* Administer User
+* Read User Information
+
+  [![GitOps Devel app](/images/devsecops/quay-generate-access-token.png)](/images/devsecops/quay-generate-access-token.png)
+
+1. Review the assigned permissions.
+
+1. Select Authorize Application and then confirm confirm the authorization by selecting Authorize Application at the bottom of the page.
+
+1. Save/copy the generated access token.
+
+1. At a command line prompt that has KUBECONFIG set to the central/hub cluster's `auth/kubeconfig` file, run the following command with the token that was saved/copied above.
+
+  `$ oc create secret -n openshift-operators generic quay-integration --from-literal=token=<access_token>`
+
+There is a ACM policy that will make sure that this is copied out to the managed clusters. If there are any problems with the managed cluster's Quay Bridge `quay-integration` token, you can run the same command on the managed cluster.
+
+### Creating an ACS/Quay integration
+
+Advanced Cluster Security needs to be integrated with Quay Enterprise registry. Currently there is no way to automate this as it requires the above manual step to generate the OAuth token.
+
+1. On the ACS console, under ==Platform Configuration== on the left hand side, select ==Integrations==.
+
+1. Under Image Integrations select ==Red Hat Quay.io==
+
+1. In the Integrations > Quay.io page select ==New Integration== and fill out the form: Give it a name like `hub-quay` and select Registry as the type. Provide the URL for Quay Enterprise and the OAuth token generated in [above](#completing-the-quay-bridge-with-a-bearer-token). Press ==Save==. Here is an example.
+
+  [![ACS Quay Integration](/images/devsecops/acs-quay-integration.png)](/images/devsecops/acs-quay-integration.png)
+
 # Next Steps
 
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
