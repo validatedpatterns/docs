@@ -235,7 +235,7 @@ Return to this dashboard later after deploying the development and production cl
 
    [![Quay dashboard](/images/devsecops/quay-dashboard.png)](/images/devsecops/quay-dashboard.png)
 
-### Completing the Quay Bridge with a bearer token
+## Completing the Quay Bridge with a bearer token
 
 Managed clusters use a Quay Bridge in order to provide integration between the cluster and Quay Enterprise running on the hub/central cluster. The Quay Bridge looks like a local OpenShift registry but acts as a proxy to the Quay Enterprise registry. Currently there is a manual step to completing the Quay Bridge setup for managed clusters.
 
@@ -275,7 +275,7 @@ Managed clusters use a Quay Bridge in order to provide integration between the c
 
 There is a ACM policy that will make sure that this is copied out to the managed clusters. If there are any problems with the managed cluster's Quay Bridge `quay-integration` token, you can run the same command on the managed cluster.
 
-### Creating an ACS/Quay integration
+## Creating an ACS/Quay integration
 
 Advanced Cluster Security needs to be integrated with Quay Enterprise registry. Currently there is no way to automate this as it requires the above manual step to generate the OAuth token.
 
