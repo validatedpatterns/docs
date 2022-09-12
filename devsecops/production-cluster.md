@@ -19,11 +19,11 @@ nav_order: 3
 
 ## Introduction
 
-Production clusters need to be secured and so one part of the deployment is Advanced Cluster Security with a secured configuration. This allows ACS to monitor and report on security issues on the cluster. ACS secured sites report to an ACS Central application that is deployed on the hub.
+Production clusters need to be secured and so one part of the deployment is to install the Advanced Cluster Security operator with a secured configuration. This allows ACS central to monitor and report on security issues on the cluster. ACS secured sites report to an ACS Central application that is deployed on the hub.
 
 ## Allow ACM to deploy the production application to a subset of secured clusters
 
-By default the production applications are deployed on all `secured` clusters that ACM knows about.
+By default the production applications are deployed on all `prod` clusters that ACM knows about.
 
 ```json
   - name: secured
@@ -32,7 +32,7 @@ By default the production applications are deployed on all `secured` clusters th
       value: "false"
     clusterSelector:
       matchLabels:
-        clusterGroup: secured
+        clusterGroup: prod
       matchExpressions:
       - key: vendor
         operator: In
@@ -70,7 +70,7 @@ Select the "Import cluster" option beside the highlighted Create Cluster button.
 
 ![import-cluster](/images/import-cluster.png "Select Import cluster")
 
-On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=secured` Press import. Done.
+On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=prod` Press import. Done.
 
 ![import-with-kubeconfig](/images/import-with-kubeconfig.png "Import using kubeconfig")
 
@@ -80,7 +80,7 @@ Using this method, you are done. Skip to the section [Production is joined](#pro
 
 1. Install the `cm` (cluster management) command-line tool. See details [here](https://github.com/open-cluster-management/cm-cli/#installation)
 
-1. Obtain the KUBECONFIG file from the managed secured cluster.
+1. Obtain the KUBECONFIG file from the managed production (prod) cluster.
 
 1. On the command-line login into the hub/datacenter cluster (use `oc login` or export the KUBECONFIG).
 
@@ -105,7 +105,7 @@ You can also use `clusteradm` to join a cluster. The following instructions expl
    `oc login`
    or
 
-   `export KUBECONFIG=~/my-ocp-env/secured`
+   `export KUBECONFIG=~/my-ocp-env/prod`
 
 1. Then request to that the production join the datacenter hub
 
@@ -122,7 +122,7 @@ Skip to the next section, [Production is joined](#production-is-joined)
 ### Designate the new cluster as a production site
 
 Now that ACM is no longer deploying the production applications everywhere, we need
-to explicitly indicate that the new cluster has the production role. If you haven't tagged the cluster as `clusterGroup=secured` then we can that here.
+to explicitly indicate that the new cluster has the production role. If you haven't tagged the cluster as `clusterGroup=prod` then we can that here.
 
 We do this by adding the label referenced in the managedSite's `clusterSelector`.
 
@@ -132,13 +132,13 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
 
 1. Apply the label
 
-   `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER clusterGroup=secured`
+   `oc label managedclusters.cluster.open-cluster-management.io/YOURCLUSTER clusterGroup=prod`
 
 ### You're done
 
 That's it! Go to your production OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
 
-[![GitOps Dashboard Secured](/images/devsecops/gitops-secured-cluster.png)](/images/devsecops/gitops-secured-cluster.png)
+[![GitOps Dashboard prod](/images/devsecops/gitops-secured-cluster.png)](/images/devsecops/gitops-secured-cluster.png)
 
 ## Next up
 
