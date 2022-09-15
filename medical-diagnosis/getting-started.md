@@ -240,7 +240,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
 
    ```text
    NAME                       HOST/PORT                                                                                      PATH   SERVICES                   PORT    TERMINATION            WILDCARD
-   datacenter-gitops-server   datacenter-gitops-server-medical-diagnosis-datacenter.apps.wh-medctr.blueprints.rhecoeng.com          datacenter-gitops-server   https   passthrough/Redirect   None
+   hub-gitops-server   hub-gitops-server-medical-diagnosis-hub.apps.wh-medctr.blueprints.rhecoeng.com          hub-gitops-server   https   passthrough/Redirect   None
    # admin.password
    xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH
    NAME                      HOST/PORT                                                                         PATH   SERVICES                  PORT    TERMINATION            WILDCARD
@@ -251,7 +251,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
    FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6
    ```
 
-   The most important ArgoCD instance to examine at this point is `multicloud-gitops-datacenter`. This is where all the applications for the pattern can be tracked.
+   The most important ArgoCD instance to examine at this point is `medical-diagnosis-hub`. This is where all the applications for the pattern can be tracked.
 
 1. Check all applications are synchronised. There are thirteen different ArgoCD "applications" deployed as part of this pattern.
 

@@ -18,9 +18,9 @@ nav_order: 2
 
 The **Medical Diagnosis** pattern has been tested in the following Certified Cloud Providers.
 
-| **Certified Cloud Providers** | 4.8 | 4.9 | 4.10 |
+| **Certified Cloud Providers** | 4.8 | 4.9 | 4.10 | 4.11 |
 | :---- | :---- | :---- | :---- |
-| Amazon Web Services | Tested | Tested | Tested |
+| Amazon Web Services | Tested | Tested | Tested | Tested |
 | Google Compute |   | |
 | Microsoft Azure |   | |
 
@@ -39,7 +39,7 @@ Here's an inventory of what gets deployed by the **Medical Diagnosis** pattern:
 
 | Name | Kind | Namespace | Description
 | :---- | :---- | :---- | :----
-| Medical Diagnosis Datacenter | Application | medical-diagnosis-datacenter | Hub GitOps management
+| Medical Diagnosis Hub | Application | medical-diagnosis-hub | Hub GitOps management
 | Red Hat OpenShift GitOps | Operator | openshift-operators | OpenShift GitOps
 | Red Hat OpenShift Data Foundations | Operator | openshift-storage | Cloud Native storage solution
 | Red Hat AMQStreams (Apache Kafka) | Operator | openshift-operators | AMQ Streams provides Apache Kafka access
@@ -47,11 +47,11 @@ Here's an inventory of what gets deployed by the **Medical Diagnosis** pattern:
 
 ### Medical Diagnosis Pattern OpenShift Cluster Size
 
-The Medical Diagnosis pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
+The Medical Diagnosis pattern has been tested with a defined set of configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
 
 The OpenShift cluster for the **Medical Diagnosis** pattern needs to be sized a bit larger to support the compute and storage demands of OpenShift Data Foundations and other operators that make up the pattern. The above cluster sizing is close to a **minimum** size for an OpenShift cluster supporting this pattern.  In the next few sections we take some snapshots of the cluster utilization while the **Medical Diagnosis** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications.
 
-The OpenShift cluster is a standard datacenter deployment of 3 control plane nodes and 3 or more worker nodes.
+The OpenShift cluster is a standard deployment of 3 control plane nodes and 3 or more worker nodes.
 
 | Node Type | Number of nodes | Cloud Provider | Instance Type
 | :----: | :----: | :----: | :----:
@@ -72,7 +72,7 @@ FATAL failed to fetch Metadata: failed to load asset "Install Config": [controlP
 
 Below you can find a list of the AWS instance types that can be used to deploy the **Medical Diagnosis** pattern.
 
-| Instance type | Default vCPUs | Memory (GiB) | Datacenter | Factory/Edge
+| Instance type | Default vCPUs | Memory (GiB) | Hub | Factory/Edge
 | :------: | :-----: | :-----: | :----: | :----:
 | | | | 3x3 OCP Cluster | 3 Node OCP Cluster
 | m4.xlarge   | 4  | 16 | N | N
