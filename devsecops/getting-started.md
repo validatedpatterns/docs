@@ -19,7 +19,7 @@ nav_order: 1
 
 # Prerequisites
 
-1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../multicloud-gitops/cluster-sizing).
+1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../devsecops/cluster-sizing).
 1. A second OpenShift cluster for production (optional but desirable)
 1. A third OpenShift cluster for secure CI pipelines (optional but desirable)
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
