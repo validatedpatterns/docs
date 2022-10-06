@@ -1,0 +1,6 @@
+[whitelist]
+files = [
+  "secrets/vault.md",
+  "ansible-edge-gitops/ansible-automation-platform.md",
+  "ansible-edge-gitops/ansible-automation-platform.md",
+]
