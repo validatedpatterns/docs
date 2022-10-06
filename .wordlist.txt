@@ -161,7 +161,7 @@ hb
 hbv
 hc
 highperformance
-HIPAA
+hipaa
 hmi
 hoc
 hostname
@@ -302,6 +302,7 @@ params
 passthrough
 pathed
 persistentvolumeclaim
+persistentvolumes
 pgsql
 pki
 plaintext

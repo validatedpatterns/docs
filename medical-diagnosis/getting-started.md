@@ -19,7 +19,7 @@ nav_order: 1
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing).
+1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../medical-diagnosis/cluster-sizing).
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 1. S3-capable Storage set up in your public/private cloud for the x-ray images
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)

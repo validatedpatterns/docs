@@ -19,7 +19,7 @@ nav_order: 1
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing).
+1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../industrial-edge/cluster-sizing).
 1. (Optional) A second OpenShift cluster for edge/factory
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 1. A quay account with the following repositories set as public:
