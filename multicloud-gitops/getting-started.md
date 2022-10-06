@@ -34,6 +34,17 @@ service](https://console.redhat.com/openshift/create).
 
 # How to deploy
 
+1. Install the installation tooling dependencies.  You will need:
+
+    * `make` - the well-known software build tool
+    * `sh` - a POSIX-compatible shell
+    * `sed` - the "stream editor", commonly used in shell scripting
+    * `oc` - the OpenShift client
+    * `jq` - The swiss army knife for JSON
+    * `git` - The well known version control utility
+    * `ansible` - The well-known automation tool
+    * The `kubernetes.core` collection for ansible
+
 1. Fork the [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops) repo on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 
 1. Clone the forked copy of this repository.
