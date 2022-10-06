@@ -40,7 +40,6 @@ service](https://console.redhat.com/openshift/create).
     * `sh` - a POSIX-compatible shell
     * `sed` - the "stream editor", commonly used in shell scripting
     * `oc` - the OpenShift client
-    * `jq` - The swiss army knife for JSON
     * `git` - The well known version control utility
     * `ansible` - The well-known automation tool
     * The `kubernetes.core` collection for ansible
