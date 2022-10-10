@@ -22,19 +22,19 @@ has_children: false
 
 A multicloud pattern using cockroachdb and submariner, deployed via RHACM
 
-Repo: https://github.com/hybrid-cloud-patterns/cockroachdb-pattern
+[Repo](https://github.com/hybrid-cloud-patterns/cockroachdb-pattern)
 
 ### Kong
 
 A pattern for Kong Gateway Control Plane and Data Plane demo
 
-Repo: https://github.com/hybrid-cloud-patterns/kong-gateway
+[Repo](https://github.com/hybrid-cloud-patterns/kong-gateway)
 
 ### Bobby Car
 
 A distributed cloud-native application that implements key aspects of a modern IoT architecture.
 
-Repo: https://github.com/mbaldessari/bobbycar
+[Repo](https://github.com/mbaldessari/bobbycar)
 
 ### Quarkus Coffee Shop
 
@@ -47,4 +47,4 @@ A pattern for deploying the well regarded [Coffeeshop demo](https://quarkuscoffe
 * Quarkus
 * Kafka (or AMQ Streams in Red Hat terminology)
 
-Repo: https://github.com/mhjacks/quarkus-coffeeshop-pattern
+[Repo](https://github.com/mhjacks/quarkus-coffeeshop-pattern)
