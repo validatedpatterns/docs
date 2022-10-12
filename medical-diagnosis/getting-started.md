@@ -26,21 +26,7 @@ nav_order: 1
 
 The following packages need to be installed on your local system to seed the pattern correctly:
 
-```bash
-dnf install -y git make python3-pip
-```
-
-Use pip3 to install the following python packages required for ansible:
-
-```bash
-pip3 install --user --upgrade pip ansible kubernetes openshift awscli
-```
-
-Install the ansible-galaxy collection:
-
-```bash
-ansible-galaxy collection install kubernetes.core
-```
+{% include prerequisite-tools.md %}
 
 The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern
 there is no dedicated Hub / Edge cluster for the **Medical Diagnosis** pattern.
