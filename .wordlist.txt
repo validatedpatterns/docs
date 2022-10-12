@@ -59,6 +59,8 @@ clustername
 clustersecretstore
 cncf
 cnv
+cockroachdb
+coffeeshop
 colocated
 compliancetype
 config
@@ -248,6 +250,7 @@ mcollective
 mhjacks
 mhjacks's
 mib
+microservices
 middleware
 militaries
 millicore
@@ -323,6 +326,7 @@ publickey
 pv
 qe
 quickstart
+quarkus
 rabbitmq
 rdma
 readme
