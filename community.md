@@ -30,11 +30,11 @@ A pattern for Kong Gateway Control Plane and Data Plane demo
 
 [Repo](https://github.com/hybrid-cloud-patterns/kong-gateway)
 
-### Bobby Car
+### Connected Vehicle Architecture
 
 A distributed cloud-native application that implements key aspects of a modern IoT architecture.
 
-[Repo](https://github.com/mbaldessari/bobbycar)
+[Repo](https://github.com/hybrid-cloud-patterns/connected-vehicle-architecture)
 
 ### Quarkus Coffee Shop
 
