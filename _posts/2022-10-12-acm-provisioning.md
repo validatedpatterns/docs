@@ -156,18 +156,19 @@ You can read more about cluster pools in the [ACM documentation](https://access.
 
 Each managed cluster group can have multiple pools, here is an example:
 ```
-      myFirstPool:
-        name: aws-ap
-        openshiftVersion: 4.10.18
-        baseDomain: blueprints.rhecoeng.com
-        platform:
-          aws:
-            region: ap-southeast-2
-	size: 3
-        clusters:
-        - tokyo
-        - sydney
-        - jakarta
+      clusterPools:
+        myFirstPool:
+          name: aws-ap
+          openshiftVersion: 4.10.18
+          baseDomain: blueprints.rhecoeng.com
+          platform:
+            aws:
+              region: ap-southeast-2
+          size: 3
+          clusters:
+          - tokyo
+          - sydney
+          - jakarta
 ```
 
 The most important thing to change is `.baseDomain`, which will need to
