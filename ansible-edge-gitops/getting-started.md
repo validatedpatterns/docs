@@ -78,19 +78,13 @@ files:
 
 If you are going to install via `make install` from your workstation, you will need the following tools and packages:
 
-* make
-* awk
-* sed
-* helm (v3+)
-* oc (the OpenShift client)
-* ansible
+{% include prerequisite-tools.md %}
 
-And the following ansible collections:
+And additionally, the following ansible collections:
 
 * community.okd
 * redhat_cop.controller_configuration
 * awx.awx
-* core.kubernetes
 
 To see what collections are installed:
 
