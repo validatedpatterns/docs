@@ -46,7 +46,7 @@ Now you have a copy of the pattern that you can make changes to.  You can read
 more about the Multi-cloud GitOps pattern on our [community
 site](https://hybrid-cloud-patterns.io/multicloud-gitops/)
 
-Next, [install the Validated Patterns operator](https://hybrid-cloud-patterns.io/infrastructure/using-validated-pattern-operator/) from Operator Hub.
+Next, [install the Validated Patterns operator]([https://hybrid-cloud-patterns.io/infrastructure/using-validated-pattern-operator/](https://youtu.be/AHLam3u8eKM)) from Operator Hub.
 
 And finally, click through to the installed operator, and select the `Create
 instance` button and fill out the Create a Pattern form.  Most of the defaults
@@ -109,6 +109,8 @@ Ensure `podman` is installed, and load the secrets with:
 ```
 ./common/scripts/pattern-util.sh make load-secrets
 ```
+
+[![Loading provisioning secrets](https://img.youtube.com/vi/zagNOk21RPo/default.jpg "Loading provisioning secrets")](https://youtu.be/zagNOk21RPo)
 
 These values will be used to create a number of secrets that ACM expects in
 order to provision clusters.
@@ -183,13 +185,17 @@ If `.size` is omitted, the pool will automatically resize based on the number of
 clusters specified.  Specifying no clusters will define the pool, but not
 provision any clusters.
 
+[![Defining and scaling the cluster pool](https://img.youtube.com/vi/FaomChtlUE4/default.jpg "Defining and scaling the cluster pool")](https://youtu.be/FaomChtlUE4)
 
-Here's the ACM console after waiting for the additional clusters to be
-provisioned, as well as the configured managed clusters.
+[![Defining clusters](https://img.youtube.com/vi/M-BJrEeoNd4/default.jpg "Defining clusters")](https://youtu.be/M-BJrEeoNd4)
 
-![acm console](/images/provision/acm-console.png) 
-![spoke argocd](/images/provision/spoke-argopng) 
-![spoke console](/images/provision/spoke-console.png) 
+## Delivering Applications and Configuration to Clusters
+
+[![Updating the managed cluster configuration](https://img.youtube.com/vi/emn_Coqp5jQ/default.jpg "Updating the managed cluster configuration")](https://youtu.be/emn_Coqp5jQ)
+
+## Deprovisioning Clusters
+
+[![Deprovisioning clusters](https://img.youtube.com/vi/F_-sne3U5ew/default.jpg "Deprovisioning clusters")](https://youtu.be/F_-sne3U5ew)
 
 ## Conclusion
 
