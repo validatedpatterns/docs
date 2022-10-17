@@ -166,7 +166,7 @@ Each managed cluster group can have multiple pools, here is an example:
           platform:
             aws:
               region: ap-southeast-2
-          size: 3
+          size: 1
           clusters:
           - tokyo
           - sydney
