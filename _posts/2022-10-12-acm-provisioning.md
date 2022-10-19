@@ -110,7 +110,7 @@ Ensure `podman` is installed, and load the secrets with:
 ./common/scripts/pattern-util.sh make load-secrets
 ```
 
-[![Loading provisioning secrets](https://img.youtube.com/vi/zagNOk21RPo/default.jpg "Loading provisioning secrets")](https://youtu.be/zagNOk21RPo)
+[![Loading provisioning secrets](https://img.youtu.be/vi/LSDUTfZvcyA/default.jpg "Loading provisioning secrets")](https://youtu.be/LSDUTfZvcyA)
 
 These values will be used to create a number of secrets that ACM expects in
 order to provision clusters.
