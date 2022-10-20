@@ -1,0 +1,7 @@
+= Contributor's guide
+
+Use the Contributor's guide to learn about ways to contribute to the Hybrid Cloud Patterns documentation, to understand the prerequisites and toolchain required for contribution, and to follow some basic documentation style and structure guidelines.
+
+include::contributing.adoc[leveloffset=+1]
+include::tools_and_setup.adoc[leveloffset=+1]
+include::doc_guidelines.adoc[leveloffset=+1]
