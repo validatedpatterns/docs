@@ -19,10 +19,13 @@ parent: Requirements
 1. TOC
 {:toc}
 
-**What is it:** Best practice implementations conforming to the Validated Patterns implementation practices
-**Purpose:** Codify best practices and promote collaboration between different groups inside, and external to, Red Hat
-**Creator:** Customers, Partners, GSIs, Services/Consultants, SAs, and other Red Hat teams
-### Requirements
+## tl;dr
+
+* **What are they:** Best practice implementations conforming to the Validated Patterns implementation practices
+* **Purpose:** Codify best practices and promote collaboration between different groups inside, and external to, Red Hat
+* **Creator:** Customers, Partners, GSIs, Services/Consultants, SAs, and other Red Hat teams
+
+## Requirements
 
 General requirements for all Community, Validated, and Supported patterns
 
