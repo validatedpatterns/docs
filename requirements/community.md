@@ -4,11 +4,11 @@ title: Community Patterns
 nav_order: 3
 has_children: false
 publish: true
-parent: Requirements
+parent: Workflow
 
 ---
 
-# Community Patterns
+# Community Pattern Requirements
 
 {: .no_toc }
 
