@@ -24,10 +24,14 @@ Additional requirements specific to the implementation for all Community, Valida
 * _MUST-2._ Patterns **MUST** be useful without all content stored in private git repos
 * _MUST-3._ Patterns **MUST** include a list of names and versions of all the products and projects being consumed by the pattern
 * _MUST-4._ Patterns **MUST** be useful without any sample applications that are private or lack public sources. 
+
 Patterns must not become useless due to bit rot or opaque incompatibilities in closed source “applications”.
+
 * _MUST-5._ Patterns **MUST NOT** store sensitive data elements, including but not limited to passwords, in Git
 * _MUST-6._ Patterns **MUST** be possible to deploy on any IPI-based OpenShift cluster (BYO)
+
 We distinguish between the provisioning and configuration requirements of the initial cluster (“Patterns”), and of clusters/machines managed by the initial cluster (see “Managed clusters”) 
+
 * _MUST-7._ Patterns **MUST** use the https://github.com/hybrid-cloud-patterns/common/tree/main/clustergroup Helm chart, as the initial OpenShift GitOps application that describes all namespaces, subscriptions, and any other GitOps applications which contain the configuration elements that make up the solution.
 * _MUST-8._ Managed clusters **MUST** operate on the premise of “eventual consistency” (automatic retries, and an expectation of idempotence), which is one of the essential benefits of the GitOps model.
 * _MUST-9._ Imperative elements **MUST** be implemented as idempotent code stored in Git
@@ -39,10 +43,14 @@ We distinguish between the provisioning and configuration requirements of the in
 * _SHOULD-12._ Patterns SHOULD use the VP operator to deploy patterns.  However anything that creates the OpenShift GitOps subscription and initial clustergroup application could be acceptable.
 * _SHOULD-13._ Patterns SHOULD embody the “open hybrid cloud model” unless there is a compelling reason to limit the availability of functionality to a specific platform or topology.
 * _SHOULD-14._ Patterns SHOULD use industry standards and Red Hat products for all required tooling 
+
 Patterns prefer current best practices at the time of pattern development. Solutions that do not conform to best practices should expect to justify non-conformance and/or expend engineering effort to conform.
+
 * _SHOULD-15._ Patterns SHOULD NOT make use of upstream/community operators and images except, depending on the market segment, where critical to the overall solution. 
+
 Such operators are forbidden to be deployed into an increasing number of customer environments, which limits reuse.
 Alternatives include productizing the operator, and building it in-cluster from trusted sources as part of the pattern.
+
 * _SHOULD-16._ Patterns SHOULD be decomposed into modules that perform a specific function, so that they can be reused in other patterns.  
 For example, Bucket Notification is a capability in the Medical Diagnosis pattern that could be used for other solutions.
 * _SHOULD-17._ Patterns SHOULD use Ansible Automation Platform to drive the declarative provisioning and management of managed hosts (eg. RHEL). See also “Imperative elements”.
