@@ -2,6 +2,7 @@
 layout: default
 title: Workflow
 nav_order: 4
+has_children: true
 ---
 
 # Workflow
