@@ -18,6 +18,8 @@ published: true
 
 Additional requirements specific to the implementation for all Community, Validated, and Supported patterns
 
+### Must
+
 * _MUST-1._ Patterns **MUST** include one or more Git repositories, in a publicly accessible location, containing configuration elements that can be consumed by the OpenShift GitOps operator (ArgoCD) without supplying custom ArgoCD images.
 * _MUST-2._ Patterns **MUST** be useful without all content stored in private git repos
 * _MUST-3._ Patterns **MUST** include a list of names and versions of all the products and projects being consumed by the pattern
@@ -29,6 +31,8 @@ We distinguish between the provisioning and configuration requirements of the in
 * _MUST-7._ Patterns **MUST** use the https://github.com/hybrid-cloud-patterns/common/tree/main/clustergroup Helm chart, as the initial OpenShift GitOps application that describes all namespaces, subscriptions, and any other GitOps applications which contain the configuration elements that make up the solution.
 * _MUST-8._ Managed clusters **MUST** operate on the premise of “eventual consistency” (automatic retries, and an expectation of idempotence), which is one of the essential benefits of the GitOps model.
 * _MUST-9._ Imperative elements **MUST** be implemented as idempotent code stored in Git
+
+### Should
 
 * _SHOULD-10._ Patterns SHOULD include sample application(s) to demonstrate the business problem(s) addressed by the pattern.  
 * _SHOULD-11._ Patterns SHOULD try to indicate which parts are foundational as opposed to being for demonstration purposes. 
@@ -48,6 +52,8 @@ For example, Bucket Notification is a capability in the Medical Diagnosis patter
 * _SHOULD-21._ Managed clusters SHOULD use the “pull” deployment model for obtaining their configuration.
 * _SHOULD-22._ Imperative elements SHOULD be implemented as Ansible playbooks
 * _SHOULD-23._ Imperative elements SHOULD be driven declaratively – by which we mean that the playbooks should be triggered by Jobs and/or CronJobs stored in Git and delivered by OpenShift GitOps.
+
+### Can
 
 * _CAN-24._ Patterns CAN include additional configuration and/or demo elements located in one or more additional private git repos.
 * _CAN-25._ Patterns CAN include automation that deploys a known set of clusters and/or machines in a specific topology 
