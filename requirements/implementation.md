@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Implementation Requirements
-parent: Requirements
+parent: Workflow
 has_children: false
 nav_order: 4
 published: true
