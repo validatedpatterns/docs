@@ -38,7 +38,7 @@ General requirements for all Community, and Validated patterns
    As community leaders, contributions from within Red Hat may be subject to a higher level of scrutiny
    While we strive to be inclusive, the community will have quality standards and generally using the framework does not automatically imply a solution is suitable for the community to endorse/publish. 
 
-1. Patterns **MUST** undergo an informal technical review by a community leader to ensure that it conforms to the [technical requirements]([#](/requirements/implementation/)) and meets basic reuse standards
+1. Patterns **MUST** undergo an informal technical review by a community leader to ensure that it conforms to the [technical requirements](/requirements/implementation/) and meets basic reuse standards
 1. Patterns **MUST** document their support policy
 
    It is anticipated that most community patterns will be supported by the community on a best-effort basis, but this should be stated explicitly.  
