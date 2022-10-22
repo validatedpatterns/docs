@@ -50,7 +50,7 @@ from the Validated Patterns team.
 ## Requirements
 
 Validated Patterns have deliverable and requirements in addition to those
-specified for Community-level patterns
+specified for [Community-level](/requirements/community/) patterns
 
 ### Must
 1. Validated Patterns **MUST** contain more than two RH products. Alternative: Engage with the BU
@@ -68,7 +68,7 @@ specified for Community-level patterns
 
 1. Validated Patterns **MUST** only make use of Red Hat products that are already fully supported by their product team(s).
 1. Validated Patterns **MUST NOT** rely on functionality in tech-preview, or hidden behind feature gates.
-1. Validated Patterns **MUST** conform to the same Community-level implementation requirements
+1. Validated Patterns **MUST** conform to the same Community-level [implementation requirements](/requirements/implementation/)
 1. Validated Patterns **MUST** have their architectures reviewed by the PM, TPM, or TMM of each Red Hat product they consume to ensure consistency with the product teams’ intentions and roadmaps
 1. Validated Patterns **MUST** have their implementation reviewed by the patterns team to ensure that it is sufficiently flexible to function across a variety of platforms, customer environments, and any relevant verticals. 
 1. Validated Patterns **MUST** include a standardized architecture drawing, created with (or at least conforming to) the PAC tooling
