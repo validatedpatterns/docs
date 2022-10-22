@@ -32,7 +32,7 @@ Additional requirements specific to the implementation for all Community, and Va
 
    We distinguish between the provisioning and configuration requirements of the initial cluster (“Patterns”), and of clusters/machines managed by the initial cluster (see “Managed clusters”) 
 
-1. Patterns **MUST** use the https://github.com/hybrid-cloud-patterns/common/tree/main/clustergroup Helm chart, as the initial OpenShift GitOps application that describes all namespaces, subscriptions, and any other GitOps applications which contain the configuration elements that make up the solution.
+1. Patterns **MUST** use a standardized [clustergroup](https://github.com/hybrid-cloud-patterns/common/tree/main/clustergroup) Helm chart, as the initial OpenShift GitOps application that describes all namespaces, subscriptions, and any other GitOps applications which contain the configuration elements that make up the solution.
 1. Managed clusters **MUST** operate on the premise of “eventual consistency” (automatic retries, and an expectation of idempotence), which is one of the essential benefits of the GitOps model.
 1. Imperative elements **MUST** be implemented as idempotent code stored in Git
 
@@ -57,7 +57,7 @@ Alternatives include productizing the operator, and building it in-cluster from 
 
 1. Patterns SHOULD use Ansible Automation Platform to drive the declarative provisioning and management of managed hosts (eg. RHEL). See also “Imperative elements”.
 1. Patterns SHOULD use RHACM to manage policy and compliance on any managed clusters.
-1. Patterns SHOULD use RHACM and the https://github.com/hybrid-cloud-patterns/common/tree/main/acm chart to deploy and configure OpenShift GitOps to managed clusters.
+1. Patterns SHOULD use RHACM and a [standardized acm chart](https://github.com/hybrid-cloud-patterns/common/tree/main/acm) to deploy and configure OpenShift GitOps to managed clusters.
 1. Managed clusters SHOULD be loosely coupled to their hub, and use OpenShift GitOps to consume applications and configuration directly from Git as opposed to having hard dependencies on a centralized cluster. 
 1. Managed clusters SHOULD use the “pull” deployment model for obtaining their configuration.
 1. Imperative elements SHOULD be implemented as Ansible playbooks
