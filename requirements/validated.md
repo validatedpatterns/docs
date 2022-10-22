@@ -56,7 +56,7 @@ specified for [Community-level](/requirements/community/) patterns
 1. Validated Patterns **MUST** contain more than two RH products. Alternative: Engage with the BU
 1. Validated Patterns, or the solution on which they are based, **MUST** have been deployed and approved for use in at least one customer environment.
 
-   Alternative: Community Pattern
+   Alternative: [Community Pattern](/requirements/community)
 
 1. Validated Patterns **MUST** be meaningful without specialized hardware, including flavors of architectures not explicitly supported. Alternative: Engage with DCI
 
