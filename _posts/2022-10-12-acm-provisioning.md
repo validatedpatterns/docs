@@ -71,14 +71,14 @@ machine you control.
 
 First clone your fork of the repository onto your local machine, and copy the template to a location not controlled by Git (to avoid accidentally committing the contents)
 
-```
+```sh
 git clone git@github.com:{yourfork}/multicloud-gitops.git
 cp values-secret.yaml.template ~/values-secret.yaml
 ```
 
 You will need to uncomment and provide values for the following keys in order to make use of the provisioning functionality:
 
-```
+```yaml
 secrets:
   aws:                                       [1]
     access_key_id: AKIAIOSFODNN7EXAMPLE
@@ -106,7 +106,7 @@ Obtain the login command for your cluster and run it locally.
 
 Ensure `podman` is installed, and load the secrets with:
 
-```
+```sh
 ./common/scripts/pattern-util.sh make load-secrets
 ```
 

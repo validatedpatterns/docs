@@ -55,7 +55,7 @@ Alternatives include productizing the operator, and building it in-cluster from 
 
    For example, Bucket Notification is a capability in the Medical Diagnosis pattern that could be used for other solutions.
 
-1. Patterns SHOULD use Ansible Automation Platform to drive the declarative provisioning and management of managed hosts (eg. RHEL). See also “Imperative elements”.
+1. Patterns SHOULD use Ansible Automation Platform to drive the declarative provisioning and management of managed hosts (e.g. RHEL). See also “Imperative elements”.
 1. Patterns SHOULD use RHACM to manage policy and compliance on any managed clusters.
 1. Patterns SHOULD use RHACM and a [standardized acm chart](https://github.com/hybrid-cloud-patterns/common/tree/main/acm) to deploy and configure OpenShift GitOps to managed clusters.
 1. Managed clusters SHOULD be loosely coupled to their hub, and use OpenShift GitOps to consume applications and configuration directly from Git as opposed to having hard dependencies on a centralized cluster. 
@@ -68,7 +68,7 @@ Alternatives include productizing the operator, and building it in-cluster from 
 1. Patterns CAN include additional configuration and/or demo elements located in one or more additional private git repos.
 1. Patterns CAN include automation that deploys a known set of clusters and/or machines in a specific topology 
 1. Patterns CAN limit functionality/testing claims to specific platforms, topologies, and cluster/node sizes
-1. Patterns CAN consume operators from established partners (eg. Hashicorp Vault, and Seldon)
+1. Patterns CAN consume operators from established partners (e.g. Hashicorp Vault, and Seldon)
 1. Patterns CAN include managed clusters
 1. Patterns CAN include details or automation for provisioning managed clusters, or rely on the admin to pre-provision them out-of-band. 
 1. Patterns CAN also choose to model multi-cluster solutions as an uncoordinated collection of “initial hub clusters”

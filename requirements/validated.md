@@ -76,11 +76,11 @@ specified for [Community-level](/requirements/community/) patterns
 1. Validated Patterns **MUST** include a recorded demo highlighting the business problem and how the pattern solves it
 1. Validated Patterns **MUST** include a test plan covering all features or attributes being highlighted by the demo that also spans multiple products.  Negative flow tests (such as resiliency or data retention in the presence of network outages) are limited to scenarios covered by the demonstration script.
 1. Validated Patterns **MUST** include automated CI testing that runs on every change to the pattern, or a schedule no less frequently than once per week
-1. Validated Patterns **MUST** create a new point release of the validation-level deliverables when minor versions (eg. “12” in OpenShift 4.12) of consumed products change
+1. Validated Patterns **MUST** create a new point release of the validation-level deliverables when minor versions (e.g. “12” in OpenShift 4.12) of consumed products change
 1. Validated Patterns **MUST** document their support policy
 
    The individual products used in a Validated Pattern are backed by the full Red Hat support experience conditional on the customer’s subscription to those products, and the individual products’ support policy. 
-   Additional components in a Validated Pattern that are not supported by Red Hat (eg. Hashicorp Vault, and Seldon Core) will require a customer to obtain support from that vendor directly.
+   Additional components in a Validated Pattern that are not supported by Red Hat (e.g. Hashicorp Vault, and Seldon Core) will require a customer to obtain support from that vendor directly.
    The validated patterns team is very motivated to address any problems in the VP Operator, as well as problems in the common helm charts, but cannot not offer any SLAs at this time.
    See also our standard disclaimer
 
@@ -92,7 +92,7 @@ specified for [Community-level](/requirements/community/) patterns
 1. Validated Patterns SHOULD trigger CI runs for new versions of consumed products 
 1. Validated Patterns SHOULD provide an RHPDS lab environment
 
-   A bare bones environment into which the solution can be deployed, and a list of instructions for doing so (eg. installing and configuring OpenShift GitOps)
+   A bare bones environment into which the solution can be deployed, and a list of instructions for doing so (e.g. installing and configuring OpenShift GitOps)
 
 1. Validated Patterns SHOULD provide pre-built demo environment using RHPDS
 
