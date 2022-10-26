@@ -336,7 +336,7 @@ AAP only needs the private key and the username as a machine credential. The pub
 
 Note that the default SSH setting for RHEL does not allow password-based logins via SSH, and it's at the very least inconvenient to copy the SSH private key into a VM inside the cluster, so the typical way the keypair will be used is through Ansible.
 
-### Console Access via OpenShift Console
+### Virtual Machine Console Access via OpenShift Console
 
 Navigate to Virtualization -> VirtualMachines and make sure Project: All Projects or edge-gitops-vms is selected:
 
@@ -346,7 +346,11 @@ Click on the "three dots" menu on the right, which will open a dialog like the f
 
 [![show-vm-open-console](/images/ansible-edge-gitops/aeg-open-vm-console.png)](/images/ansible-edge-gitops/aeg-open-vm-console.png)
 
-The console view will either show a standard RHEL console login screen, or if the demo is working as designed, it will show the Ignition application running in kiosk mode. If the console shows a standard RHEL login, it can be accessed using the the initial user name (`cloud-user` by default) and password (which is what is specified in the Helm chart Values as either the password specific to that machine group, the default cloudInit, or a hardcoded default which can be seen in the template [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml). On a VM created through the wizard or via `oc process` from a template, the password will be set on the VirtualMachine object in the `volumes` section.
+*Note:* In OpenShift Virtualization 4.11, the "Open Console" option appears when you click on the virtual machine name in openshift console. The dialog looks like this:
+
+[![kubevirt411-vm-open-console](/images/ansible-edge-gitops/aeg-kubevirt411-con-ignition.png)](/images/ansible-edge-gitops/aeg-kubevirt411-con-ignition.png)
+
+The virtual machine console view will either show a standard RHEL console login screen, or if the demo is working as designed, it will show the Ignition application running in kiosk mode. If the console shows a standard RHEL login, it can be accessed using the the initial user name (`cloud-user` by default) and password (which is what is specified in the Helm chart Values as either the password specific to that machine group, the default cloudInit, or a hardcoded default which can be seen in the template [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml). On a VM created through the wizard or via `oc process` from a template, the password will be set on the VirtualMachine object in the `volumes` section.
 
 ### Initial User login (cloud-user)
 

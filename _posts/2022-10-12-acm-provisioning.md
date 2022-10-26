@@ -32,21 +32,25 @@ Let’s walk through an example using the Multi-Cloud GitOps pattern as an examp
 
 ## Preparation
 
-Start by [deploying](https://hybrid-cloud-patterns.io/multicloud-gitops/getting-started/) the Multi-cloud GitOps pattern on AWS.
-
 If you've never deployed OpenShift before, you could try [ROSA](https://cloud.redhat.com/learn/getting-started-red-hat-openshift-service-aws-rosa/deploy-rosa-cluster)
 the pay-as-you-go OpenShift managed service.
 
-Next, you'll need to create a fork of the
-https://github.com/hybrid-cloud-gitops/multicloud-gitops/ repo.  Go there in a
-browser, make sure you’re logged in to GitHub, click the “Fork” button, and
-confirm the destination by clicking the big green "Create fork" button.
+| Installing a validated pattern | 
+| ------------------------------ |
+| [![Installing a validated pattern](https://img.youtube.com/vi/N6XPh-9XZAM/mqdefault.jpg "Installing a validated pattern")](https://youtu.be/N6XPh-9XZAM) |
+
+Start by [deploying](https://hybrid-cloud-patterns.io/multicloud-gitops/getting-started/) the Multi-cloud GitOps pattern on AWS.
+
+Next, you'll need to create a fork of the [multicloud-gitops](https://github.com/hybrid-cloud-gitops/multicloud-gitops/)
+repo.  Go there in a browser, make sure you’re logged in to GitHub, click the
+“Fork” button, and confirm the destination by clicking the big green "Create
+fork" button.
 
 Now you have a copy of the pattern that you can make changes to.  You can read
 more about the Multi-cloud GitOps pattern on our [community
 site](https://hybrid-cloud-patterns.io/multicloud-gitops/)
 
-Next, [install the Validated Patterns operator]([https://hybrid-cloud-patterns.io/infrastructure/using-validated-pattern-operator/](https://youtu.be/AHLam3u8eKM)) from Operator Hub.
+Next, [install the Validated Patterns operator](https://hybrid-cloud-patterns.io/infrastructure/using-validated-pattern-operator/) from Operator Hub.
 
 And finally, click through to the installed operator, and select the `Create
 instance` button and fill out the Create a Pattern form.  Most of the defaults
@@ -68,17 +72,20 @@ credentials.  To do this you can either manually load the secrets into the
 vault via the UI, or make use of the following process for loading them from a
 machine you control.
 
+| Loading provisioning secrets | 
+| ---------------------------- |
+| [![Loading provisioning secrets](https://img.youtube.com/vi/LSDUTfZvcyA/mqdefault.jpg "Loading provisioning secrets")](https://youtu.be/LSDUTfZvcyA) |
 
 First clone your fork of the repository onto your local machine, and copy the template to a location not controlled by Git (to avoid accidentally committing the contents)
 
-```
+```sh
 git clone git@github.com:{yourfork}/multicloud-gitops.git
 cp values-secret.yaml.template ~/values-secret.yaml
 ```
 
 You will need to uncomment and provide values for the following keys in order to make use of the provisioning functionality:
 
-```
+```yaml
 secrets:
   aws:                                       [1]
     access_key_id: AKIAIOSFODNN7EXAMPLE
@@ -89,28 +96,25 @@ files:
   openshiftPullSecret: ~/.dockerconfigjson   [3]
 ```
 
-_[1]_ A guide to finding the relevant AWS values can be found at
-https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html
+_[1]_ A guide to finding the relevant AWS values can be found [here](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html)
 You might even have them in a `~/.aws/credentials` file.
 
 _[2]_ The public key is used to allow access to OpenShift nodes for triage purposes.
 
-_[3]_ The openshiftPullSecret is how Red Hat knows you’ve got a licence to install
-OpenShift.  To obtain one, go to
-https://console.redhat.com/openshift/install/pull-secret, save the contents, and
-provide that path in the secrets file.  The contents should start with something
-like: `{"auths":{"cloud.openshift.com":{"auth":"...`.
+_[3]_ The openshiftPullSecret is how Red Hat knows you’ve got a licence to
+install OpenShift.  To obtain one, go
+[here](https://console.redhat.com/openshift/install/pull-secret), save the
+contents, and provide that path in the secrets file.  The contents should start
+with something like: `{"auths":{"cloud.openshift.com":{"auth":"...`.
 
 Obtain the login command for your cluster and run it locally.
 ![console login](/images/provision/console-login.png)
 
 Ensure `podman` is installed, and load the secrets with:
 
-```
+```sh
 ./common/scripts/pattern-util.sh make load-secrets
 ```
-
-[![Loading provisioning secrets](https://img.youtube.com/vi/LSDUTfZvcyA/default.jpg "Loading provisioning secrets")](https://youtu.be/LSDUTfZvcyA)
 
 These values will be used to create a number of secrets that ACM expects in
 order to provision clusters.
@@ -124,7 +128,7 @@ of approximately 1000 clusters in total.
 
 The following is the example we will use today:
 
-```
+```yaml
   managedClusterGroups:
     myFirstGroup:
       name: group-one
@@ -156,8 +160,13 @@ on-demand and at scale.
 
 You can read more about cluster pools in the [ACM documentation](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/multicluster_engine/multicluster_engine_overview#managing-cluster-pools)
 
+| Defining the cluster pool | Defining clusters |
+| ------------------------- | ----------------- |
+| [![Defining and scaling the cluster pool](https://img.youtube.com/vi/FaomChtlUE4/mqdefault.jpg "Defining and scaling the cluster pool")](https://youtu.be/FaomChtlUE4) | [![Defining clusters](https://img.youtube.com/vi/M-BJrEeoNd4/mqdefault.jpg "Defining clusters")](https://youtu.be/M-BJrEeoNd4) |
+
 Each managed cluster group can have multiple pools, here is an example:
-```
+
+```yaml
       clusterPools:
         myFirstPool:
           name: aws-ap
@@ -185,17 +194,17 @@ If `.size` is omitted, the pool will automatically resize based on the number of
 clusters specified.  Specifying no clusters will define the pool, but not
 provision any clusters.
 
-[![Defining and scaling the cluster pool](https://img.youtube.com/vi/FaomChtlUE4/default.jpg "Defining and scaling the cluster pool")](https://youtu.be/FaomChtlUE4)
-
-[![Defining clusters](https://img.youtube.com/vi/M-BJrEeoNd4/default.jpg "Defining clusters")](https://youtu.be/M-BJrEeoNd4)
-
 ## Delivering Applications and Configuration to Clusters
 
-[![Updating the managed cluster configuration](https://img.youtube.com/vi/emn_Coqp5jQ/default.jpg "Updating the managed cluster configuration")](https://youtu.be/emn_Coqp5jQ)
+| Delivering Configuration Changes | 
+| -------------------------------- |
+| [![Updating the managed cluster configuration](https://img.youtube.com/vi/emn_Coqp5jQ/mqdefault.jpg "Updating the managed cluster configuration")](https://youtu.be/emn_Coqp5jQ) |
 
 ## Deprovisioning Clusters
 
-[![Deprovisioning clusters](https://img.youtube.com/vi/F_-sne3U5ew/default.jpg "Deprovisioning clusters")](https://youtu.be/F_-sne3U5ew)
+| Deprovisioning clusters | 
+| ----------------------- |
+| [![Deprovisioning clusters](https://img.youtube.com/vi/F_-sne3U5ew/mqdefault.jpg "Deprovisioning clusters")](https://youtu.be/F_-sne3U5ew) |
 
 ## Conclusion
 
