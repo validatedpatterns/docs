@@ -44,16 +44,23 @@ aux_links:
 # Plugins
 plugins:
   - jekyll-paginate
-  
+  - jekyll-asciidoc
+  - jekyll-redirect-from
+  - premonition
+  - jekyll/tagging]
 gems:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
   - jemoji
-
+  - asciidoctor-pdf
+  - asciidoctor
+  - bundle
 # mimic GitHub Pages with --safe
 whitelist:
+  - asciidoctor
+  - jekyll-asciidoc
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
