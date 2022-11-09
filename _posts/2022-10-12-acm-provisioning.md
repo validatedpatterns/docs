@@ -162,7 +162,7 @@ You can read more about cluster pools in the [ACM documentation](https://access.
 
 | Defining the cluster pool | Defining clusters |
 | ------------------------- | ----------------- |
-| [![Defining and scaling the cluster pool](https://img.youtube.com/vi/FaomChtlUE4/mqdefault.jpg "Defining and scaling the cluster pool")](https://youtu.be/FaomChtlUE4) | [![Defining clusters](https://img.youtube.com/vi/M-BJrEeoNd4/mqdefault.jpg "Defining clusters")](https://youtu.be/M-BJrEeoNd4) |
+| [![Defining and scaling the cluster pool](https://img.youtube.com/vi/FaomChtlUE4/mqdefault.jpg "Defining and scaling the cluster pool")](https://youtu.be/FaomChtlUE4) | [![Defining clusters](https://img.youtube.com/vi/IJk3vTjMPCo/mqdefault.jpg "Defining clusters")](https://youtu.be/IJk3vTjMPCo) |
 
 Each managed cluster group can have multiple pools, here is an example:
 
