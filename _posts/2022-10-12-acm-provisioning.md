@@ -35,13 +35,13 @@ Let’s walk through an example using the Multi-Cloud GitOps pattern as an examp
 If you've never deployed OpenShift before, you could try [ROSA](https://cloud.redhat.com/learn/getting-started-red-hat-openshift-service-aws-rosa/deploy-rosa-cluster)
 the pay-as-you-go OpenShift managed service.
 
-| Installing a validated pattern | 
+| Installing a validated pattern |
 | ------------------------------ |
 | [![Installing a validated pattern](https://img.youtube.com/vi/N6XPh-9XZAM/mqdefault.jpg "Installing a validated pattern")](https://youtu.be/N6XPh-9XZAM) |
 
 Start by [deploying](https://hybrid-cloud-patterns.io/multicloud-gitops/getting-started/) the Multi-cloud GitOps pattern on AWS.
 
-Next, you'll need to create a fork of the [multicloud-gitops](https://github.com/hybrid-cloud-gitops/multicloud-gitops/)
+Next, you'll need to create a fork of the [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops/)
 repo.  Go there in a browser, make sure you’re logged in to GitHub, click the
 “Fork” button, and confirm the destination by clicking the big green "Create
 fork" button.
@@ -72,7 +72,7 @@ credentials.  To do this you can either manually load the secrets into the
 vault via the UI, or make use of the following process for loading them from a
 machine you control.
 
-| Loading provisioning secrets | 
+| Loading provisioning secrets |
 | ---------------------------- |
 | [![Loading provisioning secrets](https://img.youtube.com/vi/LSDUTfZvcyA/mqdefault.jpg "Loading provisioning secrets")](https://youtu.be/LSDUTfZvcyA) |
 
@@ -108,7 +108,7 @@ contents, and provide that path in the secrets file.  The contents should start
 with something like: `{"auths":{"cloud.openshift.com":{"auth":"...`.
 
 Obtain the login command for your cluster and run it locally.
-![console login](/images/provision/console-login.png)
+![console login](/images/console-login.png)
 
 Ensure `podman` is installed, and load the secrets with:
 
@@ -200,20 +200,19 @@ provision any clusters.
 
 ## Delivering Applications and Configuration to Clusters
 
-| Delivering Configuration Changes | 
+| Delivering Configuration Changes |
 | -------------------------------- |
 | [![Updating the managed cluster configuration](https://img.youtube.com/vi/oorZnch-ggY/mqdefault.jpg "Updating the managed cluster configuration")](https://youtu.be/oorZnch-ggY) |
 
 ## Deprovisioning Clusters
 
-As the provisioning data only exists on the ACM hub cluster, it is important to ensure any managed clusters are deprovisioned *before* the hub itself is destroyed.  In general this involves scaling down the pool(s), and removing the entries in the `clusters:` list.
+As the provisioning data only exists on the ACM hub cluster, it is important to ensure any managed clusters are deprovisioned _before_ the hub itself is destroyed.  In general this involves scaling down the pool(s), and removing the entries in the `clusters:` list.
 
 You can see the process in action below:
 
-| Deprovisioning clusters | 
+| Deprovisioning clusters |
 | ----------------------- |
 | [![Deprovisioning clusters](https://img.youtube.com/vi/ik5LR-ouPdo/mqdefault.jpg "Deprovisioning clusters")](https://youtu.be/ik5LR-ouPdo) |
-
 
 ## Conclusion
 
