@@ -206,9 +206,14 @@ provision any clusters.
 
 ## Deprovisioning Clusters
 
+As the provisioning data only exists on the ACM hub cluster, it is important to ensure any managed clusters are deprovisioned *before* the hub itself is destroyed.  In general this involves scaling down the pool(s), and removing the entries in the `clusters:` list.
+
+You can see the process in action below:
+
 | Deprovisioning clusters | 
 | ----------------------- |
 | [![Deprovisioning clusters](https://img.youtube.com/vi/ik5LR-ouPdo/mqdefault.jpg "Deprovisioning clusters")](https://youtu.be/ik5LR-ouPdo) |
+
 
 ## Conclusion
 
