@@ -3,7 +3,7 @@ layout: post
 date: 2022-10-12
 title: Multi-cluster GitOps with Provisioning
 excerpt: With validated patterns, you can easily create and configure complex cluster topologies
-published: false
+published: true
 tags:
 - acm
 - provisioning
@@ -118,6 +118,10 @@ Ensure `podman` is installed, and load the secrets with:
 
 These values will be used to create a number of secrets that ACM expects in
 order to provision clusters.
+
+| Loading Secrets into the Cluster |
+| ------------------------- |
+| [![Loading secrets into the cluster](https://img.youtube.com/vi/LSDUTfZvcyA/mqdefault.jpg "Loading secrets into the cluster")](https://youtu.be/LSDUTfZvcyA) |
 
 ## Define a Managed Cluster Group
 
