@@ -198,13 +198,13 @@ provision any clusters.
 
 | Delivering Configuration Changes | 
 | -------------------------------- |
-| [![Updating the managed cluster configuration](https://img.youtube.com/vi/emn_Coqp5jQ/mqdefault.jpg "Updating the managed cluster configuration")](https://youtu.be/emn_Coqp5jQ) |
+| [![Updating the managed cluster configuration](https://img.youtube.com/vi/oorZnch-ggY/mqdefault.jpg "Updating the managed cluster configuration")](https://youtu.be/oorZnch-ggY) |
 
 ## Deprovisioning Clusters
 
 | Deprovisioning clusters | 
 | ----------------------- |
-| [![Deprovisioning clusters](https://img.youtube.com/vi/F_-sne3U5ew/mqdefault.jpg "Deprovisioning clusters")](https://youtu.be/F_-sne3U5ew) |
+| [![Deprovisioning clusters](https://img.youtube.com/vi/ik5LR-ouPdo/mqdefault.jpg "Deprovisioning clusters")](https://youtu.be/ik5LR-ouPdo) |
 
 ## Conclusion
 
