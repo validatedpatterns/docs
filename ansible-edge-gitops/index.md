@@ -7,7 +7,7 @@ nav_order: 1
 ---
 
 <div class="pattern_logo">
-  <img src="/images/logos/multicloud-gitops.png" class="pattern_logo" alt="Points">
+  <img src="/images/logos/ansible-edge.png" class="pattern_logo" alt="Points">
 </div>
 
 # Ansible Edge GitOps
