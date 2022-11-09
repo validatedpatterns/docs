@@ -104,6 +104,7 @@ defragmentation
 deliverables
 deploymentconfig
 deploymentconfigs
+deprovisioned
 deprovisioning
 dev
 devel
