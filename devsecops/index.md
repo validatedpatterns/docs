@@ -82,7 +82,7 @@ FIXME: uncomment once the image actually exists
 
 There are ways of combing these three clusters into a two cluster (hub/devel and secured/edge) and single cluster (all in one). The documentation provides instructions (TBD Link).
 
-### Pattern Architecture
+### Pattern Logical Architecture
 
 The following diagram explains how different roles have different concerns and focus when working with this distributed AL/ML architecture.
 
@@ -93,3 +93,13 @@ In the Multi-Cluster DevSecOps architecture there are three logical types of sit
 - The Hub. This is where the cloud native infrastructure is monitored and managed. It performs cluster management, advanced cluster security and a secure image registry.
 - Devel. This is where the development pipeline is hosted. Developers submit code builds to the pipeline and various security tools are used in the pipeline to mitigate the risk of harmful applications or code being deployed in production.
 - Secured Production. This is where applications are securely deployed and monitored.
+
+### Pattern Architecture Schema
+
+The following diagram shows various management functions, including products and components, that are deployed on central hub and managed clusters (Devel. and Prod.) in order to maintain secure clusters. Consider this the GitOps schema.
+
+[![Multicluster DevSecOps Architecture - management schema](/images/devsecops/schema-acm.png)](/images/devsecops/lschema-acm.png)
+
+The following diagram shows various development pipeline functions, including products and components, that are deployed on central hub and development (Devel) clusters in order to maintain secure supply chain for development pipelines. Consider this the DevSecOps schema.
+
+[![Multicluster DevSecOps Architecture - development schema](/images/devsecops/schema-devel-pipeline.png)](/images/devsecops/schema-devel-pipeline.png)
