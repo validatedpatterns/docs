@@ -141,7 +141,7 @@ Make sure to set up the `values-secret.yaml` and `values-global.yaml` correctly 
 1. Check the operators have been installed
 
    ```text
-   UI -> Installed Operators
+   OpenShift Console UI -> Installed Operators
    ```
 
 1. Navigate to the OpenShift GitOps instances using the links on the top right hand side of the screen.
