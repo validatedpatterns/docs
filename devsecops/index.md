@@ -54,6 +54,7 @@ It is derived from the multi-cloud GitOps pattern with added products to provide
 ### Other technologies and products
 
 - Hashicorp Vault community edition (secrets management)
+- 
 
 ## Context on Multicluster DevSecOps
 
