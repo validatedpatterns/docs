@@ -53,7 +53,7 @@ It is derived from the multi-cloud GitOps pattern with added products to provide
 
 ### Other technologies and products
 
-- Hashicorp Vault community edition (secrets management) 
+- Hashicorp Vault community edition (secrets management)
 
 ## Context on Multicluster DevSecOps
 
@@ -98,7 +98,7 @@ In the Multi-Cluster DevSecOps architecture there are three logical types of sit
 
 The following diagram shows various management functions, including products and components, that are deployed on central hub and managed clusters (Devel. and Prod.) in order to maintain secure clusters. Consider this the GitOps schema.
 
-[![Multicluster DevSecOps Architecture - management schema](/images/devsecops/schema-acm.png)](/images/devsecops/lschema-acm.png)
+[![Multicluster DevSecOps Architecture - management schema](/images/devsecops/schema-acm.png)](/images/devsecops/schema-acm.png)
 
 The following diagram shows various development pipeline functions, including products and components, that are deployed on central hub and development (Devel) clusters in order to maintain secure supply chain for development pipelines. Consider this the DevSecOps schema.
 
