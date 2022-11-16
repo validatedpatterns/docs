@@ -1,0 +1,14 @@
+  <header class="pf-c-page__header">
+    <div class="pf-c-page__header-brand">
+      <a href="{{ .Site.Home.RelPermalink }}" class="pf-c-page__header-brand-link">
+        {{ with .Site.Params.site_logo }}
+          <img src="{{ relURL . }}" alt="{{ $.Site.Title }}" />
+        {{ else }}
+          {{ .Site.Title }}
+        {{ end }}
+      </a>
+    </div>
+    <div class="pf-c-page__header-tools">
+      {{ partial "site-navigation.html" .}}
+    </div>
+  </header>

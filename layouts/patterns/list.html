@@ -1,0 +1,7 @@
+{{ define "main" }}
+    {{ if (eq .RelPermalink "/patterns/") }}
+      {{ partial "patterns-browser.html" . }}
+    {{ else }}
+      {{ partial "patterns-index.html" . }}
+    {{ end }}
+{{ end }}

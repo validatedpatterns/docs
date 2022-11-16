@@ -1,0 +1,15 @@
+<div class="pf-c-card" style="text-align: left">
+    <div class="pf-c-card__title">
+      <h1>
+        <a href="{{.RelPermalink}}">
+          {{ .Title }}
+        </a>
+      </h1>
+    </div>
+    <div class="pf-c-card__body">
+      {{ .Summary }}
+    </div>
+    <div class="pf-c-card__footer">
+      <a href="{{.RelPermalink}}">{{ $.Param "read_more_copy" | default (i18n "readMore") }}</a>
+    </div>
+</div>

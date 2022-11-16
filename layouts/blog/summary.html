@@ -1,0 +1,16 @@
+<div class="pf-c-card">
+  <div class="pf-c-card__title">
+    <a href="{{ .RelPermalink }}">
+      <h1>{{ .Title }}</h1>
+    </a>
+  </div>
+  <div class="pf-c-card__body">
+    <p>{{ .Date | time.Format ":date_long" }}</p>
+    <p>{{ .Summary }} <a href="{{ .RelPermalink }}">Read more...</a></p>
+    {{ range .Params.blog_tags }}
+      <span class="pf-c-label pf-m-orange">
+        <span class="pf-c-label__content">{{ . }}</span>
+      </span>
+    {{ end }}
+  </div>
+</div>

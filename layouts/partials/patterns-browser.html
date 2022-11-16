@@ -1,0 +1,63 @@
+<main class="pf-c-page__main">
+  <section class="pf-c-page__main-section">
+    <div class="pf-u-text-align-center">
+      <div class="pf-c-content" style="--pf-c-content--FontSize: 1rem;">
+        <h1 class="pf-c-title pf-m-4xl">
+          {{- .Title -}}
+        </h1>
+        {{ .Content }}
+      </div>
+    </section>
+    <section class="pf-c-page__main-section">
+    <div class="pf-l-grid pf-m-gutter">
+      <div class="pf-l-grid__item pf-m-3-col">
+        {{ partial "tags-type.html" . }}
+        {{ partial "tags-industries.html" . }}
+        {{ partial "tags-products.html" . }}
+      </div>
+      <div class="pf-l-grid__item pf-m-9-col">
+        <div class="pf-c-content" >
+          {{ $patterns := where $.Pages "Section" "patterns"}}
+          <div class="pf-l-stack pf-m-gutter">
+            <div class="pf-l-stack__item pf-u-text-align-right">
+              <span id="pattern-count">{{- len $patterns -}}</span> of {{ len $patterns }}  patterns displayed
+            </div>
+            <div class="pf-l-stack__item">
+              <div class="pf-l-gallery pf-m-gutter" style="--pf-l-gallery--GridTemplateColumns--min: 300px;">
+                {{ range $pattern :=  $patterns }}
+                  {{ $data := newScratch }}
+                  {{ $data.Set "tags" slice }}
+                  {{ $params := .Params }}
+                  {{ range $taxonomyname, $taxonomy := .Site.Taxonomies }}
+
+                    {{ if isset $params $taxonomyname }}
+                      {{ range $term := $pattern.Param $taxonomyname }}
+                        {{ $taglist := $data.Get "tags" }}
+                        {{ $taglist := $taglist | append (string (printf "%s:%s" $taxonomyname ($term | urlize) | printf "%s" )) }}
+                        {{ $data.Set "tags" $taglist }}
+                      {{ end }}
+
+                    {{ end }}
+                  {{ end }}
+                  {{ $taglist := $data.Get "tags" }}
+                  
+                  {{ $validated := .Param "validated" }}
+                  {{ if (eq $validated true ) }}
+                    {{ .Scratch.Set "patterntype" "type:validated" }}
+                  {{ else }}
+                    {{ .Scratch.Set "patterntype" "type:community" }}
+                  {{ end }}
+                  {{ $patterntype := .Scratch.Get "patterntype"  }}
+                  <div class="pf-l-gallery__item filterDiv" tag-data="{{ delimit $taglist " " }} {{ $patterntype }}" style="display: grid;">
+                    {{ .Render "summary-with-image" }}
+                  </div>
+                {{ end }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="{{ "js/filter.js" | relURL }}"></script>
+  </section>
+</main>

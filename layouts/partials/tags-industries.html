@@ -1,0 +1,11 @@
+<div class="pf-c-panel" style="margin-bottom: 1em">
+  <div class="pf-c-panel__header">Industries</div>
+  <hr class="pf-c-divider" />
+  <div class="pf-c-panel__main">
+    <div class="pf-c-panel__main-body">
+      {{ range $name, $taxonomy := .Site.Taxonomies.industries }}
+        <button class="pf-c-label pf-m-blue pf-m-outline" id="industries:{{- $name -}}" type="button" onclick="filterSelection(this.id)" style="margin: 5px 0;"><span class="pf-c-label__content">{{- $name | humanize | title  -}}</span></button> 
+      {{ end }}
+  </div>
+  </div>
+</div>

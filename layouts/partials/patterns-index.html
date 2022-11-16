@@ -1,0 +1,30 @@
+<div class="pf-c-page__sidebar">
+  <div class="pf-c-page__sidebar-body">
+    {{ partial "menu-patterns.html" . }}
+  </div>
+</div>
+<main class="pf-c-page__main">
+  <section class="pf-c-page__main-section">
+    <div class="pf-l-grid pf-m-gutter">
+      <div class="pf-l-grid__item pf-m-8-col">
+        <div class="pf-c-content">
+          {{ $validated := .Param "validated" }}
+          {{ if (eq $validated true ) }}
+              {{ partial "label-validated-pattern.html" . }}
+          {{ else }}
+              {{ partial "label-community-pattern.html" . }}
+          {{ end }}
+          <h1>
+            {{- .Title -}}
+          </h1>
+          <div class="pf-c-content">
+            {{ .Content }}
+          </div>
+        </div>
+      </div>
+      <div class="pf-l-grid__item pf-m-4-col">
+        {{ partial "toc.html" . }}
+      </div>
+    </div>
+  </section>
+</main>

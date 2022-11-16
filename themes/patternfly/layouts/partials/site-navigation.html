@@ -1,0 +1,14 @@
+<nav class="pf-c-nav pf-m-horizontal" role="navigation">
+  {{ if .Site.Menus.main }}
+    <ul class="pf-c-nav__list">
+      {{ range .Site.Menus.main }}
+
+      <li class="pf-c-nav__item {{ if hasPrefix $.Page.RelPermalink .URL }}pf-m-current{{ end }}">
+        <a class="pf-c-nav__link" href="{{ .URL }}" title="{{ .Title }}">
+          {{ .Name }}
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  {{ end }}
+</nav>

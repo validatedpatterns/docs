@@ -1,0 +1,50 @@
+{{ $paginator := .Paginate (where .Data.Pages "Type" "posts") }}
+{{ if gt $paginator.TotalPages 1 }}
+<div class="pf-c-pagination" style="float: left; margin-top:1em;">
+<nav class="pf-c-pagination__nav">
+  <div class="pf-c-pagination__nav-page-select pf-m-first">
+    {{ if ne $paginator.PageNumber 1 }}
+    <a href="{{ $paginator.First.URL }}">
+      <i class="fas fa-angle-double-left" aria-hidden="true"></i>
+    </a>
+    {{ else }}
+    <i class="fas fa-angle-double-left" aria-hidden="true"></i>
+    {{ end }}
+  </div>
+  <div class="pf-c-pagination__nav-page-select pf-m-prev">
+    {{ if $paginator.HasPrev }}
+    <a href="{{ $paginator.Prev.URL }}">
+      <i class="fas fa-angle-left" aria-hidden="true"></i>
+    </a>
+    {{ else }}
+    <i class="fas fa-angle-left" aria-hidden="true"></i>
+    {{ end }}
+  </div>
+  {{ range $paginator.Pagers }}
+  <div class="pf-c-pagination__nav-page-select {{ if eq . $paginator }} pf-c-pagination__current{{ end }}">
+    <a href="{{ .URL }}">
+      {{ .PageNumber }}
+    </a>
+  </div>
+  {{ end }}
+  <div class="pf-c-pagination__nav-page-select pf-m-next">
+    {{ if $paginator.HasNext }}
+    <a href="{{ $paginator.Next.URL }}">
+      <i class="fas fa-angle-right" aria-hidden="true"></i>
+    </a>
+    {{ else }}
+      <i class="fas fa-angle-right" aria-hidden="true"></i>
+    {{ end }}
+  </div>
+  <div class="pf-c-pagination__nav-page-select pf-m-last">
+    {{ if ne $paginator.PageNumber $paginator.TotalPages }}
+    <a href="{{ $paginator.Last.URL }}">
+      <i class="fas fa-angle-double-right" aria-hidden="true"></i>
+    </a>
+    {{ else }}
+      <i class="fas fa-angle-double-right" aria-hidden="true"></i>
+    {{ end }}
+  </div>
+</nav>
+</div>
+{{ end }}

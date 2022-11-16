@@ -1,0 +1,11 @@
+<div class="pf-c-nav">
+  <ul class="pf-c-nav__list">
+    {{ range .Site.Menus.learn }}
+      <li class="pf-c-nav__item">
+        <a href="{{ .URL }}" class="pf-c-nav__link">
+          {{- .Name -}}
+        </a>
+      </li>
+    {{ end }}
+  </ul>
+</div>

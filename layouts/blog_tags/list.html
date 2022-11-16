@@ -1,0 +1,34 @@
+{{ define "main" }}
+<main class="pf-c-page__main">
+  <section class="pf-c-page__main-section">
+    <div class="pf-u-text-align-center">
+      <div class="pf-c-content" style="--pf-c-content--FontSize: 1.25rem;">
+        <h1>
+          Posts tagged with "{{- .Title -}}"
+        </h1>
+        {{ .Content }}
+      </div>
+    </section>
+    <section class="pf-c-page__main-section">
+    <div class="pf-l-grid pf-m-gutter">
+
+      <div class="pf-l-grid__item pf-m-10-col">
+        <div class="pf-c-content" >
+          <div>
+            {{ $section := where $.Paginator.Pages "Section" "blog"}}
+            {{ range $section }}
+              <div >
+                {{ .Render "summary" }}
+              </div>
+            {{ end }}
+            {{ partial "paginator.html" . }}
+          </div>
+        </div>
+      </div>
+      <div class="pf-l-grid__item pf-m-2-col">
+        {{ partial "tags-blog.html" . }}
+      </div>
+    </div>
+  </section>
+</main>
+{{ end }}
