@@ -1,4 +1,4 @@
-baseURL: "http://localhost:1313/"
+baseURL: "https://docs-ng.hybrid-cloud-patterns.io"
 languageCode: "en-us"
 title: Hybrid Cloud Patterns
 theme: "patternfly"
