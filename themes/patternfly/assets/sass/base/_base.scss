@@ -1,0 +1,13 @@
+// stylelint-disable no-invalid-position-at-import-rule
+
+// remove pf3 shield styles in breaking change
+@import "shield-inheritable";
+@import "shield-noninheritable";
+
+@if $pf-global--enable-shield {
+  @include shield-inheritable;
+  @include shield-noninheritable;
+}
+
+@import "common";
+@import "globals";
