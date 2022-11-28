@@ -26,47 +26,44 @@ Any validated pattern that uses HashiCorp Vault already has deployed Vault as pa
 
 [![Vault Pods](/images/secrets/vault-pods.png)](/images/secrets/vault-pods.png)
 
-In order to setup HashiCorp Vault there are a number of different steps. Fist you must *unseal* the vault and then you must create the secrets assets needed. Fortunately the validated patterns effort has automated this for you by providing a script.
+In order to setup HashiCorp Vault there are two different ways, both of which happen automatically as part of the `make install` command:
 
-From the shell you ran `make install` run:
+1. Inside the cluster directly when the helm value `clusterGroup.insecureUnsealVaultInsideCluster` is set to `true`. With this method a cronjob will run every five minutes inside the `imperative` namespace and unseal, initialize and configure the vault. The vault's unseal keys and root token will be stored inside a secret called `vaultkeys` in the `imperative` namespace. **It is considered best practice** to copy the content of that secret offline, store it securely and then delete it.
+2. On the user's computer when the helm value `clusterGroup.insecureUnsealVaultInsideCluster` is set to `false`. This will store the json containing containing both vault root token and unseal keys inside a file called `common/pattern-vault.init`. It is recommended to encrypt this file or store it securely.
 
-```sh
-make vault-init
+An example output is the following:
+
+```json
+{
+    "recovery_keys_b64": [],
+    "recovery_keys_hex": [],
+    "recovery_keys_shares": 0,
+    "recovery_keys_threshold": 0,
+    "root_token": "hvs.VNFq7yPuZljq2VDJTkgAMs2Z",
+    "unseal_keys_b64": [
+        "+JJjKgZyEB1rbKlXs1aTuC+PBivukIlnpoe7bH4qc7TL",
+        "X2ib6LNZw+kOQH1WYR9t3RE2SgB5WbEf2FfD40OybNXf",
+        "A4DIhv9atLIQsqqyDAYkmfEJPYhFVuKGSGYwV7WCtGcL",
+        "ZWkQ7+qtgmClKdlNKWcdpvyxArm07P9eArHZB4/CMZWn",
+        "HXakF073+Kk7oOpAFbGlKIWYApzUhC/F1LDfowF/M1LK"
+    ],
+    "unseal_keys_hex": [
+        "f892632a0672101d6b6ca957b35693b82f8f062bee908967a687bb6c7e2a73b4cb",
+        "5f689be8b359c3e90e407d56611f6ddd11364a007959b11fd857c3e343b26cd5df",
+        "0380c886ff5ab4b210b2aab20c062499f1093d884556e28648663057b582b4670b",
+        "656910efeaad8260a529d94d29671da6fcb102b9b4ecff5e02b1d9078fc23195a7",
+        "1d76a4174ef7f8a93ba0ea4015b1a5288598029cd4842fc5d4b0dfa3017f3352ca"
+    ],
+    "unseal_shares": 5,
+    "unseal_threshold": 3
+}
 ```
 
-The `Makefile` includes a call out to the script to do the unseal and setup the secrets.
+The vault's root token is needed to log into the vault's UI and the unseal keys are needed whenever the vault pods are restarted.
+In the OpenShift console click on the nine box at the top and click on the `vault` line:
+[![Vault Nine Box](/images/secrets/vault-nine-box.png)]
 
-You can check the secrets were set up by examining the Vault user interface. But in order to do so you will need to get some data from the `common/pattern-vault.init` file generated from the `make vault-init` command.
-
-```text
-~/g/multicloud-gitops on main ◦ cat common/pattern-vault.init
-Unseal Key 1: jJvLf7Pv+BDo0d39ofvBu58srGpUrhVZbnzXXXXXXXXX
-Unseal Key 2: XMQtBDB3WGdBnWFt3jIb8IZ8wyr4RxPM2oB7XXXXXXXX
-Unseal Key 3: sStLSI0ejUAt4kno2ArPTN3kzwzqiBmYnhrXXXXXXXXX
-Unseal Key 4: VdVkgdtuXKEqF4oNFg8dh2MkzXbs3ZJ68NzRXXXXXXXX
-Unseal Key 5: gZ5afnmJu+24Ty+H6EP3gf257D9ZefrgJrYXXXXXXXXX
-
-Initial Root Token: s.R3NG5LHipbabbleDummyhyKHq
-
-Vault initialized with 5 key shares and a key threshold of 3. Please securely
-distribute the key shares printed above. When the Vault is re-sealed,
-restarted, or stopped, you must supply at least 3 of these keys to unseal it
-before it can start servicing requests.
-
-Vault does not store the generated master key. Without at least 3 keys to
-reconstruct the master key, Vault will remain permanently sealed!
-
-It is possible to generate new unseal keys, provided you have a quorum of
-existing unseal keys shares. See "vault operator rekey" for more information.
-```
-
-Copy the `Initial Root Token`. Above it is `s.R3NG5LHipbabbleDummyhyKHq`.
-
-In the OpenShift console under the project `vault` navigate to Networking/Routes and click on the URL for `vault`.
-
-[![Vault Route](/images/secrets/vault-route.png)](/images/secrets/vault-route.png)
-
-On the Vault page paste the copied token from the `pattern-vault-init` file.
+Copy the `root_token` field which in the example above has the value `hvs.VNFq7yPuZljq2VDJTkgAMs2Z` and paste it in the sign-in page:
 
 [![Vault Sign In](/images/secrets/vault-signin.png)](/images/secrets/vault-signin.png)
 
@@ -76,7 +73,7 @@ After signing in you will see the secrets that have been created.
 
 # Unseal
 
-If you don't see the sign in page but instead see an unseal page, something may have happened the cluster and you need to unseal it again. Instead of using `make vault-init` you should run `make vault-unseal`.
+If you don't see the sign in page but instead see an unseal page, something may have happened the cluster and you need to unseal it again. Instead of using `make vault-init` you should run `make vault-unseal`. You can also unseal it manually by running `vault operator unseal` inside the `vault-0` pod in the `vault` namespace.
 
 # What's next?
 
