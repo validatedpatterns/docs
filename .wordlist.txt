@@ -81,6 +81,7 @@ ctdim
 ctrl
 customizable
 customizations
+CVEs
 dasv
 datacenter
 dataflow
@@ -205,6 +206,7 @@ iot
 iotgateway
 iotsensor
 ipbabble
+instantiatable
 ipi
 iz
 jboss
@@ -269,6 +271,7 @@ middleware
 militaries
 millicore
 misconfigured
+misconfiguration
 mkzxbs
 mlops
 modularity
@@ -285,6 +288,7 @@ mycluster
 mydomain
 namespace
 namespaces
+natively
 nav
 ncast
 ncv
@@ -301,6 +305,7 @@ oauth
 objectstore
 oc
 ocp
+OCI
 odf
 ofvbu
 okd
@@ -372,6 +377,7 @@ rsa
 runnable
 runtime
 rxpm
+SBOM
 sas
 scalability
 scalable
@@ -383,6 +389,8 @@ serverless
 serviceaccount
 shopfloor
 shopflor
+SIGSTORE
+Sonarqube
 sla
 slas
 spinny
