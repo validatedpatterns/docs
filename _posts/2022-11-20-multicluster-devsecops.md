@@ -29,7 +29,7 @@ A successful DevSecOps based Secure Supply Chain must consider four areas of con
 1. Secure developer dependencies
 1. Secure code development
 1. Secure deployment of resources into a secure environment
-1. Software Bill of Materials (SBOM) 
+1. Software Bill of Materials (SBOM)
 
 Within each of these areas there are also many best practices to be applied particularly in Cloud Native development using container technology.
 
@@ -75,11 +75,11 @@ While these pipelines are included in the pattern, the pattern also implements  
 
 ## Highlight: Using the CI Pipeline to secure the supply chain
 
-This pattern includes some other technologies in the development CI pipeline, including cosign, a SIGSTORE project, implemented with [Tekton Chains](https://next.redhat.com/project/tekton-chains/). [Cosign](https://docs.sigstore.dev/cosign/overview/) supports container signing, verification, and storage in an OCI registry. It enables consumers to sign their pipeline resources and images and share the attestation files providing downstream consumers assurances that they are consuming a trusted artifact. 
+This pattern includes some other technologies in the development CI pipeline, including cosign, a SIGSTORE project, implemented with [Tekton Chains](https://next.redhat.com/project/tekton-chains/). [Cosign](https://docs.sigstore.dev/cosign/overview/) supports container signing, verification, and storage in an OCI registry. It enables consumers to sign their pipeline resources and images and share the attestation files providing downstream consumers assurances that they are consuming a trusted artifact.
 
-We also implement open source tools like [Sonarqube](https://www.sonarqube.org/) for static code analysis, [nexus](https://www.sonatype.com/products/nexus-repository?topnav=true) for securely storing build artifacts in-cluster, and an open source reports application that is used to upload and present the reports from the security pipeline. 
+We also implement open source tools like [Sonarqube](https://www.sonarqube.org/) for static code analysis, [nexus](https://www.sonatype.com/products/nexus-repository?topnav=true) for securely storing build artifacts in-cluster, and an open source reports application that is used to upload and present the reports from the security pipeline.
 
-Not using these tools in your environment? That’s not a problem. The pattern framework is flexible. Organizations using different services can swap out what’s in the pattern with their software of choice to fit their environment. 
+Not using these tools in your environment? That’s not a problem. The pattern framework is flexible. Organizations using different services can swap out what’s in the pattern with their software of choice to fit their environment.
 
 ## Where do we go from here?
 
