@@ -7,7 +7,7 @@ baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://hybrid-cloud-patterns.io" # the base hostname & protocol for your site, e.g. http://example.com
 #url: "http://localhost:4000" # the base hostname & protocol for your site, e.g. http://example.com
 
-logo: images/logos/medical-diagnosis-clear.png
+logo: images/logos/patterns-clear.png
 
 permalink: pretty
 exclude: [ "node_modules/", "*.gemspec", "cheat.md", "LICENSE.txt", "README.md", vendor ]

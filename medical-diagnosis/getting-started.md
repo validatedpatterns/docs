@@ -19,28 +19,14 @@ nav_order: 1
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing).
+1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../medical-diagnosis/cluster-sizing).
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 1. S3-capable Storage set up in your public/private cloud for the x-ray images
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
 
 The following packages need to be installed on your local system to seed the pattern correctly:
 
-```bash
-dnf install -y git make python3-pip
-```
-
-Use pip3 to install the following python packages required for ansible:
-
-```bash
-pip3 install --user --upgrade pip ansible kubernetes openshift awscli
-```
-
-Install the ansible-galaxy collection:
-
-```bash
-ansible-galaxy collection install kubernetes.core
-```
+{% include prerequisite-tools.md %}
 
 The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern
 there is no dedicated Hub / Edge cluster for the **Medical Diagnosis** pattern.
@@ -240,7 +226,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
 
    ```text
    NAME                       HOST/PORT                                                                                      PATH   SERVICES                   PORT    TERMINATION            WILDCARD
-   datacenter-gitops-server   datacenter-gitops-server-medical-diagnosis-datacenter.apps.wh-medctr.blueprints.rhecoeng.com          datacenter-gitops-server   https   passthrough/Redirect   None
+   hub-gitops-server   hub-gitops-server-medical-diagnosis-hub.apps.wh-medctr.blueprints.rhecoeng.com          hub-gitops-server   https   passthrough/Redirect   None
    # admin.password
    xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH
    NAME                      HOST/PORT                                                                         PATH   SERVICES                  PORT    TERMINATION            WILDCARD
@@ -251,7 +237,7 @@ You can also check on the progress using OpenShift GitOps to check on the variou
    FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6
    ```
 
-   The most important ArgoCD instance to examine at this point is `multicloud-gitops-datacenter`. This is where all the applications for the pattern can be tracked.
+   The most important ArgoCD instance to examine at this point is `medical-diagnosis-hub`. This is where all the applications for the pattern can be tracked.
 
 1. Check all applications are synchronised. There are thirteen different ArgoCD "applications" deployed as part of this pattern.
 

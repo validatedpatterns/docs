@@ -19,7 +19,7 @@ nav_order: 1
 
 # General Prerequisites
 
-1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../../multicloud-gitops/cluster-sizing). Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern.
+1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../../ansible-edge-gitops/cluster-sizing). Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern.
 1. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks)
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
 1. Ansible, which is used in the bootstrap and provisioning phases of the pattern install (and to configure Ansible Automation Platform).
@@ -78,19 +78,13 @@ files:
 
 If you are going to install via `make install` from your workstation, you will need the following tools and packages:
 
-* make
-* awk
-* sed
-* helm (v3+)
-* oc (the OpenShift client)
-* ansible
+{% include prerequisite-tools.md %}
 
-And the following ansible collections:
+And additionally, the following ansible collections:
 
 * community.okd
 * redhat_cop.controller_configuration
 * awx.awx
-* core.kubernetes
 
 To see what collections are installed:
 

@@ -19,7 +19,7 @@ nav_order: 1
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing).
+1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../industrial-edge/cluster-sizing).
 1. (Optional) A second OpenShift cluster for edge/factory
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 1. A quay account with the following repositories set as public:
@@ -31,8 +31,6 @@ nav_order: 1
     - iot-frontend
     - iot-software-sensor
 
-1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
-
 The use of this blueprint depends on having at least one running Red Hat
 OpenShift cluster. It is desirable to have a cluster for deploying the data
 center assets and a separate cluster(s) for the factory assets.
@@ -41,20 +39,15 @@ If you do not have a running Red Hat OpenShift cluster you can start one on a
 public or private cloud by using [Red Hat's cloud
 service](https://console.redhat.com/openshift/create).
 
+## Prerequisite Tools
+
+Install the installation tooling dependencies. You will need:
+
+{% include prerequisite-tools.md %}
+
 # How to deploy
 
-1. Install the installation tooling dependencies.  You will need:
-
 1. Clone the forked copy of the `industrial-edge` repo. Use branch `v2.1.1`.
-
-    - `make` - the well-known software build tool
-    - `sh` - a POSIX-compatible shell
-    - `sed` - the "stream editor", commonly used in shell scripting
-    - `oc` - the OpenShift client
-    - `jq` - The swiss army knife for JSON
-    - `git` - The well known version control utility
-    - `ansible` - The well-known automation tool
-    - The `kubernetes.core` collection for ansible
 
 1. Fork the [industrial-edge](https://github.com/hybrid-cloud-patterns/industrial-edge) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 

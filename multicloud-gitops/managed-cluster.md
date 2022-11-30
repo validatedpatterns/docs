@@ -149,11 +149,11 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
 
 1. Find the new cluster
 
-   `oc get region-one.cluster.open-cluster-management.io`
+   `oc get managedcluster.cluster.open-cluster-management.io`
 
 1. Apply the label
 
-   `oc label region-one.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster`
+   `oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster`
 
 ### You're done
 

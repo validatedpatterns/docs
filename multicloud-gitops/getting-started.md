@@ -19,7 +19,7 @@ nav_order: 1
 
 # Prerequisites
 
-1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../cluster-sizing).
+1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../multicloud-gitops/cluster-sizing).
 1. (Optional) A second OpenShift cluster for multicloud demonstration or testing
 1. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks)
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
@@ -33,6 +33,10 @@ public or private cloud by using [Red Hat's cloud
 service](https://console.redhat.com/openshift/create).
 
 # How to deploy
+
+1. Install the installation tooling dependencies.  You will need:
+
+{% include prerequisite-tools.md %}
 
 1. Fork the [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops) repo on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 

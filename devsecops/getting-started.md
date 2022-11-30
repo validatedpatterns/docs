@@ -19,7 +19,7 @@ nav_order: 1
 
 # Prerequisites
 
-1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../../multicloud-gitops/cluster-sizing).
+1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../devsecops/cluster-sizing).
 1. A second OpenShift cluster for production (optional but desirable)
 1. A third OpenShift cluster for secure CI pipelines (optional but desirable)
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
@@ -62,14 +62,7 @@ secrets:
 
 1. Install the installation tooling dependencies.  You will need:
 
-    * `make` - the well-known software build tool
-    * `sh` - a POSIX-compatible shell
-    * `sed` - the "stream editor", commonly used in shell scripting
-    * `oc` - the OpenShift client
-    * `jq` - The swiss army knife for JSON
-    * `git` - The well known version control utility
-    * `ansible` - The well-known automation tool
-    * The `kubernetes.core` collection for ansible
+{% include prerequisite-tools.md %}
 
 1. Fork the [Multi-Cluster DevSecOps](https://github.com/hybrid-cloud-patterns/multicluster-devsecops) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevSecOps processes.
 
