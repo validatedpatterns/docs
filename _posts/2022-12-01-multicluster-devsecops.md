@@ -16,7 +16,7 @@ tags:
 - quay
 ---
 
-# Validated Pattern: Secure Supply Chain
+# Multicluster DevSecOps
 
 ## Secure Supply Chain: The Why and What
 
