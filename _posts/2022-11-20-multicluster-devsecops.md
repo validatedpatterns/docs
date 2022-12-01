@@ -1,6 +1,6 @@
 ---
 layout: post
-date: 2022-07-14
+date: 2022-12-01
 title: Multicluster DevSecOps
 Authors: William Henry & Jonny Rickard
 excerpt: A validated pattern that uses OpenShift Platform Plus and OpenShift Pipelines to securely build, scan, and deliver applications
