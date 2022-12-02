@@ -2,7 +2,7 @@
 layout: default
 title: Secured Production Clusters
 grand_parent: Patterns
-parent: Secure Supply Chain
+parent: Multicluster DevSecOps
 nav_order: 3
 ---
 
