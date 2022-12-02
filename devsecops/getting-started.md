@@ -2,7 +2,7 @@
 layout: default
 title: Getting Started
 grand_parent: Patterns
-parent: Secure Supply Chain
+parent: Multicluster DevSecOps
 nav_order: 1
 ---
 
@@ -54,7 +54,7 @@ secrets:
 secrets:
   # NEVER COMMIT THESE VALUES TO GIT
   config-demo:
-    # Secret used for demonstrating vault storage, external secrets, and ACM distribution
+    # Secret used for demonstrating vault storage, external secrets, and ACM distributionsecure
     secret: PLAINTEXT
 ```
 
@@ -64,7 +64,7 @@ secrets:
 
 {% include prerequisite-tools.md %}
 
-1. Fork the [Multi-Cluster DevSecOps](https://github.com/hybrid-cloud-patterns/multicluster-devsecops) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevSecOps processes.
+1. Fork the [Multicluster DevSecOps](https://github.com/hybrid-cloud-patterns/multicluster-devsecops) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevSecOps processes.
 
 1. Clone the forked copy of the `multicluster-devsecops` repository. Use branch `v1.0`.
 
