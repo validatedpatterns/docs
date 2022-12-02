@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Secure Supply Chain Demo
+title: Multicluster DevSecOps Demo
 grand_parent: Patterns
-parent: Secure Supply Chain
+parent: Multicluster DevSecOps
 nav_order: 4
 ---
 
-# Demonstrating a Secure Supply Chain
+# Demonstrating Multicluster DevSecOps
 
 {: .no_toc }
 
@@ -19,7 +19,7 @@ nav_order: 4
 
 ## Background
 
-Up until now the Secure Supply Chain validated pattern has focused primarily on successfully deploying the architectural pattern components on the three different clusters. Now it is time to see DevSecOps in action as we step through a number of pipeline demonstrations to see the secure supply chain in action.
+Up until now the Multicluster DevSecOps validated pattern has focused primarily on successfully deploying the architectural pattern components on the three different clusters. Now it is time to see DevSecOps in action as we step through a number of pipeline demonstrations to see the secure supply chain in action.
 
 ## Prerequisite preparation
 
