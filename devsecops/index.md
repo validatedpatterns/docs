@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Secure Supply Chain
+title: Multicluster DevSecOps
 parent: Patterns
 has_children: true
 nav_order: 5
@@ -13,7 +13,7 @@ FIXME: uncomment once this exists
 </div>
 {% endcomment %}
 
-# Secure Supply Chain (aka Multicluster DevSecOps)
+# Multicluster DevSecOps
 
 {: .no_toc }
 
@@ -30,7 +30,7 @@ FIXME: uncomment once this exists
 
 ## Background
 
-With this Pattern, we demonstrate a horizontal solution for multi-cluster DevSecOps use cases.
+With this Pattern, we demonstrate a horizontal solution for multicluster DevSecOps use cases.
 
 It is derived from the multi-cloud GitOps pattern with added products to provide a complete DevSecOps workflow. This includes CI/CD pipelines with security gates; image scanning, signing and storage in a secure registry; deployment to secured clusters that provide advanced security monitoring and alerting.
 
@@ -69,7 +69,7 @@ Policy based deployment also specifies which admission controllers should be dep
 
 ## Demo Scenario
 
-The Multi-Cluster DevSecOps Pattern / Demo Scenario reflects this by having 3 layers:
+The Multicluster DevSecOps Pattern / Demo Scenario reflects this by having 3 layers:
 
 - Managed/Secured edge - the edge or production a more controlled environment.
 - Devel - where AppDev, Testing etc. is happening
@@ -100,6 +100,6 @@ The following diagram shows various management functions, including products and
 
 [![Multicluster DevSecOps Architecture - management schema](/images/devsecops/schema-acm.png)](/images/devsecops/schema-acm.png)
 
-The following diagram shows various development pipeline functions, including products and components, that are deployed on central hub and development (Devel) clusters in order to maintain secure supply chain for development pipelines. Consider this the DevSecOps schema.
+The following diagram shows various development pipeline functions, including products and components, that are deployed on the central hub and development (Devel) clusters in order to provide security features and services for development pipelines. Consider this the DevSecOps schema.
 
 [![Multicluster DevSecOps Architecture - development schema](/images/devsecops/schema-devel-pipeline.png)](/images/devsecops/schema-devel-pipeline.png)
