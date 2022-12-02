@@ -4,6 +4,7 @@ abou
 acm
 acs
 activemq
+ActualWeight
 addon
 addons
 aeg
@@ -24,6 +25,7 @@ appdev
 applicati
 argocd
 argocd's
+argoproj
 arptn
 atlassian
 auditable
@@ -34,9 +36,15 @@ backend
 baldessari
 baremetal
 baremetal integrations
+bcb
 bd
 bdo
 beekhof
+bj
+bjp
+bluegreen
+BlueGreen
+BlueGreenPause
 bootstrapservers
 bpxrficyexamplekey
 brms
@@ -45,6 +53,7 @@ btn
 bucketsource
 byo
 cakephp
+CanaryPauseStep
 cdd
 cdn
 centos
@@ -53,6 +62,7 @@ cfengine
 changelog
 ckollujlir
 claudiol
+cli
 cloudinit
 cloudinitpassword
 cloudinituser
@@ -111,6 +121,7 @@ dev
 devel
 devops
 devsecops
+dhhph
 differentiator
 dns
 dockerconfigjson
@@ -147,6 +158,8 @@ facto
 fadc
 fc
 featureful
+ffb
+ffd
 fh
 fixme
 fqdn
@@ -174,6 +187,7 @@ hashicorp's
 hb
 hbv
 hc
+hdsr
 highperformance
 hipaa
 hmi
@@ -235,6 +249,7 @@ kservice
 kstreams
 kube
 kubeconfig
+kubectl
 kubernetes
 kubevirt
 kustomization
@@ -358,6 +373,9 @@ realtime
 redhat
 reencrypt
 rekey
+replicaset
+replicasets
+ReplicaSet
 repo
 repo's
 repos
@@ -373,6 +391,9 @@ rhsm
 rhsmcredential
 rickard
 roadmaps
+Rollouts
+rollout
+rollouts
 rsa
 runnable
 runtime
@@ -381,12 +402,15 @@ SBOM
 sas
 scalability
 scalable
+scaledDown
 secretstore
 sed
 seldon
 ser
 serverless
 serviceaccount
+setWeight
+SetWeight
 shopfloor
 shopflor
 SIGSTORE
@@ -465,12 +489,16 @@ virtualmachines
 vm
 vms
 vnc
+vnq
+vnw
 waterholing
 wgdbnwft
+wfnt
 whenry
 wip
 wjalrxutnfemi/k7mdeng/bpxrficyexamplekey
 wnklrcd
+wtjq
 wyr
 xlarge
 xmqtbdb
@@ -485,5 +513,6 @@ xyz
 yaml
 yml
 zefrgjryxxxxxxxxx
+zh
 zj
 zk

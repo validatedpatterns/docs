@@ -32,6 +32,7 @@ Canary is the more modern, more advanced approach to blue/green. With a canary d
 In this blog, we’re going to use OpenShift Gitops to deploy the Argo Rollouts progressive delivery controller and we’re going to walk through a blue/green deployment as well as a canary deployment.
 
 ## Preparation
+
 Let’s start by deploying the argo-rollouts pattern from the [argo-rollouts](https://github.com/hybrid-cloud-patterns/argo-rollouts). For this demo, I have deployed a 3-Node compact cluster using `m5.2xlarge` machine types in AWS. This demo will only use rollouts to deploy onto a single cluster.
 
 ```sh
@@ -48,15 +49,15 @@ ip-10-0-206-142.us-east-2.compute.internal   Ready    master,worker   13h   v1.2
 
 oc get machines -n openshift-machine-api
 NAME                               PHASE     TYPE        REGION      ZONE         AGE
-jrickard-rollouts-7d9dd-master-0   Running   m5.2xlarge   us-east-2   us-east-2a   13h
-jrickard-rollouts-7d9dd-master-1   Running   m5.2xlarge   us-east-2   us-east-2b   13h
-jrickard-rollouts-7d9dd-master-2   Running   m5.2xlarge   us-east-2   us-east-2c   13h
+argo-rollouts-7d9dd-master-0   Running   m5.2xlarge   us-east-2   us-east-2a   13h
+argo-rollouts-7d9dd-master-1   Running   m5.2xlarge   us-east-2   us-east-2b   13h
+argo-rollouts-7d9dd-master-2   Running   m5.2xlarge   us-east-2   us-east-2c   13h
 
 ```
 
 If you've never deployed OpenShift before, you could try [ROSA](https://cloud.redhat.com/learn/getting-started-red-hat-openshift-service-aws-rosa/deploy-rosa-cluster) the pay-as-you-go OpenShift managed service.
 
-Next, you'll need to create a fork of the https://github.com/hybrid-cloud-demos/argo-rollouts/ repo.
+Next, you'll need to create a fork of the [argo-rollouts](https://github.com/hybrid-cloud-patterns/argo-rollouts/) repo.
 Go there in a browser, make sure you’re logged in to GitHub, click the “Fork” button, and confirm the destination by clicking the big green "Create fork" button.
 
 Next, [install the Validated Patterns operator](https://hybrid-cloud-patterns.io/infrastructure/using-validated-pattern-operator/) from Operator Hub.
@@ -80,6 +81,7 @@ Switch over to your cli and type: git clone <paste_the_url_just_copied> ; next, 
 Optionally, the argo project provides a plugin for the kubectl which can be used to manage rollouts in our cluster. This is totally optional and not required, however it does make it easy to track progress of the rollout. To install follow the [official install procedures](https://argoproj.github.io/argo-rollouts/installation/#kubectl-plugin-installation).
 
 ## Argo Rollouts
+
 In your copy of the repository, we can find the manifests that make up argo rollouts in `charts/all/argo-rollouts/templates`. Now we *COULD* use `oc/kubectl create -f` but that defeats the purpose of gitops! So we're going to use `openshift-gitops` and the validated pattern framework to deploy the argo rollouts controller for us.
 
 If you are interested in understanding what each of the manifests are for, I encourage you to visit the [argo rollouts architecture page](https://argoproj.github.io/argo-rollouts/architecture/) which details each resource.
@@ -87,6 +89,7 @@ If you are interested in understanding what each of the manifests are for, I enc
 Let's review how the framework is deploying argo-rollouts for us. Take a look at `values-hub.yaml` to see how argo rollouts is declared:
 
 First, we tell argocd to create the `argo-rollouts` namespace
+
 ```yaml
   namespaces:
   - open-cluster-management
@@ -96,6 +99,7 @@ First, we tell argocd to create the `argo-rollouts` namespace
 ```
 
 Next, we define a project, a project is an argocd resource that groups application resources together
+
 ```yaml
   projects:
   - hub
@@ -103,9 +107,10 @@ Next, we define a project, a project is an argocd resource that groups applicati
 ```
 
 Finally, we add a map for `argo-rollouts` where we define our application
+
 ```yaml
   applications:
-  <...ommited...>
+  <...omitted...>
     argo-rollouts:
       name: argo-rollouts
       namespace: argo-rollouts
@@ -113,7 +118,7 @@ Finally, we add a map for `argo-rollouts` where we define our application
       path: charts/all/argo-rollouts
 ```
 
-To watch the deployment in action, log in to your cluster console, and then select the “squared” dropdown box and select “Hub ArgoCD”. After accepting the security warnings for self-signed certificates, in the ArgoCD login screen click “Login with OpenShift”, when prompted select “Allow user permissions”.
+To watch the deployment in action, log in to your cluster console, and then select the “squared” drop down box and select “Hub ArgoCD”. After accepting the security warnings for self-signed certificates, in the ArgoCD login screen click “Login with OpenShift”, when prompted select “Allow user permissions”.
 
 You are now in the ArgoCD console and can see the applications deployed (or being deployed). If you don’t see the rollouts application right away don’t fret, by default, ArgoCD’s reconciliation loop runs every 3 minutes.
 
@@ -123,8 +128,8 @@ After a few, you should see the following in your ArgoCD console.
 
 With Argo Rollouts deployed, we can start using progressive delivery! Let’s start with blue/green!
 
-
 ## Blue/Green
+
 When you use a blue/green deployment strategy you will have two instances of the application running simultaneously. The “blue” or production instance will continue to receive connections and run without change, the “green” or updated application will start and be available using a different service. You can create a route (or ingress) if you’d like, and then when satisfied promote the “green” application to production.
 
 Once promoted the rollout will update the "blue" replicaset which will then scale the "blue" version of the pods down to zero. After the rollout promotion is completed we can check the rollout status using the argo rollouts plugin.
@@ -151,7 +156,7 @@ Let's add the bluegreen application to our pattern. The first thing we need to d
 ```yaml
 
   applications:
-    <... ommited ...>
+    <... omitted ...>
     bluegreen:
       name: bluegreen
       namespace: bluegreen
@@ -200,7 +205,8 @@ git commit -m "triggering rollout with image update"
 git push -u origin main
 
 ```
-Once argocd recognizes the update, the rollout controller will create a replicaset for the `green` applicaiton and will start the desired number of pods. The green application is using its own service and that service is exposed via a route. Once the replicaset has created the pods, the rollout will `pause` waiting for an action to either promote or abort the rollout.
+
+Once argocd recognizes the update, the rollout controller will create a replicaset for the `green` application and will start the desired number of pods. The green application is using its own service and that service is exposed via a route. Once the replicaset has created the pods, the rollout will `pause` waiting for an action to either promote or abort the rollout.
 
 We have two ways of viewing the rollout. The first is through UI in the argocd interface, and the other is using the argocd rollouts plugin. The UI doesn't provide as much detail as the plugin, so I'll show you what both look like for reference.
 
@@ -319,6 +325,7 @@ NAME                                  KIND        STATUS        AGE  INFO
 That's it for the blue-green deployment! Now let's take a look at a canary deployment.
 
 ## Canary Rollout
+
 Canary deployments give us a lot of control on how our application is deployed. We can define what percentage of ingress traffic gets the canary or updated application and for how long. Rollouts can use metrics to determine the health of a rollout and make a decision to continue or abort the rollout based on those metrics.
 
 This gives us insight into the health of our application as it is deployed, it gives insights into whether features are being used, and if they're working correctly. It really does open up all kinds of opportunities to learn a lot more about our applications and how they're used! Canary deployments are powerful and add flexibility to our application deployments. Either through a full application deployment or just testing a feature.
@@ -347,7 +354,7 @@ The canary demo is located in `charts/all/canary-demo` and similar to how we dep
 ```yaml
 
   applications:
-    <... ommited ...>
+    <... omitted ...>
     bluegreen:
       name: canary-demo
       namespace: canary-demo
@@ -472,4 +479,3 @@ Let's take a look at what it looks like using the argo rollouts plugin
 ## Conclusion
 
 Argo Rollouts makes progressive delivery of our applications super easy. Whether you want to deploy using blue-green or the more advanced canary rollout is up to you. The canary rollout is very powerful and as we saw gives us the ultimate control, with insights and flexibility to deploy applications. There is so much more that argo rollouts can do - this demo barely scratches the surface! Keep an eye out for argo rollouts as part of openshift-gitops in '23.
-
