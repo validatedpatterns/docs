@@ -54,7 +54,7 @@ secrets:
 secrets:
   # NEVER COMMIT THESE VALUES TO GIT
   config-demo:
-    # Secret used for demonstrating vault storage, external secrets, and ACM distributionsecure
+    # Secret used for demonstrating vault storage, external secrets, and ACM distribution secure
     secret: PLAINTEXT
 ```
 
