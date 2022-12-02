@@ -18,13 +18,13 @@ tags:
 
 # Multicluster DevSecOps
 
-## Secure Supply Chain: The Why and What
+## Software supply chain security: The why and what
 
 Today more and more organizations are turning to agile development models and DevOps. With this approach, development organizations can deliver more enhancements and bug fixes in a timely manner, providing more value to their customers. While DevOps can include security earlier in the software lifecycle, in practice this has not always been the case. DevSecOps explicitly calls on organizations to pay attention to security best practices and to automate them or “Shift Left” as much as possible.
 
 DevSecOps means baking in  application and infrastructure security from the start. In order to be successful, organizations must look both upstream where their dependencies come from, and also how their components integrate together in the production environment. It also means automating security gates to keep the DevOps workflow from slowing down. As we learn from experience, we codify that into the automation process.
 
-A successful DevSecOps based Secure Supply Chain must consider four areas of concern:
+A successful DevSecOps based supply chain must consider four areas of concern:
 
 1. Secure developer dependencies
 1. Secure code development
@@ -63,7 +63,7 @@ The heavy lifting in the pattern includes a great deal of integration between co
 * Deployment of Quay Enterprise  with OpenShift Data Foundations as a storage backend
 * Deployment of Quay Bridge operator configured to connect with Quay Enterprise on hub cluster
 * Deployment of ACS on managed nodes with integration back to ACS central on the hub
-* Deployment of a secure supply chain pipeline with scanning and signing tools, including ACS
+* Deployment of a secure pipeline with scanning and signing tools, including ACS
 
 ## Highlight: DevSecOps with Pipelines
 
@@ -73,7 +73,7 @@ The heavy lifting in the pattern includes a great deal of integration between co
 
 While these pipelines are included in the pattern, the pattern also implements  the use of [Pipelines-as-Code](https://cloud.redhat.com/blog/create-developer-joy-with-new-pipelines-as-code-feature-on-openshift) feature where the pipeline can be part of the application code repository. *"This allows developers to ship their CI/CD pipelines within the same git repository as their application, making it easier to keep both of them in sync in terms of release updates."*
 
-## Highlight: Using the CI Pipeline to secure the supply chain
+## Highlight: Using the CI Pipeline to provide supply chain security
 
 This pattern includes some other technologies in the development CI pipeline, including cosign, a SIGSTORE project, implemented with [Tekton Chains](https://next.redhat.com/project/tekton-chains/). [Cosign](https://docs.sigstore.dev/cosign/overview/) supports container signing, verification, and storage in an OCI registry. It enables consumers to sign their pipeline resources and images and share the attestation files providing downstream consumers assurances that they are consuming a trusted artifact.
 
@@ -83,6 +83,6 @@ Not using these tools in your environment? That’s not a problem. The pattern f
 
 ## Where do we go from here?
 
-This pattern provides a complete deployment solution for Multicluster DevSecOps that can be used as part of a secure supply chain deployment pattern across different industries.
+This pattern provides a complete deployment solution for Multicluster DevSecOps that can be used as part of a supply chain deployment pattern across different industries.
 
 Documentation for how to install the pattern is [here](/devsecops/), where there are detailed installation instructions and more technical details on the different components in the pattern.
