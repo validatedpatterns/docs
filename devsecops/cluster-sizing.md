@@ -2,10 +2,10 @@
 layout: default
 title: Cluster Sizing
 grand_parent: Patterns
-parent: Secure Supply Chain
+parent: Multicluster DevSecOps
 nav_order: 5
 ---
-# OpenShift Cluster Sizing for the Secure Supply Chain (Multicluster DevSecOps) Pattern
+# OpenShift Cluster Sizing for the Multicluster DevSecOps Pattern
 
 ## Table of contents
 
@@ -16,7 +16,7 @@ nav_order: 5
 
 ### Tested Platforms
 
-The **Secure Supply Chain** pattern has been tested in the following Certified Cloud Providers. Due to changes
+The **Multicluster DevSecOps** pattern has been tested in the following Certified Cloud Providers. Due to changes
 in Advanced Cluster Management 2.5, this pattern does **not work**, "out-of-the-box", with earlier versions of OCP than 4.10.
 While it's possible that it could work with some changes, we do not recommend using a version less than 4.10.
 
@@ -26,7 +26,7 @@ While it's possible that it could work with some changes, we do not recommend us
 | Google Compute | Untested | Untested |
 | Microsoft Azure | Untested | Untested |
 
-### **Secure Supply Chain / Multicluster-DevSecOps** Pattern Components
+### **Multicluster DevSecOps** Pattern Components
 
 Here's an inventory of what gets deployed by default the **Secure Supply Chain** pattern on the Hub OpenShift cluster:
 
@@ -41,7 +41,7 @@ Here's an inventory of what gets deployed by default the **Secure Supply Chain**
 
 The hub can be modified to deploy OpenShift Pipelines if needed. See Development cluster pattern components.
 
-### Secure Supply Chain Pattern OpenShift Datacenter HUB Cluster Size
+### Multicluster DevSecOps Pattern OpenShift Datacenter HUB Cluster Size
 
 The Secure Supply Chain pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
 
@@ -52,11 +52,11 @@ The Hub OpenShift Cluster is made up of the the following on the AWS deployment 
 | Control Plane | 3 | Amazon Web Services | m5.xlarge
 | Worker | 3 | Amazon Web Services | m5.4xlarge
 
-The Hub OpenShift cluster needs to be a larger than the managed clusters for this demo because it deploys critical pattern infrastructure components like Red Hat Quay which requires Red Hat Open Data Foundation (ODF).  The above cluster sizing is close to a **minimum** size for a Hub cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Secure Supply Chain** pattern is running.  Keep in mind that resources will have to be added as more images and image versions are added to the Quay registry.
+The Hub OpenShift cluster needs to be a larger than the managed clusters for this demo because it deploys critical pattern infrastructure components like Red Hat Quay which requires Red Hat Open Data Foundation (ODF).  The above cluster sizing is close to a **minimum** size for a Hub cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Multicluster DevSecOps** pattern is running.  Keep in mind that resources will have to be added as more images and image versions are added to the Quay registry.
 
 #### Hub Cluster utilization
 
-Below is a snapshot of the OpenShift cluster utilization while running the **Secure Supply Chain** pattern:
+Below is a snapshot of the OpenShift cluster utilization while running the **Multicluster DevSecOps** pattern:
 
 TBD
 
@@ -84,9 +84,9 @@ The OpenShift cluster is a standard deployment of 3 control plane nodes and 3 or
 | Control Plane/Worker | 6 | Amazon Cloud Services | m5.2xlarge
 | Control Plane/Worker | 6 | Microsoft Azure | Standard_D8s_v3
 
-### Secure Supply Chain Pattern OpenShift Production (prod) Cluster Size
+### Multicluster DevSecOps Pattern OpenShift Production (prod) Cluster Size
 
-Here's an inventory of what gets deployed by default the **Secure Supply Chain** pattern on the Production (prod) OpenShift cluster:
+Here's an inventory of what gets deployed by default the **Multicluster DevSecOps** pattern on the Production (prod) OpenShift cluster:
 
 | Name | Kind | Namespace | Description
 | :---- | :---- | :---- | :----
@@ -107,28 +107,28 @@ The OpenShift cluster is a standard datacenter deployment of 3 control plane nod
 
 **GCP**
 
-This is a snapshot of a Google Cloud managed data center cluster running the production **Secure Supply Chain** pattern.
+This is a snapshot of a Google Cloud managed data center cluster running the production **Multicluster DevSecOps** pattern.
 
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
 
 **AWS**
 
-This is a snapshot of a Amazon Web Services managed data center cluster running the production **Secure Supply Chain** pattern.
+This is a snapshot of a Amazon Web Services managed data center cluster running the production **Multicluster DevSecOps** pattern.
 
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
 
 **Azure**
 
-This is a snapshot of an Azure managed data center cluster running the production **Secure Supply Chain** pattern.
+This is a snapshot of an Azure managed data center cluster running the production **Multicluster DevSecOps** pattern.
 
 | CPU | Memory |  File System |  Network | Pod Count
 | :----: | :-----: | :----: | :----: | :----:
 
 ### AWS Instance Types
 
-The **Secure Supply Chain** pattern was tested with the highlighted AWS instances in **bold**.   The OpenShift installer will let you know if the instance type meets the minimum requirements for a cluster.
+The **Multicluster DevSecOps** pattern was tested with the highlighted AWS instances in **bold**.   The OpenShift installer will let you know if the instance type meets the minimum requirements for a cluster.
 
 The message that the openshift installer will give you will be similar to this message
 
@@ -137,7 +137,7 @@ INFO Credentials loaded from default AWS environment variables
 FATAL failed to fetch Metadata: failed to load asset "Install Config": [controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 4 vCPUs, controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 16384 MiB Memory]
 ```
 
-Below you can find a list of the AWS instance types that can be used to deploy the **Secure Supply Chain** pattern.
+Below you can find a list of the AWS instance types that can be used to deploy the **Multicluster DevSecOps** pattern.
 
 | Instance type | Default vCPUs | Memory (GiB) | Datacenter | Factory/Edge
 | :------: | :-----: | :-----: | :----: | :----:
@@ -155,13 +155,13 @@ Below you can find a list of the AWS instance types that can be used to deploy t
 | m5.16xlarge | 64 | 256 | Y | Y
 | m5.24xlarge | 96 | 384 | Y | Y
 
-The OpenShift cluster is made of 4 Control Plane nodes and 3 Workers for the Datacenter and the Edge/managed data center cluster are made of 3 Control Plane and 3 Worker nodes.  For the node sizes we used the **m5.xlarge** on AWS and this instance type met the minimum requirements to deploy the **Secure Supply Chain** pattern successfully on the Datacenter hub.  On the managed data center cluster we used the **m5.xlarge** since the minimum cluster was comprised of 3 nodes.  .
+The OpenShift cluster is made of 4 Control Plane nodes and 3 Workers for the Datacenter and the Edge/managed data center cluster are made of 3 Control Plane and 3 Worker nodes.  For the node sizes we used the **m5.xlarge** on AWS and this instance type met the minimum requirements to deploy the **Multicluster DevSecOps** pattern successfully on the Datacenter hub.  On the managed data center cluster we used the **m5.xlarge** since the minimum cluster was comprised of 3 nodes.  .
 
 To understand better what types of nodes you can use on other Cloud Providers we provide some of the details below.
 
 ### Azure Instance Types
 
-The **Secure Supply Chain** pattern was also deployed on Azure using the **Standard_D8s_v3** VM size.  Below is a table of different VM sizes available for Azure.  Keep in mind that due to limited access to Azure we only used the **Standard_D8s_v3** VM size.
+The **Multicluster DevSecOps** pattern was also deployed on Azure using the **Standard_D8s_v3** VM size.  Below is a table of different VM sizes available for Azure.  Keep in mind that due to limited access to Azure we only used the **Standard_D8s_v3** VM size.
 
 The OpenShift cluster is made of 3 Control Plane nodes and 3 Workers for the Datacenter cluster.
 
@@ -180,7 +180,7 @@ For more information please refer to the [Azure VM Size Page](https://docs.micro
 
 ### Google Cloud (GCP) Instance Types
 
-The **Secure Supply Chain** pattern was also deployed on GCP using the **n1-standard-8** VM size.  Below is a table of different VM sizes available for GCP.  Keep in mind that due to limited access to GCP we only used the **n1-standard-8** VM size.
+The **Multicluster DevSecOps** pattern was also deployed on GCP using the **n1-standard-8** VM size.  Below is a table of different VM sizes available for GCP.  Keep in mind that due to limited access to GCP we only used the **n1-standard-8** VM size.
 
 The OpenShift cluster is made of 3 Control Plane and 3 Workers for the Datacenter cluster.
 
