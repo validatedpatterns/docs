@@ -113,6 +113,7 @@ As part of this pattern, HashiCorp Vault has been installed. Refer to the sectio
 
 <!--The Next steps heading is not inline with the chapter and only points to contibution links for help and feedback or bugs -->
 # Next steps
+
 ## Deploying the managed cluster applications
 
 After the management hub is set up and works correctly, attach one or more managed clusters to the architecture (see diagrams below).
