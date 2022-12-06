@@ -6,11 +6,11 @@ parent: Multicloud GitOps
 nav_order: 4
 ---
 
-# Imperative Actions on the cluster
+# Imperative actions on the cluster
 
 {: .no_toc }
 
-## Table of Contents
+## Table of contents
 
 {: .no_toc .text-delta }
 
@@ -32,8 +32,8 @@ As a word of caution - the authors of the ansible playbooks and roles must ensur
     # The default schedule is every 10 minutes: imperative.schedule
     # Total timeout of all jobs is 1h: imperative.activeDeadlineSeconds
     # imagePullPolicy is set to always: imperative.imagePullPolicy
-    # For additional overrides that apply to the jobs, please refer to the README located in 
-    # the top level of this repository. 
+    # For additional overrides that apply to the jobs, please refer to the README located in
+    # the top level of this repository.
     jobs:
     - name: regional-ca
       # ansible playbook to be run
@@ -43,7 +43,7 @@ As a word of caution - the authors of the ansible playbooks and roles must ensur
       # verbosity: "-v"
 ```
 
-## Additional Job Customizations
+## Additional job customizations
 
 Overrides have been implemented to allow for further customization, please refer to the list below for the available overrides.
 

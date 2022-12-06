@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Managed Cluster Sites
+title: Managed cluster sites
 grand_parent: Patterns
 parent: Multicloud GitOps
 nav_order: 2
 ---
 
-# Having a managed cluster (edge) join the management hub
+# Attach a managed cluster (edge) to the management hub
 
 {: .no_toc }
 
@@ -17,9 +17,11 @@ nav_order: 2
 1. TOC
 {:toc}
 
-## Allow ACM to deploy the managed cluster application to a subset of clusters
+## Understanding Red Hat Advanced Cluster Management requirements
 
-By default the `clusterGroup` applications are deployed on all clusters that ACM knows about. In your `value-hub.yaml` file add a `managedClusterCgroup` for each cluster or group of clusters that you want to manage as one.
+Allow Red Hat Advanced Cluster Management (RHACM) to deploy the managed cluster application to a subset of clusters.
+
+By default the `clusterGroup` applications are deployed on all clusters that RHACM manages. In the  `value-hub.yaml`, file add a `managedClusterCgroup` for each cluster or group of clusters that you want to manage as one.
 
 ```yaml
   managedClusterGroups:
@@ -32,8 +34,8 @@ By default the `clusterGroup` applications are deployed on all clusters that ACM
         clusterGroup: region-one
 ```
 
-The above yaml segment will deploy the `clusterGroup` applications on managed clusters with the label
-`clusterGroup=region-one`.  Specific subscriptions and Operators, applications and projects for that `clusterGroup` are then managed in a `value-region-one.yaml` file. E.g.
+The above YAML file segment deploys the `clusterGroup` applications on managed clusters with the label
+`clusterGroup=region-one`. Specific subscriptions and Operators, applications and projects for that `clusterGroup` are then managed in a `value-region-one.yaml` file. For example:
 
 ```yaml
   namespaces:
@@ -61,43 +63,45 @@ The above yaml segment will deploy the `clusterGroup` applications on managed cl
 
 ```
 
-Remember to commit the changes and push to GitHub so that GitOps can see
-your changes and apply them.
+**Important:**
+Ensure that you commit the changes and push them to GitHub so that GitOps can fetch your changes and apply them.
 
-## Deploy a managed cluster
+## Deploying a managed cluster
 
-Rather than provide instructions on creating a managed cluster it is assumed
-that an OpenShift cluster has already been created. Use the `openshift-install` program provided at [cloud.redhat.com](https://console.redhat.com/openshift/create "Create an OpenShift cluster")
+### Prerequisites
 
-There are a three ways to join the managed cluster to the management hub.
+* An OpenShift cluster
+  * To create an OpenShift cluster, go to the [Red Hat Hybrid Cloud console](https://console.redhat.com/).
+  * Select **OpenShift -> Clusters -> Create cluster**.
 
-* Using the ACM user interface
-* Using the `cm` tool
-* Using the `clusteradm` tool
+To join the managed cluster to the management hub, you can:
 
-## Managed cluster setup using the ACM UI
+* Use the Red Hat Advanced Cluster Management (RHACM) web console
+* Use the `cm` tool
+* Use the `clusteradm` tool
 
-After ACM is installed a message regarding a "Web console update is available" may be displayed.
-Click on the "Refresh web console" link.
+## Using Red Hat Advanced Cluster Management web console to set up managed cluster
+
+After RHACM is installed, a message regarding a "Web console update is available" might be displayed.
+Click the "Refresh web console" link.
 
 ![update-web-console](/images/web-console-update-message.png "Update web console")
 
-On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down.
-This will navigate to the ACM console and to its "Clusters" section
+1. In the left navigation panel of web console, click  **local-cluster**. Select **All Clusters**. The RHACM web console is displayed with **Cluster*** on the left navigation panel.
 
 ![launch-acm-console](/images/local-all-cluster-pulldown.png "Launch ACM console")
 
-Select the "Import cluster" option beside the highlighted Create Cluster button.
+2. On the **Managed clusters** tab, click **Import cluster**.
 
 ![import-cluster](/images/import-cluster.png "Select Import cluster")
 
-On the "Import an existing cluster" page, enter the cluster name and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=region-one`. Press import. Done.
+3. On the **Import an existing cluster** page, enter the cluster name and choose **Kubeconfig** as the "import mode". Add the tag `clusterGroup=region-one`. Click **Import**.
 
 ![import-with-kubeconfig](/images/import-with-kubeconfig.png "Import using kubeconfig")
 
-Using this method, you are done. Skip to the section [Managed cluster is joined](#managed-cluster-is-joined) but ignore the part about adding the site tag.
+You can now skip to the section [Managed cluster is joined](#managed-cluster-is-joined) but ignore the part about adding the site tag.
 
-## Managed cluster setup using `cm` tool
+## Using the `cm` tool to set up a managed cluster
 
 1. Install the `cm` (cluster management) command-line tool. See details [here](https://github.com/open-cluster-management/cm-cli/#installation)
 
@@ -107,13 +111,13 @@ Using this method, you are done. Skip to the section [Managed cluster is joined]
 
 1. Run the following command:
 
-```sh
-cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-KUBECONFIG>
-```
+   ```sh
+   cm attach cluster --cluster <cluster-name>  --cluster-kubeconfig <path-to-KUBECONFIG>
+   ```
 
 Skip to the section [Managed cluster is joined](#managed-cluster-is-joined)
 
-## Managed cluster setup using `clusteradm` tool
+## Using the `clusteradm` tool to set up a managed cluster
 
 You can also use `clusteradm` to join a cluster. The following instructions explain what needs to be done. `clusteradm` is still in testing.
 
@@ -155,6 +159,6 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
 
    `oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster`
 
-### You're done
+### Verification
 
-That's it! Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it's finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
+Go to your managed cluster (edge) OpenShift console and check for the `open-cluster-management-agent` pod being launched. Be patient, it will take a while for the RHACM agent and `agent-addons` to launch. After that, the OpenShift GitOps Operator is installed. On successful installation, launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.

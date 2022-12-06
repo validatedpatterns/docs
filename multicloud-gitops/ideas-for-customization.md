@@ -6,7 +6,7 @@ parent: Multicloud GitOps
 nav_order: 6
 ---
 
-# Ideas for Customization
+# Ideas for customization
 
 {: .no_toc }
 
@@ -35,7 +35,6 @@ Another idea, after splitting the charts, could be to implement a small Rest API
 
 In the end the possibilities to tweak this pattern are endless. Do let us know if you have an awesome idea that you'd like to add
 
-# Next Steps
-
+>Contribute to this pattern:
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
