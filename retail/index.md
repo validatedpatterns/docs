@@ -30,7 +30,7 @@ nav_order: 6
 This pattern demonstrates a pattern that models the store side of a retail application.
 
 It is derived from the [Quarkus Coffeeshop Demo](https://quarkuscofeeshop.github.io) done by Red
-Hat Solution Architects. The demo models the use of multiple application microservices which use Kafka messaging to interact and a Postgres database to persist data. (There is a homeoffice analytics suite in the demo that we hope to include in a later verson of the pattern.
+Hat Solution Architects. The demo models the use of multiple application microservices which use Kafka messaging to interact and a Postgres database to persist data. (There is a homeoffice analytics suite in the demo that we hope to include in a later version of the pattern.
 
 This demo pulls together several different strands of the demo and allows for multiple stores to be installed on remote clusters via ACM if the user desires.
 
