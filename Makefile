@@ -44,6 +44,7 @@ htmlproof:
 		$(JEKYLL_CONTAINER) exec ruby /usr/local/bin/proof-html.rb
 
 lintwordlist:
+	@cp --preserve=all .wordlist.txt /tmp/.wordlist.txt
 	@sort .wordlist.txt | tr '[:upper:]' '[:lower:]' | uniq > /tmp/.wordlist.txt
 	@mv -v /tmp/.wordlist.txt .wordlist.txt
 
