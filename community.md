@@ -35,16 +35,3 @@ A pattern for Kong Gateway Control Plane and Data Plane demo
 A distributed cloud-native application that implements key aspects of a modern IoT architecture.
 
 [Repo](https://github.com/hybrid-cloud-patterns/connected-vehicle-architecture)
-
-### Quarkus Coffee Shop
-
-A pattern for deploying the well regarded [Coffeeshop demo](https://quarkuscoffeeshop.github.io), consisting of 7 microservices, that can be used to showcase:
-
-* Event Driven Architecture
-* Event Streaming
-* Domain Driven Design and Event Storming
-* Change Data Capture
-* Quarkus
-* Kafka (or AMQ Streams in Red Hat terminology)
-
-[Repo](https://github.com/mhjacks/quarkus-coffeeshop-pattern)

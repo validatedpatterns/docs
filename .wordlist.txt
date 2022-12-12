@@ -451,6 +451,7 @@ tbd
 tcp
 tekron
 tekton
+tektoncd
 templ
 templa
 templating
