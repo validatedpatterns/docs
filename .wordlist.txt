@@ -88,6 +88,8 @@ cronjobs
 csv
 ctdim
 ctrl
+customerloyalty
+customermocker
 customizable
 customizations
 cves
@@ -191,6 +193,7 @@ highperformance
 hipaa
 hmi
 hoc
+homeoffice
 hostname
 howto
 httpd
@@ -231,6 +234,7 @@ json
 jsonpointers
 jupyter
 jws
+kafdrop
 kafkasource
 kafkatopics
 kam
@@ -348,6 +352,7 @@ png
 podman
 podspercore
 posix
+postgres
 powershell
 pre
 prem
@@ -364,6 +369,7 @@ publickey
 pv
 qe
 quarkus
+quarkuscoffeeshop
 quickstart
 rabbitmq
 rdma
