@@ -88,6 +88,8 @@ cronjobs
 csv
 ctdim
 ctrl
+customerloyalty
+customermocker
 customizable
 customizations
 cves
@@ -232,6 +234,7 @@ json
 jsonpointers
 jupyter
 jws
+kafdrop
 kafkasource
 kafkatopics
 kam
@@ -366,6 +369,7 @@ publickey
 pv
 qe
 quarkus
+quarkuscoffeeshop
 quickstart
 rabbitmq
 rdma

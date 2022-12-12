@@ -34,7 +34,7 @@ nav_order: 1
     - quarkuscoffeeshop-majestic-monolith
     - quarkuscoffeeshop-web
 
-   These repos comprise the microservices that are in the demo. The public repos (quay.io/hybrid-cloud-patterns/*) contain pre-built images which will be downloaded and used by default; so the demo will run regardless of whether you choose to rebuild the apps or not. This mechanism is provided for transparency purposes (so you can repoduce the same results); or if you want to customize or change the apps themselves in some way.
+   These repos comprise the microservices that are in the demo. The public repos (quay.io/hybrid-cloud-patterns/*) contain pre-built images which will be downloaded and used by default; so the demo will run regardless of whether you choose to rebuild the apps or not. This mechanism is provided for transparency purposes (so you can reproduce the same results); or if you want to customize or change the apps themselves in some way.
 
 The use of this pattern depends on having at least one running Red Hat
 OpenShift cluster. All of the apps will run on a single cluster; optionally you can use RHACM to apply the store apps to a second cluster.
