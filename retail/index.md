@@ -64,11 +64,16 @@ The following diagram shows the relationship between the microservices, messagin
 
 ### Demo Scenario
 
-The Industrial Edge Validated Pattern / Demo Scenario is focused in the Quarkus retail experience. In a full retail
-environment, it would be easy to be overwhelmed by things like item files, tax tables, item movement/placement within the store and so on.
+The Retail Validated Pattern / Demo Scenario is focused in the Quarkus Coffeeshop retail experience. In a full retail
+environment, it would be easy to be overwhelmed by things like item files, tax tables, item movement/placement within the store and so on, so the demo does not attempt to model all those elements - instead offering a subset of services to give a sense of how data can flow in such a system, how microservices should interact (via API calls and message passing), and where data can be persisted.
+
+In the future we hope to expand this pattern with the homeoffice components, to further demonstrate how data can flow from leaf nodes to centralized data analytics services, which are crucial in retail IT environments.
 
 - Web Service - the point of sale within the store. Shows the menu, and allows the user to order food and drinks, and shows when orders are ready.
 - Counter service - the "heart" of the store operation - receives orders and dispatches them to the barista and kitchen services, as appropriate. Users may order as many food and drink items in one order as they wish.
 - Barista - the service responsible for providing items from the "drinks" side of the menu.
 - Kitchen - the service responsible for providing items from the "food" side of the menu.
+
+Further documentation on the individual services is available at the upstream [Quarkus Coffeeshop](https://quarkuscoffeeshop.github.io/) documentation site.
+
 [![Demo Scenario](/images/retail/retail-highlevel.png)](/images/retail/retail-highlevel.png)

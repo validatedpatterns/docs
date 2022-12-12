@@ -6,7 +6,7 @@ parent: Retail
 nav_order: 1
 ---
 
-# Deploying the Industrial Edge Pattern
+# Deploying the Retail Pattern
 
 {: .no_toc }
 
@@ -17,23 +17,27 @@ nav_order: 1
 1. TOC
 {:toc}
 
-# Prerequisites
+## Prerequisites
 
-1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../industrial-edge/cluster-sizing).
-1. (Optional) A second OpenShift cluster for edge/factory
-1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
-1. A quay account with the following repositories set as public:
+1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../retail/cluster-sizing).
+1. (Optional) A second OpenShift cluster for a second store environment, "raleigh".
+1. A GitHub account
+1. (Optional) A quay account that can update images; this is if you want to use the pipelines to customize the applications
+1. (Optional) A quay account with the following repositories set as public, and which you can write to:
 
-    - http-ionic
-    - httpd-ionic
-    - iot-anomaly-detection
-    - iot-consumer
-    - iot-frontend
-    - iot-software-sensor
+    - quarkuscoffeeshop-barista
+    - quarkuscoffeeshop-counter
+    - quarkuscoffeeshop-customerloyalty
+    - quarkuscoffeeshop-customermocker
+    - quarkuscoffeeshop-inventory
+    - quarkuscoffeeshop-kitchen
+    - quarkuscoffeeshop-majestic-monolith
+    - quarkuscoffeeshop-web
 
-The use of this blueprint depends on having at least one running Red Hat
-OpenShift cluster. It is desirable to have a cluster for deploying the data
-center assets and a separate cluster(s) for the factory assets.
+   These repos comprise the microservices that are in the demo. The public repos (quay.io/hybrid-cloud-patterns/*) contain pre-built images which will be downloaded and used by default; so the demo will run regardless of whether you choose to rebuild the apps or not. This mechanism is provided for transparency purposes (so you can repoduce the same results); or if you want to customize or change the apps themselves in some way.
+
+The use of this pattern depends on having at least one running Red Hat
+OpenShift cluster. All of the apps will run on a single cluster; optionally you can use RHACM to apply the store apps to a second cluster.
 
 If you do not have a running Red Hat OpenShift cluster you can start one on a
 public or private cloud by using [Red Hat's cloud
@@ -45,20 +49,16 @@ Install the installation tooling dependencies. You will need:
 
 {% include prerequisite-tools.md %}
 
-# How to deploy
+## How to deploy
 
-1. Clone the forked copy of the `industrial-edge` repo. Use branch `v2.1.1`.
+1. Fork the [retail](https://github.com/hybrid-cloud-patterns/retail) repository on GitHub.
 
-1. Fork the [industrial-edge](https://github.com/hybrid-cloud-patterns/industrial-edge) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
-
-1. Fork the [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) repository on GitHub.  It is necessary to fork this repository because the GitOps framework will push tags to this repository that match the versions of software that it will deploy.
-
-1. Clone the forked copy of the `industrial-edge` repository. Use branch `v2.1.1`.
+1. Clone the forked copy of the `retail` repo. Use branch `v1.0'.
 
    ```sh
-   git clone git@github.com:{your-username}/industrial-edge.git
-   cd industrial-edge
-   git checkout v2.1.1
+   git clone git@github.com:{your-username}/retail.git
+   cd retail
+   git checkout v1.0
    ```
 
 1. You could create your own branch where you specific values will be pushed to:
@@ -67,17 +67,9 @@ Install the installation tooling dependencies. You will need:
    git checkout -b my-branch
    ```
 
-1. There are a number of common  components used in validated patterns. These are kept in a common sub-directory. In order to use them we need to use the subtree feature of git.
-
-   ```sh
-   scripts/make_common_subtree.sh  
-   ```
-
 1. A `values-secret.yaml` file is used to automate setup of secrets needed for:
 
-   - A Git repository (E.g. Github, GitLab etc.)
    - A container image registry (E.g. Quay)
-   - S3 storage (E.g. AWS)
 
    DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub.
 
@@ -94,6 +86,10 @@ Install the installation tooling dependencies. You will need:
    git commit values-global.yaml
    git push origin my-branch
    ```
+
+In particular, the values that you need to change are under the `imageregistry` key, to use your own account and hostname. If you like, you can change the git settings (`account`, `email`, `hostname` to reflect your own account settings).
+
+If you plan to customize the build of the applications themselves, there `revision` and `imageTag` settings for each of them. The defaults should suffice if you just want to see the apps running.
 
 1. You can deploy the pattern using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you do use the operator then skip to Validating the Environment below.
 
@@ -112,129 +108,72 @@ Install the installation tooling dependencies. You will need:
    or
 
    ```sh
-   export KUBECONFIG=~/my-ocp-env/datacenter
+   export KUBECONFIG=~/my-ocp-env/retail-hub
    ```
 
 1. Apply the changes to your cluster
 
    ```sh
-   make install
+   ./common/scripts/pattern-util.sh make install
    ```
 
-# Validating the Environment
+This will execute `make install` in the team's container, which will take a bit to load the first time. It contains ansible and other dependencies so that you do not need to install them on your workstation.
 
-1. Check the operators have been installed
+The default `install` target will:
+
+1. Install the pattern via the operator
+1. Load the imageregistry secret into the vault
+1. Start the application build pipelines
+
+If you chose not to put in your registry credential, `make install` cannot complete successfully because it waits for the secret to be populated before starting the pipelines.
+
+If you do not want to run the (optional) components, another install target is provided:
+
+```text
+./common/scripts/pattern-util.sh make install-no-pipelines
+```
+
+This skips the vault setup and the pipeline builds, but still installs both Vault and the Pipelines operator, so if you want to run those in your installation later, you can run `make install` to enable them.
+
+For more information on secrets management see [here](/secrets). For information on Hashicorp's Vault see [here](/secrets/vault)
+
+## Validating the Environment
+
+Check the operators have been installed
 
    ```text
    UI -> Installed Operators
    ```
 
-1. Obtain the ArgoCD URLs and passwords
+[![retail-v1-operators](/images/retail/retail-v1-operators.png)](/images/retail/retail-v1-operators.png)
 
-   The URLs and login credentials for ArgoCD change depending on the pattern
-   name and the site names they control.  Follow the instructions below to find
-   them, however you choose to deploy the pattern.
+The OpenShift console menu should look like this. We will use it to validate that the pattern is working as expected:
 
-   Display the fully qualified domain names, and matching login credentials, for
-   all ArgoCD instances:
+[![retail-v1-console-menu](/images/retail/retail-v1-console-menu.png)](/images/retail/retail-v1-console-menu.png)
 
-   ```sh
-   ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
-   CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
-   eval $CMD
-   ```
+Check on the pipelines, if you chose to run them. They should all complete successfully:
 
-   The result should look something like:
+[![retail-v1-pipelines](/images/retail/retail-v1-pipelines.png)](/images/retail/retail-v1-pipelines.png)
 
-   ```text
-   NAME                       HOST/PORT                                                                                         PATH      SERVICES                   PORT    TERMINATION            WILDCARD
-   datacenter-gitops-server   datacenter-gitops-server-industrial-edge-datacenter.apps.mycluster.mydomain.com          datacenter-gitops-server   https   passthrough/Redirect   None
-   # admin.password
-   2F6kgITU3DsparWyC
+Ensure that the Hub ArgoCD instance shows all of its apps in Healthy and Synced status once all of the images have been built:
 
-   NAME                    HOST/PORT                                                                                   PATH   SERVICES                PORT    TERMINATION            WILDCARD
-   factory-gitops-server   factory-gitops-server-industrial-edge-factory.apps.mycluster.mydomain.com          factory-gitops-server   https   passthrough/Redirect   None
-   # admin.password
-   K4ctDIm3fH7ldhs8p
+[![retail-v1-argo-apps-p1](/images/retail/retail-v1-argo-apps-p1.png)](/images/retail/retail-v1-argo-apps-p1.png)
 
-   NAME                      HOST/PORT                                                                              PATH   SERVICES                  PORT    TERMINATION            WILDCARD
-   cluster                   cluster-openshift-gitops.apps.mycluster.mydomain.com                          cluster                   8080    reencrypt/Allow        None
-   kam                       kam-openshift-gitops.apps.mycluster.mydomain.com                              kam                       8443    passthrough/None       None
-   openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.mycluster.mydomain.com          openshift-gitops-server   https   passthrough/Redirect   None
-   # admin.password
-   WNklRCD8EFg2zK034
-   ```
+We will go to the Landing Page, which will present the applications in the pattern:
 
-   The most important ArgoCD instance to examine at this point is `data-center-gitops-server`. This is where all the applications for the datacenter, including the test environment, can be tracked.
+[![retail-v1-landing-page](/images/retail/retail-v1-landing-page.png)](/images/retail/retail-v1-landing-page.png)
 
-1. Apply the secrets from the `values-secret.yaml` to the secrets management Vault. This can be done through Vault's UI - manually without the file. The required secrets and scopes are:
+Clicking on the Store Web Page will place us in the Quarkus Coffeeshop Demo:
 
-   - **secret/hub/git** git *username* & *password* (GitHub token)
-   - **secret/hub/imageregistry** Quay or DockerHub *username* & *password*
-   - **secret/hub/aws** - base64 encoded value (see below)
+[![retail-v1-store-page](/images/retail/retail-v1-store-page.png)](/images/retail/retail-v1-store-page.png)
 
-   For AWS S3 secret, create a file, say, s3-secrets, with two lines:
+Clicking on the TEST Store Web Page will place us in a separate copy of the same demo.
 
-   ```text
-   s3.accessKey: <accessKey>
-   s3.secretKey: <secret key>
-   ```
+Clicking on the respective Kafdrop links will go to a Kafdrop instance that allows inspection of each of the respective environments.
 
-   Then encode this with base64 using
-
-   ```sh
-   cat s3-secrets | base64 -w 0
-   ```
-
-   Or you can set up the secrets using the command-line by running the following (Ansible) playbook.
-
-   ```sh
-   scripts/setup-secrets.yaml
-   ```
-
-   Using the Vault UI check that the secrets have been setup.
-
-   For more information on secrets management see [here](/secrets). For information on Hashicorp's Vault see [here](/secrets/vault)
-
-1. Check all applications are synchronised
+[![retail-v1-kafdrop](/images/retail/retail-v1-kafdrop.png)](/images/retail/retail-v1-kafdrop.png)
 
 ## Next Steps
 
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/industrial-edge/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
-
-Once the data center has been setup correctly and confirmed to be working, you can:
-
-1. Add a dedicated cluster to [deploy the factory pieces using ACM](/industrial-edge/factory)
-2. Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](../application/)
-
-   a. Making [configuration changes](https://hybrid-cloud-patterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
-   a. Making [application changes](https://hybrid-cloud-patterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
-   a. Making [AI/ML model changes](https://hybrid-cloud-patterns.io/industrial-edge/application/#application-ai-model-changes-with-devops) with DevOps
-
-# Uninstalling
-
-**Probably wont work**
-
-1. Turn off auto-sync
-
-   `helm upgrade manuela . --values ~/values-secret.yaml --set global.options.syncPolicy=Manual`
-
-1. Remove the ArgoCD applications (except for manuela-datacenter)
-
-   a. Browse to ArgoCD
-   a. Go to Applications
-   a. Click delete
-   a. Type the application name to confirm
-   a. Chose "Foreground" as the propagation policy
-   a. Repeat
-
-1. Wait until the deletions succeed
-
-   `manuela-datacenter` should be the only remaining application
-
-1. Complete the uninstall
-
-   `helm delete manuela`
-
-1. Check all namespaces and operators have been removed
+[Report Bugs](https://github.com/hybrid-cloud-patterns/retail/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
