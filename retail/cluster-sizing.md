@@ -19,11 +19,11 @@ nav_order: 5
 The **retail** pattern has been tested in the following Certified Cloud Providers.
 
 {% comment %}supportmatrix-qe-start{% endcomment %}
-| **Certified Cloud Providers** | 4.8 | 4.9 | 4.10 |
-| :---- | :---- | :---- | :---- |
-| Amazon Web Services|     |    |:heavy_check_mark: |
-| Microsoft Azure| :heavy_check_mark: |    |    |
-| Google Cloud Platform|     |:heavy_check_mark: |    |
+| **Certified Cloud Providers** | 4.10 |
+| :---- | :---- |
+| Amazon Web Services|   :heavy_check_mark: |
+| Microsoft Azure| |
+| Google Cloud Platform| |
 {% comment %}supportmatrix-qe-end{% endcomment %}
 
 ## General OpenShift Minimum Requirements
@@ -37,29 +37,7 @@ OpenShift 4 has the following minimum requirements for sizing of nodes:
 
 There are several applications that comprise the **retail** pattern.  In addition, the **retail** pattern also includes a number of supporting operators that are installed by **OpenShift GitOps** using ArgoCD.
 
-### **Retail** Pattern Components
-
-Here's an inventory of what gets deployed by the **retail** pattern on the Datacenter/Hub OpenShift cluster:
-
-| Name | Kind | Namespace | Description
-| :---- | :---- | :---- | :----
-| line-dashboard | Application | manuela-tst-all | Frontend application
-| machine-sensor-1 | Application | manuela-tst-all | Data publisher
-| machine-sensor-2 | Application | manuela-tst-all | Data publisher
-| messaging | Application | manuela-tst-all | Data subscriber
-| mqtt2kafka-integration | Application | manuela-tst-all | Kafka Integration
-| anomaly-detection-predictor-0-anomaly-detection | Application | manuela-tst-all | Anomaly detection application
-| manuela-kafka-cluster-entity-operator | Operator | manuela-tst-all | Kafka
-| Red Hat Advanced Cluster Management | Operator | open-cluster-management | Advance Cluster Management
-| Red Hat Integration - AMQ Broker | Operator | manuela-tst-all | AMQ Broker
-| Red Hat Integration - AMQ Streams | Operator | manuela-tst-all | AMQ Streams
-| Open Data Hub | Operator | openshift-operators | Open Data Hub
-| Red Hat OpenShift GitOps | Operator | openshift-operators | OpenShift GitOps
-| Red Hat Integration - Camel K | Operator | manuela-tst-all | Integration Platform, Kamelet Binding, Kamelet
-| Red Hat OpenShift Pipelines | Operator | All Namespaces | Tekton Config, Pipelines, Triggers, Addons
-| Seldon Operator | Operator | manuela-tst-all | Seldon Deployment
-
-### retail Pattern OpenShift Datacenter HUB Cluster Size
+### Retail Pattern OpenShift Datacenter HUB Cluster Size
 
 The retail pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
 
@@ -68,17 +46,9 @@ The Datacenter HUB OpenShift Cluster is made up of the the following on the AWS 
 | Node Type | Number of nodes | Cloud Provider | Instance Type
 | :---- | :----: | :---- | :----
 | Master | 3 | Amazon Web Services | m5.xlarge
-| Worker | 4 | Amazon Web Services | m5.xlarge
+| Worker | 3 | Amazon Web Services | m5.xlarge
 
 The Datacenter HUB OpenShift cluster needs to be a bit bigger than the Factory/Edge clusters because this is where the developers will be running pipelines to build and deploy the **Industrial Edge** pattern on the cluster.  The above cluster sizing is close to a **minimum** size for a Datacenter HUB cluster.  In the next few sections we take some snapshots of the cluster utilization while the **Industrial Edge** pattern is running.  Keep in mind that resources will have to be added as more developers are working building their applications.
-
-#### Hub Cluster utilization
-
-Below is a snapshot of the OpenShift cluster utilization while running the **retail** pattern:
-
-| CPU | Memory |  File System |  Network | Pod Count
-| :----: | :-----: | :----: | :----: | :----:
-| `13.84` **Used 42.16 available of 56** | `73.5 GiB` **146.3 GiB available of 219.8 GiB** | `106 GiB` **732.9 GiB available of 838.9 GiB** | `20.65` **MBps in** `22.84` **MBps out** | `354` **pods**
 
 ### Retail Pattern OpenShift Store Edge Cluster Size
 
@@ -89,32 +59,6 @@ The OpenShift cluster is made of 3 Nodes combining Master/Workers for the Edge/F
 | Master/Worker | 3 | Google Cloud | n1-standard-8
 | Master/Worker | 3 | Amazon Cloud Services | m5.2xlarge
 | Master/Worker | 3 | Microsoft Azure | Standard_D8s_v3
-
-#### Store Cluster Utilization
-
-**GCP**
-
-This is a snapshot of a Google Cloud Factory Edge cluster running the production **retail** pattern.
-
-| CPU | Memory |  File System |  Network | Pod Count
-| :----: | :-----: | :----: | :----: | :----:
-| `6.55` **17.45 available of 24** | `43.19 GiB` usage **45.09 GiB available of 88.28 GiB** | 48.45 GiB usage **334 GiB available of 382.5 GiB** | 9.64 **MBps in15.79 MBps out** | 187 **pods**
-
-**AWS**
-
-This is a snapshot of a Amazon Web Services Factory Edge cluster running the production **retail** pattern.
-
-| CPU | Memory |  File System |  Network | Pod Count
-| :----: | :-----: | :----: | :----: | :----:
-| `5.1` **18.9 available of 24** |`42.91` **GiB 49.27 GiB available of 92.18 GiB** | `51.54` **GiB 308 GiB available of 359.5 GiB** | `9.41` **MBps in** `10.38` **MBps out** | 194 **pods**
-
-**Azure**
-
-This is a snapshot of an Azure Factory Edge cluster running the production **retail** pattern.
-
-| CPU | Memory |  File System |  Network | Pod Count
-| :----: | :-----: | :----: | :----: | :----:
-| `7.86` **15.65 available of 24** | `42.76` **Gib used 51.15 GiB available of 94.2 GiB** | `71.29` **GiB used 2.93 TiB available of 3 TiB** | `8.98` **MBps in** `9.64` **MBps out** | 192 **pods*
 
 ### AWS Instance Types
 
@@ -133,19 +77,19 @@ Below you can find a list of the AWS instance types that can be used to deploy t
 | :------: | :-----: | :-----: | :----: | :----:
 | | | | 3x3 OCP Cluster | 3 Node OCP Cluster
 | m4.xlarge   | 4  | 16 | N | N
-| **m4.2xlarge**  | 8  | 32 | Y | Y
+| m4.2xlarge  | 8  | 32 | Y | Y
 | m4.4xlarge  | 16 | 64 | Y | Y
 | m4.10xlarge | 40 | 160 | Y | Y
 | m4.16xlarge | 64 | 256 | Y | Y
 | **m5.xlarge**   | 4  | 16 | Y | N
-| **m5.2xlarge**  | 8  | 32 | Y | Y
+| m5.2xlarge  | 8  | 32 | Y | Y
 | m5.4xlarge  | 16 | 64 | Y | Y
 | m5.8xlarge  | 32 | 128 | Y | Y
 | m5.12xlarge | 48 | 192 | Y | Y
 | m5.16xlarge | 64 | 256 | Y | Y
 | m5.24xlarge | 96 | 384 | Y | Y
 
-The OpenShift cluster is made of 4 Masters and 3 Workers for the Datacenter and the Edge/Factory cluster are made of 3 Master/Worker nodes.  For the node sizes we used the **m5.xlarge** on AWS and this instance type met the minimum requirements to deploy the **retail** pattern successfully on the Datacenter hub.  On the Factory/Edge cluster we used the **m5.2xlarge** since the minimum cluster was comprised of 3 nodes.  .
+The OpenShift cluster is made of 3 Masters and 3 Workers for the Datacenter and the Edge/Factory cluster are made of 3 Master/Worker nodes.  For the node sizes we used the **m5.xlarge** on AWS and this instance type met the minimum requirements to deploy the **retail** pattern successfully on the Datacenter hub.  On the Factory/Edge cluster we used the **m5.2xlarge** since the minimum cluster was comprised of 3 nodes.  .
 
 To understand better what types of nodes you can use on other Cloud Providers we provide some of the details below.
 
