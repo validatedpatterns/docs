@@ -18,6 +18,9 @@ markup:
     startLevel: 1
     endLevel: 2
     ordered: false
+  goldmark:
+    renderer:
+      unsafe: true
 
 taxonomies:
   industry: 'industries'

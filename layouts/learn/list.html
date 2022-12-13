@@ -19,7 +19,7 @@
     <div class="pf-l-stack">
       <div class="pf-c-content" >
         <div class="pf-l-gallery pf-m-gutter" style="--pf-l-gallery--GridTemplateColumns--min: 300px;">
-          {{ range .Paginator.Pages }}
+          {{ range .Paginator.Pages.ByWeight }}
           <div class="pf-l-gallery__item" style="display: grid;">
             {{ .Render "summary" }}
           </div>

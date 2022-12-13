@@ -4,7 +4,7 @@
   <div class="pf-c-panel__main">
     <div class="pf-c-panel__main-body">
       {{ range $name, $taxonomy := .Site.Taxonomies.products }}
-        <button class="pf-c-label pf-m-red pf-m-outline" id="products:{{- $name -}}" type="button" onclick="filterSelection(this.id)" style="margin: 5px 0;"><span class="pf-c-label__content">{{- $name | humanize | title  -}}</span></button> 
+        <button class="pf-c-label pf-m-red pf-m-outline" id="products:{{- $name -}}" type="button" onclick="filterSelection(this.id)" style="margin: 5px 0;"><span class="pf-c-label__content">{{ $taxonomy.Page.Title }}</span></button> 
       {{ end }}
     </div>
   </div>

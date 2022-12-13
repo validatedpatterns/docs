@@ -8,15 +8,14 @@
     <div class="pf-l-grid pf-m-gutter">
       <div class="pf-l-grid__item pf-m-8-col">
         <div class="pf-c-content">
-          {{ $validated := .Param "validated" }}
-          {{ if (eq $validated true ) }}
+          <div class="pattern-label">
+            {{ $validated := .Param "validated" }}
+            {{ if (eq $validated true ) }}
               {{ partial "label-validated-pattern.html" . }}
-          {{ else }}
+            {{ else }}
               {{ partial "label-community-pattern.html" . }}
-          {{ end }}
-          <h1>
-            {{- .Title -}}
-          </h1>
+            {{ end }}
+          </div>
           <div class="pf-c-content">
             {{ .Content }}
           </div>
