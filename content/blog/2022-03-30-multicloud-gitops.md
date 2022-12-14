@@ -1,13 +1,12 @@
 ---
-layout: post
 date: 2022-03-30
 title: Multi-Cloud GitOps
-excerpt: A validated pattern for multi-cluster and/or multi-cloud gitops
-published: true
+summary: A validated pattern for multi-cluster and/or multi-cloud gitops
 blog_tags:
 - multi-cloud gitops
 - xray
 - validated-pattern
+aliases: /2022/03/30/multicloud-gitops/
 ---
 
 # Validated Pattern: Multi-Cloud GitOps

@@ -1,13 +1,12 @@
 ---
-layout: post
 date: 2021-12-31
 title: Medical Diagnosis
-excerpt: A validated pattern for the medical field
-published: true
+summary: A validated pattern for the medical field
 blog_tags:
 - medical-diagnosis
 - xray
 - validated-pattern
+aliases: /2021/12/31/medical-diagnosis/
 ---
 
 # Validated Pattern: Medical Diagnosis

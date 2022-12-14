@@ -2,7 +2,7 @@
 layout: default
 title: Contributor's guide
 menu: contribute
-weight: 60
+weight: 10
 ---
 
 :toc:

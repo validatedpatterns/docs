@@ -24,7 +24,7 @@
             </div>
             <div class="pf-l-stack__item">
               <div class="pf-l-gallery pf-m-gutter" style="--pf-l-gallery--GridTemplateColumns--min: 300px;">
-                {{ range $pattern :=  $patterns }}
+                {{ range $pattern :=  $patterns.ByTitle }}
                   {{ $data := newScratch }}
                   {{ $data.Set "tags" slice }}
                   {{ $params := .Params }}

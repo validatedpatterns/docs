@@ -1,0 +1,264 @@
+.pattern_logo img {
+    max-width: 110px;
+    border-radius: 30%;
+}
+
+.pattern_logo {
+    width: 72px;
+    height: 72px;
+}
+
+.pattern-label {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+pre {
+    white-space: pre-wrap; 
+    padding: 10px;
+}
+
+.btn,
+#goog-wm-sb {
+ display:inline-block;
+ box-sizing:border-box;
+ padding-top:0.3em;
+ padding-right:1em;
+ padding-bottom:0.3em;
+ padding-left:1em;
+ margin:0;
+ font-family:inherit;
+ font-size:inherit;
+ font-weight:500;
+ line-height:1.5;
+ color:#7253ed;
+ text-decoration:none;
+ vertical-align:baseline;
+ cursor:pointer;
+ background-color:#f7f7f7;
+ border-width:0;
+ border-radius:4px;
+ box-shadow:0 1px 2px rgba(0,0,0,0.12),0 3px 10px rgba(0,0,0,0.08);
+ appearance:none
+}
+.btn:focus,
+#goog-wm-sb:focus {
+ text-decoration:none;
+ outline:none;
+ box-shadow:0 0 0 3px rgba(0,0,255,0.25)
+}
+.btn:focus:hover,
+#goog-wm-sb:focus:hover,
+.btn.selected:focus,
+.selected#goog-wm-sb:focus {
+ box-shadow:0 0 0 3px rgba(0,0,255,0.25)
+}
+.btn:hover,
+#goog-wm-sb:hover,
+.btn.zeroclipboard-is-hover,
+.zeroclipboard-is-hover#goog-wm-sb {
+ color:#6a4aec
+}
+.btn:hover,
+#goog-wm-sb:hover,
+.btn:active,
+#goog-wm-sb:active,
+.btn.zeroclipboard-is-hover,
+.zeroclipboard-is-hover#goog-wm-sb,
+.btn.zeroclipboard-is-active,
+.zeroclipboard-is-active#goog-wm-sb {
+ text-decoration:none;
+ background-color:#f4f4f4
+}
+.btn:active,
+#goog-wm-sb:active,
+.btn.selected,
+.selected#goog-wm-sb,
+.btn.zeroclipboard-is-active,
+.zeroclipboard-is-active#goog-wm-sb {
+ background-color:#efefef;
+ background-image:none;
+ box-shadow:inset 0 2px 4px rgba(0,0,0,0.15)
+}
+.btn.selected:hover,
+.selected#goog-wm-sb:hover {
+ background-color:#cfcfcf
+}
+.btn:disabled,
+#goog-wm-sb:disabled,
+.btn:disabled:hover,
+#goog-wm-sb:disabled:hover,
+.btn.disabled,
+.disabled#goog-wm-sb,
+.btn.disabled:hover,
+.disabled#goog-wm-sb:hover {
+ color:rgba(102,102,102,0.5);
+ cursor:default;
+ background-color:rgba(229,229,229,0.5);
+ background-image:none;
+ box-shadow:none
+}
+.btn-outline {
+ color:#7253ed;
+ background:transparent;
+ box-shadow:inset 0 0 0 2px #e6e1e8
+}
+.btn-outline:hover,
+.btn-outline:active,
+.btn-outline.zeroclipboard-is-hover,
+.btn-outline.zeroclipboard-is-active {
+ color:#6341eb;
+ text-decoration:none;
+ background-color:transparent;
+ box-shadow:inset 0 0 0 3px #e6e1e8
+}
+.btn-outline:focus {
+ text-decoration:none;
+ outline:none;
+ box-shadow:inset 0 0 0 2px #5c5962,0 0 0 3px rgba(0,0,255,0.25)
+}
+.btn-outline:focus:hover,
+.btn-outline.selected:focus {
+ box-shadow:inset 0 0 0 2px #5c5962
+}
+.btn-primary {
+ color:#fff;
+ background-color:#5739ce;
+ background-image:linear-gradient(#6f55d5, #5739ce);
+ box-shadow:0 1px 3px rgba(0,0,0,0.25),0 4px 10px rgba(0,0,0,0.12)
+}
+.btn-primary:hover,
+.btn-primary.zeroclipboard-is-hover {
+ color:#fff;
+ background-color:#5132cb;
+ background-image:linear-gradient(#6549d2,#5132cb)
+}
+.btn-primary:active,
+.btn-primary.selected,
+.btn-primary.zeroclipboard-is-active {
+ background-color:#4f31c6;
+ background-image:none;
+ box-shadow:inset 0 2px 4px rgba(0,0,0,0.15)
+}
+.btn-primary.selected:hover {
+ background-color:#472cb2
+}
+.btn-purple {
+ color:#fff;
+ background-color:#5739ce;
+ background-image:linear-gradient(#6f55d5, #5739ce);
+ box-shadow:0 1px 3px rgba(0,0,0,0.25),0 4px 10px rgba(0,0,0,0.12)
+}
+.btn-purple:hover,
+.btn-purple.zeroclipboard-is-hover {
+ color:#fff;
+ background-color:#5132cb;
+ background-image:linear-gradient(#6549d2,#5132cb)
+}
+.btn-purple:active,
+.btn-purple.selected,
+.btn-purple.zeroclipboard-is-active {
+ background-color:#4f31c6;
+ background-image:none;
+ box-shadow:inset 0 2px 4px rgba(0,0,0,0.15)
+}
+.btn-purple.selected:hover {
+ background-color:#472cb2
+}
+.btn-blue {
+ color:#fff;
+ background-color:#227efa;
+ background-image:linear-gradient(#4593fb, #227efa);
+ box-shadow:0 1px 3px rgba(0,0,0,0.25),0 4px 10px rgba(0,0,0,0.12)
+}
+.btn-blue:hover,
+.btn-blue.zeroclipboard-is-hover {
+ color:#fff;
+ background-color:#1878fa;
+ background-image:linear-gradient(#368afa,#1878fa)
+}
+.btn-blue:active,
+.btn-blue.selected,
+.btn-blue.zeroclipboard-is-active {
+ background-color:#1375f9;
+ background-image:none;
+ box-shadow:inset 0 2px 4px rgba(0,0,0,0.15)
+}
+.btn-blue.selected:hover {
+ background-color:#0669ed
+}
+.btn-green {
+ color:#fff;
+ background-color:#10ac7d;
+ background-image:linear-gradient(#13cc95, #10ac7d);
+ box-shadow:0 1px 3px rgba(0,0,0,0.25),0 4px 10px rgba(0,0,0,0.12)
+}
+.btn-green:hover,
+.btn-green.zeroclipboard-is-hover {
+ color:#fff;
+ background-color:#0fa276;
+ background-image:linear-gradient(#12be8b,#0fa276)
+}
+.btn-green:active,
+.btn-green.selected,
+.btn-green.zeroclipboard-is-active {
+ background-color:#0f9e73;
+ background-image:none;
+ box-shadow:inset 0 2px 4px rgba(0,0,0,0.15)
+}
+.btn-green.selected:hover {
+ background-color:#0d8662
+}
+
+.btn-red {
+    color:#fff;
+    background-color:#dc2525;
+    background-image:linear-gradient(#e14444, #dc2525);
+    box-shadow:0 1px 3px rgba(0,0,0,0.25),0 4px 10px rgba(0,0,0,0.12)
+   }
+   .btn-red:hover,
+   .btn-red.zeroclipboard-is-hover {
+    color:#fff;
+    background-color:#d42323;
+    background-image:linear-gradient(#de3737,#d42323)
+   }
+   .btn-red:active,
+   .btn-red.selected,
+   .btn-red.zeroclipboard-is-active {
+    background-color:#d02222;
+    background-image:none;
+    box-shadow:inset 0 2px 4px rgba(0,0,0,0.15)
+   }
+   .btn-red.selected:hover {
+    background-color:#ba1e1e
+   }
+   
+
+.btn,
+#goog-wm-sb {
+ display:inline-block;
+ margin-bottom:0.25em;
+ padding:0.5em 1em;
+ color:#fff !important;
+ font-family:-apple-system,".SFNSText-Regular","San Francisco","Roboto","Segoe UI","Helvetica Neue","Lucida Grande",Arial,sans-serif;
+ font-size:.75em;
+ font-weight:bold;
+ text-align:center;
+ text-decoration:none;
+ background-color:#7a8288;
+ border:0 !important;
+ border-radius:4px;
+ cursor:pointer
+}
+.btn:hover,
+#goog-wm-sb:hover {
+ background-color:#333
+}
+.btn .icon,
+#goog-wm-sb .icon {
+ margin-right:0.5em
+}
+.btn .icon+.hidden,
+#goog-wm-sb .icon+.hidden {
+ margin-left:-0.5em
+}

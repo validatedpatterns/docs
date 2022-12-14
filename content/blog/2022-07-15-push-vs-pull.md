@@ -1,13 +1,12 @@
 ---
-layout: post
 date: 2022-07-15
 title: Push or Pull?
-excerpt: Considerations on Push and Pull in change management systems
-published: true
+summary: Considerations on Push and Pull in change management systems
 blog_tags:
 - ansible-edge-gitops
 - patterns
 - GitOps
+aliases: /2022/07/15/push-vs-pull/
 ---
 
 # Push or Pull? Strategies for Large Scale Technology Change Management on the Edge
