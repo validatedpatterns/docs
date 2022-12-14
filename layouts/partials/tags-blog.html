@@ -6,7 +6,7 @@
     <ul class="pf-c-list pf-m-plain">
       {{ range $name, $taxonomy := .Site.Taxonomies.blog_tags }}
        <li>
-         <a class="pf-c-label pf-m-orange" href="{{ "/blog-tags/" | relLangURL }}{{ $name | urlize }}">
+         <a class="pf-c-label pf-m-orange" href="{{ "/blog_tags/" | relLangURL }}{{ $name | urlize }}">
            {{- $name -}}
          </a>
        </li>
