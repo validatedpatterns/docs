@@ -32,7 +32,7 @@ sectionPagesMenu: main
 menu:
   main:
   - identifier: patterns
-    name: Get Patterns
+    name: Patterns
     title: Patterns
     url: /patterns/
     weight: 10
