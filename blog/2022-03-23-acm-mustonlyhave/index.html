@@ -1,0 +1,80 @@
+<!doctype html><html><head><link rel=stylesheet href=https://docs-ng.hybrid-cloud-patterns.io/sass/patternfly.css><link rel=stylesheet href=https://docs-ng.hybrid-cloud-patterns.io/sass/patternfly-addons.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.7.2/css/solid.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.7.2/css/fontawesome.css><link rel=stylesheet href=/css/custom.css><title>To musthave or to mustonlyhave | Hybrid Cloud Patterns - NG Site</title></head><body><div class=pf-c-page><header class=pf-c-page__header><div class=pf-c-page__header-brand><a href=/ class=pf-c-page__header-brand-link><img src=/images/hybrid_cloud_patterns.png alt="Hybrid Cloud Patterns - NG Site"></a></div><div class=pf-c-page__header-tools><nav class="pf-c-nav pf-m-horizontal" role=navigation><ul class=pf-c-nav__list><li class=pf-c-nav__item><a class=pf-c-nav__link href=/patterns/ title=Patterns>Patterns</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/learn/ title=Learn>Learn</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/contribute/ title=Contribute>Contribute</a></li><li class="pf-c-nav__item pf-m-current"><a class=pf-c-nav__link href=/blog/ title=Blog>Blog</a></li></ul></nav></div></header><div class=pf-c-page__sidebar><div class=pf-c-page__sidebar-body><div class=pf-c-nav><ul class=pf-c-nav__list><li class=pf-c-nav__item><a href=/blog/ class=pf-c-nav__link><span class="pf-c-icon pf-m-md pf-m-inline"><span class=pf-c-icon__content><i class="fas fa-angle-left" aria-hidden=true></i></span></span>
+<span style=padding-left:10px>Back to Blog</span></a></li></ul></div></div></div><main class=pf-c-page__main><section class=pf-c-page__main-section><div class="pf-l-grid pf-m-gutter"><div class="pf-l-grid__item pf-m-8-col"><div class=pf-c-content><h1>To musthave or to mustonlyhave</h1><div class=pf-c-content><p>March 23, 2022</p><span class="pf-c-label pf-m-orange"><span class=pf-c-label__content>acm</span></span><p>Recently a user reported an issue when using the multicloud-gitops pattern: Namely, after testing changes in a feature branch (adding a helm application), said changes were not appearing on the remote clusters.</p><h2 id=preamble>Preamble</h2><p>In the multicloud gitops pattern each cluster has to ArgoCD instances: the &ldquo;main&rdquo; one which has additional rights and a &ldquo;secondary&rdquo; one which is in charge to keep the user applications in sync.
+The workflow of the initial pattern deployment is the following:</p><ol start=0><li>All helm charts and yaml files below are referenced directly from a remote git repo (the GitOps way). The branch being chosen is the one set to locally when running <code>make install</code>. In order to switch branch on an existing pattern, the user needs to run <code>make upgrade</code>. This will trigger a change in a helm variable pointing to the git revision which will then propagate throughout the cluster.</li><li><code>make install</code> gets invoked which calls <code>helm install common/install</code>. This will install the main ArgoCD instance on the HUB cluster.</li><li>Step 1. will also do a helm install of the <code>common/clustergroup</code> chart. This will install a number of helm charts thanks to the customizable content defined in <code>values-hub.yaml</code>. Amongst other things it will install ACM, HashiCorp Vault, the External Secrets operator (and a few more)</li><li>The helm chart for ACM will install it and push out some cluster policies in order to add the necessary yaml files to configure ArgoCD on the remote clusters that will join the ACM hub. It will create the main ArgoCD instance on the remote cluster and run the <code>common/clustergroup</code> helm chart</li><li>The <code>common/clustergroup</code> chart will do it&rsquo;s thing like on the hub, except this time it will be the <code>values-region-one.yaml</code> file driving the list of things to be installed.</li></ol><h2 id=the-problem>The problem</h2><p>The problem manifested itself in the following way: The user deployed the pattern from the <code>main</code> branch on to the clusters. Then the git branched was changed to something else (<code>feature-branch</code>), a new helm chart/application was added to the regional cluster (so in <code>values-region-one.yaml</code>) and the changes were pushed (<code>git push</code> and <code>make upgrade</code>). After the push, the application would never show up on the regional cluster.</p><h2 id=the-symptoms>The symptoms</h2><p>After a short investigation, it was clear that something was off when ACM was pushing the <code>common/clustergroup</code> Argo Application on to the regional cluster. We could observe the following yaml:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ oc get -n openshift-gitops application multicloud-gitops-region-one -o yaml
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>project: default
+</span></span><span style=display:flex><span>source:
+</span></span><span style=display:flex><span> repoURL: <span style=color:#e6db74>&#39;https://github.com/mbaldessari/multicloud-gitops.git&#39;</span>
+</span></span><span style=display:flex><span> path: common/clustergroup
+</span></span><span style=display:flex><span> targetRevision: feature-branch
+</span></span><span style=display:flex><span> helm:
+</span></span><span style=display:flex><span>   valueFiles:
+</span></span><span style=display:flex><span>    - &gt;-
+</span></span><span style=display:flex><span>      https://github.com/mbaldessari/multicloud-gitops/raw/feature-branch/values-global.yaml
+</span></span><span style=display:flex><span>    - &gt;-
+</span></span><span style=display:flex><span>      https://github.com/mbaldessari/multicloud-gitops/raw/feature-branch/values-region-one.yaml
+</span></span><span style=display:flex><span>    - &gt;-
+</span></span><span style=display:flex><span>      https://github.com/mbaldessari/multicloud-gitops/raw/main/values-global.yaml
+</span></span><span style=display:flex><span>    - &gt;-
+</span></span><span style=display:flex><span>      https://github.com/mbaldessari/multicloud-gitops/raw/main/values-region-one.yaml
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>That list under the <code>valueFiles</code> attribute was wrong. It still contained references to the old <code>main</code> branch. To make matters worse they were listed after <code>feature-branch</code> making the value files from the new branch effectively useless. It really seemed like ACM was not really pushing out the changed policy fully. It&rsquo;s as if a merge happened when an existing application was changed.</p><h2 id=resolution>Resolution</h2><p>The problem turned out to be in how we pushed out the ArgoCD Application via ACM. We did this:</p><p>{% raw %}</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>apiVersion: policy.open-cluster-management.io/v1
+</span></span><span style=display:flex><span>kind: Policy
+</span></span><span style=display:flex><span>metadata:
+</span></span><span style=display:flex><span>  name: <span style=color:#f92672>{{</span> .name <span style=color:#f92672>}}</span>-clustergroup-policy
+</span></span><span style=display:flex><span>  annotations:
+</span></span><span style=display:flex><span>    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource<span style=color:#f92672>=</span>true
+</span></span><span style=display:flex><span>    argocd.argoproj.io/compare-options: IgnoreExtraneous
+</span></span><span style=display:flex><span>spec:
+</span></span><span style=display:flex><span>  remediationAction: enforce
+</span></span><span style=display:flex><span>  disabled: false
+</span></span><span style=display:flex><span>  policy-templates:
+</span></span><span style=display:flex><span>    - objectDefinition:
+</span></span><span style=display:flex><span>        apiVersion: policy.open-cluster-management.io/v1
+</span></span><span style=display:flex><span>        kind: ConfigurationPolicy
+</span></span><span style=display:flex><span>        metadata:
+</span></span><span style=display:flex><span>          name: <span style=color:#f92672>{{</span> .name <span style=color:#f92672>}}</span>-clustergroup-config
+</span></span><span style=display:flex><span>        spec:
+</span></span><span style=display:flex><span>          remediationAction: enforce
+</span></span><span style=display:flex><span>          severity: med
+</span></span><span style=display:flex><span>          namespaceSelector:
+</span></span><span style=display:flex><span>            exclude:
+</span></span><span style=display:flex><span>              - kube-*
+</span></span><span style=display:flex><span>            include:
+</span></span><span style=display:flex><span>              - default
+</span></span><span style=display:flex><span>          object-templates:
+</span></span><span style=display:flex><span>            - complianceType: musthave
+</span></span><span style=display:flex><span>              objectDefinition:
+</span></span><span style=display:flex><span>                apiVersion: argoproj.io/v1alpha1
+</span></span><span style=display:flex><span>                kind: Application
+</span></span><span style=display:flex><span>                metadata:
+</span></span><span style=display:flex><span>                  name: <span style=color:#f92672>{{</span> $.Values.global.pattern <span style=color:#f92672>}}</span>-<span style=color:#f92672>{{</span> .name <span style=color:#f92672>}}</span>
+</span></span><span style=display:flex><span>                  namespace: openshift-gitops
+</span></span><span style=display:flex><span>                  finalizers:
+</span></span><span style=display:flex><span>                  - argoproj.io/finalizer
+</span></span><span style=display:flex><span>                spec:
+</span></span><span style=display:flex><span>                  project: default
+</span></span><span style=display:flex><span>                  source:
+</span></span><span style=display:flex><span>                    repoURL: <span style=color:#f92672>{{</span> coalesce .repoURL $.Values.global.repoURL <span style=color:#f92672>}}</span>
+</span></span><span style=display:flex><span>                    targetRevision: <span style=color:#f92672>{{</span> coalesce .targetRevision $.Values.global.targetRevision <span style=color:#f92672>}}</span>
+</span></span><span style=display:flex><span>                    path: <span style=color:#f92672>{{</span> default <span style=color:#e6db74>&#34;common/clustergroup&#34;</span> .path <span style=color:#f92672>}}</span>
+</span></span><span style=display:flex><span>                    helm:
+</span></span><span style=display:flex><span>                      valueFiles:
+</span></span><span style=display:flex><span>                      - <span style=color:#e6db74>&#34;{{ coalesce .valuesDirectoryURL </span>$<span style=color:#e6db74>.Values.global.valuesDirectoryURL }}/values-global.yaml&#34;</span>
+</span></span><span style=display:flex><span>                      - <span style=color:#e6db74>&#34;{{ coalesce .valuesDirectoryURL </span>$<span style=color:#e6db74>.Values.global.valuesDirectoryURL }}/values-{{ .name }}.yaml&#34;</span>
+</span></span><span style=display:flex><span>                      parameters:
+</span></span><span style=display:flex><span>                      - name: global.repoURL
+</span></span><span style=display:flex><span>                        value: $ARGOCD_APP_SOURCE_REPO_URL
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>{% endraw %}</p><p>The problem was entirely into the <code>complianceType: musthave</code>. Quoting the docs at <a href=https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.4/html-single/governance/index#configuration-policy-yaml-table>https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.4/html-single/governance/index#configuration-policy-yaml-table</a> we have three possibilities:</p><ul><li><code>mustonlyhave</code> Indicates that an object must exist with the exact name and relevant fields.</li><li><code>musthave</code> Indicates an object must exist with the same name as specified object-template. The other fields in the template are a subset of what exists in the object.</li><li>`mustnothave`` Indicated that an object with the same name or labels cannot exist and need to be deleted, regardless of the specification or rules.</li></ul><p>So <code>musthave</code> does not imply that the object being applied is <em>identical</em> to what is specified in the policy. The actual consequence of that on a real deployment is the following:</p><p>Existing object</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span>- <span style=color:#f92672>foo</span>:
+</span></span><span style=display:flex><span>   - <span style=color:#ae81ff>a</span>
+</span></span><span style=display:flex><span>   - <span style=color:#ae81ff>b</span>
+</span></span></code></pre></div><p>If the above template gets changed in ACM:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span>- <span style=color:#f92672>foo</span>:
+</span></span><span style=display:flex><span>   - <span style=color:#ae81ff>c</span>
+</span></span><span style=display:flex><span>   - <span style=color:#ae81ff>d</span>
+</span></span></code></pre></div><p>The end result in case of &lsquo;musthave&rsquo; complianceType will be:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span>- <span style=color:#f92672>foo</span>:
+</span></span><span style=display:flex><span>   - <span style=color:#ae81ff>a</span>
+</span></span><span style=display:flex><span>   - <span style=color:#ae81ff>b</span>
+</span></span><span style=display:flex><span>   - <span style=color:#ae81ff>c</span>
+</span></span><span style=display:flex><span>   - <span style=color:#ae81ff>d</span>
+</span></span></code></pre></div><p>Changing the complianceType to <code>mustonlyhave</code> fixed the issue as it enforced the template fully on the remote cluster and solved this issue.</p><h2 id=thanks>Thanks</h2><p>Special thanks to Ilkka Tengvall and Christian Stark for their help and patience.</p></div></div></div><div class="pf-l-grid__item pf-m-4-col"><nav class="pf-c-jump-links pf-m-vertical" aria-label=Contents><div class=pf-c-jump-links__main><div class=pf-c-jump-links__header><div class=pf-c-jump-links__label><h1>Table of Contents</h1></div></div><nav id=TableOfContents><ul class=pf-c-jump-links__list><li class=pf-c-jump-links__item><ul class=pf-c-jump-links__list><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#preamble>Preamble</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#the-problem>The problem</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#the-symptoms>The symptoms</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#resolution>Resolution</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#thanks>Thanks</a></li></ul></li></ul></nav></div></nav></div></div></section></main></div><div><div style=padding:10px;text-align:center;color:#d2d2d2;background-color:#000>Copyright &copy; 2022 Red Hat, Inc.</div></div></body></html>
