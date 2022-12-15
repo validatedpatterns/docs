@@ -7,7 +7,7 @@ products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
 - Red Hat Quay
-- Red Hat Open Data Foundation
+- Red Hat OpenShift Data Foundation
 - Red Hat Advanced Cluster Security
 industries:
 - General

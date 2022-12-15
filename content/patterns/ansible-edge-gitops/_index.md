@@ -8,7 +8,7 @@ products:
 - Red Hat Ansible Automation Platform
 - OpenShift Virtualization
 - Red Hat Enterprise Linux
-- Red Hat Open Data Foundation
+- Red Hat OpenShift Data Foundation
 industries:
 - Chemical
 aliases: /ansible-edge-gitops/
