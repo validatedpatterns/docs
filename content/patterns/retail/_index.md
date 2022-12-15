@@ -6,6 +6,7 @@ summary: This pattern demonstrates a pattern that models the store side of a ret
 products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
+- Red Hat AMQ
 industries:
 - Retail
 aliases: /retail/
