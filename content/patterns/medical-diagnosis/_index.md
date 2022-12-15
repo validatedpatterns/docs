@@ -6,7 +6,7 @@ summary: This pattern is based on a demo implementation of an automated data pip
 products:
 - Red Hat OpenShift Container Platform
 - Red Hat OpenShift Serverless
-- Red Hat OpenShift Data Foundations
+- Red Hat OpenShift Data Foundation
 industries:
 - medical
 aliases: /medical-diagnosis/
