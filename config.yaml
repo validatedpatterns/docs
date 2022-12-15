@@ -1,6 +1,6 @@
-baseURL: "https://docs-ng.hybrid-cloud-patterns.io"
+baseURL: "https://hybrid-cloud-patterns.io"
 languageCode: "en-us"
-title: Hybrid Cloud Patterns - NG Site
+title: Hybrid Cloud Patterns
 theme: "patternfly"
 summaryLength: 20
 paginate: 6
