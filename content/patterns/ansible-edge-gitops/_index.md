@@ -6,7 +6,7 @@ summary: This pattern uses OpenShift Virtualization to simulate an edge environm
 products:
 - Red Hat OpenShift Container Platform
 - Red Hat Ansible Automation Platform
-- OpenShift Virtualization
+- Red Hat OpenShift Virtualization
 - Red Hat Enterprise Linux
 - Red Hat Open Data Foundation
 industries:
