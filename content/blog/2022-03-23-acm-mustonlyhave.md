@@ -2,6 +2,7 @@
 date: 2022-03-23
 title: To musthave or to mustonlyhave
 summary: ACM has multiple enforcement strategies, be careful which one you use
+author: Michele Baldessari
 blog_tags:
 - acm
 aliases: /2022/03/23/acm-mustonlyhave/

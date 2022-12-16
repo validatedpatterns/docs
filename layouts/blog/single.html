@@ -26,15 +26,23 @@
             <h1>
               {{- .Title -}}
             </h1>
-            <div class="pf-c-content">
-              <p>{{ .Date | time.Format ":date_long" }}</p>
-              {{ range .Params.blog_tags }}
-                <span class="pf-c-label pf-m-orange">
-                  <span class="pf-c-label__content">{{ . }}</span>
-                </span>
-              {{ end }}
-              {{ .Content }}
+            {{ if .Params.author }}
+              <div style="margin: 10px 0;">
+                by {{ .Params.author }}
+              </div>
+            {{ end }}
+            <div style="margin: 10px 0;">
+              {{ .Date | time.Format ":date_long" }}
             </div>
+            <div style="margin: 20px 0;">
+            {{ range .Params.blog_tags }}
+              <span class="pf-c-label pf-m-orange">
+                <span class="pf-c-label__content">{{ . }}</span>
+              </span>
+            {{ end }}
+            </div>
+            <hr class="pf-c-divider" />
+            {{ .Content }}
           </div>
         </div>
         <div class="pf-l-grid__item pf-m-4-col">

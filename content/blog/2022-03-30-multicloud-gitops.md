@@ -2,6 +2,7 @@
 date: 2022-03-30
 title: Multi-Cloud GitOps
 summary: A validated pattern for multi-cluster and/or multi-cloud gitops
+author: Martin Jackson
 blog_tags:
 - multi-cloud gitops
 - xray
