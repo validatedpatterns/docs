@@ -2,6 +2,7 @@
 date: 2022-11-03
 title: Progressive Delivery with Argo Rollouts
 summary: Argo Rollouts lets us simplify delivery strategies like blue/green and canary deployments.
+author: Jonny Rickard
 blog_tags:
 - patterns
 - GitOps

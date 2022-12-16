@@ -2,6 +2,7 @@
 date: 2022-06-30
 title: Ansible Edge GitOps
 summary: A validated pattern that introduces Ansible and Virtualization to the framework
+author: Martin Jackson
 blog_tags:
 - ansible-edge-gitops
 - patterns

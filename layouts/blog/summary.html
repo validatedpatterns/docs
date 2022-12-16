@@ -1,10 +1,13 @@
-<div class="pf-c-card">
+<div class="pf-c-card" style="margin-bottom: 10px">
   <div class="pf-c-card__title">
     <a href="{{ .RelPermalink }}">
       <h1>{{ .Title }}</h1>
     </a>
   </div>
   <div class="pf-c-card__body">
+    {{ if .Params.author }}
+    <p>by {{ .Params.author }}</p>
+    {{ end }}
     <p>{{ .Date | time.Format ":date_long" }}</p>
     <p>{{ .Summary }} <a href="{{ .RelPermalink }}">Read more...</a></p>
     {{ range .Params.blog_tags }}

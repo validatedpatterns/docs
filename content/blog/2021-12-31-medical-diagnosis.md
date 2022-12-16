@@ -2,6 +2,7 @@
 date: 2021-12-31
 title: Medical Diagnosis
 summary: A validated pattern for the medical field
+author: Jonny Rickard
 blog_tags:
 - medical-diagnosis
 - xray
