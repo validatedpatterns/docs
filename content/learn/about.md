@@ -31,7 +31,7 @@ The diagram below outlines the general deployment flow of a datacenter applicati
 
 But first the user must create a fork of the pattern repository. This allows changes to be made to operational elements (configurations etc.) and to application code that can then be successfully made to the forked repository for DevOps continuous integration (CI). Clone the directory to your laptop/desktop. Future changes can be pushed to your fork.
 
-![GitOps for Datacenter](./images/gitops-datacenter.png)
+![GitOps for Datacenter](/images/gitops-datacenter.png)
 
  1. Make a copy of the values file. There may be one or more values files. E.g. `values-global.yaml` and/or `values-datacenter.yaml`. While most of these values allow you to specify subscriptions, operators, applications and other application specifics, there are also *secrets* which may include encrypted keys or user IDs and passwords. It is important that you make a copy and **do not push your personal values file to a repository accessible to others!**
 
@@ -45,7 +45,7 @@ Most patterns will have an Advanced Cluster Management operator deployed so that
 
 Some patterns include both a data center and one or more edge clusters. The diagram below outlines the general deployment flow of applications on an edge application. The edge OpenShift cluster is often deployed on a smaller cluster than the datacenter. Sometimes this might be a three node cluster that allows workloads to be deployed on the master nodes. The edge cluster might be a single node cluster (SN0). It might be deployed on bare metal, on local virtual machines or in a public/private cloud. Provision the cluster (see above)
 
-![GitOps for Edge](./images/gitops-edge.png)
+![GitOps for Edge](/images/gitops-edge.png)
 
  3. Import/join the cluster to the hub/data center. Instructions for importing the cluster can be found [here]. You're done.
 
