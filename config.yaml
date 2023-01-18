@@ -9,10 +9,11 @@ params:
 security:
   exec:
     allow: ["^dart-sass-embedded$", "^go$", "^npx$", "^postcss$", "^asciidoctor$"]
+    osEnv: (?i)^(GEM_PATH)$
 
 markup:
   asciidocExt:
-    attributes: {allow-uri-read}
+    attributes: {allow-uri-read, source-highlighter: rouge, icons: font, sectanchors}
     safeMode: unsafe
   tableOfContents:
     startLevel: 1

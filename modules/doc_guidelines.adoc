@@ -12,7 +12,7 @@ When authoring content, follow these style guides:
 +
 NOTE: When asked for an IBMid, Red Hat associates can use their Red Hat e-mail.
 * link:https://redhat-documentation.github.io/modular-docs/#writing-mod-docs[Modular documentation reference guide]
-** link:https://github.com/redhat-documentation/modular-docs/tree/main/modular-docs-manual/files[Modular documentation templates]
+* link:https://github.com/redhat-documentation/modular-docs/tree/main/modular-docs-manual/files[Modular documentation templates]
 
 == Modular documentation terms
 
@@ -64,6 +64,7 @@ Use lowercase. For directory with a multiple-word name, use lowercase separated 
 
 == Language and grammar
 Consider the following guidelines:
+
 * Use present tense.
 * Use active voice.
 * Use second person perspective (you).
@@ -112,10 +113,10 @@ Every assembly file should contain the following metadata at the top, with no li
 :_content-type: ASSEMBLY                                        <1>
 [id="<unique-heading-for-assembly>"]                            <2>
 = Assembly title                                                <3>
-include::_common-docs/common-attributes.adoc[]                   <4>
+include::_common-docs/common-attributes.adoc[]                  <4>
 :context: <unique-context-for-assembly>                         <5>
                                                                 <6>
-:toc:                                                         <7>
+:toc:                                                           <7>
 ----
 
 <1> The content type for the file. For assemblies, always use `:_content-type: ASSEMBLY`. Place this attribute before the anchor ID or, if present, the conditional that contains the anchor ID.
@@ -212,7 +213,3 @@ To enable syntax highlighting for a programming language, use `[source]` tags us
 * `[source,go]`
 
 * `[source,javascript]`
-
-
-
-
