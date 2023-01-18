@@ -5,3 +5,10 @@ _site/
 public/
 resources/
 .hugo_build.lock
+*~
+*swp
+*swo
+dictionary.dic
+super-linter.log
+tmp/
+Gemfile.lock
