@@ -1,3 +1,5 @@
+HUGO_CONTAINER ?= quay.io/hybridcloudpatterns/homepage-container:latest
+
 # Do not use selinux labeling when we are using nfs
 FSTYPE=$(shell df -Th . | grep -v Type | awk '{ print $$2 }')
 ifeq ($(FSTYPE), nfs)
@@ -16,6 +18,11 @@ help:
 .PHONY: test
 test: spellcheck
 	@echo "Ran all tests"
+
+.PHONY: serve
+serve: ## Build the website locally from a container and serve it
+	@echo "Serving via container. Browse to http://localhost:4000. Filesystem type: $(FSTYPE)"
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint hugo $(HUGO_CONTAINER) server -p 4000
 
 .PHONY: spellcheck
 spellcheck: ## Runs a spellchecker on the content/ folder
