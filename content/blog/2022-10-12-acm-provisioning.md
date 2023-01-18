@@ -100,7 +100,7 @@ files:
 _[1]_ A guide to finding the relevant AWS values can be found [here](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html)
 You might even have them in a `~/.aws/credentials` file.
 
-_[2]_ The public/pivate key-pair is used to allow access to OpenShift nodes for triage purposes.
+_[2]_ The public/private key-pair is used to allow access to OpenShift nodes for triage purposes.
 
 _[3]_ The openshiftPullSecret is how Red Hat knows you’ve got a licence to
 install OpenShift.  To obtain one, go
