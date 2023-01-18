@@ -38,7 +38,7 @@ machine you control.</p><table><thead><tr><th>Loading provisioning secrets</th><
 </span></span><span style=display:flex><span>  <span style=color:#f92672>privatekey</span>: <span style=color:#ae81ff>~/.ssh/id_rsa</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>openshiftPullSecret</span>: <span style=color:#ae81ff>~/.dockerconfigjson   [3]</span>
 </span></span></code></pre></div><p><em>[1]</em> A guide to finding the relevant AWS values can be found <a href=https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html>here</a>
-You might even have them in a <code>~/.aws/credentials</code> file.</p><p><em>[2]</em> The public/pivate key-pair is used to allow access to OpenShift nodes for triage purposes.</p><p><em>[3]</em> The openshiftPullSecret is how Red Hat knows you’ve got a licence to
+You might even have them in a <code>~/.aws/credentials</code> file.</p><p><em>[2]</em> The public/private key-pair is used to allow access to OpenShift nodes for triage purposes.</p><p><em>[3]</em> The openshiftPullSecret is how Red Hat knows you’ve got a licence to
 install OpenShift. To obtain one, go
 <a href=https://console.redhat.com/openshift/install/pull-secret>here</a>, save the
 contents, and provide that path in the secrets file. The contents should start
