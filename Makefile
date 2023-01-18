@@ -1,4 +1,4 @@
-HUGO_CONTAINER ?= quay.io/hybridcloudpatterns/homepage-container:latest
+HOMEPAGE_CONTAINER ?= quay.io/hybridcloudpatterns/homepage-container:latest
 
 # Do not use selinux labeling when we are using nfs
 FSTYPE=$(shell df -Th . | grep -v Type | awk '{ print $$2 }')
@@ -19,10 +19,19 @@ help:
 test: spellcheck
 	@echo "Ran all tests"
 
+.PHONY: build
+build: ## Build the website locally in the public/ folder
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint hugo $(HOMEPAGE_CONTAINER)
+
 .PHONY: serve
 serve: ## Build the website locally from a container and serve it
-	@echo "Serving via container. Browse to http://localhost:4000. Filesystem type: $(FSTYPE)"
-	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint hugo $(HUGO_CONTAINER) server -p 4000
+	@echo "Serving via container. Browse to http://localhost:4000"
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint hugo $(HOMEPAGE_CONTAINER) server -p 4000
+
+.PHONY: htmltest
+htmltest: build ## Runs htmltest against the site to find broken links
+	@echo "Running html proof to check links"
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint htmltest $(HOMEPAGE_CONTAINER)
 
 .PHONY: spellcheck
 spellcheck: ## Runs a spellchecker on the content/ folder
