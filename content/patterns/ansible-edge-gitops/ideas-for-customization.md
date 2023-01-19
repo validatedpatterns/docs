@@ -264,5 +264,5 @@ The reason this pattern ships with a script as it does instead of invoking the r
 
 # Next Steps
 
-[Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
+## [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns)
+## [Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues)

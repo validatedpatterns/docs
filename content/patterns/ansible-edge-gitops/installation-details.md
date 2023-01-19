@@ -93,7 +93,7 @@ OpenShift GitOps is central to this pattern as it is responsible for installing 
 
 # ODF (OpenShift Data Foundations)
 
-ODF is the storage framework that is needed to provide resilient storage for OpenShift Virtualization.  It is managed via the helm chart [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/charts/hub/openshift-data-foundations). This is basically the same chart that our Medical Diagnosis pattern uses (see [here](/patterns/medical-diagnosis/getting-started/#setting-up-the-storage-for-openshift-data-foundation) for details).
+ODF is the storage framework that is needed to provide resilient storage for OpenShift Virtualization.  It is managed via the helm chart [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/charts/hub/openshift-data-foundations). This is basically the same chart that our Medical Diagnosis pattern uses (see [here](/patterns/medical-diagnosis/getting-started/) for details on the Medical Edge pattern's use of storage).
 
 Please note that this chart will create a Noobaa S3 bucket named nb.epoch_timestamp.cluster-domain which will not be destroyed when the cluster is destroyed.
 
@@ -129,5 +129,5 @@ More details of the specifics of how AAP is configured are available [here](/ans
 
 # Next Steps
 
-[Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
+## [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns)
+## [Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues)
