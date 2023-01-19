@@ -1,14 +1,9 @@
-name: github pages
-
-on:
-  push:
-    branches:
-      - main  # Set a branch to deploy
-  pull_request:
-
+name: HtmlTest Action
+on: [push, pull_request]
 jobs:
-  deploy:
-    runs-on: ubuntu-22.04
+  build:
+    name: Htmltest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -32,9 +27,7 @@ jobs:
           alias asciidoctor="asciidoctor --attribute=experimental=true --attribute=icons=font"
           hugo --minify
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main'
+      - name: Run htmltest
+        uses: wjdp/htmltest-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          config: .htmltest.yml
