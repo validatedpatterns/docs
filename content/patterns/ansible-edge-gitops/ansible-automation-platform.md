@@ -124,11 +124,11 @@ It is safe to run multiple times on the same system. It is run on a schedule, ev
 
 ### [Kiosk Mode Playbook](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/kiosk_playbook.yml)
 
-This playbook runs the [kiosk_mode role](/patterns/ansible-edge-gitops/ansible-automation-platform/#kiosk_mode).
+This playbook runs the [kiosk_mode role](/patterns/ansible-edge-gitops/ansible-automation-platform/#roles-included-in-the-pattern).
 
 ### [Podman Playbook](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/podman_playbook.yml)
 
-This playbook runs the [container_lifecycle role](/patterns/ansible-edge-gitops/ansible-automation-platform/#container_lifecycle) with overrides suitable for the Ignition application container.
+This playbook runs the [container_lifecycle role](/patterns/ansible-edge-gitops/ansible-automation-platform/#roles-included-in-the-pattern) with overrides suitable for the Ignition application container.
 
 ### [Ping Playbook](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/ping.yml)
 
@@ -144,9 +144,11 @@ This job runs every 5 minutes to update the GitOps repository associated with th
 
 This job runs every 10 minutes to provision and configure any kiosks it finds to run the Ignition application in a podman container, and configure firefox in kiosk mode to display that application. The playbook is designed to be idempotent, so it is safe to run multiple times on the same targets; it will not make user-visible changes to those targets unless it must.
 
-This playbook combines the [inventory_preplay](/patterns/ansible-edge-gitops/ansible-automation-platform/#inventory_preplayyml) and the [Provision Kiosk Playbook](/patterns/ansible-edge-gitops/ansible-automation-platform/#provision-kiosk-playbook).
+This playbook combines the [inventory_preplay](/patterns/ansible-edge-gitops/ansible-automation-platform/#extra-playbooks-in-the-pattern) and the [Provision Kiosk Playbook](/patterns/ansible-edge-gitops/ansible-automation-platform/#extra-playbooks-in-the-pattern).
 
-## [Execution Environment](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/ansible/execution_environment)
+## Execution Environment
+
+The pattern includes an execution environment definition that can be found [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/ansible/execution_environment).
 
 The execution environment includes some additional collections beyond what is provided in the Default execution environment, including:
 
@@ -183,9 +185,9 @@ This playbook is designed to be included in other plays; its purpose is to disco
 
 ### [Provision Kiosk Playbook](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/provision_kiosk.yml)
 
-This does the work of provisioning the kiosk, which configures kiosk mode, and also installs Ignition and configures it to start at boot. It runs the [kiosk_mode](/patterns/ansible-edge-gitops/ansible-automation-platform/#kiosk_mode) and [container_lifecycle](/patterns/ansible-edge-gitops/ansible-automation-platform/#container_lifecycle) roles.
+This does the work of provisioning the kiosk, which configures kiosk mode, and also installs Ignition and configures it to start at boot. It runs the [kiosk_mode](/patterns/ansible-edge-gitops/ansible-automation-platform/#roles-included-in-the-pattern) and [container_lifecycle](/patterns/ansible-edge-gitops/ansible-automation-platform/#roles-included-in-the-pattern) roles.
 
 # Next Steps
 
-[Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
+## [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns)
+## [Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues)
