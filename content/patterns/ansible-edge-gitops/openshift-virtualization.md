@@ -265,7 +265,7 @@ You could also use the "Create VM Wizard" in the OpenShift console.
 
 ### Another option - capturing template output and converting it into a Helm Chart
 
-See details [here](/ansible-edge-gitops/ideas-for-customization/#howto-define-your-own-vm-sets-from-scratch).
+See details [here](/patterns/ansible-edge-gitops/ideas-for-customization/#howto-define-your-own-vm-sets-from-scratch).
 
 ## Components of the [virtual-machines](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml) template
 
