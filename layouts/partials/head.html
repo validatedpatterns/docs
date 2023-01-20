@@ -4,9 +4,9 @@
   <link rel="stylesheet" href="{{ $style.Permalink }}">
   {{ $sass := resources.Get "sass/patternfly-addons.scss" }}
   {{ $style := $sass | resources.ToCSS }}
+  <link rel="stylesheet" href="/css/custom.css">
   <link rel="stylesheet" href="{{ $style.Permalink }}">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/fontawesome.css">
-  {{ partial "custom-css.html" .}}
   <title>{{ if eq .IsHome false }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
 </head>
