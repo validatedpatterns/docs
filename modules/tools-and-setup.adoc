@@ -12,7 +12,7 @@ https://www.github.com/join[sign up for a GitHub account].
 == Set up authentication
 When you have your account set up, follow the instructions to
 https://help.github.com/articles/generating-ssh-keys/[generate and set up SSH
-keys on GitHub] for proper authentication between your workstation and GitHub.
+keys on GitHub] for authentication between your workstation and GitHub.
 
 Confirm authentication is working correctly with the following command:
 
@@ -21,6 +21,7 @@ $ ssh -T git@github.com
 ----
 
 == Fork and clone the Hybrid Cloud Patterns documentation repository
+
 You must fork and set up the Hybrid Cloud Patterns documentation repository on your workstation so that you can create PRs and contribute. These steps must only be performed during initial setup.
 
 . Fork the https://github.com/hybrid-cloud-patterns/docs repository into your
@@ -53,14 +54,16 @@ This ensures that you are tracking the remote repository to keep your local
 repository in sync with it.
 
 == Install Asciidoctor
+
 The Hybrid Cloud Patterns documentation is created in AsciiDoc language, and is processed with http://asciidoctor.org/[AsciiDoctor], which is an AsciiDoc language processor.
 
 === Prerequisites
+
 The following are minimum requirements:
 
 * A bash shell environment (Linux and OS X include a bash shell environment)
-* A web browser (Firefox, Chrome, or Safari)
-* https://docs.asciidoctor.org/asciidoctor/latest/tooling/#web-browser-add-ons-preview-only[Web browser add-ons (preview only)]??
+* A web browser (Mozilla Firefox, Google Chrome, or Safari)
+* https://docs.asciidoctor.org/asciidoctor/latest/tooling/#web-browser-add-ons-preview-only[Web browser add-ons (preview only)]
 * An editor that can strip trailing whitespace
 * An https://docs.asciidoctor.org/asciidoctor/latest/install/[installer]
 

@@ -42,7 +42,7 @@ Use lowercase separated by dash. Create assembly and module file names that accu
 .Examples
 * `designing-guided-decision-tables.adoc` (Assembly of guided decision table modules)
 * `guided-decision-tables.adoc` (Concept module)
-* `creating-guided-decision-tables.adoc`` (Procedure module for creating)
+* `creating-guided-decision-tables.adoc` (Procedure module for creating)
 * `guided-decision-table-examples.adoc` (Reference module with examples)
 
 === Content type attributes
