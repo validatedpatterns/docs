@@ -5,6 +5,7 @@
 :imagesdir: ../images
 
 == General guidelines
+
 When authoring content, follow these style guides:
 
 * link:https://redhat-documentation.github.io/supplementary-style-guide/[Red Hat Supplementary Style Guide]
@@ -56,7 +57,7 @@ Add the attribute from the following list that corresponds to your file type:
 * `:_content-type: PROCEDURE`
 * `:_content-type: REFERENCE`
 
-See, xref:doc_guidelines.adoc#assembly-file-metadata[Assembly file metadata] and xref:doc_guidelines.adoc#module-file-metadata[Module file metadata].
+See, xref:assembly-file-metadata[Assembly file metadata] and xref:module-file-metadata[Module file metadata].
 
 == Naming conventions for directories
 

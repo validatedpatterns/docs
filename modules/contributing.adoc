@@ -46,8 +46,7 @@ When you submit a PR, the https://github.com/orgs/hybrid-cloud-patterns/teams/do
 └── README.adoc
 ----
 
-== Next steps
-* link:https://hybrid-cloud-patterns.io/contribute/contribute-to-docs/#contributing-to-docs-tools-and-setup[Install and set up the tools and software] on your workstation so that you can contribute.
-* link:https://hybrid-cloud-patterns.io/contribute/contribute-to-docs/#contributing-to-docs-doc-guidelines[Review the documentation guidelines] to
-understand some basic guidelines to keep documentation consistent
-across our content.
+//to-do: commenting out this section since presently this is rendered as one single page and the topics under the link immediately follow the "Next steps" section. Originally, the links under the "Next steps" section were meant to open as new pages, which they currently don't.
+//== Next steps
+//* link:https://hybrid-cloud-patterns.io/contribute/contribute-to-docs/#contributing-to-docs-tools-and-setup[Install and set up the tools and software] on your workstation so that you can contribute.
+//* link:https://hybrid-cloud-patterns.io/contribute/contribute-to-docs/#contributing-to-docs-doc-guidelines[Review the documentation guidelines] to understand some basic guidelines to keep documentation consistent across our content.
