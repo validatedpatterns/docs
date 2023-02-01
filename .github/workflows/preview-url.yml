@@ -1,0 +1,14 @@
+name: Auto Comment
+on: [issues, pull_request]
+jobs:
+  autocomment:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: wow-actions/auto-comment@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pullRequestOpened: |
+            👋 @{{ author }}
+            You should be able to see a rendered preview of this PR in a few minutes (max 5) here:
+            https://docs-pr.acksyn.org/pr/{{ id }}/public/
