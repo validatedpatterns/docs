@@ -3,6 +3,8 @@ on: [issues, pull_request]
 jobs:
   run:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - uses: wow-actions/auto-comment@v1
         with:
