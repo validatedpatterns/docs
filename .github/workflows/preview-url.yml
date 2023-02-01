@@ -3,8 +3,9 @@ on: [issues, pull_request]
 jobs:
   autocomment:
     runs-on: ubuntu-latest
-    permissions: write-all
-      #pull-requests: write-all
+    permissions:
+      pull-requests: write
+      contents: read
     steps:
       - uses: wow-actions/auto-comment@v1
         with:
