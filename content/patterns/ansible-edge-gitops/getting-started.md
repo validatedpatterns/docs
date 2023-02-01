@@ -55,6 +55,17 @@ secrets:
     container_extra_params: "Optional extra params to pass to kiosk ignition container, including admin password"
 ```
 
+* A userData block to use with cloud-init. This will allow console login as the user you specify (traditionally cloud-user) with the password you specify. The value in cloud-init is used as the default; roles in the edge-gitops-vms chart can also specify other secrets to use by referencing them in the role block.
+
+```yaml
+  cloud-init:
+    userData: |-
+      #cloud-config
+      user: 'username of user for console, probably cloud-user'
+      password: 'a suitable password to use on the console'
+      chpasswd: { expire: False }
+```
+
 * A manifest file with an entitlement to run Ansible Automation Platform. This file (which will be a .zip file) will be posted to to Ansible Automation Platform instance to enable its use.  Instructions for creating a manifest file can be found [here](https://www.redhat.com/en/blog/how-create-and-use-red-hat-satellite-manifest)
 
 ```yaml
