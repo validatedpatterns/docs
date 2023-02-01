@@ -524,3 +524,4 @@ zefrgjryxxxxxxxxx
 zh
 zj
 zk
+Gitea

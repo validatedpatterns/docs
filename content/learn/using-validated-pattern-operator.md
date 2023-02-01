@@ -53,3 +53,62 @@ Review the rest of the form fields and check if they require changes. For first 
 From there OpenShift GitOps will install the rest of the assets and artifacts for this pattern. Make sure to change your project to `All Projects` so you will see the other operators installing. E.g. Advanced Cluster Management (ACM).
 
 Please follow any other post-install instructions for the pattern on that pattern's `Getting started` page.
+
+## Using the in-cluster Gitea server
+
+The operator supports the ability to host a forked version of the pattern inside the cluster. This means you don't need to fork the pattern repository before deploying it in your cluster to be able to tweak while you work on it. This can be useful if you don't want to host the forked repository outside the cluster, or for a quick demo.
+
+[![Enabling in-cluster fork](/images/operator/enable-in-cluster-fork.png)](/images/operator/enable-in-cluster-fork.png))
+
+To enable the in cluster fork, extend the `gitSpec` section in the pattern and tick the `useInClusterFork` checkbox. During the reconciliation loop, the operator will deploy a Gitea server, if none exists already, and fork the repository defined in the `target Repo` and `target Revision` onto the Gitea instance. Then it will use the newly forked repository as the source URL in the argoCD application. The URL of the newly created repository will be captured in the `Pattern` Status section, under the `inClusterRepo` field.
+
+The Gitea server uses a persistent volume to store the git information to ensure that the data remains even if the Gitea server is not available.
+
+```yaml
+status:
+  ...
+  inClusterRepo: https://gitea-gitea.apps.jgil-gitops.gifm.p1.openshiftapps.com/hybrid-cloud-patterns/multicloud-gitops.git
+  ...
+```
+
+At this point we're ready to clone the repository locally:
+
+```bash
+$> git clone https://gitea-gitea.apps.jgil-gitops.gifm.p1.openshiftapps.com/hybrid-cloud-patterns/multicloud-gitops.git
+Cloning into 'multicloud-gitops'...
+remote: Enumerating objects: 7367, done.
+remote: Counting objects: 100% (7367/7367), done.
+remote: Compressing objects: 100% (3291/3291), done.
+remote: Total 7367 (delta 3658), reused 7367 (delta 3658), pack-reused 0
+Receiving objects: 100% (7367/7367), 2.58 MiB | 9.24 MiB/s, done.
+Resolving deltas: 100% (3658/3658), done.
+```
+
+Before pushing changes to the repository, we'll need to extract the user credentials that are found in the `gitea` namespace, under the `gitea-user-credentials` secret:
+
+```bash
+$> oc get secret gitea-user-credentials -n gitea -ojsonpath='{.data.username}'|base64 -d
+hybrid-cloud-patterns
+$> oc get secret gitea-user-credentials -n gitea -ojsonpath='{.data.password}'|base64 -d
+HZL#4AMh*$5w*16p
+```
+
+With these values at hand, we push the changes:
+
+```bash
+$> git push
+Username for 'https://gitea-gitea.apps.jgil-gitops.gifm.p1.openshiftapps.com': hybrid-cloud-patterns
+Password for 'https://hybrid-cloud-patterns@gitea-gitea.apps.jgil-gitops.gifm.p1.openshiftapps.com': ***************
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 297 bytes | 297.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: . Processing 1 references
+remote: Processed 1 references in total
+To https://gitea-gitea.apps.jgil-gitops.gifm.p1.openshiftapps.com/hybrid-cloud-patterns/multicloud-gitops.git
+   0a4e3bf..ff79b6b  main -> main
+```
+
+The gitops server will detect the newly applied changes and reconcile the pattern accordingly.
