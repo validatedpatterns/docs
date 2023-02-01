@@ -4,7 +4,6 @@ jobs:
   autocomment:
     runs-on: ubuntu-latest
     permissions:
-      pull-requests: write
       contents: read
     steps:
       - uses: wow-actions/auto-comment@v1
