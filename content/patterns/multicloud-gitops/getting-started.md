@@ -13,8 +13,7 @@ aliases: /multicloud-gitops/getting-started/
   * Select **OpenShift -> Clusters -> Create cluster**.
   * The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See [sizing your cluster](../../multicloud-gitops/cluster-sizing).
 * Optional: A second OpenShift cluster for multicloud demonstration.
-* A GitHub account and, optionally, a token for it with repositories permissions, to read from and write to your forks.
-* The Helm binary. For details, see [Installing Helm](https://helm.sh/docs/intro/install/).
+* The git binary and podman. For details see [Installing Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Installing Podman](https://podman.io/getting-started/installation)
 
 The use of this pattern depends on having at least one running Red Hat
 OpenShift cluster. It is desirable to have a cluster for deploying the GitOps
@@ -30,7 +29,7 @@ service](https://console.redhat.com/openshift/create).
 
    {% include prerequisite-tools.md %}
 
-2. Fork the [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops) repository on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+2. Fork the [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops) repository on GitHub. It is recommended to fork because you can update your fork as part of the GitOps and DevOps processes.
 
 3. Clone the forked copy of this repository.
 
@@ -38,14 +37,16 @@ service](https://console.redhat.com/openshift/create).
     git clone git@github.com:your-username/multicloud-gitops.git
     ```
 
-4. Create a local copy of the Helm values file that can safely include credentials.
+4. Create a local copy of the secret values file that can safely include credentials.
 
     **Warning:**
     Do not commit this file. You do not want to push personal credentials to GitHub.
+    Note that if you do not want to customize the secrets, these steps are not needed,
+    The framework will just generate a random password for the config-demo application
 
     ```sh
-    cp values-secret.yaml.template ~/values-secret.yaml
-    vi ~/values-secret.yaml
+    cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
+    vi ~/values-secret-multicloud-gitops.yaml
     ```
 
 5. Customize the deployment for your cluster.
@@ -58,17 +59,11 @@ service](https://console.redhat.com/openshift/create).
    git push origin my-branch
    ```
 
-6. You can deploy the pattern using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you do use the Operator, then skip Verification.
+6. You can deploy the pattern by running `./pattern.sh make install` or by using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you choose the former please use the following steps
 
-## Verification
+## ./pattern make install
 
-1. Preview the changes.
-
-    ```sh
-    make show
-    ```
-
-2. Login to your cluster using oc login or exporting the `KUBECONFIG`.
+1. Login to your cluster using oc login or exporting the `KUBECONFIG`.
 
     ```sh
     oc login
@@ -80,10 +75,10 @@ service](https://console.redhat.com/openshift/create).
     export KUBECONFIG=~/my-ocp-env/hub/auth/kubconfig
     ```
 
-3. Apply the changes to your cluster.
+2. Deploy the pattern to your cluster.
 
     ```sh
-    make install
+    ./pattern.sh make install
     ```
 
 4. Verify that the Operators have been installed.
