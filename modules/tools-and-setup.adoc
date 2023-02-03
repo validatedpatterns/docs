@@ -67,8 +67,10 @@ The following are minimum requirements:
 * An editor that can strip trailing whitespace
 * An https://docs.asciidoctor.org/asciidoctor/latest/install/[installer]
 
+=== Preview the documentation using a container
+
+* To build the documentation locally, you can run `make serve` from the docs git repository folder and then point your browser to `localhost:4000`. This requires `make` and `podman` to be installed.
 //to-do: Add instructions to "Install Hugo"
 
-//to-do: Add instructions "Deploy Hugo as a container image"
 
 
