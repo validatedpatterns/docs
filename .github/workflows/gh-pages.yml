@@ -19,7 +19,7 @@ jobs:
         with:
           ruby-version: 2.7
 
-      - run: gem install asciidoctor
+      - run: gem install asciidoctor rouge
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
