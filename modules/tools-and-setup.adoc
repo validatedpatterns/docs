@@ -67,8 +67,20 @@ The following are minimum requirements:
 * An editor that can strip trailing whitespace
 * An https://docs.asciidoctor.org/asciidoctor/latest/install/[installer]
 
+=== Preview the documentation using a container image
+
+You can use the container image to build the Hybrid Cloud Patterns documentation, locally. To do so, ensure that you have installed the `make` and `podman` tools.
+
+ * In the terminal window, navigate to the local instance of the `hybrid-cloud-patterns/docs` repository and run the following command:
+
+[source,terminal]
+----
+$ make server
+----
+
+.Verification
+A preview is available on your browser at `localhost:4000`.
 //to-do: Add instructions to "Install Hugo"
 
-//to-do: Add instructions "Deploy Hugo as a container image"
 
 
