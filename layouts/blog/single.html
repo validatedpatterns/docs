@@ -45,10 +45,9 @@
             {{ .Content }}
           </div>
         </div>
-        <div class="pf-l-grid__item pf-m-4-col">
           {{ partial "toc.html" . }}
-        </div>
       </div>
     </section>
+    {{ partial "footer.html" . }}
   </main>
 {{ end }}

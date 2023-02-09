@@ -1,24 +1,21 @@
 {{ define "main" }}
   {{ $section := .Site.GetPage "section" .Section }}
-  <div class="pf-c-page__sidebar">
-    <div class="pf-c-page__sidebar-body">
-      {{ partial "menu-contribute.html" . }}
-    </div>
-  </div>
-  <main class="pf-c-page__main">
-    <section class="pf-c-page__main-section pf-m-fill pf-m-light-100">
-      <div class="pf-l-grid pf-m-gutter">
-        <div class="pf-l-grid__item pf-m-8-col">
-          <div class="pf-c-content">
-            <div class="pf-c-content">
-              {{ .Content }}
-            </div>
-          </div>
-        </div>
-        <div class="pf-l-grid__item pf-m-4-col">
-          {{ partial "toc.html" . }}
+      <div class="pf-c-page__sidebar">
+        <div class="pf-c-page__sidebar-body">
+          {{ partial "menu-contribute.html" . }}
         </div>
       </div>
-    </section>
-  </main>
+    <main class="pf-c-page__main">
+      <section class="pf-c-page__main-section pf-m-fill pf-m-light-100">
+        <div class="pf-l-grid pf-m-gutter">
+          <div class="pf-l-grid__item pf-m-8-col">
+            <div class="pf-c-content">
+                {{ .Content }}
+            </div>
+          </div>
+            {{ partial "toc.html" . }}
+        </div>
+      </section>
+      {{ partial "footer.html" . }}
+    </main> 
 {{ end }}
