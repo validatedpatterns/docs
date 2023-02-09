@@ -69,7 +69,17 @@ The following are minimum requirements:
 
 === Preview the documentation using a container image
 
-* To build the documentation locally, you can run `make serve` from the docs git repository folder and then point your browser to `localhost:4000`. This requires `make` and `podman` to be installed.
+You can use the container image to build the Hybrid Cloud Patterns documentation, locally. To do so, ensure that you have installed the `make` and `podman` tools.
+
+ * In the terminal window, navigate to the local instance of the `hybrid-cloud-patterns/docs` repository and run the following command:
+
+[source,terminal]
+----
+$ make server
+----
+
+.Verification
+A preview is available on your browser at `localhost:4000`.
 //to-do: Add instructions to "Install Hugo"
 
 
