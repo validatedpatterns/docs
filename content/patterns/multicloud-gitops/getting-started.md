@@ -61,7 +61,8 @@ service](https://console.redhat.com/openshift/create).
 
 6. You can deploy the pattern by running `./pattern.sh make install` or by using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you choose the former please use the following steps
 
-## ./pattern make install
+##  Deploying the cluster by using the pattern.sh file
+To deploy the cluster by using the `pattern.sh` file, complete the following steps:
 
 1. Login to your cluster using oc login or exporting the `KUBECONFIG`.
 
