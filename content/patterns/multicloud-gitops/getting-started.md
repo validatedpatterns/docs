@@ -41,7 +41,7 @@ service](https://console.redhat.com/openshift/create).
 
     **Warning:**
     Do not commit this file. You do not want to push personal credentials to GitHub.
-    Note that if you do not want to customize the secrets, these steps are not needed,
+    Note that if you do not want to customize the secrets, these steps are not needed.
     The framework generates a random password for the config-demo application.
 
     ```sh
