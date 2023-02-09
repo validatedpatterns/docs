@@ -1,0 +1,79 @@
+---
+layout: default
+title: Patterns quick start
+menu: learn
+weight: 20
+---
+
+== Patterns quick start
+
+Each pattern can be deployed using the command line. The only requirement is to have `git` and `podman` installed. See the <<installation_prerequisites>> for more information.
+
+Check the `values-\*.yaml` for changes that are needed before deployment. After changing the `values-*.yaml` files where needed and pushing them to your git repository, you can run `./pattern.sh make install` from your local repository directory and that will deploy the datacenter/hub cluster for a pattern. Edge clusters are deployed by joining/importing them into ACM on the hub.
+
+Alternatively to the `./pattern.sh make install` method, you can use the https://operatorhub.io/operator/patterns-operator[validated pattern operator] available in the OpenShift console.
+
+For information on using the Validated Patterns Operator, see link:/infrastructure/using-validated-pattern-operator/[Using the Validated Pattern Operator].
+
+Follow any other post-install instructions for the pattern on that pattern’s Getting started page.
+
+
+== Prerequisite installation instructions [[installation_prerequisites]]
+
+== Tested Operating systems
+The following instructions have been tested on the following operating systems:
+
+* Red Hat Enterprise Linux 8 and 9
+* CentOS 8 and 9
+* Fedora 36 and onwards
+* Debian Bookworm
+* Ubuntu 22.04
+* Mac OSX Big Sur and onwards
+
+=== Red Hat Enterprise Linux 8 and 9
+Make sure that you have both the `appstream` and the `baseos` repositories configured.
+For example on RHEL 8 you will get the following:
+
+[source,terminal]
+----
+sudo dnf repolist
+Updating Subscription Management repositories.
+repo id                               repo name
+rhel-8-for-x86_64-appstream-rpms      Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
+rhel-8-for-x86_64-baseos-rpms         Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
+----
+
+Install `podman` and `git`:
+
+[source,terminal]
+----
+sudo dnf install -y podman git
+----
+
+=== Fedora
+Install `podman` and `git`:
+
+[source,terminal]
+----
+sudo dnf install -y podman git
+----
+
+=== Debian and derivatives
+Install `podman` and `git`:
+
+[source,terminal]
+----
+sudo apt-get install -y podman git
+----
+
+=== Mac OSX
+Install `podman` and `git`:
+
+[source,terminal]
+----
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install podman git
+# Containers on MacOSX run in a VM which is managed by "podman machine" commands
+podman machine init -v ${HOME}:${HOME} -v /private/tmp/:/private/tmp
+podman machine start
+----
