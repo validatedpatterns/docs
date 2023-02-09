@@ -10,13 +10,15 @@ else
 	ATTRS = "rw,z"
 endif
 
+##@ Docs tasks
+
 .PHONY: help
 # No need to add a comment here as help is described in common/
 help:
-	@printf "$$(grep -hE '^\S+:.*##' $(MAKEFILE_LIST) | sort | sed -e 's/:.*##\s*/:/' -e 's/^\(.\+\):\(.*\)/\\x1b[36m\1\\x1b[m:\2/' | column -c2 -t -s :)\n"
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^(\s|[a-zA-Z_0-9-])+:.*?##/ { printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 .PHONY: test
-test: spellcheck
+test: spellcheck ## Runs tests
 	@echo "Ran all tests"
 
 .PHONY: build
@@ -32,6 +34,15 @@ serve: ## Build the website locally from a container and serve it
 htmltest: build ## Runs htmltest against the site to find broken links
 	@echo "Running html proof to check links"
 	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint htmltest $(HOMEPAGE_CONTAINER)
+
+.PHONY: run
+run: ## Runs the container interactively
+	@echo "Running html proof to check links"
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) $(HOMEPAGE_CONTAINER)
+
+.PHONY: update-container
+update-container: ## Updates the container used for local testing
+	podman pull $(HOMEPAGE_CONTAINER)
 
 .PHONY: spellcheck
 spellcheck: ## Runs a spellchecker on the content/ folder
