@@ -59,7 +59,7 @@ service](https://console.redhat.com/openshift/create).
    git push origin my-branch
    ```
 
-6. You can deploy the pattern by running `./pattern.sh make install` or by using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you choose the former please use the following steps
+6. You can deploy the pattern by running `./pattern.sh make install` or by using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). 
 
 ##  Deploying the cluster by using the pattern.sh file
 To deploy the cluster by using the `pattern.sh` file, complete the following steps:
