@@ -29,7 +29,6 @@ jobs:
 
       - name: Build
         run: |
-          alias asciidoctor="asciidoctor --no-header-footer --attribute=experimental=true --attribute=icons=font"
           hugo --minify
 
       - name: Deploy
