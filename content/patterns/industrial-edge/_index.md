@@ -135,6 +135,7 @@ _Figure 8: Schematic view of secrets exchange and management in an Industrial Ed
 
 Authentication is used to securely deploy and update components across multiple locations. The credentials are stored using a secrets management solution like Hashicorp Vault. The external secrets component is used to integrate various secrets management tools (AWS Secrets Manager, Google Secrets Manager, Azure Key Vault). As shown in Figure 7, these secrets are then passed to Red Hat Advanced Cluster Management for Kubernetes (RHACM) which pushes the secrets to the RHACM agent at the edge clusters based on policy. RHACM is also responsible for providing secrets to OpenShift for GitOps workflows( using Tekton and Argo CD).
 
+For logical, physical and dataflow diagrams, please see excellent work done by the [Red Hat Portfolio Architecture team](https://www.redhat.com/architect/portfolio/detail/26)
 
 ## Demo Scenario
 
@@ -158,7 +159,6 @@ The northbound traffic of sensor data is visible in Figure 9. It flows from the 
 
 The southbound traffic is abstracted  in the App-Dev / Pipeline box at the top. This is where GitOps kicks in to push config or version changes down into the factories.
 
-Industrial edge pattern: https://hybrid-cloud-patterns.io/industrial-edge/
 
 ## Download diagrams
 
