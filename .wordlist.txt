@@ -182,6 +182,7 @@ gitspec
 golang
 gpus
 grafana
+grpc
 gsis
 gz
 hardcoded
@@ -216,6 +217,7 @@ informa
 informat
 informati
 informatio
+ingester
 init
 instantiatable
 integrations
@@ -323,6 +325,9 @@ nvv
 nzrxxxxxxxx
 oauth
 objectstore
+observability
+observatorium
+observatorium's
 oc
 oci
 ocp
@@ -366,14 +371,17 @@ processserver
 productization
 productizing
 programmatically
+promtail
 psql
 pstools
 pubkey
 publickey
 pv
 qe
+ql
 quarkus
 quarkuscoffeeshop
+querier
 quickstart
 rabbitmq
 rdma
@@ -460,6 +468,8 @@ templ
 templa
 templating
 tengvall
+thanos
+thanos's
 thi
 tib
 tmm
@@ -501,6 +511,7 @@ vnq
 vnw
 vps
 waterholing
+websocket
 wfnt
 wgdbnwft
 whenry

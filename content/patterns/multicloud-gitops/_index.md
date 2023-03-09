@@ -116,7 +116,7 @@ As detailed below, Figure 5 provides a schematic diagram showing remaining activ
 
 - Manifest and configuration are set as code template in the form of “Kustomization” yaml. It describes the end desire state of how the managed cluster is going to be like. When done, it is pushed into the source control management repository with a version assigned to each update.
 - OpenShift GitOps watches the repository and detects changes in the repository.
-- OpenShift GitOps creates/updates the manifest by creating Kuberenet objects on top of Red Hat Advanced Cluster Management.
+- OpenShift GitOps creates/updates the manifest by creating Kubernetes objects on top of Red Hat Advanced Cluster Management.
 - Red Hat Advanced Cluster Management provision/update/delete managed clusters and configuration according to the manifest. In the manifest, you can configure what cloud provider the cluster will be on, the name of the cluster, infra node details and worker node. Governance policy can also be applied as well as provision an agent in the cluster as the bridge between the control center and the managed cluster.
 - OpenShift GitOps will continuously watch between the code repository and status of the clusters reported back to Red Hat Advanced Cluster Management. Any configuration drift or in case of any failure, it will automatically try to remediate by applying the manifest (Or showing alerts for manual intervention).
 
