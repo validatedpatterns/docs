@@ -142,7 +142,7 @@ Secrets are created in each namespace, where applications can use them.
 ### Observability in hybrid multicloud environment
 
 
-[![Schematic showing the use of Observatorium and other tools to add observability to the solution](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-monitoring.png.png)](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-monitoring.png.png)
+[![Schematic showing the use of Observatorium and other tools to add observability to the solution](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-monitoring.png)](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-monitoring.png)
 
 _Figure 7. Schematic showing the use of Observatorium and other tools to add observability to the solution._
 
