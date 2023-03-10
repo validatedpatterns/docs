@@ -1,0 +1,26 @@
+:_content-type: REFERENCE
+:imagesdir: ../../images
+
+[id="support-matrix-for-multicloud-gitops-pattern-cluster-sizing"]
+= Support matrix for the Multicloud GitOps pattern
+
+The Multicloud GitOps pattern has been tested in the following Certified Cloud Providers.
+
+|===
+| Certified Cloud Providers | 4.8 | 4.9 | 4.10
+
+| Amazon Web Services
+|
+|&#10003;
+|
+
+| Microsoft Azure
+|
+|&#10003;
+|
+
+| Google Cloud Platform
+|&#10003;
+|
+|
+|===

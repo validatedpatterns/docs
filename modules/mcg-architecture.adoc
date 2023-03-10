@@ -1,0 +1,74 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="overview-architecture"]
+= Overview of the architectures
+
+The following figure provides a schematic diagram overview of the complete solution including both components and data flows.
+
+//figure 3 originally
+.Overview schematic diagram of the complete solution
+image::multicloud-gitops/schema-gitops.png[Physical Architecture]
+
+Subsequent schematic diagrams provide details on:
+
+* Bootstrapping the management hub (Figure 4)
+* Hybrid multi-cloud GitOps (Figure 5)
+* Dynamic security management (Figure 6)
+
+[id="bootstrapping-management-hub"]
+== Bootstrapping the management hub
+
+The following figure provides a schematic diagram showing the setup of the management hub using Ansible playbooks.
+
+//figure 4 originally
+.Schematic diagram of bootstrapping the management hub
+image::multicloud-gitops/spi-multi-cloud-gitops-sd-install.png[Schematic diagram of bootstrapping the management hub]
+
+* Set up the OpenShift Container Platform that hosts the Management Hub. The OpenShift installation program provides flexible ways to install OpenShift. An Ansible playbook starts the installation with necessary configurations.
+
+* Ansible playbooks deploy and configure Red Hat Advanced Cluster Management for Kubernetes and, later, other supporting components such as external secrets management, on top of the provisioned OpenShift cluster.
+
+* Another Ansible playbook installs HashiCorp Vault, a Red Hat partner product chosen for this solution that can be used to manage secrets for OpenShift clusters.
+
+* An Ansible playbook configures and installs the Openshift GitOps operator on the hub cluster. This deploys the Openshift GitOps instance to enable continuous delivery.
+
+[id="hybrid-multicloud-gitops"]
+== Hybrid Multicloud GitOps
+
+The following figure provides a schematic diagram showing remaining activities associated with setting up the management hub and clusters using Red Hat Advanced Cluster Management.
+
+//figure 5 originally
+.Schematic diagram of hybrid multi-cloud management with GitOps
+image::multicloud-gitops/spi-multi-cloud-gitops-sd-security.png[Schematic diagram of hybrid multi-cloud management with GitOps]
+
+* Manifest and configuration are set as code template in the form of a `Kustomization` YAML file. The file describes the desired end state of the managed cluster. When complete, the `Kustomization` YAML file is pushed into the source control management repository with a version assigned to each update.
+* OpenShift GitOps monitors the repository and detects changes in the repository.
+* OpenShift GitOps creates and updates the manifest by creating Kubernetes objects on top of Red Hat Advanced Cluster Management.
+* Red Hat Advanced Cluster Management provisions, updates, or deletes managed clusters and configuration according to the manifest. In the manifest, you can configure what cloud provider the cluster will be on, the name of the cluster, infrastructure node details and worker node. Governance policy can also be applied as well as provision an agent in the cluster as the bridge between the control center and the managed cluster.
+* OpenShift GitOps continuously monitors the code repository and the status of the clusters reported back to Red Hat Advanced Cluster Management. Any configuration drift or in case of any failure, OpenShift GitOps will automatically try to remediate by applying the manifest or by displaying alerts for manual intervention.
+
+[id="dynamic-security-management"]
+== Dynamic security management
+
+The following figure provides a schematic diagram showing how secrets are handled in this solution.
+
+//figure 6 originally
+.Schematic showing the setup and use of external secrets management
+image::multicloud-gitops/spi-multi-cloud-gitops-sd-security.png[Schematic showing the setup and use of external secrets management]
+
+* During setup, the token to securely access HashiCorp Vault is stored in Ansible Vault. It is encrypted to protect sensitive content.
+
+* Red Hat Advanced Cluster Management for Kubernetes acquires the token from Ansible Vault during install and distributes it among the clusters. As a result, you have centralized control over the managed clusters through RHACM.
+
+* To allow the cluster access to the external vault, you must set up the external secret management with Helm in this study. OpenShift Gitops is used to deploy the external secret object to a managed cluster.
+
+* External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
+
+* Secrets are created in each namespace, where applications can use them.
+
+[role="_additional-resources"]
+.Additional resources
+
+View and download all of the diagrams above from the link:https://www.redhat.com/architect/portfolio/tool/index.html?#gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/diagrams/spi-multi-cloud-gitops.drawio[Red Hat Portfolio Architecture open source tooling site].
+

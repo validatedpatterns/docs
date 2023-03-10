@@ -1,21 +1,23 @@
----
-title: Imperative Actions
-weight: 40
-aliases: /multicloud-gitops/imperative-actions/
----
+:_content-type: REFERENCE
+:imagesdir: ../../images
 
-# Imperative actions on the cluster
+[id="mcg-using-kubernetes-cronjob-imperative-actions"]
+= Using kubernetes cronjobs to apply imperative actions
 
-## Using kubernetes cronjobs to execute imperative actions
+There is currently no way within Argo CD to apply an imperative action against a cluster. However, you can declaratively apply changes to a cluster using kubernetes cronjob resources. Customers can use their Ansible playbooks to take action against a cluster if necessary.
 
-There is currently no way within argoCD to apply an imperative action against a cluster. So we have developed a way to declaratively apply changes to a cluster using kubernetes cronjob resources. Customers can use their ansible playbooks to take action against a cluster if necessary.
+[WARNING]
+====
+The authors of the Ansible playbooks and roles must ensure that the playbooks are idempotent because they get applied through cronjobs which are set to run every 10 minutes.
+====
 
-As a word of caution - the authors of the ansible playbooks and roles must ensure that the playbooks are idempotent because they get applied through cronjobs which are set to run every 10 minutes. Adding your playbooks to the pattern requires the following:
+Adding your playbooks to the pattern requires the following:
 
-1. move your ansible configurations to the appropriate directory under ansible in your forked repository
-2. define your job as a list (see example below)
+. Move your Ansible configurations to the appropriate directory under Ansible in your forked repository.
+. Define your job as a list, for example:
 
-```yaml
+[source,yaml]
+----
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
     # The default schedule is every 10 minutes: imperative.schedule
@@ -25,21 +27,22 @@ As a word of caution - the authors of the ansible playbooks and roles must ensur
     # the top level of this repository.
     jobs:
     - name: regional-ca
-      # ansible playbook to be run
+      # Ansible playbook to be run
       playbook: ansible/playbooks/on-hub-get-regional-ca.yml
       # per playbook timeout in seconds
       timeout: 234
       # verbosity: "-v"
-```
+----
 
-## Additional job customizations
+== Additional job customizations
 
-Overrides have been implemented to allow for further customization, please refer to the list below for the available overrides.
+The pattern includes override parameters to provide further customization. Refer to the list below for the available overrides.
 
-```yaml
+[source,yaml]
+----
   imperative:
     jobs: []
-    # This image contains ansible + kubernetes.core by default and is used to run the jobs
+    # This image contains Ansible + kubernetes.core by default and is used to run the jobs
     image: registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8:latest
     namespace: "imperative"
     # configmap name in the namespace that will contain all helm values
@@ -55,7 +58,7 @@ Overrides have been implemented to allow for further customization, please refer
     # Set to run every 9 minutes in order for load-secrets to succeed within
     # a reasonable amount of time (it waits up to 15 mins)
     insecureUnsealVaultInsideClusterSchedule: "*/9 * * * *"
-    # Increase ansible verbosity with '-v' or '-vv..'
+    # Increase Ansible verbosity with '-v' or '-vv..'
     verbosity: ""
     serviceAccountCreate: true
     # service account to be used to run the cron pods
@@ -64,4 +67,4 @@ Overrides have been implemented to allow for further customization, please refer
     clusterRoleYaml: ""
     roleName: imperative-role
     roleYaml: ""
-```
+----

@@ -15,6 +15,7 @@ markup:
   asciidocExt:
     attributes: {allow-uri-read, source-highlighter: rouge, icons: font, sectanchors}
     safeMode: unsafe
+    imagesdir: images
   tableOfContents:
     startLevel: 1
     endLevel: 3

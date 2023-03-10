@@ -1,0 +1,27 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+
+[id="mcg-openshift-datacenter-hub-cluster-size"]
+= Multicloud GitOps pattern with OpenShift datacenter hub cluster size
+
+The Multicloud GitOps pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
+
+The datacenter hub OpenShift cluster uses the following the AWS deployment configuration:
+
+[cols="<,^,<,<"]
+|===
+| Node Type | Number of nodes | Cloud Provider | Instance Type
+
+| Control Plane
+| 4
+| Amazon Web Services
+| m5.xlarge
+
+| Worker
+| 3
+| Amazon Web Services
+| m5.xlarge
+|===
+
+The datacenter hub OpenShift cluster needs to be a bit bigger than the Factory/Edge clusters because this is where the developers will be running pipelines to build and deploy the Multicloud GitOps pattern on the cluster. The above cluster sizing is close to a minimum size for a Datacenter HUB cluster. In the next few sections we take some snapshots of the cluster utilization while the Multicloud GitOps pattern is running. Keep in mind that resources will have to be added as more developers are working building their applications.

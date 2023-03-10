@@ -1,8 +1,9 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
 [id="contributing-to-docs-doc-guidelines"]
 = Documentation guidelines
-
-:description: Documentation guidelines for contributing to the Hybrid Cloud Patterns Docs
-:imagesdir: ../images
+Documentation guidelines for contributing to the Hybrid Cloud Patterns Docs
 
 == General guidelines
 

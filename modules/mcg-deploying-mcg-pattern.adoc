@@ -1,0 +1,115 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="deploying-mcg-pattern"]
+= Deploying the Multicloud GitOps pattern
+
+//Note that Block titles like these don't render correctly on the site
+.Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *OpenShift \-> Clusters \-> Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../multicloud-gitops/mcg-cluster-sizing[sizing your cluster].
+* Optional: A second OpenShift cluster for multicloud demonstration.
+* The git binary. See https://git-scm.com/book/en/v2/Getting-Started-Installing-Git[Installing Git]
+* The Podman tool. See https://podman.io/getting-started/installation[Installing Podman]
+
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
+
+If you do not have a running Red Hat OpenShift cluster, you can start one on a
+public or private cloud by using https://console.redhat.com/openshift/create[Red Hat Hybrid Cloud Console].
+
+.Procedure
+
+. https://hybrid-cloud-patterns.io/learn/quickstart/[Install the tooling dependencies].
++
+. Fork the https://github.com/hybrid-cloud-patterns/multicloud-gitops[multicloud-gitops] repository on GitHub.
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+git clone git@github.com:your-username/multicloud-gitops.git
+----
+
+. Create a local copy of the secret values file that can safely include credentials. Run the following commands:
++
+[source,terminal]
+----
+cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
+----
++
+[source,terminal]
+----
+vi ~/values-secret-multicloud-gitops.yaml
+----
++
+[WARNING]
+====
+Do not commit this file. You do not want to push personal credentials to GitHub. If you do not want to customize the secrets, these steps are not needed. The framework generates a random password for the config-demo application.
+====
+
+. Customize the deployment for your cluster. Run the following command:
++
+[source,terminal]
+----
+git checkout -b my-branch
+----
++
+[source,terminal]
+----
+vi values-global.yaml
+----
++
+[source,terminal]
+----
+git add values-global.yaml
+----
++
+[source,terminal]
+----
+git commit values-global.yaml
+----
++
+[source,terminal]
+----
+git push origin my-branch
+----
+
+. Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator].
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the cluster by using the pattern.sh file
+
+To deploy the cluster by using the `pattern.sh` file, complete the following steps:
+
+. Login to your cluster by running the following command:
++
+[source,terminal]
+----
+ oc login
+----
++
+Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
++
+[source,terminal]
+----
+ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster. Run the following command:
++
+[source,terminal]
+----
+ ./pattern.sh make install
+----
+
+. Verify that the Operators have been installed.
+ .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
+ .. Check that the Operator is installed in the `openshift-operators` namespace and its status is `Succeeded`.
+. Verify that all applications are synchronized. Under the project `multicloud-gitops-hub` click the URL for the `hub` gitops `server`. The Vault application is not synched.
++
+image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
+
+
+As part of this pattern, HashiCorp Vault has been installed. Refer to the section on https://hybrid-cloud-patterns.io/secrets/vault/[Vault].
