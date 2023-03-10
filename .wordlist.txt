@@ -95,6 +95,7 @@ customermocker
 customizable
 customizations
 cves
+cyber
 dasv
 datacenter
 dataflow
@@ -288,6 +289,7 @@ mdeng
 mhjacks
 mhjacks's
 mib
+microcontrollers
 microservices
 middleware
 militaries
@@ -412,9 +414,11 @@ rollouts
 rsa
 runnable
 runtime
+runtimes
 rxpm
 sas
 sbom
+scada
 scalability
 scalable
 scaleddown

@@ -38,7 +38,7 @@ Supervisory control and data acquisition (SCADA) has often been used to collecti
 ## Solution Overview
 
 
-[![High level view of Industrial Edge](/images/industrial-edge/edge-manufacturing-efficiency-marketing-slide.png)](images/industrial-edge/edge-manufacturing-efficiency-marketing-slide.png)
+[![High level view of Industrial Edge](/images/industrial-edge/edge-manufacturing-efficiency-marketing-slide.png)](/images/industrial-edge/edge-manufacturing-efficiency-marketing-slide.png)
 
 _Figure 1. Industrial edge solution overview._
 
