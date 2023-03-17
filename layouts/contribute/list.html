@@ -2,25 +2,27 @@
 <div class="pf-c-page__sidebar">
   <div class="pf-c-page__sidebar-body">
     {{ partial "menu-contribute.html" . }}
+  
   </div>
 </div>
 <main class="pf-c-page__main">
   <section class="pf-c-page__main-section">
     <div class="pf-l-stack pf-u-text-align-center">
-      <div class="pf-c-content" style="--pf-c-content--FontSize: 1rem;">
-        <h1 class="pf-c-title pf-m-4xl">
-          {{- .Title -}}
-        </h1>
+      <div class="pf-c-content" style="--pf-c-content--FontSize: 1rem">
+        <h1 class="pf-c-title pf-m-4xl">{{- .Title -}}</h1>
         {{ .Content }}
       </div>
     </div>
   </section>
   <section class="pf-c-page__main-section">
     <div class="pf-l-stack">
-      <div class="pf-c-content" >
-        <div class="pf-l-gallery pf-m-gutter" style="--pf-l-gallery--GridTemplateColumns--min: 300px;">
+      <div class="pf-c-content">
+        <div
+          class="pf-l-gallery pf-m-gutter"
+          style="--pf-l-gallery--GridTemplateColumns--min: 300px"
+        >
           {{ range .Paginator.Pages }}
-          <div class="pf-l-gallery__item" style="display: grid;">
+          <div class="pf-l-gallery__item" style="display: grid">
             {{ .Render "summary" }}
           </div>
           {{ end }}

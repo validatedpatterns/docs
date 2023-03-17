@@ -3,11 +3,10 @@
     {{ partial "menu-patterns.html" . }}
   </div>
 </div>
-<main class="pf-c-page__main">
+<main class="pf-c-page__main" tabindex="0" data-bs-spy="scroll" data-bs-target="#TableOfContents" data-bs-offset="50">
   <section class="pf-c-page__main-section">
-    <div class="pf-l-grid pf-m-gutter">
-      <div class="pf-l-grid__item pf-m-8-col">
-        <div class="pf-c-content">
+    <div class="pf-u-display-flex">
+        <div class="pf-c-content min-height">
           <div class="pattern-label">
             {{ $validated := .Param "validated" }}
             {{ if (eq $validated true ) }}
@@ -16,10 +15,7 @@
               {{ partial "label-community-pattern.html" . }}
             {{ end }}
           </div>
-          <div class="pf-c-content">
-            {{ .Content }}
-          </div>
-        </div>
+          {{ .Content }}
       </div>
         {{ partial "toc.html" . }}
     </div>
