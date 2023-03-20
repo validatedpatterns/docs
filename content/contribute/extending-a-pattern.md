@@ -22,23 +22,17 @@ In the example below AMQ Streams (Kafka) is chosen as a product to add to a patt
 
 ## Before starting, fork and clone first
 
-Visit the github page for the pattern that you wish to extend. E.g. [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops). Select “Fork” in the top right corner.
+1. Visit the github page for the pattern that you wish to extend. E.g. [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops). Select “Fork” in the top right corner.
 
-[![pattern-fork](/images/contribute/pattern-fork.png)](/images/contribute/pattern-fork.png)
+1. On the create a new fork page. You can choose what owner repository you want and the name of the fork. Most times you will fork into your personal repo and leave the name the same. When you have made the appropriate changes press the "Create fork" button.  
 
-Create a new fork. You can choose what owner repository you want and the name of the fork. Most times you will fork into your personal repo and leave the name the same. 
+1. You will need to clone from the new fork onto you laptop/desktop so that you can do the extension work effectively. So on the new fork’s main page elect the green “Code” button and copy the git repo’s ssh address.
 
-[![pattern-create-fork](/images/contribute/pattern-create-fork.png)](/images/contribute/pattern-create-fork.png)
-
-You will need to clone from the new fork onto you laptop/desktop so that you can do the extension work effectively. So on the fork’s main page select code and select ssh as the clone method. 
-
-[![pattern-clone](/images/contribute/pattern-clone.png)](/images/contribute/pattern-clone.png)
-
-Select the green “Code” button and copy the git repo’s ssh address.
-
-In an appropriate directory (e.g. `~/git`) use `git clone` on the command line using the ssh address copied above. Then create a branch to extend the pattern. 
+1. In an appropriate directory on your laptop (e.g. `~/git`) use `git clone` on the command line using the ssh address copied above. Then create a branch to extend the pattern. For example if you are extending the `multicloud-gitops` pattern and adding kafka, you will need to clone your fork of multicloud-gitops and create a branch to add Kafka:
 
 ```bash
+~/git> git clone git@github.com:<your git account>/multicloud-gitops.git
+~/git> cd multicloud-gitops
 ~/git/multicloud-gitops> git checkout -b add-kafka
 ```
 
@@ -212,7 +206,12 @@ spec:
 ```
 
 ## Add, Commit & Push
-Steps:
+**Steps:**
+
+1. Use `git status` to see what's changed that you need to add to your commit and add them using `git add`
+1. Commit the changes to the branch
+1. Push the branch to your fork.
+
 ```bash
 ~/git/multicloud-gitops> git status
 ~/git/multicloud-gitops> git add <the assets created/changed>
@@ -227,3 +226,5 @@ Let’s check the OpenShift console. This can take a bit of time for ArgoCD to p
 1. Select the Red Hat Integration - AMQ Streams operator.
 1. Select Kafka tab. Is there a new lab-cluster created?
 1. Select the Kafka Topic tab. Is there a lab-streams topic created?
+
+This is a very simple and minimal Kafka set up. It is likely you will need to add more manifests to the Chart but it is a good start.
