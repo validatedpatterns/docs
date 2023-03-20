@@ -2,7 +2,7 @@
 menu: contribute
 title: Extending an existing pattern
 weight: 20
-aliases: /creating-a-new-pattern/
+aliases: /extending-a-pattern/
 ---
 
 # Extending a pattern
@@ -21,10 +21,13 @@ This additions need to be made to the appropriate `values-<cluster grouping>.yam
 In the example below AMQ Streams (Kafka) is chosen as a product to add to a pattern.
 
 ## Before starting, fork and clone first
+
 Visit the github page for the pattern that you wish to extend. E.g. [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops). Select “Fork” in the top right corner.
+
 [![pattern-fork](/images/contribute/pattern-fork.png)](/images/contribute/pattern-fork.png)
 
 Create a new fork. You can choose what owner repository you want and the name of the fork. Most times you will fork into your personal repo and leave the name the same. 
+
 [![pattern-create-fork](/images/contribute/pattern-create-fork.png)](/images/contribute/pattern-create-fork.png)
 
 You will need to clone from the new fork onto you laptop/desktop so that you can do the extension work effectively. So on the fork’s main page select code and select ssh as the clone method. 
@@ -36,7 +39,6 @@ Select the green “Code” button and copy the git repo’s ssh address.
 In an appropriate directory (e.g. `~/git`) use `git clone` on the command line using the ssh address copied above. Then create a branch to extend the pattern. 
 
 ```bash
----
 ~/git/multicloud-gitops> git checkout -b add-kafka
 ```
 
@@ -92,7 +94,6 @@ You must add a Chart for Kafka:
 Because Kafka (AMQ Streams) is often used to communicate across different clusters in multi-cluster and/or multi-cloud environment you are going to add these to the the `all` sub dir `charts/all/kafka/templates` directory. In order to do that we must:
 
 ```bash
----
 ~/git/multicloud-gitops> mkdir charts/all/kafka
 ~/git/multicloud-gitops> mkdir charts/all/kafka/templates
 ```
@@ -213,7 +214,6 @@ spec:
 ## Add, Commit & Push
 Steps:
 ```bash
----
 ~/git/multicloud-gitops> git status
 ~/git/multicloud-gitops> git add <the assets created/changed>
 ~/git/multicloud-gitops> git commit -m “Added Kafka using AMQ Stream operator and Helm charts”
