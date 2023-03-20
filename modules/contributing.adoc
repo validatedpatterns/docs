@@ -9,7 +9,7 @@
 
 There are a few different ways you can contribute to Hybrid Cloud Patterns documentation:
 
-* Email the Hybrid Cloud Patterns team at `hybrid-cloud-patterns@googlegroups.com`.
+* Email the Hybrid Cloud Patterns team at mailto:hybrid-cloud-patterns@googlegroups.com[hybrid-cloud-patterns@googlegroups.com].
 * Create a link:https://github.com/hybrid-cloud-patterns/docs/issues[GitHub] or link:https://issues.redhat.com/projects/MBP/issues[Jira issue] .
 //to-do: Add link to the contribution workflow when we have a proper one. You might need to create a new file
 * Submit a pull request (PR). To create a PR, create a local clone of your own fork of the link:https://github.com/hybrid-cloud-patterns/docs[Hybrid Cloud Patterns docs repository], make your changes, and submit a PR. This option is best if you have substantial changes.
@@ -29,11 +29,14 @@ When you submit a PR, the https://github.com/orgs/hybrid-cloud-patterns/teams/do
 │   └── blog
 |   └── contribute
 |   └── learn
-|   |  └── multicloud-gitops
-|   |  | └──multicloud-gitops-assembly.adoc
-|   |  └── medical-diagnosis
-|   |    └── medical-diagnosis-assembly.adoc
 |   └── patterns
+|       └── multicloud-gitops
+|       |   └──_index.adoc
+|       |   └──mcg-getting-started.adoc
+|       |
+|       └── medical-diagnosis
+|           └──_index.adoc
+|           └── medical-diagnosis-assembly.adoc
 ├── layouts
 │   └── _default
 |   └── blog
@@ -41,6 +44,7 @@ When you submit a PR, the https://github.com/orgs/hybrid-cloud-patterns/teams/do
 │   └── multicloud-gitops-logical-architecture.adoc
 │   └── multicloud-gitops-physical-architecture.adoc
 ├── static
+|   └── images
 ├── themes/patternfly
 ├── config.yaml
 └── README.adoc

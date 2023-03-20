@@ -33,12 +33,14 @@ to clone the forked repository.
 .  Clone the forked repository onto your workstation with the following
 command, replacing _<user_name>_ with your actual GitHub username.
 +
+[source,terminal]
 ----
 $ git clone git@github.com:<user_name>/docs.git
 ----
 
 . Change into the directory for the local repository you just cloned.
 +
+[source,terminal]
 ----
 $ cd docs
 ----
@@ -46,6 +48,7 @@ $ cd docs
 . Add an upstream pointer back to the Hybrid Cloud Patterns's remote repository, in this
 case _docs_.
 +
+[source,terminal]
 ----
 $ git remote add upstream git@github.com:hybrid-cloud-patterns/docs.git
 ----
@@ -65,7 +68,7 @@ The following are minimum requirements:
 * A web browser (Mozilla Firefox, Google Chrome, or Safari)
 * https://docs.asciidoctor.org/asciidoctor/latest/tooling/#web-browser-add-ons-preview-only[Web browser add-ons (preview only)]
 * An editor that can strip trailing whitespace
-* An https://docs.asciidoctor.org/asciidoctor/latest/install/[installer]
+* An https://docs.asciidoctor.org/asciidoctor/latest/install/[Asciidoctor installer]
 
 === Preview the documentation using a container image
 
@@ -75,7 +78,7 @@ You can use the container image to build the Hybrid Cloud Patterns documentation
 
 [source,terminal]
 ----
-$ make server
+$ make serve
 ----
 
 .Verification
