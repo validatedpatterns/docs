@@ -1,7 +1,7 @@
 ---
 menu: contribute
 title: Creating a new pattern
-weight: 20
+weight: 30
 aliases: /creating-a-new-pattern/
 ---
 

@@ -14,7 +14,7 @@ Production clusters need to be secured and so one part of the deployment is to i
 
 By default the production applications are deployed on all `prod` clusters that ACM knows about.
 
-```json
+```yaml
   - name: secured
     helmOverrides:
     - name: clusterGroup.isHubCluster
