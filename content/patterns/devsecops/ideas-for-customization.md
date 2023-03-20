@@ -14,5 +14,5 @@ One of the major goals of the Red Hat patterns development process is to create 
 
 1. In the `region` directory make a new directory that will house the Helm chart for your tool.
 
-1. Follow the guide on [how to extend a pattern](/contribute/extending-a-pattern.md)
+1. Follow the guide on [how to extend a pattern](/contribute/extending-a-pattern/)
 

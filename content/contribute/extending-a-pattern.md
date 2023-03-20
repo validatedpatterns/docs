@@ -33,7 +33,7 @@ You will need to clone from the new fork onto you laptop/desktop so that you can
 
 Select the green “Code” button and copy the git repo’s ssh address.
 
-In an appropriate directory (e.g. `~/git`) usse `git clone` on the command line using the ssh address copied above. Then create a branch to extend the pattern. 
+In an appropriate directory (e.g. `~/git`) use `git clone` on the command line using the ssh address copied above. Then create a branch to extend the pattern. 
 
 ```bash
 ---
@@ -78,18 +78,18 @@ applications:
 ``` 
 
 ## Adding the Helm Chart
-The `path:` tag in the above kafka application tells ArgoCD where to find the Helm Chart needed to deploy this application. Paths are relative the the top level pattern directory and therefore in my example that is ~/git/my-new-pattern 
+The `path:` tag in the above kafka application tells ArgoCD where to find the Helm Chart needed to deploy this application. Paths are relative the the top level pattern directory and therefore in my example that is `~/git/multicloud-gitops`.  
 
 ArgoCD will continuously monitor for changes to artifacts in that location for updates to apply. Each different site type would have its own `values-` file listing subscriptions and applications.
 
 ### Helm Charts
-The previous steps merely instruct ArgoCD to install the operator for AMQ Streams. No Kakfa cluster or topics are created. There is more work to be done.
+The previous steps merely instruct ArgoCD to install the operator for AMQ Streams. No Kafka cluster or topics are created. There is more work to be done.
 
-We must add some charts for Kafka:
+You must add a Chart for Kafka:
 1. A Kafka cluster chart
 1. A Kafka topic chart.
 
-We are going to add these to the charts/all/kafka/templates directory. In order to do that we must:
+Because Kafka (AMQ Streams) is often used to communicate across different clusters in multi-cluster and/or multi-cloud environment you are going to add these to the the `all` sub dir `charts/all/kafka/templates` directory. In order to do that we must:
 
 ```bash
 ---
@@ -152,7 +152,7 @@ metadata:
 # annotations:
 #   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 #
-#   NOTE if needed you can use argocd synch-wave to delay a manifest  
+#   NOTE if needed you can use argocd sync-wave to delay a manifest  
 #   argocd.argoproj.io/sync-wave: "3"
 spec:
  entityOperator:
@@ -212,10 +212,13 @@ spec:
 
 ## Add, Commit & Push
 Steps:
+```bash
+---
 ~/git/multicloud-gitops> git status
 ~/git/multicloud-gitops> git add <the assets created/changed>
 ~/git/multicloud-gitops> git commit -m “Added Kafka using AMQ Stream operator and Helm charts”
 ~/git/multicloud-gitops> git push origin multicloud-gitops
+```
 
 ## Watch OpenShift GitOps hub cluster UI and see Kafka get deployed
 Let’s check the OpenShift console. This can take a bit of time for ArgoCD to pick it up and deploy the assets.

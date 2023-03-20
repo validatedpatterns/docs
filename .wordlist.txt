@@ -21,8 +21,10 @@ ansible
 apicast
 apicurito
 apis
+apiversion
 appdev
 applicati
+appversion
 architecturedetail
 argocd
 argocd's
@@ -147,6 +149,7 @@ efrqurrkuojrlsqhi
 ejuat
 endcomment
 endraw
+entityoperator
 entrypoint
 envi
 ep
@@ -221,6 +224,7 @@ informatio
 ingester
 init
 instantiatable
+insync
 integrations
 intellection
 interna
@@ -229,6 +233,7 @@ iotgateway
 iotsensor
 ipbabble
 ipi
+isr
 iz
 jboss
 jira
@@ -242,6 +247,7 @@ jws
 kafdrop
 kafkasource
 kafkatopics
+KafkaTopic
 kam
 kamelet
 keypair
@@ -297,6 +303,7 @@ millicore
 misconfiguration
 misconfigured
 mkzxbs
+mkdir
 mlops
 modularity
 mor
@@ -425,6 +432,7 @@ scaleddown
 secretstore
 sed
 seldon
+semver
 ser
 serverless
 serviceaccount
@@ -432,6 +440,7 @@ setweight
 shopfloor
 shopflor
 sigstore
+skipdryrunOnmissingresource
 sla
 slas
 sonarqube
@@ -472,14 +481,17 @@ templ
 templa
 templating
 tengvall
+testlab
 thanos
 thanos's
 thi
 tib
+tls
 tmm
 toc
 toh
 toplevel
+topicOperator
 topologies
 toprettyjson
 tpm
@@ -501,6 +513,7 @@ upstreaming
 upstream's
 userdata
 userguide
+useroperator
 userid
 usr
 vcpu
