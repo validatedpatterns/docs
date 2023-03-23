@@ -1,5 +1,5 @@
 ---
-title: CI Status
+title: Status
 ---
 
 Text:
