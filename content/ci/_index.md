@@ -2,8 +2,8 @@
 title: Status
 ---
 
-<iframe src="https://util.hybrid-cloud-patterns.io/dashboard.php?platform=aws" width="600" height="60"></iframe>
+<iframe class="ci-result" src="https://util.hybrid-cloud-patterns.io/dashboard.php?platform=aws" max-width="80%" height="40">
 
-<iframe src="https://util.hybrid-cloud-patterns.io/dashboard.php?pattern=manuela" width="800" height="100"></iframe>
+<iframe class="ci-result" src="https://util.hybrid-cloud-patterns.io/dashboard.php?pattern=manuela" max-width="80%" height="50"/>
 
-<iframe src="https://util.hybrid-cloud-patterns.io/dashboard.php" width="900" height="1600"></iframe>
+<iframe src="https://util.hybrid-cloud-patterns.io/dashboard.php" height="1400"/>
