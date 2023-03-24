@@ -9,6 +9,7 @@ addon
 addons
 adoc
 aeg
+aegitops
 afce
 afnmju
 agentless
@@ -216,6 +217,7 @@ hubcluster
 hubclusterdomain
 hyperconverged
 idempotence
+iframe
 ignoredifferences
 iiuc
 ilkka
@@ -299,8 +301,10 @@ managedsite's
 maxpods
 mbaldessari
 mbps
+mcgitops
 mcollective
 mdeng
+medicaldiag
 mhjacks
 mhjacks's
 mib
@@ -532,6 +536,7 @@ userguide
 useroperator
 userid
 usr
+util
 vcpu
 vcpus
 vdvkgdtuxkeqf

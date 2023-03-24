@@ -18,6 +18,8 @@ aliases: /industrial-edge/
   <img src="/images/logos/industrial-edge.png" class="pattern_logo" alt="Points">
 </div>
 
+{{< iframe "https://util.hybrid-cloud-patterns.io/dashboard.php?pattern=manuela" >}}
+
 # Industrial Edge Pattern
 
 {{% button text="Install" url="getting-started" color-class="btn-green" %}}
@@ -30,7 +32,7 @@ _Red Hat  Validated Patterns are detailed deployments created for different use 
 
 **Use Case:** Boosting manufacturing efficiency and product quality with artificial intelligence/machine learning (AI/ML) out to the edge of the network.
 
-**Background:** Microcontrollers and other types of simple computers have long been widely used on factory floors and processing plants to monitor and control the many machines required to implement the many machines required to implement many modern manufacturing workflows. 
+**Background:** Microcontrollers and other types of simple computers have long been widely used on factory floors and processing plants to monitor and control the many machines required to implement the many machines required to implement many modern manufacturing workflows.
 The manufacturing industry has consistently used technology to fuel innovation, production optimization, and operations. However, historically, control systems were mostly “dumb” in that they mostly took actions in response to pre-programmed triggers and heuristics. For example, predictive maintenance commonly took place on either a set length of time or the number of hours was in service.
 Supervisory control and data acquisition (SCADA) has often been used to collectively describe these hardware and software systems, which mostly functioned independently of the company’s information technology (IT) systems. Companies increasingly see the benefit of bridging these operational technology (OT) systems with their IT. Factory systems can be much more flexible as a result. They can also benefit from newer technologies such as AI/ML, thereby allowing for tasks like maintenance to be scheduled based on multiple real-time measurements rather than simple programmed triggers while bringing processing power closer to data.
 
@@ -43,7 +45,7 @@ Supervisory control and data acquisition (SCADA) has often been used to collecti
 _Figure 1. Industrial edge solution overview._
 
 
-Figure 1 provides an overview of the industrial edge solution. It is applicable across a number of verticals including manufacturing. 
+Figure 1 provides an overview of the industrial edge solution. It is applicable across a number of verticals including manufacturing.
 
 This solution:
 - Provides real-time insights from the edge to the core datacenter
@@ -81,7 +83,7 @@ The following technology was chosen for this solution as depicted logically in F
 
 ## The Technology
 
-[**Red Hat OpenShift**](https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it?intcmp=7013a00000318EWAAY) is an enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud,  and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. 
+[**Red Hat OpenShift**](https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it?intcmp=7013a00000318EWAAY) is an enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud,  and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere.
 
 [**Red Hat Application Foundations**](https://www.redhat.com/en/products/application-foundations?intcmp=7013a00000318EWAAY) (also sold as Red Hat Integration) includes frameworks and capabilities for designing, building, deploying, connecting, securing, and scaling cloud-native applications, including foundational patterns like microservices, API-first, and data streaming. When combined with Red Hat OpenShift, Application Foundations creates a hybrid cloud platform for development and operations teams to build and modernize applications efficiently and with attention to security, while balancing developer choice and flexibility with operational control.
 It includes, among other components::
@@ -154,7 +156,7 @@ The demo scenario reflects the data flows described earlier and shown in Figure 
 
 **Factory Data Center:** the near edge, at the plant, but in a more controlled environment.
 
-**Central Data Center:** the cloud/core, where ML model training, application development, testing, and related work happens. (Along with ERP systems and other centralized functions that are not part of this demo.) 
+**Central Data Center:** the cloud/core, where ML model training, application development, testing, and related work happens. (Along with ERP systems and other centralized functions that are not part of this demo.)
 
 The northbound traffic of sensor data is visible in Figure 9. It flows from the sensor at the bottom via MQTT to the factory, where it is split into two streams: one to be fed into an ML model for anomaly detection and another one to be streamed up to the central data center via event streaming (using Kafka) to be stored for model training.
 

@@ -1,7 +1,7 @@
 ---
 title: Multicluster DevSecOps
 date: 2022-06-08
-summary: This pattern is derived from the multi-cloud GitOps pattern with added products to provide a complete DevSecOps workflow. 
+summary: This pattern is derived from the multi-cloud GitOps pattern with added products to provide a complete DevSecOps workflow.
 products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
@@ -19,6 +19,8 @@ FIXME: uncomment once this exists
   <img src="/images/logos/devsecops.png" class="pattern_logo" alt="Points">
 </div>
 -->
+
+{{< iframe "https://util.hybrid-cloud-patterns.io/dashboard.php?pattern=devsecops" >}}
 
 # Multicluster DevSecOps
 
