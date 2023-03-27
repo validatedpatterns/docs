@@ -18,6 +18,8 @@ aliases: /ansible-edge-gitops/
   <img src="/images/logos/ansible-edge.png" class="pattern_logo" alt="Points">
 </div>
 
+{{< iframe "https://util.hybrid-cloud-patterns.io/dashboard.php?pattern=aegitops" >}}
+
 # Ansible Edge GitOps
 
 {{% button text="Install" url="getting-started" color-class="btn-green" %}}

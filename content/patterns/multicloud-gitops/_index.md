@@ -15,6 +15,8 @@ aliases: /multicloud-gitops/
   <img src="/images/logos/multicloud-gitops.png" class="pattern_logo" alt="Points">
 </div>
 
+{{< iframe "https://util.hybrid-cloud-patterns.io/dashboard.php?pattern=mcgitops" >}}
+
 # Multicloud GitOps
 
 {{% button text="Install" url="getting-started" color-class="btn-green" %}}
@@ -30,11 +32,12 @@ _Some details will differ based on the requirements of a specific implementation
 - Enable cross-cluster governance and application lifecycle management.
 - Securely manage secrets across the deployment.
 
-**Background:** 
-Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds—private or public. 
+**Background:**
+Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds—private or public.
 This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code checks the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
 
 ## Solution overview
+
 This architecture covers hybrid and multi-cloud management with GitOps as shown in Figure 1. At a high level this requires a management hub, for DevOps and GitOps, and infrastructure that extends to one or more managed clusters running on private or public clouds. The automated infrastructure-as-code approach can manage the versioning of components and deploy according to the infrastructure-as-code configuration.
 
 **Why Hybrid Multicloud management with GitOps ?**
@@ -42,7 +45,6 @@ This architecture covers hybrid and multi-cloud management with GitOps as shown 
 - Unify management across cloud environments.
 - Dynamic infrastructure security.
 - Infrastructural continuous delivery best practices.
-
 
 [![Multi-Cloud Architecture](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)
 
@@ -52,28 +54,25 @@ _Figure 1 shows a high-level overview of the solution including the business dri
 
 [![Logical Architecture](/images/multicloud-gitops/logical-diagram.png)](/images/multicloud-gitops/logical-diagram.png)
 
-
 _Figure 2. Logical diagram of hybrid multi-cloud management with GitOps._
 
 As you can see in Figure 2, logically this solution can be viewed as being composed of an automation component, unified management (including secrets management), and the cluster(s) under management—all running on top of a user-chosen mixture of on-prem data center(s) and public cloud(s).
-
 
 ## The technology
 
 The following technology was chosen for this solution.
 
-[*Red Hat OpenShift Platform*](https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it) is an enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems (like HashiCorp Vault in this case) to securely add secrets into the OpenShift platform.
+[_Red Hat OpenShift Platform_](https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it) is an enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems (like HashiCorp Vault in this case) to securely add secrets into the OpenShift platform.
 
-[*Red Hat OpenShift GitOps*](https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it) is a declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+[_Red Hat OpenShift GitOps_](https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it) is a declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
 
+[_Red Hat Advanced Cluster Management for Kubernetes_](https://www.redhat.com/en/technologies/management/advanced-cluster-management) controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale.
 
-[*Red Hat Advanced Cluster Management for Kubernetes*](https://www.redhat.com/en/technologies/management/advanced-cluster-management) controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale.
-
-[*Red Hat Ansible Automation Platform*](https://www.redhat.com/en/technologies/management/ansible) provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation—from development and operations to security and network teams.
+[_Red Hat Ansible Automation Platform_](https://www.redhat.com/en/technologies/management/ansible) provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation—from development and operations to security and network teams.
 
 **Hashicorp Vault**  provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
 
-This solution also uses a variety of *observability tools* including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
+This solution also uses a variety of _observability tools_ including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
 
 ## Architectures
 
@@ -86,11 +85,9 @@ Subsequent schematic diagrams go into more detail on:
 - Dynamic security management (Figure 6)
 - Observability in hybrid multi-cloud environments (Figure 7)
 
-
 [![Physical Architecture](/images/multicloud-gitops/schema-gitops.png)](/images/multicloud-gitops/schema-gitops.png)
 
 _Figure 3. Overview schematic diagram of the complete solution._
-
 
 ### Bootstrapping the management hub
 
@@ -110,7 +107,6 @@ As detailed below, Figure 4 provides a schematic diagram showing the setup of th
 [![Schematic diagram of hybrid multi-cloud management with GitOps](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-security.png)](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-security.png)
 
 _Figure 5. Schematic diagram of hybrid multi-cloud management with GitOps._
-
 
 As detailed below, Figure 5 provides a schematic diagram showing remaining activities associated with setting up the management hub and clusters using Red Hat Advanced Cluster Management.
 
@@ -141,7 +137,6 @@ Secrets are created in each namespace, where applications can use them.
 
 ### Observability in hybrid multicloud environment
 
-
 [![Schematic showing the use of Observatorium and other tools to add observability to the solution](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-monitoring.png)](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-monitoring.png)
 
 _Figure 7. Schematic showing the use of Observatorium and other tools to add observability to the solution._
@@ -160,10 +155,10 @@ For logical, physical and dataflow diagrams, please see excellent work done by t
 ## Demo Scenario
 
 ## Download diagrams
+
 View and download all of the diagrams above in our open source tooling site.
 
 [[Open Diagrams]](https://www.redhat.com/architect/portfolio/tool/index.html?#gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/diagrams/spi-multi-cloud-gitops.drawio)
-
 
 ## What Next
 
