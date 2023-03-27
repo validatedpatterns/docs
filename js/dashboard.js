@@ -1,4 +1,5 @@
 var bucket_url = 'https://storage.googleapis.com/hcp-results';
+var bucket_target_id = 'data';
 var bucket_filter_field = null;
 var bucket_filter_value = null;
 
@@ -41,6 +42,10 @@ class Badge {
     }
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function filterBadges(badges, field, value) {
     if ( field === "pattern" ) {
 	return badges.filter(badge => badge.pattern === value);
@@ -72,6 +77,12 @@ function get_shield_url(badge, label) {
         base = base +'&label='+ encodeURI(label);
     }
     return base + '&url=' + encodeURI(badge.getURI());
+}
+
+function print_shield(bucket, badge, tag) {
+    shield_url = get_shield_url(bucket, badge, tag);
+    //echo "<a href='bucket/badge' rel='nofollow'><img alt='tag' src='shield_url' style='max-width: 100%;'></a><br/>";
+    return "<object data="+shield_url+" style='max-width: 100%;'></object><br/>";
 }
 
 function pattern_name(key) {
@@ -113,7 +124,7 @@ function getBadgeDate(xml) {
 	    return parent.childNodes[j].childNodes[0].nodeValue;
 	}
     }
-    return "3001-01-01T01:01:01.000Z";
+    return "2033-03-22T16:45:47.966Z";
 }
 
 function getUniqueValues(badges, field){
@@ -199,7 +210,7 @@ function createFilteredHorizontalTable(badges, field, titles) {
 	pBadges = filterBadges(badges, field, r);
 
 	tableText = tableText + "<tr>";
-	if ( titles ) {
+	if ( bucket_filter_value == null ) {
 	    tableText = tableText + "<td><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td>";
 	}
 	
@@ -229,7 +240,7 @@ function createFilteredVerticalTable(badges, field, titles) {
 	fieldColumns.push(filterBadges(badges, field, r));
 
 	// https://stackoverflow.com/questions/43775947/dynamically-generate-table-from-json-array-in-javascript
-	if ( titles ) {
+	if ( bucket_filter_value == null ) {
 	    tableText = tableText + "<th><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></th>";
 	}		  
     });
@@ -347,10 +358,10 @@ function reqListener() {
 	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", true);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "version", true);
     }
-    document.getElementById('data').innerHTML = htmlText;
+    document.getElementById(bucket_target_id).innerHTML = htmlText;
 }
 
-function obtainBadges(aUrl, field, value) {
+function obtainBadges(aUrl, target, field, value) {
     const req = new XMLHttpRequest();
     setBucketFilters(field, value);
 
@@ -361,8 +372,12 @@ function obtainBadges(aUrl, field, value) {
 	// Requires new bucket permissions
 	//bucket_url = aUrl;
     }
+
+    if ( target != null ) {
+	bucket_target_id = target;
+    }
+    
     req.open("GET", aUrl);
     req.send();
     return req.responseText;          
 }
-
