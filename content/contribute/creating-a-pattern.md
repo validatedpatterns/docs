@@ -133,10 +133,6 @@ The `path:` tag tells OpenShift GitOps where to find the Helm charts needed to d
 
 Each different site type would have its own values- file listing subscriptions and applications.
 
-## Scripts to framework
-
-## Ansible to Framework
-
 ## Kustomize to framework
 
 Kustomize can still be used within the framework but it will be driven by Helm. If you have a lot of `kustomization.yaml`, you may not need to refactor all of it. However, you will need a Helm chart to drive it and you will need to check for names and paths etc. that you may need to parameterize using the Helm templates capabilities.
@@ -182,8 +178,6 @@ spec:
 ```
 
 {% endraw %}
-
-# Lessons learned
 
 ## Size matters
 
