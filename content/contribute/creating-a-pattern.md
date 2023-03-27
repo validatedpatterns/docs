@@ -27,8 +27,8 @@ The validated patterns framework is much more of a best practice of structuring 
 Therefore the question really is: How do I move my successful architecture solution into a sustainable GitOps/DevOps framework? And that is what we are going to do in this section.
 
 ## Requirements for creating a new pattern
-* The patterns framework requires some artifacts like OpenShift GitOps (ArgoCD) in order to provide the GitOps automation. All existing patterns use OpenShift GitOps as a starting point. The [multicloud-gitops pattern](/patterns/multicloud-gitops) is the most fundamental of patterns and therefore it is reocmmended to use it as a base pattern. I.e Create a new pattern based on it.
-* Create a new branch on your new patternto perform the initial changes.
+* The patterns framework requires some artifacts like OpenShift GitOps (ArgoCD) in order to provide the GitOps automation. All existing patterns use OpenShift GitOps as a starting point. The [multicloud-gitops pattern](/patterns/multicloud-gitops) is the most fundamental of patterns and therefore it is recommended to use it as a base pattern. I.e Create a new pattern based on it.
+* Create a new branch on your new pattern to perform the initial changes.
 * Deploy the initial new pattern pattern to the cluster.
 
 # Moving to the validated patterns framework
