@@ -1,7 +1,7 @@
 ---
 menu: contribute
 title: Extending an existing pattern
-weight: 20
+weight: 30
 aliases: /extending-a-pattern/
 ---
 

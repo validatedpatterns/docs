@@ -1,25 +1,35 @@
 ---
-menu:
-  contribute:
-    parent: Creating a new pattern
-title: Getting Started
-weight: 22
-aliases: /building-vps/getting-started/
+menu: contribute
+title: Creating a new pattern
+weight: 40
+aliases: /creating-a-new-pattern/
 ---
 
-# Getting started creating a new pattern
+# Creating a new pattern
+The validated patterns community has relied on existing architectures that have been successfully deployed in an enterprise. The architecture itself is a best practice in assembling technologies and projects to provide a working solution. How that solution is deployed and managed is a different matter. It may have evolved over time and may have grown in its deployment such that ongoing maintenance is not sustainable.
 
-# Prerequisites
+The validated patterns framework is much more of a best practice of structuring the various configuration assets and integrating with GitOps and DevOps tools.
 
-Please make sure you have read the [introduction section](/creating-a-new-pattern) and the [structure](/building-vps/structure) section of this documentation.
+Therefore the question really is: how do I move my successful architecture solution into a sustainable GitOps/DevOps framework? And that is what we are going to do in this section.
 
-# You're probably not starting from scratch
+So how do you take a current application workload and move it to the Validated Pattern framework? One of the first things that you should do is look at your current implementation of your workload and identify the kubernetes manifests that are involved in order to run the workloads.
+
+## Prerequisites
+
+Please make sure you have read the [Background section](/background-on-pattern-development), including the [structure](/building-vps/structure/) section.
+
+## You're probably not starting from scratch
 
 The validated patterns community has relied on existing architectures that have been successfully deployed in an enterprise. The architecture itself is a best practice in assembling technologies and projects to provide a working solution. How that solution is deployed and managed is a different matter. It may have evolved over time and may have grown in its deployment such that ongoing maintenance is not sustainable.
 
 The validated patterns framework is much more of a best practice of structuring the various configuration assets and integrating with GitOps and DevOps tools.
 
 Therefore the question really is: How do I move my successful architecture solution into a sustainable GitOps/DevOps framework? And that is what we are going to do in this section.
+
+## Requirements for creating a new pattern
+* The patterns framework requires some artifacts like OpenShift GitOps (ArgoCD) in order to provide the GitOps automation. All existing patterns use OpenShift GitOps as a starting point. The [multicloud-gitops pattern](/patterns/multicloud-gitops) is the most fundamental of patterns and therefore it is reocmmended to use it as a base pattern. I.e Create a new pattern based on it.
+* Create a new branch on your new patternto perform the initial changes.
+* Deploy the initial new pattern pattern to the cluster.
 
 # Moving to the validated patterns framework
 

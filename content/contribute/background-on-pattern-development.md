@@ -1,13 +1,13 @@
 ---
 menu: contribute
-title: Creating a new pattern
-weight: 30
-aliases: /creating-a-new-pattern/
+title: Background on pattern development
+weight: 20
+aliases: /background-on-pattern-development/
 ---
 
-# Creating a new pattern
+# Motivation for Cloud Native pattern development
 
-## Introduction to pattern creation
+## Introduction
 
 This section provides details on how to create a new pattern using the validated patterns framework. Creating a new pattern might start from scratch or it may start from an existing deployment that would benefit from a repeatable framework based on GitOps.
 
@@ -17,7 +17,7 @@ The framework uses popular Cloud Native Computing Foundation (CNCF) [projects](h
 
 There is no desire to replicate efforts already in CNCF. If new a open source project comes out of this framework, the plan would be to contribute that to CNCF.
 
-## Who creates patterns?
+## Who is a pattern developer?
 
 Many enterprise class Cloud Native applications are complex and require many different application services integrated together. Organizations can learn from each other on how to create robust, scalable, and maintainable systems. When you find a pattern that seems to work, it makes sense to promote best practices to others in order for them to not repeat the many failures you probably made while getting to your killer pattern.
 
