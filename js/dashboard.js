@@ -1,4 +1,6 @@
-var bucket = 'https://storage.googleapis.com/hcp-results';
+var bucket_url = 'https://storage.googleapis.com/hcp-results';
+var bucket_filter_field = null;
+var bucket_filter_value = null;
 
 class Badge {
     
@@ -39,10 +41,6 @@ class Badge {
     }
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 function filterBadges(badges, field, value) {
     if ( field === "pattern" ) {
 	return badges.filter(badge => badge.pattern === value);
@@ -74,12 +72,6 @@ function get_shield_url(badge, label) {
         base = base +'&label='+ encodeURI(label);
     }
     return base + '&url=' + encodeURI(badge.getURI());
-}
-
-function print_shield(bucket, badge, tag) {
-    shield_url = get_shield_url(bucket, badge, tag);
-    //echo "<a href='bucket/badge' rel='nofollow'><img alt='tag' src='shield_url' style='max-width: 100%;'></a><br/>";
-    return "<object data="+shield_url+" style='max-width: 100%;'></object><br/>";
 }
 
 function pattern_name(key) {
@@ -121,7 +113,7 @@ function getBadgeDate(xml) {
 	    return parent.childNodes[j].childNodes[0].nodeValue;
 	}
     }
-    return "2033-03-22T16:45:47.966Z";
+    return "3001-01-01T01:01:01.000Z";
 }
 
 function getUniqueValues(badges, field){
@@ -293,7 +285,7 @@ function getBadges(xmlText) {
 	
 	if ( key.endsWith("-badge.json") ) {
 	    //		  console.log("Key["+i+"] : "+ key);
-	    badges.push(new Badge(bucket, key, getBadgeDate(entries[i])));
+	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
 	}
     }
 
@@ -301,53 +293,76 @@ function getBadges(xmlText) {
     // console.log(badges);
 }
 
+function setBucketFilters(field, value) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    sections = [ "date", "version", "platform", "pattern" ];
+    
+    if ( field != null ) {
+	bucket_filter_field = field;
+
+    } else {
+	for ( i=0; i < sections.length; i++) {
+	    if ( urlParams.get(sections[i]) != null ) {
+		bucket_filter_field = sections[i];
+	    }
+	}
+    }
+
+    if (bucket_filter_field != null) {
+	if ( value != null) {
+	    bucket_filter_value = value;
+	} else if (urlParams.get(bucket_filter_field) != null) {
+	    bucket_filter_value = urlParams.get(bucket_filter_field);
+	}
+    }
+}
+
 function reqListener() {
     //	  console.log(this.responseText);
 
     var field;
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    if ( urlParams.get('pattern') != null ) {
-	field = "pattern";
-    } else if ( urlParams.get('platform') != null ) {
-	field = "platform";
-    } else if ( urlParams.get('version') != null ) {
-	field = "version";
-    }
+    setBucketFilters();
 
     htmlText = "";
     badges = getBadges(this.responseText);
-    if ( urlParams.get('date') != null ) {
+    if ( bucket_filter_field === "date" ) {
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
 	htmlText = createFilteredVerticalTable(badges, "date", false);
 
-    } else if (field != null ) {
-	value = urlParams.get(field);
-	if ( value != null) {
-	    badges = filterBadges(badges, field, value);
+    } else if (bucket_filter_field != null ) {
+	if ( bucket_filter_value != null) {
+	    badges = filterBadges(badges, bucket_filter_field, bucket_filter_value);
 	}
 	badges.sort(patternSort);
-	htmlText = createFilteredHorizontalTable(badges, field, false);
+	htmlText = createFilteredHorizontalTable(badges, bucket_filter_field, false);
 
     } else {
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
 	htmlText = createFilteredVerticalTable(badges, "date", true);
 
-	// TODO: Convert to vertical table with `th`
 	badges.sort(patternVertSort);
 	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", true);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", true);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "version", true);
     }
-    //document.getElementById('data').appendChild(dFrag); // 10.1s
-    document.getElementById('data').innerHTML = htmlText; // 1.75s
+    document.getElementById('data').innerHTML = htmlText;
 }
 
-function obtainBadges(aUrl){
+function obtainBadges(aUrl, field, value) {
     const req = new XMLHttpRequest();
-    //bucket = aUrl;
+    setBucketFilters(field, value);
+
     req.addEventListener("load", reqListener);
+    if ( aUrl == null) {
+	aUrl = bucket_url;
+    } else {
+	// Requires new bucket permissions
+	//bucket_url = aUrl;
+    }
     req.open("GET", aUrl);
     req.send();
     return req.responseText;          
 }
+
