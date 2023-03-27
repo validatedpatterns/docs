@@ -1,11 +1,12 @@
 ---
 menu: contribute
-title: Creating a new pattern
+title: Creating a pattern
 weight: 40
 aliases: /creating-a-pattern/
 ---
 
-# Creating a new pattern
+# Creating a pattern
+
 The validated patterns community has relied on existing architectures that have been successfully deployed in an enterprise. The architecture itself is a best practice in assembling technologies and projects to provide a working solution. How that solution is deployed and managed is a different matter. It may have evolved over time and may have grown in its deployment such that ongoing maintenance is not sustainable.
 
 The validated patterns framework is much more of a best practice of structuring the various configuration assets and integrating with GitOps and DevOps tools.
@@ -16,7 +17,7 @@ So how do you take a current application workload and move it to the Validated P
 
 ## Prerequisites
 
-Please make sure you have read the [Background section](/background-on-pattern-development/), including the [structure](/building-vps/structure/) section.
+Please make sure you have read the [background section](/background-on-pattern-development/), including the [structure section](/building-vps/structure/).
 
 ## You're probably not starting from scratch
 

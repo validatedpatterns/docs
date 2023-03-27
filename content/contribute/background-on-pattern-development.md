@@ -5,10 +5,9 @@ weight: 20
 aliases: /background-on-pattern-development/
 ---
 
-# Motivation for Cloud Native pattern development
+# Background on pattern development
 
 ## Introduction
-
 This section provides details on how to create a new pattern using the validated patterns framework. Creating a new pattern might start from scratch or it may start from an existing deployment that would benefit from a repeatable framework based on GitOps.
 
 This introduction explains some of framework design decisions and why they were chosen. There are some high level concepts that are required for the framework. While those concepts can be implemented using a variety of open source projects, this framework is prescriptive and mentions the project and also (down stream) product that was used. E.g. For development builds we use Tekton (project) and specifically use OpenShift Pipelines (product).

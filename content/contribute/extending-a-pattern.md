@@ -5,7 +5,7 @@ weight: 30
 aliases: /extending-a-pattern/
 ---
 
-# Extending a pattern
+# Extending an existing pattern
 
 ## Introduction to extending a pattern using a fork
 Extending an existing pattern usually means adding a new product and/or configuration to the existing pattern. This usually requires four steps:
