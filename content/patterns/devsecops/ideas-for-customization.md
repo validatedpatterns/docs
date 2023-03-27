@@ -8,7 +8,7 @@ aliases: /devsecops/ideas-for-customization/
 
 ## More desirable tools in the development pipeline
 
-One of the major goals of the Red Hat patterns development process is to create modular, customizable demos. Maybe there is a tool in the CI/CD pipeline that you'd like to substitute for a preffered tool. E.g. using Clair in Quay to do image scanning instead of RH ACS. Or Quay Enterprise may be removed for another image repository. 
+One of the major goals of the Red Hat patterns development process is to create modular, customizable demos. Maybe there is a tool in the CI/CD pipeline that you'd like to substitute for a preferred tool. E.g. using Clair in Quay to do image scanning instead of RH ACS. Or Quay Enterprise may be removed for another image repository. 
 
 ### How to add a new tool to the pipeline
 
@@ -32,4 +32,4 @@ While this can be done with any of the patterns the Multicluster DevSecOps patte
 
 1. `values-smart-signs.yaml`
 
-GitOps and DevSecOps would be used to make sure that applications would be deployed on the correct clusters. Some of the "clusters" might be light single-node clusters.  Some applications be be deployed to several cluster groups. E.g. the application to place inofrmation on a smart sign might also be deployed to the tram cars that also have smart signs in passenger compartments or the engineers compartment.
+GitOps and DevSecOps would be used to make sure that applications would be deployed on the correct clusters. Some of the "clusters" might be light single-node clusters.  Some applications be be deployed to several cluster groups. E.g. the application to place information on a smart sign might also be deployed to the tram cars that also have smart signs in passenger compartments or the engineers compartment.
