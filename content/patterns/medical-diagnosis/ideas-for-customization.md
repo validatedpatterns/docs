@@ -18,6 +18,8 @@ One of the major goals of the Red Hat patterns development process is to create 
 
 1. Militaries could use images collected from drones, satellites or other platforms to identify objects and determine with probability what that object is. For example, the model could be trained to determine a type of ship, potentially its country of origin and other identifying characteristics.
 
+1. Manufacturing companies could use the pattern to inspect finished products as they roll off a production line. An image of the item, including using different types of light, could be analyzies to help expose defects before packaging and distributing. The item could be routed to a defect area. 
+
 ## Summary
 
 These are just a few ideas to help get the creative juices flowing for how you could use the medical-diagnosis pattern as a framework for your application.
