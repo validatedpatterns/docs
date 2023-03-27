@@ -10,7 +10,7 @@ title: Status
 
   <div class='results'>
     <p id="data"/>
-    <script type="text/javascript" src="js/dashboard.js"></script>
+    <script type="text/javascript" src="/js/dashboard.js"></script>
     <script>
       obtainBadges('https://util.hybrid-cloud-patterns.io/bucket.xml', 'platform');
     </script>
