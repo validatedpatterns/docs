@@ -2,7 +2,7 @@
 menu: contribute
 title: Creating a new pattern
 weight: 40
-aliases: /creating-a-new-pattern/
+aliases: /creating-a-pattern/
 ---
 
 # Creating a new pattern
@@ -16,7 +16,7 @@ So how do you take a current application workload and move it to the Validated P
 
 ## Prerequisites
 
-Please make sure you have read the [Background section](/background-on-pattern-development), including the [structure](/building-vps/structure/) section.
+Please make sure you have read the [Background section](/background-on-pattern-development/), including the [structure](/building-vps/structure/) section.
 
 ## You're probably not starting from scratch
 
