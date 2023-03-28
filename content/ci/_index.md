@@ -8,6 +8,8 @@ These are the latest results of the Validated Patterns CI test runs.
 
 Subsequent versions of this page will differentiate between failures prior to pattern installation, and those in the pattern tests.
 
+  <script type="text/javascript" src="/js/dashboard.js"></script>
+
   <div class='results'>
     <p id="ci-dataset"> </p>
     <script>
