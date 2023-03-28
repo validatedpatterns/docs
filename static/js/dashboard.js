@@ -353,7 +353,7 @@ function getBucketOptions(url, target, field, value) {
     } else {
 	for ( i=0; i < sections.length; i++) {
 	    if ( urlParams.get(sections[i]) != null ) {
-		options.set("field", field);
+		options.set("field", sections[i]);
 	    }
 	}
     }
@@ -362,7 +362,7 @@ function getBucketOptions(url, target, field, value) {
     if (filter_field != null) {
 	if ( value != null) {
 	    options.set("value", value);
-	} else if (urlParams.get(bucket_filter_field) != null) {
+	} else if (urlParams.get(filter_field) != null) {
 	    options.set("value", urlParams.get(filter_field));
 	}
     }
