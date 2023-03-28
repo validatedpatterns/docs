@@ -8,4 +8,9 @@ These are the latest results of the Validated Patterns CI test runs.
 
 Subsequent versions of this page will differentiate between failures prior to pattern installation, and those in the pattern tests.
 
-<iframe class="ci-result" src="https://util.hybrid-cloud-patterns.io/dashboard.php" width="800" height="1400"> </iframe>
+  <div class='results'>
+    <p id="ci-dataset"> </p>
+    <script>
+      obtainBadges(null, 'ci-dataset');
+    </script>
+  </div>
