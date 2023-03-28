@@ -1,8 +1,3 @@
-var bucket_url = 'https://storage.googleapis.com/hcp-results';
-var bucket_target_id = 'data';
-var bucket_filter_field = null;
-var bucket_filter_value = null;
-
 class Badge {
     
     constructor(base, key, date) {  // Class constructor
@@ -195,7 +190,7 @@ function toTitleCase(str) {
     );
 }      
 
-function createFilteredHorizontalTable(badges, field, titles) {
+function createFilteredHorizontalTable(badges, field, value, titles) {
     //document.getElementById('data').innerHTML = 'Hello World!';
 
     tableText = "<div style='ci-results'>";
@@ -210,7 +205,7 @@ function createFilteredHorizontalTable(badges, field, titles) {
 	pBadges = filterBadges(badges, field, r);
 
 	tableText = tableText + "<tr>";
-	if ( bucket_filter_value == null ) {
+	if ( value == null ) {
 	    tableText = tableText + "<td><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td>";
 	}
 	
@@ -223,7 +218,7 @@ function createFilteredHorizontalTable(badges, field, titles) {
     return tableText + "</tbody></table></div>";
 }
 
-function createFilteredVerticalTable(badges, field, titles) {
+function createFilteredVerticalTable(badges, field, value, titles) {
     //document.getElementById('data').innerHTML = 'Hello World!';
 
     tableText = "<div style='ci-results'>";
@@ -240,7 +235,7 @@ function createFilteredVerticalTable(badges, field, titles) {
 	fieldColumns.push(filterBadges(badges, field, r));
 
 	// https://stackoverflow.com/questions/43775947/dynamically-generate-table-from-json-array-in-javascript
-	if ( bucket_filter_value == null ) {
+	if ( value == null ) {
 	    tableText = tableText + "<th><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></th>";
 	}		  
     });
@@ -271,7 +266,7 @@ function createFilteredVerticalTable(badges, field, titles) {
 
 }
 
-function getBadges(xmlText) {
+function getBadges(xmlText, bucket_url) {
     parser = new DOMParser();
     var xmlDoc = parser.parseFromString(xmlText, "application/xml");
     const errorNode = xmlDoc.querySelector("parsererror");
@@ -304,80 +299,88 @@ function getBadges(xmlText) {
     // console.log(badges);
 }
 
-function setBucketFilters(field, value) {
+function processBucketXML(text, options) {
+    const filter_field = options.get('field');
+    const filter_value = options.get('value');
+    badges = getBadges(text, options.get('url'));
+
+    htmlText = "";
+    
+    if ( filter_field === "date" ) {
+	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
+	htmlText = createFilteredVerticalTable(badges, "date", null, false);
+
+    } else if (filter_field != null ) {
+	if ( filter_value != null) {
+	    badges = filterBadges(badges, filter_field, filter_value);
+	}
+	badges.sort(patternSort);
+	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false);
+
+    } else {
+	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
+	htmlText = createFilteredVerticalTable(badges, "date", null, true);
+
+	badges.sort(patternVertSort);
+	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true);
+	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", null, true);
+	htmlText = htmlText + createFilteredVerticalTable(badges, "version", null, true);
+    }
+    document.getElementById(options.get('target')).innerHTML = htmlText;
+}
+
+function getBucketOptions(url, target, field, value) {
+
+    const options = new Map()
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
-    sections = [ "date", "version", "platform", "pattern" ];
+    options.set("url", 'https://storage.googleapis.com/hcp-results');
+    if ( url != null) {
+	// Requires new bucket permissions
+	// options.set("url", url);
+    }
+
+    options.set("target", 'data');
+    if ( target != null) {
+	options.set("target", target);
+    }
     
+    sections = [ "date", "version", "platform", "pattern" ];
+
     if ( field != null ) {
-	bucket_filter_field = field;
+	options.set("field", field);
 
     } else {
 	for ( i=0; i < sections.length; i++) {
 	    if ( urlParams.get(sections[i]) != null ) {
-		bucket_filter_field = sections[i];
+		options.set("field", field);
 	    }
 	}
     }
 
-    if (bucket_filter_field != null) {
+    filter_field = options.get("field");
+    if (filter_field != null) {
 	if ( value != null) {
-	    bucket_filter_value = value;
+	    options.set("value", value);
 	} else if (urlParams.get(bucket_filter_field) != null) {
-	    bucket_filter_value = urlParams.get(bucket_filter_field);
+	    options.set("value", urlParams.get(filter_field));
 	}
     }
-}
 
-function reqListener() {
-    //	  console.log(this.responseText);
-
-    var field;
-    setBucketFilters();
-
-    htmlText = "";
-    badges = getBadges(this.responseText);
-    if ( bucket_filter_field === "date" ) {
-	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
-	htmlText = createFilteredVerticalTable(badges, "date", false);
-
-    } else if (bucket_filter_field != null ) {
-	if ( bucket_filter_value != null) {
-	    badges = filterBadges(badges, bucket_filter_field, bucket_filter_value);
-	}
-	badges.sort(patternSort);
-	htmlText = createFilteredHorizontalTable(badges, bucket_filter_field, false);
-
-    } else {
-	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
-	htmlText = createFilteredVerticalTable(badges, "date", true);
-
-	badges.sort(patternVertSort);
-	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", true);
-	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", true);
-	htmlText = htmlText + createFilteredVerticalTable(badges, "version", true);
-    }
-    document.getElementById(bucket_target_id).innerHTML = htmlText;
+    return options;
 }
 
 function obtainBadges(aUrl, target, field, value) {
-    const req = new XMLHttpRequest();
-    setBucketFilters(field, value);
-
-    req.addEventListener("load", reqListener);
-    if ( aUrl == null) {
-	aUrl = bucket_url;
-    } else {
-	// Requires new bucket permissions
-	//bucket_url = aUrl;
+    let req = new XMLHttpRequest();
+    const options = getBucketOptions(aUrl, target, field, value);
+    req.open('GET', aUrl);
+    req.onload = function() {
+	if (req.status == 200) {
+	    processBucketXML(req.responseText, options);
+	} else {
+	    console.log("Error: " + req.status);
+	}
     }
-
-    if ( target != null ) {
-	bucket_target_id = target;
-    }
-    
-    req.open("GET", aUrl);
     req.send();
-    return req.responseText;          
 }
