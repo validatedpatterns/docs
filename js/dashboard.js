@@ -337,8 +337,7 @@ function getBucketOptions(url, target, field, value) {
 
     options.set("url", 'https://storage.googleapis.com/hcp-results');
     if ( url != null) {
-	// Requires new bucket permissions
-	// options.set("url", url);
+	options.set("url", url);
     }
 
     options.set("target", 'data');
@@ -374,7 +373,7 @@ function getBucketOptions(url, target, field, value) {
 function obtainBadges(aUrl, target, field, value) {
     let req = new XMLHttpRequest();
     const options = getBucketOptions(aUrl, target, field, value);
-    req.open('GET', aUrl);
+    req.open('GET', options.get("url"));
     req.onload = function() {
 	if (req.status == 200) {
 	    processBucketXML(req.responseText, options);
