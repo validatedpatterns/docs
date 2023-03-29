@@ -357,10 +357,10 @@ function getBucketOptions(input) {
 	}
     }
 
+    filter_field = options.get("field");
     if ( input.value != null ) {
 	options.set("value", input.value);
-    } else {
-	filter_field = options.get("field");
+    } else if (filter_field != null) {
 	if (filter_field != null && urlParams.get(filter_field) != null) {
 	    options.set("value", urlParams.get(filter_field));
 	}
