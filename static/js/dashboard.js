@@ -300,8 +300,8 @@ function getBadges(xmlText, bucket_url) {
 }
 
 function processBucketXML(text, options) {
-    const filter_field = options.get('field');
-    const filter_value = options.get('value');
+    const filter_field = options.get("filter_field");
+    const filter_value = options.get("filter_value");
     badges = getBadges(text, options.get('bucket'));
 
     htmlText = "";
@@ -336,32 +336,31 @@ function getBucketOptions(input) {
 
     options.set('target', 'dataset');
     options.set('bucket', 'https://storage.googleapis.com/hcp-results');
-    
-    if ( input.url != null ) {
-	options.set('bucket', input.bucket);
-    }
 
-    if ( input.target != null ) {
-	options.set("target", input.target);
+    // input.bucket , or input["bucket"]
+
+    const fields = [ "bucket", "target", "filter_field", "filter_value" ];
+    for ( i=0; i < fields.length; i++) {
+	const key = fields[i];
+	const value = input[key];
+	if ( value != null ) {
+	    console.log(key, value);
+	    options.set(fields[i], value);	
+	}
     }
     
     const sections = [ "date", "version", "platform", "pattern" ];
 
-    if ( input.filter_field != null ) {
-	options.set("field", input.filter_field);
-    } else {
+    filter_field = options.get("filter_field");
+    if ( filter_field == null ) {
 	for ( i=0; i < sections.length; i++) {
 	    if ( urlParams.get(sections[i]) != null ) {
-		options.set("field", sections[i]);
+		options.set("filter_field", sections[i]);
+		if (options.get("filter_value") == null && urlParams.get(sections[i]) != null) {
+		    options.set("filter_value", urlParams.get(sections[i]));
+		}
 	    }
 	}
-    }
-
-    filter_field = options.get("field");
-    if ( input.filter_value != null ) {
-	options.set("value", input.filter_value);
-    } else if (filter_field != null && urlParams.get(filter_field) != null) {
-	options.set("value", urlParams.get(filter_field));
     }
 
     console.log(options);
