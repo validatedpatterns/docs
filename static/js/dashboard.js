@@ -302,7 +302,7 @@ function getBadges(xmlText, bucket_url) {
 function processBucketXML(text, options) {
     const filter_field = options.get('field');
     const filter_value = options.get('value');
-    badges = getBadges(text, options.get('url'));
+    badges = getBadges(text, options.get('bucket'));
 
     htmlText = "";
     
@@ -329,27 +329,26 @@ function processBucketXML(text, options) {
     document.getElementById(options.get('target')).innerHTML = htmlText;
 }
 
-function getBucketOptions(url, target, field, value) {
-
-    const options = new Map()
+function getBucketOptions(input) {
+    const options = new Map();
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
-    options.set("url", 'https://storage.googleapis.com/hcp-results');
-    if ( url != null) {
-	options.set("url", url);
+    options.set('target', 'dataset');
+    options.set('bucket', 'https://storage.googleapis.com/hcp-results');
+    
+    if ( input.url != null ) {
+	options.set('bucket', input.bucket);
     }
 
-    options.set("target", 'data');
-    if ( target != null) {
-	options.set("target", target);
+    if ( input.target != null ) {
+	options.set("target", input.target);
     }
     
-    sections = [ "date", "version", "platform", "pattern" ];
+    const sections = [ "date", "version", "platform", "pattern" ];
 
-    if ( field != null ) {
-	options.set("field", field);
-
+    if ( input.field != null ) {
+	options.set("field", input.field);
     } else {
 	for ( i=0; i < sections.length; i++) {
 	    if ( urlParams.get(sections[i]) != null ) {
@@ -358,22 +357,23 @@ function getBucketOptions(url, target, field, value) {
 	}
     }
 
-    filter_field = options.get("field");
-    if (filter_field != null) {
-	if ( value != null) {
-	    options.set("value", value);
-	} else if (urlParams.get(filter_field) != null) {
+    if ( input.value != null ) {
+	options.set("value", input.value);
+    } else {
+	filter_field = options.get("field");
+	if (filter_field != null && urlParams.get(filter_field) != null) {
 	    options.set("value", urlParams.get(filter_field));
 	}
     }
 
+    console.log(options);
     return options;
 }
 
-function obtainBadges(aUrl, target, field, value) {
+function obtainBadges(inputs) {
     let req = new XMLHttpRequest();
-    const options = getBucketOptions(aUrl, target, field, value);
-    req.open('GET', options.get("url"));
+    const options = getBucketOptions(inputs);
+    req.open('GET', options.get('bucket'));
     req.onload = function() {
 	if (req.status == 200) {
 	    processBucketXML(req.responseText, options);
