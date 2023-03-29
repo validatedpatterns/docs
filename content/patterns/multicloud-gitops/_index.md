@@ -15,7 +15,13 @@ aliases: /multicloud-gitops/
   <img src="/images/logos/multicloud-gitops.png" class="pattern_logo" alt="Points">
 </div>
 
-{{< iframe "https://util.hybrid-cloud-patterns.io/dashboard.php?pattern=mcgitops" >}}
+<script type="text/javascript" src="/js/dashboard.js"></script>
+<div class='results'>
+  <p id="ci-dataset"> </p>
+  <script>
+    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': 'mcgitops' });
+  </script>
+</div>
 
 # Multicloud GitOps
 
