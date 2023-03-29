@@ -17,19 +17,18 @@ class Badge {
     string() {
         return this.key;
     }
-
     
     getLabel(field) {
         if(field == "pattern") {
-	    return platform_name(this.platform)+" "+this.version+" @ "+ this.date;
+	    return stringForKey(this.platform)+" "+this.version+" @ "+ this.date;
         }
         if(field == "platform") {
-	    return pattern_name(this.pattern)+" - "+this.version+" @ "+ this.date;
+	    return stringForKey(this.pattern)+" - "+this.version+" @ "+ this.date;
         }
         if(field == "version") {
-	    return pattern_name(this.pattern)+" : "+platform_name(this.platform)+" @ "+ this.date;
+	    return stringForKey(this.pattern)+" : "+stringForKey(this.platform)+" @ "+ this.date;
         }
-	return pattern_name(this.pattern)+" : "+ platform_name(this.platform)+" "+this.version+" @ "+ this.date;
+	return stringForKey(this.pattern)+" : "+ stringForKey(this.platform)+" "+this.version+" @ "+ this.date;
     }
 
     getURI() {
@@ -56,10 +55,10 @@ function filterBadges(badges, field, value) {
 
 function rowTitle(field, value) {
     if ( field === "pattern" ) {
-	return pattern_name(value);
+	return stringForKey(value);
     }
     if ( field === "platform" ) {
-	return platform_name(value);
+	return stringForKey(value);
     }
     return value;
 }
@@ -80,7 +79,26 @@ function print_shield(bucket, badge, tag) {
     return "<object data="+shield_url+" style='max-width: 100%;'></object><br/>";
 }
 
-function pattern_name(key) {
+function pattern_url(key) {
+    if ( key == "aegitops" ) {
+	return 'https://hybrid-cloud-patterns.io/patterns/ansible-edge-gitops/';
+    }
+    if ( key == "devsecops" ) {
+	return 'https://hybrid-cloud-patterns.io/patterns/devsecops/';
+    }
+    if ( key == "manuela" ) {
+	return 'https://hybrid-cloud-patterns.io/patterns/industrial-edge/';
+    }
+    if ( key == "mcgitops" ) {
+	return 'https://hybrid-cloud-patterns.io/patterns/multicloud-gitops/';
+    }
+    if ( key == "medicaldiag" ) {
+	return 'https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/';
+    }
+    return 'https://hybrid-cloud-patterns.io/patterns/'+key+'/';
+}
+
+function stringForKey(key) {
     if ( key == "aegitops" ) {
         return "Ansible Edge";
     }
@@ -96,10 +114,6 @@ function pattern_name(key) {
     if ( key == "medicaldiag" ) {
         return "Medical Diagnosis";
     }
-    return key;
-}
-
-function platform_name(key) {
     if ( key == "azr" ) {
         return "Azure";
     }
@@ -205,7 +219,9 @@ function createFilteredHorizontalTable(badges, field, value, titles) {
 	pBadges = filterBadges(badges, field, r);
 
 	tableText = tableText + "<tr>";
-	if ( value == null ) {
+	if ( value == null && field == "pattern" ) {
+	    tableText = tableText + "<td><a href='" + pattern_url(r) + "'>" + rowTitle(field, r) + "</a></td>";
+	} else {
 	    tableText = tableText + "<td><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td>";
 	}
 	
@@ -320,7 +336,7 @@ function processBucketXML(text, options) {
     } else {
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
 	htmlText = createFilteredVerticalTable(badges, "date", null, true);
-
+	
 	badges.sort(patternVertSort);
 	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", null, true);
