@@ -347,8 +347,8 @@ function getBucketOptions(input) {
     
     const sections = [ "date", "version", "platform", "pattern" ];
 
-    if ( input.field != null ) {
-	options.set("field", input.field);
+    if ( input.filter_field != null ) {
+	options.set("field", input.filter_field);
     } else {
 	for ( i=0; i < sections.length; i++) {
 	    if ( urlParams.get(sections[i]) != null ) {
@@ -358,12 +358,10 @@ function getBucketOptions(input) {
     }
 
     filter_field = options.get("field");
-    if ( input.value != null ) {
-	options.set("value", input.value);
-    } else if (filter_field != null) {
-	if (filter_field != null && urlParams.get(filter_field) != null) {
-	    options.set("value", urlParams.get(filter_field));
-	}
+    if ( input.filter_value != null ) {
+	options.set("value", input.filter_value);
+    } else if (filter_field != null && urlParams.get(filter_field) != null) {
+	options.set("value", urlParams.get(filter_field));
     }
 
     console.log(options);
