@@ -4,7 +4,9 @@ title: Status
 
 These are the latest results of the Validated Patterns CI test runs.
 
-**NOTE:** Some jobs are currently failing prior to pattern deployment due to [timeouts while deploying OpenShift](https://issues.redhat.com/browse/OCPBUGS-10439).
+**NOTE:** [March 24th] Some jobs are currently failing prior to pattern deployment due to [timeouts while deploying OpenShift](https://issues.redhat.com/browse/OCPBUGS-10439).
+
+**NOTE:** [March 29th] We are working to resolve capacity issues causing Azure jobs to fail.
 
 Subsequent versions of this page will differentiate between failures prior to pattern installation, and those in the pattern tests.
 
