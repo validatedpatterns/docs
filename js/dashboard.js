@@ -221,7 +221,7 @@ function createFilteredHorizontalTable(badges, field, value, titles) {
 	tableText = tableText + "<tr>";
 	if ( value == null && field == "pattern" ) {
 	    tableText = tableText + "<td><a href='" + pattern_url(r) + "'>" + rowTitle(field, r) + "</a></td>";
-	} else {
+	} else if ( value == null) {
 	    tableText = tableText + "<td><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td>";
 	}
 	
