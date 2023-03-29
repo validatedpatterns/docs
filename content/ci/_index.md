@@ -13,6 +13,6 @@ Subsequent versions of this page will differentiate between failures prior to pa
   <div class='results'>
     <p id="ci-dataset"> </p>
     <script>
-      obtainBadges(null, 'ci-dataset');
+      obtainBadges({ 'target':'ci-dataset' });
     </script>
   </div>
