@@ -18,7 +18,13 @@ aliases: /ansible-edge-gitops/
   <img src="/images/logos/ansible-edge.png" class="pattern_logo" alt="Points">
 </div>
 
-{{< iframe "https://util.hybrid-cloud-patterns.io/dashboard.php?pattern=aegitops" >}}
+<script type="text/javascript" src="/js/dashboard.js"></script>
+<div class='results'>
+  <p id="ci-dataset"> </p>
+  <script>
+    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': 'aegitops' });
+  </script>
+</div>
 
 # Ansible Edge GitOps
 
