@@ -16,7 +16,13 @@ aliases: /medical-diagnosis/
   <img src="/images/logos/medical-diagnosis.png" class="pattern_logo" alt="Points">
 </div>
 
-{{< iframe "https://util.hybrid-cloud-patterns.io/dashboard.php?pattern=pattern=medicaldiag" >}}
+<script type="text/javascript" src="/js/dashboard.js"></script>
+<div class='results'>
+  <p id="ci-dataset"> </p>
+  <script>
+    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': 'medicaldiag' });
+  </script>
+</div>
 
 # Medical Diagnosis
 
