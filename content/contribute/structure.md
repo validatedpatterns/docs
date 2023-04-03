@@ -1,7 +1,7 @@
 ---
 menu:
   contribute:
-    parent: Creating a new pattern
+    parent: Background on pattern development
 title: Validated pattern structure
 weight: 21
 aliases: /building-vps/structure/
@@ -11,7 +11,7 @@ aliases: /building-vps/structure/
 
 ## Framework fundamentals
 
-The validated patterns framework uses [OpenShift GitOps](https://docs.openshift.com/container-platform/4.9/cicd/gitops/understanding-openshift-gitops.html) (ArgoCD) as the primary driver for deploying patterns and keeping them up to date. Validated patterns use Helm charts as the primary artifacts for GitOps. [Helm charts](https://helm.sh/) provide a mechanism for templating that is powerful when building repeatable, automated deployments across different deployment environments (i.e. clouds, data centers, edge, etc.)
+The validated patterns framework uses [OpenShift GitOps](https://docs.openshift.com/container-platform/4.9/cicd/gitops/understanding-openshift-gitops.html) (ArgoCD) as the primary driver for deploying patterns and keeping them up to date. Validated patterns use Helm charts as the primary artifacts for GitOps. [Helm charts](https://helm.sh/) provide a mechanism for templating that is powerful when building repeatable, automated deployments across different deployment environments (i.e. clouds, data-centers, edge, etc.)
 
 Many Cloud Native Computing Foundation (CNCF) projects use [Operators](https://operatorframework.io/) to manage the lifecycle of their service. Whenever possible, validated patterns will make use of these Operators to deploy the application service.
 
@@ -115,11 +115,11 @@ The configuration YAML for each component of the application is stored in the te
 
 ## The `common` directory
 
-There are many common components that are in use across the validated patterns that exist today. E.g. AMQ Streams (Kafka) and ACM. We expect these common components to grow. Rather than duplicating the configuration in each pattern, common technologies are moved into a common directory. If there are pattern specific post-deployment configurations to be applied, those should be added to the Helm charts in the `charts` directory structure.
+There are several common components that are in use across the validated patterns that exist today. E.g. the External Secrets operator and RHACM (Red Hat Advanced Cluster Management). These components are part of the validated patterns framework. They are configured to work together in the GitOps based framework. Rather than duplicating the configuration in each pattern, these common technologies are moved into a common directory. If there are pattern specific post-deployment configurations to be applied, those should be added to the Helm charts in the `charts` directory structure. This is unlikely for these components. Consider `common` out of bounds unless you are working on modifying the framework.
 
 ## The `scripts` directory
 
-Sometimes an Operator and/or the Helm charts still leave some work to be done with regard to final configuration. When extra code is needed to deploy, the extra code is placed in the `scripts` directory. The majority of the time a consumer of a validated pattern will only use this code through the existing automation. I.e. The `Makefile` or OpenShift GitOps will make use of these scripts. So - If there is extra *massaging* required for your application, put the scripts in here and try to run them from within the automation.
+Sometimes an Operator and/or the Helm charts still leave some work to be done with regard to final configuration. When extra code is needed to deploy, the extra code is placed in the `scripts` directory. The majority of the time a consumer of a validated pattern will only use this code through the existing automation. I.e. The `Makefile` or OpenShift GitOps will make use of these scripts. So - If there is extra *massaging* required for your application, put the scripts in here and try to run them from within the automation. It is very unlikely you will need to change the scripts directory. Consider `scripts` out of bounds unless you are modifying the framework.
 
 ## Applications and `values-` files
 
@@ -133,14 +133,28 @@ For more information on values files and their usage see the [values files secti
 
 This section is meant as an introduction to the `values-` files that the framework uses to override values in the chart templates. In the Getting Started pages there will be more specific usage details.
 
-There are three types of `value-` files.
+### There are three types of `value-` files.
 
-1. `values-global.yaml`
+1. **`values-global.yaml`**: 
    This is used to set variables for helm charts across the pattern. It contains the name of the pattern and sets some other variables for artifacts like, image registry, Git repositories, GitOps syncPolicy etc.
-1. `values-<site>.yaml`
+1. **`values-<site>.yaml`**: 
    Each specific site requires information regarding what applications and subscriptions are required for that site. This file contains a list of namespaces, applications, subscriptions, the operator versions etc. for that site.
-1. `values-secret.yaml.template`
-   Some patterns are not using a [secrets management](/secrets) service like [Hashicorp Vault](/secrets/vault). As you create a new pattern, you may need to get it up and going quickly and hard code some secrets that you DO NOT want to share or push to a Git repository. This template file can be copied to your home directory, the secret values applied, and the validated pattern will go look for `values-secrets.yaml` in your home directory. **Do not leave a `values-secrets.yaml` file in your cloned git directory or it may end up in your (often public) Git repository, like GitHub.**
+1. **`values-secret.yaml.template`**: 
+   All patterns require some secrets for artifacts included in the pattern. E.g. credentials for GitHub, AWS, or Quay.io. The framework provides a safe way to load those secrets into a vault for consumption by the pattern. This template file can be copied to your home directory, the secret values applied, and the validated pattern will go look for `values-secrets.yaml` in your home directory. **Do not leave a `values-secrets.yaml` file in your cloned git directory or it may end up in your (often public) Git repository, like GitHub.**
+
+### Values files can have some overrides.
+
+1. Version overrides can be used to set specific values for OCP versions. E.g. **`values-hub-4.12.yaml`** allows you to tweak a specific value for OCP 4.12 on the Hub cluster. 
+
+1. Version overrides can be used to set specific values for specific cloud providers. E.g. **`values-AWS.yaml`** would allow you to tweak a specific value for all cluster groups deployed on AWS.
+
+### Other combination examples include:
+
+1. **`values-hub-Azure.yaml`** only apply this Azure tweak on the hub cluster.
+
+1. **`values-4.12.yaml`** apply these OCP 4.12 tweaks to all cluster groups in this pattern.
+
+Current supported cloud providers include **`AWS`**, **`Azure`**, and **`GCP`**. 
 
 ## Applications & subscriptions
 
