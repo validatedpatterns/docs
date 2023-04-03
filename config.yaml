@@ -17,7 +17,7 @@ markup:
     safeMode: unsafe
   tableOfContents:
     startLevel: 1
-    endLevel: 2
+    endLevel: 3
     ordered: false
   goldmark:
     renderer:

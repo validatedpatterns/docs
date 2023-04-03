@@ -1,8 +1,8 @@
-    <aside class="pf-l-grid__item pf-m-4-col pf-c-jump-links pf-m-vertical sticky pf-m-expandable pf-m-non-expandable-on-2xl" aria-label="Table of contents">
-      <div class="pf-c-jump-links__header">
-        <div class="pf-c-jump-links__label">
-          <h1>Table of Contents</h1>
-        </div>
-      </div>
-      {{- .TableOfContents | replaceRE "<ul>" "<ul class=\"pf-c-jump-links__list\">" | replaceRE "<li>" "<li class=\"pf-c-jump-links__item\">" | replaceRE "<a" "<a class=\"pf-c-jump-links__link\"" | safeHTML }}
-      </aside>
+<aside class="pf-c-jump-links pf-m-vertical sticky pf-m-expandable pf-m-non-expandable-on-2xl" aria-label="Table of contents">
+  <div class="pf-c-jump-links__header">
+    <div class="pf-c-jump-links__label">
+      <h1>Table of Contents</h1>
+    </div>
+  </div>
+  {{- .TableOfContents | replaceRE "<ul>" "<ul class=\"pf-c-jump-links__list\">" | replaceRE "<li>" "<li class=\"pf-c-jump-links__item\">" | replaceRE "<a" "<a class=\"pf-c-jump-links__link\"" | safeHTML }}
+  </aside>
