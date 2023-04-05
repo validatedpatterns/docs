@@ -157,8 +157,6 @@ spec:
 
 While we could have continued to use the ArgoCD community operator, we instead transitioned to using OpenShift GitOps, the Red Hat supported product. But this static subscription would not allow updates for continuous integration of new versions. And you'll remember from the Operators section above that we specify channel names as part of the subscription of operators. So we can instead using something like this (understanding the move to openshift-gitops-operator instead of ArgoCD).
 
-{% raw %}
-
 ```yaml
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -177,8 +175,6 @@ spec:
   startingCSV: openshift-gitops-operator.{{ .Values.main.gitops.csv }}
 {{- end }}
 ```
-
-{% endraw %}
 
 ## Size matters
 
