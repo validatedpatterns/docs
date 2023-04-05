@@ -449,6 +449,7 @@ scaleddown
 secretstore
 sed
 seldon
+SeldonIO
 semver
 ser
 serverless
