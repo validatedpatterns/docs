@@ -164,8 +164,6 @@ The reason the above values files exist is to take advantage of Helms ability to
 
 The following `messaging-route.yaml` example shows how the AMQ messaging service is using values set in the `values-global.yaml` file for Industrial Edge.
 
-{% raw %}
-
 ```yaml
 apiVersion: route.openshift.io/v1
 kind: Route
@@ -184,7 +182,6 @@ spec:
   wildcardPolicy: None
 ```
 
-{% endraw %}
 
 The values in the `values-global.yaml` will be substituted when the YAML is applied to the cluster.
 
