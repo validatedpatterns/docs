@@ -29,9 +29,7 @@ aliases: /industrial-edge/
 ---
 **NOTE**
 
-Industrial Edge on OpenShift 4.12 fails CI due to Seldon issue. This only affects the 
-Anomaly Detection AI/ML portion of the pattern.  The rest of the pattern functions as
-designed.  For more information on the Seldon issue please refer to https://github.com/SeldonIO/seldon-core/issues/4339.
+Industrial Edge on OpenShift Container Platform 4.12 fails CI due to a Seldon issue. This only affects the Anomaly Detection AI/ML portion of the pattern. The rest of the pattern functions as designed. For more information on the Seldon issue, see https://github.com/SeldonIO/seldon-core/issues/4339.
 
 ---
 
