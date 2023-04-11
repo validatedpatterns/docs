@@ -36,6 +36,7 @@ arptn
 atlassian
 auditable
 awk
+awsregion
 awx
 azs
 backend
@@ -56,6 +57,7 @@ bpxrficyexamplekey
 brms
 bt
 btn
+bucketname
 bucketsource
 byo
 cakephp
@@ -75,6 +77,7 @@ cloudinitpassword
 cloudinituser
 cloudprovider
 clustergroup
+clustergroupname
 clustergroups
 clustername
 clustersecretstore
@@ -232,6 +235,7 @@ informati
 informatio
 ingester
 init
+installplanapproval
 instantiatable
 insync
 integrations
@@ -531,6 +535,7 @@ unschedulable
 untrusted
 upstreaming
 upstream's
+usecsv
 userdata
 userguide
 useroperator
