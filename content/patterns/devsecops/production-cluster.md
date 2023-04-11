@@ -34,7 +34,7 @@ your changes and apply them.
 
 ## Deploy a devel cluster
 
-For instructions on how to prepare and import a development (devel) cluster please read the section link:/learn/importing-a-cluster/[importing a cluster].
+For instructions on how to prepare and import a production (prod) cluster please read the section link:/learn/importing-a-cluster/[importing a cluster].
 
 ## You are done importing the production cluster
 
