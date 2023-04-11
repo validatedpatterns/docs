@@ -86,10 +86,10 @@ Install the installation tooling dependencies. You will need:
 
 1. You can deploy the pattern using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you do use the operator then skip to Validating the Environment below.
 
-1. Preview the changes. If you'd like to review what is been deployed with the pattern, `pattern.sh` provides a way to show what will be deployed.
+1. Preview the changes
 
    ```sh
-   ./pattern.sh make show
+   make show
    ```
 
 1. Login to your cluster using oc login or exporting the KUBECONFIG
@@ -107,7 +107,7 @@ Install the installation tooling dependencies. You will need:
 1. Apply the changes to your cluster
 
    ```sh
-   ./pattern.sh make install
+   make install
    ```
 
 # Validating the Environment
