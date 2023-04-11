@@ -1,6 +1,6 @@
 ---
 title: Prerequisite Tools
-aliases: /include/prerequisite-tools/
+aliases: /prerequisite-tools/
 ---
 
 * `git`, the git client

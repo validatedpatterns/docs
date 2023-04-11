@@ -74,6 +74,7 @@ cloudinit
 cloudinitpassword
 cloudinituser
 cloudprovider
+clusteradm
 clustergroup
 clustergroups
 clustername
@@ -472,6 +473,7 @@ sso
 sstlsi
 stackrox
 standal
+stolostron
 storageclass
 storageclassname
 stormshift
