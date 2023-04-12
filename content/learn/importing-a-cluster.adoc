@@ -54,9 +54,11 @@ There are a two other known ways to join a cluster to the RH ACM hub. These meth
 
 . Run the following command:
 
-```sh
++
+[source,terminal]
+----
 cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-KUBECONFIG>
-```
+----
 
 == Importing a cluster using `clusteradm` tool
 
@@ -64,21 +66,44 @@ You can also use `clusteradm` to join a cluster. The following instructions expl
 
 . To deploy a edge cluster you will need to get the hub/datacenter cluster's token. You will need to https://github.com/open-cluster-management-io/clusteradm#install-the-clusteradm-command-line[install `clusteradm`]. When it is installed run the following on existing *hub/datacenter* cluster:
 
-   `clusteradm get token`
++
+[source,terminal]
+----
+clusteradm get token
+----
 
 . When you run the `clusteradm` command above it replies with the token and also shows you the command to use on the managed. So first you must login to the managed cluster with either of the following methods:
 
-   * `oc login`
++
+[source,terminal]
+----
+oc login
+----
 
-   * `export KUBECONFIG=~/<path-to-kubeconfig>`
++
+or 
+
++
+[source,terminal]
+----
+export KUBECONFIG=~/<path-to-kubeconfig>
+----
 
 . Then request to that the managed join the datacenter hub
 
-   `clusteradm join --hub-token <token from clusteradm get token command > <managed-cluster-name>`
++
+[source,terminal]
+----
+clusteradm join --hub-token <token from clusteradm get token command > <managed-cluster-name>
+----
 
 . Back on the hub cluster accept the join request
 
-   `clusteradm accept --clusters <managed-cluster-name>`
++
+[source,terminal]
+----
+clusteradm accept --clusters <managed-cluster-name>
+----
 
 == Designate the new cluster as a devel site
 
@@ -88,8 +113,16 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
 
 1. Find the new cluster
 
-   `oc get managedclusters.cluster.open-cluster-management.io`
++
+[source,terminal]
+----
+oc get managedclusters.cluster.open-cluster-management.io
+----
 
 1. Apply the label
 
-   `oc label managedclusters.cluster.open-cluster-management.io/<your-cluster> clusterGroup=<managed-cluster-group>`
++
+[source,terminal]
+----
+oc label managedclusters.cluster.open-cluster-management.io/<your-cluster> clusterGroup=<managed-cluster-group>
+----
