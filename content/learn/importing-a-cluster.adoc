@@ -9,6 +9,8 @@ aliases: /learn/importing-a-cluster/
 
 :toc:
 
+[id="devsec-importing-cluster"] 
+
 == Importing a managed cluster
 
 Many validated patterns require importing a cluster into a managed group. These groups have specific application sets that will be deployed and managed. Some examples are factory clusters in the Industrial Edge pattern, or development clusters in Multi-cluster DevSecOps pattern. 

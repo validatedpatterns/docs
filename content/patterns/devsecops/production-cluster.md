@@ -32,9 +32,9 @@ By default the production applications are deployed on all `prod` clusters that 
 Remember to commit the changes and push to GitHub so that GitOps can see
 your changes and apply them.
 
-## Deploy a devel cluster
+## Deploy a Production (prod) cluster
 
-For instructions on how to prepare and import a production (prod) cluster please read the section link:/learn/importing-a-cluster/[importing a cluster].
+For instructions on how to prepare and import a production (prod) cluster please read the section [importing a cluster](/learn/importing-a-cluster).
 
 ## You are done importing the production cluster
 
