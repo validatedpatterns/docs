@@ -222,11 +222,11 @@ function createKeyTable(rows) {
     tableText = tableText + "<h2>Key</h2>";
     tableText = tableText + "<table><tbody>";
 
+    tableText = tableText + "<tr>";
     rows.forEach(r => {
-	tableText = tableText + "<tr>";
 	tableText = tableText + "<td><object data='" + get_key_url(r, "") + "' style='max-width: 100%;'>'</object></td>";
-	tableText = tableText + "</tr>";
     });
+    tableText = tableText + "</tr>";
 
     return tableText + "</tbody></table></div>";
 }
