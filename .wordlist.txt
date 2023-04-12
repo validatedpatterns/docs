@@ -298,6 +298,7 @@ macosx
 makefile
 managedclustergroups
 managedclusterinfo
+managedclusters
 managedsite's
 maxpods
 mbaldessari
