@@ -361,10 +361,10 @@ function processBucketXML(text, options) {
 	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false);
 
     } else {
-	htmlText = htmlText + createKeyTable(["green", "yellow", "red"]);    
+	htmlText = createKeyTable(["green", "yellow", "red"]);    
 	
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
-	htmlText = createFilteredVerticalTable(badges, "date", null, true);
+	htmlText = htmlText + createFilteredVerticalTable(badges, "date", null, true);
 	
 	badges.sort(patternVertSort);
 	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true);
