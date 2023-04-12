@@ -73,6 +73,17 @@ function get_shield_url(badge, label) {
     return base + '&url=' + encodeURI(badge.getURI());
 }
 
+function get_key_url(color, label) {
+    uri = '/'+color+'.json'
+    base = 'https://img.shields.io/endpoint?style=flat&logo=git&logoColor=white';
+    // TODO: Replace the second link with the CI Job URL
+    base = base +'&link='+ encodeURI("/") + '&link=' + encodeURI(uri);
+    if ( label != "" ) {
+        base = base +'&label='+ encodeURI(label);
+    }
+    return base + '&url=' + encodeURI(uri);
+}
+
 function print_shield(bucket, badge, tag) {
     shield_url = get_shield_url(bucket, badge, tag);
     //echo "<a href='bucket/badge' rel='nofollow'><img alt='tag' src='shield_url' style='max-width: 100%;'></a><br/>";
@@ -204,6 +215,24 @@ function toTitleCase(str) {
     );
 }      
 
+function createKeyTable(rows) {
+    //document.getElementById('data').innerHTML = 'Hello World!';
+
+    tableText = "<div style='ci-key'>";
+    if ( titles ) {
+	tableText = tableText + "<h2>Key</h2>";
+    }
+    tableText = tableText + "<table><tbody>";
+
+    rows.forEach(r => {
+	tableText = tableText + "<tr>";
+	    tableText = tableText + "<td><object data='" + get_key_url(r, "") + "' style='max-width: 100%;'>'</object></td>";
+	tableText = tableText + "</tr>";
+    });
+
+    return tableText + "</tbody></table></div>";
+}
+
 function createFilteredHorizontalTable(badges, field, value, titles) {
     //document.getElementById('data').innerHTML = 'Hello World!';
 
@@ -334,6 +363,8 @@ function processBucketXML(text, options) {
 	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false);
 
     } else {
+	htmlText = htmlText + createKeyTable(["green", "yellow", "red"]);    
+	
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
 	htmlText = createFilteredVerticalTable(badges, "date", null, true);
 	
