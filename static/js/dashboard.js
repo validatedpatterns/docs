@@ -74,7 +74,7 @@ function get_shield_url(badge, label) {
 }
 
 function get_key_url(color, label) {
-    uri = '/'+color+'.json'
+    uri = 'https://hybrid-cloud-patterns.io/'+color+'.json'
     base = 'https://img.shields.io/endpoint?style=flat&logo=git&logoColor=white';
     // TODO: Replace the second link with the CI Job URL
     base = base +'&link='+ encodeURI("/") + '&link=' + encodeURI(uri);
