@@ -9,7 +9,7 @@ aliases: /learn/importing-a-cluster/
 
 :toc:
 
-[id="devsec-importing-cluster"] 
+[id="importing-a-cluster"] 
 
 == Importing a managed cluster
 
