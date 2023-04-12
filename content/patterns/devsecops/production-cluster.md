@@ -34,7 +34,7 @@ your changes and apply them.
 
 ## Deploy a Production (prod) cluster
 
-For instructions on how to prepare and import a production (prod) cluster please read the section [importing a cluster](/learn/importing-a-cluster).
+For instructions on how to prepare and import a production (prod) cluster please read the section [importing a cluster](/learn/importing-a-cluster). Use `clusterGroup=prod`.
 
 ## You are done importing the production cluster
 

@@ -37,7 +37,7 @@ your changes and apply them.
 
 ## Deploy a development (devel) cluster
 
-For instructions on how to prepare and import a development (devel) cluster please read the section [importing a cluster](/learn/importing-a-cluster)
+For instructions on how to prepare and import a development (devel) cluster please read the section [importing a cluster](/learn/importing-a-cluster). Use `clusterGroup=devel`.
 .
 
 ## You are done importing the development cluster

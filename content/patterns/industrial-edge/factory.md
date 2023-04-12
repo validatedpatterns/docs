@@ -39,7 +39,7 @@ your changes and apply them.
 
 ## Deploy a factory cluster
 
-For instructions on how to prepare and import a factory cluster please read the section [importing a cluster](/learn/importing-a-cluster)
+For instructions on how to prepare and import a factory cluster please read the section [importing a cluster](/learn/importing-a-cluster). Use `clusterGroup=factory`.
 
 ### You're done
 
