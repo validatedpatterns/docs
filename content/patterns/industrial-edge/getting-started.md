@@ -156,7 +156,7 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
    ```sh
    ./pattern.sh make install
    ```
-   The `make install` target will deploy the Validated Patterns Operator, deploy all the resources define in the `values-datacenter.yaml` and execute the `make load-secrets` target to load the secrets configured in your `values-secrets-industrial-edge.yaml` file.
+ The `make install` target deploys the Validated Patterns Operator, all the resources that are defined in the `values-datacenter.yaml` and runs the `make load-secrets` target to load the secrets configured in your `values-secrets-industrial-edge.yaml` file.
 
 # Validating the Environment
 
