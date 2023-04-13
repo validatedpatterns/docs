@@ -151,7 +151,7 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
    export KUBECONFIG=~/my-ocp-cluster/auth/kubeconfig
    ```
 
-1. Apply the changes to your cluster from the root directory of the pattern
+1. Apply the changes to your cluster from the root directory of the pattern.
 
    ```sh
    ./pattern.sh make install
