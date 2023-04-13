@@ -183,7 +183,7 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
 
 1. Access the ArgoCD environment
 
-   As a convenience the ArgoCD application links can be found in the OpenShift Applications Menu
+   You can find the ArgoCD application links listed under the **Red Hat applications** in the OpenShift Container Platform web console.
 
    ![ArgoCD Links](/images/ocp-applications-menu.png)
 
