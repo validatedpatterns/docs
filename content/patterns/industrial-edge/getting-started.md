@@ -28,7 +28,7 @@ If you do not have a running Red Hat OpenShift cluster you can start one on a
 public or private cloud by using [Red Hat's cloud
 service](https://console.redhat.com/openshift/create).
 
-## Prerequisite Tools
+## Prerequisites
 
 Install the installation tooling dependencies. 
 
