@@ -137,7 +137,7 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
    git push origin deploy-v2.3
    ```
 
-1. You can deploy the pattern using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/) directly. If you do deploy the pattern using the Validated Patterns Operator, installed through `Operator Hub`, you will need to execute `make load-secrets` through a terminal session on your laptop or bastion host. 
+1. You can deploy the pattern using the [Validated Patterns Operator](/infrastructure/using-validated-pattern-operator/) directly. If you deploy the pattern using the Validated Patterns Operator, installed through `Operator Hub`, you will need to run `make load-secrets` through a terminal session on your laptop or bastion host. 
 
 1. If you deploy the pattern through a terminal session on your laptop or bastion host login to your cluster using oc login or exporting the KUBECONFIG
 
