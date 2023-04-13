@@ -61,7 +61,7 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
    vi ~/values-secret-industrial-edge.yaml
    ```
 
-1. You will customize the following secret values 
+1. Customize the following secret values. 
 
    ```yaml
    version: "2.0"
