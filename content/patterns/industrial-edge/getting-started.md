@@ -160,7 +160,8 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
 
 # Validating the Environment
 
-1. Check the operators have been installed
+1. In the OpenShift Container Platform web console, navigate to the **Operators → OperatorHub** page. 
+2. Verify that the following Operators are installed on the HUB cluster:
 
    ```text
    Operators > Installed Operators
