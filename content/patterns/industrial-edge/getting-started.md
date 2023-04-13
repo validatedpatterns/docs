@@ -164,11 +164,6 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
 2. Verify that the following Operators are installed on the HUB cluster:
 
    ```text
-   Operators > Installed Operators
-   ```
-   The operators that should be installed on the HUB cluster are the following:
-
-   ```text
    Operator Name                  Namespace
    ------------------------------------------------------
    advanced-cluster-management    open-cluster-management
