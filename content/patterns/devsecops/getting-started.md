@@ -48,9 +48,9 @@ secrets:
 
 # Preparing to deploy
 
-1. Install the installation tooling dependencies.  You will [need](/include/prerequisite-tools/ "git and podman"):
-
-<!-- {% include include/prerequisite-tools.md %} -->
+1. Install the installation tooling dependencies.
+   * Git command line tool ([git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
+   * Podman command line tool ([podman](https://podman.io/getting-started/installation))
 
 1. Fork the [Multicluster DevSecOps](https://github.com/hybrid-cloud-patterns/multicluster-devsecops) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevSecOps processes. The **Fork** information and pull down menu can be found on the top right of the GitHub page for a pattern. Select the pull down an select **Create a new fork**.
 

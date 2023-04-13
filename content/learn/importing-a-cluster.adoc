@@ -15,19 +15,19 @@ aliases: /learn/importing-a-cluster/
 
 Many validated patterns require importing a cluster into a managed group. These groups have specific application sets that will be deployed and managed. Some examples are factory clusters in the Industrial Edge pattern, or development clusters in Multi-cluster DevSecOps pattern. 
 
-Red Hat Advanced Cluster Management (RH ACM) can be used to create a cluster of a specific cluster group type. You can deploy a specific cluster that way if you have RH ACM set up with credentials for deploying clusters. However in many cases an OpenShift cluster has already been created and will be imported into the set of clusters that RH ACM is managing.
+Red Hat Advanced Cluster Management (RHACM) can be used to create a cluster of a specific cluster group type. You can deploy a specific cluster that way if you have RHACM set up with credentials for deploying clusters. However in many cases an OpenShift cluster has already been created and will be imported into the set of clusters that RHACM is managing.
 
 While you can create and deploy in this manner this section concentrates on importing an existing cluster and designating a specific managed cluster group type.
 
-To deploy a cluster that can be imported into RH ACM, use the `openshift-install` program provided at https://console.redhat.com/openshift/create[console.redhat.com]. You will need login credentials. 
+To deploy a cluster that can be imported into RHACM, use the `openshift-install` program provided at https://console.redhat.com/openshift/create[console.redhat.com]. You will need login credentials. 
 
-== Importing a cluster using the RH ACM User Interface
+== Importing a cluster using the RHACM User Interface
 
-=== Getting to the RH ACM user interface
+=== Getting to the RHACM user interface
 
 After ACM is installed a message regarding a "Web console update is available" will be displayed. Click on the "Refresh web console" link.
 
-On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down. This will navigate to the RH ACM console and to its "Clusters" section
+On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down. This will navigate to the RHACM console and to its "Clusters" section
 
 Select the "Import cluster" option.
 
@@ -39,7 +39,7 @@ Using this method, you are done. Skip to the section in your pattern documentati
 
 == Other potential import tools
 
-There are a two other known ways to join a cluster to the RH ACM hub. These methods are not supported but have been tested once. The patterns team no longer tests these methods. If these methods become supported we will maintain the documentation here. 
+There are a two other known ways to join a cluster to the RHACM hub. These methods are not supported but have been tested once. The patterns team no longer tests these methods. If these methods become supported we will maintain the documentation here. 
 
 * Using the link:https://github.com/stolostron/cm-cli[cm-cli] tool
 * Using the link:https://github.com/open-cluster-management-io/clusteradm[clusteradm] tool
@@ -72,7 +72,7 @@ You can also use `clusteradm` to join a cluster. The following instructions expl
 clusteradm get token
 ----
 
-. When you run the `clusteradm` command above it replies with the token and also shows you the command to use on the managed. So first you must login to the managed cluster with either of the following methods:
+. When you run the `clusteradm` command above it replies with the token and also shows you the command to use on the managed. Login to the managed cluster with either of the following methods:
 
 +
 [source,terminal]
@@ -89,7 +89,7 @@ or
 export KUBECONFIG=~/<path-to-kubeconfig>
 ----
 
-. Then request to that the managed join the datacenter hub
+. Then request to that the managed join the datacenter hub.
 
 +
 [source,terminal]
@@ -97,7 +97,7 @@ export KUBECONFIG=~/<path-to-kubeconfig>
 clusteradm join --hub-token <token from clusteradm get token command > <managed-cluster-name>
 ----
 
-. Back on the hub cluster accept the join request
+. Back on the hub cluster accept the join request.
 
 +
 [source,terminal]
@@ -111,7 +111,7 @@ If you use the command line tools above you need to explicitly indicate that the
 
 We do this by adding the label referenced in the managedSite's `clusterSelector`.
 
-1. Find the new cluster
+1. Find the new cluster.
 
 +
 [source,terminal]
@@ -119,7 +119,7 @@ We do this by adding the label referenced in the managedSite's `clusterSelector`
 oc get managedclusters.cluster.open-cluster-management.io
 ----
 
-1. Apply the label
+1. Apply the label.
 
 +
 [source,terminal]
