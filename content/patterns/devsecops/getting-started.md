@@ -12,6 +12,7 @@ aliases: /devsecops/getting-started/
 1. A second OpenShift cluster for development using secure CI pipelines. 
 1. A third OpenShift cluster for production. (optional but desirable)
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
+1. Tools Podman and Git. (see below)
 
 If you do not have running Red Hat OpenShift clusters you can start one on a
 public or private cloud by using [Red Hat's cloud
@@ -48,7 +49,8 @@ secrets:
 
 # Preparing to deploy
 
-1. Install the installation tooling dependencies.
+1. Install the installation tooling dependencies. See [Patterns quick start]({{< ref "/content/learn/quickstart.adoc" >}})
+
    * Git command line tool ([git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
    * Podman command line tool ([podman](https://podman.io/getting-started/installation))
 
