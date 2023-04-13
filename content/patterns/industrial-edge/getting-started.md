@@ -50,7 +50,7 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
 
 1. A `values-secret-industrial-edge.yaml` file is used to automate setup of secrets needed for:
 
-   - A Git repository (E.g. Github, GitLab etc.)
+   - A git repository hosted on a service such as GitHub, GitLab, or so on.
    - A container image registry (E.g. Quay)
    - S3 storage (E.g. AWS)
 
