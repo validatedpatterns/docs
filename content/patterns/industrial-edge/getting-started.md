@@ -30,7 +30,7 @@ service](https://console.redhat.com/openshift/create).
 
 ## Prerequisites
 
-Install the installation tooling dependencies. 
+For installation tooling dependencies, see [Patterns quick start]({{< ref "/content/learn/quickstart.adoc" >}})
 
 Please refer to [Pattern Quickstart]({{< ref "/content/learn/quickstart.adoc" >}})
 
