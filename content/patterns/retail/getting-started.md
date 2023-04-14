@@ -85,7 +85,7 @@ If you plan to customize the build of the applications themselves, there `revisi
 1. Preview the changes
 
    ```sh
-   make show
+   ./pattern.sh make show
    ```
 
 1. Login to your cluster using oc login or exporting the KUBECONFIG
@@ -103,7 +103,7 @@ If you plan to customize the build of the applications themselves, there `revisi
 1. Apply the changes to your cluster
 
    ```sh
-   ./common/scripts/pattern-util.sh make install
+   ./pattern-util.sh make install
    ```
 
 This will execute `make install` in the team's container, which will take a bit to load the first time. It contains ansible and other dependencies so that you do not need to install them on your workstation.

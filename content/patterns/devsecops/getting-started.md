@@ -9,10 +9,10 @@ aliases: /devsecops/getting-started/
 # Prerequisites
 
 1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../devsecops/cluster-sizing).
-1. A second OpenShift cluster for production (optional but desirable)
-1. A third OpenShift cluster for secure CI pipelines (optional but desirable)
+1. A second OpenShift cluster for development using secure CI pipelines. 
+1. A third OpenShift cluster for production. (optional but desirable)
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
-1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
+1. Tools Podman and Git. (see below)
 
 If you do not have running Red Hat OpenShift clusters you can start one on a
 public or private cloud by using [Red Hat's cloud
@@ -49,13 +49,14 @@ secrets:
 
 # Preparing to deploy
 
-1. Install the installation tooling dependencies.  You will need:
+1. Install the installation tooling dependencies. See [Patterns quick start]({{< ref "/content/learn/quickstart.adoc" >}})
 
-{% include prerequisite-tools.md %}
+   * Git command line tool ([git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
+   * Podman command line tool ([podman](https://podman.io/getting-started/installation))
 
-1. Fork the [Multicluster DevSecOps](https://github.com/hybrid-cloud-patterns/multicluster-devsecops) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevSecOps processes.
+1. Fork the [Multicluster DevSecOps](https://github.com/hybrid-cloud-patterns/multicluster-devsecops) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevSecOps processes. The **Fork** information and pull down menu can be found on the top right of the GitHub page for a pattern. Select the pull down an select **Create a new fork**.
 
-1. Clone the forked copy of the `multicluster-devsecops` repository. Use branch `v1.0`.
+1. Clone the forked copy of the `multicluster-devsecops` repository. Use branch `v1.0`. (Clone in an appropriate sub-dir)
 
    ```sh
    git clone git@github.com:{your-username}/multicluster-devsecops.git
@@ -99,15 +100,15 @@ Make sure to set up the `values-secret.yaml` and `values-global.yaml` correctly 
 
 # How to deploy
 
-1. You can deploy the pattern using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you do use the operator then skip to Validating the Environment below.
+Please review the [Patterns quick start](/learn/quickstart/) page. This section describes deploying the pattern using `pattern.sh`. You can deploy the pattern using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you do use the operator then skip to Validating the Environment below.
 
-1. Preview the changes
+1. **Preview the changes**. If you'd like to review what is been deployed with the pattern, `pattern.sh` provides a way to show what will be deployed.
 
    ```sh
-   make show
+   ./pattern.sh make show
    ```
 
-1. Login to your cluster using oc login or exporting the KUBECONFIG
+1. Login to your cluster using `oc login` or exporting the kubernetes `kubeconfig` file with `KUBECONFIG`:
 
    ```sh
    oc login
@@ -116,13 +117,13 @@ Make sure to set up the `values-secret.yaml` and `values-global.yaml` correctly 
    or
 
    ```sh
-   export KUBECONFIG=~/my-ocp-env/hub
+   export KUBECONFIG=~/<path-to-kubeconfig/kubeconfig
    ```
 
 1. Apply the changes to your cluster
 
    ```sh
-   make install
+   ./pattern.sh make install
    ```
 
 # Validating the Environment
@@ -153,7 +154,7 @@ Make sure to set up the `values-secret.yaml` and `values-global.yaml` correctly 
 
    For more information on secrets management see [here](/secrets). For information on Hashicorp's Vault see [here](/secrets/vault)
 
-1. Check all applications are synchronized in OpenShift GitOps
+1. Check all applications are synchronized in OpenShift GitOps.
 
    [![Multicluster DevSecOps GitOps overview](/images/devsecops/gitops-hub-cluster.png)](/images/devsecops/gitops-hub-cluster.png)
 
@@ -162,22 +163,15 @@ Make sure to set up the `values-secret.yaml` and `values-global.yaml` correctly 
 1. After ACM is installed a message regarding a "Web console update is available" may be displayed.
 Click on the "Refresh web console" link.
 
-   [![update-web-console](/images/web-console-update-message.png "Update web console")](/images/web-console-update-message.png)
-
-1. Navigate to the ACM hub console. On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down.
-This will navigate to the ACM console and to its "Clusters" section
-
-   [![launch-acm-console](/images/local-all-cluster-pulldown.png "Launch ACM console")](/images/local-all-cluster-pulldown.png)
+1. Navigate to the ACM hub console. On the upper-left side you'll see a pull down labeled "local-cluster". Click on this and select "All Clusters" from this pull down. This will navigate to the ACM console and to its "Clusters" section
 
 1. The Governance dashboard shows high level information on Policy set violations and Policy violations.
 
    [![acm-dashboard](/images/devsecops/acm-governance-dashboard.png "ACM Governance dashboard")](/images/devsecops/acm-governance-dashboard.png)
 
-1. Navigate to the Governance page and select the `Policy sets` Governance tab. There are two policy sets deployed, one for the hub and one for managed clusters.
+1. Navigate to the Governance page and select the `Policy sets` Governance tab. There are two policy sets deployed, one for the hub, **openshift-plus-hub**, and one for managed clusters, **openshift-plus-managed**.
 
-   [![acm-governance](/images/devsecops/acm-governance.png "ACM Governance Policy sets")](/images/devsecops/acm-governance.png)
-
-1. Explore the Policies tab and select some policies to examine. The image below shows ACM policy status for a three cluster deployment.
+1. Explore the Policies tab and select some policies to examine. The image below shows and example of ACM policy status for a three cluster deployment.
 
    [![acm-policies](/images/devsecops/acm-governance-policies.png "ACM Governance Policies")](/images/devsecops/acm-governance-policies.png)
 
@@ -195,9 +189,7 @@ This will navigate to the ACM console and to its "Clusters" section
 
    [![ACS Central password](/images/devsecops/acs-central-htpasswd.png)](/images/devsecops/acs-central-htpasswd.png)
 
-1. Return to the ACS Central tab and paste the password into thee password field. Make sure that the Username is `admin`.
-
-   [![ACS Central password](/images/devsecops/acs-login-screen.png)](/images/devsecops/acs-login-screen.png)
+1. Return to the ACS Central tab and paste the password into the password field. Make sure that the Username is `admin`.
 
 1. This will bring you to the ACS Central dashboard page. At first it may not show any clusters showing but as the ACS secured deployment on the hub syncs with ACS central on the hub then information will start to show.  
 

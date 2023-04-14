@@ -76,6 +76,7 @@ cloudinit
 cloudinitpassword
 cloudinituser
 cloudprovider
+clusteradm
 clustergroup
 clustergroupname
 clustergroups
@@ -301,6 +302,7 @@ macosx
 makefile
 managedclustergroups
 managedclusterinfo
+managedclusters
 managedsite's
 maxpods
 mbaldessari
@@ -476,6 +478,7 @@ sso
 sstlsi
 stackrox
 standal
+stolostron
 storageclass
 storageclassname
 stormshift

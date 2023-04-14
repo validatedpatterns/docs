@@ -1,0 +1,128 @@
+---
+menu:
+  learn:
+    parent: Patterns quick start
+title: Importing a cluster
+weight: 21
+aliases: /learn/importing-a-cluster/
+---
+
+:toc:
+
+[id="importing-a-cluster"] 
+
+== Importing a managed cluster
+
+Many validated patterns require importing a cluster into a managed group. These groups have specific application sets that will be deployed and managed. Some examples are factory clusters in the Industrial Edge pattern, or development clusters in Multi-cluster DevSecOps pattern. 
+
+Red Hat Advanced Cluster Management (RHACM) can be used to create a cluster of a specific cluster group type. You can deploy a specific cluster that way if you have RHACM set up with credentials for deploying clusters. However in many cases an OpenShift cluster has already been created and will be imported into the set of clusters that RHACM is managing.
+
+While you can create and deploy in this manner this section concentrates on importing an existing cluster and designating a specific managed cluster group type.
+
+To deploy a cluster that can be imported into RHACM, use the `openshift-install` program provided at https://console.redhat.com/openshift/create[console.redhat.com]. You will need login credentials. 
+
+== Importing a cluster using the RHACM User Interface
+
+=== Getting to the RHACM user interface
+
+After ACM is installed a message regarding a "Web console update is available" will be displayed. Click on the "Refresh web console" link.
+
+On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down. This will navigate to the RHACM console and to its "Clusters" section
+
+Select the "Import cluster" option.
+
+=== Importing the cluster
+
+On the "Import an existing cluster" page, enter the cluster name (arbitrary) and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=` using the appropriate cluster group specified in the pattern. Press `Import`.
+
+Using this method, you are done. Skip to the section in your pattern documentation that describes how you can confirm the pattern deployed correctly on the managed cluster.
+
+== Other potential import tools
+
+There are a two other known ways to join a cluster to the RHACM hub. These methods are not supported but have been tested once. The patterns team no longer tests these methods. If these methods become supported we will maintain the documentation here. 
+
+* Using the link:https://github.com/stolostron/cm-cli[cm-cli] tool
+* Using the link:https://github.com/open-cluster-management-io/clusteradm[clusteradm] tool
+
+== Importing a cluster using the cm-cli tool
+
+. Install the cm-cli (`cm`) (cluster management) command-line tool. See installation instructions here: https://github.com/open-cluster-management/cm-cli/#installation[cm-cli installation]
+
+. Obtain the KUBECONFIG file from the managed cluster.
+
+. On the command-line login into the hub/datacenter cluster (use `oc login` or export the KUBECONFIG).
+
+. Run the following command:
+
++
+[source,terminal]
+----
+cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-KUBECONFIG>
+----
+
+== Importing a cluster using `clusteradm` tool
+
+You can also use `clusteradm` to join a cluster. The following instructions explain what needs to be done. `clusteradm` is still in testing.
+
+. To deploy a edge cluster you will need to get the hub/datacenter cluster's token. You will need to https://github.com/open-cluster-management-io/clusteradm#install-the-clusteradm-command-line[install `clusteradm`]. When it is installed run the following on existing *hub/datacenter* cluster:
+
++
+[source,terminal]
+----
+clusteradm get token
+----
+
+. When you run the `clusteradm` command above it replies with the token and also shows you the command to use on the managed. Login to the managed cluster with either of the following methods:
+
++
+[source,terminal]
+----
+oc login
+----
+
++
+or 
+
++
+[source,terminal]
+----
+export KUBECONFIG=~/<path-to-kubeconfig>
+----
+
+. Then request to that the managed join the datacenter hub.
+
++
+[source,terminal]
+----
+clusteradm join --hub-token <token from clusteradm get token command > <managed-cluster-name>
+----
+
+. Back on the hub cluster accept the join request.
+
++
+[source,terminal]
+----
+clusteradm accept --clusters <managed-cluster-name>
+----
+
+== Designate the new cluster as a devel site
+
+If you use the command line tools above you need to explicitly indicate that the imported cluster is part of a specific clusterGroup. If you haven't tagged the cluster as `clusterGroup=<managed-cluster-group>` then do that now. Some examples of `clusterGroup` are `factory`, `devel`, or `prod`.
+
+We do this by adding the label referenced in the managedSite's `clusterSelector`.
+
+1. Find the new cluster.
+
++
+[source,terminal]
+----
+oc get managedclusters.cluster.open-cluster-management.io
+----
+
+1. Apply the label.
+
++
+[source,terminal]
+----
+oc label managedclusters.cluster.open-cluster-management.io/<your-cluster> clusterGroup=<managed-cluster-group>
+----

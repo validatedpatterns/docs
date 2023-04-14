@@ -153,16 +153,18 @@ To install a collection that is not currently installed:
    git push origin my-branch
    ```
 
-1. (Optional) Preview the changes
+Please review the [Patterns quick start](/learn/quickstart/) page. This section describes deploying the pattern using `pattern.sh`. You can deploy the pattern using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). If you do use the operator then skip to Validating the Environment below.
+
+1. (Optional) Preview the changes. If you'd like to review what is been deployed with the pattern, `pattern.sh` provides a way to show what will be deployed.
 
     ```sh
-    make show
+    ./pattern.sh make show
     ```
 
 1. Apply the changes to your cluster. This will install the pattern via the Validated Patterns Operator, and then run any necessary follow-up steps.
 
     ```sh
-    make install
+    ./pattern.sh make install
     ```
 
 The installation process will take between 45-60 minutes to complete. If you want to know the details of what is happening during that time, the entire process is documented [here](/ansible-edge-gitops/installation-details/).

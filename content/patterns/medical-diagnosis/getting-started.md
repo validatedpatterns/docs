@@ -137,7 +137,7 @@ secrets:
 1. Preview the changes that will be made to the Helm charts.
 
    ```sh
-   make show
+   ./pattern.sh make show
    ```
 
 1. Login to your cluster using oc login or exporting the KUBECONFIG
@@ -175,7 +175,7 @@ Make sure you have the correct domain, clustername, externalUrl, targetBucket an
 1. Apply the changes to your cluster
 
    ```sh
-   make install
+   ./pattern.sh make install
    ```
 
    If the install fails and you go back over the instructions and see what was missed and change it, then run `make update` to continue the installation.
