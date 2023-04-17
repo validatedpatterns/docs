@@ -4,29 +4,29 @@
     {{ partial "menu-learn.html" . }}
   </div>
 </div>
-<main class="pf-c-page__main" >
+
+<main class="pf-c-page__main">
   <section class="pf-c-page__main-section">
-    <div class="pf-l-stack pf-u-text-align-center">
-      <div class="pf-c-content" style="--pf-c-content--FontSize: 1rem;">
-        <h1 class="pf-c-title pf-m-4xl">
-          {{- .Title -}}
+    <div class="pf-l-grid__item pf-m-9-col">
+      <div class="pf-u-text-align-center">
+        <div class="pf-c-content" style="--pf-c-content--FontSize: 1rem;">
+          <h1 class="pf-c-title pf-m-4xl">
+            {{- .Title -}}
         </h1>
-        {{ .Content }}
+        <div class="page-abstract">
+          {{ .Content }}
+        </div>
       </div>
     </div>
-  </section>
-  <section class="pf-c-page__main-section">
-    <div class="pf-l-stack">
-      <div class="pf-c-content" >
-        <div class="pf-l-gallery pf-m-gutter" style="--pf-l-gallery--GridTemplateColumns--min: 300px;">
-          {{ range .Paginator.Pages.ByWeight }}
-          <div class="pf-l-gallery__item" style="display: grid;">
-            {{ .Render "summary" }}
-          </div>
-          {{ end }}
+    <div class="pf-c-content" >
+      <div class="pf-l-gallery pf-m-gutter" style="--pf-l-gallery--GridTemplateColumns--min: 300px;">
+        {{ range .Paginator.Pages.ByWeight }}
+        <div class="pf-l-gallery__item" style="display: grid;">
+          {{ .Render "summary" }}
         </div>
-        {{ partial "paginator.html" . }}
+        {{ end }}
       </div>
+      {{ partial "paginator.html" . }}
     </div>
   </section>
   {{ partial "footer.html" . }}
