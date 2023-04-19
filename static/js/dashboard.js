@@ -36,12 +36,12 @@ class Badge {
     }
 
     getJenkinsURI() {
-	job = this.pattern+"-"+this.platform+"-ocp"+this.version+"-interop"
+        job = this.pattern+"-"+this.platform+"-ocp"+this.version+"-interop";
         return jenkins_base_url(this.pattern) + "/job/"+job+"/lastBuild/";
     }
 
     getJiraSearch() {
-	job = this.pattern+"-"+this.platform+"-"+this.version
+        job = this.pattern+"-"+this.platform+"-"+this.version;
         return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~%22"+job+"%22%20and%20status%20not%20in%20(Closed)";
     }
 }
