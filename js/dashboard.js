@@ -403,13 +403,16 @@ function processBucketXML(text, options) {
     } else {
 	htmlText = createKeyTable(["green", "yellow", "red"]);    
 	
+	htmlText = htmlText + "<table><tr><td>";    
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
 	htmlText = htmlText + createFilteredVerticalTable(badges, "date", null, true);
+	htmlText = htmlText + "</td><td>";    
 	
 	badges.sort(patternVertSort);
 	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", null, true);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "version", null, true);
+	htmlText = htmlText + "</td></tr></table>";    
     }
     document.getElementById(options.get('target')).innerHTML = htmlText;
 }
