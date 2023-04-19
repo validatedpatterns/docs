@@ -287,9 +287,9 @@ function createFilteredHorizontalTable(badges, field, value, titles) {
 
 	tableText = tableText + "<tr>";
 	if ( value == null && field == "pattern" ) {
-	    tableText = tableText + "<td><a href='" + pattern_url(r) + "'>" + rowTitle(field, r) + "</a></td>";
+	    tableText = tableText + "<td><a href='" + pattern_url(r) + "'>" + rowTitle(field, r) + "</a></td><td>&nbsp;</td>";
 	} else if ( value == null) {
-	    tableText = tableText + "<td><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td>";
+	    tableText = tableText + "<td><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td><td>&nbsp;</td>";
 	}
 	
 	pBadges.forEach(b => {
