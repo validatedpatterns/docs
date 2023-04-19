@@ -36,13 +36,13 @@ class Badge {
     }
 
     getJenkinsURI() {
-        job = this.pattern+"-"+this.platform+"-ocp"+this.version+"-interop";
-        return jenkins_base_url(this.pattern) + "/job/"+job+"/lastBuild/";
+        cijob = this.pattern+"-"+this.platform+"-ocp"+this.version+"-interop";
+        return jenkins_base_url(this.pattern) + "/job/"+cijob+"/lastBuild/";
     }
 
     getJiraSearch() {
-        job = this.pattern+"-"+this.platform+"-"+this.version;
-        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~%22"+job+"%22%20and%20status%20not%20in%20(Closed)";
+        cijob = this.pattern+"-"+this.platform+"-"+this.version;
+        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~%22"+cijob+"%22%20and%20status%20not%20in%20(Closed)";
     }
 }
 
@@ -84,7 +84,7 @@ function get_shield_url(badge, label) {
 }
 
 function get_key_url(color, label) {
-    uri = 'https://hybrid-cloud-patterns.io/'+color+'.json'
+    uri = 'https://hybrid-cloud-patterns.io/'+color+'.json';
     base = 'https://img.shields.io/endpoint?style=flat&logo=git&logoColor=white';
     // TODO: Replace the second link with the CI Job URL
     base = base +'&link='+ encodeURI("/") + '&link=' + encodeURI(uri);
@@ -99,8 +99,9 @@ function print_shield(bucket, badge, tag) {
     //echo "<a href='bucket/badge' rel='nofollow'><img alt='tag' src='shield_url' style='max-width: 100%;'></a><br/>";
     return "<object data="+shield_url+" style='max-width: 100%;'></object><br/>";
 }
+
 function jenkins_base_url(key) {
-    base = 'https://mps-jenkins-csb-mpqe.apps.ocp-c1.prod.psi.redhat.com/job/ValidatedPatterns'
+    base = 'https://mps-jenkins-csb-mpqe.apps.ocp-c1.prod.psi.redhat.com/job/ValidatedPatterns';
     if ( key == "aegitops" ) {
 	return base+'/job/AnsibleEdgeGitops';
     }
