@@ -36,13 +36,11 @@ class Badge {
     }
 
     getJenkinsURI() {
-        cijob = this.pattern+"-"+this.platform+"-ocp"+this.version+"-interop";
-        return jenkins_base_url(this.pattern) + "/job/"+cijob+"/lastBuild/";
+        return jenkins_base_url(this.pattern)+"/job/"+this.pattern+"-"+this.platform+"-ocp"+this.version+"-interop/lastBuild/";
     }
 
     getJiraSearch() {
-        cijob = this.pattern+"-"+this.platform+"-"+this.version;
-        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~%22"+cijob+"%22%20and%20status%20not%20in%20(Closed)";
+        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~%22"+this.pattern+"-"+this.platform+"-"+this.version+"%22%20and%20status%20not%20in%20(Closed)";
     }
 }
 
