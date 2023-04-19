@@ -34,6 +34,9 @@ class Badge {
     getURI() {
         return this.base+"/"+this.key;
     }
+    getJiraSearch() {
+        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~%22"+this.pattern)+"-"+this.platform+"-"+this.version+"%22%20and%20status%20not%20in%20(Closed)";
+    }
 }
 
 function sleep(ms) {
@@ -66,7 +69,7 @@ function rowTitle(field, value) {
 function get_shield_url(badge, label) {
     base = 'https://img.shields.io/endpoint?style=flat&logo=git&logoColor=white';
     // TODO: Replace the second link with the CI Job URL
-    base = base +'&link='+ encodeURI(badge.getURI()) + '&link=' + encodeURI(badge.getURI());
+    base = base +'&link='+ encodeURI(badge.getURI()) + '&link=' + encodeURI(badge.getJiraSearch());
     if ( label != "" ) {
         base = base +'&label='+ encodeURI(label);
     }
