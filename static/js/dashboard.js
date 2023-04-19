@@ -20,13 +20,13 @@ class Badge {
     
     getLabel(field) {
         if(field == "pattern") {
-	    return stringForKey(this.platform)+" "+this.version+" @ "+ this.date;
+	    return stringForKey(this.platform)+" "+this.version;
         }
         if(field == "platform") {
-	    return stringForKey(this.pattern)+" - "+this.version+" @ "+ this.date;
+	    return stringForKey(this.pattern)+" - "+this.version;
         }
         if(field == "version") {
-	    return stringForKey(this.pattern)+" : "+stringForKey(this.platform)+" @ "+ this.date;
+	    return stringForKey(this.pattern)+" : "+stringForKey(this.platform);
         }
 	return stringForKey(this.pattern)+" : "+ stringForKey(this.platform)+" "+this.version+" @ "+ this.date;
     }
@@ -120,13 +120,13 @@ function stringForKey(key) {
         return "DevSecOps";
     }
     if ( key == "manuela" ) {
-        return "Industrial Edge";
+        return "Industrial";
     }
     if ( key == "mcgitops" ) {
-        return "MultiCloud GitOps";
+        return "Core";
     }
     if ( key == "medicaldiag" ) {
-        return "Medical Diagnosis";
+        return "X-Ray";
     }
     if ( key == "azr" ) {
         return "Azure";
