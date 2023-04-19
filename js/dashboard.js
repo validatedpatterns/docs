@@ -30,12 +30,19 @@ class Badge {
         }
 	return stringForKey(this.pattern)+" : "+ stringForKey(this.platform)+" "+this.version+" @ "+ this.date;
     }
-
+	
     getURI() {
         return this.base+"/"+this.key;
     }
+
+    getJenkinsURI() {
+	job = this.pattern+"-"+this.platform+"-ocp"+this.version+"-interop"
+        return jenkins_base_url(this.pattern) + "/job/"+job+"/lastBuild/";
+    }
+
     getJiraSearch() {
-        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~%22"+this.pattern+"-"+this.platform+"-"+this.version+"%22%20and%20status%20not%20in%20(Closed)";
+	job = this.pattern+"-"+this.platform+"-"+this.version
+        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~%22"+job+"%22%20and%20status%20not%20in%20(Closed)";
     }
 }
 
@@ -69,7 +76,7 @@ function rowTitle(field, value) {
 function get_shield_url(badge, label) {
     base = 'https://img.shields.io/endpoint?style=flat&logo=git&logoColor=white';
     // TODO: Replace the second link with the CI Job URL
-    base = base +'&link='+ encodeURI(badge.getURI()) + '&link=' + encodeURI(badge.getJiraSearch());
+    base = base +'&link='+ encodeURI(badge.getJenkinsURI()) + '&link=' + encodeURI(badge.getJiraSearch());
     if ( label != "" ) {
         base = base +'&label='+ encodeURI(label);
     }
@@ -91,6 +98,25 @@ function print_shield(bucket, badge, tag) {
     shield_url = get_shield_url(bucket, badge, tag);
     //echo "<a href='bucket/badge' rel='nofollow'><img alt='tag' src='shield_url' style='max-width: 100%;'></a><br/>";
     return "<object data="+shield_url+" style='max-width: 100%;'></object><br/>";
+}
+function jenkins_base_url(key) {
+    base = 'https://mps-jenkins-csb-mpqe.apps.ocp-c1.prod.psi.redhat.com/job/ValidatedPatterns'
+    if ( key == "aegitops" ) {
+	return base+'/job/AnsibleEdgeGitops';
+    }
+    if ( key == "devsecops" ) {
+	return base+'/job/MulticlusterDevSecOps';
+    }
+    if ( key == "manuela" ) {
+	return base+'/job/Manuela';
+    }
+    if ( key == "mcgitops" ) {
+	return base+'/job/MultiCloudGitops';
+    }
+    if ( key == "medicaldiag" ) {
+	return base+'/job/MedicalDiagnosis';
+    }
+    return base;
 }
 
 function pattern_url(key) {
