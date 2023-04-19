@@ -403,10 +403,10 @@ function processBucketXML(text, options) {
     } else {
 	htmlText = createKeyTable(["green", "yellow", "red"]);    
 	
-	htmlText = htmlText + "<table><tr><td>";    
+	htmlText = htmlText + "<table><tr style='vertical-align:top'><td>";    
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
 	htmlText = htmlText + createFilteredVerticalTable(badges, "date", null, true);
-	htmlText = htmlText + "</td><td>";    
+	htmlText = htmlText + "</td><td>&nbsp;&nbsp;&nbsp;</td><td>";    
 	
 	badges.sort(patternVertSort);
 	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true);
