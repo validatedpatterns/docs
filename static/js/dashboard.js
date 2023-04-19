@@ -104,10 +104,10 @@ function jenkins_job(pattern, platform, version) {
         ciplatform = "azure";
     }
 
-    if ( key == "aegitops" ) {
-	return pattern+"-1.5-"+platform+"-ocp"+version+"-interop";
+    if ( pattern == "aegitops" ) {
+	return pattern+"-1.5-"+ciplatform+"-ocp"+version+"-interop";
     }
-    return pattern+"-"+platform+"-ocp"+version+"-interop";
+    return pattern+"-"+ciplatform+"-ocp"+version+"-interop";
 }
 
 function jenkins_base_url(key) {
