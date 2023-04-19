@@ -36,7 +36,7 @@ class Badge {
     }
 
     getJenkinsURI() {
-        return jenkins_base_url(this.pattern)+"/job/"+this.pattern+"-"+this.platform+"-ocp"+this.version+"-interop/lastBuild/";
+        return jenkins_base_url(this.pattern)+"/job/"+jenkins_job(this.pattern, this.platform, this.version)+"/lastBuild/";
     }
 
     getJiraSearch() {
@@ -96,6 +96,18 @@ function print_shield(bucket, badge, tag) {
     shield_url = get_shield_url(bucket, badge, tag);
     //echo "<a href='bucket/badge' rel='nofollow'><img alt='tag' src='shield_url' style='max-width: 100%;'></a><br/>";
     return "<object data="+shield_url+" style='max-width: 100%;'></object><br/>";
+}
+
+function jenkins_job(pattern, platform, version) {
+    ciplatform = platform
+    if ( platform == "azr" ) {
+        ciplatform = "azure";
+    }
+
+    if ( key == "aegitops" ) {
+	return pattern+"-1.5-"+platform+"-ocp"+version+"-interop";
+    }
+    return pattern+"-"+platform+"-ocp"+version+"-interop";
 }
 
 function jenkins_base_url(key) {
