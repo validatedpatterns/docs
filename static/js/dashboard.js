@@ -258,18 +258,20 @@ function toTitleCase(str) {
 function createKeyTable(rows) {
     //document.getElementById('data').innerHTML = 'Hello World!';
 
-    tableText = "<div style='ci-key'>";
+    tableText = "<div class='ci-key'>";
     tableText = tableText + "<h2>Key</h2>";
     tableText = tableText + "<table><tbody>";
 
     tableText = tableText + "<tr>";
     rows.forEach(r => {
-	tableText = tableText + "<td><object data='" + get_key_url(r, "") + "' style='max-width: 100%;'>'</object>&nbsp;</td>";
+	tableText = tableText + "<td class='ci-badge'><object data='" + get_key_url(r, "") + "' style='max-width: 100%;'>&nbsp;</object>&nbsp;</td>";
     });
     tableText = tableText + "</tr>";
-    tableText = tableText + "<tr><td><object data='" + get_key_url("links", "") + "' style='max-width: 100%;'>'</object>&nbsp;</td></tr>";
 
-    return tableText + "</tbody></table></div>";
+    tableText = tableText + "</tbody></table></div>";
+    tableText = tableText + "<object data='" + get_key_url("links", "") + "' style='max-width: 100%;'>&nbsp;</object>";
+
+    return tableText;
 }
 
 function createFilteredHorizontalTable(badges, field, value, titles) {
@@ -288,13 +290,13 @@ function createFilteredHorizontalTable(badges, field, value, titles) {
 
 	tableText = tableText + "<tr>";
 	if ( value == null && field == "pattern" ) {
-	    tableText = tableText + "<td><a href='" + pattern_url(r) + "'>" + rowTitle(field, r) + "</a></td><td>&nbsp;</td>";
+	    tableText = tableText + "<td class='ci-badge'><a href='" + pattern_url(r) + "'>" + rowTitle(field, r) + "</a></td><td class='ci-badge'>&nbsp;</td>";
 	} else if ( value == null) {
-	    tableText = tableText + "<td><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td><td>&nbsp;</td>";
+	    tableText = tableText + "<td class='ci-badge'><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td><td class='ci-badge'>&nbsp;</td>";
 	}
 	
 	pBadges.forEach(b => {
-	    tableText = tableText + "<td><object data='" + get_shield_url(b, b.getLabel(field)) + "' style='max-width: 100%;'>'</object></td>";
+	    tableText = tableText + "<td class='ci-badge'><object data='" + get_shield_url(b, b.getLabel(field)) + "' style='max-width: 100%;'>'</object></td>";
 	});
 	tableText = tableText + "</tr>";
     });
@@ -333,7 +335,7 @@ function createFilteredVerticalTable(badges, field, value, titles) {
 	tableText = tableText + "<tr>";
 	for ( i = 0; i < numColumns; i++) {
 	    blist = fieldColumns[i];
-	    tableText = tableText + "<td>";
+	    tableText = tableText + "<td class='ci-badge'>";
 	    if ( blist.length > row ) {
 		b = blist[row];
 		//		      console.log(b);
