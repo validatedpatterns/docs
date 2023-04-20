@@ -264,9 +264,10 @@ function createKeyTable(rows) {
 
     tableText = tableText + "<tr>";
     rows.forEach(r => {
-	tableText = tableText + "<td><object data='" + get_key_url(r, "") + "' style='max-width: 100%;'>'</object></td>";
+	tableText = tableText + "<td><object data='" + get_key_url(r, "") + "' style='max-width: 100%;'>'</object>&nbsp;</td>";
     });
     tableText = tableText + "</tr>";
+    tableText = tableText + "<tr><td><object data='" + get_key_url("links", "") + "' style='max-width: 100%;'>'</object>&nbsp;</td></tr>";
 
     return tableText + "</tbody></table></div>";
 }
