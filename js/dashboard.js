@@ -40,7 +40,7 @@ class Badge {
     }
 
     getJiraSearch() {
-        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~%22"+this.pattern+"-"+this.platform+"-"+this.version+"%22%20and%20status%20not%20in%20(Closed)";
+        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~%22"+this.pattern+"%22%20and%20status%20not%20in%20(Closed)";
     }
 }
 
