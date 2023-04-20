@@ -269,8 +269,6 @@ function createKeyTable(rows) {
     tableText = tableText + "</tr>";
 
     tableText = tableText + "</tbody></table></div>";
-    tableText = tableText + "<object data='" + get_key_url("links", "") + "' style='max-width: 100%;'>&nbsp;</object>";
-
     return tableText;
 }
 
