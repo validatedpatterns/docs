@@ -40,7 +40,7 @@ class Badge {
     }
 
     getJiraSearch() {
-        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~%22"+this.pattern+"%22%20and%20status%20not%20in%20(Closed)";
+        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~CI%20and%20component%3D"+jira_component(this.pattern)+"%20and%20status%20not%20in%20(Closed)";
     }
 }
 
@@ -98,15 +98,29 @@ function print_shield(bucket, badge, tag) {
     return "<object data="+shield_url+" style='max-width: 100%;'></object><br/>";
 }
 
+function jira_component(pattern) {
+	if ( pattern == "aegitops" ) {
+	    return "ansible-edge";
+        } else if ( pattern == "manuela" ) {
+	    return "industrial-edge";
+        } else if ( pattern == "mcgitops" ) {
+	    return "multicloud-gitops";
+        } else if ( pattern == "medicaldiag" ) {
+	    return "medical-diagnosis";
+        }
+	return pattern;
+}
+
 function jenkins_job(pattern, platform, version) {
     ciplatform = platform
     if ( platform == "azr" ) {
         ciplatform = "azure";
     }
 
-    if ( pattern == "aegitops" ) {
-	return pattern+"-1.5-"+ciplatform+"-ocp"+version+"-interop";
-    }
+    // Work-around for CI expansion bug
+    // if ( pattern == "aegitops" ) {
+    //    return pattern+"-1.5-"+ciplatform+"-ocp"+version+"-interop";
+    // }
     return pattern+"-"+ciplatform+"-ocp"+version+"-interop";
 }
 
@@ -163,7 +177,7 @@ function stringForKey(key) {
         return "Core";
     }
     if ( key == "medicaldiag" ) {
-        return "X-Ray";
+        return "Image Classification";
     }
     if ( key == "azr" ) {
         return "Azure";
