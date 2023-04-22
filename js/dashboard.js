@@ -286,7 +286,7 @@ function createKeyTable(rows) {
     return tableText;
 }
 
-function createFilteredHorizontalTable(badges, field, value, titles) {
+function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
     //document.getElementById('data').innerHTML = 'Hello World!';
 
     tableText = "<div style='ci-results'>";
@@ -306,10 +306,25 @@ function createFilteredHorizontalTable(badges, field, value, titles) {
 	} else if ( value == null) {
 	    tableText = tableText + "<td class='ci-badge'><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td><td class='ci-badge'>&nbsp;</td>";
 	}
-	
+
+	let index = 0;
+	let max = pBadges.length;
+
+	if ( pBadges.length > max ) {
+            tableText = tableText + "<table><tbody><tr>";
+	}
 	pBadges.forEach(b => {
+	    index = index + 1;
+	    if ( pBadges.length > max && index == max ) {
+		tableText = tableText + "</tr><tr>";
+		index = 0;
+	    }
+	    
 	    tableText = tableText + "<td class='ci-badge'><object data='" + get_shield_url(b, b.getLabel(field)) + "' style='max-width: 100%;'>'</object></td>";
 	});
+	if ( pBadges.length > max ) {
+            tableText = tableText + "</tr></tbody></table>";
+	}
 	tableText = tableText + "</tr>";
     });
 
@@ -413,7 +428,7 @@ function processBucketXML(text, options) {
 	    badges = filterBadges(badges, filter_field, filter_value);
 	}
 	badges.sort(patternSort);
-	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false);
+	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false, 6);
 
     } else {
 	htmlText = createKeyTable(["green", "yellow", "red"]);    
@@ -424,7 +439,7 @@ function processBucketXML(text, options) {
 	htmlText = htmlText + "</td><td>&nbsp;&nbsp;&nbsp;</td><td>";    
 	
 	badges.sort(patternVertSort);
-	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true);
+	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true, 3);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", null, true);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "version", null, true);
 	htmlText = htmlText + "</td></tr></table>";    
