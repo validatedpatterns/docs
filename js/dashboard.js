@@ -309,7 +309,7 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
 
 	let index = 0;
 	if ( pBadges.length > max ) {
-            tableText = tableText + "<table bordercolor='green'><tbody><tr>";
+            tableText = tableText + "<td><table bordercolor='green'><tbody><tr>";
 	}
 	pBadges.forEach(b => {
 	    index = index + 1;
@@ -321,7 +321,7 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
 	    tableText = tableText + "<td class='ci-badge'><object data='" + get_shield_url(b, b.getLabel(field)) + "' style='max-width: 100%;'>'</object></td>";
 	});
 	if ( pBadges.length > max ) {
-            tableText = tableText + "</tr></tbody></table>";
+            tableText = tableText + "</tr></tbody></table></td>";
 	}
 	tableText = tableText + "</tr>";
     });
