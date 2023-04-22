@@ -293,7 +293,7 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
     if ( titles ) {
 	tableText = tableText + "<h2>"+toTitleCase("By "+field)+"</h2>";
     }
-    tableText = tableText + "<table><tbody>";
+    tableText = tableText + "<table bordercolor='blue'><tbody>";
 
     rows = getUniqueValues(badges, field);
 
@@ -309,7 +309,7 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
 
 	let index = 0;
 	if ( pBadges.length > max ) {
-            tableText = tableText + "<table><tbody><tr>";
+            tableText = tableText + "<table bordercolor='green'><tbody><tr>";
 	}
 	pBadges.forEach(b => {
 	    index = index + 1;
