@@ -293,7 +293,7 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
     if ( titles ) {
 	tableText = tableText + "<h2>"+toTitleCase("By "+field)+"</h2>";
     }
-    tableText = tableText + "<table bordercolor='blue'><tbody>";
+    tableText = tableText + "<table><tbody>";
 
     rows = getUniqueValues(badges, field);
 
@@ -308,19 +308,22 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
 	}
 
 	let index = 0;
-	if ( pBadges.length > max ) {
-            tableText = tableText + "<td><table bordercolor='green'><tbody><tr>";
+	if ( pBadges.length >= max ) {
+            tableText = tableText + "<td><table><tbody><tr>";
 	}
 	pBadges.forEach(b => {
 	    index = index + 1;
 	    if ( pBadges.length > max && index == max ) {
 		tableText = tableText + "</tr><tr>";
+		if ( value == null ) {
+                    tableText = tableText + "<td class='ci-badge'>&nbsp;</td><td class='ci-badge'>&nbsp;</td>";
+		}
 		index = 0;
 	    }
 	    
 	    tableText = tableText + "<td class='ci-badge'><object data='" + get_shield_url(b, b.getLabel(field)) + "' style='max-width: 100%;'>'</object></td>";
 	});
-	if ( pBadges.length > max ) {
+	if ( pBadges.length >= max ) {
             tableText = tableText + "</tr></tbody></table></td>";
 	}
 	tableText = tableText + "</tr>";
