@@ -308,8 +308,6 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
 	}
 
 	let index = 0;
-	let max = pBadges.length;
-
 	if ( pBadges.length > max ) {
             tableText = tableText + "<table><tbody><tr>";
 	}
