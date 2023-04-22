@@ -303,27 +303,24 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
 	tableText = tableText + "<tr>";
 	if ( value == null && field == "pattern" ) {
 	    tableText = tableText + "<td class='ci-badge'><a href='" + pattern_url(r) + "'>" + rowTitle(field, r) + "</a></td><td class='ci-badge'>&nbsp;</td>";
-	} else if ( value == null) {
+	} else if ( value == null ) {
 	    tableText = tableText + "<td class='ci-badge'><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td><td class='ci-badge'>&nbsp;</td>";
 	}
 
 	let index = 0;
-	if ( pBadges.length >= max ) {
+	if ( true ) {
             tableText = tableText + "<td><table><tbody><tr>";
 	}
 	pBadges.forEach(b => {
 	    index = index + 1;
 	    if ( pBadges.length > max && index == max ) {
 		tableText = tableText + "</tr><tr>";
-		if ( value == null ) {
-                    tableText = tableText + "<td class='ci-badge'>&nbsp;</td><td class='ci-badge'>&nbsp;</td>";
-		}
 		index = 0;
 	    }
 	    
 	    tableText = tableText + "<td class='ci-badge'><object data='" + get_shield_url(b, b.getLabel(field)) + "' style='max-width: 100%;'>'</object></td>";
 	});
-	if ( pBadges.length >= max ) {
+	if ( true ) {
             tableText = tableText + "</tr></tbody></table></td>";
 	}
 	tableText = tableText + "</tr>";
