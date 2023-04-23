@@ -437,7 +437,7 @@ function processBucketXML(text, options) {
 	htmlText = htmlText + "</td><td>&nbsp;&nbsp;&nbsp;</td><td>";    
 	
 	badges.sort(patternVertSort);
-	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true, (window.innerWidth-600)/140);
+	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true, (window.innerWidth-1000)/140);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", null, true);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "version", null, true);
 	htmlText = htmlText + "</td></tr></table>";    
