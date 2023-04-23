@@ -426,7 +426,18 @@ function processBucketXML(text, options) {
 	    badges = filterBadges(badges, filter_field, filter_value);
 	}
 	badges.sort(patternSort);
-	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false, Math.floor(Math.min(window.innerWidth-800, 840)/140));
+	numElements = Math.min(Math.floor(window.innerWidth/140), 6);
+	// if ( window.innerWidth < 1200 ) {
+	//      No left or right sidebar    
+	//	numElements = Math.floor(window.innerWidth/140);
+	// } else if ( window.innerWidth < 1450 ) {
+	//      No right sidebar    
+	//	numElements = Math.floor((window.innerWidth-290)/140);
+	// } else {
+	//      Left and right sidebar, but fixed inner width
+	//	numElements = Math.floor(832/140);
+	}
+	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false, numElements);
 
     } else {
 	htmlText = createKeyTable(["green", "yellow", "red"]);    
