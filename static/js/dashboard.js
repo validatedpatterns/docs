@@ -174,7 +174,7 @@ function stringForKey(key) {
         return "Industrial";
     }
     if ( key == "mcgitops" ) {
-        return "Core";
+        return "Core GitOps";
     }
     if ( key == "medicaldiag" ) {
         return "Image Classification";
