@@ -441,6 +441,7 @@ function processBucketXML(text, options) {
 	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", null, true);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "version", null, true);
 	htmlText = htmlText + "</td></tr></table>";    
+	htmlText = htmlText + "<p>"+window.innerWidth+"<p>";    
     }
     document.getElementById(options.get('target')).innerHTML = htmlText;
 }
