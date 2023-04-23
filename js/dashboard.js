@@ -436,7 +436,7 @@ function processBucketXML(text, options) {
 	// } else {
 	//      Left and right sidebar, but fixed inner width
 	//	numElements = Math.floor(832/140);
-	}
+	// }
 	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false, numElements);
 
     } else {
