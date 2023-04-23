@@ -313,7 +313,7 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
 	}
 	pBadges.forEach(b => {
 	    index = index + 1;
-	    if ( pBadges.length > max && index == max ) {
+	    if ( pBadges.length > max && index >= max ) {
 		tableText = tableText + "</tr><tr>";
 		index = 0;
 	    }
@@ -426,7 +426,7 @@ function processBucketXML(text, options) {
 	    badges = filterBadges(badges, filter_field, filter_value);
 	}
 	badges.sort(patternSort);
-	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false, Math.min(window.innerWidth-800, 840)/140);
+	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false, Math.floor(Math.min(window.innerWidth-800, 840)/140));
 
     } else {
 	htmlText = createKeyTable(["green", "yellow", "red"]);    
@@ -437,7 +437,7 @@ function processBucketXML(text, options) {
 	htmlText = htmlText + "</td><td>&nbsp;&nbsp;&nbsp;</td><td>";    
 	
 	badges.sort(patternVertSort);
-	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true, (window.innerWidth-1000)/140);
+	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true, Math.floor((window.innerWidth-1000)/140));
 	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", null, true);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "version", null, true);
 	htmlText = htmlText + "</td></tr></table>";    
