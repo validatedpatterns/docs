@@ -300,7 +300,7 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
     rows.forEach(r => {
 	pBadges = filterBadges(badges, field, r);
 
-	tableText = tableText + "<tr>";
+	tableText = tableText + "<tr style='vertical-align:top'>";
 	if ( value == null && field == "pattern" ) {
 	    tableText = tableText + "<td class='ci-badge'><a href='" + pattern_url(r) + "'>" + rowTitle(field, r) + "</a></td><td class='ci-badge'>&nbsp;</td>";
 	} else if ( value == null ) {
