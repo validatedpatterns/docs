@@ -346,7 +346,7 @@ function createFilteredVerticalTable(badges, field, value, titles) {
 	fieldColumns.push(filterBadges(badges, field, r));
 
 	// https://stackoverflow.com/questions/43775947/dynamically-generate-table-from-json-array-in-javascript
-	if ( value == null ) {
+	if ( value == null && field != "date" ) {
 	    tableText = tableText + "<th><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></th>";
 	}		  
     });
