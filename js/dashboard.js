@@ -289,11 +289,11 @@ function createKeyTable(rows) {
 function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
     //document.getElementById('data').innerHTML = 'Hello World!';
 
-    tableText = "<div style='ci-results'>";
+    tableText = "<div style='ci-results' id='ci-"+field+"-result'>";
     if ( titles ) {
 	tableText = tableText + "<h2>"+toTitleCase("By "+field)+"</h2>";
     }
-    tableText = tableText + "<table><tbody>";
+    tableText = tableText + "<table id='ci-"+field+"-table'><tbody>";
 
     rows = getUniqueValues(badges, field);
 
@@ -332,11 +332,11 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
 function createFilteredVerticalTable(badges, field, value, titles) {
     //document.getElementById('data').innerHTML = 'Hello World!';
 
-    tableText = "<div style='ci-results'>";
+    tableText = "<div style='ci-results' id='ci-"+field+"-result'>";
     if ( titles ) {
 	tableText = tableText + "<h2>"+toTitleCase("By "+field)+"</h2>";
     }
-    tableText = tableText + "<table><tbody>";
+    tableText = tableText + "<table id='ci-"+field+"-table'><tbody>";
     
     rows = getUniqueValues(badges, field);
 
