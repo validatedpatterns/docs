@@ -40,7 +40,7 @@ class Badge {
     }
 
     getJiraSearch() {
-        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20summary~CI%20and%20component%3D"+jira_component(this.pattern)+"%20and%20status%20not%20in%20(Closed)";
+        return "https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20labels%20in%20(ci-fail)%20and%20component%3D"+jira_component(this.pattern)+"%20and%20status%20not%20in%20(Closed)";
     }
 }
 
