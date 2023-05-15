@@ -20,6 +20,7 @@ aliases: /medical-diagnosis/
 <div class="pattern_logo">
   <img src="/images/logos/medical-diagnosis.png" class="pattern_logo" alt="Points">
 </div>
+
 <script type="text/javascript" src="/js/dashboard.js"></script>
 <div class='results'>
   <p id="ci-dataset"> </p>
