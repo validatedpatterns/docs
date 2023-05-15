@@ -12,3 +12,5 @@ dictionary.dic
 super-linter.log
 tmp/
 Gemfile.lock
+.vscode
+.idea
