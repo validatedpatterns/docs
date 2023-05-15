@@ -15,6 +15,7 @@ aliases: /medical-diagnosis/
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 ++++
 <div class="pattern_logo">
@@ -61,8 +62,8 @@ please contact link:mailto:jrickard@redhat.com[Jonny Rickard] or link:mailto:cla
 
 === Red Hat Technologies
 
-* Red Hat OpenShift Container Platform (Kubernetes)
-* Red Hat OpenShift GitOps (ArgoCD)
+* {rh-ocp} (Kubernetes)
+* {rh-gitops} (ArgoCD)
 * Red Hat AMQ Streams (Apache Kafka Event Broker)
 * Red Hat OpenShift Serverless (Knative Eventing, Knative Serving)
 * Red Hat OpenShift Data Foundations (Cloud Native storage)

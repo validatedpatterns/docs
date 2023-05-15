@@ -74,7 +74,8 @@
 :rh-rhacm: RHACM
 //:rh-rhacm-version: 2.5
 //ACS
-:rh-acs: Red Hat Advanced Cluster Security for Kubernetes
+:rh-acs-first: Red Hat Advanced Cluster Security for Kubernetes
+
 :cert-manager-operator: cert-manager Operator for Red Hat OpenShift
 :secondary-scheduler-operator-full: Secondary Scheduler Operator for Red Hat OpenShift
 :secondary-scheduler-operator: Secondary Scheduler Operator
@@ -86,14 +87,14 @@
 :gitops-shortname: GitOps
 :gitops-ver: 1.1
 //pipelines
-:pipelines-title: Red Hat OpenShift Pipelines
-:pipelines-shortname: OpenShift Pipelines
+:rh-pipelines-first: Red Hat OpenShift Pipelines
+:pipelines-short: OpenShift Pipelines
 :pipelines-ver: pipelines-1.9
 :tekton-chains: Tekton Chains
 :tekton-hub: Tekton Hub
 :pac: Pipelines as Code
 //AMQ
-:rh-amq-full: Red Hat AMQ
+:rh-amq-first: Red Hat AMQ
 :rh-amq-short: RHAMQ
 //Runtimes
 :rh-runtime: Red Hat Runtimes
@@ -101,8 +102,8 @@
 :rh-ocp-data-first: Red Hat OpenShift Data Foundation
 :rh-ocp-data-short: OpenShift Data Foundation
 //Serverless
-:ServerlessProductName: OpenShift Serverless
-:ServerlessProductShortName: Serverless
+:rh-serverless-first: Red Hat OpenShift Serverless
+:serverless-short: OpenShift Serverless
 :ServerlessOperatorName: OpenShift Serverless Operator
 :FunctionsProductName: OpenShift Serverless Functions
 //Quay
@@ -110,3 +111,7 @@
 :quay-short: Quay
 // Red Hat Quay Container Security Operator
 :rhq-cso: Red Hat Quay Container Security Operator
+//Cloud platforms
+:AWS: Amazon Web Services (AWS)
+:GCP: Google Cloud Platform (GCP)
+:Azure: Microsoft Azure
