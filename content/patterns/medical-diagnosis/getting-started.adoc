@@ -320,8 +320,3 @@ oc patch service.serving.knative.dev/risk-assessment --type=json -p '[{"op":"rep
 ----
 +
 This changes the model version value, as well as the revisionTimestamp in the annotations, which triggers a redeployment of the service.
-
-= Next Steps
-
-link:https://groups.google.com/g/hybrid-cloud-patterns[Help & Feedback]
-link:https://github.com/hybrid-cloud-patterns/medical-diagnosis/issues[Report Bugs]
