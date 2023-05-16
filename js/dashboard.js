@@ -49,6 +49,9 @@ function sleep(ms) {
 }
 
 function filterBadges(badges, field, value) {
+    if ( field === "date" ) {
+	return badges.filter(badge => badge.date === value);
+    }
     if ( field === "pattern" ) {
 	return badges.filter(badge => badge.pattern === value);
     }
@@ -62,6 +65,9 @@ function filterBadges(badges, field, value) {
 }
 
 function rowTitle(field, value) {
+    if ( field === "date" ) {
+	return stringForKey(value);
+    }
     if ( field === "pattern" ) {
 	return stringForKey(value);
     }
@@ -71,10 +77,14 @@ function rowTitle(field, value) {
     return value;
 }
 
-function get_shield_url(badge, label) {
+function get_shield_url(badge, label, links) {
     base = 'https://img.shields.io/endpoint?style=flat&logo=git&logoColor=white';
     // TODO: Replace the second link with the CI Job URL
-    base = base +'&link='+ encodeURI(badge.getJenkinsURI()) + '&link=' + encodeURI(badge.getJiraSearch());
+    if ( links === "internal") {
+	base = base +'&link='+ encodeURI(badge.getJenkinsURI()) + '&link=' + encodeURI(badge.getJiraSearch());
+    } else {
+	base = base +'&link='+ encodeURI(badge.getURI()) + '&link=' + encodeURI(repo_url(badge.pattern));
+    }
     if ( label != "" ) {
         base = base +'&label='+ encodeURI(label);
     }
@@ -92,23 +102,19 @@ function get_key_url(color, label) {
     return base + '&url=' + encodeURI(uri);
 }
 
-function print_shield(bucket, badge, tag) {
-    shield_url = get_shield_url(bucket, badge, tag);
-    //echo "<a href='bucket/badge' rel='nofollow'><img alt='tag' src='shield_url' style='max-width: 100%;'></a><br/>";
-    return "<object data="+shield_url+" style='max-width: 100%;'></object><br/>";
-}
-
 function jira_component(pattern) {
-	if ( pattern == "aegitops" ) {
-	    return "ansible-edge";
-        } else if ( pattern == "manuela" ) {
-	    return "industrial-edge";
-        } else if ( pattern == "mcgitops" ) {
-	    return "multicloud-gitops";
-        } else if ( pattern == "medicaldiag" ) {
-	    return "medical-diagnosis";
-        }
-	return pattern;
+    const dictionary = {
+	aegitops: "ansible-edge",
+	devsecops: "devsecops",
+	manuela: "industrial-edge",
+	mcgitops: "multicloud-gitops",
+	medicaldiag: "medical-diagnosis"
+    };
+
+    if ( pattern in dictionary ) {
+	return dictionary[pattern];
+    }
+    return pattern;
 }
 
 function jenkins_job(pattern, platform, version) {
@@ -125,45 +131,70 @@ function jenkins_job(pattern, platform, version) {
 }
 
 function jenkins_base_url(key) {
-    base = 'https://mps-jenkins-csb-mpqe.apps.ocp-c1.prod.psi.redhat.com/job/ValidatedPatterns';
-    if ( key == "aegitops" ) {
-	return base+'/job/AnsibleEdgeGitops';
+    const prefix = 'https://mps-jenkins-csb-mpqe.apps.ocp-c1.prod.psi.redhat.com/job/ValidatedPatterns';
+    const dictionary = {
+	aegitops: "AnsibleEdgeGitops",
+	devsecops: "MulticlusterDevSecOps",
+	manuela: "Manuela",
+	mcgitops: "MultiCloudGitops",
+	medicaldiag: "MedicalDiagnosis"
+    };
+
+    if ( key in dictionary ) {
+	return prefix + '/job/' + dictionary[key];
     }
-    if ( key == "devsecops" ) {
-	return base+'/job/MulticlusterDevSecOps';
-    }
-    if ( key == "manuela" ) {
-	return base+'/job/Manuela';
-    }
-    if ( key == "mcgitops" ) {
-	return base+'/job/MultiCloudGitops';
-    }
-    if ( key == "medicaldiag" ) {
-	return base+'/job/MedicalDiagnosis';
-    }
-    return base;
+    return prefix;
 }
 
 function pattern_url(key) {
-    if ( key == "aegitops" ) {
-	return 'https://hybrid-cloud-patterns.io/patterns/ansible-edge-gitops/';
+    const prefix = 'https://hybrid-cloud-patterns.io/patterns/'
+    const dictionary = {
+	aegitops: "ansible-edge-gitops",
+	devsecops: "devsecops",
+	manuela: "industrial-edge",
+	mcgitops: "multicloud-gitops",
+	medicaldiag: "medical-diagnosis"
+    };
+
+    if ( key in dictionary ) {
+	return prefix + dictionary[key] + '/';
     }
-    if ( key == "devsecops" ) {
-	return 'https://hybrid-cloud-patterns.io/patterns/devsecops/';
+    return prefix + key + '/';
+}
+
+function repo_url(key) {
+    const prefix = 'https://github.com/hybrid-cloud-patterns/'
+    const dictionary = {
+	aegitops: "ansible-edge-gitops",
+	devsecops: "multicluster-devsecops",
+	manuela: "industrial-edge",
+	mcgitops: "multicloud-gitops",
+	medicaldiag: "medical-diagnosis"
+    };
+
+    if ( key in dictionary ) {
+	return prefix + dictionary[key] + '/';
     }
-    if ( key == "manuela" ) {
-	return 'https://hybrid-cloud-patterns.io/patterns/industrial-edge/';
-    }
-    if ( key == "mcgitops" ) {
-	return 'https://hybrid-cloud-patterns.io/patterns/multicloud-gitops/';
-    }
-    if ( key == "medicaldiag" ) {
-	return 'https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/';
-    }
-    return 'https://hybrid-cloud-patterns.io/patterns/'+key+'/';
+    return prefix + key + '/';
 }
 
 function stringForKey(key) {
+    const dateRegex = /^(\d{2})-(\d{2})$/;
+    const months = [
+	"Jan",
+	"Feb",
+	"March",
+	"April",
+	"May",
+	"June",
+	"July",
+	"Aug",
+	"Sept",
+	"Oct",
+	"Nov",
+	"Dec"
+    ];
+
     if ( key == "aegitops" ) {
         return "Ansible Edge";
     }
@@ -188,6 +219,12 @@ function stringForKey(key) {
     if ( key == "aws" ) {
         return "Amazon";
     }
+
+    const matches = dateRegex.exec(key);
+    if ( matches ) {
+	monthIndex = parseInt(matches[1], 10) - 1;
+	return months[monthIndex] + " "+ matches[2];
+    }
     return key;
 }
 
@@ -203,13 +240,10 @@ function getBadgeDate(xml) {
 
 function getUniqueValues(badges, field){
     results = [];
-    if (field == 'date' ) {
-	results.push('Entry');
-	return results;
-    }
-
     badges.forEach(b => {
-	if (field == 'platform' && ! results.includes(b.platform) ) {
+	if (field == 'date' && ! results.includes(b.date) ) {
+	    results.push(b.date);
+	} else if (field == 'platform' && ! results.includes(b.platform) ) {
 	    results.push(b.platform);
 	} else if (field == 'pattern' && ! results.includes(b.pattern) ) {
 	    results.push(b.pattern);
@@ -221,6 +255,8 @@ function getUniqueValues(badges, field){
     if ( field === "pattern" ) {
 	return results.sort(function(a, b){return -1 * a.localeCompare(b)});
     } else if ( field === "version" ) {
+	return results.sort(function(a, b){return -1 * a.localeCompare(b)});
+    } else if ( field === "date" ) {
 	return results.sort(function(a, b){return -1 * a.localeCompare(b)});
     }
     
@@ -286,7 +322,7 @@ function createKeyTable(rows) {
     return tableText;
 }
 
-function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
+function createFilteredHorizontalTable(badges, field, value, titles, links = "public", max = 20) {
     //document.getElementById('data').innerHTML = 'Hello World!';
 
     tableText = "<div style='ci-results' id='ci-"+field+"-result'>";
@@ -317,7 +353,7 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
 		index = 0;
 	    }
 	    
-	    tableText = tableText + "<td class='ci-badge'><object data='" + get_shield_url(b, b.getLabel(field)) + "' style='max-width: 100%;'>'</object></td>";
+	    tableText = tableText + "<td class='ci-badge'><object data='" + get_shield_url(b, b.getLabel(field), links) + "' style='max-width: 100%;'>'</object></td>";
 	    index = index + 1;
 	});
 	if ( true ) {
@@ -329,7 +365,7 @@ function createFilteredHorizontalTable(badges, field, value, titles, max = 20) {
     return tableText + "</tbody></table></div>";
 }
 
-function createFilteredVerticalTable(badges, field, value, titles) {
+function createFilteredVerticalTable(badges, field, value, titles, links = "public") {
     //document.getElementById('data').innerHTML = 'Hello World!';
 
     tableText = "<div style='ci-results' id='ci-"+field+"-result'>";
@@ -337,7 +373,8 @@ function createFilteredVerticalTable(badges, field, value, titles) {
 	tableText = tableText + "<h2>"+toTitleCase("By "+field)+"</h2>";
     }
     tableText = tableText + "<table id='ci-"+field+"-table'><tbody>";
-    
+
+    //style='vertical-align:top'
     rows = getUniqueValues(badges, field);
 
     fieldColumns = [];
@@ -364,7 +401,7 @@ function createFilteredVerticalTable(badges, field, value, titles) {
 	    if ( blist.length > row ) {
 		b = blist[row];
 		//		      console.log(b);
-		tableText = tableText + "<object data='" + get_shield_url(b, b.getLabel(field)) + "' style='max-width: 100%;'>'</object>";
+		tableText = tableText + "<object data='" + get_shield_url(b, b.getLabel(field), links) + "' style='max-width: 100%;'>'</object>";
 		any = true;
 	    }
 	    tableText = tableText + "</td>";
@@ -413,13 +450,14 @@ function getBadges(xmlText, bucket_url) {
 function processBucketXML(text, options) {
     const filter_field = options.get("filter_field");
     const filter_value = options.get("filter_value");
+    const links = options.get("links");
     badges = getBadges(text, options.get('bucket'));
 
     htmlText = "";
     
     if ( filter_field === "date" ) {
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
-	htmlText = createFilteredVerticalTable(badges, "date", null, false);
+	htmlText = createFilteredVerticalTable(badges, "date", null, false, links);
 
     } else if (filter_field != null ) {
 	if ( filter_value != null) {
@@ -437,22 +475,18 @@ function processBucketXML(text, options) {
 	//      Left and right sidebar, but fixed inner width
 	//	numElements = Math.floor(832/140);
 	// }
-	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false, numElements);
+	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false, links, numElements);
 
     } else {
 	htmlText = createKeyTable(["green", "yellow", "red"]);    
 	
-	htmlText = htmlText + "<table><tr style='vertical-align:top'><td>";    
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
-	htmlText = htmlText + createFilteredVerticalTable(badges, "date", null, true);
-	htmlText = htmlText + "</td><td>&nbsp;&nbsp;&nbsp;</td><td>";    
+	htmlText = htmlText + createFilteredHorizontalTable(badges, "date", null, true, links);
 	
 	badges.sort(patternVertSort);
-	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true, Math.floor((window.innerWidth-550)/140));
-	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", null, true);
-	htmlText = htmlText + createFilteredVerticalTable(badges, "version", null, true);
-	htmlText = htmlText + "</td></tr></table>";    
-	//htmlText = htmlText + "<p>"+window.innerWidth+"<p>";    
+	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true, links, Math.floor((window.innerWidth-550)/140));
+	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", null, true, links);
+	htmlText = htmlText + createFilteredVerticalTable(badges, "version", null, true, links);
     }
     document.getElementById(options.get('target')).innerHTML = htmlText;
 }
@@ -462,15 +496,19 @@ function getBucketOptions(input) {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
+    options.set('links', 'public');
     options.set('target', 'dataset');
     options.set('bucket', 'https://storage.googleapis.com/hcp-results');
 
     // input.bucket , or input["bucket"]
 
-    const fields = [ "bucket", "target", "filter_field", "filter_value" ];
+    const fields = [ "bucket", "target", "filter_field", "filter_value", "links" ];
     for ( i=0; i < fields.length; i++) {
 	const key = fields[i];
-	const value = input[key];
+	var value = input[key];
+	if ( value == null ) {
+	    value = urlParams.get(fields[i]);
+	}
 	if ( value != null ) {
 	    console.log(key, value);
 	    options.set(fields[i], value);	
