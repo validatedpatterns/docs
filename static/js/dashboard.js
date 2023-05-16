@@ -97,7 +97,7 @@ function get_shield_url(badge, label, links) {
 function get_key_url(color, label, links) {
     uri = 'https://hybrid-cloud-patterns.io/'+color+'.json';
     base = 'https://img.shields.io/endpoint?style=flat&logo=git&logoColor=white';
-    // TODO: Replace the second link with the CI Job URL
+
     base = base +'&link='+ encodeURI("/") + '&link=' + encodeURI(uri);
     if ( label != "" ) {
 	base = base +'&label='+ encodeURI(label);
@@ -130,10 +130,6 @@ function jenkins_job(pattern, platform, version) {
         ciplatform = "azure";
     }
 
-    // Work-around for CI expansion bug
-    // if ( pattern == "aegitops" ) {
-    //    return pattern+"-1.5-"+ciplatform+"-ocp"+version+"-interop";
-    // }
     return pattern+"-"+ciplatform+"-ocp"+version+"-interop";
 }
 
@@ -202,29 +198,19 @@ function stringForKey(key) {
 	"Dec"
     ];
 
-    if ( key == "aegitops" ) {
-        return "Ansible Edge";
-    }
-    if ( key == "devsecops" ) {
-        return "DevSecOps";
-    }
-    if ( key == "manuela" ) {
-        return "Industrial";
-    }
-    if ( key == "mcgitops" ) {
-        return "Core GitOps";
-    }
-    if ( key == "medicaldiag" ) {
-        return "Image Classification";
-    }
-    if ( key == "azr" ) {
-        return "Azure";
-    }
-    if ( key == "gcp" ) {
-        return "Google";
-    }
-    if ( key == "aws" ) {
-        return "Amazon";
+    const dictionary = {
+	aegitops: "Ansible Edge",
+	devsecops: "DevSecOps",
+	manuela: "Industrial",
+	mcgitops: "Core GitOps",
+	medicaldiag: "Image Classification"
+	azr: "Azure"
+	gcp: "GCP"
+	aws: "AWS"
+    };
+
+    if ( key in dictionary ) {
+	return dictionary[key];
     }
 
     const matches = dateRegex.exec(key);
