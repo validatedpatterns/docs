@@ -203,9 +203,9 @@ function stringForKey(key) {
 	devsecops: "DevSecOps",
 	manuela: "Industrial",
 	mcgitops: "Core GitOps",
-	medicaldiag: "Image Classification"
-	azr: "Azure"
-	gcp: "GCP"
+	medicaldiag: "Image Classification",
+	azr: "Azure",
+	gcp: "GCP",
 	aws: "AWS"
     };
 
