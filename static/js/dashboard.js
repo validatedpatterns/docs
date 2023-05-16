@@ -28,6 +28,9 @@ class Badge {
         if(field == "version") {
 	    return stringForKey(this.pattern)+" : "+stringForKey(this.platform);
         }
+        if(field == "date") {
+	    return stringForKey(this.pattern)+" : "+stringForKey(this.platform)+" "+this.version;
+        }
 	return stringForKey(this.pattern)+" : "+ stringForKey(this.platform)+" "+this.version+" @ "+ this.date;
     }
 	
@@ -353,7 +356,7 @@ function createFilteredHorizontalTable(badges, field, value, titles, links = "pu
 		index = 0;
 	    }
 	    
-	    tableText = tableText + "<td class='ci-badge'><object data='" + get_shield_url(b, b.getLabel(field), links) + "' style='max-width: 100%;'>'</object></td>";
+	    tableText = tableText + "<td class='ci-badge'><object data='" + get_shield_url(b, b.getLabel(field), links) + "' style='padding: 10; max-width: 100%;'>'</object></td>";
 	    index = index + 1;
 	});
 	if ( true ) {
