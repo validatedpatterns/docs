@@ -49,6 +49,9 @@ function sleep(ms) {
 }
 
 function filterBadges(badges, field, value) {
+    if ( field === "date" ) {
+	return badges.filter(badge => badge.date === value);
+    }
     if ( field === "pattern" ) {
 	return badges.filter(badge => badge.pattern === value);
     }
@@ -62,6 +65,9 @@ function filterBadges(badges, field, value) {
 }
 
 function rowTitle(field, value) {
+    if ( field === "date" ) {
+	return stringForKey(value);
+    }
     if ( field === "pattern" ) {
 	return stringForKey(value);
     }
@@ -164,6 +170,22 @@ function pattern_url(key) {
 }
 
 function stringForKey(key) {
+    const dateRegex = /^(\d{2})-(\d{2})$/;
+    const months = [
+	"Jan",
+	"Feb",
+	"March",
+	"April",
+	"May",
+	"June",
+	"July",
+	"Aug",
+	"Sept",
+	"Oct",
+	"Nov",
+	"Dec"
+    ];
+
     if ( key == "aegitops" ) {
         return "Ansible Edge";
     }
@@ -188,6 +210,12 @@ function stringForKey(key) {
     if ( key == "aws" ) {
         return "Amazon";
     }
+
+    const matches = dateRegex.exec(key);
+    if ( matches ) {
+	monthIndex = parseInt(matches[1], 10) - 1;
+	return months[monthIndex] + " "+ matches[2];
+    }
     return key;
 }
 
@@ -203,13 +231,10 @@ function getBadgeDate(xml) {
 
 function getUniqueValues(badges, field){
     results = [];
-    if (field == 'date' ) {
-	results.push('Entry');
-	return results;
-    }
-
     badges.forEach(b => {
-	if (field == 'platform' && ! results.includes(b.platform) ) {
+	if (field == 'date' && ! results.includes(b.date) ) {
+	    results.push(b.date);
+	} else if (field == 'platform' && ! results.includes(b.platform) ) {
 	    results.push(b.platform);
 	} else if (field == 'pattern' && ! results.includes(b.pattern) ) {
 	    results.push(b.pattern);
@@ -221,6 +246,8 @@ function getUniqueValues(badges, field){
     if ( field === "pattern" ) {
 	return results.sort(function(a, b){return -1 * a.localeCompare(b)});
     } else if ( field === "version" ) {
+	return results.sort(function(a, b){return -1 * a.localeCompare(b)});
+    } else if ( field === "date" ) {
 	return results.sort(function(a, b){return -1 * a.localeCompare(b)});
     }
     
@@ -337,7 +364,8 @@ function createFilteredVerticalTable(badges, field, value, titles) {
 	tableText = tableText + "<h2>"+toTitleCase("By "+field)+"</h2>";
     }
     tableText = tableText + "<table id='ci-"+field+"-table'><tbody>";
-    
+
+    //style='vertical-align:top'
     rows = getUniqueValues(badges, field);
 
     fieldColumns = [];
@@ -442,17 +470,13 @@ function processBucketXML(text, options) {
     } else {
 	htmlText = createKeyTable(["green", "yellow", "red"]);    
 	
-	htmlText = htmlText + "<table><tr style='vertical-align:top'><td>";    
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
-	htmlText = htmlText + createFilteredVerticalTable(badges, "date", null, true);
-	htmlText = htmlText + "</td><td>&nbsp;&nbsp;&nbsp;</td><td>";    
+	htmlText = htmlText + createFilteredHorizontalTable(badges, "date", null, true);
 	
 	badges.sort(patternVertSort);
 	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true, Math.floor((window.innerWidth-550)/140));
 	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", null, true);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "version", null, true);
-	htmlText = htmlText + "</td></tr></table>";    
-	//htmlText = htmlText + "<p>"+window.innerWidth+"<p>";    
     }
     document.getElementById(options.get('target')).innerHTML = htmlText;
 }
