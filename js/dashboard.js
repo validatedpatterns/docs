@@ -94,13 +94,17 @@ function get_shield_url(badge, label, links) {
     return base + '&url=' + encodeURI(badge.getURI());
 }
 
-function get_key_url(color, label) {
+function get_key_url(color, label, links) {
     uri = 'https://hybrid-cloud-patterns.io/'+color+'.json';
     base = 'https://img.shields.io/endpoint?style=flat&logo=git&logoColor=white';
     // TODO: Replace the second link with the CI Job URL
     base = base +'&link='+ encodeURI("/") + '&link=' + encodeURI(uri);
     if ( label != "" ) {
-        base = base +'&label='+ encodeURI(label);
+	base = base +'&label='+ encodeURI(label);
+    } else if ( links === "internal" ) {
+        base = base +'&label='+ encodeURI("Job name with link");
+    } else {
+        base = base +'&label='+ encodeURI("Job name");
     }
     return base + '&url=' + encodeURI(uri);
 }
@@ -308,7 +312,7 @@ function toTitleCase(str) {
     );
 }      
 
-function createKeyTable(rows) {
+function createKeyTable(rows, links) {
     //document.getElementById('data').innerHTML = 'Hello World!';
 
     tableText = "<div class='ci-key'>";
@@ -317,7 +321,7 @@ function createKeyTable(rows) {
 
     tableText = tableText + "<tr>";
     rows.forEach(r => {
-	tableText = tableText + "<td class='ci-badge'><object data='" + get_key_url(r, "") + "' style='max-width: 100%;'>&nbsp;</object>&nbsp;</td>";
+	tableText = tableText + "<td class='ci-badge'><object data='" + get_key_url(r, "", links) + "' style='max-width: 100%;'>&nbsp;</object>&nbsp;</td>";
     });
     tableText = tableText + "</tr>";
 
@@ -481,7 +485,7 @@ function processBucketXML(text, options) {
 	htmlText = createFilteredHorizontalTable(badges, filter_field, filter_value, false, links, numElements);
 
     } else {
-	htmlText = createKeyTable(["green", "yellow", "red"]);    
+	htmlText = createKeyTable(["green", "yellow", "red"], links);
 	
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
 	htmlText = htmlText + createFilteredHorizontalTable(badges, "date", null, true, links);
