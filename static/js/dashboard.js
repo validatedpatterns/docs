@@ -448,11 +448,7 @@ function processBucketXML(text, options) {
 
     htmlText = "";
     
-    if ( filter_field === "date" ) {
-	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
-	htmlText = createFilteredVerticalTable(badges, "date", null, false, links);
-
-    } else if (filter_field != null ) {
+    if (filter_field != null ) {
 	if ( filter_value != null) {
 	    badges = filterBadges(badges, filter_field, filter_value);
 	}
