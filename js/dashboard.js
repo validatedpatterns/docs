@@ -453,7 +453,7 @@ function processBucketXML(text, options) {
 	    badges = filterBadges(badges, filter_field, filter_value);
 	}
 	badges.sort(patternSort);
-	numElements = Math.min(Math.floor(window.innerWidth/140), 6);
+	numElements = Math.min(Math.floor(window.innerWidth/190), 6);
 	// if ( window.innerWidth < 1200 ) {
 	//      No left or right sidebar    
 	//	numElements = Math.floor(window.innerWidth/140);
