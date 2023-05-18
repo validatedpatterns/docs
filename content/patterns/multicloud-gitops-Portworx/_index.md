@@ -24,7 +24,7 @@ aliases: /multicloud-gitops-Portworx/
   </script>
 </div>
 
-# Multicloud GitOps
+# Multicloud GitOps with Portworx Enterprise
 
 {{% button text="Install" url="getting-started" color-class="btn-green" %}}
 {{% button text="Portfolio Architecture" url="https://www.redhat.com/architect/portfolio/architecturedetail?ppid=8" color-class="btn-blue" %}}
@@ -38,9 +38,10 @@ _Some details will differ based on the requirements of a specific implementation
 - Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
 - Enable cross-cluster governance and application lifecycle management.
 - Securely manage secrets across the deployment.
+- Deploy and configure Portworx Enterprise persistent storage for stateful applications.
 
 **Background:**
-Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds—private or public.
+Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds—private or public. It include Portworx Enterprise for persistent storage and Kubernetes data services required for stateful applications.
 This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code checks the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
 
 ## Solution overview
