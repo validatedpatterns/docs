@@ -29,7 +29,7 @@ aliases: /multicloud-gitops-Portworx/
 {{% button text="Install" url="getting-started" color-class="btn-green" %}}
 {{% button text="Portfolio Architecture" url="https://www.redhat.com/architect/portfolio/architecturedetail?ppid=8" color-class="btn-blue" %}}
 {{% button text="Help & Feedback" url="https://groups.google.com/g/hybrid-cloud-patterns" %}}
-{{% button text="Report Bugs" url="https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues" color-class="btn-red" %}}
+{{% button text="Report Bugs" url="https://github.com/hybrid-cloud-patterns/multicloud-gitops-Portworx/issues" color-class="btn-red" %}}
 
 _Some details will differ based on the requirements of a specific implementation but all validated patterns, based on a portfolio architecture, generalize one or more successful deployments of a use case._
 
@@ -42,6 +42,7 @@ _Some details will differ based on the requirements of a specific implementation
 
 **Background:**
 Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds—private or public. It include Portworx Enterprise for persistent storage and Kubernetes data services required for stateful applications.
+
 This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code checks the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
 
 ## Solution overview
@@ -54,13 +55,13 @@ This architecture covers hybrid and multi-cloud management with GitOps as shown 
 - Dynamic infrastructure security.
 - Infrastructural continuous delivery best practices.
 
-[![Multi-Cloud Architecture](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)
+[![Multi-Cloud Architecture](/images/multicloud-gitops-Portworx/hybrid-multicloud-management-gitops-hl-arch.png)](/images/multicloud-gitops/hybrid-multicloud-management-gitops-hl-arch.png)
 
 _Figure 1 shows a high-level overview of the solution including the business drivers, management hub, and the clusters under management._
 
 ## Logical diagram
 
-[![Logical Architecture](/images/multicloud-gitops/logical-diagram.png)](/images/multicloud-gitops/logical-diagram.png)
+[![Logical Architecture](/images/multicloud-gitops-Portworx/logical-diagram.png)](/images/multicloud-gitops/logical-diagram.png)
 
 _Figure 2. Logical diagram of hybrid multi-cloud management with GitOps._
 
@@ -78,6 +79,8 @@ The following technology was chosen for this solution.
 
 [_Red Hat Ansible Automation Platform_](https://www.redhat.com/en/technologies/management/ansible) provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation—from development and operations to security and network teams.
 
+[_Portworx Enterprise_](https://portworx.com/redhat) provides persistent storage and Kubernetes data services to Red Hat OpenShift. Persistence is necessary for stateful applications in Kubernetes environments. Portworx also provides business continuity with [Portworx Backup](https://www.redhat.com/en/resources/portworx-backup-partner-solution-brief) and [Portworx DR](https://www.redhat.com/en/resources/portworx-disaster-recovery-brief) products that will be incorporated in a future GitOps pattern.
+
 **Hashicorp Vault**  provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
 
 This solution also uses a variety of _observability tools_ including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
@@ -93,13 +96,13 @@ Subsequent schematic diagrams go into more detail on:
 - Dynamic security management (Figure 6)
 - Observability in hybrid multi-cloud environments (Figure 7)
 
-[![Physical Architecture](/images/multicloud-gitops/schema-gitops.png)](/images/multicloud-gitops/schema-gitops.png)
+[![Physical Architecture](/images/multicloud-gitops-Portworx/schema-gitops.png)](/images/multicloud-gitops-Portworx/schema-gitops.png)
 
 _Figure 3. Overview schematic diagram of the complete solution._
 
 ### Bootstrapping the management hub
 
-[![Schematic diagram of bootstrapping the management hub](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-install.png)](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-install.png)
+[![Schematic diagram of bootstrapping the management hub](/images/multicloud-gitops-Portworx/spi-multi-cloud-gitops-sd-install.png)](/images/multicloud-gitops-Portworx/spi-multi-cloud-gitops-sd-install.png)
 
 _Figure 4. Schematic diagram of bootstrapping the management hub._
 
@@ -112,7 +115,7 @@ As detailed below, Figure 4 provides a schematic diagram showing the setup of th
 
 ### Hybrid multicloud GitOps
 
-[![Schematic diagram of hybrid multi-cloud management with GitOps](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-security.png)](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-security.png)
+[![Schematic diagram of hybrid multi-cloud management with GitOps](/images/multicloud-gitops-Portworx/spi-multi-cloud-gitops-sd-security.png)](/images/multicloud-gitops-Portworx/spi-multi-cloud-gitops-sd-security.png)
 
 _Figure 5. Schematic diagram of hybrid multi-cloud management with GitOps._
 
@@ -126,7 +129,7 @@ As detailed below, Figure 5 provides a schematic diagram showing remaining activ
 
 ### Dynamic security management
 
-[![Schematic showing the setup and use of external secrets management](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-security.png)](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-security.png)
+[![Schematic showing the setup and use of external secrets management](/images/multicloud-gitops-Portworx/spi-multi-cloud-gitops-sd-security.png)](/images/multicloud-gitops-Portworx/spi-multi-cloud-gitops-sd-security.png)
 
 _Figure 6. Schematic showing the setup and use of external secrets management._
 
@@ -145,7 +148,7 @@ Secrets are created in each namespace, where applications can use them.
 
 ### Observability in hybrid multicloud environment
 
-[![Schematic showing the use of Observatorium and other tools to add observability to the solution](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-monitoring.png)](/images/multicloud-gitops/spi-multi-cloud-gitops-sd-monitoring.png)
+[![Schematic showing the use of Observatorium and other tools to add observability to the solution](/images/multicloud-gitops-Portworx/spi-multi-cloud-gitops-sd-monitoring.png)](/images/multicloud-gitops-Portworx/spi-multi-cloud-gitops-sd-monitoring.png)
 
 _Figure 7. Schematic showing the use of Observatorium and other tools to add observability to the solution._
 
