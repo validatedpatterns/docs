@@ -1,0 +1,98 @@
+<div class="pf-c-select pf-m-expanded">
+  <span id="select-checkbox-expanded-selected-label" hidden>Filter patterns</span>
+  <div class="pf-c-select__menu">
+    <div class="pf-c-accordion accordion" id="patternsAccordionNav">
+
+      <!-- TYPE-->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="typeHeading">
+          <button class="pf-c-accordion__toggle collapsed" title="Filter patterns by validation type" type="button" data-bs-toggle="collapse" data-bs-target="#collapseType" aria-expanded="false" aria-controls="collapseType">
+            Pattern Type
+            <span class="pf-c-accordion__toggle-icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+            <span class="pf-c-accordion__toggle-icon">
+              <i class="fas fa-angle-right" aria-hidden="true"></i>
+            </span>
+          </button>
+        </h2>
+        <div id="collapseType" class="pf-c-accordion__expanded-content collapse" aria-labelledby="typeHeading" data-bs-parent="#patternsAccordionNav">
+          <div class="pf-c-accordion__expanded-content-body">
+            <div class="pf-c-select__menu-group">
+              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-patterntype">
+                <label class="pf-c-check pf-c-select__menu-item" for="type:validated">
+                  <input class="pf-c-check__input" type="checkbox" onclick="filterSelection(this.id)" id="type:validated" name="validated"/>
+                  <span class="pf-c-check__label">Validated by Red Hat</span>
+                </label>
+                <label class="pf-c-check pf-c-select__menu-item" for="type:community">
+                  <input class="pf-c-check__input" type="checkbox" onclick="filterSelection(this.id)" id="type:community" name="community"/>
+                  <span class="pf-c-check__label">Community pattern</span>
+                </label>
+              </fieldset>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INDUSTRIES -->
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="industriesHeading">
+          <button class="pf-c-accordion__toggle collapsed" title="Filter patterns by industry" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIndustries" aria-expanded="false" aria-controls="collapseIndustries">
+            Industries
+            <span class="pf-c-accordion__toggle-icon">
+              <i class="fas fa-angle-right" aria-hidden="true"></i>
+            </span>
+            <span class="pf-c-accordion__toggle-icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </h2>
+        <div id="collapseIndustries" class="pf-c-accordion__expanded-content collapse" aria-labelledby="industriesHeading" data-bs-parent="#patternsAccordionNav">
+          <div class="pf-c-accordion__expanded-content-body">
+            <div class="pf-c-select__menu-group">
+              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-industry">
+                {{ range $name, $taxonomy := .Site.Taxonomies.industries }}
+                <label class="pf-c-check pf-c-select__menu-item" for="industries:{{- $name -}}">
+                  <input class="pf-c-check__input" type="checkbox" id="industries:{{- $name -}}" onclick="filterSelection(this.id)" name="{{- $name | humanize | title  -}}"/>
+                  <span class="pf-c-check__label">{{- $name | humanize | title  -}}</span>
+                </label>
+                {{ end }}
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--PRODUCTS-->
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="productHeading">
+          <button class="pf-c-accordion__toggle collapsed" title="Filter patterns by Red Hat product" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProducts" aria-expanded="false" aria-controls="collapseProducts">
+            Red Hat products
+            <span class="pf-c-accordion__toggle-icon">
+              <i class="fas fa-angle-right" aria-hidden="true"></i>
+            </span>
+            <span class="pf-c-accordion__toggle-icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </h2>
+        <div id="collapseProducts" class="pf-c-accordion__expanded-content collapse" aria-labelledby="productHeading" data-bs-parent="#patternsAccordionNav">
+          <div class="pf-c-accordion__expanded-content-body">
+            <div class="pf-c-select__menu-group">
+              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-RHproducts">
+                {{ range $name, $taxonomy := .Site.Taxonomies.products }}
+                <label class="pf-c-check pf-c-select__menu-item" for="products:{{- $name -}}">
+                  <input class="pf-c-check__input" type="checkbox" id="products:{{- $name -}}" onclick="filterSelection(this.id)" name="{{ $taxonomy.Page.Title }}"/>
+                  <span class="pf-c-check__label wrappable">{{ $taxonomy.Page.Title }}</span>
+                </label>
+                {{ end }}
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

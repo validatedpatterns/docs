@@ -42,13 +42,15 @@
             </div>
             <div style="margin: 20px 0;">
             {{ range .Params.blog_tags }}
-              <span class="pf-c-label pf-m-orange">
+              <span class="pf-c-label pf-m-grey">
                 <span class="pf-c-label__content">{{ . }}</span>
               </span>
             {{ end }}
             </div>
             <hr class="pf-c-divider" />
-            {{ .Content }}
+            <div class="page-abstract">
+              {{ .Content }}
+            </div>
           </div>
           {{ partial "toc.html" . }}
       </div>

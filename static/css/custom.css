@@ -285,6 +285,10 @@ h3 {
   margin-top: revert;
 }
 
+.page-abstract {
+  margin-bottom: 1rem;
+}
+
 /*CODE BLOCKS */
 
 code {
@@ -372,6 +376,25 @@ td > code {
   font-weight: var(--pf-global--FontWeight--light);
 }
 
+/*For the Patterns page */
+
+.pf-c-panel__header {
+  font-weight: bold ;
+}
+
+.filter-title {
+  margin-left: 1rem;
+}
+
+.reset-title {
+  margin-right: 1rem;
+  font-size: 0.75em;
+}
+
+.filter-title-div {
+  margin-top: 2rem;
+}
+
 /* This allows long names on nav items/accordions to wrap*/
 .wrappable {
   white-space:break-spaces;
@@ -385,6 +408,8 @@ td > code {
 .pattern-count-style {
   font-size:0.8rem;
 }
+
+
 
 /*RIGTH NAV titles */
 
@@ -421,7 +446,66 @@ td > code {
   font-style: italic;
 }
 
-/*FOOTER*/
+/*ACCORDIONS*/
+/*CSS from Bootstrap 5x, modified, and other custom classes*/
+
+/* This puts the accent on the open accordion*/
+.collapsed-effect:after {
+  border-color: var(--pf-global--active-color--100);
+  border-left-width: 1px;
+  border-style: solid !important;
+}
+
+.collapse:not(.show) {
+    display: none;
+}
+
+.collapsing {
+  height: 0;
+  overflow: hidden;
+  @include transition($transition-collapse);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collapsing {
+    transition: none;
+  }
+}
+
+button[aria-expanded=true] .fa-angle-right {
+  display: none;
+}
+button[aria-expanded=false] .fa-angle-down {
+  display: none;
+}
+
+.fas.fa-angle-right,
+.fas.fa-angle-down {
+  position: absolute;
+  right: 16px;
+  top: 20px;
+}
+
+.collapsed-effect::after {
+  border-style: none;
+}
+
+.pf-c-label__icon {
+  margin-right: 0.5rem;
+}
+
+.pf-c-accordion__toggle {
+  padding: var(--pf-global--spacer--md) var(--pf-global--spacer--lg) var(--pf-global--spacer--md) var(--pf-global--spacer--md);
+}
+
+.pf-c-accordion__toggle-link {
+  padding: var(--pf-global--spacer--sm) var(--pf-global--spacer--md) var(--pf-global--spacer--sm) var(--pf-global--spacer--sm);
+}
+
+.pf-c-select__menu {
+  box-shadow: 0 -0.25rem 0.25rem -0.375rem rgba(3, 3, 3, 0.72);
+}
+
 
 /* Makes scrolling smooth when clicking links on the right*/
 
@@ -432,7 +516,7 @@ main.pf-c-page__main {
 /*FOOTER*/
 
 .footer-center {
-    justify-content: center;
+  justify-content: center;
 }
 
 #footer {

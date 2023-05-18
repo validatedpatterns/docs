@@ -5,6 +5,8 @@ menu: learn
 weight: 20
 ---
 
+:toc:
+
 == Patterns quick start
 
 Each pattern can be deployed using the command line. The only requirement is to have `git` and `podman` installed. See the <<installation_prerequisites>> for more information.
