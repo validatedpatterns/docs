@@ -1,14 +1,15 @@
 ---
-title: Multicloud GitOps
-date: 2021-12-11
-validated: true
-summary: This pattern helps you develop and deploy applications on an open hybrid cloud in a stable, simple, and secure way.
+title: Multicloud GitOps with Portworx Enterprise
+date: 2023-18-05
+validated: false
+summary: This pattern helps you develop and deploy applications on an open hybrid cloud in a stable, simple, and secure way. It include Portworx Enterprise for persistent storage and Kubernetes data services required for stateful applications
 products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
+- Portworx Enterprise
 industries:
 - General
-aliases: /multicloud-gitops/
+aliases: /multicloud-gitops-Portworx/
 ---
 
 <div class="pattern_logo">
