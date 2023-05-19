@@ -107,4 +107,4 @@ For instructions on deploying the edge, refer to [Managed Cluster Sites](https:/
 
 >Contribute to this pattern:
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/multicloud-gitops-Portworx/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Report Bugs](https://github.com/portworx/rh-multicloud-gitops-pxe/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
