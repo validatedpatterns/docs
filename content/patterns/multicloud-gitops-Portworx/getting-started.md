@@ -29,12 +29,12 @@ service](https://console.redhat.com/openshift/create).
 
    {% include prerequisite-tools.md %}
 
-2. Fork the [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops) repository on GitHub. It is recommended to fork because you can update your fork as part of the GitOps and DevOps processes.
+2. Fork the [multicloud-gitops-pxe](https://github.com/portworx/rh-multicloud-gitops-pxe) repository on GitHub. It is recommended to fork because you can update your fork as part of the GitOps and DevOps processes.
 
 3. Clone the forked copy of this repository.
 
     ```sh
-    git clone git@github.com:your-username/multicloud-gitops.git
+    git clone git@github.com:your-username/multicloud-gitops-pxe.git
     ```
 
 4. Create a local copy of the secret values file that can safely include credentials.
@@ -45,8 +45,8 @@ service](https://console.redhat.com/openshift/create).
     The framework generates a random password for the config-demo application.
 
     ```sh
-    cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
-    vi ~/values-secret-multicloud-gitops.yaml
+    cp values-secret.yaml.template ~/values-secret-multicloud-gitops-pxe.yaml
+    vi ~/values-secret-multicloud-gitops-pxe.yaml
     ```
 
 5. Customize the deployment for your cluster.
@@ -88,7 +88,7 @@ To deploy the cluster by using the `pattern.sh` file, complete the following ste
 <!-- Get a SME review for this step 5 -->
 5. Verify that all applications are synchronized. Under the project `multicloud-gitops-hub` click the URL for the `hub` gitops `server`. The Vault application is not synched.
 
-[![Multicloud GitOps Hub](/images/multicloud-gitops/multicloud-gitops-argocd.png)](/images/multicloud-gitops/multicloud-gitops-argocd.png)
+[![Multicloud GitOps Hub](/images/multicloud-gitops-Portworx/multicloud-gitops-argocd.png)](/images/multicloud-gitops-Portworx/multicloud-gitops-argocd.png)
 
 <!-- Moved Deploying the managed cluster applications section under next step (or it should be a separate file-->
 
@@ -103,8 +103,8 @@ As part of this pattern, HashiCorp Vault has been installed. Refer to the sectio
 
 After the management hub is set up and works correctly, attach one or more managed clusters to the architecture (see diagrams below).
 
-For instructions on deploying the edge, refer to [Managed Cluster Sites](https://hybrid-cloud-patterns.io/multicloud-gitops/managed-cluster/).
+For instructions on deploying the edge, refer to [Managed Cluster Sites](https://hybrid-cloud-patterns.io/multicloud-gitops-Portworx/managed-cluster/).
 
 >Contribute to this pattern:
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Report Bugs](https://github.com/portworx/rh-multicloud-gitops-pxe/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
