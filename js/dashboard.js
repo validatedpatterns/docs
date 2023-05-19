@@ -470,10 +470,10 @@ function processBucketXML(text, options) {
 	htmlText = createKeyTable(["green", "yellow", "red"], links);
 	
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
-	htmlText = htmlText + createFilteredHorizontalTable(badges, "date", null, true, links, Math.floor((window.innerWidth-550)/190));
+	htmlText = htmlText + createFilteredHorizontalTable(badges, "date", null, true, links, Math.floor((window.innerWidth-200)/200));
 	
 	badges.sort(patternVertSort);
-	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true, links, Math.floor((window.innerWidth-550)/140));
+	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true, links, Math.floor((window.innerWidth-200)/140));
 	htmlText = htmlText + createFilteredVerticalTable(badges, "platform", null, true, links);
 	htmlText = htmlText + createFilteredVerticalTable(badges, "version", null, true, links);
     }
