@@ -453,7 +453,7 @@ function processBucketXML(text, options) {
 	    badges = filterBadges(badges, filter_field, filter_value);
 	}
 	badges.sort(patternSort);
-	numElements = Math.min(Math.floor(window.innerWidth/190), 6);
+	numElements = Math.min(Math.floor(window.innerWidth/140), 6);
 	// if ( window.innerWidth < 1200 ) {
 	//      No left or right sidebar    
 	//	numElements = Math.floor(window.innerWidth/140);
@@ -470,7 +470,7 @@ function processBucketXML(text, options) {
 	htmlText = createKeyTable(["green", "yellow", "red"], links);
 	
 	badges.sort(function(a, b){return -1 * a.date.localeCompare(b.date)});
-	htmlText = htmlText + createFilteredHorizontalTable(badges, "date", null, true, links);
+	htmlText = htmlText + createFilteredHorizontalTable(badges, "date", null, true, links, Math.floor((window.innerWidth-550)/190));
 	
 	badges.sort(patternVertSort);
 	htmlText = htmlText + createFilteredHorizontalTable(badges, "pattern", null, true, links, Math.floor((window.innerWidth-550)/140));
