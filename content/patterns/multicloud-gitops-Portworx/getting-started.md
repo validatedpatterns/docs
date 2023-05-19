@@ -29,7 +29,7 @@ service](https://console.redhat.com/openshift/create).
 
    {% include prerequisite-tools.md %}
 
-2. Fork the [multicloud-gitops-pxe](https://github.com/portworx/rh-multicloud-gitops-pxe) repository on GitHub. It is recommended to fork because you can update your fork as part of the GitOps and DevOps processes.
+2. Fork the [rh-multicloud-gitops-pxe](https://github.com/portworx/rh-multicloud-gitops-pxe) repository on GitHub. It is recommended to fork because you can update your fork as part of the GitOps and DevOps processes.
 
 3. Clone the forked copy of this repository.
 
