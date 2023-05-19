@@ -20,7 +20,7 @@ aliases: /multicloud-gitops-Portworx/
 <div class='results'>
   <p id="ci-dataset"> </p>
   <script>
-    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': 'mcgitops' });
+    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': 'mcgitopspxe' });
   </script>
 </div>
 
@@ -29,7 +29,7 @@ aliases: /multicloud-gitops-Portworx/
 {{% button text="Install" url="getting-started" color-class="btn-green" %}}
 {{% button text="Portfolio Architecture" url="https://www.redhat.com/architect/portfolio/architecturedetail?ppid=8" color-class="btn-blue" %}}
 {{% button text="Help & Feedback" url="https://groups.google.com/g/hybrid-cloud-patterns" %}}
-{{% button text="Report Bugs" url="https://github.com/hybrid-cloud-patterns/multicloud-gitops-Portworx/issues" color-class="btn-red" %}}
+{{% button text="Report Bugs" url="https://github.com/portworx/rh-multicloud-gitops-pxe/issues" color-class="btn-red" %}}
 
 _Some details will differ based on the requirements of a specific implementation but all validated patterns, based on a portfolio architecture, generalize one or more successful deployments of a use case._
 
