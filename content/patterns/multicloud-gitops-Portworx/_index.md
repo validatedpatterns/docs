@@ -13,7 +13,7 @@ aliases: /multicloud-gitops-Portworx/
 ---
 
 <div class="pattern_logo">
-  <img src="/images/logos/multicloud-gitops.png" class="pattern_logo" alt="Points">
+  <img src="/images/logos/multicloud-gitops-Portworx.png" class="pattern_logo" alt="Points">
 </div>
 
 <script type="text/javascript" src="/js/dashboard.js"></script>
@@ -61,7 +61,7 @@ _Figure 1 shows a high-level overview of the solution including the business dri
 
 ## Logical diagram
 
-[![Logical Architecture](/images/multicloud-gitops-Portworx/logical-diagram.png)](/images/multicloud-gitops/logical-diagram.png)
+[![Logical Architecture](/images/multicloud-gitops-Portworx/logical-diagram.png)](/images/multicloud-gitops-Portworx/logical-diagram.png)
 
 _Figure 2. Logical diagram of hybrid multi-cloud management with GitOps._
 
