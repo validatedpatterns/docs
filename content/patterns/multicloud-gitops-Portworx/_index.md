@@ -27,7 +27,6 @@ aliases: /multicloud-gitops-Portworx/
 # Multicloud GitOps with Portworx Enterprise
 
 {{% button text="Install" url="getting-started" color-class="btn-green" %}}
-{{% button text="Portfolio Architecture" url="https://www.redhat.com/architect/portfolio/architecturedetail?ppid=8" color-class="btn-blue" %}}
 {{% button text="Help & Feedback" url="https://groups.google.com/g/hybrid-cloud-patterns" %}}
 {{% button text="Report Bugs" url="https://github.com/portworx/rh-multicloud-gitops-pxe/issues" color-class="btn-red" %}}
 
