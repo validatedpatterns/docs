@@ -478,6 +478,7 @@ sso
 sstlsi
 stackrox
 standal
+stateful
 stolostron
 storageclass
 storageclassname
