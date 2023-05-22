@@ -15,7 +15,7 @@ aliases: /medical-diagnosis/getting-started/
 . S3-capable Storage set up in your public/private cloud for the x-ray images
 . The helm binary, see https://helm.sh/docs/intro/install/[here]
 
-For installation tooling dependencies, see [Patterns quick start]({{< ref "/content/learn/quickstart.adoc" >}})
+For installation tooling dependencies, see link:https://hybrid-cloud-patterns.io/learn/quickstart/[Patterns quick start].
 
 The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern
 there is no dedicated Hub / Edge cluster for the *Medical Diagnosis* pattern.
@@ -55,7 +55,7 @@ python s3-sync-buckets.py -s com.validated-patterns.xray-source -t mytest-bucket
 
 The output should look similar to this edited/compressed output.
 
-image:/videos/bucket-setup.svg[Bucket setup]]
+image:/videos/bucket-setup.svg[Bucket setup]
 
 Keep note of the name of the bucket you created, as you will need it for further pattern configuration.
 There is some key information you will need to take note of that is required by the 'values-global.yaml' file. You will need the URL for the bucket and its name. At the very end of the `values-global.yaml` file you will see a section for `s3:` were these values need to be changed.
@@ -199,14 +199,11 @@ If the install fails and you go back over the instructions and see what was miss
 
 . This takes some time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The `make install` provides some progress updates during the install. It can take up to twenty minutes. Compare your `make install` run progress with the following video showing a successful install.
 +
-link:/videos/xray-deployment.svg[image:/videos/xray-deployment.svg[Demo\]]
+image::/videos/xray-deployment.svg[link="/videos/xray-deployment.svg"]
 
 . Check that the operators have been installed in the UI.
-+
-[,text]
-----
-OpenShift UI -> Installed Operators
-----
+.. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
+ .. Check that the Operator is installed in the `openshift-operators` namespace and its status is `Succeeded`.
 +
 The main operator to watch is the OpenShift Data Foundation.
 
@@ -256,15 +253,15 @@ The most important ArgoCD instance to examine at this point is `medical-diagnosi
 
 . First we need to accept SSL certificates on the browser for the dashboard. In the OpenShift console go to the Routes for project openshift-storage. Click on the URL for the s3-rgw.
 +
-link:/images/medical-edge/storage-route.png[image:/images/medical-edge/storage-route.png[Storage Routes\]])
+image::medical-edge/storage-route.png[link="medical-edge/storage-route.png]
 +
 Make sure that you see some XML and not an access denied message.
 +
-link:/images/medical-edge/storage-rgw-route.png[image:/images/medical-edge/storage-rgw-route.png[Storage Routes\]])
+image::medical-edge/storage-rgw-route.png[link="medical-edge/storage-rgw-route.png]
 
 . While still looking at Routes, change the project to `xraylab-1`. Click on the URL for the `image-server`. Make sure you do not see an access denied message. You ought to see a `Hello World` message.
 +
-link:/images/medical-edge/grafana-routes.png[image:/images/medical-edge/grafana-routes.png[Storage Routes\]])
+image::medical-edge/grafana-routes.png[link="medical-edge/grafana-routes.png]
 
 . Turn on the image file flow. There are three ways to go about this.
 +
@@ -277,21 +274,21 @@ oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1
 +
 Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the `xraylab-1` project.
 +
-link:/images/medical-edge/dev-topology.png[image:/images/medical-edge/dev-topology.png[Xraylab-1 Topology\]])
+image::medical-edge/dev-topology.png[link="medical-edge/dev-topology.png]
 +
 Right click on the `image-generator` pod icon and select `Edit Pod count`.
 +
-link:/images/medical-edge/dev-topology-menu.png[image:/images/medical-edge/dev-topology-menu.png[Pod menu\]])
+image::medical-edge/dev-topology-menu.png[link="medical-edge/dev-topology-menu.png]
 +
 Up the pod count from `0` to `1` and save.
 +
-link:/images/medical-edge/dev-topology-pod-count.png[image:/images/medical-edge/dev-topology-pod-count.png[Pod count\]])
+image::medical-edge/dev-topology-pod-count.png[link="medical-edge/dev-topology-pod-count.png]
 +
 Alternatively, you can have the same outcome on the Administrator console.
 +
 Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project xraylab-1. Click on `image-generator` and increase the pod count to 1.
 +
-link:/images/medical-edge/start-image-flow.png[image:/images/medical-edge/start-image-flow.png[Image Pod\]])
+image::medical-edge/start-image-flow.png[link="medical-edge/start-image-flow.png]
 
 [id="making-some-changes-on-the-dashboard-getting-started"]
 == Making some changes on the dashboard

@@ -50,10 +50,10 @@ What does this pattern do?:
 
 This pipeline is showcased https://www.youtube.com/watch?v=zja83FVsm14[in this video].
 
-link:/images/medical-edge/dashboard.png[image:/images/medical-edge/dashboard.png[Pipeline dashboard\]]
+image::medical-edge/dashboard.png[link="medical-edge/dashboard.png"]
 
 This validated pattern is still under development. Any questions or concerns
-please contact link:mailto:jrickard@redhat.com[Jonny Rickard] or link:mailto:claudiol@redhat.com[Lester Claudio].
+please contact mailto:jrickard@redhat.com[Jonny Rickard] or mailto:claudiol@redhat.com[Lester Claudio].
 
 === Solution elements
 
@@ -75,7 +75,7 @@ please contact link:mailto:jrickard@redhat.com[Jonny Rickard] or link:mailto:cla
 
 In this iteration of the pattern *there is no edge component* . Future releases have planned Edge deployment capabilities as part of the pattern architecture.
 
-link:/images/medical-edge/edge-medical-diagnosis-marketing-slide.png[image:/images/medical-edge/edge-medical-diagnosis-marketing-slide.png[Multi-Cloud Architecture\]]
+image::medical-edge/edge-medical-diagnosis-marketing-slide.png[link="medical-edge/edge-medical-diagnosis-marketing-slide.png]
 
 Components are running on OpenShift either at the data center or at the medical facility (or public cloud running OpenShift).
 
@@ -83,11 +83,11 @@ Components are running on OpenShift either at the data center or at the medical 
 
 The diagram below shows the components that are deployed with the various networks that connect them.
 
-link:/images/medical-edge/physical-network.png[image:/images/medical-edge/physical-network.png[Network architecture\]]
+image::medical-edge/physical-network.png[link="medical-edge/physical-network.png]
 
 The diagram below shows the components that are deployed with the the data flows and API calls between them.
 
-link:/images/medical-edge/physical-dataflow.png[image:/images/medical-edge/physical-dataflow.png[Data flow and API call architecture\]]
+image::medical-edge/physical-dataflow.png[link="medical-edge/physical-dataflow.png]
 
 == Recorded Demo
 
