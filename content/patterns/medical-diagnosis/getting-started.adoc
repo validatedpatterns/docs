@@ -33,6 +33,7 @@ An S3 bucket is required for image processing. Please see the <<utilities,Utilit
 * https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal[Azure Blob Storage]
 * https://cloud.google.com/storage/docs/quickstart-console[GCP Cloud Storage]
 
+[id="utilities"]
 = Utilities
 
 A number of utilities have been built by the validated patterns team to lower the barrier to entry for using the community or Red Hat Validated Patterns. To use these utilities you will need to export some environment variables for your cloud provider:
@@ -60,6 +61,7 @@ image:/videos/bucket-setup.svg[Bucket setup]
 Keep note of the name of the bucket you created, as you will need it for further pattern configuration.
 There is some key information you will need to take note of that is required by the 'values-global.yaml' file. You will need the URL for the bucket and its name. At the very end of the `values-global.yaml` file you will see a section for `s3:` were these values need to be changed.
 
+[id="preparation"]
 = Preparation
 
 . Fork the https://github.com/hybrid-cloud-patterns/medical-diagnosis[medical-diagnosis] repo on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.

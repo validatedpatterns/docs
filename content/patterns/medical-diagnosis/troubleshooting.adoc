@@ -27,9 +27,9 @@ Once *common* completes, the remaining tasks within the `make install` target wi
 [id="make-vault-init--make-load-secrets-troubleshooting"]
 ==== make vault-init / make load-secrets
 
-This pattern is integrated with *HashiCorp Vault* and *External Secrets* services for secrets management within the cluster. These targets install vault from a Helm chart and the load the secret `(values-secret.yaml)` you created during link:../getting-started#preparation[Getting Started].
+This pattern is integrated with *HashiCorp Vault* and *External Secrets* services for secrets management within the cluster. These targets install vault from a Helm chart and the load the secret `(values-secret.yaml)` you created during link:../getting-started/#preparation[Getting Started].
 
-If *values-secret.yaml* does not exist, make will exit with an error saying so. Furthermore, if the *values-secret.yaml* file does exist but is improperly formatted, ansible will exit with an error about being improperly formatted. If you are not sure how format the secret, please refer to link:../getting-started#preparation[Getting Started].
+If *values-secret.yaml* does not exist, make will exit with an error saying so. Furthermore, if the *values-secret.yaml* file does exist but is improperly formatted, ansible will exit with an error about being improperly formatted. If you are not sure how format the secret, please refer to link:../getting-started/#preparation[Getting Started].
 
 [id="make-bootstrap--make-upgrade-troubleshooting"]
 ==== make bootstrap / make upgrade
