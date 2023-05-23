@@ -143,25 +143,6 @@ To allow the cluster access to the external vault, we need to set up the externa
 External secret management fetches secrets from HashiCorp Vault using the token we created in step 2 and constantly watches for updates.
 Secrets are created in each namespace, where applications can use them.
 
-Secrets are created in each namespace, where applications can use them.
-
-### Observability in hybrid multicloud environment
-
-[![Schematic showing the use of Observatorium and other tools to add observability to the solution](/images/multicloud-gitops-Portworx/spi-multi-cloud-gitops-sd-monitoring.png)](/images/multicloud-gitops-Portworx/spi-multi-cloud-gitops-sd-monitoring.png)
-
-_Figure 7. Schematic showing the use of Observatorium and other tools to add observability to the solution._
-
-As detailed below, Figure 7 provides a schematic diagram of integrating a variety of open source tools to implement observability.
-
-- The Grafana dashboard in Hub cluster makes queries. The central Querier component in Observatorium processes the Prom. QL queries and aggregates the results.
-- Prometheus scrapes metrics in the local cluster; a Thanos sidecar pushes metrics to Observatorium to persist in storage.
-- A Thanos sidecar acts as a proxy that serves Prometheus’s local data over Thanos’s gRPC API from the Querier.
-- Promtail is used to collect logs and push to Observatorium’s Loki API.
-- In Observatorium, the Loki distributor sends logs in batches to ingester, where they will be persisted. A couple of things to beware of: both ingester and querier require large memory consumption, will need more replicas.
-- The Grafana dashboard in Hub cluster display logs via requesting: real-time display (tail) with WebSocket or a time-series-based query with HTTP.
-
-For logical, physical and dataflow diagrams, please see excellent work done by the [Red Hat Portfolio Architecture team](https://www.redhat.com/architect/portfolio/detail/8)
-
 ## Demo Scenario
 
 ## Download diagrams
