@@ -1,0 +1,52 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="understanding-acm-requirements-managed-cluster"]
+= Understanding Red Hat Advanced Cluster Management requirements
+
+By default, Red Hat Advanced Cluster Management (RHACM) manages the `clusterGroup` applications that are deployed on all clusters. In the `value-hub.yaml` file, add a `managedClusterCgroup` for each cluster or group of clusters that you want to manage as one.
+
+[source,yaml]
+----
+  managedClusterGroups:
+  - name: region-one
+    helmOverrides:
+    - name: clusterGroup.isHubCluster
+      value: false
+    clusterSelector:
+      matchLabels:
+        clusterGroup: region-one
+----
+
+The above YAML file segment deploys the `clusterGroup` applications on managed clusters with the label `clusterGroup=region-one`. Specific subscriptions and Operators, applications and projects for that `clusterGroup` are then managed in a `value-region-one.yaml` file. For example:
+
+[source,yaml]
+----
+  namespaces:
+    - config-demo
+
+  projects:
+    - config-demo
+
+  applications:
+    config-demo:
+      name: config-demo
+      namespace: config-demo
+      project: config-demo
+      path: charts/all/config-demo
+
+  #Subscriptions can be added too - multicloud-gitops at present does not require subscriptions on its managed clusters
+  #subscriptions:
+.  #  example-subscription
+  #    name: example-operator
+  #    namespace: example-namespace
+  #    channel: example-channel
+  #    csv: example-operator.v1.0.0
+
+  subscriptions:
+----
+
+[IMPORTANT]
+====
+Ensure that you commit the changes and push them to GitHub so that GitOps can fetch your changes and apply them.
+====

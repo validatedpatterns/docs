@@ -1,0 +1,26 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../images
+
+[id="deploying-a-managed-cluster-using-rhacm"]
+= Deploying a managed cluster by using Red Hat Advanced Cluster Management
+
+.Prerequistes
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *OpenShift* -> *Clusters* -> *Create cluster*.
+
+* Red Hat Advanced Cluster Management (RHACM) web console to join the managed cluster to the management hub
++
+[NOTE]
+====
+After RHACM is installed, a message regarding a *Web console update is available*" might be displayed. Follow the instructions and click the *Refresh web console* link.
+====
+
+.Procedure
+
+. In the left navigation panel of web console, click *local-cluster*. Select *All Clusters*. The RHACM web console is displayed with *Cluster** on the left navigation panel.
+. On the *Managed clusters* tab, click *Import cluster*.
+. On the *Import an existing cluster* page, enter the cluster name and choose *KUBECONFIG* as the "import mode". Add the tag `clusterGroup=region-one`. Click *Import*.
+
+Now that RHACM is no longer deploying the managed cluster applications everywhere, you must indicate that the new cluster has the managed cluster role.

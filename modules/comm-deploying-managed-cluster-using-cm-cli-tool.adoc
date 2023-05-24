@@ -1,0 +1,41 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../images
+
+[id="deploying-managed-cluster-using-cm-cli-tool"]
+= Optional: Deploying a managed cluster by using `cm-cli` tool
+
+.Prerequistes
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *OpenShift \-> Clusters \-> Create cluster*.
+
+* https://github.com/open-cluster-management/cm-cli/#installation[The `cm-cli` tool]
+
+.Procedure
+
+. Obtain the `KUBECONFIG` file from the managed cluster.
+
+. Open a shell prompt and login into the management hub cluster by using either of the following methods:
++
+[source,terminal]
+----
+oc login
+----
+or
++
+[source,terminal]
+----
+export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Run the following command:
++
+[source,terminal]
+----
+cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-path_to_kubeconfig>
+----
+
+[role="_next-steps"]
+.Next steps
+* <<designate-cluster-as-a-managed-cluster-site,Designate the new cluster as a managed cluster site>>

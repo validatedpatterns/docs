@@ -1,0 +1,55 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../images
+
+[id="deploying-managed-cluster-using-clusteradm-tool"]
+= Optional: Deploying a managed cluster by using the `clusteradm` tool
+
+.Prerequistes
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *OpenShift* -> *Clusters* -> *Create cluster*.
+
+* https://github.com/open-cluster-management-io/clusteradm#install-the-clusteradm-command-line[The `clusteradm` tool]
+
+.Procedure
+
+. To deploy an edge cluster, you must to get the token from the management hub cluster. Run the following command on the existing management hub or datacenter cluster:
++
+[source,terminal]
+----
+clusteradm get token
+----
++
+The command generates a token and shows you the command to use on the managed cluster.
+
+. Login to the managed cluster with either of the following methods:
++
+[source,terminal]
+----
+oc login
+----
+or
++
+[source,terminal]
+----
+export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. To request that the managed join the hub cluster, run the following command:
++
+[source,terminal]
+----
+clusteradm join --hub-token <token_from_clusteradm_get_token_command> <managed_cluster_name>
+----
+
+. Accept the `join` request on the hub cluster:
++
+[source,terminal]
+----
+clusteradm accept --clusters <managed_cluster_name>
+----
+
+[role="_next-steps"]
+.Next steps
+* <<designate-cluster-as-a-managed-cluster-site,Designate the new cluster as a managed cluster site>>

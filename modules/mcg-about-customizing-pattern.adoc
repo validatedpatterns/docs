@@ -1,0 +1,20 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-customizing-pattern"]
+= About customizing a pattern
+
+One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple `config-demo` application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
+
+You can customize this demo in different ways.
+
+[id="split-config-demo"]
+== Split the config-demo across hub and regional clusters
+
+Currently hub and regional clusters are reusing the exact same helm chart found at `charts/all/config-demo`. The first customization step could be to split the demo app in two separate charts: one in `charts/hub/config-demo` and one in `charts/region/config-demo`. Once `charts/all/config-demo` has been copied to `charts/hub/config-demo` and `charts/region/config-demo`, you need to include them in the respective `values-hub.yaml` and `values-region-one.yaml`, respectively.
+
+After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
+
+== Rest API addition
+
+After splitting the charts, you could implement a small REST API server on the hub. This API could serve read-only values out to anyone and could provide some update write-APIs only if the client provides a secret, for example, by using the X-API-KEY mechanism. You can tweak the config-demo application to communicate to the hub and use a vault-injected secret as the X-API-KEY. So the hub would possess the key through the External-Secrets generated kubernetes secret and the regional app would possess that same secret via the RHACM policy pushing out secrets via the `{{hub fromSecret}}` mechanism.

@@ -1,0 +1,11 @@
+---
+title: Imperative actions
+weight: 40
+aliases: /multicloud-gitops/mcg-imperative-actions/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/mcg-using-imperative-actions.adoc[leveloffset=+1]

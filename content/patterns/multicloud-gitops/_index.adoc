@@ -1,0 +1,39 @@
+---
+title: Multicloud GitOps
+date: 2021-12-11
+validated: true
+summary: This pattern helps you develop and deploy applications on an open hybrid cloud in a stable, simple, and secure way.
+products:
+- Red Hat OpenShift Container Platform
+- Red Hat Advanced Cluster Management
+industries:
+- General
+aliases: /multicloud-gitops/
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+++++
+<div class="pattern_logo">
+  <img src="/images/logos/multicloud-gitops.png" class="pattern_logo" alt="Points">
+</div>
+
+<script type="text/javascript" src="/js/dashboard.js"></script>
+<div class='results'>
+  <p id="ci-dataset"> </p>
+  <script>
+    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': 'mcgitops' });
+  </script>
+</div>
+++++
+
+include::modules/mcg-about-multicloud-gitops.adoc[leveloffset=+1]
+
+include::modules/mcg-architecture.adoc[leveloffset=+1]
+
+[id="next-steps_mcg-index"]
+== Next steps
+
+* link:mcg-getting-started[Deploy the management hub] using Helm.
+* Add a managed cluster to link:mcg-managed-cluster[deploy the managed cluster piece using ACM].

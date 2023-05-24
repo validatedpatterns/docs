@@ -1,0 +1,14 @@
+---
+title: Ideas for customization
+weight: 60
+aliases: /multicloud-gitops/mcg-ideas-for-customization/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+//leaving this here on purpose to test H1 headings in assemblies and it's impact of TOC
+= Ideas for customization
+
+include::modules/mcg-about-customizing-pattern.adoc[leveloffset=+1]

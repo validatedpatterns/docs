@@ -1,0 +1,24 @@
+[id="mcg-openshift-managed-datacenter-cluster-size-cluster-sizing"]
+= Multicloud GitOps pattern with OpenShift managed datacenter cluster size
+
+The standard datacenter deployment of an OpenShift cluster is 3 control plane nodes and 3 or more worker nodes.
+
+[cols="^,^,^,^"]
+|===
+| Node Type | Number of nodes | Cloud Provider | Instance Type
+
+| Control Plane/Worker
+| 3
+| Google Cloud
+| n1-standard-8
+
+| Control Plane/Worker
+| 3
+| Amazon Cloud Services
+| m5.2xlarge
+
+| Control Plane/Worker
+| 3
+| Microsoft Azure
+| Standard_D8s_v3
+|===

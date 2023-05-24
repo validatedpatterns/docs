@@ -1,0 +1,106 @@
+:_content-type: REFERENCE
+:imagesdir: ../../images
+
+[id="aws-instance-types"]
+= Amazon Web Services (AWS) instance types
+
+The Multicloud GitOps pattern was tested with the highlighted AWS instances. With the OpenShift installer, you can determine whether an AWS instance type meets the minimum requirements for a cluster.
+
+.Example output
+[source,text]
+----
+INFO Credentials loaded from default AWS environment variables
+FATAL failed to fetch Metadata: failed to load asset "Install Config": [controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 4 vCPUs, controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 16384 MiB Memory]
+----
+
+Below you can find a list of the AWS instance types that can be used to deploy the Multicloud GitOps pattern.
+
+[cols="^,^,^,^,^"]
+|===
+| Instance type | Default vCPUs | Memory (GiB) | Datacenter | Factory/Edge
+
+|
+|
+|
+| 3x3 OCP Cluster
+| 3 Node OCP Cluster
+
+| m4.xlarge
+| 4
+| 16
+| N
+| N
+
+| *m4.2xlarge*
+| 8
+| 32
+| Y
+| Y
+
+| m4.4xlarge
+| 16
+| 64
+| Y
+| Y
+
+| m4.10xlarge
+| 40
+| 160
+| Y
+| Y
+
+| m4.16xlarge
+| 64
+| 256
+| Y
+| Y
+
+| *m5.xlarge*
+| 4
+| 16
+| Y
+| N
+
+| *m5.2xlarge*
+| 8
+| 32
+| Y
+| Y
+
+| m5.4xlarge
+| 16
+| 64
+| Y
+| Y
+
+| m5.8xlarge
+| 32
+| 128
+| Y
+| Y
+
+| m5.12xlarge
+| 48
+| 192
+| Y
+| Y
+
+| m5.16xlarge
+| 64
+| 256
+| Y
+| Y
+
+| m5.24xlarge
+| 96
+| 384
+| Y
+| Y
+|===
+
+The OpenShift cluster is made of 4 Control Plane nodes and 3 Workers for the Datacenter and the Edge/managed data center cluster are made of 3 Control Plane and 3 Worker nodes.For the node sizes, use the m5.xlarge on AWS and ensure this instance type meets the minimum requirements to deploy the Multicloud GitOps pattern successfully on the Datacenter hub. For  the managed data center cluster, use the m5.xlarge because the minimum cluster consists of 3 nodes.
+
+[role="_additional-resources"]
+.Additional resources
+* xref:modules/mcg-azure-instance-types.adoc#ms-azure-instance-types[Microsoft Azure instance types]
+* xref:modules/mcg-gcp-instance-types.adoc#gcp-instance-types[Google Cloud Platform (GCP) instance types]

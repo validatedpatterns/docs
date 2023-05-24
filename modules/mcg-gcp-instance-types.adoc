@@ -1,0 +1,39 @@
+:_content-type: REFERENCE
+:imagesdir: ../../images
+
+[id="gcp-instance-types"]
+= Google Cloud Platform (GCP) instance types
+
+The Multicloud GitOps pattern was also deployed on GCP using the *n1-standard-8* VM size.  Below is a table of different VM sizes available for GCP.  Keep in mind that due to limited access to GCP we only used the *n1-standard-8* VM size.
+
+The OpenShift cluster is made of 3 Control Plane and 3 Workers for the Datacenter cluster.
+
+The OpenShift cluster is made of 3 Nodes combining Control Plane/Workers for the Edge/managed data center cluster.
+
+The following table provides VM recommendations for different workloads.
+
+|===
+| *General purpose* | *Workload optimized* |  |  |  |
+
+| Cost-optimized | Balanced | Scale-out optimized | Memory-optimized | Compute-optimized | Accelerator-optimized
+
+| E2
+| N2, N2D, N1
+| T2D
+| M2, M1
+| C2
+| A2
+
+| Day-to-day computing at a lower cost
+| Balanced price/performance across a wide range of VM shapes
+| Best performance/cost for scale-out workloads
+| Ultra high-memory workloads
+| Ultra high performance for compute-intensive workloads
+| Optimized for high performance computing workloads
+|===
+
+[role="_additional-resources"]
+.Additional resources
+* <<ms-azure-instance-types,Microsoft Azure instance types>>
+* <<aws-instance-types,Amazon Web Services (AWS) instance types>>
+* link:https://cloud.google.com/compute/docs/machine-resource[Machine families resource and comparison guide].
