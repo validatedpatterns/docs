@@ -73,7 +73,7 @@ To deploy the cluster by using the `pattern.sh` file, complete the following ste
     or set `KUBECONFIG` to the path to your `kubeconfig` file. For example:
 
     ```sh
-    export KUBECONFIG=~/my-ocp-env/hub/auth/kubconfig
+    export KUBECONFIG=~/my-ocp-env/hub/auth/kubeconfig
     ```
 
 2. Deploy the pattern to your cluster.

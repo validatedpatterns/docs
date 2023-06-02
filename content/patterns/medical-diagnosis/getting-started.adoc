@@ -161,7 +161,7 @@ oc login
 +
 [,sh]
 ----
-export KUBECONFIG=~/my-ocp-env/auth/kubconfig
+export KUBECONFIG=~/my-ocp-env/auth/kubeconfig
 ----
 
 [id="check-the-values-files-before-deployment-getting-started"]

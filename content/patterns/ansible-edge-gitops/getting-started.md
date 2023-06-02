@@ -121,7 +121,7 @@ To install a collection that is not currently installed:
     or set KUBECONFIG to the path to your `kubeconfig` file. For example:
 
     ```sh
-    export KUBECONFIG=~/my-ocp-env/hub/auth/kubconfig
+    export KUBECONFIG=~/my-ocp-env/hub/auth/kubeconfig
     ```
 
 1. Fork the [ansible-edge-gitops](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops) repo on GitHub.  It is necessary to fork to preserve customizations you make to the default configuration files.
