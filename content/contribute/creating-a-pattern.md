@@ -43,7 +43,7 @@ There are 4 values files that make up any Validated Pattern.  The values files a
 * values-<main-hub>.yaml  (e.g. values-datacenter.yaml)
 * values-<edge>.yaml (e.g. values-edge-site.yaml, values-factory.yaml, values-development.yaml, etc.)
 * values-global.yaml (used to override global values across clusters)
-* values-secrets.yaml (NEVER commit this to github, gitlab etc. This file should be in a safe directory on your latpop)
+* values-secrets.yaml (NEVER commit this to github, gitlab etc. This file should be in a safe directory on your laptop)
 
 ## Operators into framework
 
@@ -128,7 +128,7 @@ applications:
       name: helm-with-kustomize
 ```
 
-In the above example `acm` (ACM) is part of the main `datacenter` deployment, as is `cool-app`. However, `central-kafka` is part of `backend-storage`. All these dpleoyment are on the same datacenter cluster.
+In the above example `acm` (ACM) is part of the main `datacenter` deployment, as is `cool-app`. However, `central-kafka` is part of `backend-storage`. All these deployment are on the same datacenter cluster.
 
 The `path:` tag tells OpenShift GitOps where to find the Helm charts needed to deploy this application (refer back to the [charts directory description](https://validatedpatterns.io/building-vps/structure/#the-charts-directory) for more details). OpenShift GitOps will continuously monitor for changes to artifacts in that location for updates to apply.
 
