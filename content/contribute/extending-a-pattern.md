@@ -8,7 +8,7 @@ aliases: /extending-a-pattern/
 # Extending an existing pattern
 
 ## Introduction to extending a pattern using a fork
-Extending an existing pattern refers to adding a new product and/or configuration to an existing pattern. For example a pattern might be a great fit for a solution but requires the addition of an observability tool, e.g. Prometheus, Grafana, or Elastic. Or perhaps it needs multicloud communication using Skupper. Extending an existing pattern is not very difficult. The advantage is that it automates the integration of this extra product into pattern.   
+Extending an existing pattern refers to adding a new product and/or configuration to an existing pattern. For example a pattern might be a great fit for a solution but requires the addition of an observability tool, e.g. Prometheus, Grafana, or Elastic. Extending an existing pattern is not very difficult. The advantage is that it automates the integration of this extra product into pattern.   
 
 Extending usually requires four steps:
 1. Adding any required namespace for the product  
