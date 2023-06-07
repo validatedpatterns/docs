@@ -8,15 +8,17 @@ aliases: /extending-a-pattern/
 # Extending an existing pattern
 
 ## Introduction to extending a pattern using a fork
-Extending an existing pattern usually means adding a new product and/or configuration to the existing pattern. This usually requires four steps:
+Extending an existing pattern refers to adding a new product and/or configuration to an existing pattern. For example a pattern might be a great fit for a solution but requires the addition of an observability tool, e.g. Prometheus, Grafana, or Elastic. Or perhaps it needs multicloud communication using Skupper. Extending an existing pattern is not very difficult. The advantage is that it automates the integration of this extra product into pattern.   
+
+Extending usually requires four steps:
 1. Adding any required namespace for the product  
 1. Adding a subscription to install and operator
 1. Adding one or more ArgoCD applications to manage the post-install configuration of the product
 1. Adding the Helm chart needed to implement the post-install configuration identified in step 3.
 
-Sometimes there is no operator in operator hub for the product and it requires installing the product using a Helm chart. 
+Sometimes there is no operator in [OperatorHub](https://catalog.redhat.com/software/search?deployed_as=Operator) for the product and it requires installation using a Helm chart. 
 
-This additions need to be made to the appropriate `values-<cluster grouping>.yaml` file in the top level pattern directory. If the component is on a hub cluster that would be `values-hub.yaml`. If it's on a production cluster that would be in `values-production.yaml`. Look at the pattern architecture and decide where you need to add the product.
+These additions need to be made to the appropriate `values-<cluster grouping>.yaml` file in the top level pattern directory. If the component is on a hub cluster the file would be `values-hub.yaml`. If it's on a production cluster that would be in `values-production.yaml`. Look at the pattern architecture and decide where you need to add the product.
 
 In the example below AMQ Streams (Kafka) is chosen as a product to add to a pattern.
 
@@ -24,7 +26,7 @@ In the example below AMQ Streams (Kafka) is chosen as a product to add to a patt
 
 1. Visit the github page for the pattern that you wish to extend. E.g. [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops). Select “Fork” in the top right corner.
 
-1. On the create a new fork page. You can choose what owner repository you want and the name of the fork. Most times you will fork into your personal repo and leave the name the same. When you have made the appropriate changes press the "Create fork" button.  
+1. On the create a new fork page, you can choose what owner repository you want and the name of the fork. Most times you will fork into your personal repo and leave the name the same. When you have made the appropriate changes press the "Create fork" button.  
 
 1. You will need to clone from the new fork onto you laptop/desktop so that you can do the extension work effectively. So on the new fork’s main page elect the green “Code” button and copy the git repo’s ssh address.
 
