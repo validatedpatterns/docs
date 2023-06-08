@@ -407,7 +407,7 @@ function createFilteredVerticalTable(badges, field, value, titles, links = "publ
 
 }
 
-function getBadges(xmlText, bucket_url) {
+function getBadges(xmlText, bucket_url, badge_set) {
     parser = new DOMParser();
     var xmlDoc = parser.parseFromString(xmlText, "application/xml");
     const errorNode = xmlDoc.querySelector("parsererror");
@@ -430,21 +430,25 @@ function getBadges(xmlText, bucket_url) {
 	//	  entries[i].childNodes[0].nodeValue
 	key = entries[i].childNodes[0].nodeValue;
 	
-	if ( key.endsWith("-badge.json") ) {
-	    //		  console.log("Key["+i+"] : "+ key);
+	if (badge_set == "GA" && key.endsWith("stable-badge.json") ) {
 	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
+	} else if (badge_set == "QE" && key.endsWith("prerelease-badge.json") ) {
+	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
+	} else 	if (badge_set == "all" &&  key.endsWith("-badge.json") ) {
+	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
+	} else {
+	    console.log("Skipping: " + key + " - "+badge_set);
 	}
     }
 
     return badges;
-    // console.log(badges);
 }
 
 function processBucketXML(text, options) {
     const filter_field = options.get("filter_field");
     const filter_value = options.get("filter_value");
     const links = options.get("links");
-    badges = getBadges(text, options.get('bucket'));
+    badges = getBadges(text, options.get('bucket'), options.get('sets'));
 
     htmlText = "";
     
@@ -485,13 +489,14 @@ function getBucketOptions(input) {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
+    options.set('sets', 'GA');
     options.set('links', 'public');
     options.set('target', 'dataset');
     options.set('bucket', 'https://storage.googleapis.com/hcp-results');
 
     // input.bucket , or input["bucket"]
 
-    const fields = [ "bucket", "target", "filter_field", "filter_value", "links" ];
+    const fields = [ "sets", "bucket", "target", "filter_field", "filter_value", "links" ];
     for ( i=0; i < fields.length; i++) {
 	const key = fields[i];
 	var value = input[key];
