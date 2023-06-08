@@ -1,8 +1,8 @@
 :_content-type: CONCEPT
 :imagesdir: ../../images
 
-[id="about-customizing-pattern"]
-= About customizing a pattern
+[id="about-customizing-pattern-mcg"]
+= About customizing the pattern {mcg-pattern}
 
 One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple `config-demo` application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
 

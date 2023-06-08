@@ -141,6 +141,7 @@ devel
 devops
 devsecops
 dhhph
+diag
 differentiator
 dnf
 dns

@@ -4,7 +4,6 @@
 [id="deploying-mcg-pattern"]
 = Deploying the Multicloud GitOps pattern
 
-//Note that Block titles like these don't render correctly on the site
 .Prerequisites
 
 * An OpenShift cluster
@@ -12,8 +11,8 @@
  ** Select *OpenShift \-> Clusters \-> Create cluster*.
  ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../multicloud-gitops/mcg-cluster-sizing[sizing your cluster].
 * Optional: A second OpenShift cluster for multicloud demonstration.
-* The git binary. See https://git-scm.com/book/en/v2/Getting-Started-Installing-Git[Installing Git]
-* The Podman tool. See https://podman.io/getting-started/installation[Installing Podman]
+//Replaced git and podman prereqs with the tooling dependencies page
+* https://hybrid-cloud-patterns.io/learn/quickstart/[Install the tooling dependencies].
 
 The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
 
