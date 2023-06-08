@@ -432,7 +432,7 @@ function getBadges(xmlText, bucket_url, badge_set) {
 	
 	if (badge_set == "GA" && key.endsWith("stable-badge.json") ) {
 	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
-	} else if (badge_set == "QE" && key.endsWith("prerelease-badge.json") ) {
+	} else if (badge_set == "early" && key.endsWith("prerelease-badge.json") ) {
 	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
 	} else 	if (badge_set == "all" &&  key.endsWith("-badge.json") ) {
 	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
