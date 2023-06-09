@@ -1,10 +1,10 @@
 ---
-title: Internal Status
+title: Internal
 ---
 
 These are the latest results of the Validated Patterns CI test runs.
 
-See pipeline sets: [ [All](/ci/rh?sets=all) ], [ [GA (default)](/ci/rh?sets=GA) ], [ [Pre-release](/ci/rh?sets=early) ]
+See pipeline sets: [ [All](/ci/internal?sets=all) ], [ [GA (default)](/ci/internal?sets=GA) ], [ [Pre-release](/ci/internal?sets=early) ]
 
   <script type="text/javascript" src="/js/dashboard.js"></script>
 
