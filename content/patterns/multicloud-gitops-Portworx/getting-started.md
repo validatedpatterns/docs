@@ -103,7 +103,7 @@ As part of this pattern, HashiCorp Vault has been installed. Refer to the sectio
 
 After the management hub is set up and works correctly, attach one or more managed clusters to the architecture (see diagrams below).
 
-For instructions on deploying the edge, refer to [Managed Cluster Sites](https://hybrid-cloud-patterns.io/multicloud-gitops-Portworx/managed-cluster/).
+For instructions on deploying the edge, refer to [Managed Cluster Sites](https://hybrid-cloud-patterns.io/patterns/multicloud-gitops-portworx/managed-cluster/).
 
 >Contribute to this pattern:
 {{% button text="Help & Feedback" url="https://groups.google.com/g/hybrid-cloud-patterns" %}}
