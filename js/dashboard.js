@@ -316,7 +316,7 @@ function createKeyTable(rows, links) {
 }
 
 function getContentPrefix() {
-    prefix = "<td style='width:90%'>"
+    prefix = "<td style='width:1400px'>"
     if ( false ) {
         prefix = prefix + "<table><tbody><tr>";
     } else {
