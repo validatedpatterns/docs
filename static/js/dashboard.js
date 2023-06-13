@@ -316,14 +316,14 @@ function createKeyTable(rows, links) {
 }
 
 function getContentPrefix() {
-    prefix = "<td styke='width:90%'>"
+    prefix = "<td style='width:90%'>"
     if ( false ) {
         prefix = prefix + "<table><tbody><tr>";
     } else {
 	prefix = prefix + "  <div class='pf-l-grid'>";
 	prefix = prefix + "    <div class='pf-l-grid__item pf-u-py-sm'>";
 	prefix = prefix + "      <div class='pf-c-content' >";
-	prefix = prefix + "        <div class='pf-l-gallery pf-m-gutter' style='--pf-l-gallery--GridTemplateColumns--min: 140px;'>";
+	prefix = prefix + "        <div class='pf-l-gallery pf-m-gutter' style='--pf-l-gallery--GridTemplateColumns--min: 200px;'>";
     }
     return prefix;
 }
