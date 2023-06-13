@@ -316,14 +316,14 @@ function createKeyTable(rows, links) {
 }
 
 function getContentPrefix() {
-    prefix = "<td>"
+    prefix = "<td styke='width:90%'>"
     if ( false ) {
         prefix = prefix + "<table><tbody><tr>";
     } else {
 	prefix = prefix + "  <div class='pf-l-grid'>";
-	prefix = prefix + "    <div class='pf-l-grid__item pf-m-12-col-on-sm pf-m-8-col-on-md pf-m-offset-2-col-on-md pf-m-8-col-on-lg pf-m-offset-2-col-on-lg pf-u-py-2xl'>";
+	prefix = prefix + "    <div class='pf-l-grid__item pf-u-py-sm'>";
 	prefix = prefix + "      <div class='pf-c-content' >";
-	prefix = prefix + "        <div class='pf-l-gallery pf-m-gutter' style='--pf-l-gallery--GridTemplateColumns--min: 300px;'>";
+	prefix = prefix + "        <div class='pf-l-gallery pf-m-gutter' style='--pf-l-gallery--GridTemplateColumns--min: 140px;'>";
     }
     return prefix;
 }
@@ -359,9 +359,9 @@ function createFilteredHorizontalTable(badges, field, value, titles, links = "pu
 
 	tableText = tableText + "<tr style='vertical-align:top'>";
 	if ( value == null && field == "pattern" ) {
-	    tableText = tableText + "<td class='ci-badge'><a href='" + pattern_url(r) + "'>" + rowTitle(field, r) + "</a></td><td class='ci-badge'>&nbsp;</td>";
+	    tableText = tableText + "<td class='ci-badge'><a href='" + pattern_url(r) + "'>" + rowTitle(field, r) + "</a></td>";
 	} else if ( value == null ) {
-	    tableText = tableText + "<td class='ci-badge'><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td><td class='ci-badge'>&nbsp;</td>";
+	    tableText = tableText + "<td class='ci-badge'><a href='?" + field + "=" + r + "'>" + rowTitle(field, r) + "</a></td>";
 	}
 
 	let index = 0;
