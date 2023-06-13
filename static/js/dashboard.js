@@ -315,6 +315,34 @@ function createKeyTable(rows, links) {
     return tableText;
 }
 
+function getContentPrefix() {
+    prefix = "<td>"
+    if ( false ) {
+        prefix = prefix + "<table><tbody><tr>";
+    } else {
+	prefix = prefix + "  <div class='pf-l-grid'>";
+	prefix = prefix + "    <div class='pf-l-grid__item pf-m-12-col-on-sm pf-m-8-col-on-md pf-m-offset-2-col-on-md pf-m-8-col-on-lg pf-m-offset-2-col-on-lg pf-u-py-2xl'>";
+	prefix = prefix + "      <div class='pf-c-content' >";
+	prefix = prefix + "        <div class='pf-l-gallery pf-m-gutter' style='--pf-l-gallery--GridTemplateColumns--min: 300px;'>";
+    }
+    return prefix;
+}
+
+function getContentSuffix() {
+    prefix = ""
+    if ( false ) {
+        prefix = prefix + "</tr></tbody></table>";
+    } else {
+	prefix = prefix + "        </div>";
+	prefix = prefix + "      </div>";
+	prefix = prefix + "    </div>";
+	prefix = prefix + "  </div>";
+    }
+    prefix = prefix + "</td>";
+    return prefix;
+}
+
+
 function createFilteredHorizontalTable(badges, field, value, titles, links = "public", max = 20) {
     //document.getElementById('data').innerHTML = 'Hello World!';
 
@@ -337,21 +365,23 @@ function createFilteredHorizontalTable(badges, field, value, titles, links = "pu
 	}
 
 	let index = 0;
-	if ( true ) {
-            tableText = tableText + "<td><table><tbody><tr>";
-	}
+	max = 100;
+        tableText = tableText + getContentPrefix();
+
 	pBadges.forEach(b => {
 	    if ( pBadges.length > max && index >= max ) {
 		tableText = tableText + "</tr><tr>";
 		index = 0;
 	    }
 	    
-	    tableText = tableText + "<td class='ci-badge'><object data='" + get_shield_url(b, b.getLabel(field), links) + "' style='padding: 10; max-width: 100%;'>'</object></td>";
+	    tableText = tableText + "            <div class='pf-l-gallery__item' style='display: grid;'>"
+	    //tableText = tableText + "            <td class='ci-badge'>"
+	    tableText = tableText + "<object data='" + get_shield_url(b, b.getLabel(field), links) + "' style='padding: 10; max-width: 100%;'>'</object>";
+	    //tableText = tableText + "            </td>";
+	    tableText = tableText + "            </div>"
 	    index = index + 1;
 	});
-	if ( true ) {
-            tableText = tableText + "</tr></tbody></table></td>";
-	}
+        tableText = tableText + getContentSuffix();
 	tableText = tableText + "</tr>";
     });
 
