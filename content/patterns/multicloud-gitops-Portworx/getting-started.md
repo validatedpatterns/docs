@@ -11,7 +11,7 @@ aliases: /multicloud-gitops/getting-started/
 * An OpenShift cluster
   * To create an OpenShift cluster, go to the [Red Hat Hybrid Cloud console](https://console.redhat.com/).
   * Select **OpenShift -> Clusters -> Create cluster**.
-  * The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See [sizing your cluster](../../multicloud-gitops/cluster-sizing).
+  * The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See [sizing your cluster](../../multicloud-gitops/mcg-cluster-sizing).
 * Optional: A second OpenShift cluster for multicloud demonstration.
 * The git binary and podman. For details see [Installing Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Installing Podman](https://podman.io/getting-started/installation)
 
@@ -25,7 +25,7 @@ service](https://console.redhat.com/openshift/create).
 
 ## Procedure
 
-1. Install the installation tooling dependencies. You will need:
+1. For installation tooling dependencies, see link:https://hybrid-cloud-patterns.io/learn/quickstart/[Patterns quick start].
 
    {% include prerequisite-tools.md %}
 
@@ -59,7 +59,7 @@ service](https://console.redhat.com/openshift/create).
    git push origin my-branch
    ```
 
-6. You can deploy the pattern by running `./pattern.sh make install` or by using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/). 
+6. You can deploy the pattern by running `./pattern.sh make install` or by using the [validated pattern operator](/infrastructure/using-validated-pattern-operator/).
 
 ##  Deploying the cluster by using the pattern.sh file
 To deploy the cluster by using the `pattern.sh` file, complete the following steps:

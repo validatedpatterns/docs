@@ -1,2 +1,2 @@
-DirectoryPath: "public/"
+DirectoryPath: public/
 IgnoreDirectoryMissingTrailingSlash: true

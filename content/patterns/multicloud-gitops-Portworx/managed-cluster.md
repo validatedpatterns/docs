@@ -74,11 +74,7 @@ To join the managed cluster to the management hub, you can:
 After RHACM is installed, a message regarding a "Web console update is available" might be displayed.
 Click the "Refresh web console" link.
 
-![update-web-console](/images/web-console-update-message.png "Update web console")
-
 1. In the left navigation panel of web console, click  **local-cluster**. Select **All Clusters**. The RHACM web console is displayed with **Cluster*** on the left navigation panel.
-
-![launch-acm-console](/images/local-all-cluster-pulldown.png "Launch ACM console")
 
 2. On the **Managed clusters** tab, click **Import cluster**.
 
