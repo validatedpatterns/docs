@@ -1,5 +1,6 @@
 ---
 title: Internal
+aliases: /ci/internal/
 ---
 
 These are the latest results of the Validated Patterns CI test runs.
