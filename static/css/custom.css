@@ -743,6 +743,30 @@ b.conum * {
   display: none;
 }
 
+/* SEARCH */
+
+.pf-c-search-input__icon {
+  color: black;
+}
+
+#search {
+  padding-left: 16px;
+}
+
+#results h2 {
+  font-size: 1.40rem;
+}
+
+#results {
+    width: 80%;
+    margin: auto;
+}
+
+.search-breadcrumb {
+  margin-bottom: 20px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
 /* ADMONITONS with fontawesome */
 
 .admonitionblock > table {

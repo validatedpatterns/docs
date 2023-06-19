@@ -3,10 +3,13 @@
     <ul class="pf-c-nav__list">
       {{ range .Site.Menus.main }}
 
+      {{ if not ( eq .Name "Search") }}
       <li class="pf-c-nav__item {{ if hasPrefix $.Page.RelPermalink .URL }}pf-m-current{{ end }}">
         <a class="pf-c-nav__link" href="{{ .URL }}" title="{{ .Title }}">
           {{ .Name }}
         </a>
+      {{end }}
+
       </li>
       {{ end }}
     </ul>

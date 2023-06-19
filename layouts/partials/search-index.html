@@ -1,0 +1,21 @@
+<script>
+  window.store = {
+      {{ range .Site.Pages }}
+        {{ if not ( eq .Content "") }}
+
+        // You can use any unique identifier here
+        "{{ .Permalink }}": {
+            // You can customize your searchable fields using any .Page parameters
+            "title": "{{ .Title  }}",
+            "tags": [{{ range .Params.Tags }}"{{ . }}",{{ end }}],
+            "content": {{ .Content | plainify }}, // Strip out HTML tags
+            "url": "{{ .Permalink }}",
+            "breadcrumb":  "{{ .RelPermalink }}"
+        },
+        {{ end }}
+      {{ end }}
+  }
+
+  </script>
+  <script src="/js/lunr.js"></script>
+  <script src="/js/search.js"></script>
