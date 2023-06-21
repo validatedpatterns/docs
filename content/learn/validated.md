@@ -37,6 +37,18 @@ repository, will be given admin permissions to any fork in
 [https://github.com/hybrid-cloud-patterns](https://github.com/hybrid-cloud-patterns),
 and will receive on-going assistance from the Validated Patterns team.
 
+### Nominating a Community Pattern to become Validated
+
+If there is a community pattern that you believe would be a good candidate for 
+becoming validated, please email hybrid-cloud-patterns@googlegroups.com at least 
+4 weeks prior to the end of a given quarter in order for the necessary work to be
+considered as part of the following quarter’s planning process.
+
+Please be aware that each Validated Pattern represents an ongoing maintenance, support,
+and CI effort.  Finite team capacity means we must critically balance this cost against
+the potential customer opportunity.  A “no” or “not yet” result is not intended as an
+insult against the pattern or its author.
+
 ## Requirements
 
 Validated Patterns have deliverable and requirements in addition to those
