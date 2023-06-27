@@ -6,18 +6,61 @@
 <main class="pf-c-page__main" tabindex="0" data-bs-spy="scroll" data-bs-target="#TableOfContents" data-bs-offset="50">
   <section class="pf-c-page__main-section">
     <div class="pf-u-display-flex">
-        <div class="pf-c-content min-height">
-          <div class="pattern-label">
-            {{ $validated := .Param "validated" }}
-            {{ if (eq $validated true ) }}
-              {{ partial "label-validated-pattern.html" . }}
-            {{ else }}
-              {{ partial "label-community-pattern.html" . }}
-            {{ end }}
+      <div class="pf-c-content min-height">
+        <div class="pf-c-panel pf-m-raised">
+          <div class="pf-c-panel__main">
+            <div class="pf-c-panel__main-body">
+              <div class="pf-l-grid">
+                <div class="pf-l-grid__item pf-m-10-col">
+                  <h1 class="pf-c-title pf-m-4xl">{{ .Title }}</h1>
+                </div>
+                <div class="pf-l-grid__item pf-m-2-col">
+                  {{ if (isset .Params "pattern_logo") }}
+                  <div class="pf-c-panel">
+                    <div class="pf-c-panel__main">
+                      <div class="pf-c-panel__main-body pf-u-text-align-right">
+                        <img src="/images/logos/{{ .Params.pattern_logo }}" class="pattern_logo" alt="Points">
+                      </div>
+                    </div>
+                  </div>
+                  {{ end }}
+                </div>
+                <div class="pf-l-grid__item pf-m-3-col">
+                  Validation status:
+                </div>
+                <div class="pf-l-grid__item pf-m-9-col">
+                  {{ $validated := .Param "validated" }}
+                  {{ if (eq $validated true ) }}
+                  {{ partial "label-validated-pattern.html" . }}
+                  {{ else }}
+                  {{ partial "label-community-pattern.html" . }}
+                  {{ end }}
+                </div>
+                {{ if (isset .Params "ci") }}
+                <div class="pf-l-grid__item pf-m-3-col">
+                  CI status:
+                </div>
+                <div class="pf-l-grid__item pf-m-9-col">
+                  {{ partial "ci.html" . }}
+                </div>
+                {{ end }}
+                {{ if (isset .Params "links") }}
+                <div class="pf-l-grid__item pf-m-3-col">
+                  Links:
+                </div>
+                <div class="pf-l-grid__item pf-m-9-col">
+                  {{ partial "links.html" . }}
+                </div>
+                {{ end }}
+              </div>
+            </div>
           </div>
-          {{ .Content }}
+        </div>
+
+
+        {{ .Content }}
       </div>
-        {{ partial "toc.html" . }}
+      {{ partial "toc.html" . }}
     </div>
   </section>
   {{ partial "footer.html" . }}

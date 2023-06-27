@@ -10,17 +10,17 @@ products:
 industries:
 - Retail
 aliases: /retail/
+# uncomment once this exists
+# pattern_logo: retail.png
+links:
+  install: getting-started
+  help: https://groups.google.com/g/hybrid-cloud-patterns
+  bugs: https://github.com/hybrid-cloud-patterns/retail/issues
+# uncomment once this exists
+# ci: retail
 ---
 
-<div class="pattern_logo">
-  <img src="/images/logos/industrial-edge.png" class="pattern_logo" alt="Points">
-</div>
-
 # Retail Pattern
-
-{{% button text="Install" url="getting-started" color-class="btn-green" %}}
-{{% button text="Help & Feedback" url="https://groups.google.com/g/hybrid-cloud-patterns" %}}
-{{% button text="Report Bugs" url="https://github.com/hybrid-cloud-patterns/retail/issues" color-class="btn-red" %}}
 
 ## Background
 

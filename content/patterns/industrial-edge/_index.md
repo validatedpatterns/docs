@@ -12,19 +12,16 @@ industries:
 - Industrial
 - Manufacturing
 aliases: /industrial-edge/
+pattern_logo: industrial-edge.png
+links:
+  install: getting-started
+  arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=26
+  help: https://groups.google.com/g/hybrid-cloud-patterns
+  bugs: https://github.com/hybrid-cloud-patterns/industrial-edge/issues
+ci: manuela
 ---
 
-<div class="pattern_logo">
-  <img src="/images/logos/industrial-edge.png" class="pattern_logo" alt="Points">
-</div>
-
-<script type="text/javascript" src="/js/dashboard.js"></script>
-<div class='results'>
-  <p id="ci-dataset"> </p>
-  <script>
-    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': 'manuela' });
-  </script>
-</div>
+# Industrial Edge Pattern
 
 ---
 **NOTE**
@@ -32,14 +29,6 @@ aliases: /industrial-edge/
 Industrial Edge on OpenShift Container Platform 4.12 fails CI due to a Seldon issue. This only affects the Anomaly Detection AI/ML portion of the pattern. The rest of the pattern functions as designed. For more information on the Seldon issue, see https://github.com/SeldonIO/seldon-core/issues/4339.
 
 ---
-
-# Industrial Edge Pattern
-
-{{% button text="Install" url="getting-started" color-class="btn-green" %}}
-{{% button text="Portfolio Architecture" url="https://www.redhat.com/architect/portfolio/architecturedetail?ppid=26" color-class="btn-blue" %}}
-{{% button text="Help & Feedback" url="https://groups.google.com/g/hybrid-cloud-patterns" %}}
-{{% button text="Report Bugs" url="https://github.com/hybrid-cloud-patterns/industrial-edge/issues" color-class="btn-red" %}}
-
 
 _Red Hat  Validated Patterns are detailed deployments created for different use cases. These pre-defined computing configurations bring together the Red Hat portfolio and technology ecosystem to help you stand up your architectures faster. Example application code is provided as a demonstration, along with the various open source projects and Red Hat products required for the deployment to work. Users can then modify the pattern for their own specific application._
 

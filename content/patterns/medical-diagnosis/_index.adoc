@@ -10,6 +10,13 @@ products:
 industries:
 - medical
 aliases: /medical-diagnosis/
+pattern_logo: medical-diagnosis.png
+links:
+  install: getting-started
+  arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
+  help: https://groups.google.com/g/hybrid-cloud-patterns
+  bugs: https://github.com/hybrid-cloud-patterns/medical-diagnosis/issues
+ci: medicaldiag
 ---
 
 :toc:
