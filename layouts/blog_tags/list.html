@@ -1,34 +1,40 @@
 {{ define "main" }}
+<div class="pf-c-page__sidebar">
+  <div class="pf-c-page__sidebar-body">
+    <div class="pf-l-flex filter-title-div">
+      <span class="pf-c-title pf-m-md filter-title pf-l-flex__item pf-m-grow">Filter by</span>
+      <span class="pf-l-flex__item reset-title">
+        <a href="/blog/">Reset filter</a></span>
+    </div>
+      {{ partial "tags-blog.html" . }}
+  </div>
+</div>
 <main class="pf-c-page__main">
   <section class="pf-c-page__main-section">
-    <div class="pf-u-text-align-center">
-      <div class="pf-c-content" style="--pf-c-content--FontSize: 1.25rem;">
-        <h1>
-          Posts tagged with "{{- .Title -}}"
+    <div class="pf-l-grid__item pf-m-9-col">
+      <div class="pf-u-text-align-center">
+        <div class="pf-c-content" style="--pf-c-content--FontSize: 1rem;">
+          <h1 class="pf-c-title pf-m-4xl">
+            Blog
         </h1>
-        {{ .Content }}
-      </div>
-    </section>
-    <section class="pf-c-page__main-section">
-    <div class="pf-l-grid pf-m-gutter">
-
-      <div class="pf-l-grid__item pf-m-10-col">
-        <div class="pf-c-content" >
-          <div>
-            {{ $section := where $.Paginator.Pages "Section" "blog"}}
-            {{ range $section }}
-              <div >
-                {{ .Render "summary" }}
-              </div>
-            {{ end }}
-            {{ partial "paginator.html" . }}
-          </div>
+        <p>
+          Posts tagged with "{{- .Title -}}"
+        </p>
+        <div class="page-abstract">
+          {{ .Content }}
+        </div>
         </div>
       </div>
-      <div class="pf-l-grid__item pf-m-2-col">
-        {{ partial "tags-blog.html" . }}
+      <div class="pf-c-content" >
+        {{ $section := where $.Paginator.Pages "Section" "blog"}}
+        {{ range $section }}
+          <div >
+            {{ .Render "summary" }}
+          </div>
+        {{ end }}
+        {{ partial "paginator.html" . }}
       </div>
-    </div>
   </section>
+  {{ partial "footer.html" . }}
 </main>
 {{ end }}

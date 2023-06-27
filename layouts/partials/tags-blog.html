@@ -1,17 +1,27 @@
-<div class="pf-c-panel" style="margin-bottom: 1em">
-  <div class="pf-c-panel__header">Blog Tags</div>
-  <hr class="pf-c-divider" />
-  <div class="pf-c-panel__main">
-    <div class="pf-c-panel__main-body">
-    <ul class="pf-c-list pf-m-plain">
-      {{ range $name, $taxonomy := .Site.Taxonomies.blog_tags }}
-       <li>
-         <a class="pf-c-label pf-m-grey" href="{{ "/blog_tags/" | relLangURL }}{{ $name | urlize }}">
-           {{- $name -}}
-         </a>
-       </li>
-      {{ end }}
-    </ul>
+{{ $current := .RelPermalink }}
+{{ $path := "/blog_tags/" }}
+
+<div class="pf-c-select pf-m-expanded">
+  <div class="pf-c-select__menu">
+  <div class="pf-c-panel">
+    <div class="pf-c-panel__main">
+      <div class="pf-c-panel__main-body">
+      <ul class="pf-c-list pf-m-plain">
+        {{ range $name, $taxonomy := .Site.Taxonomies.blog_tags }}
+        <li>
+          {{ $fullpath := $name | printf "%s%s" $path | printf "%s/" }}
+          <!-- This concatenates the path with the tag. Proper golang won't do it -->
+          <a class="pf-c-label pf-m-grey {{ if eq $current $fullpath }}pf-m-blue{{ end }}" href="{{ "/blog_tags/" | relLangURL }}{{ $name | urlize }}">
+            {{- $name -}}
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+      </div>
     </div>
   </div>
+  </div>
 </div>
+
+
+

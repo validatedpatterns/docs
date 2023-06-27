@@ -9,7 +9,7 @@
     <p>by {{ .Params.author }}</p>
     {{ end }}
     <p>{{ .Date | time.Format ":date_long" }}</p>
-    <p>{{ .Summary }} <a href="{{ .RelPermalink }}">Read more...</a></p>
+    <p>{{ .Summary }} </p>
     {{ range .Params.blog_tags }}
       <span class="pf-c-label pf-grey">
         <span class="pf-c-label__content">{{ . }}</span>
