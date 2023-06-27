@@ -1,0 +1,24 @@
+{{ define "main" }}
+
+<main class="pf-c-page__main">
+  <section class="pf-c-page__main-section">
+    <div class="pf-l-grid__item pf-m-9-col">
+      <div class="pf-u-text-align-center">
+        <div class="pf-c-content" style="--pf-c-content--FontSize: 1rem;">
+          <h1 class="pf-c-title pf-m-4xl">
+            {{- .Title -}}
+        </h1>
+        <div class="page-abstract">
+          <p>Enter a keyword to search the site.</p>
+        </div>
+      </div>
+      </div>
+      <div id="results" class="p-fc-content">
+        <!-- JS places the search results here-->
+      </div>
+    </div>
+  </section>
+  {{ partial "footer.html" . }}
+</main>
+
+{{ end }}
