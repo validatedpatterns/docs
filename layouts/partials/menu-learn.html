@@ -7,24 +7,53 @@
     <div class="pf-c-nav pf-m-light">
       <ul class="pf-c-nav__list">
         {{ range .Site.Menus.learn }}
+        <!--
+          {{- if and (.HasChildren) (or ( $currentPage.IsMenuCurrent "learn" . ) ( $currentPage.HasMenuCurrent "learn" . )) -}}
+          This will collapse all the children and only show them if clicked on the actual page
+          Also comments of hugo code won't let the page display unless they have an end. Commented. Like this one
+        {{ end }}-->
+
+          {{ if .HasChildren }}
+          <!-- This applies to nav items with children-->
+
+            <li class="pf-c-nav__item pf-m-expanded">
+              <a href="{{ .URL }}" class="pf-c-nav__link {{ if or ($currentPage.IsMenuCurrent "learn" .) ($currentPage.HasMenuCurrent "learn" .) }}pf-m-current{{ end }}">
+                {{- .Name -}}
+                <!-- If the section with children is not the active one, chevron to the right-->
+                {{ if not (or ($currentPage.IsMenuCurrent "learn" .) ($currentPage.HasMenuCurrent "learn" .)) }}
+
+                <!-- Also, we need to use a "span" for the chevron because the active blue line already uses the "after" pseudo-->
+                <span class="pf-c-accordion__toggle-icon">
+                  <i class="fas fa-angle-right" aria-hidden="true"></i>
+                </span>
+                <!-- If the section with children is active, chevron down-->
+                {{ else }}
+                <span class="pf-c-accordion__toggle-icon">
+                  <i class="fas fa-angle-down" aria-hidden="false"></i>
+                </span>
+                {{ end }}
+              </a>
+              <!-- Create the navigation for the children. If the section with children is not the active one, collapse the children-->
+              <section class="pf-c-nav__subnav {{ if not (or ($currentPage.IsMenuCurrent "learn" .) ($currentPage.HasMenuCurrent "learn" .)) }}collapse{{ end }}">
+                <ul class="pf-c-nav__list">
+                  {{- range .Children }}
+                    <li class="pf-c-nav__item pf-m-expanded">
+                      <a href="{{ .URL }}" class="pf-c-nav__link {{ if $currentPage.IsMenuCurrent "learn" . }}pf-m-current{{ end }}">
+                        {{- .Name -}}
+                      </a>
+                    </li>
+                  {{ end }}
+                </ul>
+            </section>
+            </li>
+          {{ else }}
+          <!-- This applies to the nav items that don't have children-->
+          <!-- It doesn't give them a chevron-->
           <li class="pf-c-nav__item pf-m-expanded">
-            <a href="{{ .URL }}" class="pf-c-nav__link {{ if ( $currentPage.IsMenuCurrent "learn" . ) -}}pf-m-current{{- end -}}">
+            <a href="{{ .URL }}" class="pf-c-nav__link {{ if $currentPage.IsMenuCurrent "learn" . }}pf-m-current{{ end }}">
               {{- .Name -}}
             </a>
-            {{- if and (.HasChildren) (or ( $currentPage.IsMenuCurrent "learn" . ) ( $currentPage.HasMenuCurrent "learn" . )) -}}
-            <section class="pf-c-nav__subnav ">
-              <ul class="pf-c-nav__list">
-                {{- range .Children }}
-                  <li class="pf-c-nav__item pf-m-expanded">
-                    <a href="{{ .URL }}" class="pf-c-nav__link {{ if ( $currentPage.IsMenuCurrent "learn" . ) -}}pf-m-current{{- end -}}">
-                      {{- .Name -}}
-                    </a>
-                  </li>
-                {{ end }}
-              </ul>
-            </section>
-            {{ end }}
-          </li>
+          {{ end }}
         {{ end }}
       </ul>
     </div>
