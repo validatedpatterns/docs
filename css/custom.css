@@ -433,6 +433,10 @@ td > code {
   display: block;
 }
 
+.pf-c-content dl.pattern-status {
+  display: grid;
+}
+
 .pf-c-content dt {
   padding-top: 20px;
 }
@@ -1208,4 +1212,60 @@ h4 .anchor::before,
 h5 .anchor::before,
 h6 .anchor::before {
   content: "\00a7";
+}
+
+/* CI Labels */
+
+.ci-label {
+  font-size: 0.8rem;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.ci-label-environment {
+  background-color: var(--pf-global--palette--black-800);
+  color: var(--pf-global--palette--white);
+  border-radius: 5px 0 0 5px;
+  padding: 0 5px;
+}
+
+.ci-label-branch-green {
+  background-color: var(--pf-global--palette--green-300);
+  color: var(--pf-global--palette--white);
+  border-radius: 0 5px 5px 0;
+  padding: 0 5px;
+}
+
+.ci-label-branch-yellow {
+  background-color: var(--pf-global--palette--gold-500);
+  color: var(--pf-global--palette--white);
+  border-radius: 0 5px 5px 0;
+  padding: 0 5px;
+}
+
+.ci-label-branch-red {
+  background-color: var(--pf-global--palette--red-100);
+  color: var(--pf-global--palette--white);
+  border-radius: 0 5px 5px 0;
+  padding: 0 5px;
+}
+
+.ci-icon {
+}
+
+.pf-c-content ul.links-menu {
+  padding-left: 0;
+  margin-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.pf-c-content ul.pf-c-nav__list {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.pf-c-content li.pf-c-nav__item + li.pf-c-nav__item {
+  margin-top: 0;
 }
