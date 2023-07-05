@@ -24,20 +24,6 @@ ci: medicaldiag
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-++++
-<div class="pattern_logo">
-  <img src="/images/logos/medical-diagnosis.png" class="pattern_logo" alt="Points">
-</div>
-
-<script type="text/javascript" src="/js/dashboard.js"></script>
-<div class='results'>
-  <p id="ci-dataset"> </p>
-  <script>
-    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': 'medicaldiag' });
-  </script>
-</div>
-++++
-
 == Background
 
 This Validated Pattern is based on a demo implementation of an automated data pipeline for chest Xray
