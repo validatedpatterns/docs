@@ -1,0 +1,14 @@
+<div class="pf-c-alert pf-m-warning" aria-label="Warning alert" style="margin-bottom: 10px;">
+  <div class="pf-c-alert__icon">
+    <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
+  </div>
+  <p class="pf-c-alert__title">
+    <span class="pf-screen-reader">{{ .Get "title" | default "Warning" }}</span>
+    {{ .Get "title" | default "Warning" }}
+  </p>
+  <div class="pf-c-alert__description">
+    <p>
+      {{ printf "%s" .Inner | markdownify }}
+    </p>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+{{ $currentPage := . }}
+<div class="pf-c-select">
+  <div class="pf-c-select__menu">
+    <div class="pf-c-nav pf-m-light">
+      <ul class="pf-c-nav__list">
+          <li class="pf-c-nav__item">
+            <a href="{{ .RelPermalink }}" class="pf-c-nav__link">
+              All
+            </a>
+          </li>
+          <li class="pf-c-nav__item">
+            <a href="{{ .RelPermalink }}?date=all" class="pf-c-nav__link">
+              By Date
+            </a>
+          </li>
+          <li class="pf-c-nav__item">
+            <a href="{{ .RelPermalink }}?pattern=all" class="pf-c-nav__link">
+              By Pattern
+            </a>
+          </li>
+          <li class="pf-c-nav__item">
+            <a href="{{ .RelPermalink }}?platform=all" class="pf-c-nav__link">
+              By Platform
+            </a>
+          </li>
+          <li class="pf-c-nav__item pf-m-expanded">
+            <a href="{{ .RelPermalink }}?version=all" class="pf-c-nav__link">
+              By Version
+            </a>
+          </li>
+      </ul>
+    </div>
+  </div>
+</div>

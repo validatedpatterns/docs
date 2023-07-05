@@ -12,25 +12,15 @@ products:
 industries:
 - Chemical
 aliases: /ansible-edge-gitops/
+pattern_logo: ansible-edge.png
+links:
+  install: getting-started
+  help: https://groups.google.com/g/hybrid-cloud-patterns
+  bugs: https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues
+ci: aegitops
 ---
 
-<div class="pattern_logo">
-  <img src="/images/logos/ansible-edge.png" class="pattern_logo" alt="Points">
-</div>
-
-<script type="text/javascript" src="/js/dashboard.js"></script>
-<div class='results'>
-  <p id="ci-dataset"> </p>
-  <script>
-    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': 'aegitops' });
-  </script>
-</div>
-
 # Ansible Edge GitOps
-
-{{% button text="Install" url="getting-started" color-class="btn-green" %}}
-{{% button text="Help & Feedback" url="https://groups.google.com/g/hybrid-cloud-patterns" %}}
-{{% button text="Report Bugs" url="https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues" color-class="btn-red" %}}
 
 ## Background
 

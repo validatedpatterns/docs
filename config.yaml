@@ -28,28 +28,3 @@ taxonomies:
   industry: 'industries'
   product: 'products'
   blog_tag: 'blog_tags'
-
-sectionPagesMenu: main
-
-menu:
-  main:
-  - identifier: patterns
-    name: Patterns
-    title: Patterns
-    url: /patterns/
-    weight: 10
-  - identifier: learn
-    name: Learn
-    title: Learn
-    url: /learn/
-    weight: 20
-  - identifier: contribute
-    name: Contribute
-    title: Contribute
-    url: /contribute/
-    weight: 30
-  - identifier: blog
-    name: Blog
-    title: Blog
-    url: /blog/
-    weight: 40

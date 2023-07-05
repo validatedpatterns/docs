@@ -10,25 +10,15 @@ products:
 industries:
 - General
 aliases: /multicloud-gitops-Portworx/
+pattern_logo: multicloud-gitops-Portworx.png
+links:
+  install: getting-started
+  help: https://groups.google.com/g/hybrid-cloud-patterns
+  bugs: https://github.com/hybrid-cloud-patterns/medical-diagnosis/issues
+# ci: mcgitopspxe
 ---
 
-<div class="pattern_logo">
-  <img src="/images/logos/multicloud-gitops-Portworx.png" class="pattern_logo" alt="Points">
-</div>
-
-<script type="text/javascript" src="/js/dashboard.js"></script>
-<div class='results'>
-  <p id="ci-dataset"> </p>
-  <script>
-    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': 'mcgitopspxe' });
-  </script>
-</div>
-
 # Multicloud GitOps with Portworx Enterprise
-
-{{% button text="Install" url="getting-started" color-class="btn-green" %}}
-{{% button text="Help & Feedback" url="https://groups.google.com/g/hybrid-cloud-patterns" %}}
-{{% button text="Report Bugs" url="https://github.com/portworx/rh-multicloud-gitops-pxe/issues" color-class="btn-red" %}}
 
 _Some details will differ based on the requirements of a specific implementation but all validated patterns, based on a portfolio architecture, generalize one or more successful deployments of a use case._
 

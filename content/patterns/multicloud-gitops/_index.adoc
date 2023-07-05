@@ -9,24 +9,17 @@ products:
 industries:
 - General
 aliases: /multicloud-gitops/
+pattern_logo: multicloud-gitops.png
+links:
+  install: mcg-getting-started
+  arch: https://www.redhat.com/architect/portfolio/detail/8-hybrid-multicloud-management-with-gitops
+  help: https://groups.google.com/g/hybrid-cloud-patterns
+  bugs: https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues
+ci: mcgitops
 ---
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
-
-++++
-<div class="pattern_logo">
-  <img src="/images/logos/multicloud-gitops.png" class="pattern_logo" alt="Points">
-</div>
-
-<script type="text/javascript" src="/js/dashboard.js"></script>
-<div class='results'>
-  <p id="ci-dataset"> </p>
-  <script>
-    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': 'mcgitops' });
-  </script>
-</div>
-++++
 
 include::modules/mcg-about-multicloud-gitops.adoc[leveloffset=+1]
 
