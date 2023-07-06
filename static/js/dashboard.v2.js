@@ -308,12 +308,17 @@ function getJSON(url){
     return Httpreq.responseText;
 }
 
-function renderSingleBadge (envLabel, envLink, branchLabel, branchLink, color) {
+function renderSingleBadge (envLabel, envLink, branchLabel, branchLink, color, badge_url) {
+    if (badge_url.endsWith("stable-badge.json") ) {
+	    var badgeClass = "ci-label-environment-stable";
+	} else if (badge_url.endsWith("prerelease-badge.json") ) {
+	    var badgeClass = "ci-label-environment-prerelease";
+	}
     badgeText = '<span class="ci-label">'
     if (envLink != null) {
-        badgeText += '<a href="' + envLink + '"><span class="ci-label-environment"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + '</span></a>'
+        badgeText += '<a href="' + envLink + '"><span class="' + badgeClass + '"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + '</span></a>'
     } else {
-        badgeText += '<span class="ci-label-environment"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + '</span>'
+        badgeText += '<span class="' + badgeClass + '"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + '</span>'
     }
     if (branchLink != null) {
         badgeText += '<a href="' + branchLink + '"><span class="ci-label-branch-' + color + '">' + branchLabel + '</span></a></span>'
@@ -340,7 +345,7 @@ function renderBadges (badges, field, value, links) {
          branchLink = encodeURI(repo_url(b.pattern));
     }
     var json_obj = JSON.parse(getJSON(b.getURI()));
-    badgeText += renderSingleBadge (b.getLabel(field), envLink, json_obj.message, branchLink, json_obj.color)
+    badgeText += renderSingleBadge (b.getLabel(field), envLink, json_obj.message, branchLink, json_obj.color, b.getURI())
   })
   badgeText += '</div>'
   return badgeText
