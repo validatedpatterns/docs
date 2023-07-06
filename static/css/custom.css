@@ -592,12 +592,12 @@ main.pf-c-page__main {
   order: 1;
   padding: 40px var(--pf-global--spacer--lg) var(--pf-global--spacer--lg)
     var(--pf-global--spacer--2xl);
-  flex-grow: 1;
+  /* flex-grow: 1; */
   background: none;
   margin: 0;
   position: sticky;
   top: 0;
-  width: 280px;
+  min-width: 400px;
   align-self: flex-start;
   z-index: 501;
 }
@@ -1223,15 +1223,22 @@ h6 .anchor::before {
   margin-top: 5px;
 }
 
-.ci-label-environment {
-  background-color: var(--pf-global--palette--black-800);
+.ci-label-environment-stable {
+  background-color: var(--pf-global--palette--black-700);
+  color: var(--pf-global--palette--white);
+  border-radius: 5px 0 0 5px;
+  padding: 0 5px;
+}
+
+.ci-label-environment-prerelease {
+  background-color: var(--pf-global--palette--black-600);
   color: var(--pf-global--palette--white);
   border-radius: 5px 0 0 5px;
   padding: 0 5px;
 }
 
 .ci-label-branch-green {
-  background-color: var(--pf-global--palette--green-300);
+  background-color: var(--pf-global--success-color--100);
   color: var(--pf-global--palette--white);
   border-radius: 0 5px 5px 0;
   padding: 0 5px;
@@ -1245,7 +1252,7 @@ h6 .anchor::before {
 }
 
 .ci-label-branch-red {
-  background-color: var(--pf-global--palette--red-100);
+  background-color: var(--pf-global--danger-color--100);
   color: var(--pf-global--palette--white);
   border-radius: 0 5px 5px 0;
   padding: 0 5px;
