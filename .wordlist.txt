@@ -206,6 +206,7 @@ gitops
 gitspec
 gkxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 golang
+googlegroups
 gpus
 grafana
 grafanadatasources
@@ -328,6 +329,7 @@ mbaldessari
 mbps
 mcg
 mcgitops
+mcgitopspxe
 mcollective
 mdeng
 medctr
