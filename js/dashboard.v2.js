@@ -28,7 +28,7 @@ class Badge {
     if (field == 'version') {
 	    return stringForKey(this.pattern) + ' : ' + stringForKey(this.platform)
     }
-    return stringForKey(this.pattern) + ' : ' + stringForKey(this.platform) + ' ' + this.version + ' @ ' + this.date
+    return stringForKey(this.pattern) + ' : ' + stringForKey(this.platform) + ' ' + this.version
   }
 
   getURI () {
