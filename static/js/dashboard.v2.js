@@ -301,14 +301,29 @@ function renderSetButtons(sets){
     buttonText += '</nav>'
     return buttonText
 }
-function getJSON(url){
-    var Httpreq = new XMLHttpRequest();
-    Httpreq.open("GET",url,false);
-    Httpreq.send(null);
-    return Httpreq.responseText;
+
+function jsonSuccess() {
+  this.callback.apply(this, this.arguments);
 }
 
-function renderSingleBadge (envLabel, envLink, branchLabel, branchLink, color, badge_url) {
+function jsonError() {
+  console.error(this.statusText);
+}
+
+function getJSON(url, callback, ...args) {
+  const jsonRequest = new XMLHttpRequest();
+  jsonRequest.callback = callback;
+  jsonRequest.arguments = args;
+  jsonRequest.onload = jsonSuccess;
+  jsonRequest.onerror = jsonError;
+  jsonRequest.open("GET", url, true);
+  jsonRequest.send(null);
+}
+
+function renderSingleBadge (key, envLabel, envLink, branchLink, badge_url) {
+    var json_obj = JSON.parse(this.responseText)
+    var branchLabel = json_obj.message
+    var color = json_obj.color
     if (badge_url.endsWith("stable-badge.json") ) {
 	    var badgeClass = "ci-label-environment-stable";
 	} else if (badge_url.endsWith("prerelease-badge.json") ) {
@@ -326,7 +341,11 @@ function renderSingleBadge (envLabel, envLink, branchLabel, branchLink, color, b
         badgeText += '<span class="ci-label-branch-' + color + '">' + branchLabel + '</span>'
     }
     badgeText += '</span>'
-    return badgeText
+    document.getElementById(key).outerHTML = badgeText
+}
+
+function renderBadgePlaceholder (key) {
+    return '<span id="' + key + '"><svg class="pf-c-spinner pf-m-md" role="progressbar" viewBox="0 0 100 100" aria-label="Loading..."><circle class="pf-c-spinner__path" cx="50" cy="50" r="45" fill="none" /></svg></span>'
 }
 
 function renderBadges (badges, field, value, links) {
@@ -344,8 +363,8 @@ function renderBadges (badges, field, value, links) {
   	     envLink = encodeURI(b.getURI())
          branchLink = encodeURI(repo_url(b.pattern));
     }
-    var json_obj = JSON.parse(getJSON(b.getURI()));
-    badgeText += renderSingleBadge (b.getLabel(field), envLink, json_obj.message, branchLink, json_obj.color, b.getURI())
+    badgeText += renderBadgePlaceholder(b.string())
+    getJSON(b.getURI(), renderSingleBadge, b.string(), b.getLabel(field), envLink, branchLink,  b.getURI())
   })
   badgeText += '</div>'
   return badgeText
