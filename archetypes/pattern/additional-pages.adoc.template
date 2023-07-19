@@ -1,0 +1,18 @@
+// Create a copy of this file and use it as a template for any additional pages
+---
+title: Title
+weight: 10
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+// Use the include:: directive to add asciidoc modules
+// from the /modules directory. For example:
+// include::modules/my-module.adoc[leveloffset=+1]
+
+== Next steps
+
+*
+*

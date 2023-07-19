@@ -1,0 +1,35 @@
+---
+title: "{{ replace .Name "-" " " | title }}"
+date: {{ .Date }}
+summary:
+products:
+- Product 1
+- Product 2
+- etc
+industries:
+- Industry 1
+- Industry 2
+- etc
+links:
+  install:
+  arch:
+  help: https://groups.google.com/g/hybrid-cloud-patterns
+  bugs:
+# The following parameters are only used for validated patterns. Do not uncomment them unless your pattern is validated.
+# validated:
+# pattern_logo:
+# ci:
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+// Use the include:: directive to add asciidoc modules
+// from the /modules directory. For example:
+// include::modules/my-module.adoc[leveloffset=+1]
+
+== Next steps
+
+*
+*

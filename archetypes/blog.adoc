@@ -1,0 +1,11 @@
+---
+title: "{{ replace .Name "-" " " | title }}"
+date: {{ .Date }}
+summary: Provide a short summary of the blog post
+author: Author
+blog_tags:
+- blog tag 1
+- blog tag 2
+---
+
+// Write your blog post here
