@@ -2,6 +2,9 @@
   {{ $section := .Site.GetPage "section" .Section }}
   <div class="pf-c-page__sidebar">
     <div class="pf-c-page__sidebar-body">
+      <div class="pf-l-flex filter-title-div">
+        <span class="pf-c-title pf-m-md filter-title pf-l-flex__item pf-m-grow">Filter by</span>
+      </div>
       {{ partial "menu-ci.html" . }}
     </div>
   </div>
