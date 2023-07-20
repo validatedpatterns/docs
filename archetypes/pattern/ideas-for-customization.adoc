@@ -1,0 +1,17 @@
+---
+title: Ideas for customization
+weight: 30
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+// Use the include:: directive to add asciidoc modules 
+// from the /modules directory. For example:
+// include::modules/my-module.adoc[leveloffset=+1]
+
+== Next steps
+
+*
+*
