@@ -388,7 +388,7 @@ git checkout -b my-branch vi values-global.yaml Replace instances of PROVIDE_ wi
 ...omitted datacenter: cloudProvider: PROVIDE_CLOUD_PROVIDER #aws, azure storageClassName: PROVIDE_STORAGECLASS_NAME #gp2 (aws) region: PROVIDE_CLOUD_REGION #us-east-1 clustername: PROVIDE_CLUSTER_NAME #OpenShift clusterName domain: PROVIDE_DNS_DOMAIN #blueprints.rhecoeng.com s3: # Values for S3 bucket access # Replace &lt;region&gt; with AWS region where S3 bucket was created # Replace &lt;cluster-name&gt; and &lt;domain&gt; with your OpenShift cluster values # bucketSource: &#34;https://s3.&lt;region&gt;.amazonaws.com/&lt;s3_bucket_name&gt;&#34; bucketSource: PROVIDE_BUCKET_SOURCE #&#34;https://s3.us-east-2.amazonaws.com/com.validated-patterns.xray-source&#34; # Bucket base name used for xray images bucketBaseName: &#34;xray-source&#34; git add values-global.yaml git commit values-global.yaml git push origin my-branch You can deploy the pattern using the validated pattern operator. If you do use the operator then skip to Validating the Environment below.
 Preview the changes that will be made to the Helm charts.
 ./pattern.sh make show Login to your cluster using oc login or exporting the KUBECONFIG
-oc login or set KUBECONFIG to the path to your kubeconfig file. For example export KUBECONFIG=~/my-ocp-env/auth/kubeconfig Check the values files before deployment You can run a check before deployment to make sure that you have the required variables to deploy the Medical Diagnosis Validated Pattern.
+$ oc login or set KUBECONFIG to the path to your kubeconfig file. For example export KUBECONFIG=~/my-ocp-env/auth/kubeconfig Check the values files before deployment You can run a check before deployment to make sure that you have the required variables to deploy the Medical Diagnosis Validated Pattern.
 You can run make predeploy to check your values. This will allow you to review your values and changed them in the case there are typos or old values. The values files that should be reviewed prior to deploying the Medical Diagnosis Validated Pattern are:
 Values File Description values-secret.yaml
 This is the values file that will include the xraylab section with all the database secrets
@@ -414,18 +414,17 @@ Make sure that you see some XML and not an access denied message.
 While still looking at Routes, change the project to xraylab-1. Click on the URL for the image-server. Make sure you do not see an access denied message. You ought to see a Hello World message.
 Turn on the image file flow. There are three ways to go about this.
 You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster.
-oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1 Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the xraylab-1 project.
+$ oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1 Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the xraylab-1 project.
 Right click on the image-generator pod icon and select Edit Pod count.
 Up the pod count from 0 to 1 and save.
 Alternatively, you can have the same outcome on the Administrator console.
 Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project xraylab-1. Click on image-generator and increase the pod count to 1.
 Making some changes on the dashboard You can change some of the parameters and watch how the changes effect the dashboard.
 You can increase or decrease the number of image generators.
-oc scale deploymentconfig/image-generator --replicas=2 Check the dashboard.
-oc scale deploymentconfig/image-generator --replicas=0 Watch the dashboard stop processing images.
+$ oc scale deploymentconfig/image-generator --replicas=2 Check the dashboard.
+$ oc scale deploymentconfig/image-generator --replicas=0 Watch the dashboard stop processing images.
 You can also simulate the change of the AI model version - as it’s only an environment variable in the Serverless Service configuration.
-oc patch service.serving.knative.dev/risk-assessment --type=json -p &#39;[{&#34;op&#34;:&#34;replace&#34;,&#34;path&#34;:&#34;/spec/template/metadata/annotations/revisionTimestamp&#34;,&#34;value&#34;:&#34;&#39;&#34;$(date +%F_%T)&#34;&#39;&#34;},{&#34;op&#34;:&#34;replace&#34;,&#34;path&#34;:&#34;/spec/template/spec/containers/0/env/0/value&#34;,&#34;value&#34;:&#34;v2&#34;}]&#39; This changes the model version value, as well as the revisionTimestamp in the annotations, which triggers a redeployment of the service.
-Next Steps Help &amp; Feedback Report Bugs
+$ oc patch service.serving.knative.dev/risk-assessment --type=json -p &#39;[{&#34;op&#34;:&#34;replace&#34;,&#34;path&#34;:&#34;/spec/template/metadata/annotations/revisionTimestamp&#34;,&#34;value&#34;:&#34;&#39;&#34;$(date +%F_%T)&#34;&#39;&#34;},{&#34;op&#34;:&#34;replace&#34;,&#34;path&#34;:&#34;/spec/template/spec/containers/0/env/0/value&#34;,&#34;value&#34;:&#34;v2&#34;}]&#39; This changes the model version value, as well as the revisionTimestamp in the annotations, which triggers a redeployment of the service.
 `,url:"https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/getting-started/",breadcrumb:"/patterns/medical-diagnosis/getting-started/"},"https://hybrid-cloud-patterns.io/patterns/multicloud-gitops-portworx/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Multicloud GitOps pattern Prerequisite An OpenShift cluster To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console. Select OpenShift -&gt; Clusters -&gt; Create cluster. The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster. Optional: A second OpenShift cluster for multicloud demonstration. The git binary and podman. For details see Installing Git and Installing Podman The use of this pattern depends on having at least one running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
 If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by using Red Hat&rsquo;s cloud service.
 Procedure For installation tooling dependencies, see link:https://hybrid-cloud-patterns.io/learn/quickstart/[Patterns quick start].
@@ -532,20 +531,8 @@ Using special configuration files. This is fine for initial development but not 
 Policy While many enterprise Cloud Native applications are open source, many of the products used require licenses or subscriptions. Policies help enforce license and subscription management and the channels needed to get access to those licenses or subscriptions.
 Similarly, in multicloud deployments and complex edge deployments, policies can help define and select the correct GitOps workflows that need to be managed for various sites or clusters. E.g. defining an OpenShift Cluster as a &ldquo;Factory&rdquo; in the Industrial Edge validated pattern provides a simple trigger to roll-out the entire Factory deployment. Policy is a powerful tool in automation.
 Validated patterns use Red Hat Advanced Cluster Management for Kubernetes to control clusters and applications from a single console, with built-in security policies.
-`,url:"https://hybrid-cloud-patterns.io/contribute/background-on-pattern-development/",breadcrumb:"/contribute/background-on-pattern-development/"},"https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:` Tested Platforms The Medical Diagnosis pattern has been tested in the following Certified Cloud Providers.
-Certified Cloud Providers 4.8 4.9 4.10 4.11 Amazon Web Services
-Tested
-Tested
-Tested
-Tested
-Google Compute
-Microsoft Azure
-General OpenShift Minimum Requirements OpenShift 4 has the following minimum requirements for sizing of nodes:
-Minimum 4 vCPU (additional are strongly recommended).
-Minimum 16 GB RAM (additional memory is strongly recommended, especially if etcd is colocated on Control Planes).
-Minimum 40 GB hard disk space for the file system containing /var/.
-Minimum 1 GB hard disk space for the file system containing /usr/local/bin/.
-Medical Diagnosis Pattern Components Here’s an inventory of what gets deployed by the Medical Diagnosis pattern:
+`,url:"https://hybrid-cloud-patterns.io/contribute/background-on-pattern-development/",breadcrumb:"/contribute/background-on-pattern-development/"},"https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:` To know the minimum requirements for an OpenShift Container Platform cluster, for example on bare-metal, see link: Minimum resource requirements for cluster installation.
+About Medical Diagnosis pattern components Here’s an inventory of what gets deployed by the Medical Diagnosis pattern:
 Name Kind Namespace Description Medical Diagnosis Hub
 Application
 medical-diagnosis-hub
@@ -566,7 +553,7 @@ Red Hat OpenShift Serverless
 Operator
 - knative-eventing - knative-serving
 Provides access to knative eventing and serving functions
-Medical Diagnosis Pattern OpenShift Cluster Size The Medical Diagnosis pattern has been tested with a defined set of configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
+About Medical Diagnosis pattern OpenShift Cluster Size The Medical Diagnosis pattern has been tested with a defined set of configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
 The OpenShift cluster for the Medical Diagnosis pattern needs to be sized a bit larger to support the compute and storage demands of OpenShift Data Foundations and other operators that make up the pattern. The above cluster sizing is close to a minimum size for an OpenShift cluster supporting this pattern. In the next few sections we take some snapshots of the cluster utilization while the Medical Diagnosis pattern is running. Keep in mind that resources will have to be added as more developers are working building their applications.
 The OpenShift cluster is a standard deployment of 3 control plane nodes and 3 or more worker nodes.
 Node Type Number of nodes Cloud Provider Instance Type Control Plane/Worker
@@ -581,116 +568,6 @@ Control Plane/Worker
 3
 Microsoft Azure
 Standard_D8s_v3
-AWS Instance Types The Medical Diagnosis pattern was tested with the highlighted AWS instances in bold. The OpenShift installer will let you know if the instance type meets the minimum requirements for a cluster.
-The message that the openshift installer will give you will be similar to this message
-INFO Credentials loaded from default AWS environment variables FATAL failed to fetch Metadata: failed to load asset &#34;Install Config&#34;: [controlPlane.platform.aws.type: Invalid value: &#34;m4.large&#34;: instance type does not meet minimum resource requirements of 4 vCPUs, controlPlane.platform.aws.type: Invalid value: &#34;m4.large&#34;: instance type does not meet minimum resource requirements of 16384 MiB Memory] Below you can find a list of the AWS instance types that can be used to deploy the Medical Diagnosis pattern.
-Instance type Default vCPUs Memory (GiB) Hub Factory/Edge 3x3 OCP Cluster
-3 Node OCP Cluster
-m4.xlarge
-4
-16
-N
-N
-m4.2xlarge
-8
-32
-Y
-Y
-m4.4xlarge
-16
-64
-Y
-Y
-m4.10xlarge
-40
-160
-Y
-Y
-m4.16xlarge
-64
-256
-Y
-Y
-m5.xlarge
-4
-16
-Y
-N
-m5.2xlarge
-8
-32
-Y
-Y
-m5.4xlarge
-16
-64
-Y
-Y
-m5.8xlarge
-32
-128
-Y
-Y
-m5.12xlarge
-48
-192
-Y
-Y
-m5.16xlarge
-64
-256
-Y
-Y
-m5.24xlarge
-96
-384
-Y
-Y
-The OpenShift cluster is made of 3 Control Plane nodes and 3 Workers. For the node sizes we used the m5.4xlarge on AWS and this instance type met the minimum requirements to deploy the Medical Diagnosis pattern successfully.
-To understand better what types of nodes you can use on other Cloud Providers we provide some of the details below.
-Azure Instance Types The Medical Diagnosis pattern was also deployed on Azure using the Standard_D8s_v3 VM size. Below is a table of different VM sizes available for Azure. Keep in mind that due to limited access to Azure we only used the Standard_D8s_v3 VM size.
-The OpenShift cluster is made of 3 Control Plane nodes and 3 Workers.
-Type Sizes Description General purpose
-B, Dsv3, Dv3, Dasv4, Dav4, DSv2, Dv2, Av2, DC, DCv2, Dv4, Dsv4, Ddv4, Ddsv4
-Balanced CPU-to-memory ratio. Ideal for testing and development, small to medium databases, and low to medium traffic web servers.
-Compute optimized
-F, Fs, Fsv2, FX
-High CPU-to-memory ratio. Good for medium traffic web servers, network appliances, batch processes, and application servers.
-Memory optimized
-Esv3, Ev3, Easv4, Eav4, Ev4, Esv4, Edv4, Edsv4, Mv2, M, DSv2, Dv2
-High memory-to-CPU ratio. Great for relational database servers, medium to large caches, and in-memory analytics.
-Storage optimized
-Lsv2
-High disk throughput and IO ideal for Big Data, SQL, NoSQL databases, data warehousing and large transactional databases.
-GPU
-NC, NCv2, NCv3, NCasT4_v3, ND, NDv2, NV, NVv3, NVv4
-Specialized virtual machines targeted for heavy graphic rendering and video editing, as well as model training and inferencing (ND) with deep learning. Available with single or multiple GPUs.
-High performance compute
-HB, HBv2, HBv3, HC, H
-Our fastest and most powerful CPU virtual machines with optional high-throughput network interfaces (RDMA).
-For more information please refer to the Azure VM Size Page.
-Google Cloud (GCP) Instance Types The Medical Diagnosis pattern was also deployed on GCP using the n1-standard-8 VM size. Below is a table of different VM sizes available for GCP. Keep in mind that due to limited access to GCP we only used the n1-standard-8 VM size.
-The OpenShift cluster is made of 3 Control Plane and 3 Workers cluster.
-The following table provides VM recommendations for different workloads.
-General purpose Workload optimized Cost-optimized
-Balanced
-Scale-out optimized
-Memory-optimized
-Compute-optimized
-Accelerator-optimized
-E2
-N2, N2D, N1
-T2D
-M2, M1
-C2
-A2
-Day-to-day computing at a lower cost
-Balanced price/performance across a wide range of VM shapes
-Best performance/cost for scale-out workloads
-Ultra high-memory workloads
-Ultra high performance for compute-intensive workloads
-Optimized for high performance computing workloads
-For more information please refer to the GCP VM Size Page.
 `,url:"https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/cluster-sizing/",breadcrumb:"/patterns/medical-diagnosis/cluster-sizing/"},"https://hybrid-cloud-patterns.io/patterns/industrial-edge/factory/":{title:"Factory Sites",tags:[],content:`Having a factory (edge) cluster join the datacenter (hub) Allow ACM to deploy the factory application to a subset of clusters By default the factory applications are deployed on all clusters that ACM knows about.
 managedSites: - name: factory clusterSelector: matchExpressions: - key: vendor operator: In values: - OpenShift This is useful for cost-effective demos, but is hardly realistic.
 To deploy the factory applications only on managed clusters with the label site=factory, change the site definition in values-datacenter.yaml to:
@@ -1253,37 +1130,38 @@ rpc error: code = Unknown desc = Manifest generation error (cached): \`/bin/bash
 This is a byproduct of the way the pattern installs applications at the moment. We are tracking this as #39.
 Symptom: Applications show &ldquo;not in sync&rdquo; status in ArgoCD Cause: There is a discrepancy between what the git repository says the application should have, and how that state is realized in ArgoCD.
 The installation mechanism currently installs operators as parts of multiple applications when running on the same cluster, so it is a race condition in ArgoCD to see which one &ldquo;wins.&rdquo; This is a problem with the way we are installing the patterns. We are tracking this as #38.
-`,url:"https://hybrid-cloud-patterns.io/patterns/industrial-edge/troubleshooting/",breadcrumb:"/patterns/industrial-edge/troubleshooting/"},"https://hybrid-cloud-patterns.io/patterns/retail/troubleshooting/":{title:"Troubleshooting",tags:[],content:"Troubleshooting Our Issue Tracker ",url:"https://hybrid-cloud-patterns.io/patterns/retail/troubleshooting/",breadcrumb:"/patterns/retail/troubleshooting/"},"https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/troubleshooting/":{title:"Troubleshooting Guide",tags:[],content:` Contents Understanding the Makefile The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn’t required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a make upgrade which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
-make install / make deploy Executing make install within the pattern application will trigger a make deploy from &lt;pattern_directory&gt;/common. This initializes the common components of the pattern framework and will install a helm chart in the default namespace. At this point cluster services such as Red Hat Advanced Cluster Management and OpenShift Gitops are deployed.
-Once common completes, the remaining tasks within the make install target will execute.
-make vault-init / make load-secrets This pattern is integrated with HashiCorp Vault and External Secrets services for secrets management within the cluster. These targets install vault from a Helm chart and the load the secret (values-secret.yaml) you created during Getting Started.
-If values-secret.yaml does not exist, make will exit with an error saying so. Furthermore, if the values-secret.yaml file does exist but is improperly formatted, ansible will exit with an error about being improperly formatted. If you are not sure how format the secret, please refer to Getting Started.
-make bootstrap / make upgrade make bootstrap is the target used for deploying the application specific components of the pattern. It is the final step in the initial make install target. Running make bootstrap directly should typically not be necessary, instead you are encouraged to run make upgrade.
-Generally, executing make upgrade should only be required when something goes wrong with the application pattern deployment. For instance, if a value was missed, and the chart wasn’t rendered correctly, executing make upgrade after fixing the value would be necessary.
-If you have any further questions, please, feel free to review the Makefile for the common and Medical Diagnosis components. It is located in common/Makefile and ./Makefile respectively.
-Troubleshooting the Pattern Deployment Occasionally the pattern will encounter issues during the deployment. This can happen for any number of reasons, but most often it is because of either a change within the operator itself or something has changed/happened to the Operator Lifecycle Manager (OLM) which determines which operators are available in the operator catalog. Generally, when an issue occurs with the OLM, the operator is unavailable for installation. To ensure that the operator is in the catalog:
-oc get packagemanifests | grep &lt;operator-name&gt; When an issue occurs with the operator itself you can verify the status of the subscription and make sure that there are no warnings.An additional option is to log into the OpenShift Console, click on Operators, and check the status of the operator.
+`,url:"https://hybrid-cloud-patterns.io/patterns/industrial-edge/troubleshooting/",breadcrumb:"/patterns/industrial-edge/troubleshooting/"},"https://hybrid-cloud-patterns.io/patterns/retail/troubleshooting/":{title:"Troubleshooting",tags:[],content:"Troubleshooting Our Issue Tracker ",url:"https://hybrid-cloud-patterns.io/patterns/retail/troubleshooting/",breadcrumb:"/patterns/retail/troubleshooting/"},"https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/troubleshooting/":{title:"Troubleshooting Guide",tags:[],content:` Understanding the Makefile The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn’t required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a make upgrade which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
+About the make install and make deploy commands Running make install within the pattern application triggers a make deploy from &lt;pattern_directory&gt;/common directory. This initializes the common components of the pattern framework and install a helm chart in the default namespace. At this point, cluster services, such as Red Hat Advanced Cluster Management (RHACM) and Red Hat OpenShift GitOps are deployed.
+After components from the common directory are installed, the remaining tasks within the make install target run.
+About the make vault-init and make load-secrets commands The Medical Diagnosis pattern is integrated with HashiCorp Vault and External Secrets Operator services for secrets management within the cluster. These targets install vault from a Helm chart and load the secret (values-secret.yaml) that you created during Getting Started.
+If values-secret.yaml does not exist, make will exit with an error saying so. Furthermore, if the values-secret.yaml file does exist but is improperly formatted, Red Hat Ansible Automation Platform exits with an error about being improperly formatted. To verify the format of the secret, see Getting Started.
+About the make bootstrap and make upgrade commands The make bootstrap command is the target used for deploying the application specific components of the pattern. It is the final step in the initial make install target. You might want to consider running the make upgrade command instead of the make bootstrap command directly.
+Generally, running the make upgrade command is required when you encounter errors with the application pattern deployment. For instance, if a value was missed and the chart was not rendered correctly, executing make upgrade command after fixing the value would be necessary.
+You might want to review the Makefile for the common and Medical Diagnosis components, which are located in common/Makefile and ./Makefile respectively.
+Troubleshooting the Pattern Deployment Occasionally the pattern will encounter issues during the deployment. This can happen for any number of reasons, but most often it is because of either a change within the operator itself or something has changed in the Operator Lifecycle Manager (OLM) which determines which operators are available in the operator catalog. Generally, when an issue occurs with the OLM, the operator is unavailable for installation. To ensure that the operator is in the catalog, run the following command:
+$ oc get packagemanifests | grep &lt;operator-name&gt; When an issue occurs with the operator itself you can verify the status of the subscription and make sure that there are no warnings.An additional option is to log into the OpenShift Console, click on Operators, and check the status of the operator.
 Other issues encounter could be with a specific application within the pattern misbehaving. Most of the pattern is deployed into the xraylab-1 namespace. Other components like ODF are deployed into openshift-storage and the OpenShift Serverless Operators are deployed into knative-serving, knative-eventing namespaces.
 Use the grafana dashboard to assist with debugging and identifying the issue
-Problem: No information is being processed in the dashboard
-Solution: Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is scaled to 0;
-oc scale -n xraylab-1 dc/image-generator --replicas=1 Or open the openshift-console, click on workloads, then click deploymentConfigs, click image-generator, and scale the pod to 1 or more.
-Problem: When browsing to the xraylab grafana dashboard and there are no images in the right-pane, only a security warning.
-Solution: The certificates for the openshift cluster are untrusted by your system. The easiest way to solve this is to open a browser and go to the s3-rgw route (oc get route -n openshift-storage), then acknowledge and accept the security warning.
-Problem: In the dashboard interface, no metrics data is available.
-Solution: There is likely something wrong with the Prometheus DataSource for the grafana dashboard. You can check the status of the datasource by executing the following:
-oc get grafanadatasources -n xraylab-1 Ensure that the prometheus datasource exists and that the status is available. This could potentially be the token from the service account (grafana-serviceaccount) that is provided to the datasource as a bearer token.
-Problem: The dashboard is showing red in the corners of the dashboard panes.
-Solution: This is most likely due to the xraylab database not being available or misconfigured. Please check the database and ensure that it is functioning properly.
-Step 1: Ensure that the database is populated with the correct tables:
-oc exec -it xraylabdb-1-&lt;uuid&gt; bash mysql -u root USE xraylabdb; SHOW tables; The expected output is:
-Welcome to the MariaDB monitor. Commands end with ; or \\g. Your MariaDB connection id is 75 Server version: 10.3.32-MariaDB MariaDB Server Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others. Type &#39;help;&#39; or &#39;\\h&#39; for help. Type &#39;\\c&#39; to clear the current input statement. MariaDB [(none)]&gt; USE xraylabdb; Database changed MariaDB [xraylabdb]&gt; show tables; +---------------------+ | Tables_in_xraylabdb | +---------------------+ | images_anonymized | | images_processed | | images_uploaded | +---------------------+ 3 rows in set (0.000 sec) Step 2: Verify the password set in the values-secret.yaml is working
-oc exec -it xraylabdb-1-&lt;uuid&gt; bash mysql -u xraylab -D xraylabdb -h xraylabdb -p &lt;provide your password at the prompt&gt; If you are able to successfully login then your password has been configured correctly in vault, the external secrets operator and mounted to the database correctly.
-Problem: The image-generator is scaled correctly, but nothing is happening in the dashboard.
-Solution: This could be that the serverless eventing function isn’t picking up the notifications from ODF and therefore, not triggering the knative-serving function to scale up. In this situation there are a number of things to check, the first thing is to check the logs of the rook-ceph-rgw-ocs-storagecluster-cephobjectstore-a-&lt;podGUID&gt; pod in the openshift-storage namespace.
-oc logs -n openshift-storage -f &lt;pod&gt; -c rgw You should see the PUT statement with a status code of 200
-Next ensure that the kafkasource and kafkservice and kafka topic resources have been created:
-oc get -n xraylab-1 kafkasource NAME TOPICS BOOTSTRAPSERVERS READY REASON AGE xray-images [&#34;xray-images&#34;] [&#34;xray-cluster-kafka-bootstrap.xraylab-1.svc:9092&#34;] True 23m oc get -n xraylab-1 kservice NAME URL LATESTCREATED LATESTREADY READY REASON risk-assessment https://risk-assessment-xraylab-1.apps.&lt;SUBDOMAIN&gt; risk-assessment-00001 risk-assessment-00001 True oc get -n xraylab-1 kafkatopics NAME CLUSTER PARTITIONS REPLICATION FACTOR READY consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a xray-cluster 50 1 True strimzi-store-topic---effb8e3e057afce1ecf67c3f5d8e4e3ff177fc55 xray-cluster 1 3 True strimzi-topic-operator-kstreams-topic-store-changelog---b75e702040b99be8a9263134de3507fc0cc4017b xray-cluster 1 1 True xray-images xray-cluster 1 1 True `,url:"https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/troubleshooting/",breadcrumb:"/patterns/medical-diagnosis/troubleshooting/"},"https://hybrid-cloud-patterns.io/learn/workflow/":{title:"Workflow",tags:[],content:`Workflow These patterns are designed to be composed of multiple components, and for those components to be used in gitops workflows by consumers and contributors. To use the first pattern as an example, we maintain the Industrial Edge pattern, which uses a repo with pattern-specific logic and configuration as well as a common repo which has elements common to multiple patterns. The common repository is included in each pattern repository as a subtree.
+Problem No information is being processed in the dashboard
+Solution Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is scaled to 0;
+$ oc scale -n xraylab-1 dc/image-generator --replicas=1 Alternatively, complete the following steps:
+Navigate to the Red Hat OpenShift Container Platform web console, and select Workloads → DeploymentConfigs
+Select image-generator and scale the pod to 1 or more.
+Problem When browsing to the xraylab grafana dashboard and there are no images in the right-pane, only a security warning.
+Solution The certificates for the openshift cluster are untrusted by your system. The easiest way to solve this is to open a browser and go to the s3-rgw route (oc get route -n openshift-storage), then acknowledge and accept the security warning.
+Problem In the dashboard interface, no metrics data is available.
+Solution There is likely something wrong with the Prometheus DataSource for the grafana dashboard. You can check the status of the datasource by executing the following:
+$ oc get grafanadatasources -n xraylab-1 Ensure that the prometheus datasource exists and that the status is available. This could potentially be the token from the service account, for example, grafana-serviceaccount, that is provided to the datasource as a bearer token.
+Problem The dashboard is showing red in the corners of the dashboard panes.
+Solution This is most likely due to the xraylab database not being available or misconfigured. Please check the database and ensure that it is functioning properly.
+Ensure that the database is populated with the correct tables:
+$ oc exec -it xraylabdb-1-&lt;uuid&gt; bash $ mysql -u root USE xraylabdb; SHOW tables; Example output Welcome to the MariaDB monitor. Commands end with ; or \\g. Your MariaDB connection id is 75 Server version: 10.3.32-MariaDB MariaDB Server Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others. Type &#39;help;&#39; or &#39;\\h&#39; for help. Type &#39;\\c&#39; to clear the current input statement. MariaDB [(none)]&gt; USE xraylabdb; Database changed MariaDB [xraylabdb]&gt; show tables; +---------------------+ | Tables_in_xraylabdb | +---------------------+ | images_anonymized | | images_processed | | images_uploaded | +---------------------+ 3 rows in set (0.000 sec) Verify the password set in the values-secret.yaml is working
+$ oc exec -it xraylabdb-1-&lt;uuid&gt; bash $ mysql -u xraylab -D xraylabdb -h xraylabdb -p &lt;provide_your_password_at_prompt&gt; If you are able to successfully login then your password has been configured correctly in vault, the external secrets operator and mounted to the database correctly.
+Problem The image-generator is scaled correctly, but nothing is happening in the dashboard.
+Solution This could be that the serverless eventing function isn’t picking up the notifications from ODF and therefore, not triggering the knative-serving function to scale up. In this situation there are a number of things to check, the first thing is to check the logs of the rook-ceph-rgw-ocs-storagecluster-cephobjectstore-a-&lt;podGUID&gt; pod in the openshift-storage namespace.
+$ oc logs -n openshift-storage -f &lt;pod&gt; -c rgw You should see the PUT statement with a status code of 200
+Ensure that the kafkasource, kafkservice, and kafka topic resources are created:
+$ oc get -n xraylab-1 kafkasource Example output NAME TOPICS BOOTSTRAPSERVERS READY REASON AGE xray-images [&#34;xray-images&#34;] [&#34;xray-cluster-kafka-bootstrap.xraylab-1.svc:9092&#34;] True 23m $ oc get -n xraylab-1 kservice Example output NAME URL LATESTCREATED LATESTREADY READY REASON risk-assessment https://risk-assessment-xraylab-1.apps.&lt;SUBDOMAIN&gt; risk-assessment-00001 risk-assessment-00001 True $ oc get -n xraylab-1 kafkatopics Example output NAME CLUSTER PARTITIONS REPLICATION FACTOR READY consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a xray-cluster 50 1 True strimzi-store-topic---effb8e3e057afce1ecf67c3f5d8e4e3ff177fc55 xray-cluster 1 3 True strimzi-topic-operator-kstreams-topic-store-changelog---b75e702040b99be8a9263134de3507fc0cc4017b xray-cluster 1 1 True xray-images xray-cluster 1 1 True `,url:"https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/troubleshooting/",breadcrumb:"/patterns/medical-diagnosis/troubleshooting/"},"https://hybrid-cloud-patterns.io/learn/workflow/":{title:"Workflow",tags:[],content:`Workflow These patterns are designed to be composed of multiple components, and for those components to be used in gitops workflows by consumers and contributors. To use the first pattern as an example, we maintain the Industrial Edge pattern, which uses a repo with pattern-specific logic and configuration as well as a common repo which has elements common to multiple patterns. The common repository is included in each pattern repository as a subtree.
 Consuming a pattern Fork the pattern repository on GitHub to your workspace (GitHub user or organization). It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes, and the main branch (by default) will be used in the automated workflows.
 Clone the forked copy
 git clone git@github.com:&lt;your-workspace&gt;/industrial-edge.git
@@ -1975,32 +1853,30 @@ The northbound traffic of sensor data is visible in Figure 9. It flows from the 
 The southbound traffic is abstracted in the App-Dev / Pipeline box at the top. This is where GitOps kicks in to push config or version changes down into the factories.
 Download diagrams View and download all of the diagrams above in our open source tooling site.
 [Open Diagrams]
-Pattern Structure `,url:"https://hybrid-cloud-patterns.io/patterns/industrial-edge/",breadcrumb:"/patterns/industrial-edge/"},"https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/":{title:"Medical Diagnosis",tags:[],content:` Background This Validated Pattern is based on a demo implementation of an automated data pipeline for chest Xray analysis previously developed by Red Hat. The original demo can be found here. It was developed for the US Department of Veteran Affairs.
-This validated pattern includes the same functionality as the original demonstration. The difference is that we use the GitOps framework to deploy the pattern including operators, creation of namespaces, and cluster configuration. Using GitOps provides a much more efficient means of doing continuous deployment.
-What does this pattern do?:
-Ingest chest Xrays from a simulated Xray machine and puts them into an objectStore based on Ceph.
+Pattern Structure `,url:"https://hybrid-cloud-patterns.io/patterns/industrial-edge/",breadcrumb:"/patterns/industrial-edge/"},"https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/":{title:"Medical Diagnosis",tags:[],content:` Background This validated pattern is based on a demo implementation of an automated data pipeline for chest Xray analysis previously developed by Red Hat. You can find the original demonstration here. It was developed for the US Department of Veteran Affairs.
+This validated pattern includes the same functionality as the original demonstration. The difference is that we use the GitOps framework to deploy the pattern including Operators, creation of namespaces, and cluster configuration. Using GitOps provides an efficient means of implementing continuous deployment.
+Workflow Ingest chest Xrays from a simulated Xray machine and puts them into an objectStore based on Ceph.
 The objectStore sends a notification to a Kafka topic.
 A KNative Eventing Listener to the topic triggers a KNative Serving function.
 An ML-trained model running in a container makes a risk assessment of Pneumonia for incoming images.
-A Grafana dashboard displays the pipeline in real time, along with images incoming, processed and anonymized, as well as full metrics collected from Prometheus.
+A Grafana dashboard displays the pipeline in real time, along with images incoming, processed, and anonymized, as well as full metrics collected from Prometheus.
 This pipeline is showcased in this video.
-This validated pattern is still under development. Any questions or concerns please contact Jonny Rickard or Lester Claudio.
-Solution elements How to use a GitOps approach to keep in control of configuration and operations
-How to deploy AI/ML technologies for medical diagnosis using GitOps.
-Red Hat Technologies Red Hat OpenShift Container Platform (Kubernetes)
-Red Hat OpenShift GitOps (ArgoCD)
-Red Hat AMQ Streams (Apache Kafka Event Broker)
-Red Hat OpenShift Serverless (Knative Eventing, Knative Serving)
-Red Hat OpenShift Data Foundations (Cloud Native storage)
-Grafana dashboard (OpenShift Grafana Operator)
+This validated pattern is still under development. If you have any questions or concerns contact Jonny Rickard or Lester Claudio
+About the solution elements The solution aids the understanding of the following: * How to use a GitOps approach to keep in control of configuration and operations. * How to deploy AI/ML technologies for medical diagnosis using GitOps.
+The Medical Diagnosis pattern uses the following Red Hat products and technologies:
+Red Hat OpenShift Container Platform for container orchestration
+Red Hat OpenShift GitOps, a GitOps continuous delivery (CD) product for Kubernetes.
+Red Hat AMQ, an event streaming platform based on the Apache Kafka
+Red Hat OpenShift Serverless for event-driven applications
+Red Hat OpenShift Data Foundation for cloud native storage capabilities
+Grafana Operator to manage and share Grafana dashboards, datasources, and so on
 Open Data Hub
 S3 storage
-Architecture In this iteration of the pattern there is no edge component . Future releases have planned Edge deployment capabilities as part of the pattern architecture.
+About the architecture There is no edge component in this iteration of the pattern. Edge deployment capabilities are planned part of the pattern architecture for a future release.
 Components are running on OpenShift either at the data center or at the medical facility (or public cloud running OpenShift).
-Physical Schema The diagram below shows the components that are deployed with the various networks that connect them.
+About the physical schema The diagram below shows the components that are deployed with the various networks that connect them.
 The diagram below shows the components that are deployed with the the data flows and API calls between them.
-Recorded Demo What Next Getting started Deploy the Pattern
-Visit the repository
+Recorded demo Next steps Getting started Deploy the Pattern
 `,url:"https://hybrid-cloud-patterns.io/patterns/medical-diagnosis/",breadcrumb:"/patterns/medical-diagnosis/"},"https://hybrid-cloud-patterns.io/ci/":{title:"CI Status",tags:[],content:`These are the latest results of the Validated Patterns CI test runs.
 `,url:"https://hybrid-cloud-patterns.io/ci/",breadcrumb:"/ci/"},"https://hybrid-cloud-patterns.io/patterns/cockroachdb/":{title:"Cockroach",tags:[],content:`Cockroach A multicloud pattern using cockroachdb and submariner, deployed via RHACM.
 Repo
