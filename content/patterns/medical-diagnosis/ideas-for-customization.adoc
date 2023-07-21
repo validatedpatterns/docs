@@ -6,7 +6,6 @@ aliases: /medical-diagnosis/ideas-for-customization/
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
-include::modules/comm-attributes.adoc[]
 
 = Why change it?
 

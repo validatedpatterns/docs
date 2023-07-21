@@ -7,21 +7,48 @@ aliases: /medical-diagnosis/cluster-sizing/
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
-include::modules/comm-attributes.adoc[]
 
-//AI: Removed the following since we have CI status linked on the patterns page
-//[id="tested-platforms-cluster-sizing"]
-//== Tested Platforms
+[id="tested-platforms-cluster-sizing"]
+== Tested Platforms
 
-//AI: Removed the following in favor of the link to OCP docs
-//[id="general-openshift-minimum-requirements-cluster-sizing"]
-//== General OpenShift Minimum Requirements
+The *Medical Diagnosis* pattern has been tested in the following Certified Cloud Providers.
 
-To know the minimum requirements for an {ocp} cluster, for example on bare-metal, see link: https://docs.openshift.com/container-platform/4.13/installing/installing_bare_metal/installing-bare-metal.html#installation-minimum-resource-requirements_installing-bare-metal[Minimum resource requirements for cluster installation].
+|===
+| *Certified Cloud Providers* | 4.8 | 4.9 | 4.10 | 4.11
+
+| Amazon Web Services
+| Tested
+| Tested
+| Tested
+| Tested
+
+| Google Compute
+|
+|
+|
+|
+
+| Microsoft Azure
+|
+|
+|
+|
+|===
 
 
-[id="about-med-diagnosis-components"]
-=== About {med-pattern} components
+[id="general-openshift-minimum-requirements-cluster-sizing"]
+== General OpenShift Minimum Requirements
+
+OpenShift 4 has the following minimum requirements for sizing of nodes:
+
+* *Minimum 4 vCPU* (additional are strongly recommended).
+* *Minimum 16 GB RAM* (additional memory is strongly recommended, especially if etcd is colocated on Control Planes).
+* *Minimum 40 GB* hard disk space for the file system containing /var/.
+* *Minimum 1 GB* hard disk space for the file system containing /usr/local/bin/.
+
+
+[id="medical-diagnosis-pattern-components-cluster-sizing"]
+=== Medical Diagnosis Pattern Components
 
 Here's an inventory of what gets deployed by the *Medical Diagnosis* pattern:
 
@@ -57,7 +84,7 @@ Here's an inventory of what gets deployed by the *Medical Diagnosis* pattern:
 
 
 [id="medical-diagnosis-pattern-openshift-cluster-size-cluster-sizing"]
-=== About {med-pattern} OpenShift Cluster Size
+=== Medical Diagnosis Pattern OpenShift Cluster Size
 
 The Medical Diagnosis pattern has been tested with a defined set of configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
 
@@ -85,4 +112,172 @@ The OpenShift cluster is a standard deployment of 3 control plane nodes and 3 or
 | Standard_D8s_v3
 |===
 
-//Removed section for instance types as we did for MCG
+[id="aws-instance-types-cluster-sizing"]
+=== AWS Instance Types
+
+The *Medical Diagnosis* pattern was tested with the highlighted AWS instances in *bold*.   The OpenShift installer will let you know if the instance type meets the minimum requirements for a cluster.
+
+The message that the openshift installer will give you will be similar to this message
+
+[,text]
+----
+INFO Credentials loaded from default AWS environment variables
+FATAL failed to fetch Metadata: failed to load asset "Install Config": [controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 4 vCPUs, controlPlane.platform.aws.type: Invalid value: "m4.large": instance type does not meet minimum resource requirements of 16384 MiB Memory]
+----
+
+Below you can find a list of the AWS instance types that can be used to deploy the *Medical Diagnosis* pattern.
+
+[cols="^,^,^,^,^"]
+|===
+| Instance type | Default vCPUs | Memory (GiB) | Hub | Factory/Edge
+
+|
+|
+|
+| 3x3 OCP Cluster
+| 3 Node OCP Cluster
+
+| m4.xlarge
+| 4
+| 16
+| N
+| N
+
+| *m4.2xlarge*
+| 8
+| 32
+| Y
+| Y
+
+| m4.4xlarge
+| 16
+| 64
+| Y
+| Y
+
+| m4.10xlarge
+| 40
+| 160
+| Y
+| Y
+
+| m4.16xlarge
+| 64
+| 256
+| Y
+| Y
+
+| *m5.xlarge*
+| 4
+| 16
+| Y
+| N
+
+| *m5.2xlarge*
+| 8
+| 32
+| Y
+| Y
+
+| *m5.4xlarge*
+| 16
+| 64
+| Y
+| Y
+
+| m5.8xlarge
+| 32
+| 128
+| Y
+| Y
+
+| m5.12xlarge
+| 48
+| 192
+| Y
+| Y
+
+| m5.16xlarge
+| 64
+| 256
+| Y
+| Y
+
+| m5.24xlarge
+| 96
+| 384
+| Y
+| Y
+|===
+
+The OpenShift cluster is made of 3 Control Plane nodes and 3 Workers.  For the node sizes we used the *m5.4xlarge* on AWS and this instance type met the minimum requirements to deploy the *Medical Diagnosis* pattern successfully.
+
+To understand better what types of nodes you can use on other Cloud Providers we provide some of the details below.
+
+[id="azure-instance-types-cluster-sizing"]
+=== Azure Instance Types
+
+The *Medical Diagnosis* pattern was also deployed on Azure using the *Standard_D8s_v3* VM size.  Below is a table of different VM sizes available for Azure.  Keep in mind that due to limited access to Azure we only used the *Standard_D8s_v3* VM size.
+
+The OpenShift cluster is made of 3 Control Plane nodes and 3 Workers.
+
+|===
+| Type | Sizes | Description
+
+| https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general[General purpose]
+| B, Dsv3, Dv3, Dasv4, Dav4, DSv2, Dv2, Av2, DC, DCv2, Dv4, Dsv4, Ddv4, Ddsv4
+| Balanced CPU-to-memory ratio. Ideal for testing and development, small to medium databases, and low to medium traffic web servers.
+
+| https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-compute[Compute optimized]
+| F, Fs, Fsv2, FX
+| High CPU-to-memory ratio. Good for medium traffic web servers, network appliances, batch processes, and application servers.
+
+| https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-memory[Memory optimized]
+| Esv3, Ev3, Easv4, Eav4, Ev4, Esv4, Edv4, Edsv4, Mv2, M, DSv2, Dv2
+| High memory-to-CPU ratio. Great for relational database servers, medium to large caches, and in-memory analytics.
+
+| https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-storage[Storage optimized]
+| Lsv2
+| High disk throughput and IO ideal for Big Data, SQL, NoSQL databases, data warehousing and large transactional databases.
+
+| https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-gpu[GPU]
+| NC, NCv2, NCv3, NCasT4_v3, ND, NDv2, NV, NVv3, NVv4
+| Specialized virtual machines targeted for heavy graphic rendering and video editing, as well as model training and inferencing (ND) with deep learning. Available with single or multiple GPUs.
+
+| https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-hpc[High performance compute]
+| HB, HBv2, HBv3, HC, H
+| Our fastest and most powerful CPU virtual machines with optional high-throughput network interfaces (RDMA).
+|===
+
+For more information please refer to the https://docs.microsoft.com/en-us/azure/virtual-machines/sizes[Azure VM Size Page].
+
+[id="google-cloud-gcp-instance-types-cluster-sizing"]
+=== Google Cloud (GCP) Instance Types
+
+The *Medical Diagnosis* pattern was also deployed on GCP using the *n1-standard-8* VM size.  Below is a table of different VM sizes available for GCP.  Keep in mind that due to limited access to GCP we only used the *n1-standard-8* VM size.
+
+The OpenShift cluster is made of 3 Control Plane and 3 Workers cluster.
+
+The following table provides VM recommendations for different workloads.
+
+|===
+| *General purpose* | *Workload optimized* |  |  |  |
+
+| Cost-optimized | Balanced | Scale-out optimized | Memory-optimized | Compute-optimized | Accelerator-optimized
+
+| E2
+| N2, N2D, N1
+| T2D
+| M2, M1
+| C2
+| A2
+
+| Day-to-day computing at a lower cost
+| Balanced price/performance across a wide range of VM shapes
+| Best performance/cost for scale-out workloads
+| Ultra high-memory workloads
+| Ultra high performance for compute-intensive workloads
+| Optimized for high performance computing workloads
+|===
+
+For more information please refer to the https://cloud.google.com/compute/docs/machine-types[GCP VM Size Page].
