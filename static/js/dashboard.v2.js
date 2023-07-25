@@ -523,7 +523,7 @@ function getBucketOptions (input) {
   }
   options.set('links', 'public');
   options.set('target', 'dataset')
-  options.set('bucket', 'https://storage.googleapis.com/hcp-results')
+  options.set('bucket', 'https://storage.googleapis.com/vp-results')
 
   const fields = [ 'sets', 'bucket', 'target', 'filter_field', 'filter_value', 'links', 'disable_buttons' ]
   for (i = 0; i < fields.length; i++) {
