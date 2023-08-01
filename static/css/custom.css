@@ -71,17 +71,22 @@ td > code {
 
 /*Adds type of content to listingblock*/
 
-.listingblock > .content {
+.listingblock {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.listingblock > .pf-c-code-block {
   position: relative;
 }
 
-.listingblock code[data-lang]::before {
+.listingblock div[data-lang]::before {
   content: attr(data-lang);
   position: absolute;
   font-size: 0.75em;
   top: 0.425rem;
-  right: 0.5rem;
-  line-height: 1;
+  left: 0.5rem;
+  line-height: 2;
   text-transform: uppercase;
   color: inherit;
   opacity: 0.5;
