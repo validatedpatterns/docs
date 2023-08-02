@@ -1,12 +1,12 @@
 ---
 menu: learn
-title: Hybrid Cloud Patterns
+title: Validated Patterns
 weight: 10
 ---
 
-# Hybrid Cloud Patterns
+# Validated Patterns
 
-Hybrid Cloud Patterns and the downstream Validated Patterns are a natural progression from reference architectures with additional value. Here is a brief video to explain what patterns are all about:
+Validated Patterns and the upstream Community Patterns are a natural progression from reference architectures with additional value. Here is a brief video to explain what patterns are all about:
 
 [![patterns-intro-video](https://img.youtube.com/vi/lI8TurakeG4/0.jpg)](https://www.youtube.com/watch?v=lI8TurakeG4)
 

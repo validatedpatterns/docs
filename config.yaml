@@ -1,11 +1,11 @@
 baseURL: "https://validatedpatterns.io/"
 languageCode: "en-us"
-title: Hybrid Cloud Patterns
+title: Validated Patterns
 theme: "patternfly"
 summaryLength: 20
 paginate: 6
 params:
-  site_logo: /images/hybrid_cloud_patterns.png
+  site_logo: /images/validated-patterns.png
 security:
   exec:
     allow: ["^dart-sass-embedded$", "^go$", "^npx$", "^postcss$", "^asciidoctor$"]

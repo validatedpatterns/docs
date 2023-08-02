@@ -6,4 +6,4 @@ menu:
     name: Blog
 ---
 
-Find out the latest news about Hybrid Cloud Patterns.
+Find out the latest news about Validated Patterns.
