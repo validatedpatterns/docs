@@ -1,4 +1,4 @@
-baseURL: "https://hybrid-cloud-patterns.io"
+baseURL: "https://validatedpatterns.io/"
 languageCode: "en-us"
 title: Hybrid Cloud Patterns
 theme: "patternfly"
