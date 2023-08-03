@@ -1,12 +1,12 @@
 ---
 menu: learn
-title: Validated Patterns
+title: About Validated Patterns
 weight: 10
 ---
 
-# Validated Patterns
+# About Validated Patterns
 
-Validated Patterns and the upstream Community Patterns are a natural progression from reference architectures with additional value. Here is a brief video to explain what patterns are all about:
+Validated Patterns and upstream Community Patterns are a natural progression from reference architectures with additional value. Here is a brief video to explain what patterns are all about:
 
 [![patterns-intro-video](https://img.youtube.com/vi/lI8TurakeG4/0.jpg)](https://www.youtube.com/watch?v=lI8TurakeG4)
 
