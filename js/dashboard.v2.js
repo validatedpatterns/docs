@@ -320,7 +320,7 @@ function getJSON(url, callback, ...args) {
   jsonRequest.send(null);
 }
 
-function renderSingleBadge (key, envLabel, envLink, branchLink, badge_url) {
+function renderSingleBadge (key, field, envLabel, envLink, branchLink, badge_url) {
     var json_obj = JSON.parse(this.responseText)
     var branchLabel = json_obj.message
     var color = json_obj.color
@@ -341,11 +341,11 @@ function renderSingleBadge (key, envLabel, envLink, branchLink, badge_url) {
         badgeText += '<span class="ci-label-branch-' + color + '">' + branchLabel + '</span>'
     }
     badgeText += '</span>'
-    document.getElementById(key).outerHTML = badgeText
+    document.getElementById(key + '-' + field).outerHTML = badgeText
 }
 
-function renderBadgePlaceholder (key) {
-    return '<span id="' + key + '"><svg class="pf-c-spinner pf-m-md" role="progressbar" viewBox="0 0 100 100" aria-label="Loading..."><circle class="pf-c-spinner__path" cx="50" cy="50" r="45" fill="none" /></svg></span>'
+function renderBadgePlaceholder (key, field) {
+    return '<span id="' + key + '-' + field + '"><svg class="pf-c-spinner pf-m-md" role="progressbar" viewBox="0 0 100 100" aria-label="Loading..."><circle class="pf-c-spinner__path" cx="50" cy="50" r="45" fill="none" /></svg></span>'
 }
 
 function renderBadges (badges, field, value, links) {
@@ -363,8 +363,9 @@ function renderBadges (badges, field, value, links) {
   	     envLink = encodeURI(b.getURI())
          branchLink = encodeURI(repo_url(b.pattern));
     }
-    badgeText += renderBadgePlaceholder(b.string())
-    getJSON(b.getURI(), renderSingleBadge, b.string(), b.getLabel(field), envLink, branchLink,  b.getURI())
+    console.log(field)
+    badgeText += renderBadgePlaceholder(b.string(), field)
+    getJSON(b.getURI(), renderSingleBadge, b.string(), field, b.getLabel(field), envLink, branchLink,  b.getURI())
   })
   badgeText += '</div>'
   return badgeText
