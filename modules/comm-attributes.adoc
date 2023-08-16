@@ -7,7 +7,7 @@
 //:prewrap!:
 //Solution name
 //:rh-solution-name: Validated Patterns
-:solution-name-upstream: Hybrid Cloud Patterns
+:solution-name-upstream: Validated Patterns
 //:solution-version: Update later when we start using versioned releases
 //Patterns
 :aeg-pattern: Ansible Edge GitOps pattern
@@ -69,6 +69,8 @@
 :insights-advisor-url: link:https://console.redhat.com/openshift/insights/advisor/[Insights Advisor]
 :hybrid-console-first: Red Hat Hybrid Cloud Console
 :hybrid-console: Hybrid Cloud Console
+:hybrid-console-url: https://console.redhat.com/
+:hybrid-console-ocp-url: https://console.redhat.com/openshift
 //ACM
 :rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
 :rh-rhacm: RHACM

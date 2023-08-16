@@ -1,0 +1,95 @@
+---
+menu:
+  learn:
+    parent: Infrastructure
+title: Using the Validated Patterns Operator (asciidoc)
+aliases: /infrastructure/using-validated-pattern-operator-adoc/
+weight: 40
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+= About the {validated-patterns-op}
+
+You use the {validated-patterns-op} to install and manage {solution-name-upstream}. Use the {hybrid-console-first} to install the {validated-patterns-op}. After installing the Operator, you can create an instance where you can specify the details for your pattern. The {validated-patterns-op} then installs and manages the required assets and artifacts that are required for the pattern.
+
+//Include Procedure module here
+[id="installing-validated-patterns-operator_{context}"]
+== Installing the {validated-patterns-op}
+
+.Prerequisites
+Access to an {ocp} cluster using an account with cluster-admin permissions.
+
+.Procedure
+
+. Navigate in the {hybrid-console-first} to the *Operators* → *OperatorHub* page.
+
+. Scroll or type a keyword into the *Filter by keyword* box to find the Operator you want. For example, type `validated patterns` to find the {validated-patterns-op}.
+
+. Select the Operator to display additional information.
++
+[NOTE]
+====
+Choosing a Community Operator warns that Red Hat does not certify Community Operators; you must acknowledge the warning before continuing.
+====
+
+. Read the information about the Operator and click *Install*.
+
+. On the *Install Operator* page:
+
+.. Select an *Update channel* (if more than one is available).
+
+.. Select a *Version* (if more than one is available).
+
+.. Select an *Installation mode*:
+*** *All namespaces on the cluster (default)* installs the Operator in the default `openshift-operators` namespace to watch and be made available to all namespaces in the cluster. This option is not always available.
+*** *A specific namespace on the cluster* allows you to choose a specific, single namespace in which to install the Operator. The Operator will only watch and be made available for use in this single namespace.
+
+.. Select *Automatic* or *Manual* approval strategy.
+
+. Click *Install* to make the Operator available to the selected namespaces on this {ocp} cluster.
+
+.Verification
+To confirm that the installation is successful:
+
+. Navigate to the *Operators* → *Installed Operators* page.
+
+. Check that the Operator is installed in the selected namespace and its status is `Succeeded`.
+
+//Include Procedure module here
+[id="create-pattern-instance_{context}"]
+== Creating a pattern instance
+
+.Prerequisites
+The {validated-patterns-op} is successfully installed in the relevant namespace.
+
+.Procedure
+
+. Navigate to the *Operators* → *Installed Operators* page.
+
+. Click the installed *{validated-patterns-op}*.
+
+. Under the *Details* tab, in the *Provided APIs* section, in the
+*Pattern* box, click *Create Instance* that displays the *Create Pattern* page.
+
+. On the the *Create Pattern* page, select *Form view* and enter information in the following fields:
+
+** *Name* - A name for the pattern deployment that is used in the projects that you created.
+** *Labels* - Apply any other labels you might need for deploying this pattern.
+** *Cluster Group Name* - Select a cluster group name to identify the type of cluster where this pattern is being deployed. For example, if you are deploying the {ie-pattern}, the cluster group name is `datacenter`. If you are deploying the {mcg-pattern}, the cluster group name is `hub`.
++
+To know the cluster group name for the patterns that you want to deploy, check the relevant pattern-specific requirements.
+. Expand the *Git Config* section to reveal the options and enter the required information.
+.. Change the *Target Repo* URL to your forked repository URL. For example, `+https://github.com/validatedpatterns/<pattern_name>+` to `+https://github.com/<your-git-username>/<pattern-name>+`
+.. Optional: You might need to change the *Target Revision* if it is marked `stable` or if it has a specific a version number. For example, `v2.1`, it might be `main`, or it might be a new branch that you've created, `my-branch`.
+. Ensure that you have made any required changes to your `values-*.yaml` files locally and pushed them to your forked repository on the correct branch or target that you chose in the previous step.
+. Click *Create*.
+
+.Verification
+
+The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
+
+For more information about post-installation instructions for a pattern, see its _Getting started_ page.
