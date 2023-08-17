@@ -324,14 +324,18 @@ function renderSingleBadge (key, field, envLabel, envLink, branchLink, badge_url
     var json_obj = JSON.parse(this.responseText)
     var branchLabel = json_obj.message
     var color = json_obj.color
+    var nightlyLabel = ""
     if (badge_url.endsWith("stable-badge.json") ) {
 	    var badgeClass = "ci-label-environment-stable";
 	} else if (badge_url.endsWith("prerelease-badge.json") ) {
 	    var badgeClass = "ci-label-environment-prerelease";
+    } else if (badge_url.endsWith("nightly-badge.json") ) {
+	    var badgeClass = "ci-label-environment-prerelease";
+        nightlyLabel = "(nightly build)"
 	}
     badgeText = '<span class="ci-label">'
     if (envLink != null) {
-        badgeText += '<a href="' + envLink + '"><span class="' + badgeClass + '"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + '</span></a>'
+        badgeText += '<a href="' + envLink + '"><span class="' + badgeClass + '"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + ' ' + nightlyLabel + '</span></a>'
     } else {
         badgeText += '<span class="' + badgeClass + '"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + '</span>'
     }
@@ -461,12 +465,12 @@ function getBadges (xmlText, bucket_url, badge_set) {
     key = entries[i].childNodes[0].nodeValue
     if (badge_set == "GA" && key.endsWith("stable-badge.json") ) {
 	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
-	} else if (badge_set == "early" && key.endsWith("prerelease-badge.json") ) {
+	} else if (badge_set == "early" && (key.endsWith("prerelease-badge.json") || key.endsWith("nightly-badge.json")) ) {
 	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
-	} else 	if (badge_set == "all" &&  key.endsWith("-badge.json") ) {
+	} else if (badge_set == "all" &&  key.endsWith("-badge.json") ) {
 	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
 	} else {
-	    console.log("Skipping: " + key + " - "+badge_set);
+	    console.log("Skipping: " + key);
 	}
   }
 
