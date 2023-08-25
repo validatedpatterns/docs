@@ -620,3 +620,4 @@ zh
 zj
 zja
 zk
+Gitea
