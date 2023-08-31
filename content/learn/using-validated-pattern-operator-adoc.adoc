@@ -14,14 +14,14 @@ include::modules/comm-attributes.adoc[]
 
 = About the {validated-patterns-op}
 
-You use the {validated-patterns-op} to install and manage {solution-name-upstream}. Use the {hybrid-console-first} to install the {validated-patterns-op}. After installing the Operator, you can create an instance where you can specify the details for your pattern. The {validated-patterns-op} then installs and manages the required assets and artifacts that are required for the pattern.
+You can use the {validated-patterns-op} to install and manage {solution-name-upstream}. Use the {hybrid-console-first} to install the {validated-patterns-op}. After installing the Operator, you can create an instance where you can specify the details for your pattern. The {validated-patterns-op} then installs and manages the required assets and artifacts that the pattern requires.
 
 //Include Procedure module here
 [id="installing-validated-patterns-operator_{context}"]
 == Installing the {validated-patterns-op}
 
 .Prerequisites
-Access to an {ocp} cluster using an account with cluster-admin permissions.
+* Access to an {ocp} cluster using an account with cluster-admin permissions.
 
 .Procedure
 
