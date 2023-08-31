@@ -2,7 +2,7 @@
 menu:
   learn:
     parent: Infrastructure
-title: Using the Validated Patterns Operator (asciidoc)
+title: Using the Validated Patterns Operator
 aliases: /infrastructure/using-validated-pattern-operator-adoc/
 weight: 40
 ---
@@ -83,8 +83,8 @@ The {validated-patterns-op} is successfully installed in the relevant namespace.
 +
 To know the cluster group name for the patterns that you want to deploy, check the relevant pattern-specific requirements.
 . Expand the *Git Config* section to reveal the options and enter the required information.
-.. Change the *Target Repo* URL to your forked repository URL. For example, `+https://github.com/validatedpatterns/<pattern_name>+` to `+https://github.com/<your-git-username>/<pattern-name>+`
-.. Optional: You might need to change the *Target Revision* if it is marked `stable` or if it has a specific a version number. For example, `v2.1`, it might be `main`, or it might be a new branch that you've created, `my-branch`.
+.. Change the *Target Repo* URL to your forked repository URL. For example, change `+https://github.com/validatedpatterns/<pattern_name>+` to `+https://github.com/<your-git-username>/<pattern-name>+`
+.. Optional: You might need to change the *Target Revision* field. The default value is `HEAD`. However, you can also provide a value for a branch, tag, or commit that you want to deploy. For example, `v2.1`, `main`, or a branch that you created, `my-branch`.
 . Ensure that you have made any required changes to your `values-*.yaml` files locally and pushed them to your forked repository on the correct branch or target that you chose in the previous step.
 . Click *Create*.
 
