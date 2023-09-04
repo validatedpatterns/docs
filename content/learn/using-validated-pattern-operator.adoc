@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Infrastructure
 title: Using the Validated Patterns Operator
-aliases: /infrastructure/using-validated-pattern-operator-adoc/
+aliases: /infrastructure/using-validated-pattern-operator/
 weight: 40
 ---
 
