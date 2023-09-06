@@ -91,12 +91,12 @@ There are two approaches to secret handling with validated patterns:
 - Using special configuration files. This is fine for initial development but not for production.
 - Using a Cloud Native secrets handling tool e.g. [Vault](https://www.vaultproject.io/docs/platform/k8s) or [Conjur](https://www.conjur.org/solutions/secrets-management/)
 
-Some of the validated patterns use configuration files (for now), while others, like the [Multicloud GitOps](https://hybrid-cloud-patterns.io/multicloud-gitops/), use Vault. See [Vault Setup](https://hybrid-cloud-patterns.io/secrets/vault/) for more info.
+Some of the validated patterns use configuration files (for now), while others, like the [Multicloud GitOps](https://validatedpatterns.io/multicloud-gitops/), use Vault. See [Vault Setup](https://validatedpatterns.io/secrets/vault/) for more info.
 
 ## Policy
 
 While many enterprise Cloud Native applications are open source, many of the products used require licenses or subscriptions. Policies help enforce license and subscription management and the channels needed to get access to those licenses or subscriptions.
 
-Similarly, in multicloud deployments and complex edge deployments, policies can help define and select the correct GitOps workflows that need to be managed for various sites or clusters. E.g. defining an OpenShift Cluster as a "Factory" in the [Industrial Edge](https://hybrid-cloud-patterns.io/industrial-edge/factory/) validated pattern provides a simple trigger to roll-out the entire Factory deployment. Policy is a powerful tool in automation.
+Similarly, in multicloud deployments and complex edge deployments, policies can help define and select the correct GitOps workflows that need to be managed for various sites or clusters. E.g. defining an OpenShift Cluster as a "Factory" in the [Industrial Edge](https://validatedpatterns.io/industrial-edge/factory/) validated pattern provides a simple trigger to roll-out the entire Factory deployment. Policy is a powerful tool in automation.
 
 Validated patterns use [Red Hat Advanced Cluster Management for Kubernetes](https://www.redhat.com/en/technologies/management/advanced-cluster-management) to control clusters and applications from a single console, with built-in security policies.

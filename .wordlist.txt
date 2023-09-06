@@ -580,6 +580,7 @@ userid
 useroperator
 usr
 util
+validatedpatterns
 vcpu
 vcpus
 vdvkgdtuxkeqf

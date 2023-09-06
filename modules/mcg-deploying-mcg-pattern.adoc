@@ -22,7 +22,7 @@ public or private cloud by using https://console.redhat.com/openshift/create[Red
 
 .Procedure
 
-. https://hybrid-cloud-patterns.io/learn/quickstart/[Install the tooling dependencies].
+. https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
 +
 . Fork the https://github.com/hybrid-cloud-patterns/multicloud-gitops[multicloud-gitops] repository on GitHub.
 . Clone the forked copy of this repository.
@@ -112,4 +112,4 @@ Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
 image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
 
 
-As part of this pattern, HashiCorp Vault has been installed. Refer to the section on https://hybrid-cloud-patterns.io/secrets/vault/[Vault].
+As part of this pattern, HashiCorp Vault has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].

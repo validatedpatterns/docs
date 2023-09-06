@@ -80,4 +80,4 @@ The config-demo namespace uses a deployment of the Red Hat Universal Base Image 
 
 One of the next things we are committed to delivering in the new year is a pattern to extend the concept of GitOps to include elements that are outside of OpenShift and Kubernetes - specifically Red Hat Enterprise Linux nodes, including Red Hat Enterprise Linux For Edge nodes, as well as Red Hat Ansible Automation Platform.
 
-We plan on developing a number of new patterns throughout the new year, which will showcase various technologies.  Keep watching this space for updates, and if you would like to get involved, visit our site at [https://hybrid-cloud-patterns.io](https://hybrid-cloud-patterns.io)!
+We plan on developing a number of new patterns throughout the new year, which will showcase various technologies.  Keep watching this space for updates, and if you would like to get involved, visit our site at [https://validatedpatterns.io](https://validatedpatterns.io)!

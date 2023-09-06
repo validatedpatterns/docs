@@ -130,7 +130,7 @@ applications:
 
 In the above example `acm` (ACM) is part of the main `datacenter` deployment, as is `cool-app`. However, `central-kafka` is part of `backend-storage`.
 
-The `path:` tag tells OpenShift GitOps where to find the Helm charts needed to deploy this application (refer back to the [charts directory description](https://hybrid-cloud-patterns.io/building-vps/structure/#the-charts-directory) for more details). OpenShift GitOps will continuously monitor for changes to artifacts in that location for updates to apply.
+The `path:` tag tells OpenShift GitOps where to find the Helm charts needed to deploy this application (refer back to the [charts directory description](https://validatedpatterns.io/building-vps/structure/#the-charts-directory) for more details). OpenShift GitOps will continuously monitor for changes to artifacts in that location for updates to apply.
 
 Each different site type would have its own values- file listing subscriptions and applications.
 
@@ -178,4 +178,4 @@ spec:
 
 ## Size matters
 
-If things are taking a long time to deploy, use the OpenShift console to check on memory and other potential capacity issues with the cluster. If running in a cloud you may wish to up the machine size. Check the [sizing charts](https://hybrid-cloud-patterns.io/infrastructure/).
+If things are taking a long time to deploy, use the OpenShift console to check on memory and other potential capacity issues with the cluster. If running in a cloud you may wish to up the machine size. Check the [sizing charts](https://validatedpatterns.io/infrastructure/).

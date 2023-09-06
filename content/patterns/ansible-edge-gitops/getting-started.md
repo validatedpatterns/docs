@@ -228,7 +228,7 @@ The container used for this pattern is the container [image](https://hub.docker.
 ## HashiCorp [Vault](https://www.vaultproject.io/)
 
 Vault is used as the authoritative source for the Kiosk ssh pubkey via the External Secrets Operator.
-As part of this pattern HashiCorp Vault has been installed. Refer to the section on [Vault](https://hybrid-cloud-patterns.io/secrets/vault/).
+As part of this pattern HashiCorp Vault has been installed. Refer to the section on [Vault](https://validatedpatterns.io/secrets/vault/).
 
 # Next Steps
 

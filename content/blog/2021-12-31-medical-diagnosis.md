@@ -22,15 +22,15 @@ The purpose of this pattern is to show how medical facilities can take full adva
 
 The image is uploaded to an S3-compatible object storage. This upload triggers an event from the storage, “a new image has been uploaded”,  that is sent into a Kafka topic. This topic is consumed by a KNative Eventing listener that triggers the launch of a KNative Serving instance. This instance is a containerimage  with the AI/ML model and the needed processing functions. Based on the information from the event it received, the container retrieves the image from the object store, pre-processes it, makes a prediction on the risk of pneumonia using the AI/ML model, and saves the result. A notification of those results is sent to the medical staff as well.
 
-[![physical-dataflow](https://hybrid-cloud-patterns.io/images/medical-edge/physical-dataflow.png)](https://hybrid-cloud-patterns.io/images/medical-edge/physical-dataflow.png)
+[![physical-dataflow](https://validatedpatterns.io/images/medical-edge/physical-dataflow.png)](https://validatedpatterns.io/images/medical-edge/physical-dataflow.png)
 
-For a recorded demo deploying the pattern and seeing the dashboards available to the user, check out our [docs page](https://hybrid-cloud-patterns.io/medical-diagnosis/)!
+For a recorded demo deploying the pattern and seeing the dashboards available to the user, check out our [docs page](https://validatedpatterns.io/medical-diagnosis/)!
 
 ## Pattern Deployment
 
 ---
 
-To deploy this pattern, follow the instructions outlined on the [getting-started](https://hybrid-cloud-patterns.io/medical-diagnosis/getting-started/) page.
+To deploy this pattern, follow the instructions outlined on the [getting-started](https://validatedpatterns.io/medical-diagnosis/getting-started/) page.
 
 ### What's happening?
 

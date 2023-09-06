@@ -272,8 +272,8 @@ Once the hub has been setup correctly and confirmed to be working, you can:
 1. Add a dedicated production cluster to [deploy production using ACM](/devsecops/production-cluster)
 1. Once the hub, production and devel clusters have been deployed you will want to check out and test the Multi-Cluster DevSecOps demo code. You can find that here TBD
 
-   a. Making [configuration changes](https://hybrid-cloud-patterns.io/devsecops/) with GitOps TBD
-   a. Making [application changes](https://hybrid-cloud-patterns.io/devsecops/) using DevOps TBD
+   a. Making [configuration changes](https://validatedpatterns.io/devsecops/) with GitOps TBD
+   a. Making [application changes](https://validatedpatterns.io/devsecops/) using DevOps TBD
 
 # Uninstalling
 
