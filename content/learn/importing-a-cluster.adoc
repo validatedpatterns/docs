@@ -9,17 +9,16 @@ aliases: /learn/importing-a-cluster/
 
 :toc:
 
-[id="importing-a-cluster"] 
-
+[id="importing-a-cluster"]
 == Importing a managed cluster
 
-Many validated patterns require importing a cluster into a managed group. These groups have specific application sets that will be deployed and managed. Some examples are factory clusters in the Industrial Edge pattern, or development clusters in Multi-cluster DevSecOps pattern. 
+Many validated patterns require importing a cluster into a managed group. These groups have specific application sets that will be deployed and managed. Some examples are factory clusters in the Industrial Edge pattern, or development clusters in Multi-cluster DevSecOps pattern.
 
 Red Hat Advanced Cluster Management (RHACM) can be used to create a cluster of a specific cluster group type. You can deploy a specific cluster that way if you have RHACM set up with credentials for deploying clusters. However in many cases an OpenShift cluster has already been created and will be imported into the set of clusters that RHACM is managing.
 
 While you can create and deploy in this manner this section concentrates on importing an existing cluster and designating a specific managed cluster group type.
 
-To deploy a cluster that can be imported into RHACM, use the `openshift-install` program provided at https://console.redhat.com/openshift/create[console.redhat.com]. You will need login credentials. 
+To deploy a cluster that can be imported into RHACM, use the `openshift-install` program provided at https://console.redhat.com/openshift/create[console.redhat.com]. You will need login credentials.
 
 == Importing a cluster using the RHACM User Interface
 
@@ -39,7 +38,7 @@ Using this method, you are done. Skip to the section in your pattern documentati
 
 == Other potential import tools
 
-There are a two other known ways to join a cluster to the RHACM hub. These methods are not supported but have been tested once. The patterns team no longer tests these methods. If these methods become supported we will maintain the documentation here. 
+There are a two other known ways to join a cluster to the RHACM hub. These methods are not supported but have been tested once. The patterns team no longer tests these methods. If these methods become supported we will maintain the documentation here.
 
 * Using the link:https://github.com/stolostron/cm-cli[cm-cli] tool
 * Using the link:https://github.com/open-cluster-management-io/clusteradm[clusteradm] tool
@@ -81,7 +80,7 @@ oc login
 ----
 
 +
-or 
+or
 
 +
 [source,terminal]
