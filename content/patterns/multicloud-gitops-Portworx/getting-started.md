@@ -25,7 +25,7 @@ service](https://console.redhat.com/openshift/create).
 
 ## Procedure
 
-1. For installation tooling dependencies, see link:https://hybrid-cloud-patterns.io/learn/quickstart/[Patterns quick start].
+1. For installation tooling dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
 
    {% include prerequisite-tools.md %}
 
@@ -94,7 +94,7 @@ To deploy the cluster by using the `pattern.sh` file, complete the following ste
 
 ## Multicloud GitOps application demos
 
-As part of this pattern, HashiCorp Vault has been installed. Refer to the section on [Vault](https://hybrid-cloud-patterns.io/secrets/vault/).
+As part of this pattern, HashiCorp Vault has been installed. Refer to the section on [Vault](https://validatedpatterns.io/secrets/vault/).
 
 <!--The Next steps heading is not inline with the chapter and only points to contibution links for help and feedback or bugs -->
 # Next steps
@@ -103,7 +103,7 @@ As part of this pattern, HashiCorp Vault has been installed. Refer to the sectio
 
 After the management hub is set up and works correctly, attach one or more managed clusters to the architecture (see diagrams below).
 
-For instructions on deploying the edge, refer to [Managed Cluster Sites](https://hybrid-cloud-patterns.io/patterns/multicloud-gitops-portworx/managed-cluster/).
+For instructions on deploying the edge, refer to [Managed Cluster Sites](https://validatedpatterns.io/patterns/multicloud-gitops-portworx/managed-cluster/).
 
 >Contribute to this pattern:
 {{% button text="Help & Feedback" url="https://groups.google.com/g/hybrid-cloud-patterns" %}}

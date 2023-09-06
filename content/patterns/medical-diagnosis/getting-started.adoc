@@ -15,7 +15,7 @@ aliases: /medical-diagnosis/getting-started/
 . S3-capable Storage set up in your public/private cloud for the x-ray images
 . The helm binary, see link:https://helm.sh/docs/intro/install/[here]
 
-For installation tooling dependencies, see link:https://hybrid-cloud-patterns.io/learn/quickstart/[Patterns quick start].
+For installation tooling dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
 
 The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern
 there is no dedicated Hub / Edge cluster for the *Medical Diagnosis* pattern.

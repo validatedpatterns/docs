@@ -39,7 +39,7 @@ the pay-as-you-go OpenShift managed service.
 | ------------------------------ |
 | [![Installing a validated pattern](https://img.youtube.com/vi/N6XPh-9XZAM/mqdefault.jpg "Installing a validated pattern")](https://youtu.be/N6XPh-9XZAM) |
 
-Start by [deploying](https://hybrid-cloud-patterns.io/multicloud-gitops/getting-started/) the Multi-cloud GitOps pattern on AWS.
+Start by [deploying](https://validatedpatterns.io/multicloud-gitops/getting-started/) the Multi-cloud GitOps pattern on AWS.
 
 Next, you'll need to create a fork of the [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops/)
 repo.  Go there in a browser, make sure you’re logged in to GitHub, click the
@@ -48,9 +48,9 @@ fork" button.
 
 Now you have a copy of the pattern that you can make changes to.  You can read
 more about the Multi-cloud GitOps pattern on our [community
-site](https://hybrid-cloud-patterns.io/multicloud-gitops/)
+site](https://validatedpatterns.io/multicloud-gitops/)
 
-Next, [install the Validated Patterns operator](https://hybrid-cloud-patterns.io/infrastructure/using-validated-pattern-operator/) from Operator Hub.
+Next, [install the Validated Patterns operator](https://validatedpatterns.io/infrastructure/using-validated-pattern-operator/) from Operator Hub.
 
 And finally, click through to the installed operator, and select the `Create
 instance` button and fill out the Create a Pattern form.  Most of the defaults
@@ -150,7 +150,7 @@ should be delivered to the cluster.
 
 `.labels` tells ACM how to decide which clusters get this site configuration.  If
 you were building and [importing
-clusters](https://hybrid-cloud-patterns.io/industrial-edge/factory/) yourself,
+clusters](https://validatedpatterns.io/industrial-edge/factory/) yourself,
 these are the labels you would need to specify during the import process.  You
 can specify different and/or additional labels, but the default is to use
 `clusterGroup={name of the group}`

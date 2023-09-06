@@ -60,7 +60,7 @@ If you've never deployed OpenShift before, you could try [ROSA](https://cloud.re
 Next, you'll need to create a fork of the [argo-rollouts](https://github.com/hybrid-cloud-patterns/argo-rollouts/) repo.
 Go there in a browser, make sure you’re logged in to GitHub, click the “Fork” button, and confirm the destination by clicking the big green "Create fork" button.
 
-Next, [install the Validated Patterns operator](https://hybrid-cloud-patterns.io/infrastructure/using-validated-pattern-operator/) from Operator Hub.
+Next, [install the Validated Patterns operator](https://validatedpatterns.io/infrastructure/using-validated-pattern-operator/) from Operator Hub.
 
 And finally, click through to the installed operator, and select the `Create
 instance` button and fill out the Create a Pattern form.  Most of the defaults

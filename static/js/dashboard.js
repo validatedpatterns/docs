@@ -95,7 +95,7 @@ function get_shield_url(badge, label, links) {
 }
 
 function get_key_url(color, label, links) {
-    uri = 'https://hybrid-cloud-patterns.io/'+color+'.json';
+    uri = 'https://validatedpatterns.io/'+color+'.json';
     base = 'https://img.shields.io/endpoint?style=flat&logo=git&logoColor=white';
 
     base = base +'&link='+ encodeURI("/") + '&link=' + encodeURI(uri);
@@ -150,7 +150,7 @@ function jenkins_base_url(key) {
 }
 
 function pattern_url(key) {
-    const prefix = 'https://hybrid-cloud-patterns.io/patterns/'
+    const prefix = 'https://validatedpatterns.io/patterns/'
     const dictionary = {
 	aegitops: "ansible-edge-gitops",
 	devsecops: "devsecops",

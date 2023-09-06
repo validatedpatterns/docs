@@ -1,6 +1,6 @@
 # Hybrid Cloud Patterns documentation site
 
-This project contains the new proof-of-concept documentation site for hybrid-cloud-patterns.io
+This project contains the new proof-of-concept documentation site for validatedpatterns.io
 
 You can build this site using [Hugo](https://gohugo.io/).
 

@@ -16,7 +16,7 @@ This demo in particular can be customized in a number of ways that might be very
 
 Hopefully we are all familiar with GitHub.  If you are not GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.  Our Industrial Edge GitOps repository is available in our [Hybrid Cloud Patterns GitHub](https://github.com/hybrid-cloud-patterns "Hybrid Cloud Patterns Homepage") organization.
 
-To fork this repository, and deploy the Industrial Edge pattern, follow the steps found in our [Getting Started](https://hybrid-cloud-patterns.io/industrial-edge/getting-started "Industrial Edge Getting Started Guide") section.  This will allow you to follow the next few HOWTO guides in this section.
+To fork this repository, and deploy the Industrial Edge pattern, follow the steps found in our [Getting Started](https://validatedpatterns.io/industrial-edge/getting-started "Industrial Edge Getting Started Guide") section.  This will allow you to follow the next few HOWTO guides in this section.
 
 Our sensors have been configured to send data relating to the vibration of the devices.  To show the power of GitOps, and keeping state in a git repository, we can make a change to the config map of one of the sensors to detect and report data on temperature. This is done via a variable called *SENSOR_TEMPERATURE_ENABLED* that is initially set to false.  Setting this variable to true will trigger the GitOps engine to synchronize the application, restart the machine sensor and apply the change.
 

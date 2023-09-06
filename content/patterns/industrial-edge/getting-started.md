@@ -235,9 +235,9 @@ Once the data center has been setup correctly and confirmed to be working, you c
 1. Add a dedicated cluster to [deploy the factory pieces using ACM](/industrial-edge/factory)
 2. Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](../application/)
 
-   a. Making [configuration changes](https://hybrid-cloud-patterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
-   a. Making [application changes](https://hybrid-cloud-patterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
-   a. Making [AI/ML model changes](https://hybrid-cloud-patterns.io/industrial-edge/application/#application-ai-model-changes-with-devops) with DevOps
+   a. Making [configuration changes](https://validatedpatterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
+   a. Making [application changes](https://validatedpatterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
+   a. Making [AI/ML model changes](https://validatedpatterns.io/industrial-edge/application/#application-ai-model-changes-with-devops) with DevOps
 
 # Uninstalling
 
