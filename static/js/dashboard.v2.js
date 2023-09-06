@@ -329,6 +329,8 @@ function renderSingleBadge (key, field, envLabel, envLink, branchLink, badge_url
 	    var badgeClass = "ci-label-environment-stable";
 	} else if (badge_url.endsWith("prerelease-badge.json") ) {
 	    var badgeClass = "ci-label-environment-prerelease";
+    } else if (badge_url.endsWith("operator-badge.json") ) {
+	    var badgeClass = "ci-label-environment-prerelease";
     } else if (badge_url.endsWith("nightly-badge.json") ) {
 	    var badgeClass = "ci-label-environment-prerelease";
         nightlyLabel = "(nightly build)"
@@ -465,7 +467,7 @@ function getBadges (xmlText, bucket_url, badge_set) {
     key = entries[i].childNodes[0].nodeValue
     if (badge_set == "GA" && key.endsWith("stable-badge.json") ) {
 	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
-	} else if (badge_set == "early" && (key.endsWith("prerelease-badge.json") || key.endsWith("nightly-badge.json")) ) {
+	} else if (badge_set == "early" && (key.endsWith("prerelease-badge.json") || key.endsWith("nightly-badge.json") || key.endsWith("operator-badge.json")) ) {
 	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
 	} else if (badge_set == "all" &&  key.endsWith("-badge.json") ) {
 	    badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
