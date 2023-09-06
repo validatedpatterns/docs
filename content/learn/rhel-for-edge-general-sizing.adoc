@@ -7,8 +7,11 @@ weight: 32
 aliases: /infrastructure/rhel-for-edge-general-sizing/
 ---
 
-# RHEL for Edge General Sizing
+:toc:
 
-## Recommended node host practices
+= RHEL for Edge General Sizing
+
+[id="recommended-node-host-practices"]
+== Recommended node host practices
 
 TBD
