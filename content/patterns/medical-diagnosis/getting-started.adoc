@@ -19,11 +19,11 @@ include::modules/comm-attributes.adoc[]
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *OpenShift \-> Clusters \-> Create cluster*.
+ ** Select *OpenShift* -> *Clusters* -> *Create cluster*.
  ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../medical-diagnosis/cluster-sizing[sizing your cluster].
 * A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
-. An S3-capable Storage set up in your public or private cloud for the x-ray images
-. The Helm binary, see link:https://helm.sh/docs/intro/install/[Installing Helm]
+* An S3-capable Storage set up in your public or private cloud for the x-ray images
+* The Helm binary, see link:https://helm.sh/docs/intro/install/[Installing Helm]
 For installation tooling dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
 
 [NOTE]
@@ -51,14 +51,14 @@ For information about creating the buckets on other cloud providers, see the fol
 = Utilities
 //AI: Update the use of community and VP post naming tier update
 
-To use the link:https://github.com/validatedpatterns/utilities[utilities] that are available, export some environment variables for your cloud provider. For example:
+To use the link:https://github.com/validatedpatterns/utilities[utilities] that are available, export some environment variables for your cloud provider.
 
-or AWS:
+.Example for AWS. Ensure that you replace values with your keys:
 
 [source,terminal]
 ----
-export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX # replace with your key
-export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX # replace with your key
+export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ----
 
 Create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or you can use the scripts that are provided in link:https://github.com/validatedpatterns/utilities[utilities] repository.
