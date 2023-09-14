@@ -5,6 +5,8 @@
 [id="about-openshift-cluster-sizing-mcg"]
 = About OpenShift cluster sizing for the Multicloud GitOps Pattern
 
+For information on minimum hardware requirements for an OpenShift cluster, refer to the {ocp} documentation for link:https://docs.openshift.com/container-platform/3.11/install/prerequisites.html#hardware[System and environment requirements].
+
 To understand cluster sizing requirements for the Multicloud GitOps pattern, consider the following components that the Multicloud GitOps pattern deploys on the datacenter or the hub OpenShift cluster:
 
 |===
@@ -25,12 +27,5 @@ To understand cluster sizing requirements for the Multicloud GitOps pattern, con
 | openshift-operators
 | OpenShift GitOps
 |===
-
-The following are the minimum requirements for sizing of nodes for OpenShift Container Platform 4.x:
-
-* Minimum 4 vCPU** (additional are strongly recommended)
-* Minimum 16 GB RAM** (additional memory is strongly recommended, especially if `etcd` is colocated on Control Planes)
-* Minimum 40 GB hard disk space for the file system containing `/var/`
-* Minimum 1 GB hard disk space for the file system containing `/usr/local/bin/`
 
 The Multicloud GitOps pattern also includes the Red Hat Advanced Cluster Management (RHACM) supporting operator that is installed by OpenShift GitOps using Argo CD.
