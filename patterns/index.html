@@ -341,7 +341,7 @@ a. Making configuration changes with GitOps a. Making application changes using 
 Uninstalling We currently do not support uninstalling this pattern.
 `,url:"https://validatedpatterns.io/patterns/industrial-edge/getting-started/",breadcrumb:"/patterns/industrial-edge/getting-started/"},"https://validatedpatterns.io/patterns/medical-diagnosis/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Medical Diagnosis pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select OpenShift -&gt; Clusters -&gt; Create cluster.
+Select OpenShift → Clusters → Create cluster.
 The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
 A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
 An S3-capable Storage set up in your public or private cloud for the x-ray images
@@ -352,9 +352,8 @@ For information about creating the buckets on other cloud providers, see the fol
 AWS S3
 Azure Blob Storage
 GCP Cloud Storage
-Utilities To use the utilities that are available, export some environment variables for your cloud provider. For example:
-or AWS:
-export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX # replace with your key export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX # replace with your key Create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or you can use the scripts that are provided in utilities repository.
+Utilities To use the utilities that are available, export some environment variables for your cloud provider.
+Example for AWS. Ensure that you replace values with your keys: export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or you can use the scripts that are provided in utilities repository.
 $ python s3-create.py -b mytest-bucket -r us-west-2 -p $ python s3-sync-buckets.py -s validated-patterns-md-xray -t mytest-bucket -r us-west-2 Example output Note the name and URL for the bucket for further pattern configuration. For example, you must update these values in a values-global.yaml file, where there is a section for s3:
 Preparing for deployment Procedure Fork the medical-diagnosis repository on GitHub. You must fork the repository because your fork will be updated as part of the GitOps and DevOps processes.
 Clone the forked copy of this repository.
