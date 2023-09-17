@@ -157,6 +157,15 @@ function pattern_url (key) {
 }
 
 function stringForKey (key) {
+  if (key == 'azr') {
+    return 'Azure'
+  }
+  if (key == 'gcp') {
+    return 'Google'
+  }
+  if (key == 'aws') {
+    return 'Amazon'
+  }
   if (key == 'aegitops') {
     return 'Ansible Edge'
   }
@@ -170,16 +179,16 @@ function stringForKey (key) {
     return 'Core GitOps'
   }
   if (key == 'medicaldiag') {
+    return 'Medical Diagnosis'
+  }
+  if (key == 'imageclass') {
     return 'Image Classification'
   }
-  if (key == 'azr') {
-    return 'Azure'
+  if (key == 'connvehicle') {
+    return 'Connected Vehicle'
   }
-  if (key == 'gcp') {
-    return 'Google'
-  }
-  if (key == 'aws') {
-    return 'Amazon'
+  if (key == 'retail') {
+    return 'Quarkus CoffeeShop'
   }
   return key
 }
