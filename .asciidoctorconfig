@@ -1,11 +1,10 @@
-:data-uri:
 :icons:
 :experimental:
 
 //:toc: macro
 //:toc-title:
-:imagesdir: static/images
-:includedir: modules
+:imagesdir: /static/images
+:includedir: /modules
 :prewrap!:
 //Solution name
 :rh-solution-name: Validated Patterns

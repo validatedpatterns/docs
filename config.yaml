@@ -45,3 +45,17 @@ menus:
     - name: Workshop
       url: https://play.validatedpatterns.io
       weight: 25
+module:
+  mounts:
+  - source: archetypes
+    target: archetypes
+  - source: content
+    target: content
+  - source: static
+    target: static
+  - source: layouts
+    target: layouts
+  - source: assets
+    target: assets
+  - source: modules
+    target: content
