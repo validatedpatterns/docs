@@ -1,0 +1,31 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="med-understanding-the-makefile-troubleshooting"]
+=== Understanding the Makefile
+
+The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn't required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a `make upgrade` which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
+
+[id="about-make-install-make-deploy-command"]
+==== About the make install and make deploy commands
+
+Running `make install` within the pattern application triggers a `make deploy` from `<pattern_directory>/common` directory. This initializes the `common` components of the pattern framework and install a helm chart in the `default` namespace. At this point, cluster services, such as {rh-rhacm-first} and {rh-gitops} are deployed.
+
+After components from the `common` directory are installed, the remaining tasks within the `make install` target run.
+//AI: Check which are these other tasks
+
+[id="about-make-vault-init-make-load-secrets-commands"]
+==== About the make vault-init and make load-secrets commands
+
+The {med-pattern} is integrated with {hashicorp-vault} and {eso-op} services for secrets management within the cluster. These targets install vault from a {helm-chart} and load the secret `(values-secret.yaml)` that you created during link:../getting-started/#preparing-for-deployment[Getting Started].
+
+If `values-secret.yaml` does not exist, make will exit with an error saying so. Furthermore, if the `values-secret.yaml` file does exist but is improperly formatted, {rh-ansible} exits with an error about being improperly formatted. To verify the format of the secret, see link:../getting-started/#preparing-for-deployment[Getting Started].
+
+[id="about-make-bootstrap-make-upgrade-commands"]
+==== About the make bootstrap and make upgrade commands
+The `make bootstrap` command is the target used for deploying the application specific components of the pattern. It is the final step in the initial `make install` target. You might want to consider running the `make upgrade` command instead of the `make bootstrap` command directly.
+
+Generally, running the `make upgrade` command is required when you encounter errors with the application pattern deployment. For instance, if a value was missed and the chart was not rendered correctly, executing `make upgrade` command after fixing the value would be necessary.
+
+You might want to review the `Makefile` for the `common` and `Medical Diagnosis` components, which are located in `common/Makefile` and `./Makefile` respectively.
+

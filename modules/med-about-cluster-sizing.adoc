@@ -1,0 +1,41 @@
+
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-openshift-cluster-sizing-med"]
+= About OpenShift cluster sizing for the {med-pattern}
+
+To understand cluster sizing requirements for the {med-pattern}, consider the following components that the {med-pattern} deploys on the datacenter or the hub OpenShift cluster:
+
+|===
+| Name | Kind | Namespace | Description
+
+| Medical Diagnosis Hub
+| Application
+| medical-diagnosis-hub
+| Hub GitOps management
+
+| {rh-gitops}
+| Operator
+| openshift-operators
+| {rh-gitops-short}
+
+| {rh-ocp-data-first}
+| Operator
+| openshift-storage
+| Cloud Native storage solution
+
+| {rh-amq-streams}
+| Operator
+| openshift-operators
+| AMQ Streams provides Apache Kafka access
+
+| {rh-serverless-first}
+| Operator
+| - knative-serving (knative-eventing)
+| Provides access to Knative Serving and Eventing functions
+|===
+
+//AI: Removed the following since we have CI status linked on the patterns page
+//[id="tested-platforms-cluster-sizing"]
+//== Tested Platforms

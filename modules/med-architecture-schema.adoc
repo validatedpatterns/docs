@@ -1,0 +1,29 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-architecture-med"]
+== About the architecture
+
+[IMPORTANT]
+====
+Presently, the {med-pattern} does not have an edge component. Edge deployment capabilities are planned as part of the pattern architecture for a future release.
+====
+
+image::medical-edge/edge-medical-diagnosis-marketing-slide.png[link="/images/medical-edge/edge-medical-diagnosis-marketing-slide.png"]
+
+Components are running on OpenShift either at the data center, at the medical facility, or public cloud running OpenShift.
+
+[id="about-physical-schema-med"]
+=== About the physical schema
+
+The following diagram shows the components that are deployed with the various networks that connect them.
+
+image::medical-edge/physical-network.png[link="/images/medical-edge/physical-network.png"]
+
+The following diagram shows the components that are deployed with the the data flows and API calls between them.
+
+image::medical-edge/physical-dataflow.png[link="/images/medical-edge/physical-dataflow.png"]
+
+== Recorded demo
+
+link:/videos/xray-deployment.svg[image:/videos/xray-deployment.svg[Demo\]]
