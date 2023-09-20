@@ -344,6 +344,11 @@ function renderSingleBadge (key, field, envLabel, envLink, branchLink, badge_url
 	    var badgeClass = "ci-label-environment-prerelease";
         nightlyLabel = "(nightly build)"
 	}
+
+    if ( envLink == "internal") {
+      envLink = json.jenkinsURL
+    }
+
     badgeText = '<span class="ci-label">'
     if (envLink != null) {
         badgeText += '<a href="' + envLink + '"><span class="' + badgeClass + '"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + ' ' + nightlyLabel + '</span></a>'
@@ -372,7 +377,7 @@ function renderBadges (badges, field, value, links) {
   badgeText = '<div class="pf-l-flex">'
   pBadges.forEach(b => {
     if ( links == "internal") {
-  	     envLink = encodeURI(b.getJenkinsURI())
+  	     envLink = "internal"
          branchLink = encodeURI(b.getJiraSearch());
     } else {
   	     envLink = encodeURI(b.getURI())
