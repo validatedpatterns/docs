@@ -346,7 +346,7 @@ function renderSingleBadge (key, field, envLabel, envLink, branchLink, badge_url
 	}
 
     if ( envLink == "internal") {
-      envLink = json.jenkinsURL
+      envLink = json_obj.jenkinsURL
     }
 
     badgeText = '<span class="ci-label">'
