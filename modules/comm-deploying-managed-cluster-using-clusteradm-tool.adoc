@@ -8,7 +8,7 @@
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *OpenShift* -> *Clusters* -> *Create cluster*.
+ ** Select *Services* -> *Containers* -> *Create cluster*.
 
 * https://github.com/open-cluster-management-io/clusteradm#install-the-clusteradm-command-line[The `clusteradm` tool]
 
