@@ -1,6 +1,6 @@
 ---
 title: Emerging Disease Detection
-date: 2023-10-01
+date: 2023-09-23
 validated: false
 summary: This pattern is based on a demo implementation of an automated data pipeline for sepsis analysis previously developed by Red Hat.
 products:
@@ -9,11 +9,11 @@ products:
 industries:
 - medical
 aliases: /emerging-disease-detection/
-pattern_logo: emerging-disease-detection.png
+// pattern_logo: emerging-disease-detection.png
 links:
   install: getting-started
   arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
-  help: https://groups.google.com/g/validatedpatterns
+  help: https://groups.google.com/g/hybrid-cloud-patterns
   bugs: https://github.com/validatedpatterns/emerging-disease-detection/issues
 ci: edd
 ---
