@@ -1,7 +1,7 @@
 ---
 title: Emerging Disease Detection
 date: 2023-10-01
-validated: true
+validated: false
 summary: This pattern is based on a demo implementation of an automated data pipeline for sepsis analysis previously developed by Red Hat.
 products:
 - Red Hat OpenShift Container Platform
