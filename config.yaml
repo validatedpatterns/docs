@@ -13,7 +13,7 @@ security:
 
 markup:
   asciidocExt:
-    attributes: {allow-uri-read, source-highlighter: rouge, icons: font, sectanchors}
+    attributes: {allow-uri-read, source-highlighter: rouge, icons: font, sectanchors, showtitle}
     safeMode: unsafe
     imagesdir: images
   tableOfContents:

@@ -2,7 +2,7 @@
 title: Medical Diagnosis
 date: 2021-01-19
 validated: true
-summary: This pattern is based on a demo implementation of an automated data pipeline for chest x-ray analysis previously developed by Red Hat.
+summary: This pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis previously developed by Red Hat.
 products:
 - Red Hat OpenShift Container Platform
 - Red Hat OpenShift Serverless
@@ -24,69 +24,82 @@ ci: medicaldiag
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-== Background
+//Module to be included
+//:_content-type: CONCEPT
+//:imagesdir: ../../images
+[id="about-med-diag-pattern"]
+= About the {med-pattern}
 
-This Validated Pattern is based on a demo implementation of an automated data pipeline for chest Xray
-analysis previously developed by Red Hat.  The original demo can be found link:https://github.com/red-hat-data-services/jumpstart-library[here]. It was developed for the US Department of Veteran Affairs.
+Background::
 
-This validated pattern includes the same functionality as the original demonstration. The difference is
-that we use the _GitOps_ framework to deploy the pattern including operators, creation of namespaces,
-and cluster configuration. Using GitOps provides a much more efficient means of doing continuous deployment.
+This validated pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that was previously developed by {redhat}. You can find the original demonstration link:https://github.com/red-hat-data-services/jumpstart-library[here]. It was developed for the US Department of Veteran Affairs.
 
-What does this pattern do?:
+This validated pattern includes the same functionality as the original demonstration. The difference is that this solution uses the GitOps framework to deploy the pattern including Operators, creation of namespaces, and cluster configuration. Using GitOps provides an efficient means of implementing continuous deployment.
 
-* Ingest chest Xrays from a simulated Xray machine and puts them into an objectStore based on Ceph.
-* The objectStore sends a notification to a Kafka topic.
-* A KNative Eventing Listener to the topic triggers a KNative Serving function.
+Workflow::
+
+* Ingest chest X-rays from a simulated X-ray machine and puts them into an `objectStore` based on Ceph.
+* The `objectStore` sends a notification to a Kafka topic.
+* A KNative Eventing listener to the topic triggers a KNative Serving function.
 * An ML-trained model running in a container makes a risk assessment of Pneumonia for incoming images.
-* A Grafana dashboard displays the pipeline in real time, along with images incoming, processed and anonymized, as well as full metrics collected from Prometheus.
+* A Grafana dashboard displays the pipeline in real time, along with images incoming, processed, anonymized, and full metrics collected from Prometheus.
 
 This pipeline is showcased link:https://www.youtube.com/watch?v=zja83FVsm14[in this video].
 
 image::medical-edge/dashboard.png[link="/images/medical-edge/dashboard.png"]
 
-This validated pattern is still under development. Any questions or concerns
-please contact mailto:jrickard@redhat.com[Jonny Rickard] or mailto:claudiol@redhat.com[Lester Claudio].
+//[NOTE]
+//====
+//This validated pattern is still under development. If you have any questions or concerns contact mailto:jrickard@redhat.com[Jonny Rickard] or mailto:claudiol@redhat.com[Lester Claudio].
+//====
 
-=== Solution elements
+[id="about-solution-med"]
+== About the solution elements
 
-* How to use a GitOps approach to keep in control of configuration and operations
+The solution aids the understanding of the following:
+
+* How to use a GitOps approach to keep in control of configuration and operations.
 * How to deploy AI/ML technologies for medical diagnosis using GitOps.
 
-=== Red Hat Technologies
+The {med-pattern} uses the following products and technologies:
 
-* {rh-ocp} (Kubernetes)
-* {rh-gitops} (ArgoCD)
-* Red Hat AMQ Streams (Apache Kafka Event Broker)
-* Red Hat OpenShift Serverless (Knative Eventing, Knative Serving)
-* Red Hat OpenShift Data Foundations (Cloud Native storage)
-* Grafana dashboard (OpenShift Grafana Operator)
-* Open Data Hub
+* {rh-ocp} for container orchestration
+* {rh-gitops}, a GitOps continuous delivery (CD) solution
+* {rh-amq-first}, an event streaming platform based on the Apache Kafka
+* {rh-serverless-first} for event-driven applications
+* {rh-ocp-data-first} for cloud native storage capabilities
+* {grafana-op} to manage and share Grafana dashboards, data sources, and so on
 * S3 storage
 
-== Architecture
+[id="about-architecture-med"]
+== About the architecture
 
-In this iteration of the pattern *there is no edge component* . Future releases have planned Edge deployment capabilities as part of the pattern architecture.
+[IMPORTANT]
+====
+Presently, the {med-pattern} does not have an edge component. Edge deployment capabilities are planned as part of the pattern architecture for a future release.
+====
 
 image::medical-edge/edge-medical-diagnosis-marketing-slide.png[link="/images/medical-edge/edge-medical-diagnosis-marketing-slide.png"]
 
-Components are running on OpenShift either at the data center or at the medical facility (or public cloud running OpenShift).
+Components are running on OpenShift either at the data center, at the medical facility, or public cloud running OpenShift.
 
-=== Physical Schema
+[id="about-physical-schema-med"]
+=== About the physical schema
 
-The diagram below shows the components that are deployed with the various networks that connect them.
+The following diagram shows the components that are deployed with the various networks that connect them.
 
 image::medical-edge/physical-network.png[link="/images/medical-edge/physical-network.png"]
 
-The diagram below shows the components that are deployed with the the data flows and API calls between them.
+The following diagram shows the components that are deployed with the the data flows and API calls between them.
 
 image::medical-edge/physical-dataflow.png[link="/images/medical-edge/physical-dataflow.png"]
 
-== Recorded Demo
+== Recorded demo
 
 link:/videos/xray-deployment.svg[image:/videos/xray-deployment.svg[Demo\]]
 
-== What Next
+[id="next-steps_med-diag-index"]
+== Next steps
 
 * Getting started link:getting-started[Deploy the Pattern]
-* Visit the link:https://github.com/hybrid-cloud-patterns/medical-diagnosis[repository]
+//We have relevant links on the patterns page
