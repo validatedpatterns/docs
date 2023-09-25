@@ -1,0 +1,85 @@
+---
+title: Emerging Disease Detection
+date: 2023-10-01
+validated: false
+summary: This pattern is based on a demo implementation of an automated data pipeline for sepsis analysis previously developed by Red Hat.
+products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift Serverless
+industries:
+- medical
+aliases: /emerging-disease-detection/
+pattern_logo: emerging-disease-detection.png
+links:
+  install: getting-started
+  arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
+  help: https://groups.google.com/g/validatedpatterns
+  bugs: https://github.com/validatedpatterns/emerging-disease-detection/issues
+ci: edd
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]:
+
+== Background
+
+Use case::
+
+* Use a AI automation at the edge to detect emerging diseases.
+* Use an event driven architecture 
+* Securely manage secrets across the deployment.
++
+[NOTE]
+====
+Based on the requirements of a specific implementation, certain details might differ. However, all validated patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
+====
+
+Background::
+No technology is better poised to transform Healthcare as AI and Business Process Automation. Coupled with an Edge Architecture, these continuous monitoring and detection systems can scale to provide early warning intervention and measurable process improvements, anywhere. 
+
+Detection of disease states like sepsis, stroke, pulmonary embolism, and heart attack requires low-latency, broadband, asynchronous streaming capabilities. We have prototyped an early warning platform built with a distributed edge architecture, fed by at-home post-operative monitoring (fitbit, smart phone, wifi devices) and automated Clinical care escalation and coordination processes. This platform has the potential to significantly lower network traffic and cost while providing early warning interventions for our nation's Veterans.
+
+[id="about-solution"]
+== About the solution
+
+To demonstrate the effectiveness of the solution this pattern focuses on the specific problem of Sepsis. Sepsis is the body's extreme response to an infection. It is a life-threatening medical emergency. Sepsis is a costly and life threatening condition that can result in multi-organ failure. Beating conditions like sepsis requires rapid detection and mitigation of risks. With the immune system compromised, recovery at home is often preferred to minimize the risk for cross-infections, yet medical teams often lack the capability to perform constant surveillance for emerging risks across their patient cohorts, especially in rural settings. In this session, we will demonstrate an early warning system driven by Clinical AI at the Edge, fed by at-home post-operative monitoring and automated Clinical care escalation and coordination processes. 
+
+Sepsis is a costly and life threatening condition that can result in multi-organ failure. Beating conditions like sepsis requires rapid detection and mitigation of risks. With the immune system compromised, recovery at home is often preferred to minimize the risk for cross-infections, yet medical teams often lack the capability to perform constant surveillance for emerging risks across their patient cohorts, especially in rural settings. In this demonstration, we will follow a vulnerable, post-operative patient, Alani, as she recovers from surgery in her home setting. 
+
+== Technology Highlights:
+* Event-Driven Architecture
+* Mobile Engagement 
+* Machine Learning
+* BPM+ Process Automation
+
+
+//figure 1 originally
+.Overview of the solution reference architecture
+image::emerging-disease-detection/edd-reference-architecture.png[Reference Architecture]
+
+In the following figure, logically, this solution can be viewed as being composed of an automation component, unified management including secrets management, and the clusters under management, all running on top of a user-chosen mixture of on-premise data centers and public clouds.
+
+//figure 2 originally
+.Sepsis Detection Workflow
+image::emerging-disease-detection/edd-sepsis-detection-ml-workflow.png[ML Workflow]
+
+[id="about-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Platform]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift GitOps]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+
+https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform]::
+Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+
+Hashicorp Vault::
+Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+
+This solution also uses a variety of _observability tools_ including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
