@@ -9,7 +9,7 @@ products:
 industries:
 - medical
 aliases: /emerging-disease-detection/
-pattern_logo: emerging-disease-detection.png
+// pattern_logo: emerging-disease-detection.png
 links:
   install: getting-started
   arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
