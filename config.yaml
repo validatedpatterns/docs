@@ -11,6 +11,9 @@ security:
   exec:
     allow: ["^dart-sass-embedded$", "^go$", "^npx$", "^postcss$", "^asciidoctor$"]
     osEnv: (?i)^(GEM_PATH)$
+  funcs:
+    getenv:
+    - ^HUGO_
 
 markup:
   asciidocExt:
@@ -55,7 +58,5 @@ module:
     target: static
   - source: layouts
     target: layouts
-  - source: assets
-    target: assets
   - source: modules
     target: content
