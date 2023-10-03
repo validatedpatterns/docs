@@ -10,33 +10,55 @@ aliases: /requirements/sandbox/
 
 :toc:
 
-= Requirements for the Sandbox Tier 
+= The Validated Patterns 'Sandbox' Tier 
 
 [id="tldr"]
 == tl;dr
 
-* TBA
+The Sandbox tier is an inclusive and low-risk way to become associated with the Validated Patterns initiative.  As long as the patterns framework is your starting point, and you include some minimal documentation, then you are welcome here.
+
+[id="onboarding-existing-implementations"]
+== Onboarding Existing Implementations
+
+TODO: A short note on the value of converting existing implementations
+
+The Validated Patterns team has a preference for empowering other, and not
+taking credit for their work.
+
+Where there is an existing application/demo, there is also a strong preference for the originating team to own any changes that are needed for the implementation to become a Validated Pattern.  Alternatively, if the Validated Patterns team drives the conversion, then in order to prevent confusion and duplicated efforts, we are likely to ask for a commitment to phase out use of the previous implementation for future engagements such as demos, presentations, and workshops.
+
+The goal is to avoid bringing a parallel implementation into existence which divides engineering resources, and creates confusion internally and with customers as the implementations drift apart.
+
+In both scenarios the originating team can choose where to host the primary repository, will be given admin permissions to any fork in https://github.com/validatedpatterns , and will receive on-going assistance from the Validated Patterns team.
 
 [id="requirements"]
 == Requirements
 
-General requirements for all Validated patterns
+General requirements for all Validated Patterns
 
-[id="base"]
-=== Base
+[id="must"]
+=== Must
 
-. Patterns *MUST* include a top-level README highlighting the business problem and how the pattern solves it
-. Patterns *MUST* include an architecture drawing. The specific tool/format is flexible as long as the meaning is clear.
-. Patterns *MUST* undergo an informal architecture review by a community leader to ensure that the solution has the right products, and they are generally being used as intended.
+. Sandbox Patterns *MUST* continue to meet the following criteria to remain in the Sandbox tier
+. Sandbox Patterns *MUST* conform to the common technical link:/requirements/implementation/[implementation requirements]
+. Tested Patterns *MUST* be able to be deployed onto a freshly deployed OpenShift cluster without prior modification or tuning
+. Sandbox Patterns *MUST* include a top-level README highlighting the business problem and how the pattern solves it
+. Sandbox Patterns *MUST* include an architecture drawing. The specific tool/format is flexible as long as the meaning is clear.
+. Sandbox Patterns *MUST* undergo an informal technical review by a community leader to ensure that it meets basic reuse standards
+. Sandbox Patterns *MUST* undergo an informal architecture review by a community leader to ensure that the solution has the right components, and they are generally being used as intended.
 +
 For example: not using a database as a message bus.
 As community leaders, contributions from within Red Hat may be subject to a higher level of scrutiny
 While we strive to be inclusive, the community will have quality standards and generally using the framework does not automatically imply a solution is suitable for the community to endorse/publish.
-
-. Patterns *MUST* undergo an informal technical review by a community leader to ensure that it conforms to the link:/requirements/implementation/[technical requirements] and meets basic reuse standards
-. Patterns *MUST* document their support policy
+. Sandbox Patterns *MUST* document their support policy
 +
-REVIEW: It is anticipated that most community patterns will be supported by the community on a best-effort basis, but this should be stated explicitly.
+It is anticipated that most sandbox patterns will be supported by the community on a best-effort basis, but this should be stated explicitly.
 The validated patterns team commits to maintaining the framework but will also accept help.
 
-. Patterns SHOULD include a recorded demo highlighting the business problem and how the pattern solves it
+
+[id="can"]
+=== Can
+
+. Sandbox Patterns (including works-in-progress) CAN be hosted in the https://gitops.com/validatedpatterns-sandbox GitHub organization
+. Sandbox Patterns CAN be listed on the https://validatedpatterns.io site
+. Sandbox Patterns meeting additional criteria CAN be nominated for promotion to the link:/requirements/tested/[Tested tier]
