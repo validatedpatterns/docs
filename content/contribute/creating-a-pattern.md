@@ -11,9 +11,9 @@ The validated patterns community has relied on existing architectures that have 
 
 The validated patterns framework is much more of a best practice of structuring the various configuration assets and integrating with GitOps and DevOps tools.
 
-Therefore the question really is: how do I move my successful architecture solution into a sustainable GitOps/DevOps framework? And that is what we are going to do in this section.
+Therefore the question really is: how do I move my successful architecture solution into a sustainable GitOps/DevOps framework? And that is what we are going to address this section.
 
-So how do you take a current application workload and move it to the Validated Pattern framework? One of the first things that you should do is look at your current implementation of your workload and identify the kubernetes manifests that are involved in order to run the workloads.
+So how do you take a current application workload and move it to the Validated Pattern framework? One of the first things that you should do is look at the current implementation of your workload and identify the kubernetes manifests that are involved in order to run the workloads.
 
 ## Prerequisites
 
@@ -28,7 +28,7 @@ The validated patterns framework is much more of a best practice of structuring 
 Therefore the question really is: How do I move my successful architecture solution into a sustainable GitOps/DevOps framework? And that is what we are going to do in this section.
 
 ## Requirements for creating a new pattern
-* The patterns framework requires some artifacts like OpenShift GitOps (ArgoCD) in order to provide the GitOps automation. All existing patterns use OpenShift GitOps as a starting point. The [multicloud-gitops pattern](/patterns/multicloud-gitops) is the most fundamental of patterns and therefore it is recommended to use it as a base pattern. I.e Create a new pattern based on it.
+* The patterns framework requires some artifacts like OpenShift GitOps (ArgoCD) in order to provide the GitOps automation. All existing patterns use OpenShift GitOps as a starting point. The [multicloud-gitops pattern](/patterns/multicloud-gitops) is the most fundamental of patterns and therefore it is recommended to use it as a base pattern; i.e create a new pattern based on it.
 * Create a new branch on your new pattern to perform the initial changes.
 * Deploy the initial new pattern pattern to the cluster.
 
@@ -41,9 +41,9 @@ One of the first things that you should do is look at your current implementatio
 There are 4 values files that make up any Validated Pattern.  The values files are:
 
 * values-<main-hub>.yaml  (e.g. values-datacenter.yaml)
-* values-<edge>.yaml (e.g. values-edge-site.yaml or values-factory.yaml)
-* values-global.yaml
-* values-secrets.yaml
+* values-<edge>.yaml (e.g. values-edge-site.yaml, values-factory.yaml, values-development.yaml, etc.)
+* values-global.yaml (used to override global values across clusters)
+* values-secrets.yaml (NEVER commit this to github, gitlab etc. This file should be in a safe directory on your laptop)
 
 ## Operators into framework
 
@@ -128,7 +128,7 @@ applications:
       name: helm-with-kustomize
 ```
 
-In the above example `acm` (ACM) is part of the main `datacenter` deployment, as is `cool-app`. However, `central-kafka` is part of `backend-storage`.
+In the above example `acm` (ACM) is part of the main `datacenter` deployment, as is `cool-app`. However, `central-kafka` is part of `backend-storage`. All these deployment are on the same datacenter cluster.
 
 The `path:` tag tells OpenShift GitOps where to find the Helm charts needed to deploy this application (refer back to the [charts directory description](https://validatedpatterns.io/building-vps/structure/#the-charts-directory) for more details). OpenShift GitOps will continuously monitor for changes to artifacts in that location for updates to apply.
 
