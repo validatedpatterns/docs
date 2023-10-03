@@ -120,7 +120,7 @@ secrets:
     - name: database-db
       value: xraylabdb
     - name: database-master-user
-      value: xralab
+      value: xraylab
     - name: database-password
       onMissingValue: generate
       vaultPolicy: validatedPatternDefaultPolicy

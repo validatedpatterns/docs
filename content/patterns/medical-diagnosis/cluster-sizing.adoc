@@ -67,7 +67,7 @@ For information about requirements for additional platforms, see link:https://do
 The {med-pattern} has been tested with a defined set of configurations that represent the most common combinations that {ocp} customers are using for the x86_64 architecture.
 
 For {med-pattern}, the OpenShift cluster size must be a bit larger to support the compute and storage demands of OpenShift Data Foundations and other Operators.
-//AI:Removed a few lines from here since the content is updated to remove any ambuguity. We rather use direct links (OCP docs/ GCP/AWS/Azure)
+//AI:Removed a few lines from here since the content is updated to remove any ambiguity. We rather use direct links (OCP docs/ GCP/AWS/Azure)
 [NOTE]
 ====
 You might want to add resources when more developers are working on building their applications.
