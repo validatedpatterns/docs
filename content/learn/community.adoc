@@ -31,7 +31,7 @@ General requirements for all Community, and Validated patterns
 . Patterns *MUST* undergo an informal architecture review by a community leader to ensure that the solution has the right products, and they are generally being used as intended.
 +
 For example: not using a database as a message bus.
-As community leaders, contributions from within Red Hat may be subject to a higher level of scrutiny
+As community leaders, contributions from within Red Hat may be subject to a higher level of scrutiny.
 While we strive to be inclusive, the community will have quality standards and generally using the framework does not automatically imply a solution is suitable for the community to endorse/publish.
 
 . Patterns *MUST* undergo an informal technical review by a community leader to ensure that it conforms to the link:/requirements/implementation/[technical requirements] and meets basic reuse standards
