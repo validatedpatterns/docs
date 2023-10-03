@@ -2,7 +2,7 @@
 menu:
   learn:
     parent: Workflow
-title: Tested Patterns
+title: Validated Patterns - Tested Tier
 weight: 43
 aliases: /requirements/tested/
 ---
@@ -17,7 +17,7 @@ aliases: /requirements/tested/
 The Tested tier is intended to provide consumers with additional collateral and reassurance that the pattern was known to be recently working on at least one recent version of OpenShift.  Inclusion in this tier requires some additional work for the pattern's owner - which might be a partner or sufficiently motivated SME.
 
 [id="nominating-a-community-pattern-to-become-Tested"]
-=== Nominating a Sandbox Pattern for Promotion to Tested
+== Nominating a Sandbox Pattern for Promotion to Tested
 
 If there is a Sandbox pattern that you believe would be a good candidate for promotion to tested, you can make that case by emailing hybrid-cloud-patterns@googlegroups.com
 
