@@ -139,7 +139,7 @@ Formatting commands and code blocks To enable syntax highlighting, use [source,t
 [source,javascript]
 `,url:"https://validatedpatterns.io/contribute/contribute-to-docs/",breadcrumb:"/contribute/contribute-to-docs/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select OpenShift -&gt; Clusters -&gt; Create cluster.
+Select Services -&gt; Containers -&gt; Create cluster.
 The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
 Optional: A second OpenShift cluster for multicloud demonstration.
 Install the tooling dependencies.
@@ -351,7 +351,7 @@ a. Making configuration changes with GitOps a. Making application changes using 
 Uninstalling We currently do not support uninstalling this pattern.
 `,url:"https://validatedpatterns.io/patterns/industrial-edge/getting-started/",breadcrumb:"/patterns/industrial-edge/getting-started/"},"https://validatedpatterns.io/patterns/medical-diagnosis/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Medical Diagnosis pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select OpenShift → Clusters → Create cluster.
+Select Services → Containers → Create cluster.
 The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
 A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
 An S3-capable Storage set up in your public or private cloud for the x-ray images
@@ -413,7 +413,7 @@ $ oc scale deploymentconfig/image-generator --replicas=2 Check the dashboard.
 $ oc scale deploymentconfig/image-generator --replicas=0 Watch the dashboard stop processing images.
 You can also simulate the change of the AI model version - as it’s only an environment variable in the Serverless Service configuration.
 $ oc patch service.serving.knative.dev/risk-assessment --type=json -p &#39;[{&#34;op&#34;:&#34;replace&#34;,&#34;path&#34;:&#34;/spec/template/metadata/annotations/revisionTimestamp&#34;,&#34;value&#34;:&#34;&#39;&#34;$(date +%F_%T)&#34;&#39;&#34;},{&#34;op&#34;:&#34;replace&#34;,&#34;path&#34;:&#34;/spec/template/spec/containers/0/env/0/value&#34;,&#34;value&#34;:&#34;v2&#34;}]&#39; This changes the model version value, and the revisionTimestamp in the annotations, which triggers a redeployment of the service.
-`,url:"https://validatedpatterns.io/patterns/medical-diagnosis/getting-started/",breadcrumb:"/patterns/medical-diagnosis/getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Multicloud GitOps pattern Prerequisite An OpenShift cluster To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console. Select OpenShift -&gt; Clusters -&gt; Create cluster. The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster. Optional: A second OpenShift cluster for multicloud demonstration. The git binary and podman. For details see Installing Git and Installing Podman The use of this pattern depends on having at least one running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
+`,url:"https://validatedpatterns.io/patterns/medical-diagnosis/getting-started/",breadcrumb:"/patterns/medical-diagnosis/getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Multicloud GitOps pattern Prerequisite An OpenShift cluster To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console. Select Services -&gt; Containers -&gt; Create cluster. The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster. Optional: A second OpenShift cluster for multicloud demonstration. The git binary and podman. For details see Installing Git and Installing Podman The use of this pattern depends on having at least one running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
 If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by using Red Hat&rsquo;s cloud service.
 Procedure For installation tooling dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
 {% include prerequisite-tools.md %}
@@ -593,7 +593,7 @@ Next Steps Help &amp; Feedback Report Bugs `,url:"https://validatedpatterns.io/p
 By default the clusterGroup applications are deployed on all clusters that RHACM manages. In the value-hub.yaml, file add a managedClusterCgroup for each cluster or group of clusters that you want to manage as one.
 managedClusterGroups: - name: region-one helmOverrides: - name: clusterGroup.isHubCluster value: false clusterSelector: matchLabels: clusterGroup: region-one The above YAML file segment deploys the clusterGroup applications on managed clusters with the label clusterGroup=region-one. Specific subscriptions and Operators, applications and projects for that clusterGroup are then managed in a value-region-one.yaml file. For example:
 namespaces: - config-demo projects: - config-demo applications: config-demo: name: config-demo namespace: config-demo project: config-demo path: charts/all/config-demo #Subscriptions can be added too - multicloud-gitops at present does not require subscriptions on its managed clusters #subscriptions: # example-subscription: # name: example-operator # namespace: example-namespace # channel: example-channel # csv: example-operator.v1.0.0 subscriptions: Important: Ensure that you commit the changes and push them to GitHub so that GitOps can fetch your changes and apply them.
-Deploying a managed cluster Prerequisites An OpenShift cluster To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console. Select OpenShift -&gt; Clusters -&gt; Create cluster. To join the managed cluster to the management hub, you can:
+Deploying a managed cluster Prerequisites An OpenShift cluster To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console. Select Services -&gt; Containers -&gt; Create cluster. To join the managed cluster to the management hub, you can:
 Use the Red Hat Advanced Cluster Management (RHACM) web console Use the cm tool Use the clusteradm tool Using Red Hat Advanced Cluster Management web console to set up managed cluster After RHACM is installed, a message regarding a &ldquo;Web console update is available&rdquo; might be displayed. Click the &ldquo;Refresh web console&rdquo; link.
 In the left navigation panel of web console, click local-cluster. Select All Clusters. The RHACM web console is displayed with Cluster* on the left navigation panel.
 On the Managed clusters tab, click Import cluster.
@@ -626,7 +626,7 @@ managedClusterGroups: - name: region-one helmOverrides: - name: clusterGroup.isH
 namespaces: - config-demo projects: - config-demo applications: config-demo: name: config-demo namespace: config-demo project: config-demo path: charts/all/config-demo #Subscriptions can be added too - multicloud-gitops at present does not require subscriptions on its managed clusters #subscriptions: . # example-subscription # name: example-operator # namespace: example-namespace # channel: example-channel # csv: example-operator.v1.0.0 subscriptions: Ensure that you commit the changes and push them to GitHub so that GitOps can fetch your changes and apply them.
 Deploying a managed cluster by using Red Hat Advanced Cluster Management Prerequistes An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select OpenShift → Clusters → Create cluster.
+Select Services → Containers → Create cluster.
 Red Hat Advanced Cluster Management (RHACM) web console to join the managed cluster to the management hub
 After RHACM is installed, a message regarding a Web console update is available&#34; might be displayed. Follow the instructions and click the Refresh web console link.
 Procedure In the left navigation panel of web console, click local-cluster. Select All Clusters. The RHACM web console is displayed with Cluster* on the left navigation panel.
@@ -635,7 +635,7 @@ On the Import an existing cluster page, enter the cluster name and choose KUBECO
 Now that RHACM is no longer deploying the managed cluster applications everywhere, you must indicate that the new cluster has the managed cluster role.
 Optional: Deploying a managed cluster by using cm-cli tool Prerequistes An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select OpenShift -&gt; Clusters -&gt; Create cluster.
+Select Services -&gt; Containers -&gt; Create cluster.
 The cm-cli tool
 Procedure Obtain the KUBECONFIG file from the managed cluster.
 Open a shell prompt and login into the management hub cluster by using either of the following methods:
@@ -644,7 +644,7 @@ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Run the following command:
 cm attach cluster --cluster &lt;cluster-name&gt; --cluster-kubeconfig &lt;path-to-path_to_kubeconfig&gt; Next steps Designate the new cluster as a managed cluster site
 Optional: Deploying a managed cluster by using the clusteradm tool Prerequistes An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select OpenShift → Clusters → Create cluster.
+Select Services → Containers → Create cluster.
 The clusteradm tool
 Procedure To deploy an edge cluster, you must to get the token from the management hub cluster. Run the following command on the existing management hub or datacenter cluster:
 clusteradm get token The command generates a token and shows you the command to use on the managed cluster.
