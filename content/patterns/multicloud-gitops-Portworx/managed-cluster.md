@@ -61,7 +61,7 @@ Ensure that you commit the changes and push them to GitHub so that GitOps can fe
 
 * An OpenShift cluster
   * To create an OpenShift cluster, go to the [Red Hat Hybrid Cloud console](https://console.redhat.com/).
-  * Select **OpenShift -> Clusters -> Create cluster**.
+  * Select **Services -> Containers -> Create cluster**.
 
 To join the managed cluster to the management hub, you can:
 

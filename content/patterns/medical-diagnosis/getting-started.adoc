@@ -19,7 +19,7 @@ include::modules/comm-attributes.adoc[]
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *OpenShift* -> *Clusters* -> *Create cluster*.
+ ** Select *Services* -> *Containers* -> *Create cluster*.
  ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../medical-diagnosis/cluster-sizing[sizing your cluster].
 * A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
 * An S3-capable Storage set up in your public or private cloud for the x-ray images

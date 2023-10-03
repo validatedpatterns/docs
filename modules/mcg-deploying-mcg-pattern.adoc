@@ -8,7 +8,7 @@
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *OpenShift \-> Clusters \-> Create cluster*.
+ ** Select *Services \-> Containers \-> Create cluster*.
  ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../multicloud-gitops/mcg-cluster-sizing[sizing your cluster].
 * Optional: A second OpenShift cluster for multicloud demonstration.
 //Replaced git and podman prereqs with the tooling dependencies page
