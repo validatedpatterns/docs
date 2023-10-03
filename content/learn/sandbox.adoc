@@ -2,26 +2,25 @@
 menu:
   learn:
     parent: Workflow
-title: Community Patterns
+title: Validated Patterns - Sandbox Tier
 weight: 42
 aliases: /requirements/community/
+aliases: /requirements/sandbox/
 ---
 
 :toc:
 
-= Community Pattern Requirements
+= Requirements for the Sandbox Tier 
 
 [id="tldr"]
 == tl;dr
 
-* *What are they:* Best practice implementations conforming to the Validated Patterns implementation practices
-* *Purpose:* Codify best practices and promote collaboration between different groups inside, and external to, Red Hat
-* *Creator:* Customers, Partners, GSIs, Services/Consultants, SAs, and other Red Hat teams
+* TBA
 
 [id="requirements"]
 == Requirements
 
-General requirements for all Community, and Validated patterns
+General requirements for all Validated patterns
 
 [id="base"]
 === Base
@@ -37,7 +36,7 @@ While we strive to be inclusive, the community will have quality standards and g
 . Patterns *MUST* undergo an informal technical review by a community leader to ensure that it conforms to the link:/requirements/implementation/[technical requirements] and meets basic reuse standards
 . Patterns *MUST* document their support policy
 +
-It is anticipated that most community patterns will be supported by the community on a best-effort basis, but this should be stated explicitly.
+REVIEW: It is anticipated that most community patterns will be supported by the community on a best-effort basis, but this should be stated explicitly.
 The validated patterns team commits to maintaining the framework but will also accept help.
 
 . Patterns SHOULD include a recorded demo highlighting the business problem and how the pattern solves it
