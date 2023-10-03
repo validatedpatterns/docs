@@ -20,7 +20,7 @@ include::modules/comm-attributes.adoc[]
 The Maintained tier is intended to provide consumers with additional "sales" collateral and reassurance that the pattern was known to be functional on all currently supported LTS versions of OpenShift.  Inclusion in this tier may require additional work for the pattern's owner - which might be a partner or sufficiently motivated SME.
 
 [id="nominating-a-community-pattern-to-become-validated"]
-=== Nominating a Tested Pattern to become Maintained
+== Nominating a Tested Pattern to become Maintained
 
 If there is a Tested pattern that you believe would be a good candidate for promotion to Maintained, you can make that case by emailing hybrid-cloud-patterns@googlegroups.com
 
