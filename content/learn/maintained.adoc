@@ -2,14 +2,15 @@
 menu:
   learn:
     parent: Workflow
-title: Validated Patterns
+title: Validated Patterns - Maintained Tier
 weight: 43
+aliases: /requirements/maintained/
 aliases: /requirements/validated/
 ---
 
 :toc:
 
-= Validated Pattern Requirements
+= Requirements for the Maintained Tier 
 
 [id="tldr"]
 == tl;dr
@@ -42,10 +43,10 @@ https://github.com/hybrid-cloud-patterns,
 and will receive on-going assistance from the Validated Patterns team.
 
 [id="nominating-a-community-pattern-to-become-validated"]
-=== Nominating a Community Pattern to become Validated
+=== Nominating a Tested Pattern to become Maintained
 
-If there is a community pattern that you believe would be a good candidate for
-becoming validated, please email hybrid-cloud-patterns@googlegroups.com at least
+If there is a tested pattern that you believe would be a good candidate for
+promotion to maintained, please email hybrid-cloud-patterns@googlegroups.com at least
 4 weeks prior to the end of a given quarter in order for the necessary work to be
 considered as part of the following quarter's planning process.
 
