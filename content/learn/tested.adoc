@@ -87,4 +87,4 @@ TODO: Convert above link to adoc
 A document for QE that defines, at a technical level, how to validate if the pattern has been successfully deployed and is functionally operational.
 Example: https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view[Validating an Industrial Edge Deployment]
 
-. Tested Patterns meeting additional criteria CAN be nominated for promotion to the link:/requirements/maintained/[Maintained tier]
+. Tested Patterns meeting additional criteria CAN be nominated for promotion to the link:/learn/maintained/[Maintained tier]
