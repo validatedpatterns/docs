@@ -22,7 +22,7 @@ The Sandbox tier is an inclusive and low-risk way to become associated with the 
 
 TODO: A short note on the value of converting existing implementations
 
-The Validated Patterns team has a preference for empowering other, and not
+The Validated Patterns team has a preference for empowering others, and not
 taking credit for their work.
 
 Where there is an existing application/demo, there is also a strong preference for the originating team to own any changes that are needed for the implementation to become a Validated Pattern.  Alternatively, if the Validated Patterns team drives the conversion, then in order to prevent confusion and duplicated efforts, we are likely to ask for a commitment to phase out use of the previous implementation for future engagements such as demos, presentations, and workshops.
@@ -61,4 +61,4 @@ The validated patterns team commits to maintaining the framework but will also a
 
 . Sandbox Patterns (including works-in-progress) CAN be hosted in the https://gitops.com/validatedpatterns-sandbox GitHub organization
 . Sandbox Patterns CAN be listed on the https://validatedpatterns.io site
-. Sandbox Patterns meeting additional criteria CAN be nominated for promotion to the link:/requirements/tested/[Tested tier]
+. Sandbox Patterns meeting additional criteria CAN be nominated for promotion to the link:/learn/tested/[Tested tier]
