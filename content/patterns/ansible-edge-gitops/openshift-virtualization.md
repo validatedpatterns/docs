@@ -353,5 +353,5 @@ The [rhel8-kiosk-with-svc](https://github.com/hybrid-cloud-patterns/ansible-edge
 
 # Next Steps
 
-## [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns)
+## [Help & Feedback](https://groups.google.com/g/validatedpatterns)
 ## [Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues)

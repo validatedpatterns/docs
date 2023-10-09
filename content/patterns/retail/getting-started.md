@@ -164,5 +164,5 @@ Clicking on the respective Kafdrop links will go to a Kafdrop instance that allo
 
 ## Next Steps
 
-[Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Help & Feedback](https://groups.google.com/g/validatedpatterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/hybrid-cloud-patterns/retail/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }

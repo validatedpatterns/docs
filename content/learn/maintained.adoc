@@ -20,7 +20,7 @@ The Maintained tier is intended to provide consumers with additional "sales" col
 [id="nominating-a-community-pattern-to-become-validated"]
 == Nominating a Tested Pattern to become Maintained
 
-If there is a Tested pattern that you believe would be a good candidate for promotion to Maintained, you can make that case by emailing hybrid-cloud-patterns@googlegroups.com
+If there is a Tested pattern that you believe would be a good candidate for promotion to Maintained, you can make that case by emailing validatedpatterns@googlegroups.com
 
 Please be aware that each Maintained pattern represents an ongoing maintenance, support, and testing effort.  Finite team capacity means that it is simply not possible for the team to take on this responsibility for all Validated Patterns.  
 

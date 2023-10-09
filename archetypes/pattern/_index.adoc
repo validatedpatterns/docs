@@ -13,7 +13,7 @@ industries:
 links:
   install:
   arch:
-  help: https://groups.google.com/g/hybrid-cloud-patterns
+  help: https://groups.google.com/g/validatedpatterns
   bugs:
 # The following parameters are only used for validated patterns. Do not uncomment them unless your pattern is validated.
 # validated:

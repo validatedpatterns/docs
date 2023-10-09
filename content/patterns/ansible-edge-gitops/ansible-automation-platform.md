@@ -189,5 +189,5 @@ This does the work of provisioning the kiosk, which configures kiosk mode, and a
 
 # Next Steps
 
-## [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns)
+## [Help & Feedback](https://groups.google.com/g/validatedpatterns)
 ## [Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues)

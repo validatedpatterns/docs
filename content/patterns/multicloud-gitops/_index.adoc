@@ -13,7 +13,7 @@ pattern_logo: multicloud-gitops.png
 links:
   install: mcg-getting-started
   arch: https://www.redhat.com/architect/portfolio/detail/8-hybrid-multicloud-management-with-gitops
-  help: https://groups.google.com/g/hybrid-cloud-patterns
+  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues
 ci: mcgitops
 ---

@@ -19,7 +19,7 @@ The Tested tier is intended to provide consumers with additional collateral and 
 [id="nominating-a-community-pattern-to-become-Tested"]
 == Nominating a Sandbox Pattern for Promotion to Tested
 
-If there is a Sandbox pattern that you believe would be a good candidate for promotion to tested, you can make that case by emailing hybrid-cloud-patterns@googlegroups.com
+If there is a Sandbox pattern that you believe would be a good candidate for promotion to tested, you can make that case by emailing validatedpatterns@googlegroups.com
 
 Please be aware that each Tested pattern represents an ongoing maintenance, support, and testing effort.  Finite team capacity means that it is simply not possible for the team to take on this responsibility for all Validated Patterns.  
 
@@ -45,8 +45,8 @@ Qualification is a Validated Patterns TOC decision with input from the pattern o
 
 . Tested Patterns *MUST* have their implementation reviewed by the patterns team to ensure that it is sufficiently flexible to function across a variety of platforms, customer environments, and any relevant verticals.
 . Tested Patterns *MUST* include a standardized architecture drawing, created with (or at least conforming to) the PAC tooling
-. Tested Patterns *MUST* include a script for others to follow when demonstrating how the pattern addresses a business problem
-. Tested Patterns *MUST* include a test plan covering all features or attributes being highlighted by the demonstration script.  Negative flow tests (such as resiliency or data retention in the presence of network outages) are limited to scenarios covered by the demonstration script.
+. Tested Patterns *MUST* include a written guide for others to follow when demonstrating how the pattern addresses a business problem
+. Tested Patterns *MUST* include a test plan covering all features or attributes being highlighted by the demonstration guide.  Negative flow tests (such as resiliency or data retention in the presence of network outages) are also limited to scenarios covered by the demonstration guide.
 +
 The test plan *MUST* define how to validate if the pattern has been successfully deployed and is functionally operational.
 Example: https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view[Validating an Industrial Edge Deployment]
