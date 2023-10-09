@@ -10,20 +10,20 @@ aliases: /faq/
 = FAQ
 
 [id="what-is-a-hybrid-cloud-pattern"]
-== What is a Hybrid Cloud Pattern?
+== What is a Validated Pattern?
 
-Hybrid Cloud Patterns are collections of applications (in the ArgoCD sense) that demonstrate aspects of hub/edge computing that seem interesting and useful.  Hybrid Cloud Patterns will generally have a hub or centralized component, and an edge component.  These will interact in different ways.
+Validated Patterns are collections of applications (in the ArgoCD sense) that demonstrate aspects of hub/edge computing that seem interesting and useful.  Validated Patterns will generally have a hub or centralized component, and an edge component.  These will interact in different ways.
 
-Many things have changed in the IT landscape in the last few years - containers and kubernetes have taken the industry by storm, but they introduce many technologies and concepts.  It is not always clear how these technologies and concepts play together - and Hybrid Cloud Patterns is our effort to show these technologies working together on non-trivial applications in ways that make sense for real customers and partners to use.
+Many things have changed in the IT landscape in the last few years - containers and kubernetes have taken the industry by storm, but they introduce many technologies and concepts.  It is not always clear how these technologies and concepts play together - and Validated Patterns is our effort to show these technologies working together on non-trivial applications in ways that make sense for real customers and partners to use.
 
-The first Hybrid Cloud Pattern is based on https://github.com/sa-mw-dach/manuela[MANUela], an application developed by Red Hat field associates.  This application highlights some interesting aspects of the industrial edge in a cloud-native world - the hub component features pipelines to build the application, a "twin" for testing purposes, a central data lake, an s3 component to gather data from the edge installations (which are factories in this case).  The edge component has machine sensors, which are responsible for only gathering data from instrumented line devices and shares them via MQTT messaging.  The edge also features Seldon, an AI/ML framework for making predictions, a custom Node.js application to show data in real time, and messaging components supporting both MQTT and Kafka protocols.  The local applications use MQTT to retrieve data for display, and the Kafka components move the data to the central hub for storage and analysis.
+The first Validated Pattern is based on https://github.com/sa-mw-dach/manuela[MANUela], an application developed by Red Hat field associates.  This application highlights some interesting aspects of the industrial edge in a cloud-native world - the hub component features pipelines to build the application, a "twin" for testing purposes, a central data lake, an s3 component to gather data from the edge installations (which are factories in this case).  The edge component has machine sensors, which are responsible for only gathering data from instrumented line devices and shares them via MQTT messaging.  The edge also features Seldon, an AI/ML framework for making predictions, a custom Node.js application to show data in real time, and messaging components supporting both MQTT and Kafka protocols.  The local applications use MQTT to retrieve data for display, and the Kafka components move the data to the central hub for storage and analysis.
 
-We are actively developing new Hybrid Cloud Patterns.  Watch this space for updates!
+We are actively developing new Validated Patterns.  Watch this space for updates!
 
 [id="how-are-they-different-from-xyz"]
 == How are they different from XYZ?
 
-Many technology demos can be very minimal - such demos have an important place in the ecosystem to demonstrate the intent of an individual technology.  Hybrid Cloud Patterns are meant to demonstrate groups of technologies working together in a cloud native way.  And yet, we hope to make these patterns general enough to allow for swapping application components out -- for example, if you want to swap out ActiveMQ for RabbitMQ to support MQTT - or use a different messaging technology altogether, that should be possible.  The other components will require reconfiguration.
+Many technology demos can be very minimal - such demos have an important place in the ecosystem to demonstrate the intent of an individual technology.  Validated Patterns are meant to demonstrate groups of technologies working together in a cloud native way.  And yet, we hope to make these patterns general enough to allow for swapping application components out -- for example, if you want to swap out ActiveMQ for RabbitMQ to support MQTT - or use a different messaging technology altogether, that should be possible.  The other components will require reconfiguration.
 
 [id="what-technologies-are-used"]
 == What technologies are used?
@@ -44,7 +44,7 @@ In the future, we expect to further use Red Hat OpenShift, and expand the integr
 [id="how-are-they-structured"]
 == How are they structured?
 
-Hybrid Cloud Patterns come in parts - we have a https://github.com/hybrid-cloud-patterns/common[common] repository with logic that will apply to multiple patterns.  Layered on top of that is our first pattern - https://github.com/hybrid-cloud-patterns/industrial-edge[industrial edge].  This layout allows for individual applications within a pattern to be swapped out by pointing to different repositories or branches for those individual components by customizing the values files in the root of the repository to point to different branches or forks or even different repositories entirely. (At present, the repositories all have to be on github.com and accessible with the same token.)
+Validated Patterns come in parts - we have a https://github.com/validatedpatterns/common[common] repository with logic that will apply to multiple patterns.  Layered on top of that is our first pattern - https://github.com/validatedpatterns/industrial-edge[industrial edge].  This layout allows for individual applications within a pattern to be swapped out by pointing to different repositories or branches for those individual components by customizing the values files in the root of the repository to point to different branches or forks or even different repositories entirely. (At present, the repositories all have to be on github.com and accessible with the same token.)
 
 The common repository is primarily concerned with how to deploy the GitOps operator, and to create the namespaces that will be necessary to manage the pattern applications.
 

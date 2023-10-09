@@ -16,7 +16,7 @@ This demo in particular can be customized in a number of ways that might be very
 
 1. Either fork the repo or copy the edge-gitops-vms chart out of it.
 
-1. Customize the [values.yaml](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/values.yaml) file
+1. Customize the [values.yaml](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/values.yaml) file
 
 The `vms` data structure is designed to support multiple groups and types of VMs. The `kiosk` example defines all of the variables currently supported by the chart, including references to the Vault instance and port definitions.  If, for example, you wanted to replace kiosk with new iotsensor and iotgateway types, the whole file might look like this:
 
@@ -79,7 +79,7 @@ vms:
         targetPort: 1883
 ```
 
-This would create 1 iotgateway VM and 4 iotsensor VMs. Adjustments would also need to be made in [values-secret](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/values-secret.yaml.template) and [ansible-load-controller](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh) to add the iotgateway-ssh and iotsensor-ssh data structures.
+This would create 1 iotgateway VM and 4 iotsensor VMs. Adjustments would also need to be made in [values-secret](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-secret.yaml.template) and [ansible-load-controller](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh) to add the iotgateway-ssh and iotsensor-ssh data structures.
 
 # HOWTO define your own VM sets "from scratch"
 
@@ -246,11 +246,11 @@ In just a few minutes, you will have a blank rhel8 VM running, which you can the
 oc get template -n openshift rhel8-desktop-medium -o yaml > my-template.yaml
 ```
 
-Once you have this local template, you can view the elements you want to customize, possibly using [this](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml) as an example.
+Once you have this local template, you can view the elements you want to customize, possibly using [this](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml) as an example.
 
 # HOWTO Define your own Ansible Controller Configuration
 
-The [ansible_load_controller.sh](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh) is designed to be relatively easy to customize with a new controller configuration. Structurally, it is principally based on [configure_controller.yml](https://github.com/redhat-cop/controller_configuration/blob/devel/playbooks/configure_controller.yml) from the Red Hat Community of Practice [controller_configuration](https://github.com/redhat-cop/controller_configuration) collection. The order and specific list of  roles invoked is taken from there.
+The [ansible_load_controller.sh](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh) is designed to be relatively easy to customize with a new controller configuration. Structurally, it is principally based on [configure_controller.yml](https://github.com/redhat-cop/controller_configuration/blob/devel/playbooks/configure_controller.yml) from the Red Hat Community of Practice [controller_configuration](https://github.com/redhat-cop/controller_configuration) collection. The order and specific list of  roles invoked is taken from there.
 
 To customize it, the main thing would be to replace the different variables in the role tasks with the your own. The script includes the roles for variable types that this pattern does not manage in order to make that part straightforward. Feel free to add your own roles and playbooks (and add them to the controller configuration script).
 
@@ -258,11 +258,11 @@ The reason this pattern ships with a script as it does instead of invoking the r
 
 # HOWTO substitute your own container application (instead of ignition)
 
-1. Adjust the query in the [inventory_preplay.yml](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/inventory_preplay.yml) either by overriding the vars for the play, or forking the repo and replacing the vars with your own query terms. (That is, use your own label(s) and namespace to discover the services you want to connect to.
+1. Adjust the query in the [inventory_preplay.yml](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/inventory_preplay.yml) either by overriding the vars for the play, or forking the repo and replacing the vars with your own query terms. (That is, use your own label(s) and namespace to discover the services you want to connect to.
 
-1. Adjust or override the vars in the [provision_kiosk.yml](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/ansible/provision_kiosk.yml) playbook to suitable values for your own container application. The roles it calls are fairly generic, so changing the vars is all you should need to do.
+1. Adjust or override the vars in the [provision_kiosk.yml](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/provision_kiosk.yml) playbook to suitable values for your own container application. The roles it calls are fairly generic, so changing the vars is all you should need to do.
 
 # Next Steps
 
 ## [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns)
-## [Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues)
+## [Report Bugs](https://github.com/validatedpatterns/ansible-edge-gitops/issues)

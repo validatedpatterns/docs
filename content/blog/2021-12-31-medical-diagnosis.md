@@ -14,7 +14,7 @@ aliases: /2021/12/31/medical-diagnosis/
 
 Our team recently completed the development of a validated pattern that showcases the capabilities we have at our fingertips when we combine OpenShift and other cutting edge Red Hat technologies to deliver a solution.
 
-We've taken an application defined imperatively in an Ansible playbook and converted it into GitOps style declarative kubernetes resources. Using the validated pattern framework we are able to deploy, manage and integrate with multiple cutting edge Red Hat technologies, and provide a capability that the initial deployment strategy didn't have available to it: a lifecycle. Everything you need to take this pattern for a spin is in [git](https://github.com/hybrid-cloud-patterns/medical-diagnosis).
+We've taken an application defined imperatively in an Ansible playbook and converted it into GitOps style declarative kubernetes resources. Using the validated pattern framework we are able to deploy, manage and integrate with multiple cutting edge Red Hat technologies, and provide a capability that the initial deployment strategy didn't have available to it: a lifecycle. Everything you need to take this pattern for a spin is in [git](https://github.com/validatedpatterns/medical-diagnosis).
 
 ## Pattern Workflow
 

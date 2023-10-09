@@ -6,9 +6,9 @@ aliases: /ansible-edge-gitops/openshift-virtualization/
 
 # OpenShift Virtualization
 
-# Understanding the Edge GitOps VMs [Helm Chart](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/tree/main/charts/hub/edge-gitops-vms)
+# Understanding the Edge GitOps VMs [Helm Chart](https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/edge-gitops-vms)
 
-The heart of the Edge GitOps VMs helm chart is a [template file](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml) that was designed with a fair amount of flexibility in mind. Specifically, it allows you to specify:
+The heart of the Edge GitOps VMs helm chart is a [template file](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml) that was designed with a fair amount of flexibility in mind. Specifically, it allows you to specify:
 
 1. One or more "groups" of VMs (such as "kiosk" in our example) with an arbitrary number of instances per group
 1. Different sizing parameters (cores, threads, memory, disk size) for each group
@@ -230,7 +230,7 @@ windows2k19-server-large                        Template for Microsoft Windows S
 windows2k19-server-medium                       Template for Microsoft Windows Server 2019 VM. A PVC with the Windows disk im...   3 (1 generated)   1
 ```
 
-Additionally, you may copy and customize these templates if you wish.  The [template file](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/rhel8-kiosk-with-svc.yaml) is an example of a customized template that was used to help develop this pattern.
+Additionally, you may copy and customize these templates if you wish.  The [template file](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/rhel8-kiosk-with-svc.yaml) is an example of a customized template that was used to help develop this pattern.
 
 ### Creating a VM from the Console via Template
 
@@ -267,7 +267,7 @@ You could also use the "Create VM Wizard" in the OpenShift console.
 
 See details [here](/patterns/ansible-edge-gitops/ideas-for-customization/#howto-define-your-own-vm-sets-from-scratch).
 
-## Components of the [virtual-machines](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml) template
+## Components of the [virtual-machines](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml) template
 
 ### Setup - the mechanism for creating identifiers declaratively
 
@@ -339,7 +339,7 @@ Click on the "three dots" menu on the right, which will open a dialog like the f
 
 [![kubevirt411-vm-open-console](/images/ansible-edge-gitops/aeg-kubevirt411-con-ignition.png)](/images/ansible-edge-gitops/aeg-kubevirt411-con-ignition.png)
 
-The virtual machine console view will either show a standard RHEL console login screen, or if the demo is working as designed, it will show the Ignition application running in kiosk mode. If the console shows a standard RHEL login, it can be accessed using the the initial user name (`cloud-user` by default) and password (which is what is specified in the Helm chart Values as either the password specific to that machine group, the default cloudInit, or a hardcoded default which can be seen in the template [here](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml). On a VM created through the wizard or via `oc process` from a template, the password will be set on the VirtualMachine object in the `volumes` section.
+The virtual machine console view will either show a standard RHEL console login screen, or if the demo is working as designed, it will show the Ignition application running in kiosk mode. If the console shows a standard RHEL login, it can be accessed using the the initial user name (`cloud-user` by default) and password (which is what is specified in the Helm chart Values as either the password specific to that machine group, the default cloudInit, or a hardcoded default which can be seen in the template [here](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml). On a VM created through the wizard or via `oc process` from a template, the password will be set on the VirtualMachine object in the `volumes` section.
 
 ### Initial User login (cloud-user)
 
@@ -349,9 +349,9 @@ In general, and before the VMs have been configured by the Ansible Jobs, you can
 
 Also included in the edge-gitops-vms chart is a separate template that will allow the creation of VMs with similar (though not identical characteristics) to the ones defined in the chart.
 
-The [rhel8-kiosk-with-svc](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/rhel8-kiosk-with-svc.yaml) template is preserved as an intermediate step to creating your own VM types, to see how the pipeline from default VM template -> customized template -> Helm-variable chart can work.
+The [rhel8-kiosk-with-svc](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/rhel8-kiosk-with-svc.yaml) template is preserved as an intermediate step to creating your own VM types, to see how the pipeline from default VM template -> customized template -> Helm-variable chart can work.
 
 # Next Steps
 
 ## [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns)
-## [Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues)
+## [Report Bugs](https://github.com/validatedpatterns/ansible-edge-gitops/issues)

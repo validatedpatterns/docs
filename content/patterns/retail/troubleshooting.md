@@ -6,4 +6,4 @@ aliases: /retail/troubleshooting/
 
 # Troubleshooting
 
-## Our [Issue Tracker](https://github.com/hybrid-cloud-patterns/industrial-edge/issues)
+## Our [Issue Tracker](https://github.com/validatedpatterns/industrial-edge/issues)

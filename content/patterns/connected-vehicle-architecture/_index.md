@@ -10,4 +10,4 @@ products:
 
 A distributed cloud-native application that implements key aspects of a modern IoT architecture.
 
-[Repo](https://github.com/hybrid-cloud-patterns/connected-vehicle-architecture)
+[Repo](https://github.com/validatedpatterns/connected-vehicle-architecture)

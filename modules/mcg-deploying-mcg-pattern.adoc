@@ -12,7 +12,7 @@
  ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../multicloud-gitops/mcg-cluster-sizing[sizing your cluster].
 * Optional: A second OpenShift cluster for multicloud demonstration.
 //Replaced git and podman prereqs with the tooling dependencies page
-* https://hybrid-cloud-patterns.io/learn/quickstart/[Install the tooling dependencies].
+* https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
 
 The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
 
@@ -23,7 +23,7 @@ public or private cloud by using https://console.redhat.com/openshift/create[Red
 
 . https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
 +
-. Fork the https://github.com/hybrid-cloud-patterns/multicloud-gitops[multicloud-gitops] repository on GitHub.
+. Fork the https://github.com/validatedpatterns/multicloud-gitops[multicloud-gitops] repository on GitHub.
 . Clone the forked copy of this repository.
 +
 [source,terminal]

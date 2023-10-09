@@ -6,7 +6,7 @@ aliases: /industrial-edge/troubleshooting/
 
 # Troubleshooting
 
-## Our [Issue Tracker](https://github.com/hybrid-cloud-patterns/industrial-edge/issues)
+## Our [Issue Tracker](https://github.com/validatedpatterns/industrial-edge/issues)
 
 ## Installation-phase Failures
 
@@ -47,7 +47,7 @@ The industrial edge pattern runs two post-install operations after creating the 
 
 **Extracting the secret from the datacenter ArgoCD instance for use in the Pipelines**
 
-This depends on the installation of both the cluster-wide GitOps operator, and the installation of an instance in the datacenter namespace.  The logic is controlled [here](https://github.com/hybrid-cloud-patterns/industrial-edge/blob/main/Makefile) (where the parameters are set) and [here](https://github.com/hybrid-cloud-patterns/common/blob/main/Makefile), which does the interactions with the cluster (to extract the secret and create a resource in manuela-ci).
+This depends on the installation of both the cluster-wide GitOps operator, and the installation of an instance in the datacenter namespace.  The logic is controlled [here](https://github.com/validatedpatterns/industrial-edge/blob/main/Makefile) (where the parameters are set) and [here](https://github.com/validatedpatterns/common/blob/main/Makefile), which does the interactions with the cluster (to extract the secret and create a resource in manuela-ci).
 
 This task runs first, and if it does not complete, the seed pipeline will not start either.  Things to check:
 
@@ -85,9 +85,9 @@ In general, use the project-supplied `global.options.UseCSV` setting of `False`.
 
 #### Symptom: "User not found" error in first stage of pipeline run
 
-**Cause:** Despite the message, the error is most likely that you don't have a fork of [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev).
+**Cause:** Despite the message, the error is most likely that you don't have a fork of [manuela-dev](https://github.com/validatedpatterns-demos/manuela-dev).
 
-**Resolution:** Fork [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) into your namespace in GitHub and run `make seed`.
+**Resolution:** Fork [manuela-dev](https://github.com/validatedpatterns-demos/manuela-dev) into your namespace in GitHub and run `make seed`.
 
 #### Symptom: Intermittent failures in Pipeline stages
 
@@ -120,7 +120,7 @@ desirable to do so, since multiple pipelines attempting to change the repository
 
 **Resolution:** Run `make seed` in the root of the repository OR re-run the failed pipeline segment (e.g. seed-iot-frontend or seed-iot-consumer).
 
-We're looking into better long-term fixes for a number of the situations that can cause these situations as [#40](https://github.com/hybrid-cloud-patterns/industrial-edge/issues/40).
+We're looking into better long-term fixes for a number of the situations that can cause these situations as [#40](https://github.com/validatedpatterns/industrial-edge/issues/40).
 
 #### Symptom: Error in "push-*" pipeline tasks
 
@@ -161,10 +161,10 @@ rpc error: code = Unknown desc = Manifest generation error (cached): `/bin/bash 
 
 **Cause:**
 
-This is a byproduct of the way the pattern installs applications at the moment. We are tracking this as [#39](https://github.com/hybrid-cloud-patterns/industrial-edge/issues/39).
+This is a byproduct of the way the pattern installs applications at the moment. We are tracking this as [#39](https://github.com/validatedpatterns/industrial-edge/issues/39).
 
 #### Symptom:  Applications show "not in sync" status in ArgoCD
 
 **Cause:** There is a discrepancy between what the git repository says the application should have, and how that state is realized in ArgoCD.
 
-The installation mechanism currently installs operators as parts of multiple applications when running on the same cluster, so it is a race condition in ArgoCD to see which one "wins."  This is a problem with the way we are installing the patterns. We are tracking this as [#38](https://github.com/hybrid-cloud-patterns/industrial-edge/issues/38).
+The installation mechanism currently installs operators as parts of multiple applications when running on the same cluster, so it is a race condition in ArgoCD to see which one "wins."  This is a problem with the way we are installing the patterns. We are tracking this as [#38](https://github.com/validatedpatterns/industrial-edge/issues/38).

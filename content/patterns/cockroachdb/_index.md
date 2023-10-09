@@ -10,4 +10,4 @@ products:
 
 A multicloud pattern using cockroachdb and submariner, deployed via RHACM.
 
-[Repo](https://github.com/hybrid-cloud-patterns/cockroachdb-pattern)
+[Repo](https://github.com/validatedpatterns/cockroachdb-pattern)

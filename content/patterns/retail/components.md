@@ -6,7 +6,7 @@ aliases: /retail/components/
 
 # Component Details
 
-## The Quarkus Coffeeshop Store [Chart](https://github.com/hybrid-cloud-patterns/retail/tree/main/charts/store/quarkuscoffeeshop-charts)
+## The Quarkus Coffeeshop Store [Chart](https://github.com/validatedpatterns/retail/tree/main/charts/store/quarkuscoffeeshop-charts)
 
 This chart is responsible for deploying the applications, services and routes for the Quarkus Coffeeshop demo. It models a set of microservices that would make sense for a coffeeshop retail operation. The detail of what the microservices do is [here](https://quarkuscoffeeshop.github.io/coffeeshop/).
 
@@ -48,7 +48,7 @@ All the components look like this in ArgoCD when deployed:
 
 The chart is designed such that the same chart can be deployed in the hub cluster as the "production" store, the "demo" or TEST store, and on a remote cluster.
 
-## The Quarkus Coffeeshop Database [Chart](https://github.com/hybrid-cloud-patterns/retail/tree/main/charts/all/crunchy-pgcluster)
+## The Quarkus Coffeeshop Database [Chart](https://github.com/validatedpatterns/retail/tree/main/charts/all/crunchy-pgcluster)
 
 This installs a database instance suitable for use in the Retail pattern. It uses the Crunchy PostgreSQL [Operator](https://github.com/CrunchyData/postgres-operator) to provide PostgreSQL services, which includes high availability and backup services by default, and other features available.
 
@@ -58,11 +58,11 @@ In ArgoCD, it looks like this:
 
 [![retail-v1-argo-coffeeshopdb](/images/retail/retail-v1-argo-coffeeshopdb.png)](/images/retail/retail-v1-argo-coffeeshopdb.png)
 
-## The Quarkus Coffeeshop Kafka [Chart](https://github.com/hybrid-cloud-patterns/retail/tree/main/charts/all/quarkuscoffeeshop-kafka)
+## The Quarkus Coffeeshop Kafka [Chart](https://github.com/validatedpatterns/retail/tree/main/charts/all/quarkuscoffeeshop-kafka)
 
 This chart installs Kafka for use in the Retail pattern. It uses the Red Hat AMQ Streams [operator](https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html/using_amq_streams_on_openshift_container_platform/index).
 
-## The Quarkus Coffeeshop Pipelines [Chart](https://github.com/hybrid-cloud-patterns/retail/tree/main/charts/hub/quarkuscoffeeshop-pipelines)
+## The Quarkus Coffeeshop Pipelines [Chart](https://github.com/validatedpatterns/retail/tree/main/charts/hub/quarkuscoffeeshop-pipelines)
 
 The pipelines chart defines build pipelines using the Red Hat OpenShift Pipelines [Operator](https://catalog.redhat.com/software/operators/detail/5ec54a4628834587a6b85ca5) (tektoncd). Pipelines are provided for all of the application images that ship with the pattern; the pipelines all build the app from source, deploy them to the "demo" namespace, and push them to the configured image registry.
 
@@ -70,7 +70,7 @@ Like the store and database charts, the kafka chart supports all three modes of 
 
 [![retail-v1-argo-pipelines](/images/retail/retail-v1-argo-pipelines.png)](/images/retail/retail-v1-argo-pipelines.png)
 
-## The Quarkus Coffeeshop Landing Page [Chart](https://github.com/hybrid-cloud-patterns/retail/tree/main/charts/all/landing-page)
+## The Quarkus Coffeeshop Landing Page [Chart](https://github.com/validatedpatterns/retail/tree/main/charts/all/landing-page)
 
 The Landing Page chart builds the page that presents the links for the demos in the pattern.
 

@@ -14,7 +14,7 @@ pattern_logo: multicloud-gitops-Portworx.png
 links:
   install: getting-started
   help: https://groups.google.com/g/hybrid-cloud-patterns
-  bugs: https://github.com/hybrid-cloud-patterns/medical-diagnosis/issues
+  bugs: https://github.com/validatedpatterns/medical-diagnosis/issues
 # ci: mcgitopspxe
 ---
 

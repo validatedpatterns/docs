@@ -17,7 +17,7 @@ links:
   install: getting-started
   arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=26
   help: https://groups.google.com/g/hybrid-cloud-patterns
-  bugs: https://github.com/hybrid-cloud-patterns/industrial-edge/issues
+  bugs: https://github.com/validatedpatterns/industrial-edge/issues
 ci: manuela
 ---
 

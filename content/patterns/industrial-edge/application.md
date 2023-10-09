@@ -38,8 +38,8 @@ Make sure you have the `kubeadmin` administrator login for the data center clust
 
 You will need to login into GitHub and be able to fork two repositories.
 
-* hybrid-cloud-patterns/industrial-edge
-* hybrid-cloud-patterns/manuela-dev
+* validatedpatterns/industrial-edge
+* validatedpatterns-demos/manuela-dev
 
 ## Configuration changes with GitOps
 

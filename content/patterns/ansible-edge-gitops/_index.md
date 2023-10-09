@@ -16,7 +16,7 @@ pattern_logo: ansible-edge.png
 links:
   install: getting-started
   help: https://groups.google.com/g/hybrid-cloud-patterns
-  bugs: https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues
+  bugs: https://github.com/validatedpatterns/ansible-edge-gitops/issues
 ci: aegitops
 ---
 

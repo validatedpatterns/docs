@@ -15,7 +15,7 @@ aliases: /retail/
 links:
   install: getting-started
   help: https://groups.google.com/g/hybrid-cloud-patterns
-  bugs: https://github.com/hybrid-cloud-patterns/retail/issues
+  bugs: https://github.com/validatedpatterns/retail/issues
 # uncomment once this exists
 # ci: retail
 ---
