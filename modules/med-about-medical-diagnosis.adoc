@@ -43,4 +43,4 @@ The {med-pattern} uses the following products and technologies:
 * {rh-serverless-first} for event-driven applications
 * {rh-ocp-data-first} for cloud native storage capabilities
 * {grafana-op} to manage and share Grafana dashboards, data sources, and so on
-* S3 storage
+* Storage, such as AWS S3 buckets

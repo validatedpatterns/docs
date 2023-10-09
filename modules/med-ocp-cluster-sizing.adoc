@@ -2,7 +2,7 @@
 :imagesdir: ../../images
 
 [id="med-openshift-cluster-size"]
-== About {med-pattern} OpenShift cluster size
+== About OpenShift cluster size for the {med-pattern}
 
 The {med-pattern} has been tested with a defined set of configurations that represent the most common combinations that {ocp} customers are using for the x86_64 architecture.
 
