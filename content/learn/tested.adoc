@@ -45,7 +45,7 @@ Qualification is a Validated Patterns TOC decision with input from the pattern o
 
 . Tested Patterns *MUST* have their implementation reviewed by the patterns team to ensure that it is sufficiently flexible to function across a variety of platforms, customer environments, and any relevant verticals.
 . Tested Patterns *MUST* include a standardized architecture drawing, created with (or at least conforming to) the PAC tooling
-. Tested Patterns *MUST* include a written guide for others to follow when demonstrating how the pattern addresses a business problem
+. Tested Patterns *MUST* include a written guide for others to follow when demonstrating the pattern
 . Tested Patterns *MUST* include a test plan covering all features or attributes being highlighted by the demonstration guide.  Negative flow tests (such as resiliency or data retention in the presence of network outages) are also limited to scenarios covered by the demonstration guide.
 +
 The test plan *MUST* define how to validate if the pattern has been successfully deployed and is functionally operational.
@@ -55,22 +55,7 @@ TODO: Convert above link to adoc
 
 . Tested Patterns *MUST* nominate at least one currently supported OpenShift release to test against
 . Tested Patterns *MUST* ensure the test plan passes at least once per quarter
-. Tested Patterns *MUST* create a publically available JSON file (eg. in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and OpenShift version. Eg.
-[source,json]
-----
-  {
-    "schemaVersion":1,
-    "label":"gcp-4.13",
-    "message":"main",
-    "color":"green",
-    "jenkinsURL":"https://.../",
-    "infraProvider":"gcp",
-    "openshiftVersion":"4.13.14",
-    "debugInfo":"https://...tgz",
-    "date":"2023-10-03"
-  }
-----
-
+. Tested Patterns *MUST* create a publically available JSON file (eg. in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and OpenShift version. See link:/learn/test-artefacts/[testing artefacts]
 . Tested Patterns *DO NOT* imply an obligation of support for partner or community operators by Red Hat or the pattern owner.
 
 [id="should"]
