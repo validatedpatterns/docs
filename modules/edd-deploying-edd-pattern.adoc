@@ -6,14 +6,14 @@
 
 == Prerequisites
 
-. An OpenShift cluster (Go to https://console.redhat.com/openshift/create[the OpenShift console]). Cluster must have a dynamic StorageClass to provision PersistentVolumes. 
+. An OpenShift cluster (Go to https://console.redhat.com/openshift/create[the OpenShift console]). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
 // See also link:../../emerging-disease-detection/cluster-sizing[sizing your cluster].
 . A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 
 For installation tooling dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
 
 The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern
-there is no dedicated Hub / Edge cluster for the *Emerging Disease Detection* pattern. This single node pattern can be extend as a managed cluster(s) to a central hub. 
+there is no dedicated Hub / Edge cluster for the *Emerging Disease Detection* pattern. This single node pattern can be extend as a managed cluster(s) to a central hub.
 // See link:../../emerging-disease-detection/ideas-for-customization[ideas for customization.]
 
 If you do not have a running Red Hat OpenShift cluster you can start one on a
@@ -65,7 +65,7 @@ secrets:
     - name: kieserver_user_password
       value: kieserver
     - name: psql_passwd
-      value: rhpam 
+      value: rhpam
 
   - name: fhir-psql-db
     vaultPrefixes:
@@ -215,3 +215,11 @@ The most important ArgoCD instance to examine at this point is `emerging-disease
 
 . Check all applications are synchronised. There are thirteen different ArgoCD "applications" deployed as part of this pattern.
 
+[id="viewing-the-sepsis-application-dashboard-getting-started"]
+== Viewing the Sepsis Detection dashboard
+TO-DO: Describe how to examine the various parts of the Sepsis application
+
+= Next Steps
+
+link:https://groups.google.com/g/validatedpatterns[Help & Feedback]
+link:https://github.com/validatedpatterns/emerging-disease-detection/issues[Report Bugs]
