@@ -12,9 +12,9 @@ aliases: /2022/03/30/multicloud-gitops/
 
 # Validated Pattern: Multi-Cloud GitOps
 
-## Hybrid Cloud Patterns: The Story so far
+## Validated Patterns: The Story so far
 
-Our first foray into the realm of Hybrid Cloud Patterns was the adaptation of the MANUela application and its associated tooling to ArgoCD and Tekton, to demonstrate the deployment of a fairly involved IoT application designed to monitor industrial equipment and use AI/ML techniques to predict failure.  This resulted in the Industrial Edge validated pattern, which you can see [here](https://github.com/hybrid-cloud-patterns/industrial-edge).
+Our first foray into the realm of Validated Patterns was the adaptation of the MANUela application and its associated tooling to ArgoCD and Tekton, to demonstrate the deployment of a fairly involved IoT application designed to monitor industrial equipment and use AI/ML techniques to predict failure.  This resulted in the Industrial Edge validated pattern, which you can see [here](https://github.com/validatedpatterns/industrial-edge).
 
 This was our first use of a framework to deploy a significant application, and we learned a lot by doing it.  It was good to be faced with a number of problems in the “real world” before taking a look at what is really essential for the framework and why.
 

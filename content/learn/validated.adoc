@@ -38,7 +38,7 @@ as the implementations drift apart.
 
 In both scenarios the originating team can choose where to host the primary
 repository, will be given admin permissions to any fork in
-https://github.com/hybrid-cloud-patterns,
+https://github.com/validatedpatterns,
 and will receive on-going assistance from the Validated Patterns team.
 
 [id="nominating-a-community-pattern-to-become-validated"]

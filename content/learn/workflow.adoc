@@ -10,7 +10,7 @@ aliases: /workflow/
 = Workflow
 
 These patterns are designed to be composed of multiple components, and for those components to be used in gitops
-workflows by consumers and contributors.  To use the first pattern as an example, we maintain the link:/industrial-edge[Industrial Edge] pattern, which uses a https://github.com/hybrid-cloud-patterns/industrial-edge[repo] with pattern-specific logic and configuration as well as a https://github.com/hybrid-cloud-patterns/common[common repo] which has elements common to multiple patterns.  The common repository is included in each pattern repository as a subtree.
+workflows by consumers and contributors.  To use the first pattern as an example, we maintain the link:/industrial-edge[Industrial Edge] pattern, which uses a https://github.com/validatedpatterns/industrial-edge[repo] with pattern-specific logic and configuration as well as a https://github.com/validatedpatterns/common[common repo] which has elements common to multiple patterns.  The common repository is included in each pattern repository as a subtree.
 
 [id="consuming-a-pattern"]
 == Consuming a pattern
@@ -50,12 +50,12 @@ workflows) and will be easier to make upstream, if you wish.  Contributions from
 . Customizations to `values-global.yaml` and other files that are particular to your installation
 . Commits made by Tekton and other automated processes that will be particular to your installation
 
-To isolate changes for upstreaming (`hcp` is "Hybrid Cloud Patterns", you can use a different remote and/or branch name
+To isolate changes for upstreaming (`hcp` is "Validated Patterns", you can use a different remote and/or branch name
 if you want):
 
 [source,terminal]
 ----
-$ git remote add hcp https://github.com/hybrid-cloud-patterns/industrial-edge
+$ git remote add hcp https://github.com/validatedpatterns/industrial-edge
 $ git fetch --all
 $ git branch -b hcp-main -t hcp/main
    <make changes on the hcp-main branch>
@@ -147,7 +147,7 @@ When run without arguments, the script will run as if it had been given the foll
 
 [source,terminal]
 ----
-$ common/scripts/make_common_subtree.sh https://github.com/hybrid-cloud-patterns/common.git main common-subtree
+$ common/scripts/make_common_subtree.sh https://github.com/validatedpatterns/common.git main common-subtree
 ----
 
 Which are the defaults the repository is normally configured with.
@@ -176,7 +176,7 @@ Subtrees have some pitfalls as well. In the subtree strategy, it is easier to di
 [id="contributing-to-patterns-using-common-subtrees"]
 == Contributing to Patterns using Common Subtrees
 
-Once you have forked common and changed your subtree for testing, changes from your fork can then be proposed to [https://github.com/hybrid-cloud-patterns/common.git] and can then be integrated into other patterns. A change to upstream common for a particular upstream pattern would have to be done in two stages:
+Once you have forked common and changed your subtree for testing, changes from your fork can then be proposed to [https://github.com/validatedpatterns/common.git] and can then be integrated into other patterns. A change to upstream common for a particular upstream pattern would have to be done in two stages:
 
 . PR the change into upstream's common
 . PR the updated common into the pattern repository

@@ -5,7 +5,7 @@
 = Install and set up the tools and software
 
 == Create a GitHub account
-Before you can contribute to Hybrid Cloud Patterns documentation, you must
+Before you can contribute to Validated Patterns documentation, you must
 https://www.github.com/join[sign up for a GitHub account].
 
 == Set up authentication
@@ -20,11 +20,11 @@ Confirm authentication is working correctly with the following command:
 $ ssh -T git@github.com
 ----
 
-== Fork and clone the Hybrid Cloud Patterns documentation repository
+== Fork and clone the Validated Patterns documentation repository
 
-You must fork and set up the Hybrid Cloud Patterns documentation repository on your workstation so that you can create PRs and contribute. These steps must only be performed during initial setup.
+You must fork and set up the Validated Patterns documentation repository on your workstation so that you can create PRs and contribute. These steps must only be performed during initial setup.
 
-. Fork the https://github.com/hybrid-cloud-patterns/docs repository into your
+. Fork the https://github.com/validatedpatterns/docs repository into your
 GitHub account from the GitHub UI. Click *Fork* in the upper right-hand corner.
 
 . In the terminal on your workstation, change into the directory where you want
@@ -45,7 +45,7 @@ $ git clone git@github.com:<user_name>/docs.git
 $ cd docs
 ----
 
-. Add an upstream pointer back to the Hybrid Cloud Patterns's remote repository, in this
+. Add an upstream pointer back to the Validated Patterns's remote repository, in this
 case _docs_.
 +
 [source,terminal]
@@ -58,7 +58,7 @@ repository in sync with it.
 
 == Install Asciidoctor
 
-The Hybrid Cloud Patterns documentation is created in AsciiDoc language, and is processed with http://asciidoctor.org/[AsciiDoctor], which is an AsciiDoc language processor.
+The Validated Patterns documentation is created in AsciiDoc language, and is processed with http://asciidoctor.org/[AsciiDoctor], which is an AsciiDoc language processor.
 
 === Prerequisites
 
@@ -72,9 +72,9 @@ The following are minimum requirements:
 
 === Preview the documentation using a container image
 
-You can use the container image to build the Hybrid Cloud Patterns documentation, locally. To do so, ensure that you have installed the `make` and `podman` tools.
+You can use the container image to build the Validated Patterns documentation, locally. To do so, ensure that you have installed the `make` and `podman` tools.
 
- * In the terminal window, navigate to the local instance of the `hybrid-cloud-patterns/docs` repository and run the following command:
+ * In the terminal window, navigate to the local instance of the `validatedpatterns/docs` repository and run the following command:
 
 [source,terminal]
 ----

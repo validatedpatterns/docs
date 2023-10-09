@@ -3,7 +3,7 @@
 
 [id="contributing-to-docs-doc-guidelines"]
 = Documentation guidelines
-Documentation guidelines for contributing to the Hybrid Cloud Patterns Docs
+Documentation guidelines for contributing to the Validated Patterns Docs
 
 == General guidelines
 
@@ -124,7 +124,7 @@ include::_common-docs/common-attributes.adoc[]                  <4>
 <1> The content type for the file. For assemblies, always use `:_content-type: ASSEMBLY`. Place this attribute before the anchor ID or, if present, the conditional that contains the anchor ID.
 <2> A unique anchor ID for this assembly. Use lowercase. Example: cli-developer-commands
 <3> Human readable title (notice the '=' top-level header)
-<4> Includes attributes common to Hybrid Cloud Patterns docs.
+<4> Includes attributes common to Validated Patterns docs.
 <5> Context used for identifying headers in modules that is the same as the anchor ID. Example: cli-developer-commands.
 <6> A blank line. You *must* have a blank line here before the toc.
 <7> The table of contents for the current assembly.

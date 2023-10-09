@@ -1,4 +1,4 @@
-# Hybrid Cloud Patterns documentation site
+# Validated Patterns documentation site
 
 This project contains the new proof-of-concept documentation site for validatedpatterns.io
 

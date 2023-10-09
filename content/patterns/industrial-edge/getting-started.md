@@ -35,9 +35,9 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
 
 # How to deploy
 
-1. Fork the [industrial-edge](https://github.com/hybrid-cloud-patterns/industrial-edge) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+1. Fork the [industrial-edge](https://github.com/validatedpatterns/industrial-edge) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 
-1. Fork the [manuela-dev](https://github.com/hybrid-cloud-patterns/manuela-dev) repository on GitHub.  It is necessary to fork this repository because the GitOps framework will push tags to this repository that match the versions of software that it will deploy.
+1. Fork the [manuela-dev](https://github.com/validatedpatterns-demos/manuela-dev) repository on GitHub.  It is necessary to fork this repository because the GitOps framework will push tags to this repository that match the versions of software that it will deploy.
 
 1. Clone the forked copy of the `industrial-edge` repository. Create a deployment branch using the branch `v2.3`.
 
@@ -61,7 +61,7 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
    vi ~/values-secret-industrial-edge.yaml
    ```
 
-1. Customize the following secret values. 
+1. Customize the following secret values.
 
    ```yaml
    version: "2.0"
@@ -137,7 +137,7 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
    git push origin deploy-v2.3
    ```
 
-1. You can deploy the pattern using the [Validated Patterns Operator](/infrastructure/using-validated-pattern-operator/) directly. If you deploy the pattern using the Validated Patterns Operator, installed through `Operator Hub`, you will need to run `make load-secrets` through a terminal session on your laptop or bastion host. 
+1. You can deploy the pattern using the [Validated Patterns Operator](/infrastructure/using-validated-pattern-operator/) directly. If you deploy the pattern using the Validated Patterns Operator, installed through `Operator Hub`, you will need to run `make load-secrets` through a terminal session on your laptop or bastion host.
 
 1. If you deploy the pattern through a terminal session on your laptop or bastion host login to your cluster by using the`oc login` command or by exporting the `KUBECONFIG` file.
 
@@ -160,7 +160,7 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
 
 # Validating the Environment
 
-1. In the OpenShift Container Platform web console, navigate to the **Operators → OperatorHub** page. 
+1. In the OpenShift Container Platform web console, navigate to the **Operators → OperatorHub** page.
 2. Verify that the following Operators are installed on the HUB cluster:
 
    ```text
@@ -228,7 +228,7 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
 ## Next Steps
 
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/industrial-edge/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Report Bugs](https://github.com/validatedpatterns/industrial-edge/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 Once the data center has been setup correctly and confirmed to be working, you can:
 

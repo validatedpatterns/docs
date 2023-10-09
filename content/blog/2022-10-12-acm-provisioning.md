@@ -41,7 +41,7 @@ the pay-as-you-go OpenShift managed service.
 
 Start by [deploying](https://validatedpatterns.io/multicloud-gitops/getting-started/) the Multi-cloud GitOps pattern on AWS.
 
-Next, you'll need to create a fork of the [multicloud-gitops](https://github.com/hybrid-cloud-patterns/multicloud-gitops/)
+Next, you'll need to create a fork of the [multicloud-gitops](https://github.com/validatedpatterns/multicloud-gitops/)
 repo.  Go there in a browser, make sure you’re logged in to GitHub, click the
 “Fork” button, and confirm the destination by clicking the big green "Create
 fork" button.
@@ -56,7 +56,7 @@ And finally, click through to the installed operator, and select the `Create
 instance` button and fill out the Create a Pattern form.  Most of the defaults
 are fine, but make sure you update the GitSpec URL to point to your fork of
 `multicloud-gitops`, rather than
-`https://github.com/hybrid-cloud-patterns/multicloud-gitops`.
+`https://github.com/validatedpatterns/multicloud-gitops`.
 
 ### Providing your Cloud Credentials
 

@@ -29,4 +29,4 @@ The {med-pattern} can answer the call to either of these requirements by using  
 These are just a few ideas to help you understand how you could use the {med-pattern} as a framework for your application.
 
 //We have relevant links on the patterns page
-//AI: Why does this point to AEG though? https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues[Report Bugs]
+//AI: Why does this point to AEG though? https://github.com/validatedpatterns/ansible-edge-gitops/issues[Report Bugs]

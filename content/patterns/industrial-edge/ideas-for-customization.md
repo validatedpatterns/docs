@@ -14,7 +14,7 @@ This demo in particular can be customized in a number of ways that might be very
 
 # HOWTO Forking the Industrial Edge repository to your github account
 
-Hopefully we are all familiar with GitHub.  If you are not GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.  Our Industrial Edge GitOps repository is available in our [Hybrid Cloud Patterns GitHub](https://github.com/hybrid-cloud-patterns "Hybrid Cloud Patterns Homepage") organization.
+Hopefully we are all familiar with GitHub.  If you are not GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.  Our Industrial Edge GitOps repository is available in our [Validated Patterns GitHub](https://github.com/validatedpatterns "Validated Patterns Homepage") organization.
 
 To fork this repository, and deploy the Industrial Edge pattern, follow the steps found in our [Getting Started](https://validatedpatterns.io/industrial-edge/getting-started "Industrial Edge Getting Started Guide") section.  This will allow you to follow the next few HOWTO guides in this section.
 
@@ -62,4 +62,4 @@ The idea is that this pattern can be used for other use cases keeping the main c
 What ideas for customization do you have? Can you use this pattern for other use cases?  Let us know through our feedback link below.
 
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Report Bugs](https://github.com/validatedpatterns/ansible-edge-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }

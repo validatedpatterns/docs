@@ -26,7 +26,9 @@ Make sure you have the `kubeadmin` administrator login for the data center clust
 
 You will need to login into GitHub and be able to fork two repositories.
 
-* hybrid-cloud-patterns/multicluster-devsecops
+* validatedpatterns/multicluster-devsecops
+
+<!--There is no such repo as chat-client in either orgs -->
 * hybrid-cloud-patterns/chat-client
 
 ## Pipeline Demos

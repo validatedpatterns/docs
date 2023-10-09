@@ -2,21 +2,21 @@
 :imagesdir: ../../images
 
 [id="contributing-to-docs-contributing"]
-= Contribute to Hybrid Cloud Patterns documentation
+= Contribute to Validated Patterns documentation
 
 == Different ways to contribute
 
-There are a few different ways you can contribute to Hybrid Cloud Patterns documentation:
+There are a few different ways you can contribute to Validated Patterns documentation:
 
-* Email the Hybrid Cloud Patterns team at mailto:hybrid-cloud-patterns@googlegroups.com[hybrid-cloud-patterns@googlegroups.com].
-* Create a link:https://github.com/hybrid-cloud-patterns/docs/issues[GitHub] or link:https://issues.redhat.com/projects/MBP/issues[Jira issue] .
+* Email the Validated Patterns team at mailto:hybrid-cloud-patterns@googlegroups.com[hybrid-cloud-patterns@googlegroups.com].
+* Create a link:https://github.com/validatedpatterns/docs/issues[GitHub] or link:https://issues.redhat.com/projects/MBP/issues[Jira issue] .
 //to-do: Add link to the contribution workflow when we have a proper one. You might need to create a new file
-* Submit a pull request (PR). To create a PR, create a local clone of your own fork of the link:https://github.com/hybrid-cloud-patterns/docs[Hybrid Cloud Patterns docs repository], make your changes, and submit a PR. This option is best if you have substantial changes.
+* Submit a pull request (PR). To create a PR, create a local clone of your own fork of the link:https://github.com/validatedpatterns/docs[Validated Patterns docs repository], make your changes, and submit a PR. This option is best if you have substantial changes.
 //to-do:For more details on creating a PR see <topic_link_to_contribution_workflow>.
 
 == Contribution workflow
 
-When you submit a PR, the https://github.com/orgs/hybrid-cloud-patterns/teams/docs[Hybrid Cloud Patterns Docs team] reviews the PR and arranges further reviews by Quality Engineering (QE), subject matter experts (SMEs), and others, as required. If the PR requires changes, updates, or corrections, the reviewers add comments in the PR. The documentation team merges the PR after you have implemented all feedback, and you have squashed all commits.
+When you submit a PR, the https://github.com/orgs/hybrid-cloud-patterns/teams/docs[Validated Patterns Docs team] reviews the PR and arranges further reviews by Quality Engineering (QE), subject matter experts (SMEs), and others, as required. If the PR requires changes, updates, or corrections, the reviewers add comments in the PR. The documentation team merges the PR after you have implemented all feedback, and you have squashed all commits.
 
 
 == Repository organization

@@ -9,4 +9,4 @@ products:
 
 A pattern for Kong Gateway Control Plane and Data Plane demo
 
-[Repo](https://github.com/hybrid-cloud-patterns/kong-gateway)
+[Repo](https://github.com/validatedpatterns/kong-gateway)

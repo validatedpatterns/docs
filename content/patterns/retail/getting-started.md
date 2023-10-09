@@ -40,7 +40,7 @@ Install the installation tooling dependencies. You will need:
 
 ## How to deploy
 
-1. Fork the [retail](https://github.com/hybrid-cloud-patterns/retail) repository on GitHub.
+1. Fork the [retail](https://github.com/validatedpatterns/retail) repository on GitHub.
 
 1. Clone the forked copy of the `retail` repo. Use branch `v1.0'.
 
@@ -165,4 +165,4 @@ Clicking on the respective Kafdrop links will go to a Kafdrop instance that allo
 ## Next Steps
 
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/retail/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Report Bugs](https://github.com/validatedpatterns/retail/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }

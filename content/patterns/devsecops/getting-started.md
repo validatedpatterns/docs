@@ -9,7 +9,7 @@ aliases: /devsecops/getting-started/
 # Prerequisites
 
 1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../devsecops/cluster-sizing).
-1. A second OpenShift cluster for development using secure CI pipelines. 
+1. A second OpenShift cluster for development using secure CI pipelines.
 1. A third OpenShift cluster for production. (optional but desirable)
 1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 1. Tools Podman and Git. (see below)
@@ -21,7 +21,7 @@ service](https://console.redhat.com/openshift/create).
 # Credentials Required in Pattern
 
 In addition to the openshift cluster, you will need to prepare a number of secrets, or credentials, which will be used
-in the pattern in various ways. To do this, copy the [values-secret.yaml template](https://github.com/hybrid-cloud-patterns/multicluster-devsecops/blob/main/values-secret.yaml.template) to your home directory as `values-secret.yaml` and replace the explanatory text as follows:
+in the pattern in various ways. To do this, copy the [values-secret.yaml template](https://github.com/validatedpatterns/multicluster-devsecops/blob/main/values-secret.yaml.template) to your home directory as `values-secret.yaml` and replace the explanatory text as follows:
 
 * Your git repository username and password. The password must be base64 encoded.
 
@@ -54,7 +54,7 @@ secrets:
    * Git command line tool ([git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
    * Podman command line tool ([podman](https://podman.io/getting-started/installation))
 
-1. Fork the [Multicluster DevSecOps](https://github.com/hybrid-cloud-patterns/multicluster-devsecops) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevSecOps processes. The **Fork** information and pull down menu can be found on the top right of the GitHub page for a pattern. Select the pull down an select **Create a new fork**.
+1. Fork the [Multicluster DevSecOps](https://github.com/validatedpatterns/multicluster-devsecops) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevSecOps processes. The **Fork** information and pull down menu can be found on the top right of the GitHub page for a pattern. Select the pull down an select **Create a new fork**.
 
 1. Clone the forked copy of the `multicluster-devsecops` repository. Use branch `v1.0`. (Clone in an appropriate sub-dir)
 
@@ -191,7 +191,7 @@ Click on the "Refresh web console" link.
 
 1. Return to the ACS Central tab and paste the password into the password field. Make sure that the Username is `admin`.
 
-1. This will bring you to the ACS Central dashboard page. At first it may not show any clusters showing but as the ACS secured deployment on the hub syncs with ACS central on the hub then information will start to show.  
+1. This will bring you to the ACS Central dashboard page. At first it may not show any clusters showing but as the ACS secured deployment on the hub syncs with ACS central on the hub then information will start to show.
 
    [![ACS Central dashboard](/images/devsecops/acs-dashboard.png)](/images/devsecops/acs-dashboard.png)
 
@@ -264,7 +264,7 @@ Advanced Cluster Security needs to be integrated with Quay Enterprise registry. 
 # Next Steps
 
 [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/hybrid-cloud-patterns/multicluster-devsecops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Report Bugs](https://github.com/validatedpatterns/multicluster-devsecops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 Once the hub has been setup correctly and confirmed to be working, you can:
 

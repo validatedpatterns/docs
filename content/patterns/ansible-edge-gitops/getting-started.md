@@ -25,7 +25,7 @@ service](https://console.redhat.com/openshift/create).
 # Credentials Required in Pattern
 
 In addition to the openshift cluster, you will need to prepare a number of secrets, or credentials, which will be used
-in the pattern in various ways. To do this, copy the [values-secret.yaml template](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/blob/main/values-secret.yaml.template) to your home directory as `values-secret.yaml` and replace the explanatory text as follows:
+in the pattern in various ways. To do this, copy the [values-secret.yaml template](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-secret.yaml.template) to your home directory as `values-secret.yaml` and replace the explanatory text as follows:
 
 * A username and  SSH Keypair (private key and public key). These will be used to provide access to the Kiosk VMs in the demo.
 
@@ -124,7 +124,7 @@ To install a collection that is not currently installed:
     export KUBECONFIG=~/my-ocp-env/hub/auth/kubeconfig
     ```
 
-1. Fork the [ansible-edge-gitops](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops) repo on GitHub.  It is necessary to fork to preserve customizations you make to the default configuration files.
+1. Fork the [ansible-edge-gitops](https://github.com/validatedpatterns/ansible-edge-gitops) repo on GitHub.  It is necessary to fork to preserve customizations you make to the default configuration files.
 
 1. Clone the forked copy of this repository.
 
@@ -233,4 +233,4 @@ As part of this pattern HashiCorp Vault has been installed. Refer to the section
 # Next Steps
 
 ## [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns)
-## [Report Bugs](https://github.com/hybrid-cloud-patterns/ansible-edge-gitops/issues)
+## [Report Bugs](https://github.com/validatedpatterns/ansible-edge-gitops/issues)
