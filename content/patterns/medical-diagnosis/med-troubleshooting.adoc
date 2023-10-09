@@ -1,12 +1,13 @@
 ---
 title: Troubleshooting
 weight: 40
-aliases: /medical-diagnosis/troubleshooting/
+aliases: /medical-diagnosis/med-troubleshooting/
 ---
 
 :toc:
 :imagesdir: /images
 :_content-type: REFERENCE
+
 include::modules/comm-attributes.adoc[]
 
 include::modules/med-about-makefile.adoc[leveloffset=+1]

@@ -17,9 +17,9 @@ After components from the `common` directory are installed, the remaining tasks 
 [id="about-make-vault-init-make-load-secrets-commands"]
 ==== About the make vault-init and make load-secrets commands
 
-The {med-pattern} is integrated with {hashicorp-vault} and {eso-op} services for secrets management within the cluster. These targets install vault from a {helm-chart} and load the secret `(values-secret.yaml)` that you created during link:../getting-started/#preparing-for-deployment[Getting Started].
+The {med-pattern} is integrated with {hashicorp-vault} and {eso-op} services for secrets management within the cluster. These targets install vault from a {helm-chart} and load the secret `(values-secret.yaml)` that you created during link:../med-getting-started/#preparing-for-deployment[Getting Started].
 
-If `values-secret.yaml` does not exist, make will exit with an error saying so. Furthermore, if the `values-secret.yaml` file does exist but is improperly formatted, {rh-ansible} exits with an error about being improperly formatted. To verify the format of the secret, see link:../getting-started/#preparing-for-deployment[Getting Started].
+If `values-secret.yaml` does not exist, make will exit with an error saying so. Furthermore, if the `values-secret.yaml` file does exist but is improperly formatted, {rh-ansible} exits with an error about being improperly formatted. To verify the format of the secret, see link:../med-getting-started/#preparing-for-deployment[Getting Started].
 
 [id="about-make-bootstrap-make-upgrade-commands"]
 ==== About the make bootstrap and make upgrade commands

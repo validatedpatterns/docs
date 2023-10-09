@@ -1,11 +1,12 @@
 ---
 title: Ideas for customization
 weight: 50
-aliases: /medical-diagnosis/ideas-for-customization/
+aliases: /medical-diagnosis/med-ideas-for-customization/
 ---
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
+
 include::modules/comm-attributes.adoc[]
 
 include::modules/med-about-customizing-pattern.adoc[leveloffset=+1]

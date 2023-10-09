@@ -2,7 +2,7 @@
 :imagesdir: ../../images
 
 [id="med-openshift-cluster-size"]
-=== About {med-pattern} OpenShift cluster size
+== About {med-pattern} OpenShift cluster size
 
 The {med-pattern} has been tested with a defined set of configurations that represent the most common combinations that {ocp} customers are using for the x86_64 architecture.
 
@@ -41,7 +41,7 @@ The OpenShift cluster is a standard deployment of 3 control plane nodes and 3 or
 |===
 
 [role="_additional-resources"]
-.Additional resource
+.Additional resources
 * link:https://aws.amazon.com/ec2/instance-types/[AWS instance types]
 * link:https://learn.microsoft.com/en-us/azure/virtual-machines/sizes[Azure instance types: Sizes for virtual machines in Azure]
 * link:https://cloud.google.com/compute/docs/machine-resource[Google Cloud Platform instance types: Machine families resource and comparison guide]

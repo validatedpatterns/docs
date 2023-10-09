@@ -1,7 +1,7 @@
 ---
-title: Cluster Sizing
+title: Cluster sizing
 weight: 20
-aliases: /medical-diagnosis/cluster-sizing/
+aliases: /medical-diagnosis/med-cluster-sizing/
 ---
 
 :toc:

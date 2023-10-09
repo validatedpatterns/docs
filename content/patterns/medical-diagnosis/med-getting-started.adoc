@@ -1,7 +1,7 @@
 ---
-title: Getting Started
+title: Getting started
 weight: 10
-aliases: /medical-diagnosis/getting-started/
+aliases: /medical-diagnosis/med-getting-started/
 ---
 
 :toc:
@@ -9,18 +9,13 @@ aliases: /medical-diagnosis/getting-started/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-//Module to be included
-//:_content-type: PROCEDURE
-//:imagesdir: ../../../images
-[id="deploying-med-pattern"]
-= Deploying the {med-pattern}
-
-.Prerequisites
+[id="general-prerequisites_{context}"]
+= Prerequisites
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *Services* -> *Containers* -> *Create cluster*.
- ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../medical-diagnosis/cluster-sizing[sizing your cluster].
+ ** Select *OpenShift* -> *Clusters* -> *Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../medical-diagnosis/med-cluster-sizing[sizing your cluster].
 * A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
 * An S3-capable Storage set up in your public or private cloud for the x-ray images
 * The Helm binary, see link:https://helm.sh/docs/intro/install/[Installing Helm]
@@ -31,367 +26,24 @@ For installation tooling dependencies, see link:https://validatedpatterns.io/lea
 The {med-pattern} does not have a dedicated hub or edge cluster.
 ====
 
-[id="setting-up-an-s3-bucket-for-the-xray-images-getting-started"]
-=== Setting up an S3 Bucket for the xray-images
+[id="setting-up-storage-for-xray-images"]
+== Setting up storage for the X-ray images
 
-An S3 bucket is required for image processing.
-For information about creating a bucket in AWS S3, see the <<utilities,Utilities>> section.
-
-For information about creating the buckets on other cloud providers, see the following links:
+Setting up storage is required for image processing.For information about creating the buckets on other cloud providers, see the following links:
 
 * link:https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html[AWS S3]
 * link:https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal[Azure Blob Storage]
 * link:https://cloud.google.com/storage/docs/quickstart-console[GCP Cloud Storage]
 
-//Module to be included
-//:_content-type: PROCEDURE
-//:imagesdir: ../../../images
+include::modules/med-setup-aws-s3-bucket-with-utilities.adoc[leveloffset=+2]
 
-[id="utilities"]
-= Utilities
-//AI: Update the use of community and VP post naming tier update
+include::modules/med-preparing-for-deployment.adoc[leveloffset=+1]
 
-To use the link:https://github.com/validatedpatterns/utilities[utilities] that are available, export some environment variables for your cloud provider.
+include::modules/med-deploying-med-diag-pattern.adoc[leveloffset=+1]
 
-.Example for AWS. Ensure that you replace values with your keys:
+[id="post-deployment-configuration_{context}"]
+== Post-deployment configuration
 
-[source,terminal]
-----
-export AWS_ACCESS_KEY_ID=AKXXXXXXXXXXXXX
-export AWS_SECRET_ACCESS_KEY=gkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-----
+include::modules/med-using-ocp-gitops-to-check-app-progress.adoc[leveloffset=+2]
 
-Create the S3 bucket and copy over the data from the validated patterns public bucket to the created bucket for your demo. You can do this on the cloud providers console or you can use the scripts that are provided in link:https://github.com/validatedpatterns/utilities[utilities] repository.
-
-[source,terminal]
-----
-$ python s3-create.py -b mytest-bucket -r us-west-2 -p
-$ python s3-sync-buckets.py -s validated-patterns-md-xray -t mytest-bucket -r us-west-2
-----
-
-.Example output
-
-image:/videos/bucket-setup.svg[Bucket setup]
-
-Note the name and URL for the bucket for further pattern configuration. For example, you must update these values in a `values-global.yaml` file, where there is a section for `s3:`
-
-[id="preparing-for-deployment"]
-= Preparing for deployment
-.Procedure
-
-. Fork the link:https://github.com/validatedpatterns/medical-diagnosis[medical-diagnosis] repository on GitHub. You must fork the repository because your fork will be updated as part of the GitOps and DevOps processes.
-. Clone the forked copy of this repository.
-+
-[source,terminal]
-----
-$ git clone git@github.com:<your-username>/medical-diagnosis.git
-----
-
-. Create a local copy of the Helm values file that can safely include credentials.
-+
-[WARNING]
-====
-Do not commit this file. You do not want to push personal credentials to GitHub.
-====
-+
-Run the following commands:
-+
-[source,terminal]
-----
-$ cp values-secret.yaml.template ~/values-secret-medical-diagnosis.yaml
-$ vi ~/values-secret-medical-diagnosis.yaml
-----
-+
-.Example `values-secret.yaml` file
-
-[source,yaml]
-----
-version "2.0"
-secrets:
-  # NEVER COMMIT THESE VALUES TO GIT
-
-  # Database login credentials and configuration
-  - name: xraylab
-    fields:
-    - name: database-user
-      value: xraylab
-    - name: database-host
-      value: xraylabdb
-    - name: database-db
-      value: xraylabdb
-    - name: database-master-user
-      value: xraylab
-    - name: database-password
-      onMissingValue: generate
-      vaultPolicy: validatedPatternDefaultPolicy
-    - name: database-root-password
-      onMissingValue: generate
-      vaultPolicy: validatedPatternDefaultPolicy
-    - name: database-master-password
-      onMissingValue: generate
-      vaultPolicy: validatedPatternDefaultPolicy
-
-  # Grafana Dashboard admin user/password
-  - name: grafana
-    fields:
-      - name: GF_SECURITY_ADMIN_USER:
-        value: root
-      - name: GF_SECURITY_ADMIN_PASSWORD:
-        onMissingValue: generate
-        vaultPolicy: validatedPatternDefaultPolicy
-----
-+
-By default, Vault password policy generates the passwords for you. However, you can create your own passwords.
-+
-[NOTE]
-====
-When defining a custom password for the database users, avoid using the `$` special character as it gets interpreted by the shell and will ultimately set the incorrect desired password.
-====
-
-. To customize the deployment for your cluster, update the `values-global.yaml` file by running the following commands:
-+
-[source,terminal]
-----
-$ git checkout -b my-branch
-$ vi values-global.yaml
-----
-+
-Replace instances of PROVIDE_ with your specific configuration
-+
-[source,yaml]
-----
-   ...omitted
-   datacenter:
-     cloudProvider: PROVIDE_CLOUD_PROVIDER #AWS, AZURE, GCP
-     storageClassName: PROVIDE_STORAGECLASS_NAME #gp3-csi
-     region: PROVIDE_CLOUD_REGION #us-east-2
-     clustername: PROVIDE_CLUSTER_NAME #OpenShift clusterName
-     domain: PROVIDE_DNS_DOMAIN #example.com
-
-   s3:
-     # Values for S3 bucket access
-     # Replace <region> with AWS region where S3 bucket was created
-     # Replace <cluster-name> and <domain> with your OpenShift cluster values
-     # bucketSource: "https://s3.<region>.amazonaws.com/<s3_bucket_name>"
-     bucketSource: PROVIDE_BUCKET_SOURCE #validated-patterns-md-xray
-     # Bucket base name used for xray images
-     bucketBaseName: "xray-source"
-----
-+
-[source,terminal]
-----
-$ git add values-global.yaml
-$ git commit values-global.yaml
-$ git push origin my-branch
-----
-
-. To deploy the pattern, you can use the link:/infrastructure/using-validated-pattern-operator/[{validated-patterns-op}]. If you do use the Operator, skip to <<check-the-values-files-before-deployment,validating the environment>>.
-
-. To preview the changes that will be implemented to the Helm charts, run the following command:
-+
-[source,terminal]
-----
-$ ./pattern.sh make show
-----
-
-. Login to your cluster by running the following command:
-+
-[source,terminal]
-----
-$ oc login
-----
-+
-Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
-+
-[source,terminal]
-----
- export KUBECONFIG=~/<path_to_kubeconfig>
-----
-
-[id="check-the-values-files-before-deployment"]
-== Check the values files before deployment
-
-To ensure that you have the required variables to deploy the {med-pattern}, run the `./pattern.sh make predeploy` command. You can review your values and make updates, if required.
-
-You must review the following values files before deploying the {med-pattern}:
-
-|===
-| Values File | Description
-
-| values-secret.yaml
-| Values file that includes the secret parameters required by the pattern
-
-| values-global.yaml
-| File that contains all the global values used by Helm to deploy the pattern
-|===
-
-[NOTE]
-====
-Before you run the `./pattern.msh make install` command, ensure that you have the correct values for:
-```
-- domain
-- clusterName
-- cloudProvider
-- storageClassName
-- region
-- bucketSource
-```
-====
-
-//image::/videos/predeploy.svg[link="/videos/predeploy.svg"]
-
-//Module to be included
-//:_content-type: PROCEDURE
-//:imagesdir: ../../../images
-[id="med-deploy-pattern_{context}"]
-= Deploy
-
-. To apply the changes to your cluster, run the following command:
-+
-[source,terminal]
-----
-$ ./pattern.sh make install
-----
-+
-If the installation fails, you can go over the instructions and make updates, if required.
-To continue the installation, run the following command:
-+
-[source,terminal]
-----
-$ ./pattern.sh make update
-----
-+
-This step might take some time, especially for the {ocp-data-short} Operator components to install and synchronize. The `./pattern.sh make install` command provides some progress updates during the installation process. It can take up to twenty minutes. Compare your `./pattern.sh make install` run progress with the following video that shows a successful installation.
-+
-image::/videos/xray-deployment.svg[link="/videos/xray-deployment.svg"]
-
-. Verify that the Operators have been installed.
-.. To verify, in the {ocp} web console, navigate to *Operators* → *Installed Operators* page.
-.. Check that the Operator is installed in the `openshift-operators` namespace and its status is `Succeeded`. Ensure that {ocp-data-short} is listed in the list of installed Operators.
-
-
-//Module to be included
-//:_content-type: PROCEDURE
-//:imagesdir: ../../../images
-[id="using-openshift-gitops-to-check-on-application-progress-getting-started"]
-== Using OpenShift GitOps to check on Application progress
-
-To check the various applications that are being deployed, you can view the progress of the {rh-gitops-short} Operator.
-
-. Obtain the ArgoCD URLs and passwords.
-+
-The URLs and login credentials for ArgoCD change depending on the pattern name and the site names they control.  Follow the instructions below to find them, however you choose to deploy the pattern.
-+
-Display the fully qualified domain names, and matching login credentials, for
-all ArgoCD instances:
-+
-[source,terminal]
-----
-ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
-CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
-eval $CMD
-----
-+
-.Example output
-+
-[source,text]
-----
-NAME                       HOST/PORT                                                                                      PATH   SERVICES                   PORT    TERMINATION            WILDCARD
-hub-gitops-server   hub-gitops-server-medical-diagnosis-hub.apps.wh-medctr.blueprints.rhecoeng.com          hub-gitops-server   https   passthrough/Redirect   None
-# admin.password
-xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH
-NAME                      HOST/PORT                                                                         PATH   SERVICES                  PORT    TERMINATION            WILDCARD
-cluster                   cluster-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com                          cluster                   8080    reencrypt/Allow        None
-kam                       kam-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com                              kam                       8443    passthrough/None       None
-openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com          openshift-gitops-server   https   passthrough/Redirect   None
-# admin.password
-FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6
-----
-+
-[IMPORTANT]
-====
-Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the applications for the pattern in this instance.
-====
-
-. Check that all applications are synchronized. There are thirteen different ArgoCD `applications` that are deployed as part of this pattern.
-
-
-//Module to be included
-//:_content-type: PROCEDURE
-//:imagesdir: ../../../images
-[id="viewing-the-grafana-based-dashboard-getting-started"]
-== Viewing the Grafana based dashboard
-
-. Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for project `openshift-storage``. Click the URL for the `s3-rgw`.
-+
-image::medical-edge/storage-route.png[link="/images/medical-edge/storage-route.png"]
-+
-Ensure that you see some XML and not the access denied error message.
-+
-image::medical-edge/storage-rgw-route.png[link="/images/medical-edge/storage-rgw-route.png"]
-
-. While still looking at Routes, change the project to `xraylab-1`. Click the URL for the `image-server`. Ensure that you do not see an access denied error message. You must to see a `Hello World` message.
-+
-image::medical-edge/grafana-routes.png[link="/images/medical-edge/grafana-routes.png"]
-
-. Turn on the image file flow. There are three ways to go about this.
-+
-You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster.
-+
-[source,terminal]
-----
-$ oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1
-----
-+
-Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the `xraylab-1` project.
-+
-image::medical-edge/dev-topology.png[link="/images/medical-edge/dev-topology.png"]
-+
-Right-click on the `image-generator` pod icon and select `Edit Pod count`.
-+
-image::medical-edge/dev-topology-menu.png[link="/images/medical-edge/dev-topology-menu.png"]
-+
-Up the pod count from `0` to `1` and save.
-+
-image::medical-edge/dev-topology-pod-count.png[link="/images/medical-edge/dev-topology-pod-count.png"]
-+
-Alternatively, you can have the same outcome on the Administrator console.
-+
-Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project `xraylab-1`.
-Click `image-generator` and increase the pod count to 1.
-+
-image::medical-edge/start-image-flow.png[link="/images/medical-edge/start-image-flow.png"]
-
-
-//Module to be included
-//:_content-type: PROCEDURE
-//:imagesdir: ../../../images
-[id="making-some-changes-on-the-dashboard-getting-started"]
-== Making some changes on the dashboard
-
-You can change some of the parameters and watch how the changes effect the dashboard.
-
-. You can increase or decrease the number of image generators.
-+
-[source,terminal]
-----
-$ oc scale deploymentconfig/image-generator --replicas=2
-----
-+
-Check the dashboard.
-+
-[source,terminal]
-----
-$ oc scale deploymentconfig/image-generator --replicas=0
-----
-+
-Watch the dashboard stop processing images.
-
-. You can also simulate the change of the AI model version - as it's only an environment variable in the Serverless Service configuration.
-+
-[source,terminal]
-----
-$ oc patch service.serving.knative.dev/risk-assessment --type=json -p '[{"op":"replace","path":"/spec/template/metadata/annotations/revisionTimestamp","value":"'"$(date +%F_%T)"'"},{"op":"replace","path":"/spec/template/spec/containers/0/env/0/value","value":"v2"}]'
-----
-+
-This changes the model version value, and the `revisionTimestamp` in the annotations, which triggers a redeployment of the service.
+include::modules/med-viewing-grafana-dashboard.adoc[leveloffset=+2]

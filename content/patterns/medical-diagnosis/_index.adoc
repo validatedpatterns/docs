@@ -32,4 +32,4 @@ include::modules/med-architecture-schema.adoc[leveloffset=+1]
 [id="next-steps_med-diag-index"]
 == Next steps
 
-* Getting started link:getting-started[Deploy the Pattern]
+* link:med-getting-started[Deploy the pattern]

@@ -1,0 +1,75 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="viewing-the-grafana-based-dashboard-getting-started"]
+= Viewing the Grafana based dashboard
+
+. Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for project `openshift-storage``. Click the URL for the `s3-rgw`.
++
+image::medical-edge/storage-route.png[link="/images/medical-edge/storage-route.png"]
++
+Ensure that you see some XML and not the access denied error message.
++
+image::medical-edge/storage-rgw-route.png[link="/images/medical-edge/storage-rgw-route.png"]
+
+. While still looking at Routes, change the project to `xraylab-1`. Click the URL for the `image-server`. Ensure that you do not see an access denied error message. You must to see a `Hello World` message.
++
+image::medical-edge/grafana-routes.png[link="/images/medical-edge/grafana-routes.png"]
+
+. Turn on the image file flow. There are three ways to go about this.
++
+You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster.
++
+[source,terminal]
+----
+$ oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1
+----
++
+Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the `xraylab-1` project.
++
+image::medical-edge/dev-topology.png[link="/images/medical-edge/dev-topology.png"]
++
+Right-click on the `image-generator` pod icon and select `Edit Pod count`.
++
+image::medical-edge/dev-topology-menu.png[link="/images/medical-edge/dev-topology-menu.png"]
++
+Up the pod count from `0` to `1` and save.
++
+image::medical-edge/dev-topology-pod-count.png[link="/images/medical-edge/dev-topology-pod-count.png"]
++
+Alternatively, you can have the same outcome on the Administrator console.
++
+Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project `xraylab-1`.
+Click `image-generator` and increase the pod count to 1.
++
+image::medical-edge/start-image-flow.png[link="/images/medical-edge/start-image-flow.png"]
+
+[id="customizing-dashboard"]
+== Customizing the dashboard
+
+You can change some of the parameters and watch how the changes effect the dashboard.
+
+. To increase or decrease the number of image generators, run the following command:
++
+[source,terminal]
+----
+$ oc scale deploymentconfig/image-generator --replicas=2
+----
++
+Check the dashboard.
++
+[source,terminal]
+----
+$ oc scale deploymentconfig/image-generator --replicas=0
+----
++
+Watch the dashboard stop processing images.
+
+. You can also simulate the change of the AI model version, which is an environment variable in the Serverless Service configuration.
++
+[source,terminal]
+----
+$ oc patch service.serving.knative.dev/risk-assessment --type=json -p '[{"op":"replace","path":"/spec/template/metadata/annotations/revisionTimestamp","value":"'"$(date +%F_%T)"'"},{"op":"replace","path":"/spec/template/spec/containers/0/env/0/value","value":"v2"}]'
+----
++
+This changes the model version value, and the `revisionTimestamp` in the annotations, which triggers a redeployment of the service.

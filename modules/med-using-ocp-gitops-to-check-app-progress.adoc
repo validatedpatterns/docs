@@ -1,0 +1,44 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="using-openshift-gitops-to-check-application-progress"]
+== Using {rh-gitops-short} to check application progress
+
+To check the various applications that are being deployed, you can view the progress of the {rh-gitops-short} Operator.
+
+. Obtain the ArgoCD URLs and passwords.
++
+The URLs and login credentials for ArgoCD change depending on the pattern name and the site names they control.  Follow the instructions below to find them, however you choose to deploy the pattern.
++
+Display the fully qualified domain names, and matching login credentials, for
+all ArgoCD instances:
++
+[source,terminal]
+----
+ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
+CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
+eval $CMD
+----
++
+.Example output
++
+[source,text]
+----
+NAME                       HOST/PORT                                                                                      PATH   SERVICES                   PORT    TERMINATION            WILDCARD
+hub-gitops-server   hub-gitops-server-medical-diagnosis-hub.apps.wh-medctr.blueprints.rhecoeng.com          hub-gitops-server   https   passthrough/Redirect   None
+# admin.password
+xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH
+NAME                      HOST/PORT                                                                         PATH   SERVICES                  PORT    TERMINATION            WILDCARD
+cluster                   cluster-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com                          cluster                   8080    reencrypt/Allow        None
+kam                       kam-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com                              kam                       8443    passthrough/None       None
+openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com          openshift-gitops-server   https   passthrough/Redirect   None
+# admin.password
+FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6
+----
++
+[IMPORTANT]
+====
+Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the applications for the pattern in this instance.
+====
+
+. Check that all applications are synchronized. There are thirteen different ArgoCD `applications` that are deployed as part of this pattern.
