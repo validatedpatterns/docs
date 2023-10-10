@@ -61,5 +61,5 @@ The idea is that this pattern can be used for other use cases keeping the main c
 
 What ideas for customization do you have? Can you use this pattern for other use cases?  Let us know through our feedback link below.
 
-[Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Help & Feedback](https://groups.google.com/g/validatedpatterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/validatedpatterns/ansible-edge-gitops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }

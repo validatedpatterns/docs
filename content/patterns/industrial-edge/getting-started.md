@@ -227,7 +227,7 @@ For installation tooling dependencies, see [Patterns quick start]({{< ref "/cont
 
 ## Next Steps
 
-[Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Help & Feedback](https://groups.google.com/g/validatedpatterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/validatedpatterns/industrial-edge/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 Once the data center has been setup correctly and confirmed to be working, you can:

@@ -264,5 +264,5 @@ The reason this pattern ships with a script as it does instead of invoking the r
 
 # Next Steps
 
-## [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns)
+## [Help & Feedback](https://groups.google.com/g/validatedpatterns)
 ## [Report Bugs](https://github.com/validatedpatterns/ansible-edge-gitops/issues)

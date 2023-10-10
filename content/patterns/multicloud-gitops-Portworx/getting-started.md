@@ -106,5 +106,5 @@ After the management hub is set up and works correctly, attach one or more manag
 For instructions on deploying the edge, refer to [Managed Cluster Sites](https://validatedpatterns.io/patterns/multicloud-gitops-portworx/managed-cluster/).
 
 >Contribute to this pattern:
-{{% button text="Help & Feedback" url="https://groups.google.com/g/hybrid-cloud-patterns" %}}
+{{% button text="Help & Feedback" url="https://groups.google.com/g/validatedpatterns" %}}
 {{% button text="Report Bugs" url="https://github.com/portworx/rh-multicloud-gitops-pxe/issues" color-class="btn-red" %}}
