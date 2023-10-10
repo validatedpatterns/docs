@@ -16,7 +16,7 @@ pattern_logo: industrial-edge.png
 links:
   install: getting-started
   arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=26
-  help: https://groups.google.com/g/hybrid-cloud-patterns
+  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/industrial-edge/issues
 ci: manuela
 ---

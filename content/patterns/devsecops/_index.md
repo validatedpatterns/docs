@@ -15,7 +15,7 @@ aliases: /devsecops/
 # pattern_logo: devsecops.png
 links:
   install: getting-started
-  help: https://groups.google.com/g/hybrid-cloud-patterns
+  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/multicluster-devsecops/issues
 ci: devsecops
 ---

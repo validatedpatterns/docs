@@ -232,5 +232,5 @@ As part of this pattern HashiCorp Vault has been installed. Refer to the section
 
 # Next Steps
 
-## [Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns)
+## [Help & Feedback](https://groups.google.com/g/validatedpatterns)
 ## [Report Bugs](https://github.com/validatedpatterns/ansible-edge-gitops/issues)

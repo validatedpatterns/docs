@@ -263,7 +263,7 @@ Advanced Cluster Security needs to be integrated with Quay Enterprise registry. 
 
 # Next Steps
 
-[Help & Feedback](https://groups.google.com/g/hybrid-cloud-patterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Help & Feedback](https://groups.google.com/g/validatedpatterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Report Bugs](https://github.com/validatedpatterns/multicluster-devsecops/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 Once the hub has been setup correctly and confirmed to be working, you can:
