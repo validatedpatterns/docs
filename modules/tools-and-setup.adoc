@@ -50,7 +50,7 @@ case _docs_.
 +
 [source,terminal]
 ----
-$ git remote add upstream git@github.com:hybrid-cloud-patterns/docs.git
+$ git remote add upstream git@github.com:validatedpatterns/docs.git
 ----
 
 This ensures that you are tracking the remote repository to keep your local
