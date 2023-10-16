@@ -9,67 +9,65 @@ aliases: /requirements/tested/
 
 :toc:
 
-= The Validated Patterns 'Tested' Tier
+[id="about-tested-tier"]
+= About the {tested-tier}
 
-[id="tldr"]
-== tl;dr
+The {tested-tier} provides you with additional collateral and reassurance that the pattern was known to be recently working on at least one recent version of {rh-ocp}. Inclusion in this tier requires some additional work for the pattern's owner - which might be a partner or a sufficiently motivated Subject Matter Expert (SME).
 
-The Tested tier is intended to provide consumers with additional collateral and reassurance that the pattern was known to be recently working on at least one recent version of OpenShift.  Inclusion in this tier requires some additional work for the pattern's owner - which might be a partner or sufficiently motivated SME.
+[id="nominating-a-community-pattern-to-become-maintained"]
+== Nominating a Tested pattern for promotion to Maintained
 
-[id="nominating-a-community-pattern-to-become-Tested"]
-== Nominating a Sandbox Pattern for Promotion to Tested
+If there is a Tested pattern that you believe would be a good candidate for promotion to Maintained, you can make that case by mailing mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
 
-If there is a Sandbox pattern that you believe would be a good candidate for promotion to tested, you can make that case by emailing validatedpatterns@googlegroups.com
-
-Please be aware that each Tested pattern represents an ongoing maintenance, support, and testing effort.  Finite team capacity means that it is simply not possible for the team to take on this responsibility for all Validated Patterns.  
+Please be aware that each Tested pattern represents an ongoing maintenance, support, and testing effort. Finite team capacity means that it is simply not possible for the team to take on this responsibility for all {solution-name-upstream}.
 
 For this reason we have designed the tiers and our processes to facilitate this to occur outside of the team by any sufficiently motivated party, including other parts of Red Hat, partners, and even customers.
 
-In limited cases, the Validated Patterns team may consider taking on that work, however please get in contact at least 4 weeks prior to the end of a given quarter in order for the necessary work to be considered as part of the following quarter's planning process
+In limited cases, the {solution-name-upstream} team may consider taking on that work, however please get in contact at least 4 weeks prior to the end of a given quarter in order for the necessary work to be considered as part of the following quarter's planning process
 
 
-[id="requirements"]
+[id="requirements-tested-tier"]
 == Requirements
 
-Tested Patterns have deliverable and requirements *in addition* to those
+{tested-pattern} have deliverable and requirements *in addition* to those
 specified for the link:/requirements/sandbox/[Sandbox tier]
 
-[id="must"]
+[id="must-tested-tier"]
 === Must
 
-. Tested Patterns *MUST* continue to meet the following criteria to remain in the Tested tier
-. Tested Patterns *MUST* conform to the common technical link:/requirements/implementation/[implementation requirements]
-. Tested Patterns *MUST* be meaningful without specialized hardware, including flavors of architectures not explicitly supported.
+. {tested-pattern} *MUST* continue to meet the following criteria to remain in the {tested-tier}
+. {tested-pattern} *MUST* conform to the common technical link:/requirements/implementation/[implementation requirements]
+. {tested-pattern} *MUST* be meaningful without specialized hardware, including flavors of architectures not explicitly supported.
 +
-Qualification is a Validated Patterns TOC decision with input from the pattern owner.
+Qualification is a {solution-name-upstream} TOC decision with input from the pattern owner.
 
-. Tested Patterns *MUST* have their implementation reviewed by the patterns team to ensure that it is sufficiently flexible to function across a variety of platforms, customer environments, and any relevant verticals.
-. Tested Patterns *MUST* include a standardized architecture drawing, created with (or at least conforming to) the PAC tooling
-. Tested Patterns *MUST* include a written guide for others to follow when demonstrating the pattern
-. Tested Patterns *MUST* include a test plan covering all features or attributes being highlighted by the demonstration guide.  Negative flow tests (such as resiliency or data retention in the presence of network outages) are also limited to scenarios covered by the demonstration guide.
+. {tested-pattern} *MUST* have their implementation reviewed by the patterns team to ensure that it is sufficiently flexible to function across a variety of platforms, customer environments, and any relevant verticals.
+. {tested-pattern} *MUST* include a standardized architecture drawing, created with (or at least conforming to) the PAC tooling
+. {tested-pattern} *MUST* include a written guide for others to follow when demonstrating the pattern
+. {tested-pattern} *MUST* include a test plan covering all features or attributes being highlighted by the demonstration guide. Negative flow tests (such as resiliency or data retention in the presence of network outages) are also limited to scenarios covered by the demonstration guide.
 +
 The test plan *MUST* define how to validate if the pattern has been successfully deployed and is functionally operational.
 Example: https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view[Validating an Industrial Edge Deployment]
 +
-TODO: Convert above link to adoc
+//TODO: Convert above link to adoc
 
-. Tested Patterns *MUST* nominate at least one currently supported OpenShift release to test against
-. Tested Patterns *MUST* ensure the test plan passes at least once per quarter
-. Tested Patterns *MUST* create a publically available JSON file (eg. in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and OpenShift version. See link:/learn/test-artefacts/[testing artefacts]
-. Tested Patterns *DO NOT* imply an obligation of support for partner or community operators by Red Hat or the pattern owner.
+. {tested-pattern} *MUST* nominate at least one currently supported OpenShift release to test against
+. {tested-pattern} *MUST* ensure the test plan passes at least once per quarter
+. {tested-pattern} *MUST* create a publically available JSON file (eg. in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and OpenShift version. See link:/learn/test-artefacts/[testing artefacts]
+. {tested-pattern} *DO NOT* imply an obligation of support for partner or community operators by Red Hat or the pattern owner.
 
-[id="should"]
+[id="should-tested-tier"]
 === Should
 
-. Tested Patterns SHOULD be broadly applicable.
-. Tested Patterns SHOULD focus on functionality not performance.
+. {tested-pattern} SHOULD be broadly applicable.
+. {tested-pattern} SHOULD focus on functionality not performance.
 
-[id="can"]
+[id="can-tested-tier"]
 === Can
 
-. Teams creating Tested Patterns CAN provide their own SLA
+. Teams creating {tested-pattern} CAN provide their own SLA
 +
 A document for QE that defines, at a technical level, how to validate if the pattern has been successfully deployed and is functionally operational.
 Example: https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view[Validating an Industrial Edge Deployment]
 
-. Tested Patterns meeting additional criteria CAN be nominated for promotion to the link:/learn/maintained/[Maintained tier]
+. {tested-pattern} meeting additional criteria CAN be nominated for promotion to the link:/learn/maintained/[Maintained tier]

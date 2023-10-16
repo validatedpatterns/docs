@@ -6,9 +6,16 @@
 //:imagesdir: images
 //:prewrap!:
 :redhat: Red{nbsp}Hat
-//Solution name
+//Pattern names
 //:rh-solution-name: Validated Patterns
 :solution-name-upstream: Validated Patterns
+:sandbox-pattern: Sandbox Patterns
+:maintained-pattern: Maintained Patterns
+:tested-pattern: Tested Patterns
+//Validated Patterns tiers
+:sandbox-tier: Sandbox tier
+:maintained-tier: Maintained tier
+:tested-tier: Tested tier
 //:solution-version: Update later when we start using versioned releases
 //Patterns
 :aeg-pattern: Ansible Edge GitOps pattern

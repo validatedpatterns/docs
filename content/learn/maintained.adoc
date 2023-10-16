@@ -12,56 +12,54 @@ aliases: /requirements/validated/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-= The Validated Patterns 'Maintained' Tier
+[id="about-maintained-tier"]
+= About the {maintained-tier}
 
-[id="tldr"]
-== tl;dr
-
-The Maintained tier is intended to provide consumers with additional "sales" collateral and reassurance that the pattern was known to be functional on all currently supported LTS versions of OpenShift.  Inclusion in this tier may require additional work for the pattern's owner - which might be a partner or sufficiently motivated SME.
+The {maintained-tier} is intended to provide consumers with additional "sales" collateral and reassurance that the pattern was known to be functional on all currently supported LTS versions of OpenShift. Inclusion in this tier may require additional work for the pattern's owner - which might be a partner or sufficiently motivated SME.
 
 [id="nominating-a-community-pattern-to-become-validated"]
-== Nominating a Tested Pattern to become Maintained
+== Nominating a maintained pattern to become validated pattern
 
-If there is a Tested pattern that you believe would be a good candidate for promotion to Maintained, you can make that case by emailing validatedpatterns@googlegroups.com
+If there is a maintained pattern that you believe would be a good candidate for promotion to validated pattern, you can make that case by mailing mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
 
-Please be aware that each Maintained pattern represents an ongoing maintenance, support, and testing effort.  Finite team capacity means that it is simply not possible for the team to take on this responsibility for all Validated Patterns.
+Please be aware that each Maintained pattern represents an ongoing maintenance, support, and testing effort. Finite team capacity means that it is simply not possible for the team to take on this responsibility for all {solution-name-upstream}.
 
 For this reason we have designed the tiers and our processes to facilitate this to occur outside of the team by any sufficiently motivated party, including other parts of Red Hat, partners, and even customers.
 
-In limited cases, the Validated Patterns team may consider taking on that work, however please get in contact at least 4 weeks prior to the end of a given quarter in order for the necessary work to be considered as part of the following quarter's planning process
+In limited cases, the {solution-name-upstream} team may consider taking on that work, however please get in contact at least 4 weeks prior to the end of a given quarter in order for the necessary work to be considered as part of the following quarter's planning process
 
 
-[id="requirements"]
+[id="requirements-maintained-tier"]
 == Requirements
 
-Validated Patterns have deliverable and requirements *in addition* to those
+{solution-name-upstream} have deliverable and requirements *in addition* to those
 specified for the link:/requirements/tested/[Tested tier]
 
-[id="must"]
+[id="must-maintained-tier"]
 === Must
 
-. Maintained Patterns *MUST* continue to meet the following criteria to remain in Maintained Tested tier
-. Maintained Patterns *MUST* conform to the common technical link:/requirements/implementation/[implementation requirements]
-. Maintained Patterns *MUST* only make use of components that are either supported, or easily substitued for supportable equivalents (eg. HashiCorp vault which has community and enterprise variants)
-. Maintained Patterns *MUST NOT* rely on functionality in tech-preview, or hidden behind feature gates
-. Maintained Patterns *MUST* have their architectures reviewed by the PM, TPM, or TMM of each Red Hat product they consume to ensure consistency with the product teams` intentions and roadmaps
-. Maintained Patterns *MUST* include a presentation deck oriented around the business problem being solved and intended for use by the field to sell and promote the solution
-. Maintained Patterns *MUST* include test plan automation that runs on every change to the pattern, or a schedule no less frequently than once per week
-. Maintained Patterns *MUST* be tested on all currently supported OpenShift LTS releases
-. Maintained Patterns *MUST* fix breakage in a "timely" manner
-. Maintained Patterns *MUST* document their support policy
+. {maintained-pattern} *MUST* continue to meet the following criteria to remain in Maintained Tested tier
+. {maintained-pattern} *MUST* conform to the common technical link:/requirements/implementation/[implementation requirements]
+. {maintained-pattern} *MUST* only make use of components that are either supported, or easily substitued for supportable equivalents (eg. HashiCorp vault which has community and enterprise variants)
+. {maintained-pattern} *MUST NOT* rely on functionality in tech-preview, or hidden behind feature gates
+. {maintained-pattern} *MUST* have their architectures reviewed by the PM, TPM, or TMM of each Red Hat product they consume to ensure consistency with the product teams` intentions and roadmaps
+. {maintained-pattern} *MUST* include a presentation deck oriented around the business problem being solved and intended for use by the field to sell and promote the solution
+. {maintained-pattern} *MUST* include test plan automation that runs on every change to the pattern, or a schedule no less frequently than once per week
+. {maintained-pattern} *MUST* be tested on all currently supported OpenShift LTS releases
+. {maintained-pattern} *MUST* fix breakage in a "timely" manner
+. {maintained-pattern} *MUST* document their support policy
 +
 The individual products used in a Validated Pattern are backed by the full Red Hat support experience conditional on the customer's subscription to those products, and the individual products`' support policy.
 +
 Additional components in a Validated Pattern that are not supported by Red Hat (e.g. Hashicorp Vault, and Seldon Core) will require a customer to obtain support from that vendor directly.
 +
-The validated patterns team is very motivated to address any problems in the VP Operator, as well as problems in the common helm charts, but cannot not offer any SLAs at this time.
+The {solution-name-upstream} team is very motivated to address any problems in the VP Operator, as well as problems in the common helm charts, but cannot not offer any SLAs at this time.
 +
 TODO: Create an aDoc version of our support statement slide
 
-. Maintained Patterns *DO NOT* imply an obligation of support for partner or community operators by Red Hat.
+. {maintained-pattern} *DO NOT* imply an obligation of support for partner or community operators by Red Hat.
 
-[id="can"]
+[id="can-maintained-tier"]
 === Can
 
-. Teams creating Validated Patterns CAN provide their own SLA
+. Teams creating {solution-name-upstream} CAN provide their own SLA
