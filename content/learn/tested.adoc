@@ -9,13 +9,16 @@ aliases: /requirements/tested/
 
 :toc:
 
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
 [id="about-tested-tier"]
 = About the {tested-tier}
 
 The {tested-tier} provides you with additional collateral and reassurance that the pattern was known to be recently working on at least one recent version of {rh-ocp}. Inclusion in this tier requires some additional work for the pattern's owner - which might be a partner or a sufficiently motivated Subject Matter Expert (SME).
 
 [id="nominating-a-community-pattern-to-become-maintained"]
-== Nominating a Tested pattern for promotion to Maintained
+== Nominating a tested pattern for promotion to a maintained pattern
 
 If there is a Tested pattern that you believe would be a good candidate for promotion to Maintained, you can make that case by mailing mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
 

@@ -10,6 +10,9 @@ aliases: /requirements/sandbox/
 
 :toc:
 
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
 [id="about-sandbox-tier"]
 = About the {sandbox-tier}
 

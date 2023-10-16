@@ -1,0 +1,52 @@
+---
+menu: contribute
+title: Pattern types
+weight: 50
+aliases: /contribute/pattern-types/
+---
+
+:toc:
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="pattern-type_{context}"]
+= Pattern types
+To know about the patterns that you can contribute and use, understand the following different pattern types:
+
+|===
+|Pattern type|Description|Support status
+
+|Archieved
+|End of lifecycle. Might have worked at one time, but is no longer maintained and exist as a reference only
+Has dependencies that are missing in {ocp} versions after 4.x
+Broken since 4.x and there is no subject matter expert (SME) to advise a fix
+Superseded by another pattern, or no longer of interest to customers
+|
+
+|Sandboxed
+|A work in progress, might not yet include a demonstration. A Customer business problem has potentially not been identified or fully solved
+Might have been manually tested, and on a limited set of platforms
+Not yet reviewed by Red{nbsp}Hat
+|
+
+|Point-in-time tested
+|Clear business problem with demo
+All components are supportable*, and any Red Hat product usage signed-off by BUs
+Test plan (manual or automated) that passes at least once for each new OpenShift minor version within 3 months of GA
+|
+
+|Actively maintained
+|Group 2 plus…
+Formal release process with z-streams
+CI automation (either weekly or event driven at a similar interval)
+|
+
+|Supported
+|In addition to being tested and maintained:
+- community editions of partner products are easily replaced with Enterprise variants
+- partner escalation process/agreement in place
+- CEE enablement
+|Fully supported
+|===
+

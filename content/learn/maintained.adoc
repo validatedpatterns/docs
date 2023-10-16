@@ -18,7 +18,7 @@ include::modules/comm-attributes.adoc[]
 The {maintained-tier} is intended to provide consumers with additional "sales" collateral and reassurance that the pattern was known to be functional on all currently supported LTS versions of OpenShift. Inclusion in this tier may require additional work for the pattern's owner - which might be a partner or sufficiently motivated SME.
 
 [id="nominating-a-community-pattern-to-become-validated"]
-== Nominating a maintained pattern to become validated pattern
+== Nominating a maintained pattern for promotion to a validated pattern
 
 If there is a maintained pattern that you believe would be a good candidate for promotion to validated pattern, you can make that case by mailing mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
 
