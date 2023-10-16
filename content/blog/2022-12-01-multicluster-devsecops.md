@@ -74,7 +74,7 @@ While these pipelines are included in the pattern, the pattern also implements  
 
 ## Highlight: Using the CI Pipeline to provide supply chain security
 
-This pattern includes some other technologies in the development CI pipeline, including cosign, a SIGSTORE project, implemented with [Tekton Chains](https://next.redhat.com/project/tekton-chains/). [Cosign](https://docs.sigstore.dev/cosign/overview/) supports container signing, verification, and storage in an OCI registry. It enables consumers to sign their pipeline resources and images and share the attestation files providing downstream consumers assurances that they are consuming a trusted artifact.
+This pattern includes some other technologies in the development CI pipeline, including cosign, a SIGSTORE project, implemented with [Tekton Chains](https://next.redhat.com/2022/10/06/signing-images/). [Cosign](https://docs.sigstore.dev/cosign/overview/) supports container signing, verification, and storage in an OCI registry. It enables consumers to sign their pipeline resources and images and share the attestation files providing downstream consumers assurances that they are consuming a trusted artifact.
 
 We also implement open source tools like [Sonarqube](https://www.sonarqube.org/) for static code analysis, [nexus](https://www.sonatype.com/products/nexus-repository?topnav=true) for securely storing build artifacts in-cluster, and an open source reports application that is used to upload and present the reports from the security pipeline.
 
