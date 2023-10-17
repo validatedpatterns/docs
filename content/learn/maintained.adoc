@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Workflow
 title: Validated Patterns - Maintained Tier
-weight: 44
+weight: 45
 aliases: /requirements/maintained/
 aliases: /requirements/validated/
 ---
