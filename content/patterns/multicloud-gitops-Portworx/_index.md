@@ -14,7 +14,7 @@ pattern_logo: multicloud-gitops-Portworx.png
 links:
   install: getting-started
   help: https://groups.google.com/g/validatedpatterns
-  bugs: https://github.com/validatedpatterns/medical-diagnosis/issues
+  bugs: https://github.com/portworx/rh-multicloud-gitops-pxe/issues
 # ci: mcgitopspxe
 ---
 
