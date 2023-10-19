@@ -1,5 +1,6 @@
 ---
 title: Kong
+tier: sandbox
 Summary: A pattern for Kong Gateway Control Plane and Data Plane demo.
 products:
 - Red Hat OpenShift Container Platform
