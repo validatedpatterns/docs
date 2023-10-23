@@ -551,7 +551,7 @@ function getBucketOptions (input) {
     buckets.push(bucket)
   } else {
     buckets.push('https://storage.googleapis.com/vp-results')
-    buckets.push('https://vp-ntnx-results.s3.amazonaws.com/')
+    buckets.push('https://vp-ntnx-results.s3.amazonaws.com')
   }
   options.set('buckets', buckets)
 
