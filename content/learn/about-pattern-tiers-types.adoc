@@ -13,25 +13,26 @@ aliases: /learn/pattern-tier-overview
 include::modules/comm-attributes.adoc[]
 
 [id="pattern-type"]
-== About the Validated Pattern tiers
+== About the {solution-name-upstream} tiers
 
-To know about the patterns that you can contribute and use, understand the following different pattern tiers:
+To know about the patterns that you can contribute and use, understand the following pattern tiers:
 
 |===
 |Pattern tier|Description
 
-|Sandboxed
-|A work in progress, might not yet include a demonstration. A Customer business problem has potentially not been identified or fully solved
+|{sandbox-tier-first}
+|A pattern under the {sandbox} tier or a {sandbox} pattern is one that might be in a work-in-progress state. , might not yet include a demonstration. A customer business problem has potentially not been identified or fully solved
 Might have been manually tested, and on a limited set of platforms
 Not yet reviewed by Red{nbsp}Hat
 
 
-|Tested
-|Clear business problem with demo
+|{tested-tier-first}
+The {tested} tier provides you with additional collateral and reassurance that the pattern was known to be recently working on at least one recent version of {rh-ocp}. Inclusion in this tier requires some additional work for the pattern’s owner - which might be a partner or a sufficiently motivated Subject Matter Expert (SME).|
+Clear business problem with demo
 All components are supportable*, and any Red Hat product usage signed-off by BUs
 Test plan (manual or automated) that passes at least once for each new OpenShift minor version within 3 months of GA
 
-|Maintained
+|{maintained-tier-first}
 |Group 2 plus…
 Formal release process with z-streams
 CI automation (either weekly or event driven at a similar interval)

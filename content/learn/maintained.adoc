@@ -2,7 +2,7 @@
 menu:
   learn:
     parent: Workflow
-title: Validated Patterns - Maintained Tier
+title: Validated Patterns - Maintained tier
 weight: 45
 aliases: /requirements/maintained/
 aliases: /requirements/validated/
@@ -13,9 +13,9 @@ aliases: /requirements/validated/
 include::modules/comm-attributes.adoc[]
 
 [id="about-maintained-tier"]
-= About the {maintained-tier}
+= About the {maintained-tier-first}
 
-The {maintained-tier} is intended to provide consumers with additional "sales" collateral and reassurance that the pattern was known to be functional on all currently supported LTS versions of OpenShift. Inclusion in this tier may require additional work for the pattern's owner - which might be a partner or sufficiently motivated SME.
+The {maintained} tier is intended to provide consumers with additional "sales" collateral and reassurance that the pattern was known to be functional on all currently supported LTS versions of OpenShift. Inclusion in this tier may require additional work for the pattern's owner - which might be a partner or sufficiently motivated SME.
 
 [id="nominating-a-community-pattern-to-become-validated"]
 == Nominating a maintained pattern for promotion to a validated pattern
@@ -38,16 +38,16 @@ specified for the link:/requirements/tested/[Tested tier]
 [id="must-maintained-tier"]
 === Must
 
-. {maintained-pattern} *MUST* continue to meet the following criteria to remain in Maintained Tested tier
-. {maintained-pattern} *MUST* conform to the common technical link:/requirements/implementation/[implementation requirements]
-. {maintained-pattern} *MUST* only make use of components that are either supported, or easily substitued for supportable equivalents (eg. HashiCorp vault which has community and enterprise variants)
-. {maintained-pattern} *MUST NOT* rely on functionality in tech-preview, or hidden behind feature gates
-. {maintained-pattern} *MUST* have their architectures reviewed by the PM, TPM, or TMM of each Red Hat product they consume to ensure consistency with the product teams` intentions and roadmaps
-. {maintained-pattern} *MUST* include a presentation deck oriented around the business problem being solved and intended for use by the field to sell and promote the solution
-. {maintained-pattern} *MUST* include test plan automation that runs on every change to the pattern, or a schedule no less frequently than once per week
-. {maintained-pattern} *MUST* be tested on all currently supported OpenShift LTS releases
-. {maintained-pattern} *MUST* fix breakage in a "timely" manner
-. {maintained-pattern} *MUST* document their support policy
+. {maintained} pattern *MUST* continue to meet the following criteria to remain in Maintained Tested tier
+. {maintained} pattern *MUST* conform to the common technical link:/requirements/implementation/[implementation requirements]
+. {maintained} pattern *MUST* only make use of components that are either supported, or easily substitued for supportable equivalents (eg. HashiCorp vault which has community and enterprise variants)
+. {maintained} pattern *MUST NOT* rely on functionality in tech-preview, or hidden behind feature gates
+. {maintained} pattern *MUST* have their architectures reviewed by the PM, TPM, or TMM of each Red Hat product they consume to ensure consistency with the product teams` intentions and roadmaps
+. {maintained} pattern *MUST* include a presentation deck oriented around the business problem being solved and intended for use by the field to sell and promote the solution
+. {maintained} pattern *MUST* include test plan automation that runs on every change to the pattern, or a schedule no less frequently than once per week
+. {maintained} pattern *MUST* be tested on all currently supported OpenShift LTS releases
+. {maintained} pattern *MUST* fix breakage in a "timely" manner
+. {maintained} pattern *MUST* document their support policy
 +
 The individual products used in a Validated Pattern are backed by the full Red Hat support experience conditional on the customer's subscription to those products, and the individual products`' support policy.
 +
@@ -57,7 +57,7 @@ The {solution-name-upstream} team is very motivated to address any problems in t
 +
 TODO: Create an aDoc version of our support statement slide
 
-. {maintained-pattern} *DO NOT* imply an obligation of support for partner or community operators by Red Hat.
+. {maintained} pattern *DO NOT* imply an obligation of support for partner or community operators by Red Hat.
 
 [id="can-maintained-tier"]
 === Can

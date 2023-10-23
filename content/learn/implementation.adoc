@@ -2,7 +2,7 @@
 menu:
   learn:
     parent: Workflow
-title: Implementation Requirements
+title: Implementation requirements
 weight: 42
 aliases: /requirements/implementation/
 ---
@@ -10,11 +10,11 @@ aliases: /requirements/implementation/
 :toc:
 
 [id="technical-requirements"]
-== Technical Requirements
+== Technical requirements
 
 Additional requirements specific to the implementation for all Community, and Validated patterns
 
-[id="must"]
+[id="must-implementation-requirements"]
 === Must
 
 . Patterns *MUST* include one or more Git repositories, in a publicly accessible location, containing configuration elements that can be consumed by the OpenShift GitOps operator (ArgoCD) without supplying custom ArgoCD images.
@@ -33,7 +33,7 @@ We distinguish between the provisioning and configuration requirements of the in
 . Managed clusters *MUST* operate on the premise of "`eventual consistency`" (automatic retries, and an expectation of idempotence), which is one of the essential benefits of the GitOps model.
 . Imperative elements *MUST* be implemented as idempotent code stored in Git
 
-[id="should"]
+[id="should-implementation-requirements"]
 === Should
 
 . Patterns SHOULD include sample application(s) to demonstrate the business problem(s) addressed by the pattern.
@@ -61,7 +61,7 @@ For example, Bucket Notification is a capability in the Medical Diagnosis patter
 . Imperative elements SHOULD be implemented as Ansible playbooks
 . Imperative elements SHOULD be driven declaratively -- by which we mean that the playbooks should be triggered by Jobs and/or CronJobs stored in Git and delivered by OpenShift GitOps.
 
-[id="can"]
+[id="can-implementation-requirements"]
 === Can
 
 . Patterns CAN include additional configuration and/or demo elements located in one or more additional private git repos.
