@@ -664,9 +664,9 @@ b.conum * {
   color: #408080;
   font-style: italic;
 } /* Comment */
-.highlight .err {
+/* .highlight .err {
   border: 1px solid #ff0000;
-} /* Error */
+} Error */
 .highlight .k {
   color: #008000;
   font-weight: bold;
