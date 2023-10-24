@@ -190,6 +190,9 @@ function stringForKey (key) {
   if (key == 'retail') {
     return 'Quarkus CoffeeShop'
   }
+  if (key == 'nutanix') {
+    return 'Nutanix'
+  }
   return key
 }
 
