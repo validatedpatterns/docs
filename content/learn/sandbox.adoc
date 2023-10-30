@@ -40,18 +40,18 @@ General requirements for all {solution-name-upstream}
 [id="must-sandbox-tier"]
 === Must
 
-. {sandbox} pattern *MUST* continue to meet the following criteria to remain in the Sandbox tier
-. {sandbox} pattern *MUST* conform to the common technical link:/requirements/implementation/[implementation requirements]
-. {sandbox} pattern *MUST* be able to be deployed onto a freshly deployed OpenShift cluster without prior modification or tuning
-. {sandbox} pattern *MUST* include a top-level README highlighting the business problem and how the pattern solves it
-. {sandbox} pattern *MUST* include an architecture drawing. The specific tool/format is flexible as long as the meaning is clear.
-. {sandbox} pattern *MUST* undergo an informal technical review by a community leader to ensure that it meets basic reuse standards
-. {sandbox} pattern *MUST* undergo an informal architecture review by a community leader to ensure that the solution has the right components, and they are generally being used as intended.
+. {sandbox} pattern must continue to meet the following criteria to remain in the Sandbox tier
+. {sandbox} pattern must conform to the common technical link:/requirements/implementation/[implementation requirements]
+. {sandbox} pattern must be able to be deployed onto a freshly deployed OpenShift cluster without prior modification or tuning
+. {sandbox} pattern must include a top-level README highlighting the business problem and how the pattern solves it
+. {sandbox} pattern must include an architecture drawing. The specific tool/format is flexible as long as the meaning is clear.
+. {sandbox} pattern must undergo an informal technical review by a community leader to ensure that it meets basic reuse standards
+. {sandbox} pattern must undergo an informal architecture review by a community leader to ensure that the solution has the right components, and they are generally being used as intended.
 +
 For example: not using a database as a message bus.
 As community leaders, contributions from within Red Hat may be subject to a higher level of scrutiny.
 While we strive to be inclusive, the community will have quality standards and generally using the framework does not automatically imply a solution is suitable for the community to endorse/publish.
-. {sandbox} pattern *MUST* document their support policy
+. {sandbox} pattern must document their support policy
 +
 It is anticipated that most{sandbox} pattern will be supported by the community on a best-effort basis, but this should be stated explicitly.
 The {solution-name-upstream} team commits to maintaining the framework but will also accept help.
@@ -60,6 +60,6 @@ The {solution-name-upstream} team commits to maintaining the framework but will 
 [id="can-sandbox-tier"]
 === Can
 
-. {sandbox} pattern (including works-in-progress) CAN be hosted in the link:https://github.com/validatedpatterns-sandbox[https://github.com/validatedpatterns-sandbox] GitHub organization
+. {sandbox} pattern (including works-in-progress) can be hosted in the link:https://github.com/validatedpatterns-sandbox[https://github.com/validatedpatterns-sandbox] GitHub organization
 . {sandbox} pattern CAN be listed on the link:https://validatedpatterns.io[https://validatedpatterns.io] site
-. {sandbox} pattern meeting additional criteria CAN be nominated for promotion to the link:/learn/tested/[Tested tier]
+. {sandbox} pattern meeting additional criteria can be nominated for promotion to the link:/learn/tested/[Tested tier]

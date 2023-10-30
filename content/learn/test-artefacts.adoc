@@ -12,7 +12,7 @@ aliases: /requirements/tested/
 [id="testing-artefacts"]
 = Testing artefacts
 
-In order to be represented in the CI dashboard, testers can create a publically available JSON file (eg. in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and OpenShift version.
+To be represented in the CI dashboard, testers can create a publicly available JSON file (for example, in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and {rh-ocp} version.
 
 [id="file-naming-convention"]
 == File naming convention
