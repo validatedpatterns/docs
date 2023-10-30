@@ -11,7 +11,7 @@ weight: 20
 
 Each pattern can be deployed using the command line. The only requirement is to have `git` and `podman` installed. See the <<installation_prerequisites>> for more information.
 
-Patterns deployment requires several tools including Helm to install. However, the validated patterns framework removes the need to install and maintain these tools. The `pattern.sh` script uses a container the includes the necessary tools. The use of that container is why you need to install `podman`.
+Patterns deployment requires several tools including Helm to install. However, the validated patterns framework removes the need to install and maintain these tools. The `pattern.sh` script uses a container which includes the necessary tools. The use of that container is why you need to install `podman`.
 
 Check the `values-\*.yaml` for changes that are needed before deployment. After changing the `values-*.yaml` files where needed and pushing them to your git repository, you can run `./pattern.sh make install` from your local repository directory and that will deploy the datacenter/hub cluster for a pattern. Edge clusters are deployed by joining/importing them into ACM on the hub.
 
