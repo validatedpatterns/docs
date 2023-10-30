@@ -2,7 +2,7 @@
 menu:
   learn:
     parent: Workflow
-title: Validated Pattern Tiers
+title: Validated Pattern tiers
 weight: 41
 aliases: /learn/pattern-tier-overview
 ---
@@ -15,27 +15,26 @@ include::modules/comm-attributes.adoc[]
 [id="pattern-type"]
 == About the {solution-name-upstream} tiers
 
-To know about the patterns that you can use and contribute towards, understand the following pattern tiers:
+To contribute to the patterns that suit your usecase or to learn about onboarding your own pattern, understand the following pattern tiers.
 
 |===
 |Pattern tier|Description
 
 |{sandbox-tier-first}
-|A pattern categorized under the {sandbox} tier is an inclusive and low-risk way to become associated with the {solution-name-upstream} project. The minimum requirement to qualify for the {sandbox} tier is that you must start with the patterns framework and include minimal documentation.
-The patterns in this tier might be in a work-in-progress state; and they might have been manually tested and on a limited set of platforms.
+|A pattern categorized under the {sandbox} tier provides you with an entry-point to onboard to the {solution-name-upstream}. The minimum requirement to qualify for the {sandbox} tier is that you must start with the patterns framework and include minimal documentation.
+
+These patterns in this tier might be in a work-in-progress state; and they might have been manually tested on a limited set of platforms.
 
 
 |{tested-tier-first}
-|A pattern categorized under theThe {tested} tier provides you with additional collateral and reassurance that the pattern was known to be recently working on at least one recent version of {rh-ocp}. Inclusion in this tier requires some additional work for the pattern’s owner - which might be a partner or a sufficiently motivated Subject Matter Expert (SME).
-Clear business problem with demo
-All components are supportable*, and any Red Hat product usage signed-off by BUs
-Test plan (manual or automated) that passes at least once for each new OpenShift minor version within 3 months of GA
+|A pattern categorized under the {tested} tier implies that the pattern was known to be recently working on at least one recent version of {rh-ocp}. Qualifying for this tier might require  additional work for the pattern’s owner, who might be a partner or a sufficiently motivated subject matter expert (SME).
+//Additional work such as?
+These patterns in this tier might have a defined business problem with demonstration. The patterns  might have a test plan - manual or automated, which passes at least once for each new {rh-ocp} minor version.
 
 |{maintained-tier-first}
-| intended to provide consumers with additional "sales" collateral and reassurance that the pattern was known to be functional on all currently supported LTS versions of OpenShift. Inclusion in this tier may require additional work for the pattern’s owner - which might be a partner or sufficiently motivated SME.
-Group 2 plus…
-Formal release process with z-streams
-CI automation (either weekly or event driven at a similar interval)
+|A pattern categorized under the {tested} tier implies that the pattern was known to be functional on all currently supported extended update support (EUS) versions of {rh-ocp}. Qualifying for this tier might require additional work for the pattern’s owner who might be a partner or a sufficiently motivated SME.
+
+These patterns  might have a formal release process with z-streams They might have continuous integration (CI) automation testing.
 
 |===
 

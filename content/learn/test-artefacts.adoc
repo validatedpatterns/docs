@@ -9,6 +9,9 @@ aliases: /requirements/tested/
 
 :toc:
 
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
 [id="testing-artefacts"]
 = Testing artefacts
 

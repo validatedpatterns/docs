@@ -41,25 +41,25 @@ specified for the link:/requirements/sandbox/[Sandbox tier]
 [id="must-tested-tier"]
 === Must
 
-. {tested} pattern must continue to meet the following criteria to remain in the {tested} tier
-. {tested} pattern must conform to the common technical link:/requirements/implementation/[implementation requirements]
-. {tested} pattern must be meaningful without specialized hardware, including flavors of architectures not explicitly supported.
+* A {tested} pattern must continue to meet the following criteria to remain in the {tested} tier
+* A {tested} pattern must conform to the common technical link:/requirements/implementation/[implementation requirements]
+* A {tested} pattern must be meaningful without specialized hardware, including flavors of architectures not explicitly supported.
 +
 Qualification is a {solution-name-upstream} TOC decision with input from the pattern owner.
 
-. {tested} pattern must have their implementation reviewed by the patterns team to ensure that it is sufficiently flexible to function across a variety of platforms, customer environments, and any relevant verticals.
-. {tested} pattern must include a standardized architecture drawing, created with (or at least conforming to) the PAC tooling
-. {tested} pattern must include a written guide for others to follow when demonstrating the pattern
-. {tested} pattern must include a test plan covering all features or attributes being highlighted by the demonstration guide. Negative flow tests (such as resiliency or data retention in the presence of network outages) are also limited to scenarios covered by the demonstration guide.
+* A {tested} pattern must have their implementation reviewed by the patterns team to ensure that it is sufficiently flexible to function across a variety of platforms, customer environments, and any relevant verticals.
+* A {tested} pattern must include a standardized architecture drawing, created with (or at least conforming to) the PAC tooling
+* A {tested} pattern must include a written guide for others to follow when demonstrating the pattern
+* A {tested} pattern must include a test plan covering all features or attributes being highlighted by the demonstration guide. Negative flow tests (such as resiliency or data retention in the presence of network outages) are also limited to scenarios covered by the demonstration guide.
 +
 The test plan must define how to validate if the pattern has been successfully deployed and is functionally operational.
 Example: https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view[Validating an Industrial Edge Deployment]
 +
 //TODO: Convert above link to adoc
 
-. {tested} pattern must nominate at least one currently supported OpenShift release to test against
-. {tested} pattern must ensure the test plan passes at least once per quarter
-. {tested} pattern must create a publically available JSON file (eg. in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and OpenShift version. See link:/learn/test-artefacts/[testing artefacts]
+* A {tested} pattern must nominate at least one currently supported OpenShift release to test against
+* A {tested} pattern must ensure the test plan passes at least once per quarter
+* A {tested} pattern must create a publically available JSON file (eg. in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and OpenShift version. See link:/learn/test-artefacts/[testing artefacts]
 
 [NOTE]
 ====
@@ -69,15 +69,15 @@ The {tested} pattern *do not* imply an obligation of support for partner or comm
 [id="should-tested-tier"]
 === Should
 
-. {tested} pattern should be broadly applicable.
-. {tested} pattern should focus on functionality not performance.
+* A {tested} pattern should be broadly applicable.
+* A {tested} pattern should focus on functionality not performance.
 
 [id="can-tested-tier"]
 === Can
 
-. Teams creating {tested} pattern can provide their own SLA
-+
+Teams creating {tested} pattern can provide their own service level agreement (SLA).
+
 A document for QE that defines, at a technical level, how to validate if the pattern has been successfully deployed and is functionally operational.
 Example: https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view[Validating an Industrial Edge Deployment]
 
-. {tested} pattern meeting additional criteria CAN be nominated for promotion to the link:/learn/maintained/[Maintained tier]
+* A {tested} pattern meeting additional criteria CAN be nominated for promotion to the link:/learn/maintained/[Maintained tier]
