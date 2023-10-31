@@ -13,6 +13,7 @@
 :sandbox: sandbox
 :maintained: maintained
 :tested: tested
+:validated: validated
 :sandbox-tier-first: Validated Patterns Sandbox tier
 :tested-tier-first: Validated Patterns Tested tier
 :maintained-tier-first: Validated Patterns Maintained tier
