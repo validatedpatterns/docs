@@ -14,22 +14,24 @@ aliases: /secrets/vault/
 [id="prerequisites"]
 = Prerequisites
 
-You have deployed/installed a validated pattern using the instructions provided for that pattern. This should include setting having logged into the cluster using `oc login` or setting you `KUBECONFIG` environment variable and running a `make install`.
+You have deployed/installed a validated pattern using the instructions provided for that pattern. This should include setting having logged into the cluster using `oc login` or setting you `KUBECONFIG` environment variable and running a `./pattern.sh make install`.
 
 [id="setting-up-hashicorp-vault"]
 = Setting up HashiCorp Vault
 
-Any validated pattern that uses HashiCorp Vault already has deployed Vault as part of the `make install`.  To verify that Vault is installed you can first see that the `vault` project exists and then select the Workloads/Pods:
+Any validated pattern that uses HashiCorp Vault already has deployed Vault as part of the `./pattern.sh make install`. To verify that Vault is installed you can first see that the `vault` project exists and then select the Workloads/Pods:
 
 image:/images/secrets/vault-pods.png[link="/images/secrets/vault-pods.png"]
 
-In order to setup HashiCorp Vault there are two different ways, both of which happen automatically as part of the `make install` command:
+The setup for HashiCorp Vault happens automatically as part of the `./pattern.sh make install` command.
+A cronjob will run every five minutes inside the `imperative` namespace and unseal, initialize and configure the vault. The vault's unseal keys and root token will be stored inside a secret called `vaultkeys` in the `imperative` namespace.
 
-. Inside the cluster directly when the helm value `clusterGroup.insecureUnsealVaultInsideCluster` is set to `true`. With this method a cronjob will run every five minutes inside the `imperative` namespace and unseal, initialize and configure the vault. The vault's unseal keys and root token will be stored inside a secret called `vaultkeys` in the `imperative` namespace. *It is considered best practice* to copy the content of that secret offline, store it securely and then delete it.
-. On the user's computer when the helm value `clusterGroup.insecureUnsealVaultInsideCluster` is set to `false`. This will store the json containing containing both vault root token and unseal keys inside a file called `common/pattern-vault.init`. It is recommended to encrypt this file or store it securely.
+[NOTE]
+====
+It is recommended that you copy the contents of that secret offline, store it securely, and then delete it. It will not be recreated after the vault is unsealed.
+====
 
-An example output is the following:
-
+An example output from running the `oc extract -n imperative secret/vaultkeys --to=- --keys=vault_data_json 2>/dev/null` command:
 [source,json]
 ----
 {
