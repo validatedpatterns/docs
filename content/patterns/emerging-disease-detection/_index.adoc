@@ -15,7 +15,7 @@ aliases: /emerging-disease-detection/
 links:
   install: getting-started
   arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
-  help: https://groups.google.com/g/hybrid-cloud-patterns
+  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/emerging-disease-detection/issues
 ci: edd
 ---
