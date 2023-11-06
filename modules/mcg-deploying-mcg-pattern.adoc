@@ -21,8 +21,6 @@ public or private cloud by using https://console.redhat.com/openshift/create[Red
 
 .Procedure
 
-. https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
-+
 . Fork the https://github.com/validatedpatterns/multicloud-gitops[multicloud-gitops] repository on GitHub.
 . Clone the forked copy of this repository.
 +
