@@ -18,23 +18,23 @@ include::modules/comm-attributes.adoc[]
 
 A pattern categorized under the {maintained} tier implies that the pattern was known to be functional on all currently supported extended update support (EUS) versions of {rh-ocp}. Qualifying for this tier might require additional work for the pattern’s owner who might be a partner or a sufficiently motivated subject matter expert (SME).
 
-[id="nominating-a-community-pattern-to-become-validated"]
-== Nominating a maintained pattern for promotion to a validated pattern
+[id="nominating-a-pattern-for-maintained-tier"]
+== Nominating a pattern for the {maintained} tier
 
-If your {maintained} pattern qualifies or meets the criteria for promotion to a {validated} pattern, submit your nomination to mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
+If your pattern qualifies or meets the criteria for {maintained} tier, submit your nomination to mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
 
 [NOTE]
 ====
 Each {maintained} pattern represents an ongoing maintenance, support, and testing effort. Finite team capacity means that it is not possible for the team to take on this responsibility for all {solution-name-upstream}.
 ====
-//NOte sure about the following bits - needs discussion
+
 For this reason we have designed the tiers and our processes to facilitate this to occur outside of the team by any sufficiently motivated party, including other parts of Red Hat, partners, and even customers.
 
 In limited cases, the {solution-name-upstream} team may consider taking on that work, however, it is recommended that you contact the team at least 4 weeks prior to the end of a given quarter for the necessary work to be considered as part of the following quarter's planning process.
 
 
 [id="requirements-maintained-tier"]
-== Requirements
+== Requirements for the {maintained} tier
 
 The {maintained} patterns have deliverable and requirements in addition to those
 specified for the link:/requirements/tested/[Tested tier].
@@ -54,12 +54,12 @@ A {maintained} pattern must continue to meet the following criteria to remain in
 * A {maintained} pattern must fix breakage in timely manner.
 * A {maintained} pattern must document their support policy.
 +
-//Needs review by legal?
+
 The individual products used in a {solution-name-upstream} are backed by the full {redhat} support experience conditional on the customer's subscription to those products, and the individual products`s support policy.
 +
 Additional components in a {solution-name-upstream} that are not supported by {redhat}; for example, Hashicorp Vault, and Seldon Core, require a customer to obtain support from that vendor directly.
 +
-//very motivated? will we or won't we?
+
 The {solution-name-upstream} team is will try to address any problems in the {validated-patterns-op}, and in the common Helm charts, but cannot not offer any SLAs at this time.
 +
 //TODO: Create an aDoc version of our support statement slide

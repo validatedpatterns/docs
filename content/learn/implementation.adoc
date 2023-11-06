@@ -33,12 +33,12 @@ These are optional or desirable features, but their absence does not hinder the 
 . Patterns must be useful without all content stored in private Git repositories.
 . Patterns must include a list of names and versions of all the products and projects that the pattern consumes.
 . Patterns must be useful without any sample applications that are private or that lack public sources.
-//AI:why application was styled that way
-Patterns must *not* become useless due to bit rot or opaque incompatibilities in closed source applications.
+
+. Patterns must *not* become useless due to bit rot or opaque incompatibilities in closed source applications.
 . Patterns must *not* store sensitive data elements, including but not limited to, passwords in Git repositories.
 . Patterns must be possible to deploy on any installer-provisioned infrastructure OpenShift cluster (BYO).
-//AI:why Patterns and Managed clusters is styled that way
-We distinguish between the provisioning and configuration requirements of the initial cluster (`Patterns`) and of clusters or machines that are managed by the initial cluster (see `Managed clusters`).
++
+We distinguish between the provisioning and configuration requirements of the initial cluster (`Patterns`) and of clusters or machines that are managed by the initial cluster (`Managed clusters`).
 . Patterns must use a standardized https://github.com/validatedpatterns/common/tree/main/clustergroup[clustergroup] Helm chart as the initial {rh-gitops} application that describes all namespaces, subscriptions, and any other GitOps applications which contain the configuration elements that make up the solution.
 . Managed clusters must operate on the premise of `eventual consistency` (automatic retries, and an expectation of idempotence), which is one of the essential benefits of the GitOps model.
 . Imperative elements must be implemented as idempotent code stored in Git repository.
@@ -78,6 +78,6 @@ For example, Bucket Notification is a capability in the {med-pattern} that could
 . Patterns can consume Operators from established partners (for example, Hashicorp Vault, and Seldon)
 . Patterns can include managed clusters.
 . Patterns can include details or automation for provisioning managed clusters, or rely on the admin to pre-provision them out-of-band.
-//AI:why initial hub clusters was styled that way.
-. Patterns can also choose to model multi-cluster solutions as an uncoordinated collection of `initial hub clusters`
+
+. Patterns can also choose to model multi-cluster solutions as an uncoordinated collection of initial hub clusters.
 . Imperative elements can interact with cluster state or external influences.

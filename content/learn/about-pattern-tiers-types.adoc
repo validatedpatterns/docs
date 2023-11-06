@@ -12,8 +12,8 @@ aliases: /learn/about-pattern-tiers-types
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-[id="pattern-type"]
-== About the {solution-name-upstream} tiers
+[id="pattern-tiers"]
+== {solution-name-upstream} tiers
 
 The different tiers of {solution-name-upstream} are designed to facilitate ongoing maintenance, support, and testing effort for a pattern. To contribute to a pattern that suits your solution or to learn about onboarding your own pattern, understand the following pattern tiers.
 
@@ -27,8 +27,8 @@ The patterns in this tier might be in a work-in-progress state; and they might h
 
 
 |link:/requirements/tested/[{tested-tier-first}]
-|A pattern categorized under the {tested} tier implies that the pattern might have been recently working on at least one recent version of {rh-ocp}. Qualifying for this tier might require  additional work for the pattern’s owner, who might be a partner or a motivated subject matter expert (SME).
-//Additional work such as?
+|A pattern categorized under the {tested} tier implies that the pattern might have been recently working on at least one recent version of {rh-ocp}. Qualifying for this tier might require additional work for the pattern’s owner, who might be a partner or a motivated subject matter expert (SME).
+
 The patterns in this tier might have a defined business problem with a demonstration. The patterns  might have a manual or automated test plan, which passes at least once for each new {rh-ocp} minor version.
 
 |link:/requirements/maintained/[{maintained-tier-first}]

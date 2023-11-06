@@ -17,10 +17,10 @@ include::modules/comm-attributes.adoc[]
 
 The {tested} tier provides you with additional collateral and reassurance that the pattern was known to be recently working on at least one recent version of {rh-ocp}. Inclusion in this tier requires some additional work for the pattern's owner - which might be a partner or a sufficiently motivated subject matter expert (SME).
 
-[id="nominating-a-community-pattern-to-become-maintained"]
-== Nominating a tested pattern for promotion to a maintained pattern
+[id="nominating-a-pattern-for-tested-tier"]
+== Nominating a a pattern for the {tested} tier
 
-If your {tested} pattern qualifies or meets the criteria for promotion to a {validated} pattern, submit your nomination to  mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
+If your pattern qualifies or meets the criteria for {tested} tier, submit your nomination to mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
 
 [NOTE]
 ====
@@ -45,11 +45,9 @@ A {tested} pattern must continue to meet the following criteria to remain in the
 * A {tested} pattern must conform to the common technical link:/requirements/implementation/[implementation requirements]
 * A {tested} pattern must be meaningful without specialized hardware, including flavors of architectures not explicitly supported.
 +
-Qualification is a {solution-name-upstream} TOC decision with input from the pattern owner.
-//AI: What's TOC?
+Qualification is a {solution-name-upstream} Technical Oversight Committee (TOC) decision with input from the pattern owner.
 * A {tested} pattern must have their implementation reviewed by the patterns team to ensure that it is sufficiently flexible to function across a variety of platforms, customer environments, and any relevant verticals.
-* A {tested} pattern must include a standardized architecture drawing, created with (or at least conforming to) the PAC tooling
-//AI: What's PAC
+* A {tested} pattern must include a standardized architecture drawing, created with (or at least conforming to) the standard {solution-name-upstream} tooling
 * A {tested} pattern must include a written guide for others to follow when demonstrating the pattern
 * A {tested} pattern must include a test plan covering all features or attributes being highlighted by the demonstration guide. Negative flow tests (such as resiliency or data retention in the presence of network outages) are also limited to scenarios covered by the demonstration guide.
 +

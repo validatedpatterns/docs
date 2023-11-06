@@ -18,8 +18,8 @@ include::modules/comm-attributes.adoc[]
 
 A pattern categorized under the {sandbox} tier provides you with an entry point to onboard to the {solution-name-upstream}. The minimum requirement to qualify for the {sandbox} tier is that you must start with the patterns framework and include minimal documentation.
 
-[id="onboarding-existing-implementations"]
-== Onboarding existing implementations
+[id="nominating-a-pattern-for-sandbox-tier"]
+== Nominating a pattern for the {sandbox} tier
 
 //TODO: A short note on the value of converting existing implementations
 
@@ -33,7 +33,6 @@ In both scenarios the originating team can choose where to host the primary repo
 
 [id="requirements-sandbox-tier"]
 == Requirements for the {sandbox} tier
-// should this be sandbox tier?
 Consider these requirements for all {sandbox} tier.
 
 [id="must-sandbox-tier"]
