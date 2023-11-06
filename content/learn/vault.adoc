@@ -31,7 +31,7 @@ A cronjob will run every five minutes inside the `imperative` namespace and unse
 *It is considered best practice* to copy the content of that secret offline, store it securely and then delete it. It won't be recreated after the vault is unsealed.
 ====
 
-An example output, obtained via `oc extract -n imperative secret/vaultkeys --to=- --keys=vault_data_json 2>/dev/null`, is the following:
+An example output from running the `oc extract -n imperative secret/vaultkeys --to=- --keys=vault_data_json 2>/dev/null` command:
 [source,json]
 ----
 {
