@@ -23,13 +23,6 @@ ci: manuela
 
 # Industrial Edge Pattern
 
----
-**NOTE**
-
-Industrial Edge on OpenShift Container Platform 4.12 fails CI due to a Seldon issue. This only affects the Anomaly Detection AI/ML portion of the pattern. The rest of the pattern functions as designed. For more information on the Seldon issue, see https://github.com/SeldonIO/seldon-core/issues/4339.
-
----
-
 _Red Hat  Validated Patterns are detailed deployments created for different use cases. These pre-defined computing configurations bring together the Red Hat portfolio and technology ecosystem to help you stand up your architectures faster. Example application code is provided as a demonstration, along with the various open source projects and Red Hat products required for the deployment to work. Users can then modify the pattern for their own specific application._
 
 **Use Case:** Boosting manufacturing efficiency and product quality with artificial intelligence/machine learning (AI/ML) out to the edge of the network.
