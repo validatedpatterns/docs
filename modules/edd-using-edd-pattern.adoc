@@ -1,0 +1,10 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="deploying-edd-pattern"]
+= Using the Emerging Disease Detection pattern
+
+The following steps describes how you can use this pattern in a demo.
+
+== Viewing the Sepsis Detection dashboard
+TO-DO: Describe how to examine the various parts of the Sepsis application

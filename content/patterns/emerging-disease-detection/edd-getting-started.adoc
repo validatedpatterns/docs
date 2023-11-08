@@ -1,0 +1,17 @@
+---
+title: Getting started
+weight: 10
+aliases: /emerging-disease-detection/getting-started/
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/edd-deploying-edd-pattern.adoc[leveloffset=1]
+
+include::modules/edd-using-edd-pattern.adoc[leveloffset=1]
+
+= Next Steps
+
+link:https://groups.google.com/g/hybrid-cloud-patterns[Help & Feedback]
+link:https://github.com/validatedpatterns/emerging-disease-detection/issues[Report Bugs]
