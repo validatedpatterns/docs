@@ -2,7 +2,7 @@
 :imagesdir: ../../../images
 
 [id="deploying-edd-pattern"]
-= Deploying the Emerging Diseasae Detection pattern
+= Deploying the Emerging Disease Detection pattern
 
 == Prerequisites
 
