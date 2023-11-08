@@ -8,3 +8,8 @@ The following steps describes how you can use this pattern in a demo.
 
 == Viewing the Sepsis Detection dashboard
 TO-DO: Describe how to examine the various parts of the Sepsis application
+
+= Next Steps
+
+link:https://groups.google.com/g/validatedpatterns[Help & Feedback]
+link:https://github.com/validatedpatterns/emerging-disease-detection/issues[Report Bugs]
