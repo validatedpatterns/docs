@@ -1,0 +1,50 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="overview-architecture"]
+== Overview of the Architecture
+
+As data arrives from Alani's various monitoring devices her latest metrics are collected in the FHIR database. Debezium is an open source distributed platform for change data capture. It will create an observation bundle for streaming to the AI model. This, in turn, will create a risk assessment and provide that to the process automation for review with Alani's doctor or the on-call doctor that is available. Their assessment may trigger further process workflows. 
+
+//figure 1 originally
+.Overview of the solution reference architecture
+image::emerging-disease-detection/edd-reference-architecture.png[link="/images/emerging-disease-detection/edd-reference-architecture.png"]
+
+In the following figure, logically, this solution can be viewed as being composed of an automation component, unified management including secrets management, and the clusters under management, all running on top of a user-chosen mixture of on-premise data centers and public clouds.
+
+//figure 2 originally
+.Sepsis Data Architecture
+image::emerging-disease-detection/edd-data-architecture.png[link="/images/emerging-disease-detection/edd-data-architecture.png", width=940]
+
+//figure 3 logical
+.Logical Architecture
+image::emerging-disease-detection/edd-logical-architecture-legend.png[link="/images/emerging-disease-detection/edd-logical-architecture-legend.png", width=940]
+
+//figure 4 Schema
+.Data Flow Architecture
+image::emerging-disease-detection/edd-schema-dataflow.png[link="/images/emerging-disease-detection/edd-schema-dataflow.png", width=940]
+
+[id="about-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Platform]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift GitOps]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+
+https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform]::
+Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+
+https://www.redhat.com/en/technologies/jboss-middleware/amq[Red Hat AMQ Streams]::
+Red Hat AMQ streams is a massively scalable, distributed, and high-performance data streaming platform based on the Apache Kafka project. It offers a distributed backbone that allows microservices and other applications to share data with high throughput and low latency. Red Hat AMQ Streams is available in the Red Hat AMQ product.
+
+https://marketplace.redhat.com/en-us/products/red-hat-single-sign-on[Red Hat Single Sign-On]::
+Based on the Keycloak project, Red Hat Single Sign-On enhances security by enabling you to secure your web applications with Web single sign-on (SSO) capabilities based on popular standards such as SAML 2.0, OpenID Connect and OAuth 2.0.
+
+Hashicorp Vault::
+Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+
+This solution also uses a variety of _observability tools_ including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.

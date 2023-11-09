@@ -1,12 +1,8 @@
----
-title: Getting Started
-weight: 10
-aliases: /emerging-disease-detection/getting-started/
----
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
 
-:toc:
-:imagesdir: /images
-:_content-type: ASSEMBLY
+[id="deploying-edd-pattern"]
+= Deploying the Emerging Disease Detection pattern
 
 == Prerequisites
 
@@ -219,11 +215,3 @@ The most important ArgoCD instance to examine at this point is `emerging-disease
 
 . Check all applications are synchronised. There are thirteen different ArgoCD "applications" deployed as part of this pattern.
 
-[id="viewing-the-sepsis-application-dashboard-getting-started"]
-== Viewing the Sepsis Detection dashboard
-TO-DO: Describe how to examine the various parts of the Sepsis application
-
-= Next Steps
-
-link:https://groups.google.com/g/validatedpatterns[Help & Feedback]
-link:https://github.com/validatedpatterns/emerging-disease-detection/issues[Report Bugs]

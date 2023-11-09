@@ -1,0 +1,47 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-emerging-disease-detaction-pattern"]
+= About the Emerging Disease Detection pattern
+
+Use case::
+
+* Use a GitOps approach to manage a hybrid cloud deployment for an AI emerging disease detection system.
+* Use a AI automation at the edge to detect emerging diseases.
+* Use an event driven architecture 
+* Enable application lifecycle management.
+* Securely manage secrets across the deployment.
++
+Background::
+No technology is better poised to transform Healthcare as AI and Business Process Automation. Coupled with an Edge Architecture, these continuous monitoring and detection systems can scale to provide early warning intervention and measurable process improvements, anywhere. 
+
+Detection of disease states like sepsis, stroke, pulmonary embolism, and heart attack requires low-latency, broadband, asynchronous streaming capabilities. We have prototyped an early warning platform built with a distributed edge architecture, fed by at-home post-operative monitoring (fitbit, smart phone, wifi devices) and automated Clinical care escalation and coordination processes. This platform has the potential to significantly lower network traffic and cost while providing early warning interventions for our nation's Veterans.
+
+[id="about-solution"]
+== About the solution
+
+To demonstrate the effectiveness of the solution this pattern focuses on the specific problem of Sepsis. Sepsis is the body's extreme response to an infection. It is a life-threatening medical emergency. Sepsis is a costly and life threatening condition that can result in multi-organ failure. Beating conditions like sepsis requires rapid detection and mitigation of risks. With the immune system compromised, recovery at home is often preferred to minimize the risk for cross-infections, yet medical teams often lack the capability to perform constant surveillance for emerging risks across their patient cohorts, especially in rural settings. In this session, we will demonstrate an early warning system driven by Clinical AI at the Edge, fed by at-home post-operative monitoring and automated Clinical care escalation and coordination processes. 
+
+== Technology Highlights:
+* Event-Driven Architecture
+* Data Science on OpenShift
+* Process Automation
+
+== Solution Discussion and Demonstration
+In this demonstration, we will follow a vulnerable, post-operative patient, Alani, as she recovers from surgery in her home setting. The pattern demonstrates an early warning system driven by Clinical AI at the Edge, fed by at-home post-operative monitoring and automated Clinical care escalation and coordination processes.
+
+This architecture pattern demonstrates three strengths:
+
+* Enabling healthcare at the edge
+** Taking healthcare past the edge of the cloud to support care processes in Low Bandwidth environments.
+* AI integrated into healthcare team workflows
+** BPM+ Health workflows support plug & play AI modules embedded into clinical workflows as Clinical Decision Support.
+* Event driven, Intelligent automation
+** Clinical best practices & processes automated using BPM+ Health authored workflows using FHIR API endpoints.
+
+For a thorough explanation of this solution in the context of Sepsis detection please consider reviewing the following 25 minute video. 
+
+// video link to a presentation on the use case
+.Overview of the solution in Sepsis Detection
+video::VHjpKIeviFE[youtube]
+
