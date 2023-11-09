@@ -317,7 +317,47 @@ Formatting commands and code blocks To enable syntax highlighting, use [source,t
 [source,yaml]
 [source,go]
 [source,javascript]
-`,url:"https://validatedpatterns.io/contribute/contribute-to-docs/",breadcrumb:"/contribute/contribute-to-docs/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
+`,url:"https://validatedpatterns.io/contribute/contribute-to-docs/",breadcrumb:"/contribute/contribute-to-docs/"},"https://validatedpatterns.io/patterns/emerging-disease-detection/edd-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Emerging Disease Detection pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
+A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
+For installation tooling dependencies, see Patterns quick start.
+The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern there is no dedicated Hub / Edge cluster for the Emerging Disease Detection pattern. This single node pattern can be extend as a managed cluster(s) to a central hub.
+If you do not have a running Red Hat OpenShift cluster you can start one on a public or private cloud by using Red Hat’s cloud service.
+Utilities A number of utilities have been built by the validated patterns team to lower the barrier to entry for using the community or Red Hat Validated Patterns. To use these utilities you will need to export some environment variables for your cloud provider:
+Preparation Fork the emerging-disease-detection repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+Clone the forked copy of this repository.
+git clone git@github.com:&lt;your-username&gt;/emerging-disease-detection.git Create a local copy of the Helm secrets values file that can safely include credentials
+DO NOT COMMIT THIS FILE
+You do not want to push credentials to GitHub.
+cp values-secret.yaml.template ~/values-secret.yaml vi ~/values-secret.yaml values-secret.yaml example
+secrets: - name: rhpam vaultPrefixes: - global fields: - name: rhpam_api_passwd value: kieserver - name: sso_siteadmin_password value: r3dh4t1! - name: kie_admin_password value: admin - name: kieserver_user_password value: kieserver - name: psql_passwd value: rhpam - name: fhir-psql-db vaultPrefixes: - global fields: - name: psql_credentials_secret value: psql_secret - name: psql_user_name value: fhir - name: psql_user_passwd value: fhir When you edit the file you can make changes to the various DB and Grafana passwords if you wish.
+Customize the values-global.yaml for your deployment
+git checkout -b my-branch vi values-global.yaml Replace instances of PROVIDE_ with your specific configuration
+global: pattern: emerging-disease-detection hubClusterDomain: &#34;AUTO&#34; # this is for test only This value is automatically fetched when Invoking against a cluster options: useCSV: false syncPolicy: Automatic installPlanApproval: Automatic main: clusterGroupName: hub gitOpsSpec: operatorChannel: gitops-1.9 git add values-global.yaml git commit values-global.yaml git push origin my-branch You can deploy the pattern using the validated pattern operator. If you do use the operator then skip to Validating the Environment below.
+Preview the changes that will be made to the Helm charts.
+./pattern.sh make show Login to your cluster using oc login or exporting the KUBECONFIG
+oc login or set KUBECONFIG to the path to your kubeconfig file. For example export KUBECONFIG=~/my-ocp-env/auth/kubeconfig Check the values files before deployment You can run a check before deployment to make sure that you have the required variables to deploy the Emerging Disease Detection Validated Pattern.
+You can run make predeploy to check your values. This will allow you to review your values and changed them in the case there are typos or old values. The values files that should be reviewed prior to deploying the Medical Diagnosis Validated Pattern are:
+Values File Description values-secret.yaml / values-secret-emerging-disease-detection.yaml
+This is the values file that will include the rhpam and fhir-psql-db sections with all database et al secrets
+values-global.yaml
+File that is used to contain all the global values used by Helm
+Deploy Apply the changes to your cluster
+./pattern.sh make install If the install fails and you go back over the instructions and see what was missed and change it, then run make update to continue the installation.
+This takes some time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The make install provides some progress updates during the install. It can take up to twenty minutes. Compare your make install run progress with the following video showing a successful install.
+Check that the operators have been installed in the UI.
+To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
+Check that the Operator is installed in the openshift-operators namespace and its status is Succeeded.
+Using OpenShift GitOps to check on Application progress You can also check on the progress using OpenShift GitOps to check on the various applications deployed.
+Obtain the ArgoCD URLs and passwords.
+The URLs and login credentials for ArgoCD change depending on the pattern name and the site names they control. Follow the instructions below to find them, however you choose to deploy the pattern.
+Display the fully qualified domain names, and matching login credentials, for all ArgoCD instances:
+ARGO_CMD=\`oc get secrets -A -o jsonpath=&#39;{range .items[*]}{&#34;oc get -n &#34;}{.metadata.namespace}{&#34; routes; oc -n &#34;}{.metadata.namespace}{&#34; extract secrets/&#34;}{.metadata.name}{&#34; --to=-\\\\n&#34;}{end}&#39; | grep gitops-cluster\` CMD=\`echo $ARGO_CMD | sed &#39;s|- oc|-;oc|g&#39;\` eval $CMD The result should look something like:
+NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD hub-gitops-server hub-gitops-server-emerging-disease-detection-hub.apps.wh-edd-cluster.aws.validatedpatterns.com hub-gitops-server https passthrough/Redirect None # admin.password xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD cluster cluster-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com cluster 8080 reencrypt/Allow None kam kam-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com kam 8443 passthrough/None None openshift-gitops-server openshift-gitops-server-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com openshift-gitops-server https passthrough/Redirect None # admin.password FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6 The most important ArgoCD instance to examine at this point is emerging-disease-detection-hub. This is where all the applications for the pattern can be tracked.
+Check all applications are synchronised. There are thirteen different ArgoCD &#34;applications&#34; deployed as part of this pattern.
+Using the Emerging Disease Detection pattern The following steps describes how you can use this pattern in a demo.
+Viewing the Sepsis Detection dashboard TO-DO: Describe how to examine the various parts of the Sepsis application
+Next Steps Help &amp; Feedback Report Bugs
+`,url:"https://validatedpatterns.io/patterns/emerging-disease-detection/edd-getting-started/",breadcrumb:"/patterns/emerging-disease-detection/edd-getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
 Select Services -&gt; Containers -&gt; Create cluster.
 The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
@@ -453,46 +493,7 @@ tbd should be the only remaining application
 Complete the uninstall
 helm delete tbd
 Check all namespaces and operators have been removed
-`,url:"https://validatedpatterns.io/patterns/devsecops/getting-started/",breadcrumb:"/patterns/devsecops/getting-started/"},"https://validatedpatterns.io/patterns/emerging-disease-detection/getting-started/":{title:"Getting Started",tags:[],content:` Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
-A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
-For installation tooling dependencies, see Patterns quick start.
-The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern there is no dedicated Hub / Edge cluster for the Emerging Disease Detection pattern. This single node pattern can be extend as a managed cluster(s) to a central hub.
-If you do not have a running Red Hat OpenShift cluster you can start one on a public or private cloud by using Red Hat’s cloud service.
-Utilities A number of utilities have been built by the validated patterns team to lower the barrier to entry for using the community or Red Hat Validated Patterns. To use these utilities you will need to export some environment variables for your cloud provider:
-Preparation Fork the emerging-disease-detection repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
-Clone the forked copy of this repository.
-git clone git@github.com:&lt;your-username&gt;/emerging-disease-detection.git Create a local copy of the Helm secrets values file that can safely include credentials
-DO NOT COMMIT THIS FILE
-You do not want to push credentials to GitHub.
-cp values-secret.yaml.template ~/values-secret.yaml vi ~/values-secret.yaml values-secret.yaml example
-secrets: - name: rhpam vaultPrefixes: - global fields: - name: rhpam_api_passwd value: kieserver - name: sso_siteadmin_password value: r3dh4t1! - name: kie_admin_password value: admin - name: kieserver_user_password value: kieserver - name: psql_passwd value: rhpam - name: fhir-psql-db vaultPrefixes: - global fields: - name: psql_credentials_secret value: psql_secret - name: psql_user_name value: fhir - name: psql_user_passwd value: fhir When you edit the file you can make changes to the various DB and Grafana passwords if you wish.
-Customize the values-global.yaml for your deployment
-git checkout -b my-branch vi values-global.yaml Replace instances of PROVIDE_ with your specific configuration
-global: pattern: emerging-disease-detection hubClusterDomain: &#34;AUTO&#34; # this is for test only This value is automatically fetched when Invoking against a cluster options: useCSV: false syncPolicy: Automatic installPlanApproval: Automatic main: clusterGroupName: hub gitOpsSpec: operatorChannel: gitops-1.9 git add values-global.yaml git commit values-global.yaml git push origin my-branch You can deploy the pattern using the validated pattern operator. If you do use the operator then skip to Validating the Environment below.
-Preview the changes that will be made to the Helm charts.
-./pattern.sh make show Login to your cluster using oc login or exporting the KUBECONFIG
-oc login or set KUBECONFIG to the path to your kubeconfig file. For example export KUBECONFIG=~/my-ocp-env/auth/kubeconfig Check the values files before deployment You can run a check before deployment to make sure that you have the required variables to deploy the Emerging Disease Detection Validated Pattern.
-You can run make predeploy to check your values. This will allow you to review your values and changed them in the case there are typos or old values. The values files that should be reviewed prior to deploying the Medical Diagnosis Validated Pattern are:
-Values File Description values-secret.yaml / values-secret-emerging-disease-detection.yaml
-This is the values file that will include the rhpam and fhir-psql-db sections with all database et al secrets
-values-global.yaml
-File that is used to contain all the global values used by Helm
-Deploy Apply the changes to your cluster
-./pattern.sh make install If the install fails and you go back over the instructions and see what was missed and change it, then run make update to continue the installation.
-This takes some time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The make install provides some progress updates during the install. It can take up to twenty minutes. Compare your make install run progress with the following video showing a successful install.
-Check that the operators have been installed in the UI.
-To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
-Check that the Operator is installed in the openshift-operators namespace and its status is Succeeded.
-Using OpenShift GitOps to check on Application progress You can also check on the progress using OpenShift GitOps to check on the various applications deployed.
-Obtain the ArgoCD URLs and passwords.
-The URLs and login credentials for ArgoCD change depending on the pattern name and the site names they control. Follow the instructions below to find them, however you choose to deploy the pattern.
-Display the fully qualified domain names, and matching login credentials, for all ArgoCD instances:
-ARGO_CMD=\`oc get secrets -A -o jsonpath=&#39;{range .items[*]}{&#34;oc get -n &#34;}{.metadata.namespace}{&#34; routes; oc -n &#34;}{.metadata.namespace}{&#34; extract secrets/&#34;}{.metadata.name}{&#34; --to=-\\\\n&#34;}{end}&#39; | grep gitops-cluster\` CMD=\`echo $ARGO_CMD | sed &#39;s|- oc|-;oc|g&#39;\` eval $CMD The result should look something like:
-NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD hub-gitops-server hub-gitops-server-emerging-disease-detection-hub.apps.wh-edd-cluster.aws.validatedpatterns.com hub-gitops-server https passthrough/Redirect None # admin.password xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD cluster cluster-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com cluster 8080 reencrypt/Allow None kam kam-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com kam 8443 passthrough/None None openshift-gitops-server openshift-gitops-server-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com openshift-gitops-server https passthrough/Redirect None # admin.password FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6 The most important ArgoCD instance to examine at this point is emerging-disease-detection-hub. This is where all the applications for the pattern can be tracked.
-Check all applications are synchronised. There are thirteen different ArgoCD &#34;applications&#34; deployed as part of this pattern.
-Viewing the Sepsis Detection dashboard TO-DO: Describe how to examine the various parts of the Sepsis application
-Next Steps Help &amp; Feedback Report Bugs
-`,url:"https://validatedpatterns.io/patterns/emerging-disease-detection/getting-started/",breadcrumb:"/patterns/emerging-disease-detection/getting-started/"},"https://validatedpatterns.io/patterns/industrial-edge/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Industrial Edge Pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also sizing your cluster.
+`,url:"https://validatedpatterns.io/patterns/devsecops/getting-started/",breadcrumb:"/patterns/devsecops/getting-started/"},"https://validatedpatterns.io/patterns/industrial-edge/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Industrial Edge Pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also sizing your cluster.
 (Optional) A second OpenShift cluster for edge/factory
 A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 A quay account with the following repositories set as public:
@@ -1747,11 +1748,11 @@ Who is behind this? Today, a team of Red Hat engineers including Andrew Beekhof 
 Excited or intrigued by what you see here? We’d love to hear your thoughts and ideas! Try the patterns contained here and see below for links to our repositories and issue trackers.
 How can I get involved? Try out what we’ve done and submit issues to our issue trackers.
 We will review pull requests to our pattern repositories.
-`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/emerging-disease-detection/":{title:"Emerging Disease Detection",tags:[],content:` include::modules/comm-attributes.adoc[]:
-Background Use case Use a AI automation at the edge to detect emerging diseases.
+`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/emerging-disease-detection/":{title:"Emerging Disease Detection",tags:[],content:` About the Emerging Disease Detection pattern Use case Use a GitOps approach to manage a hybrid cloud deployment for an AI emerging disease detection system.
+Use a AI automation at the edge to detect emerging diseases.
 Use an event driven architecture
+Enable application lifecycle management.
 Securely manage secrets across the deployment.
-Based on the requirements of a specific implementation, certain details might differ. However, all validated patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
 Background No technology is better poised to transform Healthcare as AI and Business Process Automation. Coupled with an Edge Architecture, these continuous monitoring and detection systems can scale to provide early warning intervention and measurable process improvements, anywhere.
 Detection of disease states like sepsis, stroke, pulmonary embolism, and heart attack requires low-latency, broadband, asynchronous streaming capabilities. We have prototyped an early warning platform built with a distributed edge architecture, fed by at-home post-operative monitoring (fitbit, smart phone, wifi devices) and automated Clinical care escalation and coordination processes. This platform has the potential to significantly lower network traffic and cost while providing early warning interventions for our nation’s Veterans.
 About the solution To demonstrate the effectiveness of the solution this pattern focuses on the specific problem of Sepsis. Sepsis is the body’s extreme response to an infection. It is a life-threatening medical emergency. Sepsis is a costly and life threatening condition that can result in multi-organ failure. Beating conditions like sepsis requires rapid detection and mitigation of risks. With the immune system compromised, recovery at home is often preferred to minimize the risk for cross-infections, yet medical teams often lack the capability to perform constant surveillance for emerging risks across their patient cohorts, especially in rural settings. In this session, we will demonstrate an early warning system driven by Clinical AI at the Edge, fed by at-home post-operative monitoring and automated Clinical care escalation and coordination processes.
@@ -1767,7 +1768,7 @@ BPM+ Health workflows support plug &amp; play AI modules embedded into clinical 
 Event driven, Intelligent automation
 Clinical best practices &amp; processes automated using BPM+ Health authored workflows using FHIR API endpoints.
 For a thorough explanation of this solution in the context of Sepsis detection please consider reviewing the following 25 minute video.
-Overview of the solution in Sepsis Detection Pattern Architecture Overview As data arrives from Alani’s various monitoring devices her latest metrics are collected in the FHIR database. Debezium is an open source distributed platform for change data capture. It will create an observation bundle for streaming to the AI model. This, in turn, will create a risk assessment and provide that to the process automation for review with Alani’s doctor or the on-call doctor that is available. Their assessment may trigger further process workflows.
+Overview of the solution in Sepsis Detection Overview of the Architecture As data arrives from Alani’s various monitoring devices her latest metrics are collected in the FHIR database. Debezium is an open source distributed platform for change data capture. It will create an observation bundle for streaming to the AI model. This, in turn, will create a risk assessment and provide that to the process automation for review with Alani’s doctor or the on-call doctor that is available. Their assessment may trigger further process workflows.
 Figure 1. Overview of the solution reference architecture In the following figure, logically, this solution can be viewed as being composed of an automation component, unified management including secrets management, and the clusters under management, all running on top of a user-chosen mixture of on-premise data centers and public clouds.
 Figure 2. Sepsis Data Architecture Figure 3. Logical Architecture Figure 4. Data Flow Architecture About the technology The following technologies are used in this solution:
 Red Hat OpenShift Platform An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
@@ -1777,6 +1778,7 @@ Red Hat AMQ Streams Red Hat AMQ streams is a massively scalable, distributed, an
 Red Hat Single Sign-On Based on the Keycloak project, Red Hat Single Sign-On enhances security by enabling you to secure your web applications with Web single sign-on (SSO) capabilities based on popular standards such as SAML 2.0, OpenID Connect and OAuth 2.0.
 Hashicorp Vault Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
 This solution also uses a variety of observability tools including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
+Next steps Deploy the management hub using Helm.
 `,url:"https://validatedpatterns.io/patterns/emerging-disease-detection/",breadcrumb:"/patterns/emerging-disease-detection/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
 `,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
 Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric solutions while maintaining a level of Continuous Integration (CI) over your application.
