@@ -28,7 +28,7 @@ A cronjob will run every five minutes inside the `imperative` namespace and unse
 
 [NOTE]
 ====
-It is recommended that you copy the contents of that secret offline, store it securely, and then delete it. It will not be recreated after the vault is unsealed.
+It is recommended that you copy the contents of that secret offline, store it securely, and then delete it. It will not be recreated after the vault is unsealed. You can back it up to a file with the following command: `oc get -n imperative secrets/vaultkeys -o yaml > <path-to-secret-storage>/vault-unseal-keys.yaml`. Then you may delete it from the cluster by running `oc delete -n imperative secret/vaultkeys`. The unseal keys will be needed to unseal the vault again should its pod be restarted. You can restore the vaultkeys with `oc apply -f <path-to-secret-storage>/vault-unseal-keys.yaml` and then wait for the CronJob called `unseal-vault` to run (the default is every five minutes). Remember to delete the vaultkeys secret again once the vault is unsealed
 ====
 
 An example output from running the `oc extract -n imperative secret/vaultkeys --to=- --keys=vault_data_json 2>/dev/null` command:
@@ -75,7 +75,7 @@ link:/images/secrets/vault-secrets-engine-screen.png[image:/images/secrets/vault
 [id="unseal"]
 = Unseal
 
-If you don't see the sign in page but instead see an unseal page, something may have happened the cluster and you need to unseal it again. Instead of using `make vault-init` you should run `make vault-unseal`. You can also unseal it manually by running `vault operator unseal` inside the `vault-0` pod in the `vault` namespace.
+If you don't see the sign in page but instead see an unseal page, something may have happened the cluster and you need to unseal it again. Make sure that the `imperative/vaultkeys` secret exists and wait for the CronJob called `unseal-vault` inside the `imperative` namespace to run. Alternatively you could unseal the vault manually by running `vault operator` commands inside the `vault-0` pod. See these link:https://developer.hashicorp.com/vault/docs/commands/operator/unseal[instructions] for additional information.
 
 [id="whats-next"]
 = What's next?
