@@ -5,7 +5,7 @@
 [id="about-openshift-cluster-sizing-med"]
 = About OpenShift cluster sizing for the {med-pattern}
 
-To understand cluster sizing requirements for the {med-pattern}, consider the following components that the {med-pattern} deploys on the datacenter or the hub OpenShift cluster:
+The {med-pattern} deploys the following components on the datacenter or the hub OpenShift cluster:
 
 |===
 | Name | Kind | Namespace | Description

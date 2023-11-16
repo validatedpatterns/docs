@@ -28,5 +28,5 @@ $ python s3-sync-buckets.py -s validated-patterns-md-xray -t mytest-bucket -r us
 
 image:/videos/bucket-setup.svg[Bucket setup]
 
-Make a note of the name and the URL for the bucket for further pattern configuration. For example, you must update these values in a `values-global.yaml` file, where there is a section for `s3:`
+Make a note of the name and the URL for the bucket for further pattern configuration. For example, you must update these values in a `values-global.yaml` file, where there is a section for `s3:`.
 

@@ -72,7 +72,7 @@ By default, Vault password policy generates the passwords for you. However, you 
 +
 [NOTE]
 ====
-When defining a custom password for the database users, avoid using the `$` special character because it gets interpreted by the shell and will ultimately set the incorrect desired password.
+When defining a custom password for the database users, avoid using the `$` special character because it gets interpreted by the shell and will ultimately set the incorrect password.
 ====
 
 . To customize the deployment for your cluster, update the `values-global.yaml` file by running the following commands:
@@ -105,6 +105,8 @@ Replace instances of PROVIDE_ with your specific configuration
      bucketBaseName: "xray-source"
 ----
 +
+Save the values-global.yaml file and commit it to your branch:
+
 [source,terminal]
 ----
 $ git add values-global.yaml
@@ -137,7 +139,7 @@ Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
 
 .Verification
 
-To ensure that you have the required variables to deploy the {med-pattern}, run the `./pattern.sh make predeploy` command. You can review your values and make updates, if required.
+To ensure that you have the required variables to deploy the {med-pattern}, run the `./pattern.sh make predeploy` command. You can review your values and m0ake any required updates.
 
 You must review the following `values*` files before deploying the {med-pattern}:
 

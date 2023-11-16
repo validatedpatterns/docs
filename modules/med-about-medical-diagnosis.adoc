@@ -6,7 +6,7 @@
 
 Background::
 
-This validated pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that was previously developed by {redhat}. You can find the original demonstration link:https://github.com/red-hat-data-services/jumpstart-library[here]. It was developed for the US Department of Veteran Affairs.
+This validated pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that {redhat} developed for the US Department of Veteran Affairs. You can find the original demonstration link:https://github.com/red-hat-data-services/jumpstart-library[here].
 
 This validated pattern includes the same functionality as the original demonstration. The difference is that this solution uses the GitOps framework to deploy the pattern including Operators, creation of namespaces, and cluster configuration. Using GitOps provides an efficient means of implementing continuous deployment.
 

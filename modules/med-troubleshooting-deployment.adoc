@@ -2,7 +2,7 @@
 :imagesdir: ../../../images
 
 [id="troubleshooting-the-pattern-deployment-troubleshooting"]
-=== Troubleshooting the pattern deployment
+= Troubleshooting the pattern deployment
 
 Occasionally the pattern will encounter issues during the deployment. This can happen for any number of reasons, but most often it is because of either a change within the operator itself or something has changed in the {olm-first} which determines which operators are available in the operator catalog. Generally, when an issue occurs with the {olm-short}, the operator is unavailable for installation. To ensure that the operator is in the catalog, run the following command:
 
@@ -23,7 +23,7 @@ Use the grafana dashboard to assist with debugging and identifying the issue
 '''
 Problem:: No information is being processed in the dashboard
 
-Solution:: Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is *scaled to 0*;
+Solution:: Solution:: Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is *scaled to 0*":
 +
 [source,terminal]
 ----
@@ -97,7 +97,7 @@ MariaDB [xraylabdb]> show tables;
 3 rows in set (0.000 sec)
 ----
 +
-. Verify the password set in the `values-secret.yaml` is working
+. Verify the password set in the `values-secret.yaml` is working:
 +
 [source,terminal]
 ----
