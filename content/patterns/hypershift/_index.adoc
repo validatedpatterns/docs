@@ -1,12 +1,10 @@
 ---
 title: HyperShift
 date: 2023-11-15
-validated: true
+validated: false
 summary: This pattern is for deploying the Hosted Control Plane (HyperShift) service.
 products:
 - Red Hat OpenShift Container Platform
-- Multi-cluster-Engine
-- AWS Controller for Kubernetes (S3)
 industries:
 - infrastructure
 aliases: /hypershift/
@@ -26,12 +24,12 @@ include::modules/comm-attributes.adoc[]
 //Module to be included
 //:_content-type: CONCEPT
 //:imagesdir: ../../images
-[id="about-med-diag-pattern"]
-= About the {med-pattern}
+[id="about-hyp-pattern"]
+= About the {hyp-pattern}
 
 Background::
 
-This pattern is designed and intended to assist with simplifying the deployment of a HyperShift Hosting cluster. When this pattern is deployed, users will be be able to create hostedclusters of their own.
+This pattern is designed and intended to assist with simplifying the deployment of an {hyp} Hosting cluster. When this pattern is deployed, users will be be able to create hostedclusters of their own.
 
 Workflow::
 
@@ -60,7 +58,7 @@ The {hyp-pattern} uses the following products and technologies:
 * {rh-ocp} for container orchestration
 * {rh-gitops}, a GitOps continuous delivery (CD) solution
 * {rh-mce}, the multicluster-engine provider
-* S3 storage
+* {ack-s3}, a S3 storage controller
 
 // All commented out by jrickard
 //== Recorded demo
