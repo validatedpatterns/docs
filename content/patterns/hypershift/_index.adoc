@@ -5,6 +5,8 @@ validated: false
 summary: This pattern is for deploying the Hosted Control Plane (HyperShift) service.
 products:
 - Red Hat OpenShift Container Platform
+- Red Hat MultiCluster Engine
+- AWS Controller for Kubernetes
 industries:
 - infrastructure
 aliases: /hypershift/
@@ -24,12 +26,12 @@ include::modules/comm-attributes.adoc[]
 //Module to be included
 //:_content-type: CONCEPT
 //:imagesdir: ../../images
-[id="about-hyp-pattern"]
-= About the {hyp-pattern}
+[id="about-hcp-pattern"]
+= About the {hcp-pattern} ({hcp})
 
 Background::
 
-This pattern is designed and intended to assist with simplifying the deployment of an {hyp} Hosting cluster. When this pattern is deployed, users will be be able to create hostedclusters of their own.
+This pattern is designed and intended to assist with simplifying the deployment of an {hcp} Hosting cluster. When this pattern is deployed, users will be be able to create hostedclusters of their own.
 
 Workflow::
 
@@ -40,20 +42,20 @@ Workflow::
 * Create a buildconfig and imagestream that provide the HyperShift cli (`hypershift`) as an imagestream to be used in further automation if desired.
 
 //This pipeline is showcased link:https://www.youtube.com/watch?v=zja83FVsm14[in this video].
-
-image::hypershift/hypershift-high-level-architecture.png[link="/images/hypershift/hypershift-high-level-architecture.png"]
+//[#fig:001]
+image::hypershift/hypershift-high-level-architecture.png[link="/images/hypershift/hypershift-high-level-architecture.png",title="source: https://hypershift-docs.netlify.app/", align="center"]
 
 //[NOTE]
 //====
 //If you have any questions or concerns contact mailto:jrickard@redhat.com[Jonny Rickard].
 //====
 
-[id="about-solution-hyp"]
+[id="about-solution-hcp"]
 == About the solution elements
 
-The solution enables the rapid provisioning of hosted controlplane clusters.
+The solution enables the rapid provisioning of {hcp}.
 
-The {hyp-pattern} uses the following products and technologies:
+The {hcp-pattern} uses the following products and technologies:
 
 * {rh-ocp} for container orchestration
 * {rh-gitops}, a GitOps continuous delivery (CD) solution
