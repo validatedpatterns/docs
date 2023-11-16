@@ -42,13 +42,13 @@ Workflow::
 * Create a buildconfig and imagestream that provide the HyperShift cli (`hypershift`) as an imagestream to be used in further automation if desired.
 
 //This pipeline is showcased link:https://www.youtube.com/watch?v=zja83FVsm14[in this video].
-//[#fig:001]
+
 image::hypershift/hypershift-high-level-architecture.png[link="/images/hypershift/hypershift-high-level-architecture.png",title="source: https://hypershift-docs.netlify.app/", align="center"]
 
-//[NOTE]
-//====
-//If you have any questions or concerns contact mailto:jrickard@redhat.com[Jonny Rickard].
-//====
+[NOTE]
+====
+If you have any questions or concerns contact mailto:jrickard@redhat.com[Jonny Rickard].
+====
 
 [id="about-solution-hcp"]
 == About the solution elements
