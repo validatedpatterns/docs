@@ -31,7 +31,7 @@ include::modules/comm-attributes.adoc[]
 
 Background::
 
-This pattern is designed and intended to assist with simplifying the deployment of an {hcp} Hosting cluster. When this pattern is deployed, users will be be able to create hostedclusters of their own.
+This pattern simplifies the deployment of an {hcp} or hosted control plane cluster. Use this pattern to create hosted  control plane clusters.
 
 Workflow::
 
