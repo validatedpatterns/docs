@@ -126,7 +126,7 @@
 // Red Hat Quay Container Security Operator
 :rhq-cso: Red{nbsp}Hat Quay Container Security Operator
 // OpenSource/Community Operators
-:ack-s3: AWS Kubernetes Controller for S3
+:ack-s3-op: AWS Controllers for Kubernetes - Amazon S3 Operator
 //Cloud platforms
 :AWS: Amazon Web Services (AWS)
 :GCP: Google Cloud Platform (GCP)
