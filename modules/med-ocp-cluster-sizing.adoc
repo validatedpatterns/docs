@@ -10,7 +10,7 @@ For {med-pattern}, the OpenShift cluster size must be larger than a standard clu
 
 The minimum requirements for an {ocp} cluster depend on your installation platform, for example:
 
-* For AWS, see link:https://docs.openshift.com/container-platform/4.13/installing/installing_aws/preparing-to-install-on-aws.html#requirements-for-installing-ocp-on-aws[Installing {ocp} on AWS]
+* For AWS, see link:https://docs.openshift.com/container-platform/4.13/installing/installing_aws/preparing-to-install-on-aws.html#requirements-for-installing-ocp-on-aws[Installing {ocp} on AWS].
 
 * For bare-metal, see link:https://docs.openshift.com/container-platform/4.13/installing/installing_bare_metal/installing-bare-metal.html#installation-minimum-resource-requirements_installing-bare-metal[Installing {ocp} on bare metal].
 

@@ -1,2 +1,4 @@
 DirectoryPath: public/
 IgnoreDirectoryMissingTrailingSlash: true
+IgnoreCanonicalBrokenLinks: false
+TestFilesConcurrently: true
