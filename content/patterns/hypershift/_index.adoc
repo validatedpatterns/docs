@@ -8,7 +8,7 @@ products:
 - Red Hat MultiCluster Engine
 - AWS Controller for Kubernetes
 industries:
-- infrastructure
+- Infrastructure
 aliases: /hypershift/
 pattern_logo: medical-diagnosis.png
 links:
