@@ -6,6 +6,8 @@ aliases: /infrastructure/
 ---
 
 :toc:
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 [id="background"]
 == Background

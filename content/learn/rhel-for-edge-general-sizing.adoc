@@ -8,6 +8,8 @@ aliases: /infrastructure/rhel-for-edge-general-sizing/
 ---
 
 :toc:
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 = RHEL for Edge General Sizing
 

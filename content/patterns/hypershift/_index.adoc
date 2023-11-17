@@ -12,7 +12,7 @@ industries:
 aliases: /hypershift/
 pattern_logo: medical-diagnosis.png
 links:
- 
+
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/hypershift/issues
 ci: hypershift
@@ -36,9 +36,9 @@ This pattern simplifies the deployment of an {hcp} or hosted control plane clust
 Workflow::
 
 * Install multicluster engine for Kubernetes Operator
-* Create an instance of the `MultiClusterEngine` to enable `hypershift`, which is a [technology preview feature](https://access.redhat.com/support/offerings/techpreview).
+* Create an instance of the `MultiClusterEngine` to enable `hypershift`, which is a link:https://access.redhat.com/support/offerings/techpreview[technology preview feature].
 * Install the AWS Controllers for Kubernetes - Amazon S3 Operator
-* Create an S3 bucket that hosted control plane will use for OpenID Connect (OIDC) 
+* Create an S3 bucket that hosted control plane will use for OpenID Connect (OIDC)
 * Create a buildconfig and imagestream that provide the HyperShift cli (`hypershift`) as an imagestream to be used in further automation if desired.
 
 //This pipeline is showcased link:https://www.youtube.com/watch?v=zja83FVsm14[in this video].
@@ -59,8 +59,8 @@ The {hcp-pattern} uses the following products and technologies:
 
 * {rh-ocp} for container orchestration
 * {rh-gitops}, a GitOps continuous delivery (CD) solution
-* {rh-mce}, the multicluster-engine provider
-* {ack-s3}, a S3 storage controller
+* The {rh-mce} Operator, the multicluster-engine provider
+* {ack-s3-op}, an S3 storage controller
 
 // All commented out by jrickard
 //== Recorded demo

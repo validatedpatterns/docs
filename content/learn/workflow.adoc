@@ -6,6 +6,8 @@ aliases: /workflow/
 ---
 
 :toc:
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 = Workflow
 

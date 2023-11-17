@@ -8,6 +8,8 @@ aliases: /requirements/validated/
 ---
 
 :toc:
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 = Validated Pattern Requirements
 

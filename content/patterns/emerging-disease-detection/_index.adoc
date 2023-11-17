@@ -26,6 +26,7 @@ contributor:
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 include::modules/edd-about-emerging-disease-detection.adoc[leveloffset=+1]
 

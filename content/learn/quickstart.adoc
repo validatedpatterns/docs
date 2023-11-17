@@ -6,6 +6,8 @@ weight: 20
 ---
 
 :toc:
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 == Patterns quick start
 

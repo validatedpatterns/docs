@@ -7,6 +7,7 @@ aliases: /multicloud-gitops/mcg-managed-cluster/
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 //leaving this here on purpose to test H1 headings (with ID) in assemblies and it's impact of TOC
 [id="attach-managed-cluster"]

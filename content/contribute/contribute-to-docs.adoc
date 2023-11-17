@@ -6,6 +6,8 @@ weight: 10
 ---
 
 :toc:
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 //Use the Contributor's guide to learn about ways to contribute to the Validated Patterns, to understand the prerequisites and toolchain required for contribution, and to follow some basic documentation style and structure guidelines.
 

@@ -8,6 +8,7 @@ aliases: /creating-a-pattern/
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 The validated patterns community has relied on existing architectures that have been successfully deployed in an enterprise. The architecture itself is a best practice in assembling technologies and projects to provide a working solution. How that solution is deployed and managed is a different matter. It may have evolved over time and may have grown in its deployment such that ongoing maintenance is not sustainable.
 
