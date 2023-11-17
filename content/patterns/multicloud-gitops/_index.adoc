@@ -20,6 +20,7 @@ ci: mcgitops
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 include::modules/mcg-about-multicloud-gitops.adoc[leveloffset=+1]
 

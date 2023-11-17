@@ -5,7 +5,11 @@
 [id="about-openshift-cluster-sizing-mcg"]
 = About OpenShift cluster sizing for the Multicloud GitOps Pattern
 
-For information on minimum hardware requirements for an OpenShift cluster, refer to the {ocp} documentation for link:https://docs.openshift.com/container-platform/3.11/install/prerequisites.html#hardware[System and environment requirements].
+The minimum requirements for an {ocp} cluster depend on your installation platform, for example:
+
+* For AWS, see link:https://docs.openshift.com/container-platform/4.13/installing/installing_aws/preparing-to-install-on-aws.html#requirements-for-installing-ocp-on-aws[Installing {ocp} on AWS].
+
+* For bare-metal, see link:https://docs.openshift.com/container-platform/4.13/installing/installing_bare_metal/installing-bare-metal.html#installation-minimum-resource-requirements_installing-bare-metal[Installing {ocp} on bare metal].
 
 To understand cluster sizing requirements for the Multicloud GitOps pattern, consider the following components that the Multicloud GitOps pattern deploys on the datacenter or the hub OpenShift cluster:
 

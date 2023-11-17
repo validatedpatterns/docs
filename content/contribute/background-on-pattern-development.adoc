@@ -8,6 +8,7 @@ aliases: /background-on-pattern-development/
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 == Introduction
 

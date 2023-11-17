@@ -8,6 +8,8 @@ aliases: /secrets/vault/
 ---
 
 :toc:
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 = Deploying HashiCorp Vault in a validated pattern
 

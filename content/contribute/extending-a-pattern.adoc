@@ -8,6 +8,7 @@ aliases: /extending-a-pattern/
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 == Introduction to extending a pattern using a fork
 

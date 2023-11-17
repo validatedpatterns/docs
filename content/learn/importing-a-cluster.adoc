@@ -8,6 +8,8 @@ aliases: /learn/importing-a-cluster/
 ---
 
 :toc:
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
 
 [id="importing-a-cluster"]
 == Importing a managed cluster

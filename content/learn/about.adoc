@@ -5,6 +5,9 @@ weight: 10
 ---
 :toc:
 
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
 Validated Patterns and upstream Community Patterns are a natural progression from reference architectures with additional value. Here is a brief video to explain what patterns are all about:
 
 image::https://img.youtube.com/vi/lI8TurakeG4/0.jpg[patterns-intro-video,link=https://www.youtube.com/watch?v=lI8TurakeG4]
