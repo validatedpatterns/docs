@@ -36,7 +36,7 @@ This pattern simplifies the deployment of an {hcp} or hosted control plane clust
 Workflow::
 
 * Install multicluster engine for Kubernetes Operator
-* Create an instance of the multicluster-engine which enables the tech preview feature `hypershift`
+* Create an instance of the `MultiClusterEngine` to enable `hypershift`, which is a [technology preview feature](https://access.redhat.com/support/offerings/techpreview).
 * Install the AWS Controller for Kubernetes (ACK) operator for S3
 * Create an S3 bucket to be used by HyperShift for OIDC
 * Create a buildconfig and imagestream that provide the HyperShift cli (`hypershift`) as an imagestream to be used in further automation if desired.
