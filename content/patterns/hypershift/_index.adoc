@@ -37,7 +37,7 @@ Workflow::
 
 * Install multicluster engine for Kubernetes Operator
 * Create an instance of the `MultiClusterEngine` to enable `hypershift`, which is a [technology preview feature](https://access.redhat.com/support/offerings/techpreview).
-* Install the AWS Controller for Kubernetes (ACK) operator for S3
+* Install the AWS Controllers for Kubernetes - Amazon S3 Operator
 * Create an S3 bucket to be used by HyperShift for OIDC
 * Create a buildconfig and imagestream that provide the HyperShift cli (`hypershift`) as an imagestream to be used in further automation if desired.
 
