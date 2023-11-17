@@ -83,7 +83,8 @@
 //ACM
 :rh-rhacm-first: Red{nbsp}Hat Advanced Cluster Management (RHACM)
 :rh-rhacm: RHACM
-:rh-mce: Multicluster Engine
+:rh-mce: multicluster engine for Kubernetes
+:mce-short: multicluster engine
 //:rh-rhacm-version: 2.5
 //ACS
 :rh-acs-first: Red{nbsp}Hat Advanced Cluster Security for Kubernetes
