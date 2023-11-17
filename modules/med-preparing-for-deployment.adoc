@@ -106,7 +106,7 @@ Replace instances of PROVIDE_ with your specific configuration
 ----
 +
 Save the values-global.yaml file and commit it to your branch:
-
++
 [source,terminal]
 ----
 $ git add values-global.yaml

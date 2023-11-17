@@ -1,7 +1,7 @@
 :_content-type: PROCEDURE
 :imagesdir: ../../../images
 
-[id="med-deploy-pattern_{context}"]
+[id="med-deploy-pattern"]
 = Deploying the {med-pattern}
 
 . To apply the changes to your cluster, run the following command:
