@@ -176,7 +176,6 @@ NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD hub-gitops-server hub-git
 Check all applications are synchronised. There are thirteen different ArgoCD &#34;applications&#34; deployed as part of this pattern.
 Using the Emerging Disease Detection pattern The following steps describes how you can use this pattern in a demo.
 Viewing the Sepsis Detection dashboard TO-DO: Describe how to examine the various parts of the Sepsis application
-Next Steps Help &amp; Feedback Report Bugs
 `,url:"https://validatedpatterns.io/patterns/emerging-disease-detection/edd-getting-started/",breadcrumb:"/patterns/emerging-disease-detection/edd-getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
 Select Services -&gt; Containers -&gt; Create cluster.
@@ -831,7 +830,9 @@ To order, click on the &ldquo;Place an Order&rdquo; button on the front page. Th
 Click the &ldquo;Add&rdquo; button next to a menu item; the item name will appear. Add a name for the order:
 You can add as many orders as you want. On your last item, click the &ldquo;Place Order&rdquo; button on the item dialog:
 As the orders are serviced by the barista and kitchen services, you can see their status in the &ldquo;Orders&rdquo; section of the page:
-`,url:"https://validatedpatterns.io/patterns/retail/application/",breadcrumb:"/patterns/retail/application/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Multicloud GitOps Pattern For information on minimum hardware requirements for an OpenShift cluster, refer to the {ocp} documentation for System and environment requirements.
+`,url:"https://validatedpatterns.io/patterns/retail/application/",breadcrumb:"/patterns/retail/application/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Multicloud GitOps Pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
+For AWS, see Installing OpenShift Container Platform on AWS.
+For bare-metal, see Installing OpenShift Container Platform on bare metal.
 To understand cluster sizing requirements for the Multicloud GitOps pattern, consider the following components that the Multicloud GitOps pattern deploys on the datacenter or the hub OpenShift cluster:
 Name Kind Namespace Description multicloud-gitops-hub
 Application
@@ -1474,7 +1475,7 @@ The virtual machine console view will either show a standard RHEL console login 
 Initial User login (cloud-user) In general, and before the VMs have been configured by the Ansible Jobs, you can log in to the VMs on the console using the user and password you specified in the Helm chart, or else you can look at the VirtualMachine object and see what the username and password setting are. The pattern, by design, replaces the typical console view with Firefox running in kiosk mode. But this mechanism can still be used if you change the console from &ldquo;VNC Console&rdquo; to &ldquo;Serial Console&rdquo;.
 The &ldquo;extra&rdquo; VM Template Also included in the edge-gitops-vms chart is a separate template that will allow the creation of VMs with similar (though not identical characteristics) to the ones defined in the chart.
 The rhel8-kiosk-with-svc template is preserved as an intermediate step to creating your own VM types, to see how the pipeline from default VM template -&gt; customized template -&gt; Helm-variable chart can work.
-Next Steps Help &amp; Feedback Report Bugs `,url:"https://validatedpatterns.io/patterns/ansible-edge-gitops/openshift-virtualization/",breadcrumb:"/patterns/ansible-edge-gitops/openshift-virtualization/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`Ideas for customization About customizing the pattern {mcg-pattern} One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
+Next Steps Help &amp; Feedback Report Bugs `,url:"https://validatedpatterns.io/patterns/ansible-edge-gitops/openshift-virtualization/",breadcrumb:"/patterns/ansible-edge-gitops/openshift-virtualization/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
 You can customize this demo in different ways.
 Split the config-demo across hub and regional clusters Currently hub and regional clusters are reusing the exact same helm chart found at charts/all/config-demo. The first customization step could be to split the demo app in two separate charts: one in charts/hub/config-demo and one in charts/region/config-demo. Once charts/all/config-demo has been copied to charts/hub/config-demo and charts/region/config-demo, you need to include them in the respective values-hub.yaml and values-region-one.yaml, respectively.
 After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
@@ -1570,7 +1571,7 @@ How can I get involved? Try out what we’ve done and submit issues to our issue
 We will review pull requests to our pattern repositories.
 `,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/hypershift/":{title:"HyperShift",tags:[],content:`About the HyperShift pattern (hosted control plane) Background This pattern simplifies the deployment of an hosted control plane or hosted control plane cluster. Use this pattern to create hosted control plane clusters.
 Workflow Install multicluster engine for Kubernetes Operator
-Create an instance of the MultiClusterEngine to enable hypershift, which is a [technology preview feature](https://access.redhat.com/support/offerings/techpreview).
+Create an instance of the MultiClusterEngine to enable hypershift, which is a technology preview feature.
 Install the AWS Controllers for Kubernetes - Amazon S3 Operator
 Create an S3 bucket that hosted control plane will use for OpenID Connect (OIDC)
 Create a buildconfig and imagestream that provide the HyperShift cli (hypershift) as an imagestream to be used in further automation if desired.
@@ -1579,8 +1580,8 @@ About the solution elements The solution enables the rapid provisioning of hoste
 The HyperShift pattern uses the following products and technologies:
 Red Hat OpenShift Container Platform for container orchestration
 Red Hat OpenShift GitOps, a GitOps continuous delivery (CD) solution
-multicluster engine for Kubernetes, the multicluster-engine provider
-{ack-s3}, a S3 storage controller
+The multicluster engine for Kubernetes Operator, the multicluster-engine provider
+AWS Controllers for Kubernetes - Amazon S3 Operator, an S3 storage controller
 `,url:"https://validatedpatterns.io/patterns/hypershift/",breadcrumb:"/patterns/hypershift/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
 `,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
 Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric solutions while maintaining a level of Continuous Integration (CI) over your application.
