@@ -13,6 +13,8 @@
 //Patterns
 :aeg-pattern: Ansible Edge GitOps pattern
 :aeg: Ansible Edge GitOps
+:hcp: hosted control plane
+:hcp-pattern: HyperShift pattern
 :ie-pattern: Industrial Edge pattern
 :ie: Industrial Edge
 :mcg-pattern: Multicloud GitOps pattern
@@ -81,6 +83,8 @@
 //ACM
 :rh-rhacm-first: Red{nbsp}Hat Advanced Cluster Management (RHACM)
 :rh-rhacm: RHACM
+:rh-mce: multicluster engine for Kubernetes
+:mce-short: multicluster engine
 //:rh-rhacm-version: 2.5
 //ACS
 :rh-acs-first: Red{nbsp}Hat Advanced Cluster Security for Kubernetes
@@ -121,6 +125,8 @@
 :quay-short: Quay
 // Red Hat Quay Container Security Operator
 :rhq-cso: Red{nbsp}Hat Quay Container Security Operator
+// OpenSource/Community Operators
+:ack-s3-op: AWS Controllers for Kubernetes - Amazon S3 Operator
 //Cloud platforms
 :AWS: Amazon Web Services (AWS)
 :GCP: Google Cloud Platform (GCP)

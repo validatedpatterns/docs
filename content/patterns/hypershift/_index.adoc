@@ -1,0 +1,74 @@
+---
+title: HyperShift
+date: 2023-11-15
+validated: false
+summary: This pattern is for deploying the Hosted Control Plane (HyperShift) service.
+products:
+- Red Hat OpenShift Container Platform
+- Red Hat MultiCluster Engine
+- AWS Controller for Kubernetes
+industries:
+- Infrastructure
+aliases: /hypershift/
+pattern_logo: medical-diagnosis.png
+links:
+ 
+  help: https://groups.google.com/g/validatedpatterns
+  bugs: https://github.com/validatedpatterns-sandbox/hypershift/issues
+ci: hypershift
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+//Module to be included
+//:_content-type: CONCEPT
+//:imagesdir: ../../images
+[id="about-hcp-pattern"]
+= About the {hcp-pattern} ({hcp})
+
+Background::
+
+This pattern simplifies the deployment of an {hcp} or hosted control plane cluster. Use this pattern to create hosted  control plane clusters.
+
+Workflow::
+
+* Install multicluster engine for Kubernetes Operator
+* Create an instance of the `MultiClusterEngine` to enable `hypershift`, which is a [technology preview feature](https://access.redhat.com/support/offerings/techpreview).
+* Install the AWS Controllers for Kubernetes - Amazon S3 Operator
+* Create an S3 bucket that hosted control plane will use for OpenID Connect (OIDC) 
+* Create a buildconfig and imagestream that provide the HyperShift cli (`hypershift`) as an imagestream to be used in further automation if desired.
+
+//This pipeline is showcased link:https://www.youtube.com/watch?v=zja83FVsm14[in this video].
+
+image::hypershift/hypershift-high-level-architecture.png[link="/images/hypershift/hypershift-high-level-architecture.png",title="source: https://hypershift-docs.netlify.app/", align="center"]
+
+[NOTE]
+====
+If you have any questions or concerns contact mailto:jrickard@redhat.com[Jonny Rickard].
+====
+
+[id="about-solution-hcp"]
+== About the solution elements
+
+The solution enables the rapid provisioning of {hcp}.
+
+The {hcp-pattern} uses the following products and technologies:
+
+* {rh-ocp} for container orchestration
+* {rh-gitops}, a GitOps continuous delivery (CD) solution
+* {rh-mce}, the multicluster-engine provider
+* {ack-s3}, a S3 storage controller
+
+// All commented out by jrickard
+//== Recorded demo
+
+//link:/videos/xray-deployment.svg[image:/videos/xray-deployment.svg[Demo\]]
+
+//[id="next-steps_med-diag-index"]
+//== Next steps
+
+//* Getting started link:getting-started[Deploy the Pattern]
+//We have relevant links on the patterns page
