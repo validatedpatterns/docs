@@ -1577,7 +1577,23 @@ Who is behind this? Today, a team of Red Hat engineers including Andrew Beekhof 
 Excited or intrigued by what you see here? We’d love to hear your thoughts and ideas! Try the patterns contained here and see below for links to our repositories and issue trackers.
 How can I get involved? Try out what we’ve done and submit issues to our issue trackers.
 We will review pull requests to our pattern repositories.
-`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/emerging-disease-detection/":{title:"Emerging Disease Detection",tags:[],content:` About the Emerging Disease Detection pattern Use case Use a GitOps approach to manage a hybrid cloud deployment for an AI emerging disease detection system.
+`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/hypershift/":{title:"HyperShift",tags:[],content:`About the HyperShift pattern (hosted control plane) Background This pattern simplifies the deployment of an hosted control plane or hosted control plane cluster. Use this pattern to create hosted control plane clusters.
+Workflow Install multicluster engine for Kubernetes Operator
+Create an instance of the MultiClusterEngine to enable hypershift, which is a [technology preview feature](https://access.redhat.com/support/offerings/techpreview).
+Install the AWS Controllers for Kubernetes - Amazon S3 Operator
+Create an S3 bucket that hosted control plane will use for OpenID Connect (OIDC)
+Create a buildconfig and imagestream that provide the HyperShift cli (hypershift) as an imagestream to be used in further automation if desired.
+Figure 1. source: https://hypershift-docs.netlify.app/ If you have any questions or concerns contact Jonny Rickard.
+About the solution elements The solution enables the rapid provisioning of hosted control plane.
+The HyperShift pattern uses the following products and technologies:
+Red Hat OpenShift Container Platform for container orchestration
+Red Hat OpenShift GitOps, a GitOps continuous delivery (CD) solution
+multicluster engine for Kubernetes, the multicluster-engine provider
+{ack-s3}, a S3 storage controller
+`,url:"https://validatedpatterns.io/patterns/hypershift/",breadcrumb:"/patterns/hypershift/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric solutions while maintaining a level of Continuous Integration (CI) over your application.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/emerging-disease-detection/":{title:"Emerging Disease Detection",tags:[],content:` About the Emerging Disease Detection pattern Use case Use a GitOps approach to manage a hybrid cloud deployment for an AI emerging disease detection system.
 Use a AI automation at the edge to detect emerging diseases.
 Use an event driven architecture
 Enable application lifecycle management.
@@ -1608,10 +1624,7 @@ Red Hat Single Sign-On Based on the Keycloak project, Red Hat Single Sign-On enh
 Hashicorp Vault Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
 This solution also uses a variety of observability tools including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
 Next steps Deploy the management hub using Helm.
-`,url:"https://validatedpatterns.io/patterns/emerging-disease-detection/",breadcrumb:"/patterns/emerging-disease-detection/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
-Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric solutions while maintaining a level of Continuous Integration (CI) over your application.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/retail/":{title:"Retail",tags:[],content:`Retail Pattern Background This pattern demonstrates a pattern that models the store side of a retail application.
+`,url:"https://validatedpatterns.io/patterns/emerging-disease-detection/",breadcrumb:"/patterns/emerging-disease-detection/"},"https://validatedpatterns.io/patterns/retail/":{title:"Retail",tags:[],content:`Retail Pattern Background This pattern demonstrates a pattern that models the store side of a retail application.
 It is derived from the Quarkus Coffeeshop Demo done by Red Hat Solution Architects. The demo models the use of multiple application microservices which use Kafka messaging to interact and a Postgres database to persist data. (There is a homeoffice analytics suite in the demo that we hope to include in a later version of the pattern.
 This demo pulls together several different strands of the demo and allows for multiple stores to be installed on remote clusters via ACM if the user desires.
 The demo allows users to go to the store&rsquo;s web page, order drinks and food items, and see those items &ldquo;made&rdquo; and served by the microservices in real time.
