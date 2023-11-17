@@ -1,8 +1,10 @@
 # Validated Patterns documentation site
 
-This project contains the new proof-of-concept documentation site for validatedpatterns.io
+This project contains the new proof-of-concept documentation site for [validatedpatterns.io](validatedpatterns.io).
 
-You can build this site using [Hugo](https://gohugo.io/).
+Use a container image to build the Validated Patterns documentation, locally. See [Preview the documentation using a container image](https://validatedpatterns.io/contribute/contribute-to-docs/#_preview_the_documentation_using_a_container_image).
+
+Alternatively, you can build this site using [Hugo](https://gohugo.io/).
 
 ## Install Hugo
 
