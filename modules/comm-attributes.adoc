@@ -13,7 +13,7 @@
 //Patterns
 :aeg-pattern: Ansible Edge GitOps pattern
 :aeg: Ansible Edge GitOps
-:hcp: Hosted Control Plane
+:hcp: hosted control plane
 :hcp-pattern: HyperShift pattern
 :ie-pattern: Industrial Edge pattern
 :ie: Industrial Edge
