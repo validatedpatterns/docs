@@ -1,0 +1,39 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-mlops-fraud-detection-pattern"]
+= About the MLOps Fraud Detection
+
+MLOps Credit Card Fraud Detection use case::
+* Build and train models in RHODS to detect credit card fraud
+* Track and store those models with MLFlow
+* Serve a model stored in MLFlow using RHODS Model Serving (or MLFlow serving)
+* Deploy a model application in OpenShift that runs sends data to the served model and displays the prediction
+
++
+Background::
+AI technology is already transforming the financial services industry. AI models can be used to make rapid inferences that benefit the FS institute and its customers. This pattern deploys a AI model to detect fraud on crdit card transactions
+
+[id="about-solution"]
+== About the solution
+
+The model is built on a Credit Card Fraud Detection model, which predicts if a credit card usage is fraudulent or not depending on a few parameters such as: distance from home and last transaction, purchase price compared to median, if it's from a retailer that already has been purchased from before, if the PIN number is used and if it's an online order or not.
+
+== Technology Highlights:
+* Event-Driven Architecture
+* Data Science on OpenShift
+* Model registry using MLFlow
+
+== Solution Discussion
+
+This architecture pattern demonstrates four strengths:
+
+* *Real-Time Processing*: Analyze transactions in real-time, quickly identifying and flagging potentially fraudulent activities. This speed is crucial in preventing unauthorized transactions before they are completed.
+* *Pattern Recognition*: Detect patterns and anomalies in data and learn from historical transaction data to identify typical spending patterns of a cardholder and flag transactions that deviate from these patterns.
+* *Cost Efficiency*: By automating the detection process, AI reduces the need for extensive manual review of transactions, which can be time-consuming and costly.
+* *Flexibility and Agility*: An cloud native architecture that supports the use of microservices, containers, and serverless computing, allowing for more flexible and agile development and deployment of AI models. This means faster iteration and deployment of new fraud detection algorithms.
+
+// video link to a presentation on the use case
+.Overview of the solution in credit card fraud detection
+* video link coming soon
+// video::VHjpKIeviFE[youtube]

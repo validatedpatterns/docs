@@ -1,0 +1,36 @@
+---
+title: MLOps Fraud Detection 
+date: 2023-11-12
+validated: false
+summary: This pattern demonstrates how Red Hat OpenShift AI and MLFlow can be used together to build an end-to-end MLOps platform. It demonstrates this using a credit card fraud detection use case. 
+products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift AI
+- Red Hat Open Data Foundation
+industries:
+- financial services
+aliases: /mlops-fraud-detection/
+pattern_logo: mlops-fraud-detection.png
+links:
+  install: mfd-getting-started
+  arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
+  help: https://groups.google.com/g/validatedpatterns
+  bugs: https://github.com/arslankhanali/mlops-fraud-detection/issues
+ci: mfd
+contributor:
+  name: Arslan Khan
+  contact: mailto:arskhan@redhat.com
+  git: https://github.com/arslankhanali
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/mfd-about-mlops-fraud-detection.adoc[leveloffset=+1]
+
+include::modules/mfd-architecture.adoc[leveloffset=+1]
+
+[id="next-steps_mfd-index"]
+== Next steps
+
+* link:mfd-getting-started[Deploy the management hub] using Helm.

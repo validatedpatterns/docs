@@ -1,0 +1,17 @@
+---
+title: Getting started
+weight: 10
+aliases: /mlops-fraud-detection/getting-started/
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/mfd-deploying-mfd-pattern.adoc[leveloffset=1]
+
+include::modules/mfd-using-mfd-pattern.adoc[leveloffset=1]
+
+= Next Steps
+
+link:https://groups.google.com/g/hybrid-cloud-patterns[Help & Feedback]
+link:https://github.com/validatedpatterns/mlops-fraud-detection/issues[Report Bugs]
