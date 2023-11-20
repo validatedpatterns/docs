@@ -15,16 +15,16 @@ include::modules/comm-attributes.adoc[]
 [id="technical-requirements"]
 == Technical requirements
 
-Consider these requirements specific to the implementation of all {solution-name-upstream} and their respective tiers.
+Consider these requirements specific to the implementation of all {solution-name-upstream} and their tiers.
 
 The requirements are categorized as follows:
 
 Must::
-These are non-negotiable, core requirements that must be implemented.
+These are nonnegotiable, core requirements that must be implemented.
 Should::
 These are important but not critical; their implementation enhances the pattern.
 Can::
-These are optional or desirable features, but their absence does not hinder the implementation of a  pattern.
+These are optional or desirable features, but their absence does not hinder the implementation of a pattern.
 
 [id="must-implementation-requirements"]
 === Must
@@ -33,12 +33,11 @@ These are optional or desirable features, but their absence does not hinder the 
 . Patterns must be useful without all content stored in private Git repositories.
 . Patterns must include a list of names and versions of all the products and projects that the pattern consumes.
 . Patterns must be useful without any sample applications that are private or that lack public sources.
-
-. Patterns must *not* become useless due to bit rot or opaque incompatibilities in closed source applications.
-. Patterns must *not* store sensitive data elements, including but not limited to, passwords in Git repositories.
+. Patterns must *not* degrade due to lack of updates or opaque incompatibilities in closed source applications.
+. Patterns must *not* store sensitive data elements including, but not limited to, passwords in Git repositories.
 . Patterns must be possible to deploy on any installer-provisioned infrastructure OpenShift cluster (BYO).
 +
-We distinguish between the provisioning and configuration requirements of the initial cluster (`Patterns`) and of clusters or machines that are managed by the initial cluster (`Managed clusters`).
+{solution-name-upstream} distinguish between the provisioning and configuration requirements of the initial cluster (`Patterns`) and of clusters or machines that are managed by the initial cluster (`Managed clusters`).
 . Patterns must use a standardized https://github.com/validatedpatterns/common/tree/main/clustergroup[clustergroup] Helm chart as the initial {rh-gitops} application that describes all namespaces, subscriptions, and any other GitOps applications which contain the configuration elements that make up the solution.
 . Managed clusters must operate on the premise of `eventual consistency` (automatic retries, and an expectation of idempotence), which is one of the essential benefits of the GitOps model.
 . Imperative elements must be implemented as idempotent code stored in Git repository.
@@ -52,15 +51,13 @@ We distinguish between the provisioning and configuration requirements of the in
 . Patterns should embody the link:https://www.redhat.com/en/products/open-hybrid-cloud[Open Hybrid Cloud model] unless there is a compelling reason to limit the availability of functionality to a specific platform or topology.
 . Patterns should use industry standards and {redhat} products for all required tooling.
 +
-Patterns prefer current best practices at the time of pattern development. Solutions that do not conform to best practices should expect to justify non-conformance or expend engineering effort to conform.
+Patterns require current best practices at the time of pattern development. Solutions that do not conform to best practices should expect to justify non-conformance or expend engineering effort to conform.
 . Patterns should *not* make use of upstream or community Operators and images except, depending on the market segment, where it is critical to the overall solution.
 +
 Such Operators are forbidden to be deployed into an increasing number of customer environments, which limits the pattern reuse. Alternatively, consider to productize the Operator, and build it in-cluster from trusted sources as part of the pattern.
-
 . Patterns should be decomposed into modules that perform a specific function, so that they can be reused in other patterns.
 +
 For example, Bucket Notification is a capability in the {med-pattern} that could be used for other solutions.
-
 . Patterns should use {rh-ansible} to drive the declarative provisioning and management of managed hosts, for example, {rhel-first}. See also `Imperative elements`.
 . Patterns should use {rh-rhacm-first} to manage policy and compliance on any managed clusters.
 . Patterns should use {rh-rhacm} and a https://github.com/validatedpatterns/common/tree/main/acm[standardized RHACM chart] to deploy and configure {rh-gitops-short} to managed clusters.
@@ -78,6 +75,5 @@ For example, Bucket Notification is a capability in the {med-pattern} that could
 . Patterns can consume Operators from established partners (for example, Hashicorp Vault, and Seldon)
 . Patterns can include managed clusters.
 . Patterns can include details or automation for provisioning managed clusters, or rely on the admin to pre-provision them out-of-band.
-
 . Patterns can also choose to model multi-cluster solutions as an uncoordinated collection of initial hub clusters.
 . Imperative elements can interact with cluster state or external influences.

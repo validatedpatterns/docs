@@ -39,13 +39,22 @@ In limited cases, the {solution-name-upstream} team may consider taking on that 
 The {maintained} patterns have deliverable and requirements in addition to those
 specified for the link:/requirements/tested/[Tested tier].
 
+The requirements are categorized as follows:
+
+Must::
+These are nonnegotiable, core requirements that must be implemented.
+Should::
+These are important but not critical; their implementation enhances the pattern.
+Can::
+These are optional or desirable features, but their absence does not hinder the implementation of a pattern.
+
 [id="must-maintained-tier"]
 === Must
 
 A {maintained} pattern must continue to meet the following criteria to remain in {maintained} tier:
 
 * A {maintained} pattern must conform to the common technical link:/requirements/implementation/[implementation requirements].
-. A {maintained} pattern must only make use of components that are either supported, or easily substituted for supportable equivalents, for example, HashiCorp vault which has community and enterprise variants.
+* A {maintained} pattern must only make use of components that are either supported, or easily substituted for supportable equivalents, for example, HashiCorp vault which has community and enterprise variants.
 * A {maintained} pattern must *not* rely on functionality in tech-preview, or hidden behind feature gates.
 * A {maintained} pattern must have their architectures reviewed by the Product Manager (PM), Technical Product Manager (TPM), or Technical Marketing Manager (TMM) of each {redhat} product they consume to ensure consistency with the product teams` intentions and roadmaps.
 * A {maintained} pattern must include a presentation slides oriented around the business problem being solved and intended for use by the field to sell and promote the solution.
@@ -58,10 +67,9 @@ A {maintained} pattern must continue to meet the following criteria to remain in
 The individual products used in a {solution-name-upstream} are backed by the full {redhat} support experience conditional on the customer's subscription to those products, and the individual products`s support policy.
 +
 Additional components in a {solution-name-upstream} that are not supported by {redhat}; for example, Hashicorp Vault, and Seldon Core, require a customer to obtain support from that vendor directly.
-+
 
 The {solution-name-upstream} team is will try to address any problems in the {validated-patterns-op}, and in the common Helm charts, but cannot not offer any SLAs at this time.
-+
+
 //TODO: Create an aDoc version of our support statement slide
 
 [NOTE]
@@ -72,4 +80,4 @@ The {maintained} patterns *do not* imply an obligation of support for partner or
 [id="can-maintained-tier"]
 === Can
 
-. If you are creating {solution-name-upstream}, you can provide your own SLA.
+* If you are creating {solution-name-upstream}, you can provide your own SLA.
