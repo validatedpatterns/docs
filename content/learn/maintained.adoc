@@ -1,0 +1,83 @@
+---
+menu:
+  learn:
+    parent: Workflow
+title: Validated Patterns - Maintained tier
+weight: 45
+aliases: /requirements/maintained/
+aliases: /requirements/validated/
+---
+
+:toc:
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="about-maintained-tier"]
+= About the {maintained-tier-first}
+
+A pattern categorized under the {maintained} tier implies that the pattern was known to be functional on all currently supported extended update support (EUS) versions of {rh-ocp}. Qualifying for this tier might require additional work for the pattern’s owner who might be a partner or a sufficiently motivated subject matter expert (SME).
+
+[id="nominating-a-pattern-for-maintained-tier"]
+== Nominating a pattern for the {maintained} tier
+
+If your pattern qualifies or meets the criteria for {maintained} tier, submit your nomination to mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
+
+[NOTE]
+====
+Each {maintained} pattern represents an ongoing maintenance, support, and testing effort. Finite team capacity means that it is not possible for the team to take on this responsibility for all {solution-name-upstream}.
+====
+
+For this reason we have designed the tiers and our processes to facilitate this to occur outside of the team by any sufficiently motivated party, including other parts of Red Hat, partners, and even customers.
+
+In limited cases, the {solution-name-upstream} team may consider taking on that work, however, it is recommended that you contact the team at least 4 weeks prior to the end of a given quarter for the necessary work to be considered as part of the following quarter's planning process.
+
+
+[id="requirements-maintained-tier"]
+== Requirements for the {maintained} tier
+
+The {maintained} patterns have deliverable and requirements in addition to those
+specified for the link:/requirements/tested/[Tested tier].
+
+The requirements are categorized as follows:
+
+Must::
+These are nonnegotiable, core requirements that must be implemented.
+Should::
+These are important but not critical; their implementation enhances the pattern.
+Can::
+These are optional or desirable features, but their absence does not hinder the implementation of a pattern.
+
+[id="must-maintained-tier"]
+=== Must
+
+A {maintained} pattern must continue to meet the following criteria to remain in {maintained} tier:
+
+* A {maintained} pattern must conform to the common technical link:/requirements/implementation/[implementation requirements].
+* A {maintained} pattern must only make use of components that are either supported, or easily substituted for supportable equivalents, for example, HashiCorp vault which has community and enterprise variants.
+* A {maintained} pattern must *not* rely on functionality in tech-preview, or hidden behind feature gates.
+* A {maintained} pattern must have their architectures reviewed by the Product Manager (PM), Technical Product Manager (TPM), or Technical Marketing Manager (TMM) of each {redhat} product they consume to ensure consistency with the product teams` intentions and roadmaps.
+* A {maintained} pattern must include a presentation slides oriented around the business problem being solved and intended for use by the field to sell and promote the solution.
+* A {maintained} pattern must include test plan automation that runs on every change to the pattern, or a schedule no less frequently than once per week.
+* A {maintained} pattern must be tested on all currently supported {rh-ocp} extended update support (EUS) releases.
+* A {maintained} pattern must fix breakage in timely manner.
+* A {maintained} pattern must document their support policy.
++
+
+The individual products used in a {solution-name-upstream} are backed by the full {redhat} support experience conditional on the customer's subscription to those products, and the individual products`s support policy.
++
+Additional components in a {solution-name-upstream} that are not supported by {redhat}; for example, Hashicorp Vault, and Seldon Core, require a customer to obtain support from that vendor directly.
+
+The {solution-name-upstream} team is will try to address any problems in the {validated-patterns-op}, and in the common Helm charts, but cannot not offer any SLAs at this time.
+
+//TODO: Create an aDoc version of our support statement slide
+
+[NOTE]
+====
+The {maintained} patterns *do not* imply an obligation of support for partner or community Operators by {redhat}.
+====
+
+[id="can-maintained-tier"]
+=== Can
+
+* If you are creating {solution-name-upstream}, you can provide your own SLA.

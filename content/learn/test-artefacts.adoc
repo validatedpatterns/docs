@@ -1,0 +1,89 @@
+---
+menu:
+  learn:
+    parent: Workflow
+title: Testing Artefacts
+weight: 50
+aliases: /requirements/tested/
+---
+
+:toc:
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="testing-artefacts"]
+= Testing artefacts
+
+To be represented in the CI dashboard, testers can create a publicly available JSON file (for example, in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and {rh-ocp} version.
+
+[id="file-naming-convention"]
+== File naming convention
+`{pattern}-{platform}-{openshift version}-stable-badge.json`
+
+Example: `medicaldiag-nutanix-4.13-stable-badge.json`
+
+Note: OpenShift verion should be `major.minor` only
+
+[id="file-template"]
+== File template
+
+[source,json]
+----
+  {
+    "schemaVersion":1,
+    "label":"{text}",
+
+    /* For now we assume `message` is the same as patternBranch */
+    "message":"{text}",
+
+    /* passed => green, test failed => red, test setup failed => yellow */
+    "color":"{test result color}",
+
+    /* eg. x.y.z */
+    "openshiftVersion":"{full openshift version}",
+
+    /* eg. AWS, GCP, Nutanix, ... */
+    "infraProvider":"{platform}",
+
+    /* Official repo of the pattern, eg. https://github.com/validatedpatterns/multicloud-gitops */
+    "patternRepo": "{text}",
+
+    /* eg. main, stable-N.M */
+    "patternBranch": "{text}",
+
+    "date":"{YYYY-MM-DD}",
+
+    /* Who ran the test eg. Red Hat */
+    "testSource": "{company name}",
+
+    /* eg. Job number */
+    "testID": "{unique id}",
+
+    /* if publically available */
+    "jenkinsURL":"{path to job}",
+
+    "debugInfo":"{location of must-gather tarball}",
+  }
+----
+
+.Example testing artifact file
+
+[source,json]
+----
+  {
+    "schemaVersion":1,
+    "label":"MCG on Nutanix",
+    "message":"main",
+    "color":"green",
+    "openshiftVersion":"4.13.14",
+    "infraProvider":"Nutanix",
+    "patternRepo": "https://github.com/validatedpatterns/multicloud-gitops",
+    "patternBranch": "main",
+    "date":"2023-10-23",
+    "testSource": "Red Hat"
+    "testID": "13602",
+    "jenkinsURL":"https://jenkins/job/ValidatedPatterns/job/MedicalDiagnosis/job/medicaldiag-gcp-ocp4.13/37/",
+    "debugInfo":"https://storage.cloud.google.com/.../medicaldiag-gcp-ocp4.13.15-13602.tgz",
+  }
+----

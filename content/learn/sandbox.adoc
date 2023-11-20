@@ -1,0 +1,72 @@
+---
+menu:
+  learn:
+    parent: Workflow
+title: Validated Patterns - Sandbox tier
+weight: 43
+aliases: /requirements/community/
+aliases: /requirements/sandbox/
+---
+
+:toc:
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="about-sandbox-tier"]
+= About the {sandbox-tier-first}
+
+A pattern categorized under the {sandbox} tier provides you with an entry point to onboard to the {solution-name-upstream}. The minimum requirement to qualify for the {sandbox} tier is that you must start with the patterns framework and include minimal documentation.
+
+[id="nominating-a-pattern-for-sandbox-tier"]
+== Nominating a pattern for the {sandbox} tier
+
+//TODO: A short note on the value of converting existing implementations
+
+The {solution-name-upstream} team has a preference for empowering others, and not taking credit for their work.
+
+Where there is an existing application or a demonstration, there is also a strong preference for the originating team to own any changes that are needed for the implementation to become a {validated} pattern. Alternatively, if the {solution-name-upstream} team drives the conversion, then to prevent confusion and duplicated efforts, we are likely to ask for a commitment to phase out use of the previous implementation for future engagements such as demos, presentations, and workshops.
+
+The goal is to avoid bringing a parallel implementation into existence which divides engineering resources, and creates confusion internally and with customers as the implementations drift apart.
+
+In both scenarios the originating team can choose where to host the primary repository, will be given admin permissions to any fork in link:https://github.com/validatedpatterns[https://github.com/validatedpatterns], and will receive on-going assistance from the {solution-name-upstream} team.
+
+[id="requirements-sandbox-tier"]
+== Requirements for the {sandbox} tier
+Consider these requirements for all {sandbox} tier.
+
+The requirements are categorized as follows:
+
+Must::
+These are nonnegotiable, core requirements that must be implemented.
+Should::
+These are important but not critical; their implementation enhances the pattern.
+Can::
+These are optional or desirable features, but their absence does not hinder the implementation of a pattern.
+
+[id="must-sandbox-tier"]
+=== Must
+A {sandbox} pattern must continue to meet the following criteria to remain in the {sandbox} tier:
+
+* A {sandbox} pattern must conform to the common technical link:/requirements/implementation/[implementation requirements].
+* A {sandbox} pattern must be able to be deployed onto a freshly deployed OpenShift cluster without prior modification or tuning.
+* A {sandbox} pattern must include a top-level README file that highlights the business problem and how the pattern solves it.
+* A {sandbox} pattern must include an architecture drawing. The specific tool or format is flexible as long as the meaning is clear.
+* A {sandbox} pattern must undergo an informal technical review by a community leader to ensure that it meets basic reuse standards.
+* A {sandbox} pattern must undergo an informal architecture review by a community leader to ensure that the solution has the right components, and they are generally being used as intended. For example, not using a database as a message bus.
++
+As community leaders, contributions from within {redhat} might be subject to a higher level of scrutiny. While we strive to be inclusive, the community will have quality standards and generally using the framework does not automatically imply a solution is suitable for the community to endorse/publish.
+* A {sandbox} pattern must document their support policy.
+
+[NOTE]
+====
+It is anticipated that most {sandbox} pattern will be supported by the community on a best-effort basis, but this should be stated explicitly.
+The {solution-name-upstream} team commits to maintaining the framework, but will also accept help.
+====
+
+[id="can-sandbox-tier"]
+=== Can
+
+* A {sandbox} pattern (including works-in-progress) can be hosted in the link:https://github.com/validatedpatterns-sandbox[https://github.com/validatedpatterns-sandbox] GitHub organization.
+* A {sandbox} pattern can be listed on the link:https://validatedpatterns.io[https://validatedpatterns.io] site.
+* A {sandbox} pattern meeting additional criteria can be nominated for promotion to the link:/learn/tested/[Tested tier].
