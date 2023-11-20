@@ -5,7 +5,6 @@ menu:
 title: Validated Patterns - Maintained tier
 weight: 45
 aliases: /requirements/maintained/
-aliases: /requirements/validated/
 ---
 
 :toc:
