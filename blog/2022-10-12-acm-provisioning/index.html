@@ -235,6 +235,8 @@ Display the fully qualified domain names, and matching login credentials, for al
 ARGO_CMD=\`oc get secrets -A -o jsonpath=&#39;{range .items[*]}{&#34;oc get -n &#34;}{.metadata.namespace}{&#34; routes; oc -n &#34;}{.metadata.namespace}{&#34; extract secrets/&#34;}{.metadata.name}{&#34; --to=-\\\\n&#34;}{end}&#39; | grep gitops-cluster\` CMD=\`echo $ARGO_CMD | sed &#39;s|- oc|-;oc|g&#39;\` eval $CMD The result should look something like:
 NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD hub-gitops-server hub-gitops-server-emerging-disease-detection-hub.apps.wh-edd-cluster.aws.validatedpatterns.com hub-gitops-server https passthrough/Redirect None # admin.password xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD cluster cluster-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com cluster 8080 reencrypt/Allow None kam kam-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com kam 8443 passthrough/None None openshift-gitops-server openshift-gitops-server-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com openshift-gitops-server https passthrough/Redirect None # admin.password FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6 The most important ArgoCD instance to examine at this point is emerging-disease-detection-hub. This is where all the applications for the pattern can be tracked.
 Check all applications are synchronised. There are thirteen different ArgoCD &#34;applications&#34; deployed as part of this pattern.
+Viewing the Sepsis Detection dashboard TO-DO: Describe how to examine the various parts of the Sepsis application
+Next Steps Help &amp; Feedback Report Bugs
 Using the Emerging Disease Detection pattern The following steps describes how you can use this pattern in a demo.
 Viewing the Sepsis Detection dashboard TO-DO: Describe how to examine the various parts of the Sepsis application
 `,url:"https://validatedpatterns.io/patterns/emerging-disease-detection/edd-getting-started/",breadcrumb:"/patterns/emerging-disease-detection/edd-getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
@@ -1317,97 +1319,134 @@ Cherry picking from a subtree commit into the parent puts the change in the pare
 Contributing to Patterns using Common Subtrees Once you have forked common and changed your subtree for testing, changes from your fork can then be proposed to [https://github.com/validatedpatterns/common.git] and can then be integrated into other patterns. A change to upstream common for a particular upstream pattern would have to be done in two stages:
 PR the change into upstream’s common
 PR the updated common into the pattern repository
-`,url:"https://validatedpatterns.io/learn/workflow/",breadcrumb:"/learn/workflow/"},"https://validatedpatterns.io/learn/implementation/":{title:"Implementation Requirements",tags:[],content:` Technical Requirements Additional requirements specific to the implementation for all Community, and Validated patterns
-Must Patterns MUST include one or more Git repositories, in a publicly accessible location, containing configuration elements that can be consumed by the OpenShift GitOps operator (ArgoCD) without supplying custom ArgoCD images.
-Patterns MUST be useful without all content stored in private git repos
-Patterns MUST include a list of names and versions of all the products and projects being consumed by the pattern
-Patterns MUST be useful without any sample applications that are private or lack public sources.
-Patterns must not become useless due to bit rot or opaque incompatibilities in closed source “applications”.
-Patterns MUST NOT store sensitive data elements, including but not limited to passwords, in Git
-Patterns MUST be possible to deploy on any IPI-based OpenShift cluster (BYO)
-We distinguish between the provisioning and configuration requirements of the initial cluster (“Patterns”), and of clusters/machines managed by the initial cluster (see “Managed clusters”)
-Patterns MUST use a standardized clustergroup Helm chart, as the initial OpenShift GitOps application that describes all namespaces, subscriptions, and any other GitOps applications which contain the configuration elements that make up the solution.
-Managed clusters MUST operate on the premise of “eventual consistency” (automatic retries, and an expectation of idempotence), which is one of the essential benefits of the GitOps model.
-Imperative elements MUST be implemented as idempotent code stored in Git
-Should Patterns SHOULD include sample application(s) to demonstrate the business problem(s) addressed by the pattern.
-Patterns SHOULD try to indicate which parts are foundational as opposed to being for demonstration purposes.
-Patterns SHOULD use the VP operator to deploy patterns. However anything that creates the OpenShift GitOps subscription and initial clustergroup application could be acceptable.
-Patterns SHOULD embody the “open hybrid cloud model” unless there is a compelling reason to limit the availability of functionality to a specific platform or topology.
-Patterns SHOULD use industry standards and Red Hat products for all required tooling
-Patterns prefer current best practices at the time of pattern development. Solutions that do not conform to best practices should expect to justify non-conformance and/or expend engineering effort to conform.
-Patterns SHOULD NOT make use of upstream/community operators and images except, depending on the market segment, where critical to the overall solution.
-Such operators are forbidden to be deployed into an increasing number of customer environments, which limits reuse. Alternatives include productizing the operator, and building it in-cluster from trusted sources as part of the pattern.
-Patterns SHOULD be decomposed into modules that perform a specific function, so that they can be reused in other patterns.
+`,url:"https://validatedpatterns.io/learn/workflow/",breadcrumb:"/learn/workflow/"},"https://validatedpatterns.io/learn/about-pattern-tiers-types/":{title:"Validated Pattern tiers",tags:[],content:` Validated Patterns tiers The different tiers of Validated Patterns are designed to facilitate ongoing maintenance, support, and testing effort for a pattern. To contribute to a pattern that suits your solution or to learn about onboarding your own pattern, understand the following pattern tiers.
+Pattern tier Description Validated Patterns Sandbox tier
+A pattern categorized under the sandbox tier provides you with an entry point to onboard to Validated Patterns. The minimum requirement to qualify for the sandbox tier is to start with the patterns framework and include minimal documentation.
+The patterns in this tier might be in a work-in-progress state; and they might have been manually tested on a limited set of platforms.
+Validated Patterns Tested tier
+A pattern categorized under the tested tier implies that the pattern might have been recently working on at least one recent version of Red Hat OpenShift Container Platform. Qualifying for this tier might require additional work for the pattern’s owner, who might be a partner or a motivated subject matter expert (SME).
+The patterns in this tier might have a defined business problem with a demonstration. The patterns might have a manual or automated test plan, which passes at least once for each new Red Hat OpenShift Container Platform minor version.
+Validated Patterns Maintained tier
+A pattern categorized under the maintained tier implies that the pattern might have been functional on all currently supported extended update support (EUS) versions of Red Hat OpenShift Container Platform. Qualifying for this tier might require additional work for the pattern’s owner who might be a partner or a motivated SME.
+The patterns in this tier might have a formal release process with patch releases. They might have continuous integration (CI) automation testing.
+`,url:"https://validatedpatterns.io/learn/about-pattern-tiers-types/",breadcrumb:"/learn/about-pattern-tiers-types/"},"https://validatedpatterns.io/learn/implementation/":{title:"Implementation requirements",tags:[],content:` Technical requirements Consider these requirements specific to the implementation of all Validated Patterns and their tiers.
+The requirements are categorized as follows:
+Must These are nonnegotiable, core requirements that must be implemented.
+Should These are important but not critical; their implementation enhances the pattern.
+Can These are optional or desirable features, but their absence does not hinder the implementation of a pattern.
+Must Patterns must include one or more Git repositories in a publicly accessible location, containing configuration elements that can be consumed by the Red Hat OpenShift GitOps Operator without supplying custom Argo CD images.
+Patterns must be useful without all content stored in private Git repositories.
+Patterns must include a list of names and versions of all the products and projects that the pattern consumes.
+Patterns must be useful without any sample applications that are private or that lack public sources.
+Patterns must not degrade due to lack of updates or opaque incompatibilities in closed source applications.
+Patterns must not store sensitive data elements including, but not limited to, passwords in Git repositories.
+Patterns must be possible to deploy on any installer-provisioned infrastructure OpenShift cluster (BYO).
+Validated Patterns distinguish between the provisioning and configuration requirements of the initial cluster (Patterns) and of clusters or machines that are managed by the initial cluster (Managed clusters).
+Patterns must use a standardized clustergroup Helm chart as the initial Red Hat OpenShift GitOps application that describes all namespaces, subscriptions, and any other GitOps applications which contain the configuration elements that make up the solution.
+Managed clusters must operate on the premise of eventual consistency (automatic retries, and an expectation of idempotence), which is one of the essential benefits of the GitOps model.
+Imperative elements must be implemented as idempotent code stored in Git repository.
+Should Patterns should include sample applications to demonstrate the business problems addressed by the pattern.
+Patterns should try to indicate which parts are foundational as opposed to being for demonstration purposes.
+Patterns should use the Validated Patterns Operator to deploy patterns. However, anything that creates the OpenShift GitOps subscription and initial clustergroup application could be acceptable.
+Patterns should embody the Open Hybrid Cloud model unless there is a compelling reason to limit the availability of functionality to a specific platform or topology.
+Patterns should use industry standards and Red Hat products for all required tooling.
+Patterns require current best practices at the time of pattern development. Solutions that do not conform to best practices should expect to justify non-conformance or expend engineering effort to conform.
+Patterns should not make use of upstream or community Operators and images except, depending on the market segment, where it is critical to the overall solution.
+Such Operators are forbidden to be deployed into an increasing number of customer environments, which limits the pattern reuse. Alternatively, consider to productize the Operator, and build it in-cluster from trusted sources as part of the pattern.
+Patterns should be decomposed into modules that perform a specific function, so that they can be reused in other patterns.
 For example, Bucket Notification is a capability in the Medical Diagnosis pattern that could be used for other solutions.
-Patterns SHOULD use Ansible Automation Platform to drive the declarative provisioning and management of managed hosts (e.g. RHEL). See also “Imperative elements”.
-Patterns SHOULD use RHACM to manage policy and compliance on any managed clusters.
-Patterns SHOULD use RHACM and a standardized acm chart to deploy and configure OpenShift GitOps to managed clusters.
-Managed clusters SHOULD be loosely coupled to their hub, and use OpenShift GitOps to consume applications and configuration directly from Git as opposed to having hard dependencies on a centralized cluster.
-Managed clusters SHOULD use the “pull” deployment model for obtaining their configuration.
-Imperative elements SHOULD be implemented as Ansible playbooks
-Imperative elements SHOULD be driven declaratively — by which we mean that the playbooks should be triggered by Jobs and/or CronJobs stored in Git and delivered by OpenShift GitOps.
-Can Patterns CAN include additional configuration and/or demo elements located in one or more additional private git repos.
-Patterns CAN include automation that deploys a known set of clusters and/or machines in a specific topology
-Patterns CAN limit functionality/testing claims to specific platforms, topologies, and cluster/node sizes
-Patterns CAN consume operators from established partners (e.g. Hashicorp Vault, and Seldon)
-Patterns CAN include managed clusters
-Patterns CAN include details or automation for provisioning managed clusters, or rely on the admin to pre-provision them out-of-band.
-Patterns CAN also choose to model multi-cluster solutions as an uncoordinated collection of “initial hub clusters”
-Imperative elements CAN interact with cluster state and/or external influences
-`,url:"https://validatedpatterns.io/learn/implementation/",breadcrumb:"/learn/implementation/"},"https://validatedpatterns.io/learn/community/":{title:"Community Patterns",tags:[],content:`Community Pattern Requirements tl;dr What are they: Best practice implementations conforming to the Validated Patterns implementation practices
-Purpose: Codify best practices and promote collaboration between different groups inside, and external to, Red Hat
-Creator: Customers, Partners, GSIs, Services/Consultants, SAs, and other Red Hat teams
-Requirements General requirements for all Community, and Validated patterns
-Base Patterns MUST include a top-level README highlighting the business problem and how the pattern solves it
-Patterns MUST include an architecture drawing. The specific tool/format is flexible as long as the meaning is clear.
-Patterns MUST undergo an informal architecture review by a community leader to ensure that the solution has the right products, and they are generally being used as intended.
-For example: not using a database as a message bus. As community leaders, contributions from within Red Hat may be subject to a higher level of scrutiny. While we strive to be inclusive, the community will have quality standards and generally using the framework does not automatically imply a solution is suitable for the community to endorse/publish.
-Patterns MUST undergo an informal technical review by a community leader to ensure that it conforms to the technical requirements and meets basic reuse standards
-Patterns MUST document their support policy
-It is anticipated that most community patterns will be supported by the community on a best-effort basis, but this should be stated explicitly. The validated patterns team commits to maintaining the framework but will also accept help.
-Patterns SHOULD include a recorded demo highlighting the business problem and how the pattern solves it
-`,url:"https://validatedpatterns.io/learn/community/",breadcrumb:"/learn/community/"},"https://validatedpatterns.io/learn/validated/":{title:"Validated Patterns",tags:[],content:`Validated Pattern Requirements tl;dr What are they: Technical foundations, backed by CI, that have succeeded in the market and Red Hat expects to be repeatable across customers and segments.
-Purpose: Reduce risk, accelerate sales cycles, and allow consulting organizations to be more effective.
-Creator: The Validated Patterns team in conjunction with: Partners, GSIs, Services/Consultants, SAs, and other Red Hat teams
-Onboarding Existing Implementations The Validated Patterns team has a preference for empowering other, and not taking credit for their work.
-Where there is an existing application/demo, there is also a strong preference for the originating team to own any changes that are needed for the implementation to become a validated pattern. Alternatively, if the Validated Patterns team drives the conversion, then in order to prevent confusion and duplicated efforts, we are likely to ask for a commitment to phase out use of the previous implementation for future engagements such as demos, presentations, and workshops.
-The goal is to avoid bringing a parallel implementation into existence which divides Red Hat resources, and creates confusion internally and with customers as the implementations drift apart.
+Patterns should use Red Hat Ansible Automation Platform to drive the declarative provisioning and management of managed hosts, for example, Red Hat Enterprise Linux (RHEL). See also Imperative elements.
+Patterns should use Red Hat Advanced Cluster Management (RHACM) to manage policy and compliance on any managed clusters.
+Patterns should use RHACM and a standardized RHACM chart to deploy and configure OpenShift GitOps to managed clusters.
+Managed clusters should be loosely coupled to their hub, and use OpenShift GitOps to consume applications and configuration directly from Git as opposed to having hard dependencies on a centralized cluster.
+Managed clusters should use the pull deployment model for obtaining their configuration.
+Imperative elements should be implemented as Ansible playbooks.
+Imperative elements should be driven declaratively implying that the playbooks should be triggered by Jobs or CronJobs stored in Git and delivered by OpenShift GitOps.
+Can Patterns can include additional configuration and/or demo elements located in one or more additional private Git repositories.
+Patterns can include automation that deploys a known set of clusters and/or machines in a specific topology.
+Patterns can limit functionality/testing claims to specific platforms, topologies, and cluster/node sizes.
+Patterns can consume Operators from established partners (for example, Hashicorp Vault, and Seldon)
+Patterns can include managed clusters.
+Patterns can include details or automation for provisioning managed clusters, or rely on the admin to pre-provision them out-of-band.
+Patterns can also choose to model multi-cluster solutions as an uncoordinated collection of initial hub clusters.
+Imperative elements can interact with cluster state or external influences.
+`,url:"https://validatedpatterns.io/learn/implementation/",breadcrumb:"/learn/implementation/"},"https://validatedpatterns.io/learn/sandbox/":{title:"Validated Patterns - Sandbox tier",tags:[],content:`About the Validated Patterns Sandbox tier A pattern categorized under the sandbox tier provides you with an entry point to onboard to the Validated Patterns. The minimum requirement to qualify for the sandbox tier is that you must start with the patterns framework and include minimal documentation.
+Nominating a pattern for the sandbox tier The Validated Patterns team has a preference for empowering others, and not taking credit for their work.
+Where there is an existing application or a demonstration, there is also a strong preference for the originating team to own any changes that are needed for the implementation to become a validated pattern. Alternatively, if the Validated Patterns team drives the conversion, then to prevent confusion and duplicated efforts, we are likely to ask for a commitment to phase out use of the previous implementation for future engagements such as demos, presentations, and workshops.
+The goal is to avoid bringing a parallel implementation into existence which divides engineering resources, and creates confusion internally and with customers as the implementations drift apart.
 In both scenarios the originating team can choose where to host the primary repository, will be given admin permissions to any fork in https://github.com/validatedpatterns, and will receive on-going assistance from the Validated Patterns team.
-Nominating a Community Pattern to become Validated If there is a community pattern that you believe would be a good candidate for becoming validated, please email hybrid-cloud-patterns@googlegroups.com at least 4 weeks prior to the end of a given quarter in order for the necessary work to be considered as part of the following quarter’s planning process.
-Please be aware that each Validated Pattern represents an ongoing maintenance, support, and CI effort. Finite team capacity means we must critically balance this cost against the potential customer opportunity. A “no” or “not yet” result is not intended as an insult against the pattern or its author.
-Requirements Validated Patterns have deliverable and requirements in addition to those specified for Community-level patterns
-Must Validated Patterns MUST contain more than two RH products. Alternative: Engage with the BU
-Validated Patterns, or the solution on which they are based, MUST have been deployed and approved for use in at least one customer environment.
-Alternative: Community Pattern
-Validated Patterns MUST be meaningful without specialized hardware, including flavors of architectures not explicitly supported. Alternative: Engage with DCI
-Qualification is a Validated Patterns engineering decision with input from the pattern owner.
-Validated Patterns MUST be broadly applicable. Alternative: Engage with Phased Gate and/or TAMs
-Qualification is a Validated Patterns PM decision with input from the pattern owner.
-Validated Patterns MUST only make use of Red Hat products that are already fully supported by their product team(s).
-Validated Patterns MUST NOT rely on functionality in tech-preview, or hidden behind feature gates.
-Validated Patterns MUST conform to the same Community-level implementation requirements
-Validated Patterns MUST have their architectures reviewed by the PM, TPM, or TMM of each Red Hat product they consume to ensure consistency with the product teams’ intentions and roadmaps
-Validated Patterns MUST have their implementation reviewed by the patterns team to ensure that it is sufficiently flexible to function across a variety of platforms, customer environments, and any relevant verticals.
-Validated Patterns MUST include a standardized architecture drawing, created with (or at least conforming to) the PAC tooling
-Validated Patterns MUST include a presentation deck oriented around the business problem being solved and intended for use by the field to sell and promote the solution
-Validated Patterns MUST include a recorded demo highlighting the business problem and how the pattern solves it
-Validated Patterns MUST include a test plan covering all features or attributes being highlighted by the demo that also spans multiple products. Negative flow tests (such as resiliency or data retention in the presence of network outages) are limited to scenarios covered by the demonstration script.
-Validated Patterns MUST include automated CI testing that runs on every change to the pattern, or a schedule no less frequently than once per week
-Validated Patterns MUST create a new point release of the validation-level deliverables when minor versions (e.g. “12” in OpenShift 4.12) of consumed products change
-Validated Patterns MUST document their support policy
-The individual products used in a Validated Pattern are backed by the full Red Hat support experience conditional on the customer’s subscription to those products, and the individual products’ support policy. Additional components in a Validated Pattern that are not supported by Red Hat (e.g. Hashicorp Vault, and Seldon Core) will require a customer to obtain support from that vendor directly. The validated patterns team is very motivated to address any problems in the VP Operator, as well as problems in the common helm charts, but cannot not offer any SLAs at this time. See also our standard disclaimer
-Validated Patterns DO NOT imply an obligation of support for partner or community operators by Red Hat.
-Should Validated Patterns SHOULD focus on functionality not performance.
-Validated Patterns SHOULD trigger CI runs for new versions of consumed products
-Validated Patterns SHOULD provide an RHPDS lab environment
-A bare bones environment into which the solution can be deployed, and a list of instructions for doing so (e.g. installing and configuring OpenShift GitOps)
-Validated Patterns SHOULD provide pre-built demo environment using RHPDS
-Having an automated demo within the RHPDS system, that will be built based on the current stable version that is run against the CI testing system
-Validated Patterns SHOULD track deployments of each validation-level deliverable
-For lifecycle decisions like discontinuing support of a version For notification if problems are found in our CI
-Can Teams creating Validated Patterns CAN provide their own SLA
-A document for QE that defines, at a technical level, how to validate if the pattern has been successfully deployed and is functionally operational. Example: Validating an Industrial Edge Deployment
-`,url:"https://validatedpatterns.io/learn/validated/",breadcrumb:"/learn/validated/"},"https://validatedpatterns.io/patterns/devsecops/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:`OpenShift Cluster Sizing for the Multicluster DevSecOps Pattern Tested Platforms The Multicluster DevSecOps pattern has been tested in the following Certified Cloud Providers. Due to changes in Advanced Cluster Management 2.5, this pattern does not work, &ldquo;out-of-the-box&rdquo;, with earlier versions of OCP than 4.10. While it&rsquo;s possible that it could work with some changes, we do not recommend using a version less than 4.10.
+Requirements for the sandbox tier Consider these requirements for all sandbox tier.
+The requirements are categorized as follows:
+Must These are nonnegotiable, core requirements that must be implemented.
+Should These are important but not critical; their implementation enhances the pattern.
+Can These are optional or desirable features, but their absence does not hinder the implementation of a pattern.
+Must A sandbox pattern must continue to meet the following criteria to remain in the sandbox tier:
+A sandbox pattern must conform to the common technical implementation requirements.
+A sandbox pattern must be able to be deployed onto a freshly deployed OpenShift cluster without prior modification or tuning.
+A sandbox pattern must include a top-level README file that highlights the business problem and how the pattern solves it.
+A sandbox pattern must include an architecture drawing. The specific tool or format is flexible as long as the meaning is clear.
+A sandbox pattern must undergo an informal technical review by a community leader to ensure that it meets basic reuse standards.
+A sandbox pattern must undergo an informal architecture review by a community leader to ensure that the solution has the right components, and they are generally being used as intended. For example, not using a database as a message bus.
+As community leaders, contributions from within Red Hat might be subject to a higher level of scrutiny. While we strive to be inclusive, the community will have quality standards and generally using the framework does not automatically imply a solution is suitable for the community to endorse/publish.
+A sandbox pattern must document their support policy.
+It is anticipated that most sandbox pattern will be supported by the community on a best-effort basis, but this should be stated explicitly. The Validated Patterns team commits to maintaining the framework, but will also accept help.
+Can A sandbox pattern (including works-in-progress) can be hosted in the https://github.com/validatedpatterns-sandbox GitHub organization.
+A sandbox pattern can be listed on the https://validatedpatterns.io site.
+A sandbox pattern meeting additional criteria can be nominated for promotion to the Tested tier.
+`,url:"https://validatedpatterns.io/learn/sandbox/",breadcrumb:"/learn/sandbox/"},"https://validatedpatterns.io/learn/tested/":{title:"Validated Patterns - Tested tier",tags:[],content:`About the Validated Patterns Tested tier The tested tier provides you with additional collateral and reassurance that the pattern was known to be recently working on at least one recent version of Red Hat OpenShift Container Platform. Inclusion in this tier requires some additional work for the pattern’s owner, which might be a partner or a sufficiently motivated subject matter expert (SME).
+Nominating a a pattern for the tested tier If your pattern qualifies or meets the criteria for tested tier, submit your nomination to validatedpatterns@googlegroups.com.
+Each tested pattern represents an ongoing maintenance, support, and testing effort. Finite team capacity means that it is not possible for the team to take on this responsibility for all Validated Patterns.
+For this reason we have designed the tiers and our processes to facilitate this to occur outside of the team by any sufficiently motivated party, including other parts of Red Hat, partners, and even customers.
+In limited cases, the Validated Patterns team may consider taking on that work, however please get in contact at least 4 weeks prior to the end of a given quarter in order for the necessary work to be considered as part of the following quarter’s planning process
+Requirements for the tested tier A tested patterns have deliverable and requirements in addition to those specified for the Sandbox tier.
+The requirements are categorized as follows:
+Must These are nonnegotiable, core requirements that must be implemented.
+Should These are important but not critical; their implementation enhances the pattern.
+Can These are optional or desirable features, but their absence does not hinder the implementation of a pattern.
+Must A tested pattern must continue to meet the following criteria to remain in the tested tier:
+A tested pattern must conform to the common technical implementation requirements.
+A tested pattern must be meaningful without specialized hardware, including flavors of architectures not explicitly supported.
+Qualification is a Validated Patterns Technical Oversight Committee (TOC) decision with input from the pattern owner.
+A tested pattern must have their implementation reviewed by the patterns team to ensure that it is sufficiently flexible to function across a variety of platforms, customer environments, and any relevant verticals.
+A tested pattern must include a standardized architecture drawing, created with (or at least conforming to) the standard Validated Patterns tooling.
+A tested pattern must include a written guide for others to follow when demonstrating the pattern.
+A tested pattern must include a test plan covering all features or attributes being highlighted by the demonstration guide. Negative flow tests (such as resiliency or data retention in the presence of network outages) are also limited to scenarios covered by the demonstration guide.
+The test plan must define how to validate if the pattern has been successfully deployed and is functionally operational. Example: Validating an Industrial Edge Deployment.
+A tested pattern must nominate at least one currently supported Red Hat OpenShift Container Platform release to test against.
+A tested pattern must ensure the test plan passes at least once per quarter.
+A tested pattern must create a publicly available JSON file (for example, in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and Red Hat OpenShift Container Platform version. See testing artefacts.
+A tested pattern does not imply an obligation of support for partner or community operators by Red Hat or the pattern owner.
+Should A tested pattern should be broadly applicable.
+A tested pattern should focus on functionality not performance.
+Can Teams creating tested pattern can provide their own service level agreement (SLA).
+A technical document for Quality Engineering (QE) team that defines how to validate if the pattern has been successfully deployed and is functionally operational. For example, see Validating an Industrial Edge Deployment.
+A tested pattern meeting additional criteria can be nominated for promotion to the Maintained tier.
+`,url:"https://validatedpatterns.io/learn/tested/",breadcrumb:"/learn/tested/"},"https://validatedpatterns.io/learn/maintained/":{title:"Validated Patterns - Maintained tier",tags:[],content:`About the Validated Patterns Maintained tier A pattern categorized under the maintained tier implies that the pattern was known to be functional on all currently supported extended update support (EUS) versions of Red Hat OpenShift Container Platform. Qualifying for this tier might require additional work for the pattern’s owner who might be a partner or a sufficiently motivated subject matter expert (SME).
+Nominating a pattern for the maintained tier If your pattern qualifies or meets the criteria for maintained tier, submit your nomination to validatedpatterns@googlegroups.com.
+Each maintained pattern represents an ongoing maintenance, support, and testing effort. Finite team capacity means that it is not possible for the team to take on this responsibility for all Validated Patterns.
+For this reason we have designed the tiers and our processes to facilitate this to occur outside of the team by any sufficiently motivated party, including other parts of Red Hat, partners, and even customers.
+In limited cases, the Validated Patterns team may consider taking on that work, however, it is recommended that you contact the team at least 4 weeks prior to the end of a given quarter for the necessary work to be considered as part of the following quarter’s planning process.
+Requirements for the maintained tier The maintained patterns have deliverable and requirements in addition to those specified for the Tested tier.
+The requirements are categorized as follows:
+Must These are nonnegotiable, core requirements that must be implemented.
+Should These are important but not critical; their implementation enhances the pattern.
+Can These are optional or desirable features, but their absence does not hinder the implementation of a pattern.
+Must A maintained pattern must continue to meet the following criteria to remain in maintained tier:
+A maintained pattern must conform to the common technical implementation requirements.
+A maintained pattern must only make use of components that are either supported, or easily substituted for supportable equivalents, for example, HashiCorp vault which has community and enterprise variants.
+A maintained pattern must not rely on functionality in tech-preview, or hidden behind feature gates.
+A maintained pattern must have their architectures reviewed by the Product Manager (PM), Technical Product Manager (TPM), or Technical Marketing Manager (TMM) of each Red Hat product they consume to ensure consistency with the product teams\` intentions and roadmaps.
+A maintained pattern must include a presentation slides oriented around the business problem being solved and intended for use by the field to sell and promote the solution.
+A maintained pattern must include test plan automation that runs on every change to the pattern, or a schedule no less frequently than once per week.
+A maintained pattern must be tested on all currently supported Red Hat OpenShift Container Platform extended update support (EUS) releases.
+A maintained pattern must fix breakage in timely manner.
+A maintained pattern must document their support policy.
+The individual products used in a Validated Patterns are backed by the full Red Hat support experience conditional on the customer’s subscription to those products, and the individual products\`s support policy.
+Additional components in a Validated Patterns that are not supported by Red Hat; for example, Hashicorp Vault, and Seldon Core, require a customer to obtain support from that vendor directly.
+The Validated Patterns team is will try to address any problems in the Validated Patterns Operator, and in the common Helm charts, but cannot not offer any SLAs at this time.
+The maintained patterns do not imply an obligation of support for partner or community Operators by Red Hat.
+Can If you are creating Validated Patterns, you can provide your own SLA.
+`,url:"https://validatedpatterns.io/learn/maintained/",breadcrumb:"/learn/maintained/"},"https://validatedpatterns.io/patterns/devsecops/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:`OpenShift Cluster Sizing for the Multicluster DevSecOps Pattern Tested Platforms The Multicluster DevSecOps pattern has been tested in the following Certified Cloud Providers. Due to changes in Advanced Cluster Management 2.5, this pattern does not work, &ldquo;out-of-the-box&rdquo;, with earlier versions of OCP than 4.10. While it&rsquo;s possible that it could work with some changes, we do not recommend using a version less than 4.10.
 | Certified Cloud Providers | 4.10 | 4.11 | 4.x | :&mdash;- | :&mdash;- | :&mdash;- | Amazon Web Services | Tested | Untested | | Google Compute | Untested | Untested | | Microsoft Azure | Untested | Untested |
 Multicluster DevSecOps Pattern Components Here&rsquo;s an inventory of what gets deployed by default the Secure Supply Chain pattern on the Hub OpenShift cluster:
 Name Kind Namespace Description Red Hat Advanced Cluster Management Operator open-cluster-management Advance cluster management Red Hat OpenShift GitOps Operator openshift-operators ArgoCD GitOps Red Hat Advanced Cluster Security Operator stackrox Advanced cluster security, central and secured Red Hat Quay Operator quay-enterprise Secure container registry Red Hat Open Data Foundation Operator openshift-storage Highly available software-defined storage Hashicorp Vault Community version Operator vault Secrets Management The hub can be modified to deploy OpenShift Pipelines if needed. See Development cluster pattern components.
@@ -1536,7 +1575,11 @@ The virtual machine console view will either show a standard RHEL console login 
 Initial User login (cloud-user) In general, and before the VMs have been configured by the Ansible Jobs, you can log in to the VMs on the console using the user and password you specified in the Helm chart, or else you can look at the VirtualMachine object and see what the username and password setting are. The pattern, by design, replaces the typical console view with Firefox running in kiosk mode. But this mechanism can still be used if you change the console from &ldquo;VNC Console&rdquo; to &ldquo;Serial Console&rdquo;.
 The &ldquo;extra&rdquo; VM Template Also included in the edge-gitops-vms chart is a separate template that will allow the creation of VMs with similar (though not identical characteristics) to the ones defined in the chart.
 The rhel8-kiosk-with-svc template is preserved as an intermediate step to creating your own VM types, to see how the pipeline from default VM template -&gt; customized template -&gt; Helm-variable chart can work.
-Next Steps Help &amp; Feedback Report Bugs `,url:"https://validatedpatterns.io/patterns/ansible-edge-gitops/openshift-virtualization/",breadcrumb:"/patterns/ansible-edge-gitops/openshift-virtualization/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
+Next Steps Help &amp; Feedback Report Bugs `,url:"https://validatedpatterns.io/patterns/ansible-edge-gitops/openshift-virtualization/",breadcrumb:"/patterns/ansible-edge-gitops/openshift-virtualization/"},"https://validatedpatterns.io/learn/test-artefacts/":{title:"Testing Artefacts",tags:[],content:`Testing artefacts To be represented in the CI dashboard, testers can create a publicly available JSON file (for example, in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and Red Hat OpenShift Container Platform version.
+File naming convention {pattern}-{platform}-{openshift version}-stable-badge.json
+Example: medicaldiag-nutanix-4.13-stable-badge.json
+Note: OpenShift verion should be major.minor only
+File template { &#34;schemaVersion&#34;:1, &#34;label&#34;:&#34;{text}&#34;, /* For now we assume \`message\` is the same as patternBranch */ &#34;message&#34;:&#34;{text}&#34;, /* passed =&gt; green, test failed =&gt; red, test setup failed =&gt; yellow */ &#34;color&#34;:&#34;{test result color}&#34;, /* eg. x.y.z */ &#34;openshiftVersion&#34;:&#34;{full openshift version}&#34;, /* eg. AWS, GCP, Nutanix, ... */ &#34;infraProvider&#34;:&#34;{platform}&#34;, /* Official repo of the pattern, eg. https://github.com/validatedpatterns/multicloud-gitops */ &#34;patternRepo&#34;: &#34;{text}&#34;, /* eg. main, stable-N.M */ &#34;patternBranch&#34;: &#34;{text}&#34;, &#34;date&#34;:&#34;{YYYY-MM-DD}&#34;, /* Who ran the test eg. Red Hat */ &#34;testSource&#34;: &#34;{company name}&#34;, /* eg. Job number */ &#34;testID&#34;: &#34;{unique id}&#34;, /* if publically available */ &#34;jenkinsURL&#34;:&#34;{path to job}&#34;, &#34;debugInfo&#34;:&#34;{location of must-gather tarball}&#34;, } Example testing artifact file { &#34;schemaVersion&#34;:1, &#34;label&#34;:&#34;MCG on Nutanix&#34;, &#34;message&#34;:&#34;main&#34;, &#34;color&#34;:&#34;green&#34;, &#34;openshiftVersion&#34;:&#34;4.13.14&#34;, &#34;infraProvider&#34;:&#34;Nutanix&#34;, &#34;patternRepo&#34;: &#34;https://github.com/validatedpatterns/multicloud-gitops&#34;, &#34;patternBranch&#34;: &#34;main&#34;, &#34;date&#34;:&#34;2023-10-23&#34;, &#34;testSource&#34;: &#34;Red Hat&#34; &#34;testID&#34;: &#34;13602&#34;, &#34;jenkinsURL&#34;:&#34;https://jenkins/job/ValidatedPatterns/job/MedicalDiagnosis/job/medicaldiag-gcp-ocp4.13/37/&#34;, &#34;debugInfo&#34;:&#34;https://storage.cloud.google.com/.../medicaldiag-gcp-ocp4.13.15-13602.tgz&#34;, } `,url:"https://validatedpatterns.io/learn/test-artefacts/",breadcrumb:"/learn/test-artefacts/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
 You can customize this demo in different ways.
 Split the config-demo across hub and regional clusters Currently hub and regional clusters are reusing the exact same helm chart found at charts/all/config-demo. The first customization step could be to split the demo app in two separate charts: one in charts/hub/config-demo and one in charts/region/config-demo. Once charts/all/config-demo has been copied to charts/hub/config-demo and charts/region/config-demo, you need to include them in the respective values-hub.yaml and values-region-one.yaml, respectively.
 After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
