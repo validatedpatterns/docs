@@ -1,0 +1,80 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="deploying-edd-pattern"]
+= Using the MLOps Fraud Detection pattern
+
+The following steps describes how you can use this pattern in a demo.
+
+== Get the MLFlow Route using command-line
+
+You can use the OC command to get the hostname through:
+
+[,sh]
+----
+oc get svc mlflow-server -n mlops -o go-template 
+--template='{{.metadata.name}}.{{.metadata.namespace}}.svc.cluster.local{{println}}'
+----
+
+The port you will find with: 
+
+[,sh]
+----
+oc get svc mlflow-server -n mlops -o yaml
+----
+//figure 1 originally
+.Getting MLFlow port
+image::mlops-fraud-detection/mfd-get-mlflow-port.png[link="/images/mlops-fraud-detection/mfd-get-mlflow-port.png", width=940]
+
+In this case the server:port is: `mlflow-server.mlops.svc.cluster.local:8080`
+Use this value when creating the work bench:
+[,sh]
+----
+MLFLOW_ROUTE=http://mlflow-server.mlops.svc.cluster.local:8080
+----
+
+== Create a RHODS workbench
+
+Start by opening up RHODS by clicking on the 9 square symbol in the top menu and choosing "Red Hat OpenShift AI".
+
+//figure 2 
+.Open Red Hat OpenShift AI (previously Red Hat Open Data Science)
+image::mlops-fraud-detection/mfd-open-rhoai.png[link="/images/mlops-fraud-detection/mfd-open-rhoai.png", width=540]
+
+Create a new Data Science project (see image) in which to build and train the model. This will also create a namespace in OpenShift which is where the application will be running after the model training is done. In the example the project is called 'Credit Card Fraud'. _You may change the project name to something different but be aware that steps further down in the demo may also need to change_.
+
+//figure 3 
+.Create a AI/ML Project
+image::mlops-fraud-detection/mfd-create-aiml-project.png[link="/images/mlops-fraud-detection/mfd-create-aiml-project.png", width=940]
+
+After the project has been created, create a workbench where we can run Jupyter. There are a few important settings here that we need to set:
+
+* *Name*: Credit Fraud Model
+* *Notebook Image*: Standard Data Science
+* *Deployment Size*: Small
+* *Environment Variable*: Add a new one that's a _Config Map -> Key/value_ and enter
+** *Get value by running*: `oc get service mlflow-server -n mlops -o go-template --template='http://{{.metadata.name}}.{{.metadata.namespace}}.svc.cluster.local:8080{{println}}'`
+** *Key*: `MLFLOW_ROUTE`
+** *Value*: `http://<route-to-mlflow>:<port>`, replacing <route-to-mlflow> and <port> with the route and port that we found in step one. In this case it is
+[,url]
+----
+ http://mlflow-server.mlflow.svc.cluster.local:8080
+----
+* *Cluster Storage*: Create new persistent storage - Call it "Credit Fraud Storage" and set the size to 20GB.
+
+//figure 4 
+.Workbench settings
+image::mlops-fraud-detection/mfd-workbench-settings.png[link="/images/mlops-fraud-detection/mfd-workbench-settings.png", width=640]
+
+Open the workbench and login if needed.
+== Train the model
+
+When inside the workbench (Jupyter), we are going to clone a GitHub repository which contains everything we need to train (and run) our model.
+You can clone the GitHub repository by pressing the GitHub button in the left side menu (see image), then select "Clone a Repository" and enter this GitHub URL:
+[,url]
+----
+https://github.com/arslankhanali/credit-fraud-detection-demo
+----
+//figure 5 
+.Open the model folder
+image::mlops-fraud-detection/mfd-open-model-folder.png[link="/images/mlops-fraud-detection/mfd-open-model-folder.png", width=640]

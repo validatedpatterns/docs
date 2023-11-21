@@ -2,19 +2,19 @@
 :imagesdir: ../../../images
 
 [id="deploying-edd-pattern"]
-= Deploying the Emerging Disease Detection pattern
+= Deploying the MLOps Fraud Detection pattern
 
 == Prerequisites
 
-. An OpenShift cluster (Go to https://console.redhat.com/openshift/create[the OpenShift console]). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
-// See also link:../../emerging-disease-detection/cluster-sizing[sizing your cluster].
+. An OpenShift cluster (Go to https://console.redhat.com/openshift/create[the OpenShift console]). Cluster must have a dynamic StorageClass to provision PersistentVolumes. 
+// See also link:../../mlops-fraud-detection/cluster-sizing[sizing your cluster].
 . A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 
 For installation tooling dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
 
 The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern
-there is no dedicated Hub / Edge cluster for the *Emerging Disease Detection* pattern. This single node pattern can be extend as a managed cluster(s) to a central hub.
-// See link:../../emerging-disease-detection/ideas-for-customization[ideas for customization.]
+there is no dedicated Hub / Edge cluster for the *MLOps Fraud Detection* pattern. This single node pattern can be extend as a managed cluster(s) to a central hub. 
+// See link:../../mlops-fraud-detection/ideas-for-customization[ideas for customization.]
 
 If you do not have a running Red Hat OpenShift cluster you can start one on a
 public or private cloud by using link:https://console.redhat.com/openshift/create[Red Hat's cloud service].
@@ -27,12 +27,12 @@ A number of utilities have been built by the validated patterns team to lower th
 [id="preparation"]
 = Preparation
 
-. Fork the link:https://github.com/validatedpatterns/emerging-disease-detection[emerging-disease-detection] repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+. Fork the link:https://github.com/validatedpatterns/mlops-fraud-detection[mlops-fraud-detection] repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 . Clone the forked copy of this repository.
 +
 [,sh]
 ----
-git clone git@github.com:<your-username>/emerging-disease-detection.git
+git clone git@github.com:<your-username>/mlops-fraud-detection.git
 ----
 
 . Create a local copy of the Helm secrets values file that can safely include credentials
@@ -43,7 +43,7 @@ You do not want to push credentials to GitHub.
 +
 [,sh]
 ----
-cp values-secret.yaml.template ~/values-secret.yaml
+cp values-secret-mlops-fraud-detection.yaml.template ~/values-secret.yaml
 vi ~/values-secret.yaml
 ----
 
@@ -52,31 +52,7 @@ vi ~/values-secret.yaml
 [source,yaml]
 ----
 secrets:
-  - name: rhpam
-    vaultPrefixes:
-    - global
-    fields:
-    - name: rhpam_api_passwd
-      value: kieserver
-    - name: sso_siteadmin_password
-      value: r3dh4t1!
-    - name: kie_admin_password
-      value: admin
-    - name: kieserver_user_password
-      value: kieserver
-    - name: psql_passwd
-      value: rhpam
-
-  - name: fhir-psql-db
-    vaultPrefixes:
-    - global
-    fields:
-    - name: psql_credentials_secret
-      value: psql_secret
-    - name: psql_user_name
-      value: fhir
-    - name: psql_user_passwd
-      value: fhir
+//Nothing at time of writing.
 ----
 
 When you edit the file you can make changes to the various DB and Grafana passwords if you wish.
@@ -94,7 +70,7 @@ vi values-global.yaml
 [source,yaml]
 ----
 global:
-  pattern: emerging-disease-detection
+  pattern: mlops-fraud-detection
   hubClusterDomain: "AUTO" # this is for test only This value is automatically fetched when Invoking against a cluster
 
   options:
@@ -141,16 +117,16 @@ export KUBECONFIG=~/my-ocp-env/auth/kubeconfig
 == Check the values files before deployment
 
 You can run a check before deployment to make sure that you have the required variables to deploy the
-Emerging Disease Detection Validated Pattern.
+MLOps Fraud Detection Validated Pattern.
 
 You can run `make predeploy` to check your values. This will allow you to review your values and changed them in
 the case there are typos or old values.  The values files that should be reviewed prior to deploying the
-Emerging Disease Detection Validated Pattern are:
+MLOps Fraud Detection Validated Pattern are:
 
 |===
 | Values File | Description
 
-| values-secret.yaml / values-secret-emerging-disease-detection.yaml
+| values-secret.yaml / values-secret-mlops-fraud-detection.yaml
 | This is the values file that will include the rhpam and fhir-psql-db sections with all database et al secrets
 
 | values-global.yaml
@@ -200,26 +176,19 @@ The result should look something like:
 [,text]
 ----
 NAME                       HOST/PORT                                                                                      PATH   SERVICES                   PORT    TERMINATION            WILDCARD
-hub-gitops-server   hub-gitops-server-emerging-disease-detection-hub.apps.wh-edd-cluster.aws.validatedpatterns.com          hub-gitops-server   https   passthrough/Redirect   None
+hub-gitops-server   hub-gitops-server-mlops-fraud-detection-hub.apps.mfd-cluster.aws.validatedpatterns.com          hub-gitops-server   https   passthrough/Redirect   None
 # admin.password
 xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH
 NAME                      HOST/PORT                                                                         PATH   SERVICES                  PORT    TERMINATION            WILDCARD
-cluster                   cluster-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com                          cluster                   8080    reencrypt/Allow        None
-kam                       kam-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com                              kam                       8443    passthrough/None       None
-openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.wh-edd-cluster.aws.validatedpatterns.com          openshift-gitops-server   https   passthrough/Redirect   None
+cluster                   cluster-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com                          cluster                   8080    reencrypt/Allow        None
+kam                       kam-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com                              kam                       8443    passthrough/None       None
+openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com          openshift-gitops-server   https   passthrough/Redirect   None
 # admin.password
 FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6
 ----
 +
-The most important ArgoCD instance to examine at this point is `emerging-disease-detection-hub`. This is where all the applications for the pattern can be tracked.
+The most important ArgoCD instance to examine at this point is `mlops-fraud-detection-hub`. This is where all the applications for the pattern can be tracked.
 
 . Check all applications are synchronised. There are thirteen different ArgoCD "applications" deployed as part of this pattern.
 
-[id="viewing-the-sepsis-application-dashboard-getting-started"]
-== Viewing the Sepsis Detection dashboard
-TO-DO: Describe how to examine the various parts of the Sepsis application
 
-= Next Steps
-
-link:https://groups.google.com/g/validatedpatterns[Help & Feedback]
-link:https://github.com/validatedpatterns/emerging-disease-detection/issues[Report Bugs]

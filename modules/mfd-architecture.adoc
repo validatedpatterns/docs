@@ -1,0 +1,53 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="overview-architecture"]
+== Overview of the Architecture
+
+Description of each component:
+
+* *Data Set*: The data set contains the data used for training and evaluating the model we will build in this demo.
+* *RHODS Notebook*: We will build and train the model using a Jupyter Notebook running in RHODS.
+* *MLFlow Experiment tracking*: We use MLFlow to track the parameters and metrics (such as accuracy, loss, etc) of a model training run. These runs can be grouped under different "experiments", making it easy to keep track of the runs.
+* *MLFlow Model registry*: As we track the experiment we also store the trained model through MLFlow so we can easily version it and assign a stage to it (for example Staging, Production, Archive).
+* *S3 (ODF)*: This is where the models are stored and what the MLFlow model registry interfaces with. We use ODF (OpenShift Data Foundation) according to the MLFlow guide, but it can be replaced with another solution.
+* *RHODS Model Serving*: We recommend using RHODS Model Serving for serving the model. It's based on ModelMesh and allows us to easily send requests to an endpoint for getting predictions.
+* *Application interface*: This is the interface used to run predictions with the model. In our case, we will build a visual interface (interactive app) using Gradio and let it load the model from the MLFlow model registry.
+
+//figure 1 originally
+.Overview of the solution reference architecture
+image::mlops-fraud-detection/mfd-reference-architecture.png[link="/images/mlops-fraud-detection/mfd-reference-architecture.png"]
+
+//figure 2 logical
+.Logical Architecture
+//image::mlops-fraud-detection/mfd-logical-architecture-legend.png[link="/images/mlops-fraud-detection/mfd-logical-architecture-legend.png", width=940]
+
+//figure 3 Schema
+.Data Flow Architecture
+//image::mlops-fraud-detection/mfd-schema-dataflow.png[link="/images/mlops-fraud-detection/mfd-schema-dataflow.png", width=940]
+
+[id="about-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Platform]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai[Red Hat OpenShift AI]::
+Red Hat® OpenShift® AI is an AI-focused portfolio that provides tools to train, tune, serve, monitor, and manage AI/ML experiments and models on Red Hat OpenShift. Bring data scientists, developers, and IT together on a unified platform to deliver AI-enabled applications faster.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift GitOps]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+
+https://www.redhat.com/en/technologies/jboss-middleware/amq[Red Hat AMQ Streams]::
+Red Hat AMQ streams is a massively scalable, distributed, and high-performance data streaming platform based on the Apache Kafka project. It offers a distributed backbone that allows microservices and other applications to share data with high throughput and low latency. Red Hat AMQ Streams is available in the Red Hat AMQ product.
+
+Hashicorp Vault (community)::
+Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+
+MLFlow Model Registry (community)::
+A centralized model store, set of APIs, and UI, to collaboratively manage the full lifecycle of an MLflow Model. It provides model lineage (which MLflow experiment and run produced the model), model versioning, model aliasing, model tagging, and annotations.
+
+Other::
+This solution also uses a variety of _observability tools_ including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
