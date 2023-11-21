@@ -137,7 +137,7 @@ global: pattern: emerging-disease-detection hubClusterDomain: &#34;AUTO&#34; # t
 Preview the changes that will be made to the Helm charts.
 ./pattern.sh make show Login to your cluster using oc login or exporting the KUBECONFIG
 oc login or set KUBECONFIG to the path to your kubeconfig file. For example export KUBECONFIG=~/my-ocp-env/auth/kubeconfig Check the values files before deployment You can run a check before deployment to make sure that you have the required variables to deploy the Emerging Disease Detection Validated Pattern.
-You can run make predeploy to check your values. This will allow you to review your values and changed them in the case there are typos or old values. The values files that should be reviewed prior to deploying the Medical Diagnosis Validated Pattern are:
+You can run make predeploy to check your values. This will allow you to review your values and changed them in the case there are typos or old values. The values files that should be reviewed prior to deploying the Emerging Disease Detection Validated Pattern are:
 Values File Description values-secret.yaml / values-secret-emerging-disease-detection.yaml
 This is the values file that will include the rhpam and fhir-psql-db sections with all database et al secrets
 values-global.yaml
@@ -159,7 +159,62 @@ Viewing the Sepsis Detection dashboard TO-DO: Describe how to examine the variou
 Next Steps Help &amp; Feedback Report Bugs
 Using the Emerging Disease Detection pattern The following steps describes how you can use this pattern in a demo.
 Viewing the Sepsis Detection dashboard TO-DO: Describe how to examine the various parts of the Sepsis application
-`,url:"https://validatedpatterns.io/patterns/emerging-disease-detection/edd-getting-started/",breadcrumb:"/patterns/emerging-disease-detection/edd-getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
+`,url:"https://validatedpatterns.io/patterns/emerging-disease-detection/edd-getting-started/",breadcrumb:"/patterns/emerging-disease-detection/edd-getting-started/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-getting-started/":{title:"Getting started",tags:[],content:` Deploying the MLOps Fraud Detection pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
+A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
+For installation tooling dependencies, see Patterns quick start.
+The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern there is no dedicated Hub / Edge cluster for the MLOps Fraud Detection pattern. This single node pattern can be extend as a managed cluster(s) to a central hub.
+If you do not have a running Red Hat OpenShift cluster you can start one on a public or private cloud by using Red Hat’s cloud service.
+Utilities A number of utilities have been built by the validated patterns team to lower the barrier to entry for using the community or Red Hat Validated Patterns. To use these utilities you will need to export some environment variables for your cloud provider:
+Preparation Fork the mlops-fraud-detection repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+Clone the forked copy of this repository.
+git clone git@github.com:&lt;your-username&gt;/mlops-fraud-detection.git Create a local copy of the Helm secrets values file that can safely include credentials
+DO NOT COMMIT THIS FILE
+You do not want to push credentials to GitHub.
+cp values-secret-mlops-fraud-detection.yaml.template ~/values-secret.yaml vi ~/values-secret.yaml values-secret.yaml example
+secrets: //Nothing at time of writing. When you edit the file you can make changes to the various DB and Grafana passwords if you wish.
+Customize the values-global.yaml for your deployment
+git checkout -b my-branch vi values-global.yaml Replace instances of PROVIDE_ with your specific configuration
+global: pattern: mlops-fraud-detection hubClusterDomain: &#34;AUTO&#34; # this is for test only This value is automatically fetched when Invoking against a cluster options: useCSV: false syncPolicy: Automatic installPlanApproval: Automatic main: clusterGroupName: hub gitOpsSpec: operatorChannel: gitops-1.9 git add values-global.yaml git commit values-global.yaml git push origin my-branch You can deploy the pattern using the validated pattern operator. If you do use the operator then skip to Validating the Environment below.
+Preview the changes that will be made to the Helm charts.
+./pattern.sh make show Login to your cluster using oc login or exporting the KUBECONFIG
+oc login or set KUBECONFIG to the path to your kubeconfig file. For example export KUBECONFIG=~/my-ocp-env/auth/kubeconfig Check the values files before deployment You can run a check before deployment to make sure that you have the required variables to deploy the MLOps Fraud Detection Validated Pattern.
+You can run make predeploy to check your values. This will allow you to review your values and changed them in the case there are typos or old values. The values files that should be reviewed prior to deploying the MLOps Fraud Detection Validated Pattern are:
+Values File Description values-secret.yaml / values-secret-mlops-fraud-detection.yaml
+This is the values file that will include the rhpam and fhir-psql-db sections with all database et al secrets
+values-global.yaml
+File that is used to contain all the global values used by Helm
+Deploy Apply the changes to your cluster
+./pattern.sh make install If the install fails and you go back over the instructions and see what was missed and change it, then run make update to continue the installation.
+This takes some time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The make install provides some progress updates during the install. It can take up to twenty minutes. Compare your make install run progress with the following video showing a successful install.
+Check that the operators have been installed in the UI.
+To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
+Check that the Operator is installed in the openshift-operators namespace and its status is Succeeded.
+Using OpenShift GitOps to check on Application progress You can also check on the progress using OpenShift GitOps to check on the various applications deployed.
+Obtain the ArgoCD URLs and passwords.
+The URLs and login credentials for ArgoCD change depending on the pattern name and the site names they control. Follow the instructions below to find them, however you choose to deploy the pattern.
+Display the fully qualified domain names, and matching login credentials, for all ArgoCD instances:
+ARGO_CMD=\`oc get secrets -A -o jsonpath=&#39;{range .items[*]}{&#34;oc get -n &#34;}{.metadata.namespace}{&#34; routes; oc -n &#34;}{.metadata.namespace}{&#34; extract secrets/&#34;}{.metadata.name}{&#34; --to=-\\\\n&#34;}{end}&#39; | grep gitops-cluster\` CMD=\`echo $ARGO_CMD | sed &#39;s|- oc|-;oc|g&#39;\` eval $CMD The result should look something like:
+NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD hub-gitops-server hub-gitops-server-mlops-fraud-detection-hub.apps.mfd-cluster.aws.validatedpatterns.com hub-gitops-server https passthrough/Redirect None # admin.password xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD cluster cluster-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com cluster 8080 reencrypt/Allow None kam kam-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com kam 8443 passthrough/None None openshift-gitops-server openshift-gitops-server-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com openshift-gitops-server https passthrough/Redirect None # admin.password FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6 The most important ArgoCD instance to examine at this point is mlops-fraud-detection-hub. This is where all the applications for the pattern can be tracked.
+Check all applications are synchronised. There are thirteen different ArgoCD &#34;applications&#34; deployed as part of this pattern.
+Using the MLOps Fraud Detection pattern The following steps describes how you can use this pattern in a demo.
+Get the MLFlow Route using command-line You can use the OC command to get the hostname through:
+oc get svc mlflow-server -n mlops -o go-template --template=&#39;{{.metadata.name}}.{{.metadata.namespace}}.svc.cluster.local{{println}}&#39; The port you will find with:
+oc get svc mlflow-server -n mlops -o yaml Figure 1. Getting MLFlow port In this case the server:port is: mlflow-server.mlops.svc.cluster.local:8080 Use this value when creating the work bench:
+MLFLOW_ROUTE=http://mlflow-server.mlops.svc.cluster.local:8080 Create a RHODS workbench Start by opening up RHODS by clicking on the 9 square symbol in the top menu and choosing &#34;Red Hat OpenShift AI&#34;.
+Figure 2. Open Red Hat OpenShift AI (previously Red Hat Open Data Science) Create a new Data Science project (see image) in which to build and train the model. This will also create a namespace in OpenShift which is where the application will be running after the model training is done. In the example the project is called &#39;Credit Card Fraud&#39;. You may change the project name to something different but be aware that steps further down in the demo may also need to change.
+Figure 3. Create a AI/ML Project After the project has been created, create a workbench where we can run Jupyter. There are a few important settings here that we need to set:
+Name: Credit Fraud Model
+Notebook Image: Standard Data Science
+Deployment Size: Small
+Environment Variable: Add a new one that’s a Config Map → Key/value and enter
+Get value by running: oc get service mlflow-server -n mlops -o go-template --template=&#39;http://{{.metadata.name}}.{{.metadata.namespace}}.svc.cluster.local:8080{{println}}&#39;
+Key: MLFLOW_ROUTE
+Value: http://&lt;route-to-mlflow&gt;:&lt;port&gt;;, replacing &lt;route-to-mlflow&gt; and &lt;port&gt; with the route and port that we found in step one. In this case it is
+http://mlflow-server.mlflow.svc.cluster.local:8080 Cluster Storage: Create new persistent storage - Call it &#34;Credit Fraud Storage&#34; and set the size to 20GB.
+Figure 4. Workbench settings Open the workbench and login if needed. == Train the model
+When inside the workbench (Jupyter), we are going to clone a GitHub repository which contains everything we need to train (and run) our model. You can clone the GitHub repository by pressing the GitHub button in the left side menu (see image), then select &#34;Clone a Repository&#34; and enter this GitHub URL:
+https://github.com/arslankhanali/credit-fraud-detection-demo Figure 5. Open the model folder Next Steps Help &amp; Feedback Report Bugs
+`,url:"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-getting-started/",breadcrumb:"/patterns/mlops-fraud-detection/mfd-getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
 Select Services -&gt; Containers -&gt; Create cluster.
 The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
@@ -1609,7 +1664,39 @@ AWS Controllers for Kubernetes - Amazon S3 Operator, an S3 storage controller
 `,url:"https://validatedpatterns.io/patterns/hypershift/",breadcrumb:"/patterns/hypershift/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
 `,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
 Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric solutions while maintaining a level of Continuous Integration (CI) over your application.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/emerging-disease-detection/":{title:"Emerging Disease Detection",tags:[],content:` About the Emerging Disease Detection pattern Use case Use a GitOps approach to manage a hybrid cloud deployment for an AI emerging disease detection system.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/":{title:"MLOps Fraud Detection",tags:[],content:` About the MLOps Fraud Detection MLOps Credit Card Fraud Detection use case Build and train models in RHODS to detect credit card fraud
+Track and store those models with MLFlow
+Serve a model stored in MLFlow using RHODS Model Serving (or MLFlow serving)
+Deploy a model application in OpenShift that runs sends data to the served model and displays the prediction
+Background AI technology is already transforming the financial services industry. AI models can be used to make rapid inferences that benefit the FS institute and its customers. This pattern deploys a AI model to detect fraud on crdit card transactions
+About the solution The model is built on a Credit Card Fraud Detection model, which predicts if a credit card usage is fraudulent or not depending on a few parameters such as: distance from home and last transaction, purchase price compared to median, if it’s from a retailer that already has been purchased from before, if the PIN number is used and if it’s an online order or not.
+Technology Highlights: Event-Driven Architecture
+Data Science on OpenShift
+Model registry using MLFlow
+Solution Discussion This architecture pattern demonstrates four strengths:
+Real-Time Processing: Analyze transactions in real-time, quickly identifying and flagging potentially fraudulent activities. This speed is crucial in preventing unauthorized transactions before they are completed.
+Pattern Recognition: Detect patterns and anomalies in data and learn from historical transaction data to identify typical spending patterns of a cardholder and flag transactions that deviate from these patterns.
+Cost Efficiency: By automating the detection process, AI reduces the need for extensive manual review of transactions, which can be time-consuming and costly.
+Flexibility and Agility: An cloud native architecture that supports the use of microservices, containers, and serverless computing, allowing for more flexible and agile development and deployment of AI models. This means faster iteration and deployment of new fraud detection algorithms.
+Overview of the solution in credit card fraud detection video link coming soon
+Overview of the Architecture Description of each component:
+Data Set: The data set contains the data used for training and evaluating the model we will build in this demo.
+RHODS Notebook: We will build and train the model using a Jupyter Notebook running in RHODS.
+MLFlow Experiment tracking: We use MLFlow to track the parameters and metrics (such as accuracy, loss, etc) of a model training run. These runs can be grouped under different &#34;experiments&#34;, making it easy to keep track of the runs.
+MLFlow Model registry: As we track the experiment we also store the trained model through MLFlow so we can easily version it and assign a stage to it (for example Staging, Production, Archive).
+S3 (ODF): This is where the models are stored and what the MLFlow model registry interfaces with. We use ODF (OpenShift Data Foundation) according to the MLFlow guide, but it can be replaced with another solution.
+RHODS Model Serving: We recommend using RHODS Model Serving for serving the model. It’s based on ModelMesh and allows us to easily send requests to an endpoint for getting predictions.
+Application interface: This is the interface used to run predictions with the model. In our case, we will build a visual interface (interactive app) using Gradio and let it load the model from the MLFlow model registry.
+Figure 1. Overview of the solution reference architecture About the technology Data Flow Architecture The following technologies are used in this solution:
+Red Hat OpenShift Platform An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+Red Hat OpenShift AI Red Hat® OpenShift® AI is an AI-focused portfolio that provides tools to train, tune, serve, monitor, and manage AI/ML experiments and models on Red Hat OpenShift. Bring data scientists, developers, and IT together on a unified platform to deliver AI-enabled applications faster.
+Red Hat OpenShift GitOps A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+Red Hat AMQ Streams Red Hat AMQ streams is a massively scalable, distributed, and high-performance data streaming platform based on the Apache Kafka project. It offers a distributed backbone that allows microservices and other applications to share data with high throughput and low latency. Red Hat AMQ Streams is available in the Red Hat AMQ product.
+Hashicorp Vault (community) Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+MLFlow Model Registry (community) A centralized model store, set of APIs, and UI, to collaboratively manage the full lifecycle of an MLflow Model. It provides model lineage (which MLflow experiment and run produced the model), model versioning, model aliasing, model tagging, and annotations.
+Other This solution also uses a variety of observability tools including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
+Next steps Deploy the management hub using Helm.
+`,url:"https://validatedpatterns.io/patterns/mlops-fraud-detection/",breadcrumb:"/patterns/mlops-fraud-detection/"},"https://validatedpatterns.io/patterns/emerging-disease-detection/":{title:"Emerging Disease Detection",tags:[],content:` About the Emerging Disease Detection pattern Use case Use a GitOps approach to manage a hybrid cloud deployment for an AI emerging disease detection system.
 Use a AI automation at the edge to detect emerging diseases.
 Use an event driven architecture
 Enable application lifecycle management.
