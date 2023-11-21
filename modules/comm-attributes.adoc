@@ -3,7 +3,7 @@
 //:experimental:
 //:toc: macro
 //:toc-title:
-//:imagesdir: images
+:imagesdir: ../../images
 //:prewrap!:
 :redhat: Red{nbsp}Hat
 //Solution name
@@ -125,3 +125,8 @@
 :AWS: Amazon Web Services (AWS)
 :GCP: Google Cloud Platform (GCP)
 :Azure: Microsoft Azure
+// Red Hat OpenShift AI
+:rh-oai: Red{nbsp}Hat OpenShift Data Science
+:oai: OpenShift Data Science
+// Icons
+:grid: grid.png
