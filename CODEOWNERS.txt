@@ -1,0 +1,6 @@
+# Set the @validatedpatterns/docs team to own the entire repo
+# we need this so that we can request and require PR reviews before merging.
+* @validatedpatterns/docs
+
+# Additional (more granular) ownership rules:
+
