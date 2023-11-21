@@ -30,7 +30,7 @@ A number of utilities have been built by the validated patterns team to lower th
 . Fork the link:https://github.com/validatedpatterns/emerging-disease-detection[emerging-disease-detection] repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 . Clone the forked copy of this repository.
 +
-[,sh]
+[source,terminal]
 ----
 git clone git@github.com:<your-username>/emerging-disease-detection.git
 ----
@@ -41,7 +41,7 @@ git clone git@github.com:<your-username>/emerging-disease-detection.git
 +
 You do not want to push credentials to GitHub.
 +
-[,sh]
+[source,terminal]
 ----
 cp values-secret.yaml.template ~/values-secret.yaml
 vi ~/values-secret.yaml
@@ -83,7 +83,7 @@ When you edit the file you can make changes to the various DB and Grafana passwo
 
 . Customize the `values-global.yaml` for your deployment
 +
-[,sh]
+[source,terminal]
 ----
 git checkout -b my-branch
 vi values-global.yaml
@@ -108,7 +108,7 @@ main:
     operatorChannel: gitops-1.9
 ----
 
-[,sh]
+[source,terminal]
 ----
    git add values-global.yaml
    git commit values-global.yaml
@@ -118,21 +118,21 @@ main:
 . You can deploy the pattern using the link:/infrastructure/using-validated-pattern-operator/[validated pattern operator]. If you do use the operator then skip to Validating the Environment below.
 . Preview the changes that will be made to the Helm charts.
 +
-[,sh]
+[source,terminal]
 ----
 ./pattern.sh make show
 ----
 
 . Login to your cluster using oc login or exporting the KUBECONFIG
 +
-[,sh]
+[source,terminal]
 ----
 oc login
 ----
 +
 .or set KUBECONFIG to the path to your `kubeconfig` file. For example
 +
-[,sh]
+[source,terminal]
 ----
 export KUBECONFIG=~/my-ocp-env/auth/kubeconfig
 ----
@@ -161,7 +161,7 @@ Emerging Disease Detection Validated Pattern are:
 
 . Apply the changes to your cluster
 +
-[,sh]
+[source,terminal]
 ----
 ./pattern.sh make install
 ----
@@ -188,7 +188,7 @@ them, however you choose to deploy the pattern.
 Display the fully qualified domain names, and matching login credentials, for
 all ArgoCD instances:
 +
-[,sh]
+[source,terminal]
 ----
 ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
 CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`

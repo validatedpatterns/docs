@@ -24,7 +24,7 @@ To demonstrate the effectiveness of the solution this pattern focuses on the spe
 
 == Technology Highlights:
 * Event-Driven Architecture
-* Data Science on OpenShift
+* {rh-oai}
 * Process Automation
 
 == Solution Discussion and Demonstration

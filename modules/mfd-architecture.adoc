@@ -31,10 +31,10 @@ image::mlops-fraud-detection/mfd-reference-architecture.png[link="/images/mlops-
 
 The following technologies are used in this solution:
 
-https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Platform]::
+link:https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Container Platform]::
 An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
 
-https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai[Red Hat OpenShift AI]::
+link:https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai[Red Hat OpenShift AI]::
 Red Hat® OpenShift® AI is an AI-focused portfolio that provides tools to train, tune, serve, monitor, and manage AI/ML experiments and models on Red Hat OpenShift. Bring data scientists, developers, and IT together on a unified platform to deliver AI-enabled applications faster.
 
 https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift GitOps]::

@@ -9,9 +9,6 @@ aliases: /mlops-fraud-detection/getting-started/
 
 include::modules/mfd-deploying-mfd-pattern.adoc[leveloffset=1]
 
-include::modules/mfd-using-mfd-pattern.adoc[leveloffset=1]
-
 = Next Steps
 
-link:https://groups.google.com/g/hybrid-cloud-patterns[Help & Feedback]
-link:https://github.com/validatedpatterns/mlops-fraud-detection/issues[Report Bugs]
+* link:mfd-running-the-demo[Run the demo].
