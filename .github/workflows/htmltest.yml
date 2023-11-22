@@ -35,6 +35,8 @@ jobs:
           ls -lR public/
 
       - name: Run htmltest
+        # Don't fail the build on broken links
+        #continue-on-error: true
         uses: wjdp/htmltest-action@master
         with:
           config: .htmltest.yml
