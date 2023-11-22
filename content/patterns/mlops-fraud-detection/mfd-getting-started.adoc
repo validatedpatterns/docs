@@ -1,7 +1,7 @@
 ---
 title: Getting started
 weight: 10
-aliases: /mlops-fraud-detection/getting-started/
+aliases: /mlops-fraud-detection/mfd-getting-started/
 ---
 :toc:
 :imagesdir: /images
@@ -11,4 +11,4 @@ include::modules/mfd-deploying-mfd-pattern.adoc[leveloffset=1]
 
 = Next Steps
 
-* link:mfd-running-the-demo[Run the demo].
+* link:../mfd-running-the-demo[Run the demo].

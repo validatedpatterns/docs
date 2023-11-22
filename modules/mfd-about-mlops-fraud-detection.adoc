@@ -33,6 +33,7 @@ This architecture pattern demonstrates four strengths:
 * *Cost Efficiency*: By automating the detection process, AI reduces the need for extensive manual review of transactions, which can be time-consuming and costly.
 * *Flexibility and Agility*: An cloud native architecture that supports the use of microservices, containers, and serverless computing, allowing for more flexible and agile development and deployment of AI models. This means faster iteration and deployment of new fraud detection algorithms.
 
+
 // video link to a presentation on the use case
 .Overview of the solution in credit card fraud detection
 * video link coming soon
