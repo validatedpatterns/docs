@@ -80,8 +80,6 @@ global:
 
 main:
   clusterGroupName: hub
-  gitOpsSpec:
-    operatorChannel: gitops-1.9
 ----
 
 [source,terminal]
