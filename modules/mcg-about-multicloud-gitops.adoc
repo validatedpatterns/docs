@@ -45,19 +45,19 @@ image::multicloud-gitops/logical-diagram.png[Logical Architecture]
 
 The following technologies are used in this solution:
 
-https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Platform]::
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-ocp}]::
 An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
 
-https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift GitOps]::
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-gitops}]::
 A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
 
-https://www.redhat.com/en/technologies/management/advanced-cluster-management[Red Hat Advanced Cluster Management for Kubernetes]::
+https://www.redhat.com/en/technologies/management/advanced-cluster-management[{rh-rhacm-first}]::
 Controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale.
 
-https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform]::
+https://www.redhat.com/en/technologies/management/ansible[{rh-ansible}]::
 Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
 
-Hashicorp Vault::
+{hashicorp-vault}::
 Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
 
 This solution also uses a variety of _observability tools_ including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
