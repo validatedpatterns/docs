@@ -10,7 +10,7 @@ params:
 security:
   exec:
     allow: ["^dart-sass-embedded$", "^go$", "^npx$", "^postcss$", "^asciidoctor$"]
-    osEnv: (?i)^(GEM_PATH)$
+    osEnv: (?i)^(GEM_PATH|PATH|PATHEXT|APPDATA|TMP|TEMP|TERM|RUBYLIB)$
   funcs:
     getenv:
     - ^HUGO_
