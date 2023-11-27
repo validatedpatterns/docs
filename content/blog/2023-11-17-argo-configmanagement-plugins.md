@@ -1,6 +1,6 @@
 ---
 date: 2023-11-17
-title: ArgoCD Config Management Plugins in Validated Patterns
+title: Argo CD Config Management Plugins in Validated Patterns
 summary: Validated Patterns now support sidecar configmanagement plugins in ArgoCD
 author: Martin Jackson
 blog_tags:
@@ -13,17 +13,17 @@ blog_tags:
 aliases: /2023/11/17/argocd-cmps/
 ---
 
-# ArgoCD Configuration Management Plugins and the Validated Patterns Framework
+# Argo CD Configuration Management Plugins and the Validated Patterns Framework
 
 ## Problem
 
-ArgoCD has a number of mechanisms for facilitating Kubernetes application deployments besides applying raw manifests.
-The most prominent mechanisms it uses are Kustomize (which is built into kubectl now) and Helm (which is an external tool still). If the user has additional needs for manifest generation that cannot be met by either of these tools, ArgoCD
+Argo CD has a number of mechanisms for facilitating Kubernetes application deployments besides applying raw manifests.
+The most prominent mechanisms it uses are Kustomize (which is built into kubectl now) and Helm (which is an external tool still). If the user has additional needs for manifest generation that cannot be met by either of these tools, Argo CD
 provides a mechanism called Configuration Management Plugins that allow for editing the manifest stream either in
 addition to or in lieu of Helm or Kustomize. This mechanism allows, for example, using both Helm and Kustomize on the
 same template files and/or bases at the same time. If the user needs a custom tool, such as [PolicyGen](https://cloud.redhat.com/blog/generating-governance-policies-using-kustomize-and-gitops) to be involved in generating Kubernetes
 manifests, this feature enables its use. Similarly, another use for this feature is to enable the
-[ArgoCD Vault Plugin](https://github.com/argoproj-labs/argocd-vault-plugin), which works by substituting specific tags
+[Argo CD Vault Plugin](https://github.com/argoproj-labs/argocd-vault-plugin), which works by substituting specific tags
 in manifests. This allows users to avoid storing secrets directly in git repositories, which is one of the key needs
 of an operational GitOps strategy.
 
@@ -85,7 +85,7 @@ the argocd kind supports this, so do we.)
 `configManagementPlugins` is an array. Each element will add one sidecar plugin to the GitOps repo-server pod the
 clusterGroup chart controls. In the `argoCD` instance it primarily adds elements to the `sidecarContainers` property.
 
-The `name` element is the name of the plugin - this is how applications can specifically request that ArgoCD/GitOps
+The `name` element is the name of the plugin - this is how applications can specifically request that Argo CD/GitOps
 process the manifests. This name is also used to compose a configmap name if the user specifies the pluginConfig string.
 
 The `image` element is the image the sidecar will use. The repo-server default initContainer will copy the argocd server
@@ -102,8 +102,8 @@ be injected into the sidecar as `plugin.yaml` via configmap. While it is possibl
 to the plugin.yaml would require the sidecar image to be rebuilt and redeployed, and the repo-server pod restarted. It
 is a documented method in the upstream documentation, so the framework allows it.
 
-Please note that the `preserveFileMode` setting in the example plugin config is not yet supported in ArgoCD 2.6/GitOps
-Operator 1.8, but is in ArgoCD 2.8/GitOps Operator 1.10. The main use for this property is to call executables inside
+Please note that the `preserveFileMode` setting in the example plugin config is not yet supported in Argo CD 2.6/GitOps
+Operator 1.8, but is in Argo CD 2.8/GitOps Operator 1.10. The main use for this property is to call executables inside
 the repository as post-renderers (as this example does). Please be aware that there are security concerns associated
 with doing this. The suggested practice is to ship any executable programs (including shell scripts, Python scripts
 etc.) as part of the sidecar image.
@@ -135,10 +135,10 @@ Finally, it was unclear that there would be significant demand for such a featur
 
 Of course, there is some common wisdom about making assumptions in situations like this. Two major factors caused us to
 revisit the question of config management plugins in the framework. First, one of our prospective users clearly had an
-architectural need of the framework that was best met using config management plugins; and upstream, ArgoCD had come up
+architectural need of the framework that was best met using config management plugins; and upstream, Argo CD had come up
 with an entirely new mechanism for implementing CMPs using sidecars. This took the question of rebuilding or
 substituting the repo-server image off the table; but required some changes in the framework to accomodate the new
-mechanism. Secondly, we learned that the existing plugin framework had been deprecated and was at risk of being removed. It was actually removed upstream in ArgoCD 2.9.
+mechanism. Secondly, we learned that the existing plugin framework had been deprecated and was at risk of being removed. It was actually removed upstream in Argo CD 2.9.
 
 Now that the framework supports user-specified sidecar plugins, we would love to hear your feedback. Does our adoption
 of CMP 2.0 meet your needs? Please engage with us in our [upstream issue tracker](https://github.com/validatedpatterns/common/issues).
