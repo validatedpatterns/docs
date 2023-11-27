@@ -1,7 +1,7 @@
 ---
 menu:
-  learn:
-    parent: Workflow
+  contribute:
+    parent: Validated Pattern tiers
 title: Validated Patterns - Maintained tier
 weight: 45
 aliases: /requirements/maintained/

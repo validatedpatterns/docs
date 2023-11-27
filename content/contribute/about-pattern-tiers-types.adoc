@@ -1,7 +1,6 @@
 ---
 menu:
-  learn:
-    parent: Workflow
+  contribute:
 title: Validated Pattern tiers
 weight: 41
 ---
