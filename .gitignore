@@ -16,3 +16,5 @@ Gemfile.lock
 .idea
 .vale/styles/AsciiDoc
 .vale/styles/RedHat
+.htmltest.yml
+.github/workflows/htmltest.yml

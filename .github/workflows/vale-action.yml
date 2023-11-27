@@ -10,7 +10,7 @@ jobs:
       - uses: errata-ai/vale-action@reviewdog
         with:
           filter_mode: added
-          vale_flags: "--no-exit --minAlertLevel=suggestion --glob=*.adoc"
+          vale_flags: "--no-exit --minAlertLevel=error --glob=*.adoc"
           reporter: github-pr-review
           fail_on_error: false
         env:
