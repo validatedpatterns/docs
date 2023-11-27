@@ -8,7 +8,7 @@ As data arrives from Alani's various monitoring devices her latest metrics are c
 
 //figure 1 originally
 .Overview of the solution reference architecture
-image::emerging-disease-detection/edd-reference-architecture.png[link="/images/emerging-disease-detection/edd-reference-architecture.png"]
+image::emerging-disease-detection/edd-rh-hl-architecture.png[link="/images/emerging-disease-detection/edd-rh-hl-architecture.png", width=940]
 
 In the following figure, logically, this solution can be viewed as being composed of an automation component, unified management including secrets management, and the clusters under management, all running on top of a user-chosen mixture of on-premise data centers and public clouds.
 
