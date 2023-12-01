@@ -1,0 +1,101 @@
+---
+title: Intel AMX accelerated Medical Diagnosis
+date: 2023-10-10
+validated: false
+summary: This pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis previously developed by Red Hat. The pattern is modified to utilize Intel AMX feature.
+products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift Serverless
+- Red Hat OpenShift Data Foundation
+- Red Hat OpenShift Node Feature Discovery
+- 4th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
+industries:
+- medical
+aliases: /medical-diagnosis-amx/
+pattern_logo: medical-diagnosis.png
+links:
+  install: getting-started
+  arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
+  help: https://groups.google.com/g/hybrid-cloud-patterns
+  bugs: https://github.com/hybrid-cloud-patterns/medical-diagnosis-amx/issues
+---
+
+include::modules/comm-attributes.adoc[]
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+//Module to be included
+//:_content-type: CONCEPT
+//:imagesdir: ../../images
+[id="about-med-diag-pattern"]
+= About the {med-pattern}
+
+Background::
+
+This validated pattern is a modified version of the Medical Diagnosis pattern. It was extended to showcase *{intel-4th-gen-xeon-processors}* capabilities, especially *link:https://www.intel.com/content/www/us/en/products/docs/accelerator-engines/advanced-matrix-extensions/overview.html[{intel-amx}]* that speeds up AI workloads.
+The pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that was previously developed by Red Hat for the US Department of Veteran Affairs. It includes the same
+functionality as the original demonstration, but uses the GitOps framework to deploy the pattern including Operators, creation of namespaces, and cluster configuration.
+
+Compared to the original Medical Diagnosis pattern, this one was extended by the Node Feature Discovery Operator, whose task is to detect hardware features and expose them as labels for this node.
+Red Hat OpenShift Serverless component is modified to assign AI workload to nodes with available {intel-amx} feature.
+
+Moreover, the Machine Learning model was quantized to int8 precision to improve efficiency thanks to *{intel-amx}*, with only marginal accuracy loss.
+
+This pattern was also adapted to run in on-premise environments.
+
+Workflow::
+
+* Node Feature Discovery operator labels nodes with {intel-amx} capabilities.
+* Ingest chest X-rays from a simulated X-ray machine and puts them into an `objectStore` based on Ceph.
+* The `objectStore` sends a notification to a Kafka topic.
+* A KNative Eventing listener to the topic triggers a KNative Serving function.
+* KNative Serving was modified to schedule pods with AI workload only on nodes with enabled {intel-amx} feature
+* An ML-trained model running in a container makes a risk assessment of Pneumonia for incoming images.
+* A Grafana dashboard displays the pipeline in real time, along with images incoming, processed, anonymized, and full metrics collected from Prometheus.
+
+The simplified pipeline without {intel-amx} is showcased link:https://www.youtube.com/watch?v=zja83FVsm14[in this video].
+
+image::medical-diagnosis-amx/dashboard.png[link="/images/medical-diagnosis-amx/dashboard.png"]
+
+[id="about-solution-med"]
+== About the solution elements
+
+The solution aids the understanding of the following:
+
+* How to use a GitOps approach to keep in control of configuration and operations.
+* How to deploy AI/ML technologies for medical diagnosis using GitOps.
+
+The {med-pattern} uses the following products and technologies:
+
+* {rh-ocp} for container orchestration
+* {rh-gitops}, a GitOps continuous delivery (CD) solution
+* {rh-amq-first}, an event streaming platform based on the Apache Kafka
+* {rh-serverless-first} for event-driven applications
+* {rh-ocp-data-first} for cloud native storage capabilities
+* {grafana-op} to manage and share Grafana dashboards, data sources, and so on
+* Node Feature Discovery operator to label nodes with {intel-amx} capabilities
+
+
+[id="about-architecture-med"]
+== About the architecture
+
+[IMPORTANT]
+====
+Presently, the {amx-med-pattern} does not have an edge component. Edge deployment capabilities are planned as part of the pattern architecture for a future release.
+====
+
+image::medical-diagnosis-amx/edge-medical-diagnosis-marketing-slide.png[link="/images/medical-diagnosis-amx/edge-medical-diagnosis-marketing-slide.png"]
+
+Components are running on OpenShift either at the data center, at the medical facility, or public cloud running OpenShift.
+
+The diagram below shows the components that are deployed with the the data flows and API calls between them.
+
+image::medical-diagnosis-amx/physical-dataflow.png[link="/images/medical-diagnosis-amx/physical-dataflow.png"]
+
+[id="next-steps_med-diag-index"]
+== Next steps
+
+* Getting started link:getting-started[Deploy the Pattern]
+//We have relevant links on the patterns page

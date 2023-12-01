@@ -1,0 +1,76 @@
+---
+title: Cluster Sizing
+weight: 20
+aliases: /medical-diagnosis/cluster-sizing/
+---
+
+include::modules/comm-attributes.adoc[]
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+//Module to be included
+//:_content-type: CONCEPT
+//:imagesdir: ../../images
+[id="about-openshift-cluster-sizing-med"]
+= About OpenShift cluster sizing for the {amx-med-pattern}
+
+The minimum requirements for an {ocp} cluster depend on your installation platform, for example:
+
+* For AWS, see link:https://docs.openshift.com/container-platform/4.13/installing/installing_aws/preparing-to-install-on-aws.html#requirements-for-installing-ocp-on-aws[Installing {ocp} on AWS].
+
+* For bare-metal, see link:https://docs.openshift.com/container-platform/4.13/installing/installing_bare_metal/installing-bare-metal.html#installation-minimum-resource-requirements_installing-bare-metal[Installing {ocp} on bare metal].
+
+To understand cluster sizing requirements for the {amx-med-pattern}, consider the following components that the {amx-med-pattern} deploys on the datacenter or the hub OpenShift cluster:
+
+|===
+| Name | Kind | Namespace | Description
+
+| Medical Diagnosis Hub
+| Application
+| medical-diagnosis-hub
+| Hub GitOps management
+
+| {rh-gitops}
+| Operator
+| openshift-operators
+| {rh-gitops-short}
+
+| {rh-ocp-data-first}
+| Operator
+| openshift-storage
+| Cloud Native storage solution
+
+| {rh-amq-streams}
+| Operator
+| openshift-operators
+| AMQ Streams provides Apache Kafka access
+
+| {rh-serverless-first}
+| Operator
+| - knative-serving (knative-eventing)
+| Provides access to Knative Serving and Eventing functions
+
+| {rh-nfd}
+| Operator
+| openshift-nfd
+| Manages the detection and labeling of hardware features and configuration (for example {intel-amx})
+|===
+
+//AI: Removed the following since we have CI status linked on the patterns page
+//[id="tested-platforms-cluster-sizing"]
+//== Tested Platforms
+
+The {amx-med-pattern} also includes the Red Hat Advanced Cluster Management (RHACM) supporting operator that is installed by OpenShift GitOps using Argo CD.
+
+For information about requirements for additional platforms, see link:https://docs.openshift.com/container-platform/4.13/installing/installing-preparing.html[{ocp} documentation].
+
+[id="med-openshift-cluster-size"]
+=== About {amx-med-pattern} OpenShift cluster size
+
+The OpenShift cluster is a standard deployment of 3 control plane nodes and 3 or more worker nodes.
+
+The recommended hardware setup:
+
+include::modules/intel-recommended-cluster-sizing.adoc[]
