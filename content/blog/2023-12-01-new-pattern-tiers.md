@@ -1,15 +1,15 @@
 ---
 date: 2023-12-01
 title: Introducing a Simplified Tier Naming Scheme
-summary: New pattern tiers Sandbox, Tested, and Maintained
+summary: Simplified pattern tiers - Sandbox, Tested, and Maintained.
 author: Andrew Beekhof
 blog_tags:
 - patterns
 - announce
-aliases: /2023/12/01/new-pattern-tiers/
+aliases: /2023/12/01/pattern-tiers/
 ---
 
-This effort started off with 2 different classes of patterns: “Community” and “Validated”, however this terminology dates back to before the effort had arrived at “Validated Patterns” as the official project name.
+The efforts here started off with 2 different classes of patterns: “Community” and “Validated”, however this terminology dates back to before the effort had arrived at “Validated Patterns” as the official project name.
 
 Having standardized on the use of “Validated Patterns” to refer to the overall initiative, it became confusing to refer to  “Community” Validated Patterns and “Validated” Validated Patterns.
 
