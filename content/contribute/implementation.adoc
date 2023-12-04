@@ -4,6 +4,7 @@ menu:
     parent: Validated Pattern tiers
 title: Implementation requirements
 weight: 42
+aliases: /learn/implementation/
 aliases: /requirements/implementation/
 ---
 

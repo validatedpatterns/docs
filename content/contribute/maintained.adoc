@@ -4,7 +4,7 @@ menu:
     parent: Validated Pattern tiers
 title: Validated Patterns - Maintained tier
 weight: 45
-aliases: /requirements/maintained/
+aliases: /requirements/validated/
 ---
 
 :toc:
@@ -29,14 +29,14 @@ Each {maintained} pattern represents an ongoing maintenance, support, and testin
 
 For this reason we have designed the tiers and our processes to facilitate this to occur outside of the team by any sufficiently motivated party, including other parts of Red Hat, partners, and even customers.
 
-In limited cases, the {solution-name-upstream} team may consider taking on that work, however, it is recommended that you contact the team at least 4 weeks prior to the end of a given quarter for the necessary work to be considered as part of the following quarter's planning process.
+In limited cases, the {solution-name-upstream} team may consider taking on that work, however, it is recommended that you contact the team at least 4 weeks before the end of a given quarter for the necessary work to be considered as part of the following quarter's planning process.
 
 
 [id="requirements-maintained-tier"]
 == Requirements for the {maintained} tier
 
 The {maintained} patterns have deliverable and requirements in addition to those
-specified for the link:/requirements/tested/[Tested tier].
+specified for the link:/contribute/tested[Tested tier].
 
 The requirements are categorized as follows:
 

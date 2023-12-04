@@ -4,7 +4,6 @@ menu:
     parent: Validated Pattern tiers
 title: Testing Artefacts
 weight: 50
-aliases: /requirements/tested/
 ---
 
 :toc:
