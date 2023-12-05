@@ -2,7 +2,7 @@
 title: Cockroach
 tier: sandbox
 Summary: A multicloud pattern using cockroachdb and submariner, deployed via RHACM.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
 ---

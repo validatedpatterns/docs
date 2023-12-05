@@ -3,7 +3,7 @@ title: Ansible Edge GitOps
 date: 2022-06-08
 tier: sandbox
 summary: This pattern uses OpenShift Virtualization to simulate an edge environment for VMs.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Ansible Automation Platform
 - Red Hat OpenShift Virtualization
