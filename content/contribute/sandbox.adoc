@@ -1,11 +1,10 @@
 ---
 menu:
-  learn:
-    parent: Workflow
+  contribute:
+    parent: Validated Pattern tiers
 title: Validated Patterns - Sandbox tier
 weight: 43
 aliases: /requirements/community/
-aliases: /requirements/sandbox/
 ---
 
 :toc:
@@ -48,7 +47,7 @@ These are optional or desirable features, but their absence does not hinder the 
 === Must
 A {sandbox} pattern must continue to meet the following criteria to remain in the {sandbox} tier:
 
-* A {sandbox} pattern must conform to the common technical link:/requirements/implementation/[implementation requirements].
+* A {sandbox} pattern must conform to the common technical link:/contribute/implementation/[implementation requirements].
 * A {sandbox} pattern must be able to be deployed onto a freshly deployed OpenShift cluster without prior modification or tuning.
 * A {sandbox} pattern must include a top-level README file that highlights the business problem and how the pattern solves it.
 * A {sandbox} pattern must include an architecture drawing. The specific tool or format is flexible as long as the meaning is clear.
@@ -69,4 +68,4 @@ The {solution-name-upstream} team commits to maintaining the framework, but will
 
 * A {sandbox} pattern (including works-in-progress) can be hosted in the link:https://github.com/validatedpatterns-sandbox[https://github.com/validatedpatterns-sandbox] GitHub organization.
 * A {sandbox} pattern can be listed on the link:https://validatedpatterns.io[https://validatedpatterns.io] site.
-* A {sandbox} pattern meeting additional criteria can be nominated for promotion to the link:/learn/tested/[Tested tier].
+* A {sandbox} pattern meeting additional criteria can be nominated for promotion to the link:/contribute/tested/[Tested tier].

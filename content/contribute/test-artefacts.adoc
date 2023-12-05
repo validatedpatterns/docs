@@ -1,10 +1,9 @@
 ---
 menu:
-  learn:
-    parent: Workflow
+  contribute:
+    parent: Validated Pattern tiers
 title: Testing Artefacts
 weight: 50
-aliases: /requirements/tested/
 ---
 
 :toc:

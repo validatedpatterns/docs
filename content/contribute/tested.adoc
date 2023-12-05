@@ -1,10 +1,9 @@
 ---
 menu:
-  learn:
-    parent: Workflow
+  contribute:
+    parent: Validated Pattern tiers
 title: Validated Patterns - Tested tier
 weight: 44
-aliases: /requirements/tested/
 ---
 
 :toc:
@@ -18,7 +17,7 @@ include::modules/comm-attributes.adoc[]
 The {tested} tier provides you with additional collateral and reassurance that the pattern was known to be recently working on at least one recent version of {rh-ocp}. Inclusion in this tier requires some additional work for the pattern's owner, which might be a partner or a sufficiently motivated subject matter expert (SME).
 
 [id="nominating-a-pattern-for-tested-tier"]
-== Nominating a a pattern for the {tested} tier
+== Nominating a pattern for the {tested} tier
 
 If your pattern qualifies or meets the criteria for {tested} tier, submit your nomination to mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
 
@@ -35,7 +34,7 @@ In limited cases, the {solution-name-upstream} team may consider taking on that 
 [id="requirements-tested-tier"]
 == Requirements for the {tested} tier
 
-A {tested} patterns have deliverable and requirements in addition to those specified for the link:/requirements/sandbox/[Sandbox tier].
+A {tested} patterns have deliverable and requirements in addition to those specified for the link:/contribute/sandbox/[Sandbox tier].
 
 The requirements are categorized as follows:
 
@@ -67,7 +66,7 @@ Example: https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlT
 
 * A {tested} pattern must nominate at least one currently supported {rh-ocp} release to test against.
 * A {tested} pattern must ensure the test plan passes at least once per quarter.
-* A {tested} pattern must create a publicly available JSON file (for example, in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and {rh-ocp} version. See link:/learn/test-artefacts/[testing artefacts].
+* A {tested} pattern must create a publicly available JSON file (for example, in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and {rh-ocp} version. See link:/contribute/test-artefacts/[testing artefacts].
 
 [NOTE]
 ====
