@@ -1,5 +1,6 @@
 ---
 title: Multicluster DevSecOps
+tier: sandbox
 date: 2022-06-08
 summary: This pattern is derived from the multi-cloud GitOps pattern with added products to provide a complete DevSecOps workflow.
 products:

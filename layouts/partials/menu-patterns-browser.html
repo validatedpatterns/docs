@@ -7,7 +7,7 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="typeHeading">
           <button class="pf-c-accordion__toggle collapsed" title="Filter patterns by validation type" type="button" data-bs-toggle="collapse" data-bs-target="#collapseType" aria-expanded="false" aria-controls="collapseType">
-            Pattern Type
+            Pattern Tiers
             <span class="pf-c-accordion__toggle-icon">
               <i class="fas fa-angle-down" aria-hidden="true"></i>
             </span>
@@ -18,21 +18,20 @@
         </h2>
         <div id="collapseType" class="pf-c-accordion__expanded-content collapse" aria-labelledby="typeHeading" data-bs-parent="#patternsAccordionNav">
           <div class="pf-c-accordion__expanded-content-body">
+            <a href="/learn/about-pattern-tiers-types/">What do these tiers mean?</a>
             <div class="pf-c-select__menu-group">
               <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-patterntype">
-                <label class="pf-c-check pf-c-select__menu-item" for="type:validated">
-                  <input class="pf-c-check__input" type="checkbox" onclick="filterSelection(this.id)" id="type:validated" name="validated"/>
-                  <span class="pf-c-check__label">Validated by Red Hat</span>
-                  <span class="pf-c-check__description">
-                    <a href="/learn/validated/">What are validated patterns?</a>
-                  </span>
+                <label class="pf-c-check pf-c-select__menu-item" for="type:maintained">
+                  <input class="pf-c-check__input" type="checkbox" onclick="filterSelection(this.id)" id="type:maintained" name="maintained"/>
+                  <span class="pf-c-check__label">Maintained</span>
                 </label>
-                <label class="pf-c-check pf-c-select__menu-item" for="type:community">
-                  <input class="pf-c-check__input" type="checkbox" onclick="filterSelection(this.id)" id="type:community" name="community"/>
-                  <span class="pf-c-check__label">Community pattern</span>
-                  <span class="pf-c-check__description">
-                    <a href="/learn/community/">What are community patterns?</a>
-                  </span>
+                <label class="pf-c-check pf-c-select__menu-item" for="type:tested">
+                  <input class="pf-c-check__input" type="checkbox" onclick="filterSelection(this.id)" id="type:tested" name="tested"/>
+                  <span class="pf-c-check__label">Tested</span>
+                </label>
+                <label class="pf-c-check pf-c-select__menu-item" for="type:sandbox">
+                  <input class="pf-c-check__input" type="checkbox" onclick="filterSelection(this.id)" id="type:sandbox" name="sandbox"/>
+                  <span class="pf-c-check__label">Sandbox</span>
                 </label>
               </fieldset>
           </div>

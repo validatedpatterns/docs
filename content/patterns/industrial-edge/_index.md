@@ -1,7 +1,7 @@
 ---
 title: Industrial Edge
 date: 2021-10-12
-validated: true
+tier: sandbox
 summary: This pattern demonstrates a horizontal solution for Industrial Edge use cases.
 products:
 - Red Hat OpenShift Container Platform

@@ -1,7 +1,7 @@
 ---
 title: Medical Diagnosis
 date: 2021-01-19
-validated: true
+tier: sandbox
 summary: This pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis previously developed by Red Hat.
 products:
 - Red Hat OpenShift Container Platform

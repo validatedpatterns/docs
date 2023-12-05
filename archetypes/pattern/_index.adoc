@@ -15,8 +15,12 @@ links:
   arch:
   help: https://groups.google.com/g/validatedpatterns
   bugs:
-# The following parameters are only used for validated patterns. Do not uncomment them unless your pattern is validated.
-# validated:
+# Set tier to one of sandbox, tested, or maintained. If empty, the default
+# is sandbox
+# tier: sandbox
+#
+# The following parameters are only used for maintained validated patterns.
+# Do not uncomment them unless your pattern is in the maintained tier.
 # pattern_logo:
 # ci:
 ---

@@ -15,11 +15,13 @@
     {{ .Summary }}
   </div>
   <div class="pf-c-card__footer">
-    {{ $validated := .Param "validated" }}
-    {{ if (eq $validated true ) }}
-        {{ partial "label-validated-pattern.html" . }}
+    {{ $validated := .Param "tier" }}
+    {{ if (eq $validated "maintained" ) }}
+      {{ partial "label-maintained.html" . }}
+    {{ else if (eq $validated "tested" ) }}
+      {{ partial "label-tested.html" . }}
     {{ else }}
-        {{ partial "label-community-pattern.html" . }}
+      {{ partial "label-sandbox.html" . }}
     {{ end }}
   </div>
 </div>
