@@ -13,6 +13,12 @@
   margin-bottom: 10px;
 }
 
+.custom-pattern-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+
 /*TITLES*/
 
 /*for now until theres just 1 h1 per page. Then change to 4xl*/
@@ -900,7 +906,7 @@ table.tableblock tr > :first-child {
 
 table.tableblock tbody > tr > * {
   overflow-wrap: break-word;
-  vertical-align: baseline;
+  /* vertical-align: baseline; */
 }
 
 table.tableblock thead {

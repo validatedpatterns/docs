@@ -16,24 +16,27 @@ include::modules/comm-attributes.adoc[]
 
 The different tiers of {solution-name-upstream} are designed to facilitate ongoing maintenance, support, and testing effort for a pattern. To contribute to a pattern that suits your solution or to learn about onboarding your own pattern, understand the following pattern tiers.
 
+[cols=".^1,.^2,5"]
 |===
-|Pattern tier|Description
+|Icon|Pattern tier|Description
 
+|image:pattern-tier-sandbox.png[]
 |link:/requirements/sandbox/[{sandbox-tier-first}]
 |A pattern categorized under the {sandbox} tier provides you with an entry point to onboard to {solution-name-upstream}. The minimum requirement to qualify for the {sandbox} tier is to start with the patterns framework and include minimal documentation.
 
 The patterns in this tier might be in a work-in-progress state; and they might have been manually tested on a limited set of platforms.
 
 
+|image:pattern-tier-tested.png[]
 |link:/requirements/tested/[{tested-tier-first}]
 |A pattern categorized under the {tested} tier implies that the pattern might have been recently working on at least one recent version of {rh-ocp}. Qualifying for this tier might require additional work for the pattern’s owner, who might be a partner or a motivated subject matter expert (SME).
 
 The patterns in this tier might have a defined business problem with a demonstration. The patterns might have a manual or automated test plan, which passes at least once for each new {rh-ocp} minor version.
 
+|image:pattern-tier-maintained.png[]
 |link:/requirements/maintained/[{maintained-tier-first}]
 |A pattern categorized under the {maintained} tier implies that the pattern might have been functional on all currently supported extended update support (EUS) versions of {rh-ocp}. Qualifying for this tier might require additional work for the pattern’s owner who might be a partner or a motivated SME.
 
 The patterns in this tier might have a formal release process with patch releases. They might have continuous integration (CI) automation testing.
 
 |===
-
