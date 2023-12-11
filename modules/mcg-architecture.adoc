@@ -76,3 +76,8 @@ View and download all of the diagrams above from the link:https://www.redhat.com
 == Presentation
 
 View a short presentation slide deck about Multicloud GitOps link:https://docs.google.com/presentation/d/1q3qllA_VtUR00VqF0eH_-F5OKHuIcCjVG2AzZ5Cm2NE/edit#slide=id.g14042b839c4_2_794[here]
+
+[id="demo-script"]
+== Demo Script
+
+View a demo script walking you through the whole pattern installation link:https://docs.google.com/document/d/1fXfH0Ws90-58LVDw3RDn_LkiILwRdJWwmsxwP0Od_is/edit#heading=h.mnh4e4mvolww[here]
