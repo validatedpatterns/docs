@@ -72,3 +72,7 @@ image::multicloud-gitops/spi-multi-cloud-gitops-sd-security.png[Schematic showin
 
 View and download all of the diagrams above from the link:https://www.redhat.com/architect/portfolio/tool/index.html?#gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/diagrams/spi-multi-cloud-gitops.drawio[Red Hat Portfolio Architecture open source tooling site].
 
+[id="slide-deck"]
+== Presentation
+
+View a short presentation slide deck about Multicloud GitOps link:https://docs.google.com/presentation/d/1q3qllA_VtUR00VqF0eH_-F5OKHuIcCjVG2AzZ5Cm2NE/edit#slide=id.g14042b839c4_2_794[here]
