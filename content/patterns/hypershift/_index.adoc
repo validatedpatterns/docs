@@ -3,9 +3,10 @@ title: HyperShift
 date: 2023-11-15
 tier: sandbox
 summary: This pattern is for deploying the Hosted Control Plane (HyperShift) service.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat MultiCluster Engine
+other_products:
 - AWS Controller for Kubernetes
 industries:
 - Infrastructure

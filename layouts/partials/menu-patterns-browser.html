@@ -69,11 +69,11 @@
         </div>
       </div>
 
-      <!--PRODUCTS-->
+      <!--RED HAT PRODUCTS-->
 
       <div class="accordion-item">
-        <h2 class="accordion-header" id="productHeading">
-          <button class="pf-c-accordion__toggle collapsed" title="Filter patterns by Red Hat product" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProducts" aria-expanded="false" aria-controls="collapseProducts">
+        <h2 class="accordion-header" id="rhProductHeading">
+          <button class="pf-c-accordion__toggle collapsed" title="Filter patterns by Red Hat product" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRhProducts" aria-expanded="false" aria-controls="collapseRhProducts">
             Red Hat products
             <span class="pf-c-accordion__toggle-icon">
               <i class="fas fa-angle-right" aria-hidden="true"></i>
@@ -83,13 +83,13 @@
             </span>
           </button>
         </h2>
-        <div id="collapseProducts" class="pf-c-accordion__expanded-content collapse" aria-labelledby="productHeading" data-bs-parent="#patternsAccordionNav">
+        <div id="collapseRhProducts" class="pf-c-accordion__expanded-content collapse" aria-labelledby="productHeading" data-bs-parent="#patternsAccordionNav">
           <div class="pf-c-accordion__expanded-content-body">
             <div class="pf-c-select__menu-group">
-              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-RHproducts">
-                {{ range $name, $taxonomy := .Site.Taxonomies.products }}
-                <label class="pf-c-check pf-c-select__menu-item" for="products:{{- $name -}}">
-                  <input class="pf-c-check__input" type="checkbox" id="products:{{- $name -}}" onclick="filterSelection(this.id)" name="{{ $taxonomy.Page.Title }}"/>
+              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-rh-products">
+                {{ range $name, $taxonomy := .Site.Taxonomies.rh_products }}
+                <label class="pf-c-check pf-c-select__menu-item" for="rh_products:{{- $name -}}">
+                  <input class="pf-c-check__input" type="checkbox" id="rh_products:{{- $name -}}" onclick="filterSelection(this.id)" name="{{ $taxonomy.Page.Title }}"/>
                   <span class="pf-c-check__label wrappable">{{ $taxonomy.Page.Title }}</span>
                 </label>
                 {{ end }}
@@ -98,6 +98,37 @@
           </div>
         </div>
       </div>
+
+      <!--OTHER PRODUCTS-->
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="otherProductHeading">
+          <button class="pf-c-accordion__toggle collapsed" title="Filter patterns by other products" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOtherProducts" aria-expanded="false" aria-controls="collapseOtherProducts">
+            Other products
+            <span class="pf-c-accordion__toggle-icon">
+              <i class="fas fa-angle-right" aria-hidden="true"></i>
+            </span>
+            <span class="pf-c-accordion__toggle-icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </h2>
+        <div id="collapseOtherProducts" class="pf-c-accordion__expanded-content collapse" aria-labelledby="otherProductHeading" data-bs-parent="#patternsAccordionNav">
+          <div class="pf-c-accordion__expanded-content-body">
+            <div class="pf-c-select__menu-group">
+              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-RHproducts">
+                {{ range $name, $taxonomy := .Site.Taxonomies.other_products }}
+                <label class="pf-c-check pf-c-select__menu-item" for="other_products:{{- $name -}}">
+                  <input class="pf-c-check__input" type="checkbox" id="other_products:{{- $name -}}" onclick="filterSelection(this.id)" name="{{ $taxonomy.Page.Title }}"/>
+                  <span class="pf-c-check__label wrappable">{{ $taxonomy.Page.Title }}</span>
+                </label>
+                {{ end }}
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

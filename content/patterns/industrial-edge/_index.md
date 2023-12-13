@@ -3,7 +3,7 @@ title: Industrial Edge
 date: 2021-10-12
 tier: sandbox
 summary: This pattern demonstrates a horizontal solution for Industrial Edge use cases.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
 - Red Hat Quay
