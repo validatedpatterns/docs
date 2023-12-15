@@ -5,7 +5,6 @@
  author: Lester Claudio
  blog_tags:
  - patterns
- - namespaces
  aliases: /2023/12/15/understanding-namespaces/
 ---
 
