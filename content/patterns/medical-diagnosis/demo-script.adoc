@@ -1,7 +1,7 @@
 ---
-title: Medical Diagnosis Demo Script
-weight: 40
-aliases: /medical-diagnosis/troubleshooting/
+title: Demo Script
+weight: 60
+aliases: /medical-diagnosis/demo/
 ---
 
 :toc:
@@ -9,24 +9,90 @@ aliases: /medical-diagnosis/troubleshooting/
 :_content-type: REFERENCE
 include::modules/comm-attributes.adoc[]
 
-Object Detection:
-The medical diagnosis pattern is more than just the identification and detection of pneumonia in x-ray images. It is an object detection and classification model built on top of Red Hat OpenShift and can be transformed to fit multiple use-cases within the object classification paradigm These use cases include detecting nefarious objects in packages at mail distribution centers, or contraband items hidden in luggage at airports. 
-Technologies Used:
-The medical diagnosis pattern utilizes technologies from Red Hat and from OpenSource Projects.. 
+[id="demo-intro"]
 
-At the core of the pattern is OpenShift GitOps (ArgoCD) providing a gitops controller to enforce the desired state of our applications deployed to our clusters. This pattern also utilizes technologies like Red Hat AMQ-Streams for Kafka, Red Hat OpenShift Serverless for Knative Eventing and Knative Serving functions. The model storage is provided by Red Hat OpenShift Data Foundations which provides a cloud-native solution for block, file and object storage requirements. 
+== Introduction
+The medical diagnosis pattern integrates multiple Red Hat and Open Source technologies together to create an AI/ML workflow that is able to identify signs of pnuemonia in x-ray images. Within this demo a dashboard is automatically created that provides the CPU and Memory metrics for the pod running the risk assessment application. The dashboard also provides visual representation of the AI/ML workflow from the images being generated at the remote medical facitility to running through the image anonymizer, it also includes the image being scanned along with statistics from the workflow - indicating the probability in which a patient may or may not have pnuemonia. 
 
-Secrets management is built-in to all Validated Patterns. Currently the backend secrets manager is HashiCorp Vault. In addition to vault we use the External Secrets Operator to abstract the creation of kubernetes secrets from the backend providers. The external secrets operator also allows us to have flexibility with different back end providers. 
+[NOTE]
+====
+We simulate the function of the remote medical facility with an application called `image-generator`
+====
 
-Medical Diagnosis uses Grafana dashboards to visualize the pipeline and pipeline metrics.
+[id="demo-objectives"]
+
+== Objectives
+
+In this demo you will complete the following:
+
+* Prepare your local workstation
+* Update the pattern repo with your cluster values
+* Deploy the pattern
+* Access the dashboard
 
 
-OpenShift Console and Medical Diagnosis Dashboard
-Login to your cluster using `kubeadmin`, then click operators > installed operators in the left hand menu.
+[id="getting-started"]
 
-We can see that we have a number of operators already installed on our cluster. This was achieved using the validated pattern framework for medical diagnosis. Keep in mind that these aren’t just the operators being installed, it’s the operators, an instance of the operator and the integration between the various operators that this application needs to run.
+== Getting Started
 
-Next, let’s switch to the developer context. Search for xraylab, then click topologies. When we zoom out we can see the individual resources that are created to make up this application. Let’s start the demonstration by scaling the image-generator deploymentConfig up to 1. We’ll discuss why we’re doing this in just a moment.
+* Follow the link:../getting-started[Getting Started Guide] to ensure that you have met all of the prequisites
+* Review link:../getting-started/#preparing-for-deployment[Preparing for Deployment] for updating the pattern with your cluster values
+
+[NOTE]
+====
+This demo begins after `./pattern.sh make install` has been executed
+====
+
+[id="demo"]
+
+== Demo
+
+Now that we have deployed the pattern onto our cluster, we can begin to discover what has changed, and then move onto the dashboard.
+
+[id="admin-view"]
+
+=== Administrator View - Review Changes to cluster
+
+Login to your cluster's console with the `kubeadmin` user
+
+Let's check out what operators were installed - In the accordian menu on the left:
+* click Operators
+* click Installed Operators
+
+Ensure that `All Projects` is selected
+
+// Jonny insert screenshot of installed operators //
+
+If you started with a new cluster then there were no layered products or operators installed. With the Validated Patterns framework we describe or declare what our cluster's desired state is and the GitOps engine does the rest. This includes creating the instance of the operator and any additional configuration between other API's to ensure everything is working together nicely.
+
+
+[id="dev-view"]
+
+=== Developer View - Review Changes to cluster
+
+Let’s switch to the developer context by click on `Administrator` in the top left corner of the accordian menu then click `Developer`
+
+// Jonny insert screenshot of context switch //
+
+* Change projects to `xraylab-1`
+* Click on `topologies`
+
+Look at all of the resources that have been created for this demo application. What we see in this interface is the collection of all components required for this AI/ML workflow to properly execute. There are even more resources and configurations that get deployed but because we don't directly interact with them we won't worry too much about them. The take away here is when you utilize the framework you are able to build in automation just like this which allows your developers to focus on their important developer things.
+
+
+[id="scale-up"]
+
+=== Scale up the deployment
+
+As we mentioned earlier, we don't have an x-ray machine hanging around that we can use for this demo, so we emulate one by creating an s3 bucket and hosting the x-ray images within it. 
+
+In the "real world" an x-ray would be taken at an edge medical facility and then uploaded to an OpenShift Data Foundations (ODF) S3 compatible bucket in the Core Hospital, triggering the AI/ML workflow. 
+
+To emulate the edge medical facility we use an application called image-generator which (when scaled up) will download the x-rays from s3 and put them in an ODF s3 bucket in the cluster, triggering the AI/ML workflow.
+
+
+
+Search for xraylab, then click topologies. When we zoom out we can see the individual resources that are created to make up this application. Let’s start the demonstration by scaling the image-generator deploymentddConfig up to 1. We’ll discuss why we’re doing this in just a moment.
 
 In the “Filter by resource” drop down, select DeploymentConfig and then in the Name search box type “image”
 
@@ -48,10 +114,10 @@ Let’s filter for risk assessment and soon we will see the pods starting to ter
 
 That’s it for this demo, I hope that you enjoyed it! For more information on medical diagnosis or the validated patterns please check out our website at https://hybrid-cloud-patterns.io
 
+[id="demo"]
 
+== Demo
 
-
-Demo:
 This demo will show all of these technologies working together to deliver an AI/ML pipeline for pneumonia detection. Let’s head over to our OpenShift cluster and take a look at the resources that have been deployed.
 
 Log in to the OpenShift Console
@@ -69,193 +135,9 @@ Let’s take a look at our Grafana dashboard -
 
 An imaging-machine at a medical facility takes an x-ray and then sends that x-ray to an objectstore bucket provided by OpenShift Data Foundations, the objectstore sends a notification to a kafka topic, and then a knative-eventing listener configured to listen to that topic triggers a knative-serving function that scales the riskAssessment deployment. The RiskAssessment application is a containerized ML-model trained for object detection and to make an assessment of probability as to if the person in the image may or may not have pneumonia. The data is persisted in the pattern with a mariadb database and is made available to the Grafana dashboard.
 
+[id="demo-wrap-up"]
 
-[id="med-understanding-the-makefile-troubleshooting"]
-=== Understanding the Makefile
+== Wrap-Up / Summary
+The medical diagnosis pattern is more than just the identification and detection of pneumonia in x-ray images. It is an object detection and classification model built on top of Red Hat OpenShift and can be transformed to fit multiple use-cases within the object classification paradigm These use cases include detecting nefarious objects in packages at mail distribution centers, or contraband items hidden in luggage at airports. 
 
-The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn't required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a `make upgrade` which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
-
-[id="about-make-install-make-deploy-troubleshooting"]
-==== About the make install and make deploy commands
-
-Running `make install` within the pattern application triggers a `make deploy` from `<pattern_directory>/common` directory. This initializes the `common` components of the pattern framework and install a helm chart in the `default` namespace. At this point, cluster services, such as {rh-rhacm-first} and {rh-gitops} are deployed.
-
-After components from the `common` directory are installed, the remaining tasks within the `make install` target run.
-//AI: Check which are these other tasks
-
-[id="make-vault-init-make-load-secrets-troubleshooting"]
-==== About the make vault-init and make load-secrets commands
-
-The {med-pattern} is integrated with {hashicorp-vault} and {eso-op} services for secrets management within the cluster. These targets install vault from a {helm-chart} and load the secret `(values-secret.yaml)` that you created during link:../getting-started/#preparing-for-deployment[Getting Started].
-
-If `values-secret.yaml` does not exist, make will exit with an error saying so. Furthermore, if the `values-secret.yaml` file does exist but is improperly formatted, {rh-ansible} exits with an error about being improperly formatted. To verify the format of the secret, see link:../getting-started/#preparing-for-deployment[Getting Started].
-
-[id="make-bootstrap-make-upgrade-troubleshooting"]
-==== About the make bootstrap and make upgrade commands
-The `make bootstrap` command is the target used for deploying the application specific components of the pattern. It is the final step in the initial `make install` target. You might want to consider running the `make upgrade` command instead of the `make bootstrap` command directly.
-
-Generally, running the `make upgrade` command is required when you encounter errors with the application pattern deployment. For instance, if a value was missed and the chart was not rendered correctly, executing `make upgrade` command after fixing the value would be necessary.
-
-You might want to review the `Makefile` for the `common` and `Medical Diagnosis` components, which are located in `common/Makefile` and `./Makefile` respectively.
-
-[id="troubleshooting-the-pattern-deployment-troubleshooting"]
-=== Troubleshooting the Pattern Deployment
-
-Occasionally the pattern will encounter issues during the deployment. This can happen for any number of reasons, but most often it is because of either a change within the operator itself or something has changed in the {olm-first} which determines which operators are available in the operator catalog. Generally, when an issue occurs with the {olm-short}, the operator is unavailable for installation. To ensure that the operator is in the catalog, run the following command:
-
-[source,terminal]
-----
-$ oc get packagemanifests | grep <operator-name>
-----
-
-When an issue occurs with the operator itself you can verify the status of the `subscription` and make sure that there are no warnings.An additional option is to log into the OpenShift Console, click on Operators, and check the status of the operator.
-
-Other issues encounter could be with a specific application within the pattern misbehaving. Most of the pattern is deployed into the `xraylab-1` namespace. Other components like ODF are deployed into `openshift-storage` and the OpenShift Serverless Operators are deployed into `knative-serving, knative-eventing` namespaces.
-
-[NOTE]
-====
-Use the grafana dashboard to assist with debugging and identifying the issue
-====
-
-'''
-Problem:: No information is being processed in the dashboard
-
-Solution:: Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is *scaled to 0*;
-+
-[source,terminal]
-----
-$ oc scale -n xraylab-1 dc/image-generator --replicas=1
-----
-+
-Alternatively, complete the following steps:
-
-. Navigate to the {rh-ocp} web console, and select *Workloads → DeploymentConfigs*
-. Select `image-generator` and scale the pod to 1 or more.
-//AI: Needs review
-
-'''
-Problem:: When browsing to the *xraylab* grafana dashboard and there are no images in the right-pane, only a security warning.
-
-Solution:: The certificates for the openshift cluster are untrusted by your system. The easiest way to solve this is to open a browser and go to the s3-rgw route (oc get route -n openshift-storage), then acknowledge and accept the security warning.
-
-'''
-Problem:: In the dashboard interface, no metrics data is available.
-
-Solution:: There is likely something wrong with the Prometheus Data Source for the grafana dashboard. You can check the status of the data source by executing the following:
-+
-[source,terminal]
-----
-$ oc get grafanadatasources -n xraylab-1
-----
-+
-Ensure that the Prometheus data source exists and that the status is available. This could potentially be the token from the service account, for example, grafana-serviceaccount, that is provided to the data source as a bearer token.
-
-'''
-Problem:: The dashboard is showing red in the corners of the dashboard panes.
-+
-image::medical-edge/medDiag-noDB.png[link="/images/medical-edge/medDiag-noDB.png"]
-
-Solution:: This is most likely due to the *xraylab* database not being available or misconfigured. Please check the database and ensure that it is functioning properly.
-
-. Ensure that the database is populated with the correct tables:
-+
-[source,terminal]
-----
-$ oc exec -it xraylabdb-1-<uuid> bash
-$ mysql -u root
-
-USE xraylabdb;
-
-SHOW tables;
-----
-+
-.Example output
-[source,terminal]
-----
-
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 75
-Server version: 10.3.32-MariaDB MariaDB Server
-
-Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-MariaDB [(none)]> USE xraylabdb;
-Database changed
-MariaDB [xraylabdb]> show tables;
-+---------------------+
-| Tables_in_xraylabdb |
-+---------------------+
-| images_anonymized   |
-| images_processed    |
-| images_uploaded     |
-+---------------------+
-3 rows in set (0.000 sec)
-----
-+
-. Verify the password set in the `values-secret.yaml` is working
-+
-[source,terminal]
-----
-$ oc exec -it xraylabdb-1-<uuid> bash
-$ mysql -u xraylab -D xraylabdb -h xraylabdb -p
-<provide_your_password_at_prompt>
-----
-+
-If you are able to successfully login then your password has been configured correctly in vault, the external secrets operator and mounted to the database correctly.
-
-'''
-Problem:: The image-generator is scaled correctly, but the dashboard is not updating.
-
-Solution:: The serverless eventing function might not be able to fetch the notifications from ODF and therefore, not triggering the knative-serving function to scale up. You may want to check the logs of the `rook-ceph-rgw-ocs-storagecluster-cephobjectstore-a-<podGUID>` pod in the `openshift-storage` namespace.
-+
-[source,terminal]
-----
-$ oc logs -n openshift-storage -f <pod> -c rgw
-----
-+
-You should see the `PUT` statement with a status code of `200`
-+
-Ensure that the `kafkasource`, `kafkservice`, and `kafka topic` resources are created:
-+
-[source,terminal]
-----
-$ oc get -n xraylab-1 kafkasource
-----
-+
-.Example output
-[source,terminal]
-----
-NAME          TOPICS            BOOTSTRAPSERVERS                                      READY   REASON   AGE
-xray-images   ["xray-images"]   ["xray-cluster-kafka-bootstrap.xraylab-1.svc:9092"]   True             23m
-----
-+
-[source,terminal]
-----
-$ oc get -n xraylab-1 kservice
-----
-+
-.Example output
-[source,terminal]
-----
-NAME              URL                                                  LATESTCREATED           LATESTREADY             READY   REASON
-risk-assessment   https://risk-assessment-xraylab-1.apps.<SUBDOMAIN>   risk-assessment-00001   risk-assessment-00001   True
-----
-+
-[source,terminal]
-----
-$ oc get -n xraylab-1 kafkatopics
-----
-+
-.Example output
-[source,terminal]
-----
-NAME                                                                                               CLUSTER        PARTITIONS   REPLICATION FACTOR   READY
-consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a                                        xray-cluster   50           1                    True
-strimzi-store-topic---effb8e3e057afce1ecf67c3f5d8e4e3ff177fc55                                     xray-cluster   1            3                    True
-strimzi-topic-operator-kstreams-topic-store-changelog---b75e702040b99be8a9263134de3507fc0cc4017b   xray-cluster   1            1                    True
-xray-images                                                                                        xray-cluster   1            1                    True
-----
-
-'''
+If you have experience installing operators then you know that installing the operator subscription isn't enough by itself, that just enables the API in the cluster. You must also provision an instance of that operator to get the desired effect. With the Validated Patterns framework, we take care of the operator deployment, creating the instance and adding any additional configuration code necessary for the operator and application to be completely functional. This level of integration between applications and operators allows us to
