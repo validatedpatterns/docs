@@ -33,7 +33,7 @@ serve: ## Build the website locally from a container and serve it
 .PHONY: htmltest
 htmltest: build ## Runs htmltest against the site to find broken links
 	@echo "Running html proof to check links"
-	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint htmltest $(HOMEPAGE_CONTAINER)
+	podman run -it --net=host -v $(PWD):/site:$(ATTRS) --entrypoint htmltest $(HOMEPAGE_CONTAINER) -c .htmltest.yml
 
 .PHONY: run
 run: ## Runs the container interactively

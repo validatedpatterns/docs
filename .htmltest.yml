@@ -1,2 +1,7 @@
 DirectoryPath: public/
 IgnoreDirectoryMissingTrailingSlash: true
+IgnoreURLs:
+  - "*route-to-mlflow*"
+  - "*svc.cluster.local"
+  - "*your-uri*"
+  - "*credit-fraud-model*"
