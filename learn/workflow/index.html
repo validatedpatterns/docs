@@ -1605,7 +1605,57 @@ Next Steps Help &amp; Feedback Report Bugs `,url:"https://validatedpatterns.io/p
 File naming convention {pattern}-{platform}-{openshift version}-stable-badge.json
 Example: medicaldiag-nutanix-4.13-stable-badge.json
 Note: OpenShift verion should be major.minor only
-File template { &#34;schemaVersion&#34;:1, &#34;label&#34;:&#34;{text}&#34;, /* For now we assume \`message\` is the same as patternBranch */ &#34;message&#34;:&#34;{text}&#34;, /* passed =&gt; green, test failed =&gt; red, test setup failed =&gt; yellow */ &#34;color&#34;:&#34;{test result color}&#34;, /* eg. x.y.z */ &#34;openshiftVersion&#34;:&#34;{full openshift version}&#34;, /* eg. AWS, GCP, Nutanix, ... */ &#34;infraProvider&#34;:&#34;{platform}&#34;, /* Official repo of the pattern, eg. https://github.com/validatedpatterns/multicloud-gitops */ &#34;patternRepo&#34;: &#34;{text}&#34;, /* eg. main, stable-N.M */ &#34;patternBranch&#34;: &#34;{text}&#34;, &#34;date&#34;:&#34;{YYYY-MM-DD}&#34;, /* Who ran the test eg. Red Hat */ &#34;testSource&#34;: &#34;{company name}&#34;, /* eg. Job number */ &#34;testID&#34;: &#34;{unique id}&#34;, /* if publically available */ &#34;jenkinsURL&#34;:&#34;{path to job}&#34;, &#34;debugInfo&#34;:&#34;{location of must-gather tarball}&#34;, } Example testing artifact file { &#34;schemaVersion&#34;:1, &#34;label&#34;:&#34;MCG on Nutanix&#34;, &#34;message&#34;:&#34;main&#34;, &#34;color&#34;:&#34;green&#34;, &#34;openshiftVersion&#34;:&#34;4.13.14&#34;, &#34;infraProvider&#34;:&#34;Nutanix&#34;, &#34;patternRepo&#34;: &#34;https://github.com/validatedpatterns/multicloud-gitops&#34;, &#34;patternBranch&#34;: &#34;main&#34;, &#34;date&#34;:&#34;2023-10-23&#34;, &#34;testSource&#34;: &#34;Red Hat&#34; &#34;testID&#34;: &#34;13602&#34;, &#34;jenkinsURL&#34;:&#34;https://jenkins/job/ValidatedPatterns/job/MedicalDiagnosis/job/medicaldiag-gcp-ocp4.13/37/&#34;, &#34;debugInfo&#34;:&#34;https://storage.cloud.google.com/.../medicaldiag-gcp-ocp4.13.15-13602.tgz&#34;, } `,url:"https://validatedpatterns.io/learn/test-artefacts/",breadcrumb:"/learn/test-artefacts/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
+File template { &#34;schemaVersion&#34;:1, &#34;label&#34;:&#34;{text}&#34;, /* For now we assume \`message\` is the same as patternBranch */ &#34;message&#34;:&#34;{text}&#34;, /* passed =&gt; green, test failed =&gt; red, test setup failed =&gt; yellow */ &#34;color&#34;:&#34;{test result color}&#34;, /* eg. x.y.z */ &#34;openshiftVersion&#34;:&#34;{full openshift version}&#34;, /* eg. AWS, GCP, Nutanix, ... */ &#34;infraProvider&#34;:&#34;{platform}&#34;, /* Official repo of the pattern, eg. https://github.com/validatedpatterns/multicloud-gitops */ &#34;patternRepo&#34;: &#34;{text}&#34;, /* eg. main, stable-N.M */ &#34;patternBranch&#34;: &#34;{text}&#34;, &#34;date&#34;:&#34;{YYYY-MM-DD}&#34;, /* Who ran the test eg. Red Hat */ &#34;testSource&#34;: &#34;{company name}&#34;, /* eg. Job number */ &#34;testID&#34;: &#34;{unique id}&#34;, /* if publically available */ &#34;jenkinsURL&#34;:&#34;{path to job}&#34;, &#34;debugInfo&#34;:&#34;{location of must-gather tarball}&#34;, } Example testing artifact file { &#34;schemaVersion&#34;:1, &#34;label&#34;:&#34;MCG on Nutanix&#34;, &#34;message&#34;:&#34;main&#34;, &#34;color&#34;:&#34;green&#34;, &#34;openshiftVersion&#34;:&#34;4.13.14&#34;, &#34;infraProvider&#34;:&#34;Nutanix&#34;, &#34;patternRepo&#34;: &#34;https://github.com/validatedpatterns/multicloud-gitops&#34;, &#34;patternBranch&#34;: &#34;main&#34;, &#34;date&#34;:&#34;2023-10-23&#34;, &#34;testSource&#34;: &#34;Red Hat&#34; &#34;testID&#34;: &#34;13602&#34;, &#34;jenkinsURL&#34;:&#34;https://jenkins/job/ValidatedPatterns/job/MedicalDiagnosis/job/medicaldiag-gcp-ocp4.13/37/&#34;, &#34;debugInfo&#34;:&#34;https://storage.cloud.google.com/.../medicaldiag-gcp-ocp4.13.15-13602.tgz&#34;, } `,url:"https://validatedpatterns.io/learn/test-artefacts/",breadcrumb:"/learn/test-artefacts/"},"https://validatedpatterns.io/patterns/medical-diagnosis/demo-script/":{title:"Demo Script",tags:[],content:` Introduction The medical diagnosis pattern integrates multiple Red Hat and Open Source technologies together to create an AI/ML workflow that is able to identify signs of pnuemonia in x-ray images. Within this demo a dashboard is automatically created that provides the CPU and Memory metrics for the pod running the risk assessment application. The dashboard also provides visual representation of the AI/ML workflow from the images being generated at the remote medical facitility to running through the image anonymizer, it also includes the image being scanned along with statistics from the workflow - indicating the probability in which a patient may or may not have pnuemonia.
+We simulate the function of the remote medical facility with an application called image-generator
+Objectives In this demo you will complete the following:
+Prepare your local workstation
+Update the pattern repo with your cluster values
+Deploy the pattern
+Access the dashboard
+Getting Started Follow the Getting Started Guide to ensure that you have met all of the prequisites
+Review Preparing for Deployment for updating the pattern with your cluster values
+This demo begins after ./pattern.sh make install has been executed
+Demo Now that we have deployed the pattern onto our cluster, we can begin to discover what has changed, and then move onto the dashboard.
+Administrator View - Review Changes to cluster Login to your cluster’s console with the kubeadmin user
+Let’s check out what operators were installed - In the accordian menu on the left:
+click Operators
+click Installed Operators
+Ensure that All Projects is selected
+If you started with a new cluster then there were no layered products or operators installed. With the Validated Patterns framework we describe or declare what our cluster’s desired state is and the GitOps engine does the rest. This includes creating the instance of the operator and any additional configuration between other API’s to ensure everything is working together nicely.
+Developer View - Review Changes to cluster Let’s switch to the developer context by click on Administrator in the top left corner of the accordian menu then click Developer
+Change projects to xraylab-1
+Click on Topology
+Look at all of the resources that have been created for this demo application. What we see in this interface is the collection of all components required for this AI/ML workflow to properly execute. There are even more resources and configurations that get deployed but because we don’t directly interact with them we won’t worry too much about them. The take away here is when you utilize the framework you are able to build in automation just like this which allows your developers to focus on their important developer things.
+Invalid Certificates We are deploying this demo using self-signed certificates that are untrusted by our browser. Unless you have provisioned valid certificates for your OpenShift cluster you must accept the invalid certificates for:
+image-server | xraylab-1 namespace
+s3-rgw | openshift-storage namespace
+grafana | xraylab-1 namespace
+IMAGESERVER_ROUTE=https://$(oc get route -n xraylab-1 image-server -o jsonpath=&#39;{.spec.host}&#39;) echo $IMAGESERVER_ROUTE S3RGW_ROUTE=https://$(oc get route -n openshift-storage s3-rgw -o jsonpath=&#39;{.spec.host}&#39;) echo $S3RGW_ROUTE GRAFANA_ROUTE=https://$(oc get route -n xraylab-1 grafana -o jsonpath=&#39;{.spec.host}&#39;) echo $GRAFANA_ROUTE You must accept the security risks / self signed certificates before scaling the image-generator application
+Scale up the deployment As we mentioned earlier, we don’t have an x-ray machine hanging around that we can use for this demo, so we emulate one by creating an s3 bucket and hosting the x-ray images within it. In the &#34;real world&#34; an x-ray would be taken at an edge medical facility and then uploaded to an OpenShift Data Foundations (ODF) S3 compatible bucket in the Core Hospital, triggering the AI/ML workflow.
+To emulate the edge medical facility we use an application called image-generator which (when scaled up) will download the x-rays from s3 and put them in an ODF s3 bucket in the cluster, triggering the AI/ML workflow.
+Let’s scale the image-generator deploymentConfig up to start the pipeline
+Make sure that you are in the xraylab-1 project under the Developer context in the OpenShift Console
+In the Topology menu under the Developer context in the OpenShift Console:
+Search for the image-generator application in the Topology console
+Click on the image-generator application ( you may have to zoom in on the highlighted application)
+Switch to the Details menu in the application menu context
+Click the ^ next to the pod donut
+Demo Dashboard Now let’s jump over to the dashboard
+Return to the topology screen
+Select “Grafana” in the drop down for Filter by resource
+Click the grafana icon
+Open url to go open a browser for the grafana dashboard.
+Within the grafana dashboard:
+click the dashboards icon
+click Manage
+select xraylab-1
+finally select the XRay Lab folder
+In the dashboard on the right we see the images that have been uploaded, processed and anonymized. Images in the processed view have been through the AI/ML pipeline and images in the lower third are images that have been stripped of Personally Identifiable Information or PII.
+In the lower middle section of the dashboard we can see the distribution of images that are normal, unsure or pneumonia has been detected. We can also see the number of risk assessment containers running as well as the cpu and memory metrics for the pods.
+Summary You did it! You have completed the deployment of the medical diagnosis pattern! Hopefully you are getting ideas of how you can take advantage of our GitOps framework to deploy and manage your applications.
+The medical diagnosis pattern is more than just the identification and detection of pneumonia in x-ray images. It is an object detection and classification model built on top of Red Hat OpenShift and can be transformed to fit multiple use-cases within the object classification paradigm. Similar use-cases would be detecting contraband items in the Postal Service or even in luggage in an airport baggage scanner.
+For more information on Validated Patterns visit our website
+`,url:"https://validatedpatterns.io/patterns/medical-diagnosis/demo-script/",breadcrumb:"/patterns/medical-diagnosis/demo-script/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
 You can customize this demo in different ways.
 Split the config-demo across hub and regional clusters Currently hub and regional clusters are reusing the exact same helm chart found at charts/all/config-demo. The first customization step could be to split the demo app in two separate charts: one in charts/hub/config-demo and one in charts/region/config-demo. Once charts/all/config-demo has been copied to charts/hub/config-demo and charts/region/config-demo, you need to include them in the respective values-hub.yaml and values-region-one.yaml, respectively.
 After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
@@ -2205,7 +2255,9 @@ About the architecture Presently, the Medical Diagnosis pattern does not have an
 Components are running on OpenShift either at the data center, at the medical facility, or public cloud running OpenShift.
 About the physical schema The following diagram shows the components that are deployed with the various networks that connect them.
 The following diagram shows the components that are deployed with the the data flows and API calls between them.
-Recorded demo Next steps Getting started Deploy the Pattern
+Recorded demo Presentation View presentation for the Medical Diagnosis Validated Pattern here
+Demo Script Use this demo script to successfully complete the Medical Diagnosis pattern demo here
+Next steps Getting started Deploy the Pattern
 `,url:"https://validatedpatterns.io/patterns/medical-diagnosis/",breadcrumb:"/patterns/medical-diagnosis/"},"https://validatedpatterns.io/ci/":{title:"CI Status",tags:[],content:`These are the latest results of the Validated Patterns CI test runs.
 `,url:"https://validatedpatterns.io/ci/",breadcrumb:"/ci/"},"https://validatedpatterns.io/patterns/cockroachdb/":{title:"Cockroach",tags:[],content:`Cockroach A multicloud pattern using cockroachdb and submariner, deployed via RHACM.
 Repo
@@ -2248,4 +2300,23 @@ To allow the cluster access to the external vault, we need to set up the externa
 External secret management fetches secrets from HashiCorp Vault using the token we created in step 2 and constantly watches for updates. Secrets are created in each namespace, where applications can use them.
 Demo Scenario Download diagrams View and download all of the diagrams above in our open source tooling site.
 [Open Diagrams]
-What Next Deploy the management hub using Helm Add a managed cluster to deploy the managed cluster piece using ACM `,url:"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/",breadcrumb:"/patterns/multicloud-gitops-portworx/"}}</script><script src=/js/lunr.js></script><script src=/js/search.js></script></footer></main></div><script src=/js/codeblock.js></script></body></html>
+What Next Deploy the management hub using Helm Add a managed cluster to deploy the managed cluster piece using ACM `,url:"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/",breadcrumb:"/patterns/multicloud-gitops-portworx/"},"https://validatedpatterns.io/contribute/support-policies/":{title:"Support Policies",tags:[],content:` Purpose The purpose of this support policy is to define expectations for the time in which consumers and developers of the Patterns framework can expect to receive assistance with their query to the Validated Patterns team.
+Continuous Integration (CI) Failures Expected Response time: 5 business days
+The Validated Patterns team will collectively triage any CI failures for patterns to which this policy applies each Monday. If necessary, a Jira issue will be created and tracked by the team.
+Reporting Pattern Issues Normally there is a path to support all products within a pattern. Either they are directly supported by the vendor (of which Red Hat may be one), or an enterprise version of that product exists.
+All product issues should be directed to the vendor of that product.
+For problems deploying patterns, unhealthy GitOps applications, or broken demos, please create an issue within the pattern’s github repository where they will be reviewed by the appropriate SME.
+To ensure we can best help you please provide the following information:
+Environment Details (Machine Sizes, Specialized Network, Storage, Hardware)
+The output of the error
+Any changes that were made prior to the failure
+Expected Outcome: What you thought should have happened
+If you are unsure if your issue is product or pattern related, please reach out to the community using https://groups.google.com/g/validatedpatterns or by emailing validatedpatterns@googlegroups.com
+Any pattern-based security issues, such as hard coded secrets, found should be reported to: validated-patterns-team@redhat.com You can expect a response within 5 business days
+Pull Requests Pull Requests against Patterns to which this policy applies will be reviewed by the appropriate SME or by the patterns team. We will endeavor to provide initial feedback within 10 business days, but ask for patience during busy periods, or if we happen to be on vacation.
+Feature Enhancements Create an issue, use the enhancement label, be clear what the desired functionality is and why it is necessary. For enhancements that could or should apply across multiple patterns, please file them against common. Use the following as a guide for creating your feature request:
+Proposed title of the feature request
+What is the nature and description of the request?
+Why do you need / want this? (List business requirements here)
+List any affected packages or components
+`,url:"https://validatedpatterns.io/contribute/support-policies/",breadcrumb:"/contribute/support-policies/"}}</script><script src=/js/lunr.js></script><script src=/js/search.js></script></footer></main></div><script src=/js/codeblock.js></script></body></html>
