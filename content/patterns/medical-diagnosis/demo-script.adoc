@@ -1,0 +1,183 @@
+---
+title: Demo Script
+weight: 60
+aliases: /medical-diagnosis/demo/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: REFERENCE
+include::modules/comm-attributes.adoc[]
+
+[id="demo-intro"]
+
+== Introduction
+The medical diagnosis pattern integrates multiple Red Hat and Open Source technologies together to create an AI/ML workflow that is able to identify signs of pnuemonia in x-ray images. Within this demo a dashboard is automatically created that provides the CPU and Memory metrics for the pod running the risk assessment application. The dashboard also provides visual representation of the AI/ML workflow from the images being generated at the remote medical facitility to running through the image anonymizer, it also includes the image being scanned along with statistics from the workflow - indicating the probability in which a patient may or may not have pnuemonia. 
+
+image:medical-edge/aiml_pipeline.png[link="/medical-edge/aiml_pipeline.png"]
+
+
+[NOTE]
+====
+We simulate the function of the remote medical facility with an application called `image-generator`
+====
+
+[id="demo-objectives"]
+
+== Objectives
+
+In this demo you will complete the following:
+
+* Prepare your local workstation
+* Update the pattern repo with your cluster values
+* Deploy the pattern
+* Access the dashboard
+
+[id="getting-started"]
+
+== Getting Started
+
+* Follow the link:../getting-started[Getting Started Guide] to ensure that you have met all of the prequisites
+* Review link:../getting-started/#preparing-for-deployment[Preparing for Deployment] for updating the pattern with your cluster values
+
+[NOTE]
+====
+This demo begins after `./pattern.sh make install` has been executed
+====
+
+[id="demo"]
+
+== Demo
+
+Now that we have deployed the pattern onto our cluster, we can begin to discover what has changed, and then move onto the dashboard.
+
+[id="admin-view"]
+
+=== Administrator View - Review Changes to cluster
+
+Login to your cluster's console with the `kubeadmin` user
+
+Let's check out what operators were installed - In the accordian menu on the left:
+
+* click Operators
+* click Installed Operators
+
+[NOTE]
+
+====
+Ensure that **All Projects** is selected
+====
+
+image:medical-edge/admin_developer-contexts.png[link="/medical-edge/admin_developer-contexts.png"]
+
+
+If you started with a new cluster then there were no layered products or operators installed. With the Validated Patterns framework we describe or declare what our cluster's desired state is and the GitOps engine does the rest. This includes creating the instance of the operator and any additional configuration between other API's to ensure everything is working together nicely.
+
+
+[id="dev-view"]
+
+=== Developer View - Review Changes to cluster
+
+Let’s switch to the developer context by click on `Administrator` in the top left corner of the accordian menu then click `Developer`
+
+* Change projects to `xraylab-1`
+* Click on `Topology`
+
+
+image:medical-edge/dev-topology.png[link="/images/medical-edge/dev-topology.png"]
+
+Look at all of the resources that have been created for this demo application. What we see in this interface is the collection of all components required for this AI/ML workflow to properly execute. There are even more resources and configurations that get deployed but because we don't directly interact with them we won't worry too much about them. The take away here is when you utilize the framework you are able to build in automation just like this which allows your developers to focus on their important developer things.
+
+
+[id="certificate-warn"]
+
+=== Invalid Certificates
+
+We are deploying this demo using self-signed certificates that are untrusted by our browser. Unless you have provisioned valid certificates for your OpenShift cluster you must accept the invalid certificates for:
+
+* image-server | xraylab-1 namespace
+* s3-rgw | openshift-storage namespace
+* grafana | xraylab-1 namespace
+
+[source, shell]
+```
+IMAGESERVER_ROUTE=https://$(oc get route -n xraylab-1 image-server -o jsonpath='{.spec.host}')
+
+echo $IMAGESERVER_ROUTE
+
+S3RGW_ROUTE=https://$(oc get route -n openshift-storage s3-rgw -o jsonpath='{.spec.host}')
+
+echo $S3RGW_ROUTE
+
+GRAFANA_ROUTE=https://$(oc get route -n xraylab-1 grafana -o jsonpath='{.spec.host}')
+
+echo $GRAFANA_ROUTE
+```
+
+[WARNING]
+
+====
+You must accept the security risks / self signed certificates before scaling the image-generator application
+====
+
+[id="scale-up"]
+
+=== Scale up the deployment
+
+As we mentioned earlier, we don't have an x-ray machine hanging around that we can use for this demo, so we emulate one by creating an s3 bucket and hosting the x-ray images within it. In the "real world" an x-ray would be taken at an edge medical facility and then uploaded to an OpenShift Data Foundations (ODF) S3 compatible bucket in the Core Hospital, triggering the AI/ML workflow. 
+
+To emulate the edge medical facility we use an application called `image-generator` which (when scaled up) will download the x-rays from s3 and put them in an ODF s3 bucket in the cluster, triggering the AI/ML workflow.
+
+Let's scale the `image-generator` deploymentConfig up to start the pipeline
+
+[NOTE]
+====
+Make sure that you are in the `xraylab-1` project under the `Developer` context in the OpenShift Console
+====
+
+In the Topology menu under the Developer context in the OpenShift Console:
+
+* Search for the `image-generator` application in the Topology console 
+
+image:medical-edge/image-generator.png[link="/medical-edge/image-generator.png"]
+
+* Click on the `image-generator` application ( you may have to zoom in on the highlighted application)
+* Switch to the `Details` menu in the application menu context
+* Click the `^` next to the pod donut 
+
+image:medical-edge/image-generator-scale.png[link="/medical-edge/image-generator-scale.png"]
+
+
+[id="demo-dashboard"]
+
+== Demo Dashboard
+
+Now let’s jump over to the dashboard
+
+* Return to the topology screen
+* Select “Grafana” in the drop down for Filter by resource
+* Click the grafana icon 
+* Open url to go open a browser for the grafana dashboard.
+
+Within the grafana dashboard:
+
+* click the dashboards icon
+* click Manage
+* select xraylab-1
+* finally select the XRay Lab folder
+
+image:medical-edge/dashboard.png[link="/medical-edge/dashboard.png"]
+
+In the dashboard on the right we see the images that have been uploaded, processed and anonymized. Images in the processed view have been through the AI/ML pipeline and images in the lower third are images that have been stripped of Personally Identifiable Information or PII. 
+
+In the lower middle section of the dashboard we can see the distribution of images that are normal, unsure or pneumonia has been detected.  We can also see the number of risk assessment containers running as well as the cpu and memory metrics for the pods. 
+
+[id="summary"]
+
+== Summary
+
+You did it! You have completed the deployment of the medical diagnosis pattern! Hopefully you are getting ideas of how you can take advantage of our GitOps framework to deploy and manage your applications. 
+
+The medical diagnosis pattern is more than just the identification and detection of pneumonia in x-ray images. It is an object detection and classification model built on top of Red Hat OpenShift and can be transformed to fit multiple use-cases within the object classification paradigm. Similar use-cases would be detecting contraband items in the Postal Service or even in luggage in an airport baggage scanner.
+
+For more information on Validated Patterns visit our link:https://validatedpatterns.io/[website]
