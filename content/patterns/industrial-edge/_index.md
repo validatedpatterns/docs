@@ -159,7 +159,7 @@ The southbound traffic is abstracted  in the App-Dev / Pipeline box at the top. 
 
 ## Demo Script
 
-To deploy the Industrial Edge Pattern demo yourself, follow the [demo script](./demo-script.md)
+To deploy the Industrial Edge Pattern demo yourself, follow the [demo script](demo-script)
 
 ## Download diagrams
 
