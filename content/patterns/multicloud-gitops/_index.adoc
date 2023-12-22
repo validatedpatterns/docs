@@ -1,9 +1,9 @@
 ---
 title: Multicloud GitOps
 date: 2021-12-11
-validated: true
+tier: maintained
 summary: This pattern helps you develop and deploy applications on an open hybrid cloud in a stable, simple, and secure way.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
 industries:

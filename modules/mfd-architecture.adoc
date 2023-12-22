@@ -19,11 +19,11 @@ Description of each component:
 image::mlops-fraud-detection/mfd-reference-architecture.png[link="/images/mlops-fraud-detection/mfd-reference-architecture.png"]
 
 //figure 2 logical
-.Logical Architecture
-//image::mlops-fraud-detection/mfd-logical-architecture-legend.png[link="/images/mlops-fraud-detection/mfd-logical-architecture-legend.png", width=940]
+//.Logical Architecture
+//image::mlops-fraud-detection/mfd-logical-architecture.png[link="/images/mlops-fraud-detection/mfd-logical-architecture.png", width=940]
 
 //figure 3 Schema
-.Data Flow Architecture
+//.Data Flow Architecture
 //image::mlops-fraud-detection/mfd-schema-dataflow.png[link="/images/mlops-fraud-detection/mfd-schema-dataflow.png", width=940]
 
 [id="about-technology"]

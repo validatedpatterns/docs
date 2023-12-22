@@ -1,9 +1,9 @@
 ---
-title: MLOps Fraud Detection 
+title: MLOps Fraud Detection
 date: 2023-11-12
-validated: false
-summary: This pattern demonstrates how {rh-oai} and MLFlow can be used together to build an end-to-end MLOps platform. It demonstrates this using a credit card fraud detection use case. 
-products:
+tier: sandbox
+summary: This pattern demonstrates how {rh-oai} and MLFlow can be used together to build an end-to-end MLOps platform. It demonstrates this using a credit card fraud detection use case.
+rh_products:
 - {rh-ocp}
 - {rh-oai}
 - {rh-ocp-data-first}

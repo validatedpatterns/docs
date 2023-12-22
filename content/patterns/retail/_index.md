@@ -1,9 +1,9 @@
 ---
 title: Retail
 date: 2022-12-08
-validated: false
+tier: sandbox
 summary: This pattern demonstrates a pattern that models the store side of a retail application.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
 - Red Hat AMQ

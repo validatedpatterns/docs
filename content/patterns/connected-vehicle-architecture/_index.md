@@ -1,7 +1,8 @@
 ---
 title: Connected Vehicle Architecture
+tier: sandbox
 Summary: A distributed cloud-native application that implements key aspects of a modern IoT architecture.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Ansible Automation Platform
 ---

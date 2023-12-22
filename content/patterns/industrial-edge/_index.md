@@ -1,9 +1,9 @@
 ---
 title: Industrial Edge
 date: 2021-10-12
-validated: true
+tier: maintained
 summary: This pattern demonstrates a horizontal solution for Industrial Edge use cases.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
 - Red Hat Quay
@@ -157,6 +157,9 @@ The northbound traffic of sensor data is visible in Figure 9. It flows from the 
 
 The southbound traffic is abstracted  in the App-Dev / Pipeline box at the top. This is where GitOps kicks in to push config or version changes down into the factories.
 
+## Demo Script
+
+To deploy the Industrial Edge Pattern demo yourself, follow the [demo script](demo-script)
 
 ## Download diagrams
 
@@ -165,7 +168,10 @@ View and download all of the diagrams above in our open source tooling site.
 [[Open Diagrams]](https://www.redhat.com/architect/portfolio/tool/index.html?#gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/diagrams/edge-manufacturing-efficiency.drawio)
 
 
-
 ## Pattern Structure
 
 <iframe src="https://slides.com/beekhof/hybrid-cloud-patterns/embed" width="800" height="600" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+## Presentation
+
+View a presentation slide deck about Industrial Edge [here](https://speakerdeck.com/rhvalidatedpatterns/industrial-edge)

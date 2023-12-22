@@ -26,5 +26,6 @@ markup:
 
 taxonomies:
   industry: 'industries'
-  product: 'products'
+  rh_product: 'rh_products'
+  other_product: 'other_products'
   blog_tag: 'blog_tags'

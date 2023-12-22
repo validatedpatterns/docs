@@ -45,11 +45,13 @@
                 {{ end }}
               {{ end }}
               {{ $taglist := $data.Get "tags" }}
-              {{ $validated := .Param "validated" }}
-              {{ if (eq $validated true ) }}
-                {{ .Scratch.Set "patterntype" "type:validated" }}
+              {{ $validated := .Param "tier" }}
+              {{ if (eq $validated "maintained" ) }}
+                {{ .Scratch.Set "patterntype" "type:maintained" }}
+              {{ else if (eq $validated "tested" ) }}
+                {{ .Scratch.Set "patterntype" "type:tested" }}
               {{ else }}
-                {{ .Scratch.Set "patterntype" "type:community" }}
+                  {{ .Scratch.Set "patterntype" "type:sandbox" }}
               {{ end }}
               {{ $patterntype := .Scratch.Get "patterntype"  }}
               <div class="pf-l-gallery__item filterDiv" tag-data="{{ delimit $taglist " " }} {{ $patterntype }}" style="display: grid;">

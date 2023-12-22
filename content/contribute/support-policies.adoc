@@ -1,0 +1,60 @@
+---
+menu: contribute
+title: Support Policies
+aliases: /policies/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="Purpose"]
+
+== Purpose
+The purpose of this support policy is to define expectations for the time in which consumers and developers of the Patterns framework can expect to receive assistance with their query to the Validated Patterns team.
+
+[id="ci-failures"]
+
+== Continuous Integration (CI) Failures
+
+Expected Response time: **5 business days**
+
+The Validated Patterns team will collectively triage any CI failures for patterns to which this policy applies each Monday. If necessary, a Jira issue will be created and tracked by the team.
+
+[id="reported-issues"]
+
+== Reporting Pattern Issues
+
+Normally there is a path to support all products within a pattern.  Either they are directly supported by the vendor (of which Red Hat may be one), or an enterprise version of that product exists.  
+
+All product issues should be directed to the vendor of that product.
+
+For problems deploying patterns, unhealthy GitOps applications, or broken demos, please create an issue within the pattern’s github repository where they will be reviewed by the appropriate SME. 
+
+To ensure we can best help you please provide the following information:
+
+* Environment Details (Machine Sizes, Specialized Network, Storage, Hardware)
+* The output of the error
+* Any changes that were made prior to the failure
+* Expected Outcome: What you thought should have happened
+
+If you are unsure if your issue is product or pattern related, please reach out to the community using https://groups.google.com/g/validatedpatterns or by emailing validatedpatterns@googlegroups.com 
+
+Any pattern-based security issues, such as hard coded secrets, found should be reported to: validated-patterns-team@redhat.com  You can expect a response **within 5 business days**
+
+[id="pull-requests"]
+
+== Pull Requests
+
+Pull Requests against Patterns to which this policy applies will be reviewed by the appropriate SME or by the patterns team. We will endeavor to provide initial feedback **within 10 business days**, but ask for patience during busy periods, or if we happen to be on vacation.
+
+[id="rfe"]
+
+== Feature Enhancements
+Create an issue, use the enhancement label, be clear what the desired functionality is and why it is necessary.  For enhancements that could or should apply across multiple patterns, please file them against common. Use the following as a guide for creating your feature request:
+
+* Proposed title of the feature request
+* What is the nature and description of the request?
+* Why do you need / want this? (List business requirements here)
+* List any affected packages or components
