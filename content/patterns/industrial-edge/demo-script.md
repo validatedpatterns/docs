@@ -33,7 +33,7 @@ This demo script begins after the completion of you running `./pattern.sh make i
 
 There is an initial `Seed Pipeline run` in namespace `manuela-ci` that builds all required container images into the local registry. Check that the run was successful like this:
 
-![Pipeline Success](/images/industiral-edge/seed_pipeline.png)
+![Pipeline Success](/images/industrial-edge/seed_pipeline.png)
 
 If it did fail, try “Rerun” on the Pipeline run page:
 
