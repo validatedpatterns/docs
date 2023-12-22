@@ -1,7 +1,7 @@
 ---
 title: Industrial Edge
 date: 2021-10-12
-tier: Maintained
+tier: maintained
 summary: This pattern demonstrates a horizontal solution for Industrial Edge use cases.
 rh_products:
 - Red Hat OpenShift Container Platform
