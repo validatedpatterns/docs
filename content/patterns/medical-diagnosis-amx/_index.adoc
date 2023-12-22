@@ -35,8 +35,7 @@ include::modules/comm-attributes.adoc[]
 Background::
 
 This validated pattern is a modified version of the Medical Diagnosis pattern. It was extended to showcase *{intel-4th-gen-xeon-processors}* capabilities, especially *link:https://www.intel.com/content/www/us/en/products/docs/accelerator-engines/advanced-matrix-extensions/overview.html[{intel-amx}]* that speeds up AI workloads.
-The pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that was previously developed by Red Hat for the US Department of Veteran Affairs. It includes the same
-functionality as the original demonstration, but uses the GitOps framework to deploy the pattern including Operators, creation of namespaces, and cluster configuration.
+The pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that was previously developed by Red Hat. It includes the same functionality as the original demonstration, but uses the GitOps framework to deploy the pattern including Operators, creation of namespaces, and cluster configuration.
 
 Compared to the original Medical Diagnosis pattern, this one was extended by the Node Feature Discovery Operator, whose task is to detect hardware features and expose them as labels for this node.
 Red Hat OpenShift Serverless component is modified to assign AI workload to nodes with available {intel-amx} feature.
@@ -75,7 +74,7 @@ The {med-pattern} uses the following products and technologies:
 * {rh-serverless-first} for event-driven applications
 * {rh-ocp-data-first} for cloud native storage capabilities
 * {grafana-op} to manage and share Grafana dashboards, data sources, and so on
-* Node Feature Discovery operator to label nodes with {intel-amx} capabilities
+* {rh-nfd} to label nodes with {intel-amx} capabilities
 
 
 [id="about-architecture-med"]

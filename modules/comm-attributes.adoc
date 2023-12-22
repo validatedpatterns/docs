@@ -137,7 +137,7 @@
 :ServerlessOperatorName: OpenShift Serverless Operator
 :FunctionsProductName: OpenShift Serverless Functions
 //Node Feature Discovery
-:rh-nfd: Node Feature Discovery
+:rh-nfd: Node Feature Discovery Operator
 //Quay
 :rh-quay: Red{nbsp}Hat Quay
 :quay-short: Quay
