@@ -2238,9 +2238,11 @@ Factory Data Center: the near edge, at the plant, but in a more controlled envir
 Central Data Center: the cloud/core, where ML model training, application development, testing, and related work happens. (Along with ERP systems and other centralized functions that are not part of this demo.)
 The northbound traffic of sensor data is visible in Figure 9. It flows from the sensor at the bottom via MQTT to the factory, where it is split into two streams: one to be fed into an ML model for anomaly detection and another one to be streamed up to the central data center via event streaming (using Kafka) to be stored for model training.
 The southbound traffic is abstracted in the App-Dev / Pipeline box at the top. This is where GitOps kicks in to push config or version changes down into the factories.
+Demo Script To deploy the Industrial Edge Pattern demo yourself, follow the demo script
 Download diagrams View and download all of the diagrams above in our open source tooling site.
 [Open Diagrams]
-Pattern Structure `,url:"https://validatedpatterns.io/patterns/industrial-edge/",breadcrumb:"/patterns/industrial-edge/"},"https://validatedpatterns.io/patterns/medical-diagnosis/":{title:"Medical Diagnosis",tags:[],content:`About the Medical Diagnosis pattern Background This validated pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that was previously developed by Red Hat. You can find the original demonstration here. It was developed for the US Department of Veteran Affairs.
+Pattern Structure Presentation View a presentation slide deck about Industrial Edge here
+`,url:"https://validatedpatterns.io/patterns/industrial-edge/",breadcrumb:"/patterns/industrial-edge/"},"https://validatedpatterns.io/patterns/medical-diagnosis/":{title:"Medical Diagnosis",tags:[],content:`About the Medical Diagnosis pattern Background This validated pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that was previously developed by Red Hat. You can find the original demonstration here. It was developed for the US Department of Veteran Affairs.
 This validated pattern includes the same functionality as the original demonstration. The difference is that this solution uses the GitOps framework to deploy the pattern including Operators, creation of namespaces, and cluster configuration. Using GitOps provides an efficient means of implementing continuous deployment.
 Workflow Ingest chest X-rays from a simulated X-ray machine and puts them into an objectStore based on Ceph.
 The objectStore sends a notification to a Kafka topic.
@@ -2266,7 +2268,28 @@ The following diagram shows the components that are deployed with the the data f
 Recorded demo Presentation View presentation for the Medical Diagnosis Validated Pattern here
 Demo Script Use this demo script to successfully complete the Medical Diagnosis pattern demo here
 Next steps Getting started Deploy the Pattern
-`,url:"https://validatedpatterns.io/patterns/medical-diagnosis/",breadcrumb:"/patterns/medical-diagnosis/"},"https://validatedpatterns.io/ci/":{title:"CI Status",tags:[],content:`These are the latest results of the Validated Patterns CI test runs.
+`,url:"https://validatedpatterns.io/patterns/medical-diagnosis/",breadcrumb:"/patterns/medical-diagnosis/"},"https://validatedpatterns.io/patterns/industrial-edge/demo-script/":{title:"",tags:[],content:`Industrial Edge Deployment Script Objectives There&rsquo;s no experience like hands-on experience and being able to see industrial edge scenarios. This is a demo for the Industrial Edge Validated Pattern using the latest product and technology improvements.
+Show Red Hat Operators being deployed Show available Red Hat Pipelines for the Industrial Edge pattern Show the seed pipeline running and explain what is is doing Demonstration of the Red Hat ArgoCD views Show the openshift-gitops-server view Show the datacenter-gitops-server view Show the factory-gitops-server view For Information on the Red Hat Validated Patterns, visit our website See the pattern in action Watch the following video for a demonstration of OpenShift Pipelines in the Industrial Edge Pattern
+In this article, we give an overview of the demo and step by step instructions on how to get started.
+#Things you can show and tell out of the box with the demo:
+#Consistent Configuration Management with Gitops - 15 min video recording and slides available
+#Application changes using DevOps #AI model development with OpenDataHub - 15 min video recording and slides #Data streaming from edge to core - 15 min video recording and slides #If you have any questions, check the FAQ and use the Industrial CoP GChat Room to get assistance!
+#Be sure to have read the Overview and Background of the Demo first.
+Getting Started NOTE: This demo takes a &ldquo;bring your own cluster&rdquo; approach, which means this pattern/demo will not deploy any OpenShift clusters.
+This demo script begins after the completion of you running ./pattern.sh make install from our Getting Started Guide
+Demo: Quick Health Check NOTE: This is a complex setup, and sometimes things can go wrong. Do a quick check of the essentials:
+There is an initial Seed Pipeline run in namespace manuela-ci that builds all required container images into the local registry. Check that the run was successful like this:
+If it did fail, try “Rerun” on the Pipeline run page:
+Check that the “Line Dashboard” in the development namespace is showing Data. The Link is in the bottom of the email under “Deployed Applications”. The Application should open - click on the “Realtime Data” Navigation on the left and wait a bit. Data should be visualized as received. Note that there is only vibration data! We will soon change that and activate temperature data also.
+If you wait a bit more (usually every 2-3 minutes), you will see an anomaly and alert (which is created by an ML Model)
+ArgoCD - all healthy and synced? Login to the datacenter Argo. Link and password are in the email under ArgoCD Deployments. Make sure you get the right “datacenter one - there is another one for OpenShift gitops which could be confusing. It should look like this:
+Demo: Configuration Changes with GitOps Follow the procedures here
+Demo: Application Changes with DevOps Follow the procedures here
+Demo: Application AI Model Changes with DevOps Follow the procedures here
+Demo: Turning event streaming between the edge and datacenter Follow the procedures here
+Troubleshooting If you run into any problems, checkout the potential/Known issues list: http://validatedpatterns.io/industrial-edge/troubleshooting/
+Summary In this demo we: , we show you how to get started with the Industrial Edge Validated Pattern. In
+Show you how to get started with the Industrial Edge Pattern Make configuration changes with GitOps Make application changes with DevOps Use DevOps to make changes to an Application AI model Stream events from the edge to the datacenter `,url:"https://validatedpatterns.io/patterns/industrial-edge/demo-script/",breadcrumb:"/patterns/industrial-edge/demo-script/"},"https://validatedpatterns.io/ci/":{title:"CI Status",tags:[],content:`These are the latest results of the Validated Patterns CI test runs.
 `,url:"https://validatedpatterns.io/ci/",breadcrumb:"/ci/"},"https://validatedpatterns.io/patterns/cockroachdb/":{title:"Cockroach",tags:[],content:`Cockroach A multicloud pattern using cockroachdb and submariner, deployed via RHACM.
 Repo
 `,url:"https://validatedpatterns.io/patterns/cockroachdb/",breadcrumb:"/patterns/cockroachdb/"},"https://validatedpatterns.io/patterns/connected-vehicle-architecture/":{title:"Connected Vehicle Architecture",tags:[],content:`Connected Vehicle Architecture A distributed cloud-native application that implements key aspects of a modern IoT architecture.
