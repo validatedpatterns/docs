@@ -6,6 +6,7 @@ summary: This is extension of Multicloud GitOps pattern with additional applicat
 products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
+- Red Hat Node Feature Discovery
 - 4th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
 industries:
 - General
@@ -60,7 +61,7 @@ Benefits of Hybrid Multicloud management with GitOps:
 .Overview of the solution including the business drivers, management hub, and the clusters under management
 image::multicloud-gitops-amx/hybrid-multicloud-management-gitops-hl-arch.png[Multicloud Architecture]
 
-//Add soemthing about hardware running with Xeons
+//Add something about hardware running with Xeons
 In the following figure, logically, this solution can be viewed as being composed of an automation component, unified management including secrets management, and the clusters under management, all running on top of a user-chosen mixture of on-premise data centers and public clouds.
 
 //figure 2 originally
