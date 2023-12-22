@@ -22,16 +22,6 @@ Watch the following video for a demonstration of [OpenShift Pipelines in the Ind
 
 In this article, we give an overview of the demo and step by step instructions on how to get started. 
 
-#Things you can show and tell out of the box with the demo:
-#
-#Consistent Configuration Management with Gitops -  15 min video recording  and slides available  
-#Application changes using DevOps
-#AI model development  with OpenDataHub  - 15 min video recording and slides
-#Data streaming from edge to core   - 15 min video recording and slides
-#If you have any questions, check the FAQ and use the Industrial CoP GChat Room to get assistance!
-#
-#Be sure to have read the Overview and Background of the Demo first. 
-
 ## Getting Started
 
 **_NOTE:_** This demo takes a "bring your own cluster" approach, which means this pattern/demo will not deploy any OpenShift clusters.
@@ -43,22 +33,22 @@ This demo script begins after the completion of you running `./pattern.sh make i
 
 There is an initial `Seed Pipeline run` in namespace `manuela-ci` that builds all required container images into the local registry. Check that the run was successful like this:
 
-![Pipeline Success](../../static/images/industiral-edge/seed_pipeline.png)
+![Pipeline Success](/images/industiral-edge/seed_pipeline.png)
 
 If it did fail, try “Rerun” on the Pipeline run page:
 
-![Re-run Pipeline](../../static/images/industrial-edge/rerun_seed_pipeline.png)
+![Re-run Pipeline](/images/industrial-edge/rerun_seed_pipeline.png)
 
 Check that the “Line Dashboard” in the development namespace is showing Data. The Link is in the bottom of the email under “Deployed Applications”. The Application should open - click on the “Realtime Data” Navigation on the left and wait a bit. Data should be visualized as received. Note that there is only vibration data! We will soon change that and activate temperature data also.
 
 If you wait a bit more (usually every 2-3 minutes), you will see an anomaly and alert (which is created by an ML Model)
 
-![line dashboard](../../static/images/industrial-edge/app-line-dashboard.png)
+![line dashboard](/images/industrial-edge/app-line-dashboard.png)
 
 ArgoCD - all healthy and synced?
 Login to the datacenter Argo. Link and password are in the email under ArgoCD Deployments. Make sure you get the right “datacenter one - there is another one for OpenShift gitops which could be confusing. It should look like this:
 
-![Healthy Argo](../../static/images/industrial-edge/ie_argoApps.png)
+![Healthy Argo](/images/industrial-edge/ie_argoApps.png)
 
 
 ### Demo: Configuration Changes with GitOps
