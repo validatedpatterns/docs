@@ -50,7 +50,6 @@ Login to the datacenter Argo. Link and password are in the email under ArgoCD De
 
 ![Healthy Argo](/images/industrial-edge/ie_argoApps.png)
 
-
 ### Demo: Configuration Changes with GitOps
 
 Follow the procedures [here](../application/#configuration-changes-with-gitops)
