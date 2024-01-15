@@ -11,7 +11,7 @@ class Badge {
     } else {
 	    this.version = ''
     }
-    this.date = date.substr(5, 5)
+    this.date = date.substr(0, 10)
   }
 
   string () {
