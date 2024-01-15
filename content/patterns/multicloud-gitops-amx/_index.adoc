@@ -17,7 +17,7 @@ pattern_logo: amx-intel-ai.png
 links:
   install: mcg-amx-getting-started
   help: https://groups.google.com/g/hybrid-cloud-patterns
-  bugs: https://github.com/hybrid-cloud-patterns/multicloud-gitops/issues
+  bugs: https://github.com/validatedpatterns-sandbox/amx-accelerated-multicloud-gitops/issues
 ---
 
 include::modules/comm-attributes.adoc[]

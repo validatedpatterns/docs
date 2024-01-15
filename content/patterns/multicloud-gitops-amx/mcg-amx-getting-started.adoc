@@ -21,7 +21,7 @@ include::modules/comm-attributes.adoc[]
  ** link:../../multicloud-gitops-amx/mcg-amx-cluster-sizing[Cluster sizing] requirements.
 * Optional: A second OpenShift cluster for multicloud demonstration.
 //Replaced git and podman prereqs with the tooling dependencies page
-* https://hybrid-cloud-patterns.io/learn/quickstart/[Install the tooling dependencies].
+* https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
 
 The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
 
@@ -33,12 +33,12 @@ public or private cloud by using https://console.redhat.com/openshift/create[Red
 . https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
 +
 //[ii]remember to give proper links!!!
-. Fork the https://github.com/hybrid-cloud-patterns/multicloud-gitops-amx[multicloud-gitops-amx] repository on GitHub.
+. Fork the https://github.com/validatedpatterns-sandbox/amx-accelerated-multicloud-gitops[multicloud-gitops-amx] repository on GitHub.
 . Clone the forked copy of this repository.
 +
 [source,terminal]
 ----
-git clone git@github.com:your-username/multicloud-gitops-amx.git
+git clone git@github.com:your-username/amx-accelerated-multicloud-gitops.git
 ----
 
 . Create a local copy of the secret values file that can safely include credentials for the config-demo application and edit it if you want to customize the secret. If not, the framework generates a random password.
