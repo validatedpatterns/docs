@@ -36,12 +36,12 @@ The {amx-med-pattern} does not have a dedicated hub or edge cluster.
 = Preparing for deployment
 .Procedure
 
-. Fork the link:https://github.com/validatedpatterns/medical-diagnosis[medical-diagnosis] repository on GitHub. You must fork the repository because your fork will be updated as part of the GitOps and DevOps processes.
+. Fork the link:https://github.com/validatedpatterns-sandbox/amx-accelerated-medical-diagnosis[medical-diagnosis] repository on GitHub. You must fork the repository because your fork will be updated as part of the GitOps and DevOps processes.
 . Clone the forked copy of this repository.
 +
 [source,terminal]
 ----
-$ git clone git@github.com:<your-username>/medical-diagnosis.git
+$ git clone git@github.com:<your-username>/amx-accelerated-medical-diagnosis.git
 ----
 
 . Create a local copy of the Helm values file that can safely include credentials.

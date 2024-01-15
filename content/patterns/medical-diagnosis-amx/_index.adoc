@@ -17,7 +17,7 @@ links:
   install: getting-started
   arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
   help: https://groups.google.com/g/hybrid-cloud-patterns
-  bugs: https://github.com/hybrid-cloud-patterns/medical-diagnosis-amx/issues
+  bugs: https://github.com/validatedpatterns-sandbox/amx-accelerated-medical-diagnosis/issues
 ---
 
 include::modules/comm-attributes.adoc[]
