@@ -192,7 +192,66 @@ ARGO_CMD=\`oc get secrets -A -o jsonpath=&#39;{range .items[*]}{&#34;oc get -n &
 NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD hub-gitops-server hub-gitops-server-mlops-fraud-detection-hub.apps.mfd-cluster.aws.validatedpatterns.com hub-gitops-server https passthrough/Redirect None # admin.password xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD cluster cluster-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com cluster 8080 reencrypt/Allow None kam kam-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com kam 8443 passthrough/None None openshift-gitops-server openshift-gitops-server-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com openshift-gitops-server https passthrough/Redirect None # admin.password FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6 The most important ArgoCD instance to examine at this point is mlops-fraud-detection-hub. This is where all the applications for the pattern can be tracked.
 Check all applications are synchronised. There are thirteen different ArgoCD &#34;applications&#34; deployed as part of this pattern.
 Next Steps Run the demo.
-`,url:"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-getting-started/",breadcrumb:"/patterns/mlops-fraud-detection/mfd-getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
+`,url:"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-getting-started/",breadcrumb:"/patterns/mlops-fraud-detection/mfd-getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Intel AMX accelerated Multicloud GitOps pattern Prerequisites An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console and select Services -&gt; Containers -&gt; Create cluster.
+The cluster must have a dynamic StorageClass to provision PersistentVolumes.
+Cluster sizing requirements.
+Optional: A second OpenShift cluster for multicloud demonstration.
+Install the tooling dependencies.
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
+If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by using Red Hat Hybrid Cloud Console.
+Procedure Install the tooling dependencies.
+Fork the multicloud-gitops-amx repository on GitHub.
+Clone the forked copy of this repository.
+git clone git@github.com:your-username/amx-accelerated-multicloud-gitops.git Create a local copy of the secret values file that can safely include credentials for the config-demo application and edit it if you want to customize the secret. If not, the framework generates a random password.
+cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml Do not commit this file. You do not want to push personal credentials to GitHub.
+(Optional) You may customize the deployment for your cluster depending on your needs by editing values-global.yaml and values-hub.yaml. To do this run the following commands:
+git checkout -b my-branch vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator - both methods are described below.
+Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
+Login to your cluster by running the following command:
+oc login Optional: Set the KUBECONFIG variable for the kubeconfig file path:
+export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
+./pattern.sh make install Verify that the Operators have been installed.
+To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
+Check that the following Operators are installed with Succeeded status (Figure 1):
+Advanced Cluster Management for Kubernetes
+multicluster engine for Kubernetes
+Node Feature Discovery Operator
+Red Hat Openshift GitOps
+Validated Patterns Operator
+Figure 1. List of Installed Operators for Multicloud GitOps Validated Pattern with AMX Deploying the cluster by using the Validated Patterns Operator To install the Validated Patterns Operator:
+Log in to the Openshift Container Platform web console and select Operators &gt; OperatorHub.
+Search for Validated Patterns Operator, open it and click Install.
+Figure 2. Instal Validated Patterns Operator Choose default settings for the installation mode, namespaces and update strategy and confirm it by clicking Install.
+Select Operators &gt; Installed Operators.
+Ensure that Validated Patterns Operator is listed in the openshift-operators project with a status Succeeded.
+After succeeded installation open Validated Patterns Operator, go to Pattern tab and click Create Pattern.
+Fill the Name of the pattern multicloud-gitops-amx and Cluster Group Name hub (from values-global.yaml file).
+Under Git Config &gt; Target Repo copy the link to your fork and under Git Config &gt; Target Revision write the name of your branch (Figure 3).
+Click Create to create the pattern.
+Figure 3. Create Pattern Form Verify that the rest of Operators have been installed:
+To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
+Check that the following Operators are installed with Succeeded status (Figure 1):
+Advanced Cluster Management for Kubernetes
+multicluster engine for Kubernetes
+Node Feature Discovery Operator
+Red Hat Openshift GitOps
+Add a secret for config-demo application (from values-secret-multicloud-gitops.yaml) to Vault manually:
+Go to Vault service route. URL can be found:
+by running command:
+oc -n vault get route vault -ojsonpath=&#39;{.spec.host}&#39; in Openshift Container Platform web console under Networking &gt; Routes for vault project.
+Log into the Vault using root token. Root token can be found by executing command:
+oc -n imperative get secrets vaultkeys -ojsonpath=&#39;{.data.vault_data_json}&#39; | base64 -d After login go to secret catalog and clik Create secret and fill all the fields manually (Figure 2):
+Path for this secret is global/config-demo (from values.yaml file for config-demo charts)
+Under Secret data key is secret (from values-secret-multicloud-gitops.yaml file) and in next field put its value.
+Click Add and then Save.
+Figure 4. Create secret Verification Go to the Hub ArgoCD and verify that all applications are synchronized. The URL can be found in Openshift Container Platform web console under Networking &gt; Routes for the project multicloud-gitops-amx-hub or use command:
+oc -n multicloud-gitops-amx-hub get route hub-gitops-server -ojsonpath=&#39;{.spec.host}&#39; All applications should be Healthy and Synced:
+Figure 5. ArgoCD panel with amx-app Check the logs of a pod amx-app to verify if it uses Intel AMX. In the OpenShift Container Platform web console, navigate to Workloads &gt; Pods. Change project to amx-app and open the Logs tab in the pod details. The appearance of avx_512_core_amx_bf16 flag on the list of compiled instructions confirms that Intel AMX is used.
+As part of this pattern, HashiCorp Vault has been installed. Refer to the section on Vault.
+Next steps After the management hub is set up and works correctly, attach one or more managed clusters to the architecture.
+For instructions on deploying the edge, refer to Attach a managed cluster (edge) to the management hub.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-getting-started/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
 Select Services -&gt; Containers -&gt; Create cluster.
 The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
@@ -364,7 +423,81 @@ Add a dedicated cluster to deploy the factory pieces using ACM
 Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that here
 a. Making configuration changes with GitOps a. Making application changes using DevOps a. Making AI/ML model changes with DevOps
 Uninstalling We currently do not support uninstalling this pattern.
-`,url:"https://validatedpatterns.io/patterns/industrial-edge/getting-started/",breadcrumb:"/patterns/industrial-edge/getting-started/"},"https://validatedpatterns.io/patterns/medical-diagnosis/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Medical Diagnosis pattern Prerequisites An OpenShift cluster
+`,url:"https://validatedpatterns.io/patterns/industrial-edge/getting-started/",breadcrumb:"/patterns/industrial-edge/getting-started/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Intel AMX accelerated Medical Diagnosis pattern Prerequisites An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select Services → Containers → Create cluster.
+The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
+A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
+An S3-capable Storage (OpenShift Data Foundation is recommended) set up in your private cloud for the x-ray images
+The Helm binary, see Installing Helm For installation tooling dependencies, see Patterns quick start.
+The Intel AMX accelerated Medical Diagnosis pattern does not have a dedicated hub or edge cluster.
+Preparing for deployment Procedure Fork the medical-diagnosis repository on GitHub. You must fork the repository because your fork will be updated as part of the GitOps and DevOps processes.
+Clone the forked copy of this repository.
+$ git clone git@github.com:&lt;your-username&gt;/amx-accelerated-medical-diagnosis.git Create a local copy of the Helm values file that can safely include credentials.
+Do not commit this file. You do not want to push personal credentials to GitHub.
+Run the following commands:
+$ cp values-secret.yaml.template ~/values-secret-medical-diagnosis.yaml $ vi ~/values-secret-medical-diagnosis.yaml Example values-secret.yaml file version &#34;2.0&#34; secrets: # NEVER COMMIT THESE VALUES TO GIT # Database login credentials and configuration - name: xraylab fields: - name: database-user value: xraylab - name: database-host value: xraylabdb - name: database-db value: xraylabdb - name: database-master-user value: xraylab - name: database-password onMissingValue: generate vaultPolicy: validatedPatternDefaultPolicy - name: database-root-password onMissingValue: generate vaultPolicy: validatedPatternDefaultPolicy - name: database-master-password onMissingValue: generate vaultPolicy: validatedPatternDefaultPolicy # Grafana Dashboard admin user/password - name: grafana fields: - name: GF_SECURITY_ADMIN_USER: value: root - name: GF_SECURITY_ADMIN_PASSWORD: onMissingValue: generate vaultPolicy: validatedPatternDefaultPolicy By default, Vault password policy generates the passwords for you. However, you can create your own passwords.
+When defining a custom password for the database users, avoid using the $ special character as it gets interpreted by the shell and will ultimately set the incorrect desired password.
+To customize the deployment for your cluster, update the values-global.yaml file by running the following commands:
+$ git checkout -b my-branch $ vi values-global.yaml Replace &#39;bucketSource&#39; value. User can set any bucket name without special signs (besides &#39;-&#39;) and numbers.
+...omitted datacenter: cloudProvider: PROVIDE_CLOUDPROVIDER # Not required for on-prem storageClassName: &#34;ocs-storagecluster-cephfs&#34; # Default filesystem storage used on on-prem cluster, can be changed by user region: PROVIDE_REGION # Not required for on-prem clustername: &#34;&#34; # Not required for on-prem, pattern uses on-prem cluster value instead domain: &#34;&#34; # Not required for on-prem, pattern uses on-prem cluster value instead s3: # Values for S3 bucket access # bucketSource: &#34;provide s3 bucket name where images are stored&#34; bucketSource: &#34;PROVIDE_BUCKET_SOURCE&#34; # Bucket base name used for image-generator and image-server applications. bucketBaseName: &#34;xray-source&#34; $ git add values-global.yaml $ git commit values-global.yaml $ git push origin my-branch To deploy the pattern, you can use the Validated Patterns Operator. If you do use the Operator, skip to validating the environment.
+Installing Validated Pattern this way may cause other components dependent on Vault to not start properly.
+After Validated pattern is installed using operator from OperatorHub user must type in secrets (from values-secret.yaml) into vault manually.
+To preview the changes that will be implemented to the Helm charts, run the following command:
+$ ./pattern.sh make show Login to your cluster by running the following command:
+$ oc login Optional: Set the KUBECONFIG variable for the kubeconfig file path:
+export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Check the values files before deployment To ensure that you have the required variables to deploy the Medical Diagnosis pattern, run the ./pattern.sh make predeploy command. You can review your values and make updates, if required.
+You must review the following values files before deploying the Medical Diagnosis pattern:
+Values File Description values-secret.yaml
+Values file that includes the secret parameters required by the pattern
+values-global.yaml
+File that contains all the global values used by Helm to deploy the pattern
+Before you run the ./pattern.msh make install command, ensure that you have the correct values for:
+- bucketSource Deploy To apply the changes to your cluster, run the following command:
+$ ./pattern.sh make install If the installation fails, you can go over the instructions and make updates, if required. To continue the installation, run the following command:
+$ ./pattern.sh make update This step might take some time, especially for the OpenShift Data Foundation Operator components to install and synchronize. The ./pattern.sh make install command provides some progress updates during the installation process. It can take up to twenty minutes. Compare your ./pattern.sh make install run progress with the following video that shows a successful installation.
+Verify that the Operators have been installed.
+To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
+Check that the Operator is installed in the openshift-operators namespace and its status is Succeeded. Ensure that OpenShift Data Foundation is listed in the list of installed Operators.
+(Optional) Typing secrets into Vault manually Log into the Vault using the root token, which can be found by executing the command:
+oc -n vault get route vault -ojsonpath=&#39;{.spec.host}&#39; Log into the Vault using root token. Root token to vault can be found by executing command:
+oc -n imperative get secrets vaultkeys -ojsonpath=&#39;{.data.vault_data_json}&#39; | base64 -d At this point user can type into the Vault secret values specified in &#39;values-secret.yaml&#39;
+Using OpenShift GitOps to check on Application progress To check the various applications that are being deployed, you can view the progress of the OpenShift GitOps Operator.
+Obtain the ArgoCD URLs and passwords.
+The URLs and login credentials for ArgoCD change depending on the pattern name and the site names they control. Follow the instructions below to find them, however you choose to deploy the pattern.
+Display the fully qualified domain names, and matching login credentials, for all ArgoCD instances:
+ARGO_CMD=\`oc get secrets -A -o jsonpath=&#39;{range .items[*]}{&#34;oc get -n &#34;}{.metadata.namespace}{&#34; routes; oc -n &#34;}{.metadata.namespace}{&#34; extract secrets/&#34;}{.metadata.name}{&#34; --to=-\\\\n&#34;}{end}&#39; | grep gitops-cluster\` CMD=\`echo $ARGO_CMD | sed &#39;s|- oc|-;oc|g&#39;\` eval $CMD Example output NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD hub-gitops-server hub-gitops-server-medical-diagnosis-hub.apps.wh-medctr.blueprints.rhecoeng.com hub-gitops-server https passthrough/Redirect None # admin.password xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH NAME HOST/PORT PATH SERVICES PORT TERMINATION WILDCARD cluster cluster-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com cluster 8080 reencrypt/Allow None kam kam-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com kam 8443 passthrough/None None openshift-gitops-server openshift-gitops-server-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com openshift-gitops-server https passthrough/Redirect None # admin.password FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6 Examine the medical-diagnosis-hub ArgoCD instance. You can track all the applications for the pattern in this instance.
+Check that all applications are synchronized. There are thirteen different ArgoCD applications that are deployed as part of this pattern.
+Set up object storage Modified version of a Medical Diagnosis pattern requires to use on-prem object storage. Instead of a AWS S3 (or other cloud equivalent) user can set up the Ceph RGW object storage. To communicate with its API user can utilize aws-cli. The installation manual is available on Amazon website
+Set up local S3 object storage only after ODF is properly deployed by validated pattern.
+User can extract CEPH_RGW_ENDPOINT by executing the command:
+oc -n openshift-storage get route s3-rgw -ojsonpath=&#39;{.spec.host}&#39; AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY of RGW object store can be found by performing following commands:
+oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_ACCESS_KEY_ID}&#39; | base64 -d oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_SECRET_ACCESS_KEY}&#39; | base64 -d These values are required to properly set up object storage, if any of them is not accessible (user get error while trying to retrieve them) that may be indicator that ODF is not working properly.
+First thing to check is s3-rgw. Please go to ArgoCD dashboard, to odf application and resync s3-rgw component.
+Second thing to do is to go to ArgoCD dashboard, to xraylab-init application and check if job bucket-init and create-s3-secret are done. If not please resync whole application.
+Clone the repository with xray images and push them to the bucket:
+git clone https://github.com/red-hat-data-services/jumpstart-library.git Xray images are stored in the following path in the repo: https://github.com/red-hat-data-services/jumpstart-library/tree/main/demo1-xray-pipeline/base_elements/containers/image-init/base_images
+Set environment variables. Create and configure the backet:
+export AWS_ACCESS_KEY_ID=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_ACCESS_KEY_ID}&#39; | base64 -d) export AWS_SECRET_ACCESS_KEY=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_SECRET_ACCESS_KEY}&#39; | base64 -d) export CEPH_RGW_ENDPOINT=$(oc -n openshift-storage get route s3-rgw -ojsonpath=&#39;{.spec.host}&#39;) export CEPH_BUCKET_NAME=&#34;PUT_NAME_OF_YOUR_BUCKET&#34; cd jumpstart-library/demo1-xray-pipeline/base_elements/containers/image-init aws --endpoint https://\${CEPH_RGW_ENDPOINT} --no-verify-ssl s3api create-bucket --bucket \${CEPH_BUCKET_NAME} aws --endpoint https://\${CEPH_RGW_ENDPOINT} --no-verify-ssl s3 cp base_images/ s3://\${CEPH_BUCKET_NAME}/ --recursive Ceph RGW bucket needs specific bucket policy to be applied. To apply policy execute following commands:
+export AWS_ACCESS_KEY_ID=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_ACCESS_KEY_ID}&#39; | base64 -d) export AWS_SECRET_ACCESS_KEY=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_SECRET_ACCESS_KEY}&#39; | base64 -d) export CEPH_RGW_ENDPOINT=$(oc -n openshift-storage get route s3-rgw -ojsonpath=&#39;{.spec.host}&#39;) export CEPH_BUCKET_NAME=&#34;PUT_NAME_OF_YOUR_BUCKET&#34; cd medical-diagnosis aws --endpoint https://\${CEPH_RGW_ENDPOINT} --no-verify-ssl s3api put-bucket-policy --bucket \${CEPH_BUCKET_NAME} --policy file://./bucket-policy.json Viewing the Grafana based dashboard Accept the SSL certificates on the browser for the dashboard. In the OpenShift Container Platform web console, go to the Routes for project openshift-storage\`. Click the URL for the s3-rgw.
+Ensure that you see some XML and not the access denied error message.
+While still looking at Routes, change the project to xraylab-1. Click the URL for the image-server. Ensure that you do not see an access denied error message. You must to see a Hello World message.
+Turn on the image file flow. There are three ways to go about this.
+You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster.
+$ oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1 Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the xraylab-1 project.
+Right-click on the image-generator pod icon and select Edit Pod count.
+Up the pod count from 0 to 1 and save.
+Alternatively, you can have the same outcome on the Administrator console.
+Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project xraylab-1. Click image-generator and increase the pod count to 1.
+OpenShift GitOps view should be similar to the following:
+All applications should be healthy for pattern to work correctly, even if some applications may be OutOfSync. If any application is in &#39;unhealthy&#39; state common solution is to sync the application. For other issues please refer to https://validatedpatterns.io/patterns/medical-diagnosis/troubleshooting/
+Making some changes on the dashboard You can change some of the parameters and watch how the changes effect the dashboard.
+You can increase or decrease the number of image generators.
+$ oc scale deploymentconfig/image-generator --replicas=2 Check the dashboard.
+$ oc scale deploymentconfig/image-generator --replicas=0 Watch the dashboard stop processing images.
+You can also simulate the change of the AI model version - as it’s only an environment variable in the Serverless Service configuration.
+$ oc patch service.serving.knative.dev/risk-assessment --type=json -p &#39;[{&#34;op&#34;:&#34;replace&#34;,&#34;path&#34;:&#34;/spec/template/metadata/annotations/revisionTimestamp&#34;,&#34;value&#34;:&#34;&#39;&#34;$(date +%F_%T)&#34;&#39;&#34;},{&#34;op&#34;:&#34;replace&#34;,&#34;path&#34;:&#34;/spec/template/spec/containers/0/env/0/value&#34;,&#34;value&#34;:&#34;v2&#34;}]&#39; This changes the model version value, and the revisionTimestamp in the annotations, which triggers a redeployment of the service.
+`,url:"https://validatedpatterns.io/patterns/medical-diagnosis-amx/getting-started/",breadcrumb:"/patterns/medical-diagnosis-amx/getting-started/"},"https://validatedpatterns.io/patterns/medical-diagnosis/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Medical Diagnosis pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
 Select Services → Containers → Create cluster.
 The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
@@ -573,7 +706,56 @@ Some of the validated patterns use configuration files (for now), while others, 
 Policy While many enterprise Cloud Native applications are open source, many of the products used require licenses or subscriptions. Policies help enforce license and subscription management and the channels needed to get access to those licenses or subscriptions.
 Similarly, in multicloud deployments and complex edge deployments, policies can help define and select the correct GitOps workflows that need to be managed for various sites or clusters. E.g. defining an OpenShift Cluster as a &#34;Factory&#34; in the Industrial Edge validated pattern provides a simple trigger to roll-out the entire Factory deployment. Policy is a powerful tool in automation.
 Validated patterns use Red Hat Advanced Cluster Management for Kubernetes to control clusters and applications from a single console, with built-in security policies.
-`,url:"https://validatedpatterns.io/contribute/background-on-pattern-development/",breadcrumb:"/contribute/background-on-pattern-development/"},"https://validatedpatterns.io/patterns/medical-diagnosis/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:`About OpenShift cluster sizing for the Medical Diagnosis pattern To understand cluster sizing requirements for the Medical Diagnosis pattern, consider the following components that the Medical Diagnosis pattern deploys on the datacenter or the hub OpenShift cluster:
+`,url:"https://validatedpatterns.io/contribute/background-on-pattern-development/",breadcrumb:"/contribute/background-on-pattern-development/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:`About OpenShift cluster sizing for the Intel AMX accelerated Medical Diagnosis pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
+For AWS, see Installing OpenShift Container Platform on AWS.
+For bare-metal, see Installing OpenShift Container Platform on bare metal.
+To understand cluster sizing requirements for the Intel AMX accelerated Medical Diagnosis pattern, consider the following components that the Intel AMX accelerated Medical Diagnosis pattern deploys on the datacenter or the hub OpenShift cluster:
+Name Kind Namespace Description Medical Diagnosis Hub
+Application
+medical-diagnosis-hub
+Hub GitOps management
+Red Hat OpenShift GitOps
+Operator
+openshift-operators
+OpenShift GitOps
+Red Hat OpenShift Data Foundation
+Operator
+openshift-storage
+Cloud Native storage solution
+Red Hat AMQ Streams
+Operator
+openshift-operators
+AMQ Streams provides Apache Kafka access
+Red Hat OpenShift Serverless
+Operator
+- knative-serving (knative-eventing)
+Provides access to Knative Serving and Eventing functions
+Node Feature Discovery Operator
+Operator
+openshift-nfd
+Manages the detection and labeling of hardware features and configuration (for example Intel AMX)
+The Intel AMX accelerated Medical Diagnosis pattern also includes the Red Hat Advanced Cluster Management (RHACM) supporting operator that is installed by OpenShift GitOps using Argo CD.
+For information about requirements for additional platforms, see OpenShift Container Platform documentation.
+About Intel AMX accelerated Medical Diagnosis pattern OpenShift cluster size The OpenShift cluster is a standard deployment of 3 control plane nodes and 3 or more worker nodes.
+The recommended hardware setup:
+Node type Number of nodes CPU Memory Storage Control Planes
+3
+4th Generation Intel Xeon Gold 6426Y (16 cores at 2.5 GHz base/3.3 GHz all core turbo/3.0 GHz AMX all core turbo) or better
+128 GB (8 x 16 GB DDR5 4800) or more
+NVME SSD 3TB or more
+Workers
+3
+4th Generation Intel Xeon Gold 6438Y+ (32 cores at 2.0 GHz base/2.8 GHz all core turbo/2.4 GHz AMX all core turbo) or better
+256 GB (16 x 16 GB) or 512 GB (16 x 32GB) DDR5-4800
+NVME SSD 3TB or more
+You might want to add resources when more developers are working on building their applications.
+The pattern was tested in the on-premises environment with following hardware configuration (per cluster):
+Node type Number of nodes CPU Memory Storage Control Planes + Workers
+3 + 3
+4th Generation Intel Xeon Platinum 8460Y+ Processor (40 cores at 2.0 GHz base/2.8 GHz all core turbo/2.6 AMX all core turbo)
+512 GB (16x32GB DDR5 4800)
+4x 3.84TB U.2 NVMe PCIe Gen4
+`,url:"https://validatedpatterns.io/patterns/medical-diagnosis-amx/cluster-sizing/",breadcrumb:"/patterns/medical-diagnosis-amx/cluster-sizing/"},"https://validatedpatterns.io/patterns/medical-diagnosis/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:`About OpenShift cluster sizing for the Medical Diagnosis pattern To understand cluster sizing requirements for the Medical Diagnosis pattern, consider the following components that the Medical Diagnosis pattern deploys on the datacenter or the hub OpenShift cluster:
 Name Kind Namespace Description Medical Diagnosis Hub
 Application
 medical-diagnosis-hub
@@ -659,7 +841,44 @@ The installation of AAP itself is governed by the chart here. The post-installat
 It is very much the intention of this pattern to make it easy to replace the specific Edge management use case with another one. Some ideas on how to do that can be found here.
 Specifics of the Ansible content for this pattern can be seen here.
 More details of the specifics of how AAP is configured are available here.
-Next Steps Help &amp; Feedback Report Bugs `,url:"https://validatedpatterns.io/patterns/ansible-edge-gitops/installation-details/",breadcrumb:"/patterns/ansible-edge-gitops/installation-details/"},"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/managed-cluster/":{title:"Managed cluster sites",tags:[],content:`Attach a managed cluster (edge) to the management hub Understanding Red Hat Advanced Cluster Management requirements Allow Red Hat Advanced Cluster Management (RHACM) to deploy the managed cluster application to a subset of clusters.
+Next Steps Help &amp; Feedback Report Bugs `,url:"https://validatedpatterns.io/patterns/ansible-edge-gitops/installation-details/",breadcrumb:"/patterns/ansible-edge-gitops/installation-details/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-managed-cluster/":{title:"Managed cluster sites",tags:[],content:` Attach a managed cluster (edge) to the management hub Understanding Red Hat Advanced Cluster Management requirements By default, Red Hat Advanced Cluster Management (RHACM) manages the clusterGroup applications that are deployed on all clusters. In the value-hub.yaml file, add a managedClusterCgroup for each cluster or group of clusters that you want to manage as one.
+managedClusterGroups: - name: region-one helmOverrides: - name: clusterGroup.isHubCluster value: false clusterSelector: matchLabels: clusterGroup: region-one The above YAML file segment deploys the clusterGroup applications on managed clusters with the label clusterGroup=region-one. Specific subscriptions and Operators, applications and projects for that clusterGroup are then managed in a value-region-one.yaml file. For example:
+namespaces: - config-demo projects: - config-demo applications: config-demo: name: config-demo namespace: config-demo project: config-demo path: charts/all/config-demo #Subscriptions can be added too - multicloud-gitops at present does not require subscriptions on its managed clusters #subscriptions: . # example-subscription # name: example-operator # namespace: example-namespace # channel: example-channel # csv: example-operator.v1.0.0 subscriptions: Ensure that you commit the changes and push them to GitHub so that GitOps can fetch your changes and apply them.
+Deploying a managed cluster by using Red Hat Advanced Cluster Management Prerequistes An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select Services → Containers → Create cluster.
+Red Hat Advanced Cluster Management (RHACM) web console to join the managed cluster to the management hub
+After RHACM is installed, a message regarding a Web console update is available&#34; might be displayed. Follow the instructions and click the Refresh web console link.
+Procedure In the left navigation panel of web console, click local-cluster. Select All Clusters. The RHACM web console is displayed with Cluster* on the left navigation panel.
+On the Managed clusters tab, click Import cluster.
+On the Import an existing cluster page, enter the cluster name and choose KUBECONFIG as the &#34;import mode&#34;. Add the tag clusterGroup=region-one. Click Import.
+Now that RHACM is no longer deploying the managed cluster applications everywhere, you must indicate that the new cluster has the managed cluster role.
+Optional: Deploying a managed cluster by using cm-cli tool Prerequistes An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select Services -&gt; Containers -&gt; Create cluster.
+The cm-cli tool
+Procedure Obtain the KUBECONFIG file from the managed cluster.
+Open a shell prompt and login into the management hub cluster by using either of the following methods:
+oc login or
+export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Run the following command:
+cm attach cluster --cluster &lt;cluster-name&gt; --cluster-kubeconfig &lt;path-to-path_to_kubeconfig&gt; Next steps Designate the new cluster as a managed cluster site
+Optional: Deploying a managed cluster by using the clusteradm tool Prerequistes An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select Services → Containers → Create cluster.
+The clusteradm tool
+Procedure To deploy an edge cluster, you must to get the token from the management hub cluster. Run the following command on the existing management hub or datacenter cluster:
+clusteradm get token The command generates a token and shows you the command to use on the managed cluster.
+Login to the managed cluster with either of the following methods:
+oc login or
+export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; To request that the managed join the hub cluster, run the following command:
+clusteradm join --hub-token &lt;token_from_clusteradm_get_token_command&gt; &lt;managed_cluster_name&gt; Accept the join request on the hub cluster:
+clusteradm accept --clusters &lt;managed_cluster_name&gt; Next steps Designate the new cluster as a managed cluster site
+Designate the new cluster as a managed cluster site If you use the command line tools such as clusteradm or cm-cli, you must explicitly indicate that the imported cluster is part of a specific clusterGroup. Some examples of clusterGroup are factory, devel, or prod.
+To tag the cluster as clusterGroup=&lt;managed-cluster-group&gt;, complete the following steps.
+Procedure To find the new cluster, run the following command:
+oc get managedcluster.cluster.open-cluster-management.io To apply the label, run the following command:
+oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster Verification Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. It might take a while for the RHACM agent and agent-addons to launch. After that, the OpenShift GitOps Operator is installed. On successful installation, launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-managed-cluster/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-managed-cluster/"},"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/managed-cluster/":{title:"Managed cluster sites",tags:[],content:`Attach a managed cluster (edge) to the management hub Understanding Red Hat Advanced Cluster Management requirements Allow Red Hat Advanced Cluster Management (RHACM) to deploy the managed cluster application to a subset of clusters.
 By default the clusterGroup applications are deployed on all clusters that RHACM manages. In the value-hub.yaml, file add a managedClusterCgroup for each cluster or group of clusters that you want to manage as one.
 managedClusterGroups: - name: region-one helmOverrides: - name: clusterGroup.isHubCluster value: false clusterSelector: matchLabels: clusterGroup: region-one The above YAML file segment deploys the clusterGroup applications on managed clusters with the label clusterGroup=region-one. Specific subscriptions and Operators, applications and projects for that clusterGroup are then managed in a value-region-one.yaml file. For example:
 namespaces: - config-demo projects: - config-demo applications: config-demo: name: config-demo namespace: config-demo project: config-demo path: charts/all/config-demo #Subscriptions can be added too - multicloud-gitops at present does not require subscriptions on its managed clusters #subscriptions: # example-subscription: # name: example-operator # namespace: example-namespace # channel: example-channel # csv: example-operator.v1.0.0 subscriptions: Important: Ensure that you commit the changes and push them to GitHub so that GitOps can fetch your changes and apply them.
@@ -899,7 +1118,51 @@ To order, click on the &ldquo;Place an Order&rdquo; button on the front page. Th
 Click the &ldquo;Add&rdquo; button next to a menu item; the item name will appear. Add a name for the order:
 You can add as many orders as you want. On your last item, click the &ldquo;Place Order&rdquo; button on the item dialog:
 As the orders are serviced by the barista and kitchen services, you can see their status in the &ldquo;Orders&rdquo; section of the page:
-`,url:"https://validatedpatterns.io/patterns/retail/application/",breadcrumb:"/patterns/retail/application/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Multicloud GitOps Pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
+`,url:"https://validatedpatterns.io/patterns/retail/application/",breadcrumb:"/patterns/retail/application/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Intel AMX accelerated Multicloud GitOps pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
+For AWS, see Installing OpenShift Container Platform on AWS.
+For bare-metal, see Installing OpenShift Container Platform on bare metal.
+To understand cluster sizing requirements for the Intel AMX accelerated Multicloud GitOps pattern, consider the following components that the Intel AMX accelerated Multicloud GitOps pattern deploys on the datacenter or the hub OpenShift cluster:
+Name Kind Namespace Description multicloud-gitops-amx-hub
+Application
+multicloud-gitops-amx-hub
+Hub GitOps management
+Red Hat Advanced Cluster Management
+Operator
+open-cluster-management
+Advance Cluster Management
+Red Hat OpenShift GitOps
+Operator
+openshift-operators
+OpenShift GitOps
+Node Feature Discovery
+Operator
+openshift-nfd
+Manages the detection and labeling of hardware features and configuration (for example Intel AMX)
+Red Hat OpenShift Data Foundation
+Operator
+openshift-storage
+Cloud Native storage solution
+The Intel AMX accelerated Multicloud GitOps pattern also includes the Red Hat Advanced Cluster Management (RHACM) supporting operator that is installed by OpenShift GitOps using Argo CD.
+Intel AMX accelerated Multicloud GitOps pattern with OpenShift clusters sizes The datacenter hub OpenShift cluster needs to be a bit bigger than the Factory/Edge clusters because this is where the developers will be running pipelines to build and deploy the Intel AMX accelerated Multicloud GitOps pattern on the cluster. The above cluster sizing is close to a minimum size for a Datacenter HUB cluster. In the next few sections we take some snapshots of the cluster utilization while the Intel AMX accelerated Multicloud GitOps pattern is running. Keep in mind that resources will have to be added as more developers are working building their applications.
+The recommended clusters sizes for datacenter hub and for managed datacenter are the same in this case:
+Node type Number of nodes CPU Memory Storage Control Planes
+3
+4th Generation Intel Xeon Gold 6426Y (16 cores at 2.5 GHz base/3.3 GHz all core turbo/3.0 GHz AMX all core turbo) or better
+128 GB (8 x 16 GB DDR5 4800) or more
+NVME SSD 3TB or more
+Workers
+3
+4th Generation Intel Xeon Gold 6438Y+ (32 cores at 2.0 GHz base/2.8 GHz all core turbo/2.4 GHz AMX all core turbo) or better
+256 GB (16 x 16 GB) or 512 GB (16 x 32GB) DDR5-4800
+NVME SSD 3TB or more
+You might want to add resources when more developers are working on building their applications.
+The pattern was tested in the on-premises environment with following hardware configuration (per cluster):
+Node type Number of nodes CPU Memory Storage Control Planes + Workers
+3 + 3
+4th Generation Intel Xeon Platinum 8460Y+ Processor (40 cores at 2.0 GHz base/2.8 GHz all core turbo/2.6 AMX all core turbo)
+512 GB (16x32GB DDR5 4800)
+4x 3.84TB U.2 NVMe PCIe Gen4
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-cluster-sizing/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-cluster-sizing/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Multicloud GitOps Pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
 For AWS, see Installing OpenShift Container Platform on AWS.
 For bare-metal, see Installing OpenShift Container Platform on bare metal.
 To understand cluster sizing requirements for the Multicloud GitOps pattern, consider the following components that the Multicloud GitOps pattern deploys on the datacenter or the hub OpenShift cluster:
@@ -1157,7 +1420,13 @@ Kustomize to framework Kustomize can still be used within the framework but it w
 For example, the original Argo CD subscription YAML from one of the patterns looked like this:
 apiVersion: operators.coreos.com/v1alpha1 kind: Subscription metadata: name: argocd-operator namespace: argocd spec: channel: alpha installPlanApproval: Manual name: argocd-operator source: community-operators sourceNamespace: openshift-marketplace startingCSV: argocd-operator.v0.0.11 While we could have continued to use the ArgoCD community operator, we instead transitioned to using OpenShift GitOps, the Red Hat supported product. But this static subscription would not allow updates for continuous integration of new versions. And you’ll remember from the Operators section above that we specify channel names as part of the subscription of operators. So we can instead using something like this (understanding the move to openshift-gitops-operator instead of ArgoCD).
 apiVersion: operators.coreos.com/v1alpha1 kind: Subscription metadata: name: openshift-gitops-operator namespace: openshift-operators labels: operators.coreos.com/openshift-gitops-operator.openshift-operators: &#34;&#34; spec: channel: {{ .Values.main.gitops.channel }} installPlanApproval: {{ .Values.main.options.installPlanApproval }} name: openshift-gitops-operator source: redhat-operators sourceNamespace: openshift-marketplace {{- if .Values.main.options.useCSV }} startingCSV: openshift-gitops-operator.{{ .Values.main.gitops.csv }} {{- end }} Size matters If things are taking a long time to deploy, use the OpenShift console to check on memory and other potential capacity issues with the cluster. If running in a cloud you may wish to up the machine size. Check the sizing charts.
-`,url:"https://validatedpatterns.io/contribute/creating-a-pattern/",breadcrumb:"/contribute/creating-a-pattern/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-imperative-actions/":{title:"Imperative actions",tags:[],content:` Using kubernetes cronjobs to apply imperative actions There is currently no way within Argo CD to apply an imperative action against a cluster. However, you can declaratively apply changes to a cluster using kubernetes cronjob resources. Customers can use their Ansible playbooks to take action against a cluster if necessary.
+`,url:"https://validatedpatterns.io/contribute/creating-a-pattern/",breadcrumb:"/contribute/creating-a-pattern/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-imperative-actions/":{title:"Imperative actions",tags:[],content:` Using kubernetes cronjobs to apply imperative actions There is currently no way within Argo CD to apply an imperative action against a cluster. However, you can declaratively apply changes to a cluster using kubernetes cronjob resources. Customers can use their Ansible playbooks to take action against a cluster if necessary.
+The authors of the Ansible playbooks and roles must ensure that the playbooks are idempotent because they get applied through cronjobs which are set to run every 10 minutes.
+Adding your playbooks to the pattern requires the following:
+Move your Ansible configurations to the appropriate directory under Ansible in your forked repository.
+Define your job as a list, for example:
+imperative: # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm # The default schedule is every 10 minutes: imperative.schedule # Total timeout of all jobs is 1h: imperative.activeDeadlineSeconds # imagePullPolicy is set to always: imperative.imagePullPolicy # For additional overrides that apply to the jobs, please refer to the README located in # the top level of this repository. jobs: - name: regional-ca # Ansible playbook to be run playbook: ansible/playbooks/on-hub-get-regional-ca.yml # per playbook timeout in seconds timeout: 234 # verbosity: &#34;-v&#34; Additional job customizations The pattern includes override parameters to provide further customization. Refer to the list below for the available overrides.
+imperative: jobs: [] # This image contains Ansible + kubernetes.core by default and is used to run the jobs image: registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8:latest namespace: &#34;imperative&#34; # configmap name in the namespace that will contain all helm values valuesConfigMap: &#34;helm-values-configmap&#34; cronJobName: &#34;imperative-cronjob&#34; jobName: &#34;imperative-job&#34; imagePullPolicy: Always # This is the maximum timeout of all the jobs (1h) activeDeadlineSeconds: 3600 # By default we run this every 10minutes schedule: &#34;*/10 * * * *&#34; # Schedule used to trigger the vault unsealing (if explicitely enabled) # Set to run every 9 minutes in order for load-secrets to succeed within # a reasonable amount of time (it waits up to 15 mins) insecureUnsealVaultInsideClusterSchedule: &#34;*/9 * * * *&#34; # Increase Ansible verbosity with &#39;-v&#39; or &#39;-vv..&#39; verbosity: &#34;&#34; serviceAccountCreate: true # service account to be used to run the cron pods serviceAccountName: imperative-sa clusterRoleName: imperative-cluster-role clusterRoleYaml: &#34;&#34; roleName: imperative-role roleYaml: &#34;&#34; `,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-imperative-actions/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-imperative-actions/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-imperative-actions/":{title:"Imperative actions",tags:[],content:` Using kubernetes cronjobs to apply imperative actions There is currently no way within Argo CD to apply an imperative action against a cluster. However, you can declaratively apply changes to a cluster using kubernetes cronjob resources. Customers can use their Ansible playbooks to take action against a cluster if necessary.
 The authors of the Ansible playbooks and roles must ensure that the playbooks are idempotent because they get applied through cronjobs which are set to run every 10 minutes.
 Adding your playbooks to the pattern requires the following:
 Move your Ansible configurations to the appropriate directory under Ansible in your forked repository.
@@ -1217,7 +1486,38 @@ rpc error: code = Unknown desc = Manifest generation error (cached): \`/bin/bash
 This is a byproduct of the way the pattern installs applications at the moment. We are tracking this as #39.
 Symptom: Applications show &ldquo;not in sync&rdquo; status in ArgoCD Cause: There is a discrepancy between what the git repository says the application should have, and how that state is realized in ArgoCD.
 The installation mechanism currently installs operators as parts of multiple applications when running on the same cluster, so it is a race condition in ArgoCD to see which one &ldquo;wins.&rdquo; This is a problem with the way we are installing the patterns. We are tracking this as #38.
-`,url:"https://validatedpatterns.io/patterns/industrial-edge/troubleshooting/",breadcrumb:"/patterns/industrial-edge/troubleshooting/"},"https://validatedpatterns.io/patterns/medical-diagnosis/troubleshooting/":{title:"Troubleshooting",tags:[],content:` Understanding the Makefile The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn’t required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a make upgrade which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
+`,url:"https://validatedpatterns.io/patterns/industrial-edge/troubleshooting/",breadcrumb:"/patterns/industrial-edge/troubleshooting/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/troubleshooting/":{title:"Troubleshooting",tags:[],content:` Understanding the Makefile The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn’t required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a make upgrade which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
+About the make install and make deploy commands Running make install within the pattern application triggers a make deploy from &lt;pattern_directory&gt;/common directory. This initializes the common components of the pattern framework and install a helm chart in the default namespace. At this point, cluster services, such as Red Hat Advanced Cluster Management (RHACM) and Red Hat OpenShift GitOps are deployed.
+After components from the common directory are installed, the remaining tasks within the make install target run.
+About the make vault-init and make load-secrets commands The Medical Diagnosis pattern is integrated with HashiCorp Vault and External Secrets Operator services for secrets management within the cluster. These targets install vault from a Helm chart and load the secret (values-secret.yaml) that you created during Getting Started.
+If values-secret.yaml does not exist, make will exit with an error saying so. Furthermore, if the values-secret.yaml file does exist but is improperly formatted, Red Hat Ansible Automation Platform exits with an error about being improperly formatted. To verify the format of the secret, see Getting Started.
+About the make bootstrap and make upgrade commands The make bootstrap command is the target used for deploying the application specific components of the pattern. It is the final step in the initial make install target. You might want to consider running the make upgrade command instead of the make bootstrap command directly.
+Generally, running the make upgrade command is required when you encounter errors with the application pattern deployment. For instance, if a value was missed and the chart was not rendered correctly, executing make upgrade command after fixing the value would be necessary.
+You might want to review the Makefile for the common and Medical Diagnosis components, which are located in common/Makefile and ./Makefile respectively.
+Troubleshooting the Pattern Deployment Occasionally the pattern will encounter issues during the deployment. This can happen for any number of reasons, but most often it is because of either a change within the operator itself or something has changed in the Operator Lifecycle Manager (OLM) which determines which operators are available in the operator catalog. Generally, when an issue occurs with the OLM, the operator is unavailable for installation. To ensure that the operator is in the catalog, run the following command:
+$ oc get packagemanifests | grep &lt;operator-name&gt; When an issue occurs with the operator itself you can verify the status of the subscription and make sure that there are no warnings.An additional option is to log into the OpenShift Console, click on Operators, and check the status of the operator.
+Other issues encounter could be with a specific application within the pattern misbehaving. Most of the pattern is deployed into the xraylab-1 namespace. Other components like ODF are deployed into openshift-storage and the OpenShift Serverless Operators are deployed into knative-serving, knative-eventing namespaces.
+Use the grafana dashboard to assist with debugging and identifying the issue
+Problem No information is being processed in the dashboard
+Solution Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is scaled to 0;
+$ oc scale -n xraylab-1 dc/image-generator --replicas=1 Alternatively, complete the following steps:
+Navigate to the Red Hat OpenShift Container Platform web console, and select Workloads → DeploymentConfigs
+Select image-generator and scale the pod to 1 or more.
+Problem When browsing to the xraylab grafana dashboard and there are no images in the right-pane, only a security warning.
+Solution The certificates for the openshift cluster are untrusted by your system. The easiest way to solve this is to open a browser and go to the s3-rgw route (oc get route -n openshift-storage), then acknowledge and accept the security warning.
+Problem In the dashboard interface, no metrics data is available.
+Solution There is likely something wrong with the Prometheus Data Source for the grafana dashboard. You can check the status of the data source by executing the following:
+$ oc get grafanadatasources -n xraylab-1 Ensure that the Prometheus data source exists and that the status is available. This could potentially be the token from the service account, for example, grafana-serviceaccount, that is provided to the data source as a bearer token.
+Problem The dashboard is showing red in the corners of the dashboard panes.
+Solution This is most likely due to the xraylab database not being available or misconfigured. Please check the database and ensure that it is functioning properly.
+Ensure that the database is populated with the correct tables:
+$ oc exec -it xraylabdb-1-&lt;uuid&gt; bash $ mysql -u root USE xraylabdb; SHOW tables; Example output Welcome to the MariaDB monitor. Commands end with ; or \\g. Your MariaDB connection id is 75 Server version: 10.3.32-MariaDB MariaDB Server Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others. Type &#39;help;&#39; or &#39;\\h&#39; for help. Type &#39;\\c&#39; to clear the current input statement. MariaDB [(none)]&gt; USE xraylabdb; Database changed MariaDB [xraylabdb]&gt; show tables; +---------------------+ | Tables_in_xraylabdb | +---------------------+ | images_anonymized | | images_processed | | images_uploaded | +---------------------+ 3 rows in set (0.000 sec) Verify the password set in the values-secret.yaml is working
+$ oc exec -it xraylabdb-1-&lt;uuid&gt; bash $ mysql -u xraylab -D xraylabdb -h xraylabdb -p &lt;provide_your_password_at_prompt&gt; If you are able to successfully login then your password has been configured correctly in vault, the external secrets operator and mounted to the database correctly.
+Problem The image-generator is scaled correctly, but the dashboard is not updating.
+Solution The serverless eventing function might not be able to fetch the notifications from ODF and therefore, not triggering the knative-serving function to scale up. You may want to check the logs of the rook-ceph-rgw-ocs-storagecluster-cephobjectstore-a-&lt;podGUID&gt; pod in the openshift-storage namespace.
+$ oc logs -n openshift-storage -f &lt;pod&gt; -c rgw You should see the PUT statement with a status code of 200
+Ensure that the kafkasource, kafkservice, and kafka topic resources are created:
+$ oc get -n xraylab-1 kafkasource Example output NAME TOPICS BOOTSTRAPSERVERS READY REASON AGE xray-images [&#34;xray-images&#34;] [&#34;xray-cluster-kafka-bootstrap.xraylab-1.svc:9092&#34;] True 23m $ oc get -n xraylab-1 kservice Example output NAME URL LATESTCREATED LATESTREADY READY REASON risk-assessment https://risk-assessment-xraylab-1.apps.&lt;SUBDOMAIN&gt; risk-assessment-00001 risk-assessment-00001 True $ oc get -n xraylab-1 kafkatopics Example output NAME CLUSTER PARTITIONS REPLICATION FACTOR READY consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a xray-cluster 50 1 True strimzi-store-topic---effb8e3e057afce1ecf67c3f5d8e4e3ff177fc55 xray-cluster 1 3 True strimzi-topic-operator-kstreams-topic-store-changelog---b75e702040b99be8a9263134de3507fc0cc4017b xray-cluster 1 1 True xray-images xray-cluster 1 1 True `,url:"https://validatedpatterns.io/patterns/medical-diagnosis-amx/troubleshooting/",breadcrumb:"/patterns/medical-diagnosis-amx/troubleshooting/"},"https://validatedpatterns.io/patterns/medical-diagnosis/troubleshooting/":{title:"Troubleshooting",tags:[],content:` Understanding the Makefile The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn’t required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a make upgrade which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
 About the make install and make deploy commands Running make install within the pattern application triggers a make deploy from &lt;pattern_directory&gt;/common directory. This initializes the common components of the pattern framework and install a helm chart in the default namespace. At this point, cluster services, such as Red Hat Advanced Cluster Management (RHACM) and Red Hat OpenShift GitOps are deployed.
 After components from the common directory are installed, the remaining tasks within the make install target run.
 About the make vault-init and make load-secrets commands The Medical Diagnosis pattern is integrated with HashiCorp Vault and External Secrets Operator services for secrets management within the cluster. These targets install vault from a Helm chart and load the secret (values-secret.yaml) that you created during Getting Started.
@@ -1538,7 +1838,13 @@ The OpenShift cluster is made of 3 Nodes combining Master/Workers for the Edge/F
 The following table provides VM recommendations for different workloads.
 | General purpose | Workload optimized
 Cost-optimized Balanced Scale-out optimized Memory-optimized Compute-optimized Accelerator-optimized E2 N2, N2D, N1 T2D M2, M1 C2 A2 Day-to-day computing at a lower cost Balanced price/performance across a wide range of VM shapes Best performance/cost for scale-out workloads Ultra high-memory workloads Ultra high performance for compute-intensive workloads Optimized for high performance computing workloads For more information please refer to the GCP VM Size Page.
-`,url:"https://validatedpatterns.io/patterns/retail/cluster-sizing/",breadcrumb:"/patterns/retail/cluster-sizing/"},"https://validatedpatterns.io/patterns/medical-diagnosis/ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`About customizing the pattern Medical Diagnosis pattern One of the major goals of the Validated Patterns development process is to create modular and customizable demos. The Medical Diagnosis pattern is just an example of how AI/ML workloads built for object detection and classification can be run on OpenShift clusters. Consider your workloads for a moment - how would your workload best consume the pattern framework? Do your consumers require on-demand or near real-time responses when using your application? Is your application processing images or data that is protected by either Government Privacy Laws or HIPAA? The Medical Diagnosis pattern can answer the call to either of these requirements by using OpenShift Serverless and OpenShift Data Foundation.
+`,url:"https://validatedpatterns.io/patterns/retail/cluster-sizing/",breadcrumb:"/patterns/retail/cluster-sizing/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`About customizing the pattern Medical Diagnosis pattern One of the major goals of the Validated Patterns development process is to create modular and customizable demos. The Medical Diagnosis pattern is just an example of how AI/ML workloads built for object detection and classification can be run on OpenShift clusters. Consider your workloads for a moment - how would your workload best consume the pattern framework? Do your consumers require on-demand or near real-time responses when using your application? Is your application processing images or data that is protected by either Government Privacy Laws or HIPAA? The Medical Diagnosis pattern can answer the call to either of these requirements by using OpenShift Serverless and OpenShift Data Foundation.
+Understanding different ways to use the Medical Diagnosis pattern The Medical Diagnosis pattern is scanning X-Ray images to determine the probability that a patient might or might not have Pneumonia. Continuing with the medical path, the pattern could be used for other early detection scenarios that use object detection and classification. For example, the pattern could be used to scan C/T images for anomalies in the body such as Sepsis, Cancer, or even benign tumors. Additionally, the pattern could be used for detecting blood clots, some heart disease, and bowel disorders like Crohn’s disease.
+The Transportation Security Agency (TSA) could use the Medical Diagnosis pattern in a way that enhances their existing scanning capabilities to detect with a higher probability restricted items carried on a person or hidden away in a piece of luggage. With Machine Learning Operations (MLOps), the model is constantly training and learning to better detect those items that are dangerous but which are not necessarily metallic, such as a firearm or a knife. The model is also training to dismiss those items that are authorized; ultimately saving passengers from being stopped and searched at security checkpoints.
+Militaries could use images collected from drones, satellites, or other platforms to identify objects and determine with probability what that object is. For example, the model could be trained to determine a type of ship, potentially its country of origin, and other such identifying characteristics.
+Manufacturing companies could use the pattern to inspect finished products as they roll off a production line. An image of the item, including using different types of light, could be analyzed to help expose defects before packaging and distributing. The item could be routed to a defect area.
+These are just a few ideas to help you understand how you could use the Medical Diagnosis pattern as a framework for your application.
+`,url:"https://validatedpatterns.io/patterns/medical-diagnosis-amx/ideas-for-customization/",breadcrumb:"/patterns/medical-diagnosis-amx/ideas-for-customization/"},"https://validatedpatterns.io/patterns/medical-diagnosis/ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`About customizing the pattern Medical Diagnosis pattern One of the major goals of the Validated Patterns development process is to create modular and customizable demos. The Medical Diagnosis pattern is just an example of how AI/ML workloads built for object detection and classification can be run on OpenShift clusters. Consider your workloads for a moment - how would your workload best consume the pattern framework? Do your consumers require on-demand or near real-time responses when using your application? Is your application processing images or data that is protected by either Government Privacy Laws or HIPAA? The Medical Diagnosis pattern can answer the call to either of these requirements by using OpenShift Serverless and OpenShift Data Foundation.
 Understanding different ways to use the Medical Diagnosis pattern The Medical Diagnosis pattern is scanning X-Ray images to determine the probability that a patient might or might not have Pneumonia. Continuing with the medical path, the pattern could be used for other early detection scenarios that use object detection and classification. For example, the pattern could be used to scan C/T images for anomalies in the body such as Sepsis, Cancer, or even benign tumors. Additionally, the pattern could be used for detecting blood clots, some heart disease, and bowel disorders like Crohn’s disease.
 The Transportation Security Agency (TSA) could use the Medical Diagnosis pattern in a way that enhances their existing scanning capabilities to detect with a higher probability restricted items carried on a person or hidden away in a piece of luggage. With Machine Learning Operations (MLOps), the model is constantly training and learning to better detect those items that are dangerous but which are not necessarily metallic, such as a firearm or a knife. The model is also training to dismiss those items that are authorized; ultimately saving passengers from being stopped and searched at security checkpoints.
 Militaries could use images collected from drones, satellites, or other platforms to identify objects and determine with probability what that object is. For example, the model could be trained to determine a type of ship, potentially its country of origin, and other such identifying characteristics.
@@ -1635,7 +1941,12 @@ In the lower middle section of the dashboard we can see the distribution of imag
 Summary You did it! You have completed the deployment of the medical diagnosis pattern! Hopefully you are getting ideas of how you can take advantage of our GitOps framework to deploy and manage your applications.
 The medical diagnosis pattern is more than just the identification and detection of pneumonia in x-ray images. It is an object detection and classification model built on top of Red Hat OpenShift and can be transformed to fit multiple use-cases within the object classification paradigm. Similar use-cases would be detecting contraband items in the Postal Service or even in luggage in an airport baggage scanner.
 For more information on Validated Patterns visit our website
-`,url:"https://validatedpatterns.io/patterns/medical-diagnosis/demo-script/",breadcrumb:"/patterns/medical-diagnosis/demo-script/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
+`,url:"https://validatedpatterns.io/patterns/medical-diagnosis/demo-script/",breadcrumb:"/patterns/medical-diagnosis/demo-script/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:` Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
+You can customize this demo in different ways.
+Split the config-demo across hub and regional clusters Currently hub and regional clusters are reusing the exact same helm chart found at charts/all/config-demo. The first customization step could be to split the demo app in two separate charts: one in charts/hub/config-demo and one in charts/region/config-demo. Once charts/all/config-demo has been copied to charts/hub/config-demo and charts/region/config-demo, you need to include them in the respective values-hub.yaml and values-region-one.yaml, respectively.
+After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
+Rest API addition After splitting the charts, you could implement a small REST API server on the hub. This API could serve read-only values out to anyone and could provide some update write-APIs only if the client provides a secret, for example, by using the X-API-KEY mechanism. You can tweak the config-demo application to communicate to the hub and use a vault-injected secret as the X-API-KEY. So the hub would possess the key through the External-Secrets generated kubernetes secret and the regional app would possess that same secret via the RHACM policy pushing out secrets via the {{hub fromSecret}} mechanism.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-ideas-for-customization/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-ideas-for-customization/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
 You can customize this demo in different ways.
 Split the config-demo across hub and regional clusters Currently hub and regional clusters are reusing the exact same helm chart found at charts/all/config-demo. The first customization step could be to split the demo app in two separate charts: one in charts/hub/config-demo and one in charts/region/config-demo. Once charts/all/config-demo has been copied to charts/hub/config-demo and charts/region/config-demo, you need to include them in the respective values-hub.yaml and values-region-one.yaml, respectively.
 After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
@@ -1839,7 +2150,85 @@ Hashicorp Vault (community) Provides a secure centralized store for dynamic infr
 MLFlow Model Registry (community) A centralized model store, set of APIs, and UI, to collaboratively manage the full lifecycle of an MLflow Model. It provides model lineage (which MLflow experiment and run produced the model), model versioning, model aliasing, model tagging, and annotations.
 Other This solution also uses a variety of observability tools including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
 Next steps Deploy the management hub using Helm.
-`,url:"https://validatedpatterns.io/patterns/mlops-fraud-detection/",breadcrumb:"/patterns/mlops-fraud-detection/"},"https://validatedpatterns.io/patterns/emerging-disease-detection/":{title:"Emerging Disease Detection",tags:[],content:` About the Emerging Disease Detection pattern Use case Use a GitOps approach to manage a hybrid cloud deployment for an AI emerging disease detection system.
+`,url:"https://validatedpatterns.io/patterns/mlops-fraud-detection/",breadcrumb:"/patterns/mlops-fraud-detection/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/":{title:"Intel AMX accelerated Medical Diagnosis",tags:[],content:`About the Medical Diagnosis pattern Background This validated pattern is a modified version of the Medical Diagnosis pattern. It was extended to showcase 4th Generation Intel Xeon Scalable Processors capabilities, especially Intel AMX that speeds up AI workloads. The pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that was previously developed by Red Hat. It includes the same functionality as the original demonstration, but uses the GitOps framework to deploy the pattern including Operators, creation of namespaces, and cluster configuration.
+Compared to the original Medical Diagnosis pattern, this one was extended by the Node Feature Discovery Operator, whose task is to detect hardware features and expose them as labels for this node. Red Hat OpenShift Serverless component is modified to assign AI workload to nodes with available Intel AMX feature.
+Moreover, the Machine Learning model was quantized to int8 precision to improve efficiency thanks to Intel AMX, with only marginal accuracy loss.
+This pattern was also adapted to run in on-premise environments.
+Workflow Node Feature Discovery operator labels nodes with Intel AMX capabilities.
+Ingest chest X-rays from a simulated X-ray machine and puts them into an objectStore based on Ceph.
+The objectStore sends a notification to a Kafka topic.
+A KNative Eventing listener to the topic triggers a KNative Serving function.
+KNative Serving was modified to schedule pods with AI workload only on nodes with enabled Intel AMX feature
+An ML-trained model running in a container makes a risk assessment of Pneumonia for incoming images.
+A Grafana dashboard displays the pipeline in real time, along with images incoming, processed, anonymized, and full metrics collected from Prometheus.
+The simplified pipeline without Intel AMX is showcased in this video.
+About the solution elements The solution aids the understanding of the following:
+How to use a GitOps approach to keep in control of configuration and operations.
+How to deploy AI/ML technologies for medical diagnosis using GitOps.
+The Medical Diagnosis pattern uses the following products and technologies:
+Red Hat OpenShift Container Platform for container orchestration
+Red Hat OpenShift GitOps, a GitOps continuous delivery (CD) solution
+Red Hat AMQ, an event streaming platform based on the Apache Kafka
+Red Hat OpenShift Serverless for event-driven applications
+Red Hat OpenShift Data Foundation for cloud native storage capabilities
+Grafana Operator to manage and share Grafana dashboards, data sources, and so on
+Node Feature Discovery Operator to label nodes with Intel AMX capabilities
+About the architecture Presently, the Intel AMX accelerated Medical Diagnosis pattern does not have an edge component. Edge deployment capabilities are planned as part of the pattern architecture for a future release.
+Components are running on OpenShift either at the data center, at the medical facility, or public cloud running OpenShift.
+The diagram below shows the components that are deployed with the the data flows and API calls between them.
+Next steps Getting started Deploy the Pattern
+`,url:"https://validatedpatterns.io/patterns/medical-diagnosis-amx/",breadcrumb:"/patterns/medical-diagnosis-amx/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx/":{title:"Intel AMX accelerated Multicloud GitOps",tags:[],content:` About the Intel AMX accelerated Multicloud GitOps pattern Use case Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
+Enable cross-cluster governance and application lifecycle management.
+Accelerate AI operations and improve computational performance by using Intel Advanced Matrix Extensions.
+Securely manage secrets across the deployment.
+Based on the requirements of a specific implementation, certain details might differ. However, all validated patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
+Background Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds, private or public. This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code checks the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed. Moreover, organizations are looking for solutions that increase efficiency and at the same time reduce costs, what is possible using 4th Generation Intel Xeon Scalable Processors with a new build-in accelerator - Intel Advanced Matrix Extensions.
+About the solution This architecture covers hybrid and multi-cloud management with GitOps as shown in following figure. At a high level this requires a management hub, for DevOps and GitOps, and infrastructure that extends to one or more managed clusters running on private or public clouds. The automated infrastructure-as-code approach can manage the versioning of components and deploy according to the infrastructure-as-code configuration.
+Benefits of Hybrid Multicloud management with GitOps:
+Unify management across cloud environments.
+Dynamic infrastructure security.
+Infrastructural continuous delivery best practices.
+Figure 1. Overview of the solution including the business drivers, management hub, and the clusters under management In the following figure, logically, this solution can be viewed as being composed of an automation component, unified management including secrets management, and the clusters under management, all running on top of a user-chosen mixture of on-premise data centers and public clouds.
+Figure 2. Logical diagram of Intel AMX accelerated hybrid multi-cloud management with GitOps About the technology The following technologies are used in this solution:
+Red Hat OpenShift Platform An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+Red Hat OpenShift GitOps A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+Red Hat Advanced Cluster Management for Kubernetes Controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale.
+Red Hat Ansible Automation Platform Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+Node Feature Discovery Operator Manages the detection of hardware features and configuration in an OpenShift Container Platform cluster by labeling the nodes with hardware-specific information. NFD labels the host with node-specific attributes, such as PCI cards, kernel, operating system version, and so on.
+Intel® Advanced Matrix Extensions A new built-in accelerator that improves the performance of deep-learning training and inference on the CPU and is ideal for workloads like natural-language processing, recommendation systems and image recognition.
+Hashicorp Vault Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+This solution also uses a variety of observability tools including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
+Overview of the architectures The following figure provides a schematic diagram overview of the complete solution including both components and data flows.
+Figure 3. Overview schematic diagram of the complete solution Subsequent schematic diagrams provide details on:
+Bootstrapping the management hub (Figure 4)
+Hybrid multi-cloud GitOps (Figure 5)
+Dynamic security management (Figure 6)
+Bootstrapping the management hub The following figure provides a schematic diagram showing the setup of the management hub using Ansible playbooks.
+Figure 4. Schematic diagram of bootstrapping the management hub Set up the OpenShift Container Platform that hosts the Management Hub. The OpenShift installation program provides flexible ways to install OpenShift. An Ansible playbook starts the installation with necessary configurations.
+Ansible playbooks deploy and configure Red Hat Advanced Cluster Management for Kubernetes and, later, other supporting components such as external secrets management, on top of the provisioned OpenShift cluster.
+Another Ansible playbook installs HashiCorp Vault, a Red Hat partner product chosen for this solution that can be used to manage secrets for OpenShift clusters.
+An Ansible playbook configures and installs the Openshift GitOps operator on the hub cluster. This deploys the Openshift GitOps instance to enable continuous delivery.
+Hybrid Multicloud GitOps The following figure provides a schematic diagram showing remaining activities associated with setting up the management hub and clusters using Red Hat Advanced Cluster Management.
+Figure 5. Schematic diagram of hybrid multi-cloud management with GitOps Manifest and configuration are set as code template in the form of a Kustomization YAML file. The file describes the desired end state of the managed cluster. When complete, the Kustomization YAML file is pushed into the source control management repository with a version assigned to each update.
+OpenShift GitOps monitors the repository and detects changes in the repository.
+OpenShift GitOps creates and updates the manifest by creating Kubernetes objects on top of Red Hat Advanced Cluster Management.
+Red Hat Advanced Cluster Management provisions, updates, or deletes managed clusters and configuration according to the manifest. In the manifest, you can configure what cloud provider the cluster will be on, the name of the cluster, infrastructure node details and worker node. Governance policy can also be applied as well as provision an agent in the cluster as the bridge between the control center and the managed cluster.
+OpenShift GitOps continuously monitors the code repository and the status of the clusters reported back to Red Hat Advanced Cluster Management. Any configuration drift or in case of any failure, OpenShift GitOps will automatically try to remediate by applying the manifest or by displaying alerts for manual intervention.
+Dynamic security management The following figure provides a schematic diagram showing how secrets are handled in this solution.
+Figure 6. Schematic showing the setup and use of external secrets management During setup, the token to securely access HashiCorp Vault is stored in Ansible Vault. It is encrypted to protect sensitive content.
+Red Hat Advanced Cluster Management for Kubernetes acquires the token from Ansible Vault during install and distributes it among the clusters. As a result, you have centralized control over the managed clusters through RHACM.
+To allow the cluster access to the external vault, you must set up the external secret management with Helm in this study. OpenShift Gitops is used to deploy the external secret object to a managed cluster.
+External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
+Secrets are created in each namespace, where applications can use them.
+Additional resources View and download all of the diagrams above from the Red Hat Portfolio Architecture open source tooling site.
+Intel AMX accelerated Multicloud GitOps pattern The basic Multicloud GitOps pattern has been extended to highlight the 4th Generation Intel Xeon Scalable Processors capabilities, offering developers a streamlined pathway to accelerate their workloads through the integration of cutting-edge Intel AMX, fostering efficiency and performance optimization in AI workloads.
+The basic pattern has been extended by the AI application named amx-app. It runs Deep Interest Evolution Network (DIEN) inference using the Intel-optimized TensorFlow and measures its accuracy. DIEN is a machine learning model used in the field of recommender systems, particularly in the domain of personalized content recommendation.
+Since the amx-app application must be running on the node with CPU supporting Intel AMX, Node Feature Discovery Operator (NFD) is deployed as a part of this pattern. NFD manages the detection of hardware features and configuration in an OpenShift Container Platform cluster. It labels the nodes with hardware-specific information. The kernel detects Intel AMX at run-time, so there is no need to enable and configure it separately.
+A deployment of amx-app was created based on instructions from Model Zoo for Intel® Architecture repository - TF DIEN inference and uses intel/recommendation:tf-spr-dien-inference image.
+An amx-app use persistent volume claim to download and prepare dataset. When the dataset is ready, an application runs and measures the inference accuracy. By enabling ONEDNN verbose all the compiled instructions are shown in the logs. The appearance of the avx512_core_amx_bf16 flag confirms that Intel AMX is used.
+Figure 7. Logs from amx-app pod Next steps Deploy the management hub using Helm.
+Add a managed cluster to deploy the managed cluster piece using ACM.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/",breadcrumb:"/patterns/multicloud-gitops-amx/"},"https://validatedpatterns.io/patterns/emerging-disease-detection/":{title:"Emerging Disease Detection",tags:[],content:` About the Emerging Disease Detection pattern Use case Use a GitOps approach to manage a hybrid cloud deployment for an AI emerging disease detection system.
 Use a AI automation at the edge to detect emerging diseases.
 Use an event driven architecture
 Enable application lifecycle management.
