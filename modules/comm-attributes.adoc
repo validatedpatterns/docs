@@ -26,8 +26,10 @@
 :ie-pattern: Industrial Edge pattern
 :ie: Industrial Edge
 :mcg-pattern: Multicloud GitOps pattern
+:amx-mcg-pattern: Intel AMX accelerated Multicloud GitOps pattern
 :mcg: multicloud GitOps
 :med-pattern: Medical Diagnosis pattern
+:amx-med-pattern: Intel AMX accelerated Medical Diagnosis pattern
 :med: medical diagnosis
 :multi-devsec-pattern: Multi-cluster DevSecOps pattern
 :multi-devsec: multi-cluster DevSecOps
@@ -35,6 +37,12 @@
 :hashicorp-vault: HashiCorp Vault
 :hashicorp-vault-short: Vault
 :helm-chart: Helm chart
+// Intel
+:intel-amx: Intel AMX
+:intel-amx-full: Intel Advanced Matrix Extensions
+:intel-4th-gen-xeon: 4th Generation Intel Xeon
+:intel-4th-gen-xeon-processors: 4th Generation Intel Xeon Scalable Processors
+:intel-4th-gen-xeon-amx: 4th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
 //Operators
 :validated-patterns-op: Validated Patterns Operator
 :grafana-op: Grafana Operator
@@ -128,6 +136,8 @@
 :serverless-short: OpenShift Serverless
 :ServerlessOperatorName: OpenShift Serverless Operator
 :FunctionsProductName: OpenShift Serverless Functions
+//Node Feature Discovery
+:rh-nfd: Node Feature Discovery Operator
 //Quay
 :rh-quay: Red{nbsp}Hat Quay
 :quay-short: Quay

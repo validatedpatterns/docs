@@ -1,0 +1,192 @@
+---
+title: Intel AMX accelerated Multicloud GitOps
+date: 2023-10-05
+validated: false
+summary: This is extension of Multicloud GitOps pattern with additional application to show the value of using Intel AMX.
+products:
+- Red Hat OpenShift Container Platform
+- Red Hat Advanced Cluster Management
+- Red Hat Node Feature Discovery
+- 4th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
+industries:
+- General
+aliases: /multicloud-gitops-amx/
+# uncomment once this exists
+# pattern_logo: multicloud-gitops.png
+pattern_logo: amx-intel-ai.png
+links:
+  install: mcg-amx-getting-started
+  help: https://groups.google.com/g/hybrid-cloud-patterns
+  bugs: https://github.com/validatedpatterns-sandbox/amx-accelerated-multicloud-gitops/issues
+---
+
+include::modules/comm-attributes.adoc[]
+
+:toc:
+:imagesdir: /images
+:_content-type: CONCEPT
+
+[id="about-multicloud-gitops-amx-pattern"]
+== About the {amx-mcg-pattern}
+
+Use case::
+
+* Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
+* Enable cross-cluster governance and application lifecycle management.
+* Accelerate AI operations and improve computational performance by using Intel Advanced Matrix Extensions.
+* Securely manage secrets across the deployment.
++
+[NOTE]
+====
+Based on the requirements of a specific implementation, certain details might differ. However, all validated patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
+====
+
+Background::
+Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds, private or public.
+This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code checks the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
+Moreover, organizations are looking for solutions that increase efficiency and at the same time reduce costs, what is possible using *{intel-4th-gen-xeon-processors}* with a new build-in accelerator - *Intel Advanced Matrix Extensions*.
+
+[id="about-solution"]
+== About the solution
+
+This architecture covers hybrid and multi-cloud management with GitOps as shown in following figure. At a high level this requires a management hub, for DevOps and GitOps, and infrastructure that extends to one or more managed clusters running on private or public clouds. The automated infrastructure-as-code approach can manage the versioning of components and deploy according to the infrastructure-as-code configuration.
+
+Benefits of Hybrid Multicloud management with GitOps:
+
+* Unify management across cloud environments.
+* Dynamic infrastructure security.
+* Infrastructural continuous delivery best practices.
+
+//figure 1 originally
+.Overview of the solution including the business drivers, management hub, and the clusters under management
+image::multicloud-gitops-amx/hybrid-multicloud-management-gitops-hl-arch.png[Multicloud Architecture]
+
+//Add something about hardware running with Xeons
+In the following figure, logically, this solution can be viewed as being composed of an automation component, unified management including secrets management, and the clusters under management, all running on top of a user-chosen mixture of on-premise data centers and public clouds.
+
+//figure 2 originally
+.Logical diagram of {intel-amx} accelerated hybrid multi-cloud management with GitOps
+image::multicloud-gitops-amx/amx-logical-diagram.png[Logical Architecture]
+
+[id="about-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Platform]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift GitOps]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+
+https://www.redhat.com/en/technologies/management/advanced-cluster-management[Red Hat Advanced Cluster Management for Kubernetes]::
+Controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale.
+
+https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform]::
+Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+
+https://docs.openshift.com/container-platform/4.13/hardware_enablement/psap-node-feature-discovery-operator.html[Node Feature Discovery Operator]::
+Manages the detection of hardware features and configuration in an OpenShift Container Platform cluster by labeling the nodes with hardware-specific information. NFD labels the host with node-specific attributes, such as PCI cards, kernel, operating system version, and so on.
+
+https://www.intel.com/content/www/us/en/products/docs/accelerator-engines/advanced-matrix-extensions/overview.html[Intel® Advanced Matrix Extensions]::
+A new built-in accelerator that improves the performance of deep-learning training and inference on the CPU and is ideal for workloads like natural-language processing, recommendation systems and image recognition.
+
+Hashicorp Vault::
+Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+
+This solution also uses a variety of _observability tools_ including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
+
+[id="overview-architecture"]
+== Overview of the architectures
+
+The following figure provides a schematic diagram overview of the complete solution including both components and data flows.
+
+//figure 3 originally
+.Overview schematic diagram of the complete solution
+image::multicloud-gitops-amx/schema-gitops.png[Physical Architecture]
+
+Subsequent schematic diagrams provide details on:
+
+* Bootstrapping the management hub (Figure 4)
+* Hybrid multi-cloud GitOps (Figure 5)
+* Dynamic security management (Figure 6)
+
+[id="bootstrapping-management-hub"]
+== Bootstrapping the management hub
+
+The following figure provides a schematic diagram showing the setup of the management hub using Ansible playbooks.
+
+//figure 4 originally
+.Schematic diagram of bootstrapping the management hub
+image::multicloud-gitops-amx/spi-multi-cloud-gitops-sd-install.png[Schematic diagram of bootstrapping the management hub]
+
+* Set up the OpenShift Container Platform that hosts the Management Hub. The OpenShift installation program provides flexible ways to install OpenShift. An Ansible playbook starts the installation with necessary configurations.
+
+* Ansible playbooks deploy and configure Red Hat Advanced Cluster Management for Kubernetes and, later, other supporting components such as external secrets management, on top of the provisioned OpenShift cluster.
+
+* Another Ansible playbook installs HashiCorp Vault, a Red Hat partner product chosen for this solution that can be used to manage secrets for OpenShift clusters.
+
+* An Ansible playbook configures and installs the Openshift GitOps operator on the hub cluster. This deploys the Openshift GitOps instance to enable continuous delivery.
+
+[id="hybrid-multicloud-gitops"]
+== Hybrid Multicloud GitOps
+
+The following figure provides a schematic diagram showing remaining activities associated with setting up the management hub and clusters using Red Hat Advanced Cluster Management.
+
+//figure 5 originally
+.Schematic diagram of hybrid multi-cloud management with GitOps
+image::multicloud-gitops-amx/spi-multi-cloud-gitops-sd-security.png[Schematic diagram of hybrid multi-cloud management with GitOps]
+
+* Manifest and configuration are set as code template in the form of a `Kustomization` YAML file. The file describes the desired end state of the managed cluster. When complete, the `Kustomization` YAML file is pushed into the source control management repository with a version assigned to each update.
+* OpenShift GitOps monitors the repository and detects changes in the repository.
+* OpenShift GitOps creates and updates the manifest by creating Kubernetes objects on top of Red Hat Advanced Cluster Management.
+* Red Hat Advanced Cluster Management provisions, updates, or deletes managed clusters and configuration according to the manifest. In the manifest, you can configure what cloud provider the cluster will be on, the name of the cluster, infrastructure node details and worker node. Governance policy can also be applied as well as provision an agent in the cluster as the bridge between the control center and the managed cluster.
+* OpenShift GitOps continuously monitors the code repository and the status of the clusters reported back to Red Hat Advanced Cluster Management. Any configuration drift or in case of any failure, OpenShift GitOps will automatically try to remediate by applying the manifest or by displaying alerts for manual intervention.
+
+[id="dynamic-security-management"]
+== Dynamic security management
+
+The following figure provides a schematic diagram showing how secrets are handled in this solution.
+
+//figure 6 originally
+.Schematic showing the setup and use of external secrets management
+image::multicloud-gitops-amx/spi-multi-cloud-gitops-sd-security.png[Schematic showing the setup and use of external secrets management]
+
+* During setup, the token to securely access HashiCorp Vault is stored in Ansible Vault. It is encrypted to protect sensitive content.
+
+* Red Hat Advanced Cluster Management for Kubernetes acquires the token from Ansible Vault during install and distributes it among the clusters. As a result, you have centralized control over the managed clusters through RHACM.
+
+* To allow the cluster access to the external vault, you must set up the external secret management with Helm in this study. OpenShift Gitops is used to deploy the external secret object to a managed cluster.
+
+* External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
+
+* Secrets are created in each namespace, where applications can use them.
+
+[role="_additional-resources"]
+.Additional resources
+
+View and download all of the diagrams above from the link:https://www.redhat.com/architect/portfolio/tool/index.html?#gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/diagrams/spi-multi-cloud-gitops.drawio[Red Hat Portfolio Architecture open source tooling site].
+
+[id="extension-of-mcg"]
+== {amx-mcg-pattern}
+
+The basic {mcg-pattern} has been extended to highlight the *{intel-4th-gen-xeon-processors}* capabilities, offering developers a streamlined pathway to accelerate their workloads through the integration of cutting-edge *{intel-amx}*, fostering efficiency and performance optimization in AI workloads.
+
+The basic pattern has been extended by the AI application named `amx-app`. It runs Deep Interest Evolution Network (DIEN) inference using the Intel-optimized TensorFlow and measures its accuracy. DIEN is a machine learning model used in the field of recommender systems, particularly in the domain of personalized content recommendation.
+
+Since the `amx-app` application must be running on the node with CPU supporting {intel-amx}, Node Feature Discovery Operator (NFD) is deployed as a part of this pattern.
+NFD manages the detection of hardware features and configuration in an OpenShift Container Platform cluster. It labels the nodes with hardware-specific information. The kernel detects {intel-amx} at run-time, so there is no need to enable and configure it separately.
+
+A deployment of `amx-app` was created based on instructions from link:https://github.com/IntelAI/models/blob/master/quickstart/recommendation/tensorflow/dien/inference/cpu/README_SPR_DEV_CAT.md[Model Zoo for Intel® Architecture repository - TF DIEN inference] and uses  link:https://hub.docker.com/layers/intel/recommendation/tf-spr-dien-inference/images/sha256-085c43d838197ae92db8a056da254506abd667951a3ae11e47da48f2f47cb92f?context=explore[intel/recommendation:tf-spr-dien-inference image].
+
+An `amx-app` use persistent volume claim to download and prepare dataset. When the dataset is ready, an application runs and measures the inference accuracy. By enabling ONEDNN verbose all the compiled instructions are shown in the logs. The appearance of the __avx512_core_amx_bf16__ flag confirms that {intel-amx} is used.
+
+//figure 7 originally
+.Logs from `amx-app` pod
+image::multicloud-gitops-amx/amx-app-log.png[Logs from amx-app pod]
+
+[id="next-steps_mcg-index"]
+== Next steps
+
+* link:mcg-amx-getting-started[Deploy the management hub] using Helm.
+* Add a managed cluster to link:mcg-amx-managed-cluster[deploy the managed cluster piece using ACM].

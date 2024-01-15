@@ -1,0 +1,224 @@
+---
+title: Getting started
+weight: 10
+aliases: /multicloud-gitops-amx/mcg-amx-getting-started/
+---
+
+include::modules/comm-attributes.adoc[]
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+[id="deploying-mcg-pattern"]
+== Deploying the {amx-mcg-pattern}
+
+.Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console] and select *Services \-> Containers \-> Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`.
+ ** link:../../multicloud-gitops-amx/mcg-amx-cluster-sizing[Cluster sizing] requirements.
+* Optional: A second OpenShift cluster for multicloud demonstration.
+//Replaced git and podman prereqs with the tooling dependencies page
+* https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
+
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
+
+If you do not have a running Red Hat OpenShift cluster, you can start one on a
+public or private cloud by using https://console.redhat.com/openshift/create[Red Hat Hybrid Cloud Console].
+
+.Procedure
+
+. https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
++
+//[ii]remember to give proper links!!!
+. Fork the https://github.com/validatedpatterns-sandbox/amx-accelerated-multicloud-gitops[multicloud-gitops-amx] repository on GitHub.
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+git clone git@github.com:your-username/amx-accelerated-multicloud-gitops.git
+----
+
+. Create a local copy of the secret values file that can safely include credentials for the config-demo application and edit it if you want to customize the secret. If not, the framework generates a random password.
++
+[source,terminal]
+----
+cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
+----
++
+[WARNING]
+====
+Do not commit this file. You do not want to push personal credentials to GitHub.
+====
+
+. (Optional) You may customize the deployment for your cluster depending on your needs by editing values-global.yaml and values-hub.yaml. To do this run the following commands:
++
+[source,terminal]
+----
+git checkout -b my-branch
+----
++
+[source,terminal]
+----
+vi values-global.yaml
+----
++
+[source,terminal]
+----
+git add values-global.yaml
+----
++
+[source,terminal]
+----
+git commit values-global.yaml
+----
++
+[source,terminal]
+----
+git push origin my-branch
+----
+
+. Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator] - both methods are described below.
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the cluster by using the pattern.sh file
+
+To deploy the cluster by using the `pattern.sh` file, complete the following steps:
+
+. Login to your cluster by running the following command:
++
+[source,terminal]
+----
+oc login
+----
++
+Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
++
+[source,terminal]
+----
+export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster. Run the following command:
++
+[source,terminal]
+----
+./pattern.sh make install
+----
+
+Verify that the Operators have been installed.
+
+. To verify, in the *OpenShift Container Platform* web console, navigate to *Operators → Installed Operators* page.
+. Check that the following Operators are installed with  `Succeeded` status (Figure 1): 
+* *Advanced Cluster Management for Kubernetes* 
+* *multicluster engine for Kubernetes* 
+* *Node Feature Discovery Operator* 
+* *Red Hat Openshift GitOps*
+* *Validated Patterns Operator*
++
+.List of Installed Operators for Multicloud GitOps Validated Pattern with AMX
+image::multicloud-gitops-amx/amx-installed-operators.png[Multicloud GitOps Hub with AMX installed operators,role="related thumb right"]
++
+
+
+== Deploying the cluster by using the Validated Patterns Operator
+
+To install the *Validated Patterns Operator*:
+
+. Log in to the *Openshift Container Platform* web console and select *Operators > OperatorHub*.
+
+. Search for *Validated Patterns Operator*, open it and click *Install*.
++
+.Instal Validated Patterns Operator
+image::multicloud-gitops-amx/amx-validated-patter-operator.png[Install Validated Patterns Operator,scale=50]
++
+. Choose default settings for the installation mode, namespaces and update strategy and confirm it by clicking *Install*.
+
+. Select *Operators > Installed Operators*.
+
+. Ensure that *Validated Patterns Operator* is listed in the `openshift-operators` project with a status `Succeeded`.
+
+After succeeded installation open *Validated Patterns Operator*, go to *Pattern* tab and click *Create Pattern*.
+
+. Fill the *Name* of the pattern `multicloud-gitops-amx` and *Cluster Group Name* `hub` (from _values-global.yaml_ file).
+
+. Under *Git Config > Target Repo* copy the link to your fork and under *Git Config > Target Revision* write the name of your branch (Figure 3).
+
+. Click *Create* to create the pattern.
++
+.Create Pattern Form
+image::multicloud-gitops-amx/amx-create-pattern.png[Create pattern Multicloud GitOps with AMX]
++
+
+
+Verify that the rest of Operators have been installed:
+
+. To verify, in the *OpenShift Container Platform* web console, navigate to *Operators → Installed Operators* page.
+. Check that the following Operators are installed with  `Succeeded` status (Figure 1): 
+* *Advanced Cluster Management for Kubernetes* 
+* *multicluster engine for Kubernetes* 
+* *Node Feature Discovery Operator* 
+* *Red Hat Openshift GitOps*
+
+Add a secret for `config-demo` application (from _values-secret-multicloud-gitops.yaml_) to *Vault* manually:
+
+. Go to Vault service route. URL can be found:
+
+.. by running command:
++
+[source,terminal]
+----
+oc -n vault get route vault -ojsonpath='{.spec.host}'
+----
++
+.. in *Openshift Container Platform* web console under *Networking > Routes* for `vault` project.
+
+. Log into the Vault using root token. Root token can be found by executing command:
++
+[source,terminal]
+----
+oc -n imperative get secrets vaultkeys -ojsonpath='{.data.vault_data_json}' | base64 -d
+----
++
+
+. After login go to `secret` catalog and clik *Create secret* and fill all the fields manually (Figure 2):
+
+.. *Path for this secret* is `global/config-demo` (from _values.yaml_ file for `config-demo` charts)
+
+.. Under *Secret data* key is `secret` (from _values-secret-multicloud-gitops.yaml_ file) and in next field put its value.
+
+.. Click *Add* and then *Save*.
++
+.Create secret
+image::multicloud-gitops-amx/amx-secret-vault.png[Create secret in the vault]
++
+
+
+== Verification
+
+Go to the Hub ArgoCD and verify that all applications are synchronized. The URL can be found in *Openshift Container Platform* web console under *Networking > Routes* for the project `multicloud-gitops-amx-hub` or use command:
+
+[source,terminal]
+----
+oc -n multicloud-gitops-amx-hub get route hub-gitops-server -ojsonpath='{.spec.host}'
+----
+
+All applications should be `Healthy` and `Synced`:
+
+.ArgoCD panel with `amx-app`
+image::multicloud-gitops-amx/multicloud-gitops-argocd-amx.png[Multicloud GitOps Hub with `amx-app`]
+
+Check the logs of a pod `amx-app` to verify if it uses *{intel-amx}*. In the *OpenShift Container Platform* web console, navigate to *Workloads > Pods*. Change project to `amx-app` and open the *Logs* tab in the pod details. The appearance of avx_512_core_amx_bf16 flag on the list of compiled instructions confirms that {intel-amx} is used.
+
+As part of this pattern, HashiCorp Vault has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
+
+[id="next-steps_mcg-getting-started"]
+== Next steps
+
+After the management hub is set up and works correctly, attach one or more managed clusters to the architecture.
+
+For instructions on deploying the edge, refer to link:../mcg-amx-managed-cluster/[Attach a managed cluster (edge) to the management hub].
+
+//For instructions on deploying the edge, refer to xref:/multicloud-gitops/mcg-managed-cluster.adoc#attach-managed-cluster[Attach a managed cluster (edge) to the management hub].
