@@ -5,7 +5,6 @@
  author: Lester Claudio
  blog_tags:
  - patterns
- aliases: /2024/01/16/validated-patterns-cisco-partnership/
 ---
 
 # Deploying Multicloud GitOps with Cisco FlashStack Data Center and Portworx Enterprise
