@@ -1,3 +1,13 @@
+---
+ date: 2024-01-16
+ title: Deploying Multicloud GitOps with Cisco FlashStack Data Center and Portworx Enterprise
+ summary: Partnership between the Validated Patterns team and Cisco Compute Solutions Technical Marketing team on how to deploy MultiCloud GitOps with FlashStack and Portworx Enterprise.
+ author: Lester Claudio
+ blog_tags:
+ - patterns
+ aliases: /2024/01/16/validated-patterns-cisco-partnership/
+---
+
 # Deploying Multicloud GitOps with Cisco FlashStack Data Center and Portworx Enterprise
 
 The Validated Patterns team, in partnership with Cisco Compute Solutions Technical Marketing team led by Paniraj Koppa, has delivered a white paper detailing how to deploy the [MultiCloud GitOps](https://validatedpatterns.io/patterns/multicloud-gitops/) Validated Pattern with the [Cisco FlashStack Data Center](https://www.cisco.com/site/us/en/solutions/computing/converged-infrastructure/pure-storage/index.html) platform. This platform integrates Cisco Unified Computing System (UCS), Cisco Networking, Pure Storage FlashArray and Portworx Enterprise Kubernetes Storage Platform with Red Hat® OpenShift®. Cisco's distinction as the first OEM partner to validate the Multicloud GitOps Validated Pattern on-premises, utilizing their leading-edge Cisco hardware, reinforces the depth of their partnership and collaborative efforts with Red Hat.
