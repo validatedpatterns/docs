@@ -11,37 +11,33 @@ class Badge {
     } else {
 	    this.version = ''
     }
-    this.date = date.substr(5, 5)
+    this.date = date.substr(0, 10)
   }
 
   string () {
     return this.key
   }
 
-  getLabel (field) {
-    if (field == 'pattern') {
-	    return stringForKey(this.platform) + ' ' + this.version
-    }
-    if (field == 'platform') {
-	    return stringForKey(this.pattern) + ' - ' + this.version
-    }
-    if (field == 'version') {
-	    return stringForKey(this.pattern) + ' : ' + stringForKey(this.platform)
-    }
-    return stringForKey(this.pattern) + ' : ' + stringForKey(this.platform) + ' ' + this.version
-  }
-
   getURI () {
     return this.base + '/' + this.key
   }
+}
 
-  getJenkinsURI () {
-    return jenkins_base_url(this.pattern) + '/job/' + jenkins_job(this.pattern, this.platform, this.version) + '/lastBuild/'
-  }
+function getJiraSearch (pattern) {
+  return 'https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20labels%20in%20(ci-fail)%20and%20component%3D' + jira_component(pattern) + '%20and%20status%20not%20in%20(Closed)'
+}
 
-  getJiraSearch () {
-    return 'https://issues.redhat.com/issues/?jql=project%3D%22Validated%20Patterns%22%20and%20labels%20in%20(ci-fail)%20and%20component%3D' + jira_component(this.pattern) + '%20and%20status%20not%20in%20(Closed)'
+function getLabel (field, json_obj) {
+  if (field == 'pattern') {
+    return stringForKey(json_obj.infraProvider) + ' ' + json_obj.openshiftVersion
   }
+  if (field == 'platform') {
+    return stringForKey(json_obj.patternName) + ' - ' + json_obj.openshiftVersion
+  }
+  if (field == 'version') {
+    return stringForKey(json_obj.patternName) + ' : ' + stringForKey(json_obj.infraProvider)
+  }
+  return stringForKey(json_obj.patternName) + ' : ' + stringForKey(json_obj.infraProvider) + ' ' + json_obj.openshiftVersion
 }
 
 function sleep (ms) {
@@ -74,27 +70,6 @@ function rowTitle (field, value) {
   return value
 }
 
-function get_shield_url (badge, label) {
-  base = 'https://img.shields.io/endpoint?style=flat&logo=git&logoColor=white'
-
-  base = base + '&link=' + encodeURI(badge.getJenkinsURI()) + '&link=' + encodeURI(badge.getJiraSearch())
-  if (label != '') {
-    base = base + '&label=' + encodeURI(label)
-  }
-  return base + '&url=' + encodeURI(badge.getURI())
-}
-
-function get_key_url (color, label) {
-  uri = 'https://validatedpatterns.io/' + color + '.json'
-  base = 'https://img.shields.io/endpoint?style=flat&logo=git&logoColor=white'
-
-  base = base + '&link=' + encodeURI('/') + '&link=' + encodeURI(uri)
-  if (label != '') {
-    base = base + '&label=' + encodeURI(label)
-  }
-  return base + '&url=' + encodeURI(uri)
-}
-
 function jira_component (pattern) {
   if (pattern == 'aegitops') {
 	    return 'ansible-edge'
@@ -102,39 +77,10 @@ function jira_component (pattern) {
 	    return 'industrial-edge'
   } else if (pattern == 'mcgitops') {
 	    return 'multicloud-gitops'
-  } else if (pattern == 'medicaldiag') {
+    } else if (pattern == 'medicaldiag') {
 	    return 'medical-diagnosis'
   }
   return pattern
-}
-
-function jenkins_job (pattern, platform, version) {
-  ciplatform = platform
-  if (platform == 'azr') {
-    ciplatform = 'azure'
-  }
-
-  return pattern + '-' + ciplatform + '-ocp' + version + '-interop'
-}
-
-function jenkins_base_url (key) {
-  base = 'https://mps-jenkins-csb-mpqe.apps.ocp-c1.prod.psi.redhat.com/job/ValidatedPatterns'
-  if (key == 'aegitops') {
-    return base + '/job/AnsibleEdgeGitops'
-  }
-  if (key == 'devsecops') {
-    return base + '/job/MulticlusterDevSecOps'
-  }
-  if (key == 'manuela') {
-    return base + '/job/Manuela'
-  }
-  if (key == 'mcgitops') {
-    return base + '/job/MultiCloudGitops'
-  }
-  if (key == 'medicaldiag') {
-    return base + '/job/MedicalDiagnosis'
-  }
-  return base
 }
 
 function pattern_url (key) {
@@ -182,7 +128,7 @@ function stringForKey (key) {
     return 'Medical Diagnosis'
   }
   if (key == 'imageclass') {
-    return 'Image Classification'
+    return 'Edge Anomaly Detection'
   }
   if (key == 'connvehicle') {
     return 'Connected Vehicle'
@@ -194,22 +140,6 @@ function stringForKey (key) {
     return 'Nutanix'
   }
   return key
-}
-
-function repo_url(key) {
-    const prefix = 'https://github.com/hybrid-cloud-patterns/'
-    const dictionary = {
-	aegitops: "ansible-edge-gitops",
-	devsecops: "multicluster-devsecops",
-	manuela: "industrial-edge",
-	mcgitops: "multicloud-gitops",
-	medicaldiag: "medical-diagnosis"
-    };
-
-    if ( key in dictionary ) {
-	return prefix + dictionary[key] + '/';
-    }
-    return prefix + key + '/';
 }
 
 function getBadgeDate (xml) {
@@ -332,24 +262,30 @@ function getJSON(url, callback, ...args) {
   jsonRequest.send(null);
 }
 
-function renderSingleBadge (key, field, envLabel, envLink, branchLink, badge_url) {
+function renderSingleBadge (key, field, linkType, badge_url) {
     var json_obj = JSON.parse(this.responseText)
-    var branchLabel = json_obj.message
+    var branchLabel = json_obj.patternBranch
     var color = json_obj.color
     var nightlyLabel = ""
+
+    var envLabel = getLabel(field, json_obj)
     if (badge_url.endsWith("stable-badge.json") ) {
 	    var badgeClass = "ci-label-environment-stable";
-	} else if (badge_url.endsWith("prerelease-badge.json") ) {
+	  } else if (badge_url.endsWith("prerelease-badge.json") ) {
 	    var badgeClass = "ci-label-environment-prerelease";
     } else if (badge_url.endsWith("operator-badge.json") ) {
 	    var badgeClass = "ci-label-environment-prerelease";
     } else if (badge_url.endsWith("nightly-badge.json") ) {
 	    var badgeClass = "ci-label-environment-prerelease";
         nightlyLabel = "(nightly build)"
-	}
+  	}
 
-    if ( envLink == "internal") {
+    if ( linkType == "internal") {
       envLink = json_obj.jenkinsURL
+      branchLink = encodeURI(getJiraSearch(json.patternName));
+    } else {
+      envLink = encodeURI(badge_url)
+      branchLink = encodeURI(json_obj.patternRepo)
     }
 
     badgeText = '<span class="ci-label">'
@@ -379,16 +315,8 @@ function renderBadges (badges, field, value, links) {
   }
   badgeText = '<div class="pf-l-flex">'
   pBadges.forEach(b => {
-    if ( links == "internal") {
-  	     envLink = "internal"
-         branchLink = encodeURI(b.getJiraSearch());
-    } else {
-  	     envLink = encodeURI(b.getURI())
-         branchLink = encodeURI(repo_url(b.pattern));
-    }
-    console.log(field)
     badgeText += renderBadgePlaceholder(b.string(), field)
-    getJSON(b.getURI(), renderSingleBadge, b.string(), field, b.getLabel(field), envLink, branchLink,  b.getURI())
+    getJSON(b.getURI(), renderSingleBadge, b.string(), field, links,  b.getURI())
   })
   badgeText += '</div>'
   return badgeText
@@ -420,50 +348,6 @@ function createFilteredHorizontalTable (badges, field, value, titles, links) {
   })
   tableText += '</dl>'
   return tableText + '</div></dd></div></dl>'
-}
-
-function createFilteredVerticalTable (badges, field, value, titles) {
-  tableText = "<div style='ci-results' id='ci-" + field + "-result'>"
-  if (titles) {
-    tableText += '<h2>' + toTitleCase('By ' + field) + '</h2>'
-  }
-  tableText += "<table id='ci-" + field + "-table'><tbody>"
-
-  rows = getUniqueValues(badges, field)
-
-  fieldColumns = []
-  tableText += '<tr>'
-  rows.forEach(r => {
-    fieldColumns.push(filterBadges(badges, field, r))
-
-    if (value == null && field != 'date') {
-	    tableText += "<th><a href='?" + field + '=' + r + "'>" + rowTitle(field, r) + '</a></th>'
-    }
-  })
-  tableText += '</tr>'
-
-  any = true
-  row = 0
-  numColumns = fieldColumns.length
-  while (any) {
-    any = false
-    tableText += '<tr>'
-    for (i = 0; i < numColumns; i++) {
-	    blist = fieldColumns[i]
-	    tableText += "<td class='ci-badge'>"
-	    if (blist.length > row) {
-      b = blist[row]
-
-      tableText += "<object data='" + get_shield_url(b, b.getLabel(field)) + "' style='max-width: 100%;'>'</object>"
-      any = true
-	    }
-	    tableText += '</td>'
-    }
-    tableText += '</tr>'
-    row = row + 1
-  }
-
-  return tableText + '</tbody></table></div>'
 }
 
 function getBadges (xmlText, bucket_url, badge_set) {
