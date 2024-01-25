@@ -58,7 +58,7 @@ Similar to other patterns, this pattern starts with a central management hub, wh
 
 ### Physical Architecture
 
-TBD
+![Ansible-Edge-GitOps-Physical-Architecture](/images/ansible-edge-gitops/aeg-arch-schematic.png)
 
 ## Recorded Demo
 
