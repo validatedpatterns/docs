@@ -27,13 +27,26 @@ service](https://console.redhat.com/openshift/create).
 In addition to the openshift cluster, you will need to prepare a number of secrets, or credentials, which will be used
 in the pattern in various ways. To do this, copy the [values-secret.yaml template](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-secret.yaml.template) to your home directory as `values-secret.yaml` and replace the explanatory text as follows:
 
-* A username and  SSH Keypair (private key and public key). These will be used to provide access to the Kiosk VMs in the demo.
+* AWS Credentials (an access key and a secret key). These are used to provision the metal worker in AWS (which hosts
+the VMs). If the portworx variant of the pattern is used, these credentials will be used to modify IAM rules to allow
+portworx to run correctly.
 
 ```yaml
 ---
 # NEVER COMMIT THESE VALUES TO GIT
 version: "2.0"
 secrets:
+  - name: aws-creds
+    fields:
+    - name: aws_access_key_id
+      value: "An aws access key that can provision VMs and manage IAM (if using portworx)"
+
+    - name: aws_secret_access_key
+      value: "An aws access secret key that can provision VMs and manage IAM (if using portworx)"
+```
+* A username and  SSH Keypair (private key and public key). These will be used to provide access to the Kiosk VMs in the demo.
+
+```yaml
   - name: kiosk-ssh
     fields:
     - name: username
