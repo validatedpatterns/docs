@@ -282,7 +282,7 @@ function renderSingleBadge (key, field, linkType, badge_url) {
 
     if ( linkType == "internal") {
       envLink = json_obj.jenkinsURL
-      branchLink = encodeURI(getJiraSearch(json.patternName));
+      branchLink = encodeURI(getJiraSearch(json_obj.patternName));
     } else {
       envLink = encodeURI(badge_url)
       branchLink = encodeURI(json_obj.patternRepo)
