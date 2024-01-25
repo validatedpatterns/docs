@@ -1,7 +1,7 @@
 ---
 title: Ansible Edge GitOps
 date: 2022-06-08
-tier: sandbox
+tier: maintained
 summary: This pattern uses OpenShift Virtualization to simulate an edge environment for VMs.
 rh_products:
 - Red Hat OpenShift Container Platform
@@ -58,7 +58,7 @@ Similar to other patterns, this pattern starts with a central management hub, wh
 
 ### Physical Architecture
 
-TBD
+![Ansible-Edge-GitOps-Physical-Architecture](/images/ansible-edge-gitops/aeg-arch-schematic.png)
 
 ## Recorded Demo
 

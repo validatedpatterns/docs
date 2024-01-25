@@ -1,7 +1,7 @@
 ---
 title: Retail
 date: 2022-12-08
-tier: sandbox
+tier: tested
 summary: This pattern demonstrates a pattern that models the store side of a retail application.
 rh_products:
 - Red Hat OpenShift Container Platform
@@ -17,7 +17,7 @@ links:
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/retail/issues
 # uncomment once this exists
-# ci: retail
+ci: retail
 ---
 
 # Retail Pattern
