@@ -36,4 +36,4 @@ This architecture pattern demonstrates four strengths:
 == Demo Video
 
 .Overview of the solution for credit card fraud detection
-video::S4gVUclXlT8[youtube]
+video::9Yx_XUOMMYI[youtube]
