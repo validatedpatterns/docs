@@ -1,0 +1,28 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="med-deploy-pattern"]
+= Deploying the {med-pattern}
+
+. To apply the changes to your cluster, run the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
++
+If the installation fails, review the instructions and make any required updates.
+To continue the installation, run the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make update
+----
++
+This step might take up to twenty minutes to complete, especially for the {ocp-data-short} Operator components to install and synchronize. The `./pattern.sh make install` command provides some progress updates during the installation process. It can take up to twenty minutes. Compare your `./pattern.sh make install` run progress with the following video that shows a successful installation.
++
+image::/videos/xray-deployment.svg[link="/videos/xray-deployment.svg"]
+
+. Verify that the Operators have been installed.
+.. To verify, in the {ocp} web console, navigate to *Operators* → *Installed Operators* page.
+.. Check that the Operator is installed in the `openshift-operators` namespace and its status is `Succeeded`. Ensure that {ocp-data-short} is listed in the list of installed Operators.

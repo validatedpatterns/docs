@@ -1,0 +1,49 @@
+---
+title: Getting started
+weight: 10
+aliases: /medical-diagnosis/med-getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="general-prerequisites_{context}"]
+= Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *OpenShift* -> *Clusters* -> *Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../medical-diagnosis/med-cluster-sizing[sizing your cluster].
+* A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
+* An S3-capable Storage set up in your public or private cloud for the x-ray images
+* The Helm binary, see link:https://helm.sh/docs/intro/install/[Installing Helm]
+For installation tooling dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
+
+[NOTE]
+====
+The {med-pattern} does not have a dedicated hub or edge cluster.
+====
+
+[id="setting-up-storage-for-xray-images"]
+== Setting up storage for the X-ray images
+
+Setting up storage is required for image processing.For information about creating the buckets on other cloud providers, see the following links:
+
+* link:https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html[AWS S3]
+* link:https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal[Azure Blob Storage]
+* link:https://cloud.google.com/storage/docs/quickstart-console[GCP Cloud Storage]
+
+include::modules/med-setup-aws-s3-bucket-with-utilities.adoc[leveloffset=+2]
+
+include::modules/med-preparing-for-deployment.adoc[leveloffset=+1]
+
+include::modules/med-deploying-med-diag-pattern.adoc[leveloffset=+1]
+
+[id="post-deployment-configuration_{context}"]
+== Post-deployment configuration
+
+include::modules/med-using-ocp-gitops-to-check-app-progress.adoc[leveloffset=+2]
+
+include::modules/med-viewing-grafana-dashboard.adoc[leveloffset=+2]

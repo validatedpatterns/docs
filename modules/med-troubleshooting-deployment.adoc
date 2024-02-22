@@ -1,44 +1,8 @@
----
-title: Troubleshooting
-weight: 40
-aliases: /medical-diagnosis/troubleshooting/
----
-
-:toc:
-:imagesdir: /images
 :_content-type: REFERENCE
-include::modules/comm-attributes.adoc[]
-
-[id="med-understanding-the-makefile-troubleshooting"]
-=== Understanding the Makefile
-
-The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn't required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a `make upgrade` which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
-
-[id="about-make-install-make-deploy-troubleshooting"]
-==== About the make install and make deploy commands
-
-Running `make install` within the pattern application triggers a `make deploy` from `<pattern_directory>/common` directory. This initializes the `common` components of the pattern framework and install a helm chart in the `default` namespace. At this point, cluster services, such as {rh-rhacm-first} and {rh-gitops} are deployed.
-
-After components from the `common` directory are installed, the remaining tasks within the `make install` target run.
-//AI: Check which are these other tasks
-
-[id="make-vault-init-make-load-secrets-troubleshooting"]
-==== About the make vault-init and make load-secrets commands
-
-The {med-pattern} is integrated with {hashicorp-vault} and {eso-op} services for secrets management within the cluster. These targets install vault from a {helm-chart} and load the secret `(values-secret.yaml)` that you created during link:../getting-started/#preparing-for-deployment[Getting Started].
-
-If `values-secret.yaml` does not exist, make will exit with an error saying so. Furthermore, if the `values-secret.yaml` file does exist but is improperly formatted, {rh-ansible} exits with an error about being improperly formatted. To verify the format of the secret, see link:../getting-started/#preparing-for-deployment[Getting Started].
-
-[id="make-bootstrap-make-upgrade-troubleshooting"]
-==== About the make bootstrap and make upgrade commands
-The `make bootstrap` command is the target used for deploying the application specific components of the pattern. It is the final step in the initial `make install` target. You might want to consider running the `make upgrade` command instead of the `make bootstrap` command directly.
-
-Generally, running the `make upgrade` command is required when you encounter errors with the application pattern deployment. For instance, if a value was missed and the chart was not rendered correctly, executing `make upgrade` command after fixing the value would be necessary.
-
-You might want to review the `Makefile` for the `common` and `Medical Diagnosis` components, which are located in `common/Makefile` and `./Makefile` respectively.
+:imagesdir: ../../../images
 
 [id="troubleshooting-the-pattern-deployment-troubleshooting"]
-=== Troubleshooting the Pattern Deployment
+= Troubleshooting the pattern deployment
 
 Occasionally the pattern will encounter issues during the deployment. This can happen for any number of reasons, but most often it is because of either a change within the operator itself or something has changed in the {olm-first} which determines which operators are available in the operator catalog. Generally, when an issue occurs with the {olm-short}, the operator is unavailable for installation. To ensure that the operator is in the catalog, run the following command:
 
@@ -59,7 +23,7 @@ Use the grafana dashboard to assist with debugging and identifying the issue
 '''
 Problem:: No information is being processed in the dashboard
 
-Solution:: Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is *scaled to 0*;
+Solution:: Solution:: Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is *scaled to 0*":
 +
 [source,terminal]
 ----
@@ -133,7 +97,7 @@ MariaDB [xraylabdb]> show tables;
 3 rows in set (0.000 sec)
 ----
 +
-. Verify the password set in the `values-secret.yaml` is working
+. Verify the password set in the `values-secret.yaml` is working:
 +
 [source,terminal]
 ----

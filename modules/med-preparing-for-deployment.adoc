@@ -1,0 +1,169 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="preparing-for-deployment"]
+= Preparing to deploy the  {med-pattern}
+
+.Procedure
+
+. Fork the link:https://github.com/validatedpatterns/medical-diagnosis[medical-diagnosis] repository on GitHub. You must fork the repository because your fork will be updated as part of the GitOps and DevOps processes.
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+$ git clone git@github.com:<your-username>/medical-diagnosis.git
+----
+
+. Create a local copy of the Helm values file that can safely include credentials.
++
+[WARNING]
+====
+Do not commit this file. You do not want to push personal credentials to GitHub.
+====
++
+Run the following commands:
++
+[source,terminal]
+----
+$ cp values-secret.yaml.template ~/values-secret-medical-diagnosis.yaml
+$ vi ~/values-secret-medical-diagnosis.yaml
+----
++
+.Example `values-secret.yaml` file
+
+[source,yaml]
+----
+version "2.0"
+secrets:
+  # NEVER COMMIT THESE VALUES TO GIT
+
+  # Database login credentials and configuration
+  - name: xraylab
+    fields:
+    - name: database-user
+      value: xraylab
+    - name: database-host
+      value: xraylabdb
+    - name: database-db
+      value: xraylabdb
+    - name: database-master-user
+      value: xralab
+    - name: database-password
+      onMissingValue: generate
+      vaultPolicy: validatedPatternDefaultPolicy
+    - name: database-root-password
+      onMissingValue: generate
+      vaultPolicy: validatedPatternDefaultPolicy
+    - name: database-master-password
+      onMissingValue: generate
+      vaultPolicy: validatedPatternDefaultPolicy
+
+  # Grafana Dashboard admin user/password
+  - name: grafana
+    fields:
+      - name: GF_SECURITY_ADMIN_USER:
+        value: root
+      - name: GF_SECURITY_ADMIN_PASSWORD:
+        onMissingValue: generate
+        vaultPolicy: validatedPatternDefaultPolicy
+----
++
+By default, Vault password policy generates the passwords for you. However, you can create your own passwords.
++
+[NOTE]
+====
+When defining a custom password for the database users, avoid using the `$` special character because it gets interpreted by the shell and will ultimately set the incorrect password.
+====
+
+. To customize the deployment for your cluster, update the `values-global.yaml` file by running the following commands:
++
+[source,terminal]
+----
+$ git checkout -b my-branch
+$ vi values-global.yaml
+----
++
+Replace instances of PROVIDE_ with your specific configuration
++
+[source,yaml]
+----
+   ...omitted
+   datacenter:
+     cloudProvider: PROVIDE_CLOUD_PROVIDER #AWS, AZURE, GCP
+     storageClassName: PROVIDE_STORAGECLASS_NAME #gp3-csi
+     region: PROVIDE_CLOUD_REGION #us-east-2
+     clustername: PROVIDE_CLUSTER_NAME #OpenShift clusterName
+     domain: PROVIDE_DNS_DOMAIN #example.com
+
+   s3:
+     # Values for S3 bucket access
+     # Replace <region> with AWS region where S3 bucket was created
+     # Replace <cluster-name> and <domain> with your OpenShift cluster values
+     # bucketSource: "https://s3.<region>.amazonaws.com/<s3_bucket_name>"
+     bucketSource: PROVIDE_BUCKET_SOURCE #validated-patterns-md-xray
+     # Bucket base name used for xray images
+     bucketBaseName: "xray-source"
+----
++
+Save the values-global.yaml file and commit it to your branch:
++
+[source,terminal]
+----
+$ git add values-global.yaml
+$ git commit values-global.yaml
+$ git push origin my-branch
+----
+
+. To deploy the pattern, you can use the link:/infrastructure/using-validated-pattern-operator/[{validated-patterns-op}]. If you use the Operator to deploy the pattern, skip to the _Verification_ section of this procedure.
+
+. To preview the changes that will be implemented to the Helm charts, run the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make show
+----
+
+. Login to your cluster by running the following command:
++
+[source,terminal]
+----
+$ oc login
+----
++
+Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
++
+[source,terminal]
+----
+ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+.Verification
+
+To ensure that you have the required variables to deploy the {med-pattern}, run the `./pattern.sh make predeploy` command. You can review your values and m0ake any required updates.
+
+You must review the following `values*` files before deploying the {med-pattern}:
+
+|===
+| Values File | Description
+
+| values-secret.yaml
+| Values file that includes the secret parameters required by the pattern
+
+| values-global.yaml
+| File that contains all the global values used by Helm to deploy the pattern
+|===
+
+[NOTE]
+====
+Before you run the `./pattern.msh make install` command, ensure that you have the correct values for:
+```
+- domain
+- clusterName
+- cloudProvider
+- storageClassName
+- region
+- bucketSource
+```
+====
+
+//image::/videos/predeploy.svg[link="/videos/predeploy.svg"]

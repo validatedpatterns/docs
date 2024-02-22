@@ -14,12 +14,12 @@ include::modules/comm-attributes.adoc[]
 = Deploying HashiCorp Vault in a validated pattern
 
 [id="prerequisites"]
-= Prerequisites
+== Prerequisites
 
 You have deployed/installed a validated pattern using the instructions provided for that pattern. This should include setting having logged into the cluster using `oc login` or setting you `KUBECONFIG` environment variable and running a `./pattern.sh make install`.
 
 [id="setting-up-hashicorp-vault"]
-= Setting up HashiCorp Vault
+== Setting up HashiCorp Vault
 
 Any validated pattern that uses HashiCorp Vault already has deployed Vault as part of the `./pattern.sh make install`. To verify that Vault is installed you can first see that the `vault` project exists and then select the Workloads/Pods:
 

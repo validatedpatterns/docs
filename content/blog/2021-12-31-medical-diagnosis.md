@@ -30,7 +30,7 @@ For a recorded demo deploying the pattern and seeing the dashboards available to
 
 ---
 
-To deploy this pattern, follow the instructions outlined on the [getting-started](https://validatedpatterns.io/medical-diagnosis/getting-started/) page.
+To deploy this pattern, follow the instructions outlined on the [Getting started](/patterns/medical-diagnosis/med-getting-started/) page.
 
 ### What's happening?
 

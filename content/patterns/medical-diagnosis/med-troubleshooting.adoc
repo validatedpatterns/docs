@@ -1,0 +1,14 @@
+---
+title: Troubleshooting
+weight: 40
+aliases: /medical-diagnosis/med-troubleshooting/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: REFERENCE
+include::modules/comm-attributes.adoc[]
+
+include::modules/med-about-makefile.adoc[leveloffset=+1]
+
+include::modules/med-troubleshooting-deployment.adoc[leveloffset=+1]

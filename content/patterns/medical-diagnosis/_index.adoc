@@ -22,81 +22,12 @@ ci: medicaldiag
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
+
 include::modules/comm-attributes.adoc[]
 
-//Module to be included
-//:_content-type: CONCEPT
-//:imagesdir: ../../images
-[id="about-med-diag-pattern"]
-= About the {med-pattern}
+include::modules/med-about-medical-diagnosis.adoc[leveloffset=+1]
 
-Background::
-
-This validated pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that was previously developed by {redhat}. You can find the original demonstration link:https://github.com/red-hat-data-services/jumpstart-library[here]. It was developed for the US Department of Veteran Affairs.
-
-This validated pattern includes the same functionality as the original demonstration. The difference is that this solution uses the GitOps framework to deploy the pattern including Operators, creation of namespaces, and cluster configuration. Using GitOps provides an efficient means of implementing continuous deployment.
-
-Workflow::
-
-* Ingest chest X-rays from a simulated X-ray machine and puts them into an `objectStore` based on Ceph.
-* The `objectStore` sends a notification to a Kafka topic.
-* A KNative Eventing listener to the topic triggers a KNative Serving function.
-* An ML-trained model running in a container makes a risk assessment of Pneumonia for incoming images.
-* A Grafana dashboard displays the pipeline in real time, along with images incoming, processed, anonymized, and full metrics collected from Prometheus.
-
-This pipeline is showcased link:https://www.youtube.com/watch?v=zja83FVsm14[in this video].
-
-image::medical-edge/dashboard.png[link="/images/medical-edge/dashboard.png"]
-
-//[NOTE]
-//====
-//This validated pattern is still under development. If you have any questions or concerns contact mailto:jrickard@redhat.com[Jonny Rickard] or mailto:claudiol@redhat.com[Lester Claudio].
-//====
-
-[id="about-solution-med"]
-== About the solution elements
-
-The solution aids the understanding of the following:
-
-* How to use a GitOps approach to keep in control of configuration and operations.
-* How to deploy AI/ML technologies for medical diagnosis using GitOps.
-
-The {med-pattern} uses the following products and technologies:
-
-* {rh-ocp} for container orchestration
-* {rh-gitops}, a GitOps continuous delivery (CD) solution
-* {rh-amq-first}, an event streaming platform based on the Apache Kafka
-* {rh-serverless-first} for event-driven applications
-* {rh-ocp-data-first} for cloud native storage capabilities
-* {grafana-op} to manage and share Grafana dashboards, data sources, and so on
-* S3 storage
-
-[id="about-architecture-med"]
-== About the architecture
-
-[IMPORTANT]
-====
-Presently, the {med-pattern} does not have an edge component. Edge deployment capabilities are planned as part of the pattern architecture for a future release.
-====
-
-image::medical-edge/edge-medical-diagnosis-marketing-slide.png[link="/images/medical-edge/edge-medical-diagnosis-marketing-slide.png"]
-
-Components are running on OpenShift either at the data center, at the medical facility, or public cloud running OpenShift.
-
-[id="about-physical-schema-med"]
-=== About the physical schema
-
-The following diagram shows the components that are deployed with the various networks that connect them.
-
-image::medical-edge/physical-network.png[link="/images/medical-edge/physical-network.png"]
-
-The following diagram shows the components that are deployed with the the data flows and API calls between them.
-
-image::medical-edge/physical-dataflow.png[link="/images/medical-edge/physical-dataflow.png"]
-
-== Recorded demo
-
-link:/videos/xray-deployment.svg[image:/videos/xray-deployment.svg[Demo\]]
+include::modules/med-architecture-schema.adoc[leveloffset=+1]
 
 == Presentation
 
@@ -110,5 +41,4 @@ Use this demo script to successfully complete the Medical Diagnosis pattern demo
 [id="next-steps_med-diag-index"]
 == Next steps
 
-* Getting started link:getting-started[Deploy the Pattern]
-//We have relevant links on the patterns page
+* link:med-getting-started/#med-deploy-pattern[Deploying the Medical Diagnosis pattern]
