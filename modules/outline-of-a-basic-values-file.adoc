@@ -1,0 +1,17 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="outline-of-a-basic-values-file"]
+= Outline of a basic values file
+
+A values file typically consists of three main sections:
+
+. *Global*: Global values refer to configuration settings for use across multiple charts within a deployment. These values are shared among various charts to avoid redundancy of configuration settings, promoting consistency. Each pattern includes a `values-global.yaml` file, with configurations automatically incorporated into the application specification processed by the GitOps operator.
+
+. *Main*: Main values encompass the overall configuration settings, including those specific to ClusterGroups and the shared configurations defined in the values-global.yaml.
+These values collectively represent the comprehensive set of configurations that define the behavior and characteristics of the entire pattern deployment.
+These might include both ClusterGroup-specific overrides and global configurations from the `values-global.yaml`, ensuring a cohesive and unified set of settings for the deployment.
+
+. *ClusterGroup*: The ClusterGroup defines a collection of applications, typically represented as Helm charts, that constitute a specific pattern deployment. It allows the incorporation of various applications in the deployment, providing flexibility to establish specific overrides or configurations for each chart individually.
+For example, in scenarios like retail, a pattern may include multiple ClusterGroups, each representing different aspects or locations within the overall deployment.
+

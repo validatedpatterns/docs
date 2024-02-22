@@ -1,0 +1,55 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-values-files"]
+= About values files
+
+Values files are essential for creating a structured and flexible approach to customize settings in applications, services, or validated patterns. These are a YAML configuration document designed to set parameters and configurations for deploying validated patterns.
+They act as a central repository for customizations and are important in tailoring patterns to specific requirements, especially in Helm charts for Kubernetes deployments.
+
+*Key characteristics of values files*:
+
+. *Plain YAML Format*: Values files are written in YAML, offering a human-readable and easy-to-edit syntax. This simplicity contributes to the accessibility of configuration settings.
+. *Hierarchical Nature*: Values files support a hierarchy of values, allowing you to organize and structure configurations logically. This hierarchy is valuable in handling complex deployments.
+
+
+[id="exploring-values"]
+== Exploring values
+
+A value represents a specific configuration or parameter that influences the behavior of a validated pattern. These values may range from simple settings like port numbers to more complex elements such as host names and DNS entries. Their role is to ensure that validated patterns adapt to diverse needs and scenarios, whether they involve straightforward settings or more complex configurations. Values are instrumental in ensuring the efficient and seamless operation of validated patterns.
+
+[id="benefits-of-using-values-files"]
+== Benefits of using values files
+
+Values files offer a flexible and modular approach to deploying validated patterns, providing key advantages:
+
+* *Adaptability*: Empowers adjustment of validated patterns or applications to diverse deployment scenarios without direct modifications to the underlying codebase.
+* *Maintainability*: Streamlines the process of updating and managing configurations, promoting maintainability and reducing the likelihood of errors during deployment.
+
+
+[id="integration-of-values-files"]
+== Integration of values files in validated patterns
+
+Validated patterns use values files to dynamically adapt to different deployment scenarios. During deployment, the pattern references the values file to fetch specific configurations, making the deployment process versatile and adaptable.
+
+*Example of a value in a values file*
+
+
+[source,yaml]
+----
+applications:
+  coffeeshop-test:
+    name: quarkuscoffeeshop-demo
+    namespace: quarkuscoffeeshop-demo
+    project: quarkuscoffeeshop-demo
+    path: charts/store/quarkuscoffeeshop-charts
+    overrides:
+      - name: projectnamespace
+        value: quarkuscoffeeshop-demo
+      - name: Release.release-namespace
+        value: quarkuscoffeeshop-demo
+      - name: storeid
+        value: TEST
+----
+
+In this example, the `coffeeshop-test` application has specific overrides, such as setting the `projectnamespace` to `quarkuscoffeeshop-demo`, the `Release.release-namespace` to `quarkuscoffeeshop-demo`, and the `storeid` to `TEST`. These values can be easily adjusted based on the desired configuration for the application, showcasing the flexibility provided by values files in tailoring deployments to specific requirements.
