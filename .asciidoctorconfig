@@ -1,0 +1,118 @@
+:icons:
+:experimental:
+
+//:toc: macro
+//:toc-title:
+:imagesdir: /static/images
+:includedir: /modules
+:prewrap!:
+//Solution name
+:rh-solution-name: Validated Patterns
+:solution-name-upstream: Hybrid Cloud Patterns
+//:solution-version: Update later when we start using versioned releases
+//Patterns
+:aeg-pattern: Ansible Edge GitOps pattern
+:aeg: Ansible Edge GitOps
+:ie-pattern: Industrial Edge pattern
+:ie: Industrial Edge
+:mcg-pattern: Multicloud GitOps pattern
+:mcg: multicloud GitOps
+:med-pattern: Medical Diagnosis pattern
+:med: medical diagnosis
+:multi-devsec-pattern: Multi-cluster DevSecOps pattern
+:multi-devsec: multi-cluster DevSecOps
+//Operators
+:validated-patterns-op: Validated Patterns Operator
+:grafana-op: Grafana Operator
+:eso-op: External Secrets Operator
+//OpenShift
+:rh-ocp: Red Hat OpenShift Container Platform
+:ocp: OpenShift Container Platform
+:ocp-version: 4.12
+:ocp-registry: OpenShift image registry
+//Single node and 3-node OpenShift
+:sno: single-node OpenShift
+:sno-first: Single-node OpenShift
+:3no: three-node OpenShift
+:3no-first: Three-node OpenShift
+//OpenShift Platform Plus
+:rh-opp: Red Hat OpenShift Platform Plus
+:opp: OpenShift Platform Plus
+//openshift virtualization (cnv)
+:VirtProductName: OpenShift Virtualization
+//Ansible:
+:rh-ansible: Red Hat Ansible Automation Platform
+:ansible: Ansible Automation Platform
+//GitOps
+:rh-gitops: Red Hat OpenShift GitOps
+:rh-gitops-short: OpenShift GitOps
+//CoreOS
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system-short: RHCOS
+:op-system-lowercase: rhcos
+//RHEL
+:rhel-first: Red Hat Enterprise Linux (RHEL)
+:rhel-short: RHEL
+//:op-system-version: 8.x
+//Console icons
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+:kebab: image:kebab.png[title="Options menu"]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:openstack-short: RHOSP
+//Assisted Installer
+:ai-full: Assisted Installer
+:ai-version: 2.3
+//Cluster Manager
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+:insights-advisor-url: link:https://console.redhat.com/openshift/insights/advisor/[Insights Advisor]
+:hybrid-console-first: Red Hat Hybrid Cloud Console
+:hybrid-console: Hybrid Cloud Console
+//ACM
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+//:rh-rhacm-version: 2.5
+//ACS
+:rh-acs-first: Red Hat Advanced Cluster Security for Kubernetes
+
+:cert-manager-operator: cert-manager Operator for Red Hat OpenShift
+:secondary-scheduler-operator-full: Secondary Scheduler Operator for Red Hat OpenShift
+:secondary-scheduler-operator: Secondary Scheduler Operator
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.1
+//pipelines
+:rh-pipelines-first: Red Hat OpenShift Pipelines
+:pipelines-short: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:pac: Pipelines as Code
+//AMQ
+:rh-amq-first: Red Hat AMQ
+:rh-amq-short: RHAMQ
+//Runtimes
+:rh-runtime: Red Hat Runtimes
+//Data foundation
+:rh-ocp-data-first: Red Hat OpenShift Data Foundation
+:rh-ocp-data-short: OpenShift Data Foundation
+//Serverless
+:rh-serverless-first: Red Hat OpenShift Serverless
+:serverless-short: OpenShift Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//Quay
+:rh-quay: Red Hat Quay
+:quay-short: Quay
+// Red Hat Quay Container Security Operator
+:rhq-cso: Red Hat Quay Container Security Operator
+//Cloud platforms
+:AWS: Amazon Web Services (AWS)
+:GCP: Google Cloud Platform (GCP)
+:Azure: Microsoft Azure
