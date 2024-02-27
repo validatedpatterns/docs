@@ -4,14 +4,26 @@
 [id="outline-of-a-basic-values-file"]
 = Outline of a basic values file
 
-A values file typically consists of three main sections:
+In a values file, each variable declares an element with a default value, influencing Helm templates and guiding validated patterns. As files or overrides enter the rendering pipeline, they replace default values in the values files, following the principle that the last value takes precedence for adaptability.
 
-. *Global*: Global values refer to configuration settings for use across multiple charts within a deployment. These values are shared among various charts to avoid redundancy of configuration settings, promoting consistency. Each pattern includes a `values-global.yaml` file, with configurations automatically incorporated into the application specification processed by the GitOps operator.
+The three-fold distinction in validated patterns, "Global," "Main," and "ClusterGroup," practically applies the Helm override scheme. While "main" and "global" terms are used interchangeably, Helm differentiates by allowing "global" variables to extend to sub-charts, ensuring comprehensive configuration access. Values files, structured in free-form YAML, provide flexibility for any YAML variable type and are organized into Global, Main, and ClusterGroup configurations. 
 
-. *Main*: Main values encompass the overall configuration settings, including those specific to ClusterGroups and the shared configurations defined in the values-global.yaml.
-These values collectively represent the comprehensive set of configurations that define the behavior and characteristics of the entire pattern deployment.
-These might include both ClusterGroup-specific overrides and global configurations from the `values-global.yaml`, ensuring a cohesive and unified set of settings for the deployment.
+In Validated patterns, values files follow Helm rules, but the "global" and "ClusterGroup" sections have distinct meanings within this framework.
 
-. *ClusterGroup*: The ClusterGroup defines a collection of applications, typically represented as Helm charts, that constitute a specific pattern deployment. It allows the incorporation of various applications in the deployment, providing flexibility to establish specific overrides or configurations for each chart individually.
-For example, in scenarios like retail, a pattern may include multiple ClusterGroups, each representing different aspects or locations within the overall deployment.
+[NOTE]
+====
+Increasingly, more value files are designed solely for overriding base chart values. These files may not always have "ClusterGroup," "Main," or "Global" values. The decision to include these sections depends on the specific overrides required for each case.
+====
 
+*Key sections of values files*:
+
+. *Global*: Global values refer to configuration settings shared across multiple charts within a deployment. These values are distributed among various charts to avoid redundancy and configuration setting repetition, promoting consistency.
+Each pattern includes a `values-global.yaml` file, which contains configurations that are automatically incorporated into the application specification processed by the GitOps operator.
+
+
+. *ClusterGroup*: The ClusterGroup holds a specific significance within validated patterns. It defines clusters that are anticipated to share nearly identical configurations, serving a common architectural purpose. A ClusterGroup may consist of one or many members. Conventionally, there is a main ClusterGroup defined in `main.clusterGroupName` in `values-global.yaml`, acting as the hub or starting point for each pattern. Additional ClusterGroups can be managed by the main ClusterGroup through tools like Red Hat Advanced Cluster Management (RHACM).
+
+[NOTE]
+====
+Not all value files contain a ClusterGroup section; instead `values-global` sets the starting point, and these value files can subsequently define managed clusters.
+====
