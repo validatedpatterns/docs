@@ -1,0 +1,26 @@
+---
+title: Getting Started
+weight: 10
+aliases: /travelops/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/trvlops-deploying.adoc[leveloffset=1]
+
+[id="next-steps_getting-started"]
+== Next Steps
+
+Head over to the Kiali and travel control dashboards after the pattern has been installed.
+
+[source, terminal]
+----
+KIALI=https://$(oc get route -n istio-system kiali -o jsonpath='{.spec.host}')
+echo ${KIALI}
+
+CONTROL=http://$(oc get route -n istio-system istio-ingressgateway -o jsonpath='{.spec.host}')
+echo ${CONTROL}
+----
