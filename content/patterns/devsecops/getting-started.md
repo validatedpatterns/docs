@@ -49,7 +49,7 @@ secrets:
 
 # Preparing to deploy
 
-1. Install the installation tooling dependencies. See [Patterns quick start]({{< ref "/content/learn/quickstart.adoc" >}})
+1. Install the installation tooling dependencies. See [Patterns quick start](/learn/quickstart/)
 
    * Git command line tool ([git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
    * Podman command line tool ([podman](https://podman.io/getting-started/installation))
