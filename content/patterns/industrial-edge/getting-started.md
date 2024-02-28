@@ -30,7 +30,7 @@ service](https://console.redhat.com/openshift/create).
 
 ## Prerequisites
 
-For installation tooling dependencies, see [Patterns quick start]({{< ref "/content/learn/quickstart.adoc" >}})
+For installation tooling dependencies, see [Patterns quick start](/learn/quickstart)
 
 
 # How to deploy
