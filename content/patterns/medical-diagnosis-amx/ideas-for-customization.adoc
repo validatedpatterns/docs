@@ -1,7 +1,7 @@
 ---
 title: Ideas for customization
 weight: 50
-aliases: /medical-diagnosis/ideas-for-customization/
+aliases: /medical-diagnosis-amx/ideas-for-customization/
 ---
 
 include::modules/comm-attributes.adoc[]

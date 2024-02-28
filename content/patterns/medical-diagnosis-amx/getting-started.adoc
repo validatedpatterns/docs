@@ -1,7 +1,7 @@
 ---
 title: Getting Started
 weight: 10
-aliases: /medical-diagnosis/getting-started/
+aliases: /medical-diagnosis-amx/getting-started/
 ---
 
 include::modules/comm-attributes.adoc[]
@@ -26,7 +26,9 @@ include::modules/comm-attributes.adoc[]
 * An S3-capable Storage (OpenShift Data Foundation is recommended) set up in your private cloud for the x-ray images
 * The Helm binary, see link:https://helm.sh/docs/intro/install/[Installing Helm]
 For installation tooling dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
-+
+
+{nbsp}
+
 [NOTE]
 ====
 The {amx-med-pattern} does not have a dedicated hub or edge cluster.
