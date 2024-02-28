@@ -14,13 +14,6 @@ include::modules/trvlops-deploying.adoc[leveloffset=1]
 [id="next-steps_getting-started"]
 == Next Steps
 
-Head over to the Kiali and travel control dashboards after the pattern has been installed.
+To run through the demo, refer to link:..//demo-script[Monitor the Mesh]
 
-[source, terminal]
-----
-KIALI=https://$(oc get route -n istio-system kiali -o jsonpath='{.spec.host}')
-echo ${KIALI}
-
-CONTROL=http://$(oc get route -n istio-system istio-ingressgateway -o jsonpath='{.spec.host}')
-echo ${CONTROL}
-----
+Like what you see, but can't quite put your finger on how you could use a Service Mesh? Check out link:../ideas-for-customization[Ways to cuatomize the Mesh] for some ideas!

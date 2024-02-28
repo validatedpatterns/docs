@@ -7,7 +7,7 @@
 The following figure provides a high level architectural overview of the travelops pattern.
 
 .Overview schematic diagram of the complete solution
-image::travelops/ossm-arch-travelops.png[Physical Architecture]
+image::travelops/ossm-arch-travelops.png[Physical Architecture,link="/images/travelops/ossm-arch-travelops.png"]
 
 Subsequent schematic diagrams provide details on:
 

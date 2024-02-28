@@ -120,21 +120,26 @@ Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
  ./pattern.sh make install
 ----
 
+[id="verify-trvlops-pattern-install"]
+== Verify TravelOps Pattern installation
+
 . Verify that the Operators have been installed.
  .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
  .. Set your project to `All Projects` and verify the operators are isntalled and have a status of `Succeeded`.
 . Verify that all applications are synchronized. Under the project `travelops-hub` click the URL for the `hub` gitops `server`. 
 +
-image::travelops/ossm-sync-success.png[ArgoCD Applications]
+image::travelops/ossm-sync-success.png[ArgoCD Applications,link="/images/travelops/ossm-sync-success.png"]
 
 +
 As part of this pattern, HashiCorp Vault has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
+
+
+[id="verify-trvlops-dashboards"]
+== Verify installation by checking the TravelOps Dashboards
+
+. Access the Kiali and Travel Control dashboards
+
 +
-
-. Verify the travelops applications are part of the Service Mesh. 
-
-Head over to the Kiali and travel control dashboards after the pattern has been installed.
-
 [source, terminal]
 ----
 KIALI=https://$(oc get route -n istio-system kiali -o jsonpath='{.spec.host}')
@@ -144,9 +149,29 @@ CONTROL=http://$(oc get route -n istio-system istio-ingressgateway -o jsonpath='
 echo ${CONTROL}
 ----
 
-Initially in this console what we want to see is that there are:
++
+When we see the &#x1F512; icon next to our applications and in the top right hand corner of the dashboard it confirms that mTLS is enabled and active in the mesh.
+
+* The "&#x1F512;" is present next to the logged in user in top right corner of the window.
 * 7 applications in the `travel-agency` tile with the "&#x1F512;" next to `Istio config`
 * 1 application in the `travel-control` tile with the "&#x1F512;" next to `Istio config`
 * 3 applications in the `travel-portal` tile with the "&#x1F512;" next to `Istio config` 
 
+. Review your Kiali dashboard 
++
+image:travelops/ossm-kiali-db-arrows.png[Kiali Dashboard,link="/images/travelops/ossm-kiali-db-arrows.png"]
 
+[id="review-travelops-agency-svc"]
+== Review Travel Agency Application Graph
+
+In the Kiali dashboard we can see how all of the various components interact with each other within the service mesh. Just to get a glimpse of what we are able to see let's take a look at the applications and services in the `travel-agency` namespace.
+
+In the left hand menu:
+
+* click Graph
+* in the `Namespace` dropdown, select `travel-agency`
+* exit the menu
+
+You should see all of the deployments and services that make up the travel-agency application.
+
+image:travelops/travel-agency-svc-kiali.png[Travel Agency,link="/images/travelops/travel-agency-svc-kiali.png"] 
