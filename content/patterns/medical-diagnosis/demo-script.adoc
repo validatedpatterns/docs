@@ -4,10 +4,10 @@ weight: 60
 aliases: /medical-diagnosis/demo/
 ---
 
-include::modules/comm-attributes.adoc[]
 :toc:
 :imagesdir: /images
 :_content-type: REFERENCE
+include::modules/comm-attributes.adoc[]
 
 [id="demo-intro"]
 
