@@ -1,0 +1,34 @@
+---
+title: TravelOps 
+date: 2024-02-09
+tier: sandbox
+summary: This pattern enables you to secure your applications using Red Hat Service Mesh.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat Service Mesh
+- Red Hat Kiali
+- Red Hat Jaeger Distributed Tracing
+- Red Hat ElasticSearch
+industries:
+- General
+aliases: /travelops/
+links:
+  install: getting-started
+  help: https://groups.google.com/g/validatedpatterns
+  bugs: https://github.com/validatedpatterns-sandbox/travelops/issues
+ci: travelops
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/trvlops-about.adoc[leveloffset=+1]
+
+include::modules/trvlops-architecture.adoc[leveloffset=+1]
+
+[id="next-steps_trvlops-index"]
+== Next steps
+
+* link:getting-started[Deploy the Pattern] using Helm.
+

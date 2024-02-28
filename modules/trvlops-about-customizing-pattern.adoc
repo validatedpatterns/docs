@@ -1,0 +1,19 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-customizing-pattern-trvlops"]
+= About customizing the pattern {trvlops-pattern}
+
+One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The {trvlops-pattern} is just an example of a pattern that can deploy a Service Mesh and add applications to it using GitOps. When reading these customization ideas really think of them in the context of starting with this pattern and extending it to meet your organizations needs. 
+
+* oAuth Configuration
+** Create an oAuth provider (HTPasswd, GitHub, MicroSoft)
+** Create RBAC (roles, rolebindings) and assign to users
+
+* External prometheus installation
+
+* Integrate `openshift-pipelines` into the pattern for a full `ci/cd` experience
+
+* Integrate with Keycloak for AuthN / AuthZ 
+
+* Integrate with a real certificate authority like Let's Encrypt

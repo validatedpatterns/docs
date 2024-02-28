@@ -1,0 +1,12 @@
+---
+title: Demo Script
+weight: 60
+aliases: /travelops/demo/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: REFERENCE
+include::modules/comm-attributes.adoc[]
+
+include::modules/trvlops-demo.adoc[leveloffset=+1]

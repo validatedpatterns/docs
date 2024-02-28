@@ -1,0 +1,10 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="demoscript-trvlops-pattern"]
+= TravelOps Demo Script
+
+[WARNING]
+====
+TravelOps demo script is under construction. Will be posted shortly.
+====

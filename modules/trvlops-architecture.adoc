@@ -1,0 +1,54 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="overview-architecture"]
+= Overview of the architectures
+
+The following figure provides a high level architectural overview of the travelops pattern.
+
+.Overview schematic diagram of the complete solution
+image::travelops/ossm-arch-travelops.png[Physical Architecture,link="/images/travelops/ossm-arch-travelops.png"]
+
+Subsequent schematic diagrams provide details on:
+
+* Hybrid multi-cloud GitOps
+* Dynamic security management
+
+[id="hybrid-multicloud-gitops"]
+== Hybrid Multicloud GitOps
+
+The following figure provides a schematic diagram showing remaining activities associated with setting up the management hub and clusters using Red Hat Advanced Cluster Management.
+
+//figure 5 originally
+.Schematic diagram of hybrid multi-cloud management with GitOps
+image::multicloud-gitops/spi-multi-cloud-gitops-sd-security.png[Schematic diagram of hybrid multi-cloud management with GitOps]
+
+* Manifest and configuration are set as code template in the form of a `Kustomization` YAML file. The file describes the desired end state of the managed cluster. When complete, the `Kustomization` YAML file is pushed into the source control management repository with a version assigned to each update.
+* OpenShift GitOps monitors the repository and detects changes in the repository.
+* OpenShift GitOps creates and updates the manifest by creating Kubernetes objects on top of Red Hat Advanced Cluster Management.
+* Red Hat Advanced Cluster Management provisions, updates, or deletes managed clusters and configuration according to the manifest. In the manifest, you can configure what cloud provider the cluster will be on, the name of the cluster, infrastructure node details and worker node. Governance policy can also be applied as well as provision an agent in the cluster as the bridge between the control center and the managed cluster.
+* OpenShift GitOps continuously monitors the code repository and the status of the clusters reported back to Red Hat Advanced Cluster Management. Any configuration drift or in case of any failure, OpenShift GitOps will automatically try to remediate by applying the manifest or by displaying alerts for manual intervention.
+
+[id="dynamic-security-management"]
+== Dynamic security management
+
+The following figure provides a schematic diagram showing how secrets are handled in this solution.
+
+//figure 6 originally
+.Schematic showing the setup and use of external secrets management
+image::multicloud-gitops/spi-multi-cloud-gitops-sd-security.png[Schematic showing the setup and use of external secrets management]
+
+* During setup, the token to securely access HashiCorp Vault is stored in Ansible Vault. It is encrypted to protect sensitive content.
+
+* Red Hat Advanced Cluster Management for Kubernetes acquires the token from Ansible Vault during install and distributes it among the clusters. As a result, you have centralized control over the managed clusters through RHACM.
+
+* To allow the cluster access to the external vault, you must set up the external secret management with Helm in this study. OpenShift Gitops is used to deploy the external secret object to a managed cluster.
+
+* External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
+
+* Secrets are created in each namespace, where applications can use them.
+
+//[id="slide-deck"]
+//== Presentation
+//
+//View a short presentation slide deck about Multicloud GitOps link:https://speakerdeck.com/rhvalidatedpatterns/multicloud-gitops[here]
