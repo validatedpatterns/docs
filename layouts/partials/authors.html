@@ -1,0 +1,4 @@
+{{ $authors := .Param "authors" | len }}
+{{ range $index, $author := .Param "authors" }}
+  {{ if and (eq (add $index 1) $authors) (gt $authors 1) }} and {{ end }}{{ . }}{{ if and (gt $authors 2) (lt (add $index 1) $authors) }}, {{ end }}
+{{ end }}
