@@ -1,0 +1,328 @@
+---
+title: Getting started
+weight: 10
+aliases: /multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-getting-started/
+---
+
+include::modules/comm-attributes.adoc[]
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+[id="deploying-mcg-sgx-hello-world-pattern"]
+== Deploying the {mcg-sgx-hello-world-pattern}
+
+.Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console] and select *Services \-> Containers \-> Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`.
+ ** link:../../multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-cluster-sizing[Cluster sizing] requirements.
+* {intel-sgx} must be enabled in BIOS (Basic Input Output System) on at least one worker machines - specific steps depends on platform.
+* https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
+* Optional: Machine with the Ubuntu 22.04 (for image conversion purposes - doesn't need to have SGX feature enabled) and git.
+ ** Gramine Shielded Containers (GSC) application requires a machine with the same OS as an input image which will be conversed.
+ ** Install the https://gramine.readthedocs.io/projects/gsc/en/latest/#prerequisites[GSC prerequisites].
+ * Optional: A second OpenShift cluster for multicloud demonstration.
+
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
+
+If you do not have a running Red Hat OpenShift cluster, you can start one on a
+public or private cloud by using https://console.redhat.com/openshift/create[Red Hat Hybrid Cloud Console].
+
+.Procedure
+
+. Fork the https://github.com/validatedpatterns-sandbox/sgx-multicloud-gitops-hello-world/[multicloud-gitops-sgx-hello-world] repository on GitHub.
+
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+git clone git@github.com:your-username/multicloud-gitops-sgx-hello-world.git
+----
+
+. Create a local copy of the secret values file that can safely include credentials for the `config-demo` application and edit it if you want to customize the secret. If not, the framework generates a random password.
++
+[source,terminal]
+----
+cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
+----
++
+[WARNING]
+====
+Do not commit this file. You do not want to push personal credentials to GitHub.
+====
+
+. (Optional) You may customize the deployment for your cluster depending on your needs by editing _values-global.yaml_ and _values-hub.yaml_. To do this run the following commands:
++
+[source,terminal]
+----
+git checkout -b my-branch
+----
++
+[source,terminal]
+----
+vi values-global.yaml
+----
++
+[source,terminal]
+----
+git add values-global.yaml
+----
++
+[source,terminal]
+----
+git commit values-global.yaml
+----
++
+[source,terminal]
+----
+git push origin my-branch
+----
+
+. (Optional) Prepare and build `hello-world` docker image and convert it to secure version using GSC - described below. The sample image is available on Red Hat container registry (quay.io/hybridcloudpatterns/hello-world-sgx:3.12) and is pulled automatically during pattern installation process with default variables.
+
+. Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator] - both methods are described below.
+
+[id="build-docker-image-and-convert-to-sgx"]
+== Optional: Prepare docker image and convert it to use {intel-sgx}
+
+To build docker image and convert it to secure version with SGX, complete the following steps using machine dedicated for GSC conversion:
+
+. Create an empty file named _Dockerfile_:
++
+[source,terminal]
+----
+$ touch Dockerfile
+----
++
+. Using a text editor, copy the following contents to the _Dockerfile_:
++
+[source,dockerfile]
+----
+FROM python:3.12
+RUN apt update
+RUN rm /usr/bin/X11
+ENTRYPOINT ["python3", "-c", "print('HelloWorld!')"]
+----
++
+. Build the docker image using the following command:
++
+[source,terminal]
+----
+$ docker build -t hello-world .
+----
++
+. Clone GSC repo:
++
+[source,terminal]
+----
+$ git clone https://github.com/gramineproject/gsc.git
+----
+. Copy configuration file from sample template:
++
+[source,terminal]
+----
+$ cd gsc
+$ cp config.yaml.template config.yaml
+----
+(Optional) This file can be adjusted if needed.
+
+. Create a new _hello-world.manifest_ file containing parameters of conversion:
++
+[source,file]
+----
+loader.pal_internal_mem_size = "1G" 
+sgx.enclave_size = "1G" 
+sgx.thread_num = 1024 
+----
+. Generate the signing key:
++
+[source,terminal]
+----
+$ openssl genrsa -3 -out enclave-key.pem 3072
+----
++
+. Build secure image using `gsc` command:
++
+[source,terminal]
+----
+$ ./gsc build hello-world hello-world.manifest
+----
+. Sign the graminized docker image:
++
+[source,terminal]
+----
+$ ./gsc sign-image hello-world enclave-key.pem
+----
+. Push secured container image to the registry which is available on the cluster:  
+.. Tag secured container image with appropriate tag and push it to the registry:
++
+[source,terminal]
+----
+$ docker tag gsc-hello-world <DOCKER_REPOSITORY>:<TAG>
+----
+`<DOCKER_REPOSITORY>` is name a docker repository, `<TAG>` is a version of an image
+
+.. Login to Docker Hub:
++
+[source,terminal]
+----
+$ docker login -u=<DOCKER_ID> docker.io 
+----
+`<DOCKER_ID>` is your login to Docker Hub
+
+.. Push the image to registry:  
++
+[source,terminal]
+----
+$ docker push <DOCKER_REPOSITORY>:<TAG>
+----
+. Update the file _charts/all/hello-world-sgx/values.yaml_ with the information about your image in your forked repo with pattern.
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the cluster by using the pattern.sh file
+
+To deploy the cluster by using the _pattern.sh_ file, complete the following steps:
+
+. Login to your cluster by running the following command:
++
+[source,terminal]
+----
+oc login
+----
++
+Optional: Set the `KUBECONFIG` variable for the _kubeconfig_ file path:
++
+[source,terminal]
+----
+export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster. Run the following command:
++
+[source,terminal]
+----
+./pattern.sh make install
+----
+
+Verify that the Operators have been installed.
+
+. To verify, in the *OpenShift Container Platform* web console, navigate to *Operators → Installed Operators* page.
+. Check that the following Operators are installed with  `Succeeded` status (Figure 1): 
+* *Advanced Cluster Management for Kubernetes* 
+* *Intel Device Plugins Operator* 
+* *multicluster engine for Kubernetes* 
+* *Node Feature Discovery Operator* 
+* *Red Hat Openshift GitOps*
+* *Validated Patterns Operator*
++
+.List of Installed Operators for Multicloud GitOps Validated Pattern with SGX
+image::multicloud-gitops-sgx-hello-world/sgx-installed-operators.png[Multicloud GitOps Hub with SGX installed operators,role="related thumb right"]
++
+
+
+== Deploying the cluster by using the Validated Patterns Operator
+
+To install the *Validated Patterns Operator*:
+
+. Log in to the *Openshift Container Platform* web console and select *Operators > OperatorHub*.
+
+. Search for *Validated Patterns Operator*, open it and click *Install*.
++
+.Install Validated Patterns Operator
+image::multicloud-gitops-sgx-hello-world/sgx-validated-pattern-operator.png[Install Validated Patterns Operator,scale=50]
++
+. Choose default settings for the installation mode, namespaces and update strategy and confirm it by clicking *Install*.
+
+. Select *Operators > Installed Operators*.
+
+. Ensure that *Validated Patterns Operator* is listed in the `openshift-operators` project with a status `Succeeded`.
+
+After a successful installation open the *Validated Patterns Operator* page. Next, go to *Pattern* tab and click *Create Pattern*.
+
+. Set the *Name* field to `multicloud-gitops-sgx-hello-world`, and the *Cluster Group Name* to `hub`. Values must be the same as in the _values-global.yaml_ file (Figure 3).
+
+. As a *Git Config > Target Repo* value, paste the link to your fork. Under *Git Config > Target Revision* write the name of your branch (Figure 3).
+
+. Click the *Create* button to create the pattern.
+
++
+.Create Pattern Form
+image::multicloud-gitops-sgx-hello-world/sgx-create-pattern.png[Create Pattern Form]
++
+
+
+Verify that the rest of Operators have been installed:
+
+. To verify, in the *OpenShift Container Platform* web console, navigate to *Operators → Installed Operators* page.
+. Check that the following Operators are installed with  `Succeeded` status (Figure 1): 
+* *Advanced Cluster Management for Kubernetes* 
+* *Intel Device Plugins Operator* 
+* *multicluster engine for Kubernetes* 
+* *Node Feature Discovery Operator* 
+* *Red Hat Openshift GitOps*
+
+Add a secret for `config-demo` application (from _values-secret-multicloud-gitops.yaml_) to *Vault* manually:
+
+. Go to Vault service route. URL can be found:
+
+.. by running command:
++
+[source,terminal]
+----
+oc -n vault get route vault -ojsonpath='{.spec.host}'
+----
++
+.. in *Openshift Container Platform* web console under *Networking > Routes* for `vault` project.
+
+. Log into the Vault using root token. Root token can be found by executing command:
++
+[source,terminal]
+----
+oc -n imperative get secrets vaultkeys -ojsonpath='{.data.vault_data_json}' | base64 -d
+----
++
+
+. After login go to `secret` catalog and clik *Create secret* and fill all the fields manually (Figure 4):
+
+.. Put `global/config-demo` value in the *Path for this secret* field (the value cames from _values-secret-multicloud-gitops.yaml_ file).
+
+.. Add one *Secret data* key-value pair. Put `secret` as a key (left field). Click *Add* button to confirm.
+
+.. Click *Save* to save changes.
+
++
+.Create secret
+image::multicloud-gitops-sgx-hello-world/sgx-secret-vault.png[Create secret]
++
+
+
+== Verification
+
+Go to the Hub ArgoCD and verify that all applications are synchronized. The URL can be found in *Openshift Container Platform* web console under *Networking > Routes* for the project `multicloud-gitops-sgx-hello-world-hub` or use command:
+
+[source,terminal]
+----
+oc -n multicloud-gitops-sgx-hello-world-hub get route hub-gitops-server -ojsonpath='{.spec.host}'
+----
+
+All applications should be `Healthy` and `Synced`:
+
+.ArgoCD panel with `hello-world-sgx` app
+image::multicloud-gitops-sgx-hello-world/multicloud-gitops-argocd-sgx.png[ArgoCD panel with hello-world-sgx app]
+Check the logs of a pod `hello-world-sgx` to verify if it uses *{intel-sgx}*. In the *OpenShift Container Platform* web console, navigate to *Workloads > Pods*. Change project to `hello-world-sgx` and open the *Logs* tab in the pod details. The Gramine output confirms that {intel-sgx} is used.
+
+In case of pod `hello-world-sgx` crashing, delete it manually to be recreated - not restarted.
+
+As part of this pattern, HashiCorp Vault has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
+
+[id="next-steps_mcg-getting-started"]
+== Next steps
+
+After the management hub is set up and works correctly, attach one or more managed clusters to the architecture.
+
+For instructions on deploying the edge, refer to link:../mcg-sgx-hello-world-managed-cluster/[Attach a managed cluster (edge) to the management hub].
+
+//For instructions on deploying the edge, refer to xref:/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-managed-cluster.adoc#attach-managed-cluster[Attach a managed cluster (edge) to the management hub].
