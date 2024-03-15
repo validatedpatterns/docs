@@ -1,0 +1,35 @@
+:_content-type: REFERENCE
+:imagesdir: ../../images
+
+|===
+| Node type | Number of nodes | CPU | Memory | Storage
+
+| Control Planes
+| 3
+| 2x {intel-5th-gen-xeon} Gold 6526Y (16 cores at 2.8 GHz base with Intel SGX) or better
+| 128 GB (8 x 16 GB DDR5 4800) or more
+| NVME SSD 3TB or more
+
+| Workers
+| 3
+| 2x {intel-5th-gen-xeon} Gold 6538Y+ (32 cores at 2.2 GHz base with Intel SGX) or better
+| 256 GB (16 x 16 GB) or 512 GB (16 x 32GB) DDR5-4800
+| NVME SSD 3TB or more
+|===
+
+[NOTE]
+====
+You might want to add resources when more developers are working on building their applications.
+====
+
+The pattern was tested in the on-premises environment with following hardware configuration (per cluster):
+
+|===
+| Node type | Number of nodes | CPU | Memory | Storage
+
+| Control Planes + Workers
+| 3 + 3
+| 2x {intel-5th-gen-xeon} Platinum 8568Y+ (48 cores at 2.3 GHz base with Intel SGX)
+| 512 GB (16x32GB DDR5 5600)
+| 4x 3.84TB U.2 NVMe PCIe Gen4
+|===

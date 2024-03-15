@@ -27,14 +27,14 @@
 :ie: Industrial Edge
 :mcg-pattern: Multicloud GitOps pattern
 :amx-mcg-pattern: Intel AMX accelerated Multicloud GitOps pattern
+:mcg-sgx-hello-world-pattern: Intel SGX protected application in Multicloud GitOps pattern
+:sgx-mcg-pattern: Intel SGX protected Vault for Multicloud GitOps pattern
 :mcg: multicloud GitOps
 :med-pattern: Medical Diagnosis pattern
 :amx-med-pattern: Intel AMX accelerated Medical Diagnosis pattern
 :med: medical diagnosis
 :multi-devsec-pattern: Multi-cluster DevSecOps pattern
 :multi-devsec: multi-cluster DevSecOps
-:trvlops-pattern: TravelOps pattern
-:trvlops: TravelOps pattern
 // Associated products
 :hashicorp-vault: HashiCorp Vault
 :hashicorp-vault-short: Vault
@@ -45,6 +45,14 @@
 :intel-4th-gen-xeon: 4th Generation Intel Xeon
 :intel-4th-gen-xeon-processors: 4th Generation Intel Xeon Scalable Processors
 :intel-4th-gen-xeon-amx: 4th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
+:intel-sgx: Intel SGX
+:intel-sgx-full: Intel Security Guard Extensions
+:intel-5th-gen-xeon: 5th Generation Intel Xeon
+:intel-5th-gen-xeon-processors: 5th Generation Intel Xeon Scalable Processors
+:intel-5th-gen-xeon-sgx: 5th Gen Intel Xeon Scalable processors with Intel Security Guard Extensions (Intel SGX)
+//Gramine Shielded Containers
+:gramine: GSC
+:gramine-full: Gramine Shielded Containers
 //Operators
 :validated-patterns-op: Validated Patterns Operator
 :grafana-op: Grafana Operator
@@ -154,10 +162,5 @@
 // Red Hat OpenShift AI
 :rh-oai: Red{nbsp}Hat OpenShift Data Science
 :oai: OpenShift Data Science
-// Red Hat Service Mesh
-:rh-sm: Red{nbsp}Hat Service Mesh
-:rh-kiali: Kiali
-:rh-jaeger: Jaeger Distributed Tracing
-:rh-elastic: ElasticSearch
 // Icons
 :grid: grid.png
