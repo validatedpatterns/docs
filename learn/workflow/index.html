@@ -271,7 +271,91 @@ Figure 5. ArgoCD panel with amx-app Check the logs of a pod amx-app to verify if
 As part of this pattern, HashiCorp Vault has been installed. Refer to the section on Vault.
 Next steps After the management hub is set up and works correctly, attach one or more managed clusters to the architecture.
 For instructions on deploying the edge, refer to Attach a managed cluster (edge) to the management hub.
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-getting-started/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-getting-started/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Intel SGX protected application in Multicloud GitOps pattern Prerequisites An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console and select Services -&gt; Containers -&gt; Create cluster.
+The cluster must have a dynamic StorageClass to provision PersistentVolumes.
+Cluster sizing requirements.
+Intel SGX must be enabled in BIOS (Basic Input Output System) on at least one worker machines - specific steps depends on platform.
+Install the tooling dependencies.
+Optional: Machine with the Ubuntu 22.04 (for image conversion purposes - doesn’t need to have SGX feature enabled) and git.
+Gramine Shielded Containers (GSC) application requires a machine with the same OS as an input image which will be conversed.
+Install the GSC prerequisites.
+Optional: A second OpenShift cluster for multicloud demonstration.
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
+If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by using Red Hat Hybrid Cloud Console.
+Procedure Fork the multicloud-gitops-sgx-hello-world repository on GitHub.
+Clone the forked copy of this repository.
+git clone git@github.com:your-username/multicloud-gitops-sgx-hello-world.git Create a local copy of the secret values file that can safely include credentials for the config-demo application and edit it if you want to customize the secret. If not, the framework generates a random password.
+cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml Do not commit this file. You do not want to push personal credentials to GitHub.
+(Optional) You may customize the deployment for your cluster depending on your needs by editing values-global.yaml and values-hub.yaml. To do this run the following commands:
+git checkout -b my-branch vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch (Optional) Prepare and build hello-world docker image and convert it to secure version using GSC - described below. The sample image is available on Red Hat container registry (quay.io/hybridcloudpatterns/hello-world-sgx:3.12) and is pulled automatically during pattern installation process with default variables.
+Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator - both methods are described below.
+Optional: Prepare docker image and convert it to use Intel SGX To build docker image and convert it to secure version with SGX, complete the following steps using machine dedicated for GSC conversion:
+Create an empty file named Dockerfile:
+$ touch Dockerfile Using a text editor, copy the following contents to the Dockerfile:
+FROM python:3.12 RUN apt update RUN rm /usr/bin/X11 ENTRYPOINT [&#34;python3&#34;, &#34;-c&#34;, &#34;print(&#39;HelloWorld!&#39;)&#34;] Build the docker image using the following command:
+$ docker build -t hello-world . Clone GSC repo:
+$ git clone https://github.com/gramineproject/gsc.git Copy configuration file from sample template:
+$ cd gsc $ cp config.yaml.template config.yaml (Optional) This file can be adjusted if needed.
+Create a new hello-world.manifest file containing parameters of conversion:
+loader.pal_internal_mem_size = &#34;1G&#34; sgx.enclave_size = &#34;1G&#34; sgx.thread_num = 1024 Generate the signing key:
+$ openssl genrsa -3 -out enclave-key.pem 3072 Build secure image using gsc command:
+$ ./gsc build hello-world hello-world.manifest Sign the graminized docker image:
+$ ./gsc sign-image hello-world enclave-key.pem Push secured container image to the registry which is available on the cluster:
+Tag secured container image with appropriate tag and push it to the registry:
+$ docker tag gsc-hello-world &lt;DOCKER_REPOSITORY&gt;:&lt;TAG&gt; &lt;DOCKER_REPOSITORY&gt; is name a docker repository, &lt;TAG&gt; is a version of an image
+Login to Docker Hub:
+$ docker login -u=&lt;DOCKER_ID&gt; docker.io &lt;DOCKER_ID&gt; is your login to Docker Hub
+Push the image to registry:
+$ docker push &lt;DOCKER_REPOSITORY&gt;:&lt;TAG&gt; Update the file charts/all/hello-world-sgx/values.yaml with the information about your image in your forked repo with pattern.
+Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
+Login to your cluster by running the following command:
+oc login Optional: Set the KUBECONFIG variable for the kubeconfig file path:
+export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
+./pattern.sh make install Verify that the Operators have been installed.
+To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
+Check that the following Operators are installed with Succeeded status (Figure 1):
+Advanced Cluster Management for Kubernetes
+Intel Device Plugins Operator
+multicluster engine for Kubernetes
+Node Feature Discovery Operator
+Red Hat Openshift GitOps
+Validated Patterns Operator
+Figure 1. List of Installed Operators for Multicloud GitOps Validated Pattern with SGX Deploying the cluster by using the Validated Patterns Operator To install the Validated Patterns Operator:
+Log in to the Openshift Container Platform web console and select Operators &gt; OperatorHub.
+Search for Validated Patterns Operator, open it and click Install.
+Figure 2. Install Validated Patterns Operator Choose default settings for the installation mode, namespaces and update strategy and confirm it by clicking Install.
+Select Operators &gt; Installed Operators.
+Ensure that Validated Patterns Operator is listed in the openshift-operators project with a status Succeeded.
+After a successful installation open the Validated Patterns Operator page. Next, go to Pattern tab and click Create Pattern.
+Set the Name field to multicloud-gitops-sgx-hello-world, and the Cluster Group Name to hub. Values must be the same as in the values-global.yaml file (Figure 3).
+As a Git Config &gt; Target Repo value, paste the link to your fork. Under Git Config &gt; Target Revision write the name of your branch (Figure 3).
+Click the Create button to create the pattern.
+Figure 3. Create Pattern Form Verify that the rest of Operators have been installed:
+To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
+Check that the following Operators are installed with Succeeded status (Figure 1):
+Advanced Cluster Management for Kubernetes
+Intel Device Plugins Operator
+multicluster engine for Kubernetes
+Node Feature Discovery Operator
+Red Hat Openshift GitOps
+Add a secret for config-demo application (from values-secret-multicloud-gitops.yaml) to Vault manually:
+Go to Vault service route. URL can be found:
+by running command:
+oc -n vault get route vault -ojsonpath=&#39;{.spec.host}&#39; in Openshift Container Platform web console under Networking &gt; Routes for vault project.
+Log into the Vault using root token. Root token can be found by executing command:
+oc -n imperative get secrets vaultkeys -ojsonpath=&#39;{.data.vault_data_json}&#39; | base64 -d After login go to secret catalog and clik Create secret and fill all the fields manually (Figure 4):
+Put global/config-demo value in the Path for this secret field (the value cames from values-secret-multicloud-gitops.yaml file).
+Add one Secret data key-value pair. Put secret as a key (left field). Click Add button to confirm.
+Click Save to save changes.
+Figure 4. Create secret Verification Go to the Hub ArgoCD and verify that all applications are synchronized. The URL can be found in Openshift Container Platform web console under Networking &gt; Routes for the project multicloud-gitops-sgx-hello-world-hub or use command:
+oc -n multicloud-gitops-sgx-hello-world-hub get route hub-gitops-server -ojsonpath=&#39;{.spec.host}&#39; All applications should be Healthy and Synced:
+Figure 5. ArgoCD panel with hello-world-sgx app Check the logs of a pod hello-world-sgx to verify if it uses Intel SGX. In the OpenShift Container Platform web console, navigate to Workloads &gt; Pods. Change project to hello-world-sgx and open the Logs tab in the pod details. The Gramine output confirms that Intel SGX is used.
+In case of pod hello-world-sgx crashing, delete it manually to be recreated - not restarted.
+As part of this pattern, HashiCorp Vault has been installed. Refer to the section on Vault.
+Next steps After the management hub is set up and works correctly, attach one or more managed clusters to the architecture.
+For instructions on deploying the edge, refer to Attach a managed cluster (edge) to the management hub.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-getting-started/",breadcrumb:"/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
 Select Services -&gt; Containers -&gt; Create cluster.
 The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
@@ -968,7 +1052,44 @@ oc get managedcluster.cluster.open-cluster-management.io
 Apply the label
 oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster
 Verification Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the RHACM agent and agent-addons to launch. After that, the OpenShift GitOps Operator is installed. On successful installation, launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/managed-cluster/",breadcrumb:"/patterns/multicloud-gitops-portworx/managed-cluster/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-managed-cluster/":{title:"Managed cluster sites",tags:[],content:`Attach a managed cluster (edge) to the management hub Understanding Red Hat Advanced Cluster Management requirements By default, Red Hat Advanced Cluster Management (RHACM) manages the clusterGroup applications that are deployed on all clusters. In the value-hub.yaml file, add a managedClusterCgroup for each cluster or group of clusters that you want to manage as one.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/managed-cluster/",breadcrumb:"/patterns/multicloud-gitops-portworx/managed-cluster/"},"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-managed-cluster/":{title:"Managed cluster sites",tags:[],content:` Attach a managed cluster (edge) to the management hub Understanding Red Hat Advanced Cluster Management requirements By default, Red Hat Advanced Cluster Management (RHACM) manages the clusterGroup applications that are deployed on all clusters. In the value-hub.yaml file, add a managedClusterCgroup for each cluster or group of clusters that you want to manage as one.
+managedClusterGroups: - name: region-one helmOverrides: - name: clusterGroup.isHubCluster value: false clusterSelector: matchLabels: clusterGroup: region-one The above YAML file segment deploys the clusterGroup applications on managed clusters with the label clusterGroup=region-one. Specific subscriptions and Operators, applications and projects for that clusterGroup are then managed in a value-region-one.yaml file. For example:
+namespaces: - config-demo projects: - config-demo applications: config-demo: name: config-demo namespace: config-demo project: config-demo path: charts/all/config-demo #Subscriptions can be added too - multicloud-gitops at present does not require subscriptions on its managed clusters #subscriptions: . # example-subscription # name: example-operator # namespace: example-namespace # channel: example-channel # csv: example-operator.v1.0.0 subscriptions: Ensure that you commit the changes and push them to GitHub so that GitOps can fetch your changes and apply them.
+Deploying a managed cluster by using Red Hat Advanced Cluster Management Prerequistes An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select Services → Containers → Create cluster.
+Red Hat Advanced Cluster Management (RHACM) web console to join the managed cluster to the management hub
+After RHACM is installed, a message regarding a Web console update is available&#34; might be displayed. Follow the instructions and click the Refresh web console link.
+Procedure In the left navigation panel of web console, click local-cluster. Select All Clusters. The RHACM web console is displayed with Cluster* on the left navigation panel.
+On the Managed clusters tab, click Import cluster.
+On the Import an existing cluster page, enter the cluster name and choose KUBECONFIG as the &#34;import mode&#34;. Add the tag clusterGroup=region-one. Click Import.
+Now that RHACM is no longer deploying the managed cluster applications everywhere, you must indicate that the new cluster has the managed cluster role.
+Optional: Deploying a managed cluster by using cm-cli tool Prerequistes An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select Services -&gt; Containers -&gt; Create cluster.
+The cm-cli tool
+Procedure Obtain the KUBECONFIG file from the managed cluster.
+Open a shell prompt and login into the management hub cluster by using either of the following methods:
+oc login or
+export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Run the following command:
+cm attach cluster --cluster &lt;cluster-name&gt; --cluster-kubeconfig &lt;path-to-path_to_kubeconfig&gt; Next steps Designate the new cluster as a managed cluster site
+Optional: Deploying a managed cluster by using the clusteradm tool Prerequistes An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select Services → Containers → Create cluster.
+The clusteradm tool
+Procedure To deploy an edge cluster, you must to get the token from the management hub cluster. Run the following command on the existing management hub or datacenter cluster:
+clusteradm get token The command generates a token and shows you the command to use on the managed cluster.
+Login to the managed cluster with either of the following methods:
+oc login or
+export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; To request that the managed join the hub cluster, run the following command:
+clusteradm join --hub-token &lt;token_from_clusteradm_get_token_command&gt; &lt;managed_cluster_name&gt; Accept the join request on the hub cluster:
+clusteradm accept --clusters &lt;managed_cluster_name&gt; Next steps Designate the new cluster as a managed cluster site
+Designate the new cluster as a managed cluster site If you use the command line tools such as clusteradm or cm-cli, you must explicitly indicate that the imported cluster is part of a specific clusterGroup. Some examples of clusterGroup are factory, devel, or prod.
+To tag the cluster as clusterGroup=&lt;managed-cluster-group&gt;, complete the following steps.
+Procedure To find the new cluster, run the following command:
+oc get managedcluster.cluster.open-cluster-management.io To apply the label, run the following command:
+oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster Verification Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. It might take a while for the RHACM agent and agent-addons to launch. After that, the OpenShift GitOps Operator is installed. On successful installation, launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-managed-cluster/",breadcrumb:"/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-managed-cluster/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-managed-cluster/":{title:"Managed cluster sites",tags:[],content:`Attach a managed cluster (edge) to the management hub Understanding Red Hat Advanced Cluster Management requirements By default, Red Hat Advanced Cluster Management (RHACM) manages the clusterGroup applications that are deployed on all clusters. In the value-hub.yaml file, add a managedClusterCgroup for each cluster or group of clusters that you want to manage as one.
 managedClusterGroups: - name: region-one helmOverrides: - name: clusterGroup.isHubCluster value: false clusterSelector: matchLabels: clusterGroup: region-one The above YAML file segment deploys the clusterGroup applications on managed clusters with the label clusterGroup=region-one. Specific subscriptions and Operators, applications and projects for that clusterGroup are then managed in a value-region-one.yaml file. For example:
 namespaces: - config-demo projects: - config-demo applications: config-demo: name: config-demo namespace: config-demo project: config-demo path: charts/all/config-demo #Subscriptions can be added too - multicloud-gitops at present does not require subscriptions on its managed clusters #subscriptions: . # example-subscription # name: example-operator # namespace: example-namespace # channel: example-channel # csv: example-operator.v1.0.0 subscriptions: Ensure that you commit the changes and push them to GitHub so that GitOps can fetch your changes and apply them.
 Deploying a managed cluster by using Red Hat Advanced Cluster Management Prerequistes An OpenShift cluster
@@ -1220,7 +1341,55 @@ Node type Number of nodes CPU Memory Storage Control Planes + Workers
 4th Generation Intel Xeon Platinum 8460Y+ Processor (40 cores at 2.0 GHz base/2.8 GHz all core turbo/2.6 AMX all core turbo)
 512 GB (16x32GB DDR5 4800)
 4x 3.84TB U.2 NVMe PCIe Gen4
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-cluster-sizing/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-cluster-sizing/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Multicloud GitOps Pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-cluster-sizing/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-cluster-sizing/"},"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Intel SGX protected application in Multicloud GitOps pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
+For AWS, see Installing OpenShift Container Platform on AWS.
+For bare-metal, see Installing OpenShift Container Platform on bare metal.
+To understand cluster sizing requirements for the Intel SGX protected application in Multicloud GitOps pattern, consider the following components that the Intel SGX protected application in Multicloud GitOps pattern deploys on the datacenter or the hub OpenShift cluster:
+Name Kind Namespace Description multicloud-gitops-sgx-hello-world-hub
+Application
+multicloud-gitops-sgx-hello-world-hub
+Hub GitOps management
+Red Hat Advanced Cluster Management
+Operator
+open-cluster-management
+Advance Cluster Management
+Red Hat OpenShift GitOps
+Operator
+openshift-operators
+OpenShift GitOps
+Node Feature Discovery
+Operator
+openshift-nfd
+Manages the detection and labeling of hardware features and configuration (for example Intel SGX)
+Intel Device Plugins Operator
+Operator
+openshift-operators
+Advertises Intel specific hardware resources to the kubelet
+Red Hat OpenShift Data Foundation
+Operator
+openshift-storage
+Cloud Native storage solution
+The Intel SGX protected application in Multicloud GitOps pattern also includes the Red Hat Advanced Cluster Management (RHACM) supporting operator that is installed by OpenShift GitOps using Argo CD.
+Intel SGX protected application in Multicloud GitOps pattern with OpenShift clusters sizes The datacenter hub OpenShift cluster needs to be a bit bigger than the Factory/Edge clusters because this is where the developers will be running pipelines to build and deploy the Intel SGX protected application in Multicloud GitOps pattern on the cluster. The above cluster sizing is close to a minimum size for a Datacenter HUB cluster. In the next few sections we take some snapshots of the cluster utilization while the Intel SGX protected application in Multicloud GitOps pattern is running. Keep in mind that resources will have to be added as more developers are working building their applications.
+The recommended clusters sizes for datacenter hub and for managed datacenter are the same in this case:
+Node type Number of nodes CPU Memory Storage Control Planes
+3
+2x 5th Generation Intel Xeon Gold 6526Y (16 cores at 2.8 GHz base with Intel SGX) or better
+128 GB (8 x 16 GB DDR5 4800) or more
+NVME SSD 3TB or more
+Workers
+3
+2x 5th Generation Intel Xeon Gold 6538Y+ (32 cores at 2.2 GHz base with Intel SGX) or better
+256 GB (16 x 16 GB) or 512 GB (16 x 32GB) DDR5-4800
+NVME SSD 3TB or more
+You might want to add resources when more developers are working on building their applications.
+The pattern was tested in the on-premises environment with following hardware configuration (per cluster):
+Node type Number of nodes CPU Memory Storage Control Planes + Workers
+3 + 3
+2x 5th Generation Intel Xeon Platinum 8568Y+ (48 cores at 2.3 GHz base with Intel SGX)
+512 GB (16x32GB DDR5 5600)
+4x 3.84TB U.2 NVMe PCIe Gen4
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-cluster-sizing/",breadcrumb:"/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-cluster-sizing/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Multicloud GitOps Pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
 For AWS, see Installing OpenShift Container Platform on AWS.
 For bare-metal, see Installing OpenShift Container Platform on bare metal.
 To understand cluster sizing requirements for the Multicloud GitOps pattern, consider the following components that the Multicloud GitOps pattern deploys on the datacenter or the hub OpenShift cluster:
@@ -1323,7 +1492,27 @@ The Quarkus Coffeeshop Kafka Chart This chart installs Kafka for use in the Reta
 The Quarkus Coffeeshop Pipelines Chart The pipelines chart defines build pipelines using the Red Hat OpenShift Pipelines Operator (tektoncd). Pipelines are provided for all of the application images that ship with the pattern; the pipelines all build the app from source, deploy them to the &ldquo;demo&rdquo; namespace, and push them to the configured image registry.
 Like the store and database charts, the kafka chart supports all three modes of deployment.
 The Quarkus Coffeeshop Landing Page Chart The Landing Page chart builds the page that presents the links for the demos in the pattern.
-`,url:"https://validatedpatterns.io/patterns/retail/components/",breadcrumb:"/patterns/retail/components/"},"https://validatedpatterns.io/contribute/extending-a-pattern/":{title:"Extending an existing pattern",tags:[],content:` Introduction to extending a pattern using a fork Extending an existing pattern usually means adding a new product and/or configuration to the existing pattern. This usually requires four steps:
+`,url:"https://validatedpatterns.io/patterns/retail/components/",breadcrumb:"/patterns/retail/components/"},"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-demo-script/":{title:"Demo Script",tags:[],content:` Introduction The multicloud gitops pattern is designed to be an entrypoint into the Validated Patterns framework. Demo, accesible within the pattern, contains two applications config-demo and hello-world to show the basic configuration and execution examples. For more information on Validated Patterns visit our documentation site.
+Objectives In this demo you will complete the following:
+Prepare your local workstation
+Deploy the pattern
+Extend the pattern with a small tweak
+Getting Started Make sure you have met all the requirements
+Follow the Getting Started Guide to ensure that you have met all of the prequisites
+This demo begins after ./pattern.sh make install has been executed
+Demo Now that we have deployed the pattern onto our cluster, with origin pointing to your fork and using my-branch as the name of the used branch, we can begin to discover what has happened. You should be able to click on the nine-box and see the following entries:
+If you now click on the &#34;Hub ArgoCD&#34; menu entry you will be taken to the ArgoCD instance with all the applications.
+Secrets loading By default in the MultiCloud GitOps pattern the secrets get loaded automatically via an out of band process inside the vault running in the OCP cluster. This means that running ./pattern.sh make install will also call the load-secrets makefile target. This load-secrets target will look for a yaml file describing the secrets to be loaded into vault and in case it cannot find one it will use the values-secret.yaml.template file in the git repo to try and generate random secrets.
+Let’s copy the template to our home folder and reload the secrets:
+cp ./values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml ./pattern.sh make load-secrets At this point if the config-demo application was not green already it should become green in the ArgoCD user interface.
+Verify the test web pages If you now click on the Routes in the Networking menu entry you will see the following network routes:
+Clicking on the hello-world application should show a small demo app that prints &#34;Hello World!&#34;:
+Once the secrets are loaded correctly inside the vault, clicking on the config-demo route should display a small application where said secret is shown:
+Make a small change to the test web pages Now we can try and tweak the hello-world application and add the below line in the charts/all/hello-world/templates/hello-world-cm.yaml file:
+diff --git a/charts/all/hello-world/templates/hello-world-cm.yaml b/charts/all/hello-world/templates/hello-world-cm.yaml index e59561ca..bd416bc6 100644 --- a/charts/all/hello-world/templates/hello-world-cm.yaml +++ b/charts/all/hello-world/templates/hello-world-cm.yaml @@ -14,6 +14,7 @@ data: &lt;/head&gt; &lt;body&gt; &lt;h1&gt;Hello World!&lt;/h1&gt; + &lt;h1&gt;This is a patched version via git&lt;/h1&gt; &lt;br/&gt; &lt;h2&gt; Hub Cluster domain is &#39;{{ .Values.global.hubClusterDomain }}&#39; &lt;br&gt; Once we commit the above change via git commit -a -m &#34;test a change&#34; and run git push origin my-branch we will be able to observe argo applying the above change:
+Summary You did it! You have completed the deployment of the MultiCloud GitOps pattern and you made a small local change and applied it via GitOps! Hopefully you are getting ideas of how you can take advantage of our GitOps framework to deploy and manage your applications.
+For more information on Validated Patterns visit our website
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-demo-script/",breadcrumb:"/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-demo-script/"},"https://validatedpatterns.io/contribute/extending-a-pattern/":{title:"Extending an existing pattern",tags:[],content:` Introduction to extending a pattern using a fork Extending an existing pattern usually means adding a new product and/or configuration to the existing pattern. This usually requires four steps:
 Adding any required namespace for the product
 Adding a subscription to install and operator
 Adding one or more ArgoCD applications to manage the post-install configuration of the product
@@ -1484,7 +1673,13 @@ Adding your playbooks to the pattern requires the following:
 Move your Ansible configurations to the appropriate directory under Ansible in your forked repository.
 Define your job as a list, for example:
 imperative: # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm # The default schedule is every 10 minutes: imperative.schedule # Total timeout of all jobs is 1h: imperative.activeDeadlineSeconds # imagePullPolicy is set to always: imperative.imagePullPolicy # For additional overrides that apply to the jobs, please refer to the README located in # the top level of this repository. jobs: - name: regional-ca # Ansible playbook to be run playbook: ansible/playbooks/on-hub-get-regional-ca.yml # per playbook timeout in seconds timeout: 234 # verbosity: &#34;-v&#34; Additional job customizations The pattern includes override parameters to provide further customization. Refer to the list below for the available overrides.
-imperative: jobs: [] # This image contains Ansible + kubernetes.core by default and is used to run the jobs image: registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8:latest namespace: &#34;imperative&#34; # configmap name in the namespace that will contain all helm values valuesConfigMap: &#34;helm-values-configmap&#34; cronJobName: &#34;imperative-cronjob&#34; jobName: &#34;imperative-job&#34; imagePullPolicy: Always # This is the maximum timeout of all the jobs (1h) activeDeadlineSeconds: 3600 # By default we run this every 10minutes schedule: &#34;*/10 * * * *&#34; # Schedule used to trigger the vault unsealing (if explicitely enabled) # Set to run every 9 minutes in order for load-secrets to succeed within # a reasonable amount of time (it waits up to 15 mins) insecureUnsealVaultInsideClusterSchedule: &#34;*/9 * * * *&#34; # Increase Ansible verbosity with &#39;-v&#39; or &#39;-vv..&#39; verbosity: &#34;&#34; serviceAccountCreate: true # service account to be used to run the cron pods serviceAccountName: imperative-sa clusterRoleName: imperative-cluster-role clusterRoleYaml: &#34;&#34; roleName: imperative-role roleYaml: &#34;&#34; `,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-imperative-actions/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-imperative-actions/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-imperative-actions/":{title:"Imperative actions",tags:[],content:` Using kubernetes cronjobs to apply imperative actions There is currently no way within Argo CD to apply an imperative action against a cluster. However, you can declaratively apply changes to a cluster using kubernetes cronjob resources. Customers can use their Ansible playbooks to take action against a cluster if necessary.
+imperative: jobs: [] # This image contains Ansible + kubernetes.core by default and is used to run the jobs image: registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8:latest namespace: &#34;imperative&#34; # configmap name in the namespace that will contain all helm values valuesConfigMap: &#34;helm-values-configmap&#34; cronJobName: &#34;imperative-cronjob&#34; jobName: &#34;imperative-job&#34; imagePullPolicy: Always # This is the maximum timeout of all the jobs (1h) activeDeadlineSeconds: 3600 # By default we run this every 10minutes schedule: &#34;*/10 * * * *&#34; # Schedule used to trigger the vault unsealing (if explicitely enabled) # Set to run every 9 minutes in order for load-secrets to succeed within # a reasonable amount of time (it waits up to 15 mins) insecureUnsealVaultInsideClusterSchedule: &#34;*/9 * * * *&#34; # Increase Ansible verbosity with &#39;-v&#39; or &#39;-vv..&#39; verbosity: &#34;&#34; serviceAccountCreate: true # service account to be used to run the cron pods serviceAccountName: imperative-sa clusterRoleName: imperative-cluster-role clusterRoleYaml: &#34;&#34; roleName: imperative-role roleYaml: &#34;&#34; `,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-imperative-actions/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-imperative-actions/"},"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-imperative-actions/":{title:"Imperative actions",tags:[],content:` Using kubernetes cronjobs to apply imperative actions There is currently no way within Argo CD to apply an imperative action against a cluster. However, you can declaratively apply changes to a cluster using kubernetes cronjob resources. Customers can use their Ansible playbooks to take action against a cluster if necessary.
+The authors of the Ansible playbooks and roles must ensure that the playbooks are idempotent because they get applied through cronjobs which are set to run every 10 minutes.
+Adding your playbooks to the pattern requires the following:
+Move your Ansible configurations to the appropriate directory under Ansible in your forked repository.
+Define your job as a list, for example:
+imperative: # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm # The default schedule is every 10 minutes: imperative.schedule # Total timeout of all jobs is 1h: imperative.activeDeadlineSeconds # imagePullPolicy is set to always: imperative.imagePullPolicy # For additional overrides that apply to the jobs, please refer to the README located in # the top level of this repository. jobs: - name: regional-ca # Ansible playbook to be run playbook: ansible/playbooks/on-hub-get-regional-ca.yml # per playbook timeout in seconds timeout: 234 # verbosity: &#34;-v&#34; Additional job customizations The pattern includes override parameters to provide further customization. Refer to the list below for the available overrides.
+imperative: jobs: [] # This image contains Ansible + kubernetes.core by default and is used to run the jobs image: registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8:latest namespace: &#34;imperative&#34; # configmap name in the namespace that will contain all helm values valuesConfigMap: &#34;helm-values-configmap&#34; cronJobName: &#34;imperative-cronjob&#34; jobName: &#34;imperative-job&#34; imagePullPolicy: Always # This is the maximum timeout of all the jobs (1h) activeDeadlineSeconds: 3600 # By default we run this every 10minutes schedule: &#34;*/10 * * * *&#34; # Schedule used to trigger the vault unsealing (if explicitely enabled) # Set to run every 9 minutes in order for load-secrets to succeed within # a reasonable amount of time (it waits up to 15 mins) insecureUnsealVaultInsideClusterSchedule: &#34;*/9 * * * *&#34; # Increase Ansible verbosity with &#39;-v&#39; or &#39;-vv..&#39; verbosity: &#34;&#34; serviceAccountCreate: true # service account to be used to run the cron pods serviceAccountName: imperative-sa clusterRoleName: imperative-cluster-role clusterRoleYaml: &#34;&#34; roleName: imperative-role roleYaml: &#34;&#34; `,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-imperative-actions/",breadcrumb:"/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-imperative-actions/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-imperative-actions/":{title:"Imperative actions",tags:[],content:` Using kubernetes cronjobs to apply imperative actions There is currently no way within Argo CD to apply an imperative action against a cluster. However, you can declaratively apply changes to a cluster using kubernetes cronjob resources. Customers can use their Ansible playbooks to take action against a cluster if necessary.
 The authors of the Ansible playbooks and roles must ensure that the playbooks are idempotent because they get applied through cronjobs which are set to run every 10 minutes.
 Adding your playbooks to the pattern requires the following:
 Move your Ansible configurations to the appropriate directory under Ansible in your forked repository.
@@ -1908,7 +2103,7 @@ The Transportation Security Agency (TSA) could use the Medical Diagnosis pattern
 Militaries could use images collected from drones, satellites, or other platforms to identify objects and determine with probability what that object is. For example, the model could be trained to determine a type of ship, potentially its country of origin, and other such identifying characteristics.
 Manufacturing companies could use the pattern to inspect finished products as they roll off a production line. An image of the item, including using different types of light, could be analyzed to help expose defects before packaging and distributing. The item could be routed to a defect area.
 These are just a few ideas to help you understand how you could use the Medical Diagnosis pattern as a framework for your application.
-`,url:"https://validatedpatterns.io/patterns/medical-diagnosis/ideas-for-customization/",breadcrumb:"/patterns/medical-diagnosis/ideas-for-customization/"},"https://validatedpatterns.io/patterns/travelops-ossm/ideas-for-customization/":{title:"Ideas for customization",tags:[],content:` About customizing the pattern TravelOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The TravelOps pattern is just an example of a pattern that can deploy a Service Mesh and add applications to it using GitOps. When reading these customization ideas really think of them in the context of starting with this pattern and extending it to meet your organizations needs.
+`,url:"https://validatedpatterns.io/patterns/medical-diagnosis/ideas-for-customization/",breadcrumb:"/patterns/medical-diagnosis/ideas-for-customization/"},"https://validatedpatterns.io/patterns/travelops-ossm/ideas-for-customization/":{title:"Ideas for customization",tags:[],content:` About customizing the pattern {trvlops-pattern} One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The {trvlops-pattern} is just an example of a pattern that can deploy a Service Mesh and add applications to it using GitOps. When reading these customization ideas really think of them in the context of starting with this pattern and extending it to meet your organizations needs.
 oAuth Configuration
 Create an oAuth provider (HTPasswd, GitHub, MicroSoft)
 Create RBAC (roles, rolebindings) and assign to users
@@ -2033,7 +2228,12 @@ You can customize this demo in different ways.
 Split the config-demo across hub and regional clusters Currently hub and regional clusters are reusing the exact same helm chart found at charts/all/config-demo. The first customization step could be to split the demo app in two separate charts: one in charts/hub/config-demo and one in charts/region/config-demo. Once charts/all/config-demo has been copied to charts/hub/config-demo and charts/region/config-demo, you need to include them in the respective values-hub.yaml and values-region-one.yaml, respectively.
 After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
 Rest API addition After splitting the charts, you could implement a small REST API server on the hub. This API could serve read-only values out to anyone and could provide some update write-APIs only if the client provides a secret, for example, by using the X-API-KEY mechanism. You can tweak the config-demo application to communicate to the hub and use a vault-injected secret as the X-API-KEY. So the hub would possess the key through the External-Secrets generated kubernetes secret and the regional app would possess that same secret via the RHACM policy pushing out secrets via the {{hub fromSecret}} mechanism.
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-ideas-for-customization/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-ideas-for-customization/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-ideas-for-customization/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-ideas-for-customization/"},"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:` Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
+You can customize this demo in different ways.
+Split the config-demo across hub and regional clusters Currently hub and regional clusters are reusing the exact same helm chart found at charts/all/config-demo. The first customization step could be to split the demo app in two separate charts: one in charts/hub/config-demo and one in charts/region/config-demo. Once charts/all/config-demo has been copied to charts/hub/config-demo and charts/region/config-demo, you need to include them in the respective values-hub.yaml and values-region-one.yaml, respectively.
+After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
+Rest API addition After splitting the charts, you could implement a small REST API server on the hub. This API could serve read-only values out to anyone and could provide some update write-APIs only if the client provides a secret, for example, by using the X-API-KEY mechanism. You can tweak the config-demo application to communicate to the hub and use a vault-injected secret as the X-API-KEY. So the hub would possess the key through the External-Secrets generated kubernetes secret and the regional app would possess that same secret via the RHACM policy pushing out secrets via the {{hub fromSecret}} mechanism.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-ideas-for-customization/",breadcrumb:"/patterns/multicloud-gitops-sgx-hello-world/mcg-sgx-hello-world-ideas-for-customization/"},"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:`Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
 You can customize this demo in different ways.
 Split the config-demo across hub and regional clusters Currently hub and regional clusters are reusing the exact same helm chart found at charts/all/config-demo. The first customization step could be to split the demo app in two separate charts: one in charts/hub/config-demo and one in charts/region/config-demo. Once charts/all/config-demo has been copied to charts/hub/config-demo and charts/region/config-demo, you need to include them in the respective values-hub.yaml and values-region-one.yaml, respectively.
 After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
@@ -2127,12 +2327,69 @@ Who is behind this? Today, a team of Red Hat engineers including Andrew Beekhof 
 Excited or intrigued by what you see here? We’d love to hear your thoughts and ideas! Try the patterns contained here and see below for links to our repositories and issue trackers.
 How can I get involved? Try out what we’ve done and submit issues to our issue trackers.
 We will review pull requests to our pattern repositories.
-`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/travelops-ossm/":{title:"TravelOps",tags:[],content:` About the travelops pattern Use case Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
+`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/":{title:"Intel SGX protected application in Multicloud GitOps",tags:[],content:` About the Intel SGX protected application in Multicloud GitOps pattern Use case Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
+Enable cross-cluster governance and application lifecycle management.
+Securely manage secrets across the deployment.
+Effectively protect data in use with Intel Software Guard Extensions.
+Based on the requirements of a specific implementation, certain details might differ. However, all validated patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
+Background Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds, private or public. This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code checks the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed. Moreover, organizations are looking for solutions that are secure for AI, ML, data processing etc. It is the case especially for cloud computing, which uses heavily multi-tenancy and multiple processes runs on single bare-metal machine and they do not know who might be their neighbors and what are their intensions. Memory encryption technologies can protect well the data and separate application from other ones run on the same machine - it is possible using 5th Generation Intel Xeon Scalable Processors with Intel Software Guard Extensions.
+About the solution This architecture covers hybrid and multi-cloud management with GitOps as shown in following figure. At a high level this requires a management hub, for DevOps and GitOps, and infrastructure that extends to one or more managed clusters running on private or public clouds. The automated infrastructure-as-code approach can manage the versioning of components and deploy according to the infrastructure-as-code configuration.
+Benefits of Hybrid Multicloud management with GitOps:
+Unify management across cloud environments.
+Dynamic infrastructure security.
+Infrastructural continuous delivery best practices.
+Figure 1. Overview of the solution including the business drivers, management hub, and the clusters under management In the following figure, logically, this solution can be viewed as being composed of an automation component, unified management including secrets management, and the clusters under management, all running on top of a user-chosen mixture of on-premise data centers and public clouds.
+Figure 2. Logical diagram of Intel SGX accelerated hybrid multi-cloud management with GitOps About the technology The following technologies are used in this solution:
+Red Hat OpenShift Platform An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+Red Hat OpenShift GitOps A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+Red Hat Advanced Cluster Management for Kubernetes Controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale.
+Red Hat Ansible Automation Platform Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+Node Feature Discovery Operator Manages the detection of hardware features and configuration in an OpenShift Container Platform cluster by labeling the nodes with hardware-specific information. NFD labels the host with node-specific attributes, such as PCI cards, kernel, operating system version, and so on.
+Intel® Device Plugins Operator Is a collection of device plugins advertising Intel specific hardware resources to the kubelet. Currently the operator has basic support for the QAT, GPU, FPGA, SGX, DSA, IAA device plugins: it validates container image references and extends reported statuses.
+Intel® Software Guard Extensions Helps protect data in use via unique application isolation technology. Protect selected code and data from modification using hardened enclaves with Intel SGX.
+Gramine Shielded Containers Transforms a Docker image into a new image which includes the Gramine Library OS, manifest files, Intel SGX related information, and executes the application inside an Intel SGX enclave using the Gramine Library OS.
+Hashicorp Vault Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+This solution also uses a variety of observability tools including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
+Overview of the architectures The following figure provides a schematic diagram overview of the complete solution including both components and data flows.
+Figure 3. Overview schematic diagram of the complete solution Subsequent schematic diagrams provide details on:
+Bootstrapping the management hub (Figure 4)
+Hybrid multi-cloud GitOps (Figure 5)
+Dynamic security management (Figure 6)
+Bootstrapping the management hub The following figure provides a schematic diagram showing the setup of the management hub using Ansible playbooks.
+Figure 4. Schematic diagram of bootstrapping the management hub Set up the OpenShift Container Platform that hosts the Management Hub. The OpenShift installation program provides flexible ways to install OpenShift. An Ansible playbook starts the installation with necessary configurations.
+Ansible playbooks deploy and configure Red Hat Advanced Cluster Management for Kubernetes and, later, other supporting components such as external secrets management, on top of the provisioned OpenShift cluster.
+Another Ansible playbook installs HashiCorp Vault, a Red Hat partner product chosen for this solution that can be used to manage secrets for OpenShift clusters.
+An Ansible playbook configures and installs the Openshift GitOps operator on the hub cluster. This deploys the Openshift GitOps instance to enable continuous delivery.
+Hybrid Multicloud GitOps The following figure provides a schematic diagram showing remaining activities associated with setting up the management hub and clusters using Red Hat Advanced Cluster Management.
+Figure 5. Schematic diagram of hybrid multi-cloud management with GitOps Manifest and configuration are set as code template in the form of a Kustomization YAML file. The file describes the desired end state of the managed cluster. When complete, the Kustomization YAML file is pushed into the source control management repository with a version assigned to each update.
+OpenShift GitOps monitors the repository and detects changes in the repository.
+OpenShift GitOps creates and updates the manifest by creating Kubernetes objects on top of Red Hat Advanced Cluster Management.
+Red Hat Advanced Cluster Management provisions, updates, or deletes managed clusters and configuration according to the manifest. In the manifest, you can configure what cloud provider the cluster will be on, the name of the cluster, infrastructure node details and worker node. Governance policy can also be applied as well as provision an agent in the cluster as the bridge between the control center and the managed cluster.
+OpenShift GitOps continuously monitors the code repository and the status of the clusters reported back to Red Hat Advanced Cluster Management. Any configuration drift or in case of any failure, OpenShift GitOps will automatically try to remediate by applying the manifest or by displaying alerts for manual intervention.
+Dynamic security management The following figure provides a schematic diagram showing how secrets are handled in this solution.
+Figure 6. Schematic showing the setup and use of external secrets management During setup, the token to securely access HashiCorp Vault is stored in Ansible Vault. It is encrypted to protect sensitive content.
+Red Hat Advanced Cluster Management for Kubernetes acquires the token from Ansible Vault during install and distributes it among the clusters. As a result, you have centralized control over the managed clusters through RHACM.
+To allow the cluster access to the external vault, you must set up the external secret management with Helm in this study. OpenShift Gitops is used to deploy the external secret object to a managed cluster.
+External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
+Secrets are created in each namespace, where applications can use them.
+Additional resources View and download all of the diagrams above from the Red Hat Portfolio Architecture open source tooling site.
+Intel SGX protected application in Multicloud GitOps pattern The basic Multicloud GitOps pattern has been extended to highlight the 5th Generation Intel Xeon Scalable Processors capabilities, offering developers Intel SGX as a streamlined pathway to protect data in use against threats with isolation, encryption, and attestation while also allowing users to maintain control and use their data.
+The application which has been added to the basic pattern is named hello-world-sgx. It is a simple Python application that runs securely inside the SGX enclave. SGX enclave is an encrypted memory, which prevents unauthorized access from other containers running on the same host or even some host’s processes.
+The sample application uses image converted with Gramine Shielded Containers (GSC) tools to include Intel SGX related information and execute the application inside an Intel SGX enclave using the Gramine Library OS. It’s an easy way to convert the application into its secure version.
+Since the hello-world-sgx application must be running on the node with CPU supporting Intel SGX, Node Feature Discovery Operator (NFD) and Intel Device Plugins Operator (IDP) are deployed as a part of this pattern.
+NFD manages the detection of hardware features and configuration in an OpenShift Container Platform cluster. It labels the nodes with hardware-specific information. It is a requirement for IDP installation. IDP provides resources which are the user interface to claim and consume the hardware feature by user pods and also advertises Intel-specific hardware resources to the kubelet.
+In the logs of hello-world-sgx pod, there is an information that &#34;Gramine is starting&#34; and it executes the application by printing &#34;HelloWorld!&#34;.
+This pattern demonstrates basic capabilities of running docker applications inside SGX enclaves. Based on this pattern other applications can be secured with Intel SGX and Gramine Shielded Containers in a similar way as presented here.
+Figure 7. Logs from hello-world-sgx pod Next steps Deploy the management hub using Helm.
+Add a managed cluster to deploy the managed cluster piece using ACM.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/",breadcrumb:"/patterns/multicloud-gitops-sgx-hello-world/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric solutions while maintaining a level of Continuous Integration (CI) over your application.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/travelops-ossm/":{title:"TravelOps",tags:[],content:` About the travelops pattern Use case Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
 Enable cross-cluster governance and application lifecycle management.
 Securely manage secrets across the deployment.
 Based on the requirements of a specific implementation, certain details might differ. However, all validated patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
-Background The TravelOps pattern deployed using OpenShift GitOps and is comprised of Red Hat Service Mesh (RHSM), Kiali for the Service Mesh console, Jaeger for distributed tracing, and elasticsearch for logging and analytics. The application deployed is from the Kiali traveldemo tutorial. This pattern isn’t as much about the demo as it is about the capabilities that are enabled with a few simple configurations. Service Mesh’s are being incorporated across multiple platforms to provide secure communications between services.
+Background The {trvlops-pattern} deployed using OpenShift GitOps and is comprised of Red Hat Service Mesh (RHSM), Kiali for the Service Mesh console, Jaeger for distributed tracing, and elasticsearch for logging and analytics. The application deployed is from the Kiali traveldemo tutorial. This pattern isn’t as much about the demo as it is about the capabilities that are enabled with a few simple configurations. Service Mesh’s are being incorporated across multiple platforms to provide secure communications between services.
 Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds, private or public. This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code will be checked by the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
 About the solution This architecture covers a single cluster for all DevOps and GitOps functionality. However, one could extend this architecture to meet hybrid or multicloud demand using a GitOps approach
 Benefits of Hybrid Multicloud management with GitOps:
@@ -2165,9 +2422,7 @@ To allow the cluster access to the external vault, you must set up the external 
 External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
 Secrets are created in each namespace, where applications can use them.
 Next steps Deploy the Pattern using Helm.
-`,url:"https://validatedpatterns.io/patterns/travelops-ossm/",breadcrumb:"/patterns/travelops-ossm/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
-Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric solutions while maintaining a level of Continuous Integration (CI) over your application.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/2024-02-07-hcp-htpasswd-config/":{title:"Adding htpasswd oAuth provider to HCP clusters",tags:[],content:`Configure HTPasswd OAuth provider for hosted clusters Overview In this blog, we&rsquo;re going to configure our hosted cluster to use htpasswd as its authentication provider.
+`,url:"https://validatedpatterns.io/patterns/travelops-ossm/",breadcrumb:"/patterns/travelops-ossm/"},"https://validatedpatterns.io/blog/2024-02-07-hcp-htpasswd-config/":{title:"Adding htpasswd oAuth provider to HCP clusters",tags:[],content:`Configure HTPasswd OAuth provider for hosted clusters Overview In this blog, we&rsquo;re going to configure our hosted cluster to use htpasswd as its authentication provider.
 There are several reasons that we would want to do this, but usually it comes down to understanding that the kubeadmin/root users aren&rsquo;t the right way to do things. HTPasswd is a simple but effective way to centrally manage users and provide access to cluster resources when bound to the proper RBAC. In a traditional OpenShift deployment the configuration of the htpasswd oauth is well documented, but with hosted control planes we have to dig a little bit for the answer. This blog walks through the configuration of the oauth provider, and also provids ways that you can verify the configuration works as intended.
 Assumptions The procedures in this blog have been tested against OpenShift 4.13 and 4.14 hostedclusters.
 This blog assumes that you have the following binaries installed on your machine:
