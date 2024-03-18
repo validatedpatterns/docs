@@ -59,4 +59,4 @@ The datacenter hub OpenShift cluster needs to be a bit bigger than the Factory/E
 
 The recommended clusters sizes for datacenter hub and for managed datacenter are the same in this case:
 
-include::modules/intel-recommended-cluster-sizing.adoc[]
+include::modules/intel-recommended-cluster-sizing-4th-gen.adoc[]

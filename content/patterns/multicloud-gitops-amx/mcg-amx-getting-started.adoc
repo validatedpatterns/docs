@@ -111,10 +111,10 @@ export KUBECONFIG=~/<path_to_kubeconfig>
 Verify that the Operators have been installed.
 
 . To verify, in the *OpenShift Container Platform* web console, navigate to *Operators → Installed Operators* page.
-. Check that the following Operators are installed with  `Succeeded` status (Figure 1): 
-* *Advanced Cluster Management for Kubernetes* 
-* *multicluster engine for Kubernetes* 
-* *Node Feature Discovery Operator* 
+. Check that the following Operators are installed with  `Succeeded` status (Figure 1):
+* *Advanced Cluster Management for Kubernetes*
+* *multicluster engine for Kubernetes*
+* *Node Feature Discovery Operator*
 * *Red Hat Openshift GitOps*
 * *Validated Patterns Operator*
 +
@@ -156,10 +156,10 @@ image::multicloud-gitops-amx/amx-create-pattern.png[Create pattern Multicloud Gi
 Verify that the rest of Operators have been installed:
 
 . To verify, in the *OpenShift Container Platform* web console, navigate to *Operators → Installed Operators* page.
-. Check that the following Operators are installed with  `Succeeded` status (Figure 1): 
-* *Advanced Cluster Management for Kubernetes* 
-* *multicluster engine for Kubernetes* 
-* *Node Feature Discovery Operator* 
+. Check that the following Operators are installed with  `Succeeded` status (Figure 1):
+* *Advanced Cluster Management for Kubernetes*
+* *multicluster engine for Kubernetes*
+* *Node Feature Discovery Operator*
 * *Red Hat Openshift GitOps*
 
 Add a secret for `config-demo` application (from _values-secret-multicloud-gitops.yaml_) to *Vault* manually:
