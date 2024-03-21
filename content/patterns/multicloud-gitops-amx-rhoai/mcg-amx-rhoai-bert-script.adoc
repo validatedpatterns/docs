@@ -1,0 +1,70 @@
+---
+title: Intel AMX Demo
+weight: 30
+aliases: /multicloud-gitops-amx-rhoai/bert/
+---
+
+include::modules/comm-attributes.adoc[]
+:toc:
+:imagesdir: /images
+:_content-type: REFERENCE
+
+[id="demo-intro"]
+
+== Introduction
+The {amx-rhoai-mcg-pattern} provides developers and data scientists with {rhoai} product that is fully configured and ready to go. It also helps to boost their workloads by integrating AMX, which ensures efficiency and performance optimization for AI workloads.
+
+== AMX demo
+
+Using {intel-5th-gen-xeon-processors} the kernel detects Intel® AMX at run-time, there is no need to enable and configure it additionally to improve performance. However, we need Intel optimized tools and frameworks to take advantage of AMX acceleration, such as OpenVINO Toolkit. 
+
+Before proceeding with this demo steps, please make sure you have your pattern deployed with link:../mcg-amx-rhoai-getting-started[Getting started].
+
+. Verify if the *openvino-notebooks-v2022.3-1* build is completed under *Builds* > *Builds*. Build might take some time and before it is finished it won't be accesible from Openshift AI console.
+
+. Open Openhsift AI dashboard and go to *Applications* > *Enabled* window.
+
+. Open Jupyter by clicking *Launch application*.
+
+. Choose *OpenVINO™ Toolkit v2022.3* notebook image with *X Large* container size and start the notebook server. Server launching will take several minutes. Once it is ready, go to access notebook server.
+
+. On the Jupyter Launcher window choose Notebook with *Python 3 (ipykernel)*.
+
+. Download BERT-large example, that uses AMX accelerator, by typing in the opened notebook:
+[source,terminal]
+!wget https://raw.githubusercontent.com/validatedpatterns-sandbox/amx-accelerated-rhoai-multicloud-gitops/main/scripts/BERT.ipynb -O BERT.ipynb
+
+
+. On the left-hand side menu the `BERT.ipynb` script should show up. Open it and run instructions one by one with play button or with `Ctr+Enter` from keyboard.
+
+All necessary tools like https://docs.openvino.ai/2022.3/omz_tools_downloader.html#installation[*Model Downloader*] and https://docs.openvino.ai/2022.3/openvino_inference_engine_tools_benchmark_tool_README.html#doxid-openvino-inference-engine-tools-benchmark-tool-r-e-a-d-m-e[*Benchmark Python Tool*] are built in and ready to use.
+
+
+===== Description of  `BERT.ipynb`
+In case of issues with downloading the script, you can copy the following steps into your notebook and run.
+[source,terminal]
+----
+%env ONEDNN_VERBOSE=1
+----
+
+Download the BERT-Large model compatible with FP32&BF16 precision https://docs.openvino.ai/2022.3/omz_models_model_bert_large_uncased_whole_word_masking_squad_0001.html[bert-large-uncased-whole-word-masking-squad-0001]:
+[source,terminal]
+----
+!omz_downloader --name bert-large-uncased-whole-word-masking-squad-0001
+----
+
+Go to the directory with downloaded model and run the benchmark tool with parameter *infer_precision bf16* to use BF16 precision:
+[source,terminal]
+----
+%cd /opt/app-root/src/intel/bert-large-uncased-whole-word-masking-squad-0001/FP32/
+
+!benchmark_app -m bert-large-uncased-whole-word-masking-squad-0001.xml -infer_precision bf16
+----
+
+In ONEDNN verbose you should see *`avx_512_core_amx`* entry, what confirms that AMX instructions are being used.
+
+.BERT inference log
+image::multicloud-gitops-amx-rhoai/amx-rhoai-bert-logs.png[Logs from amx-app pod]
+
+
+

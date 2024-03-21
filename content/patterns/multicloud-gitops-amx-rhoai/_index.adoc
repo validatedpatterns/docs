@@ -1,0 +1,120 @@
+---
+title: Intel AMX accelerated Multicloud GitOps with Openshift AI
+date: 2024-02-27
+validated: false
+summary: This is extension of Multicloud GitOps pattern with Red Hat Openshift AI component to show the value of using Intel AMX.
+products:
+- Red Hat OpenShift Container Platform
+- Red Hat Advanced Cluster Management
+- Red Hat Openshift AI
+- OpenVINO Toolkit Operator
+- 5th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
+industries:
+- General
+aliases: /multicloud-gitops-amx-rhoai/
+# uncomment once this exists
+# pattern_logo: multicloud-gitops.png
+pattern_logo: amx-intel-ai.png
+links:
+  install: mcg-amx-rhoai-getting-started
+  help: https://groups.google.com/g/hybrid-cloud-patterns
+  bugs: https://github.com/validatedpatterns-sandbox/amx-accelerated-multicloud-gitops/issues
+---
+
+include::modules/comm-attributes.adoc[]
+
+:toc:
+:imagesdir: /images
+:_content-type: CONCEPT
+
+[id="about-multicloud-gitops-rhoai-amx-pattern"]
+== About the {amx-rhoai-mcg-pattern}
+
+Use case::
+
+* Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
+* Enable cross-cluster governance and application lifecycle management.
+* Accelerate AI operations and improve computational performance by using Intel Advanced Matrix Extensions together with Openshift AI operator.
+* Securely manage secrets across the deployment.
++
+[NOTE]
+====
+Based on the requirements of a specific implementation, certain details might differ. However, all validated patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
+====
+
+Background::
+Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds, private or public.
+This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code checks the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
+Moreover, organizations are looking for solutions that increase efficiency and at the same time reduce costs, what is possible using *{intel-5th-gen-xeon-processors}* with a new build-in accelerator - *Intel Advanced Matrix Extensions*.
+
+[id="about-solution"]
+== About the solution
+
+This architecture covers hybrid and multi-cloud management with GitOps as shown in following figure. At a high level this requires a management hub, for DevOps and GitOps, and infrastructure that extends to one or more managed clusters running on private or public clouds. The automated infrastructure-as-code approach can manage the versioning of components and deploy according to the infrastructure-as-code configuration.
+
+Benefits of Hybrid Multicloud management with GitOps:
+
+* Unify management across cloud environments.
+* Dynamic infrastructure security.
+* Infrastructural continuous delivery best practices.
+
+//figure 1 originally
+.Overview of the solution including the business drivers, management hub, and the clusters under management
+image::multicloud-gitops-amx-rhoai/hybrid-multicloud-management-gitops-hl-arch.png[Multicloud Architecture]
+
+
+[id="about-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Platform]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift GitOps]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+
+https://www.redhat.com/en/technologies/management/advanced-cluster-management[Red Hat Advanced Cluster Management for Kubernetes]::
+Controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale.
+
+https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform]::
+Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai[Red Hat Openshift AI]::
+A flexible, scalable MLOps platform with tools to build, deploy, and manage AI-enabled applications. OpenShift AI (previously called Red Hat OpenShift Data Science) supports the full lifecycle of AI/ML experiments and models, on-premise and in the public cloud.
+
+https://github.com/openvinotoolkit/operator[OpenVINO Toolkit Operator]::
+The Operator includes OpenVINO™ Notebooks for development of AI optimized workloads and OpenVINO™ Model Server for deployment that enables AI inference execution at scale, and exposes AI models via gRPC and REST API interfaces.
+
+https://www.intel.com/content/www/us/en/products/docs/accelerator-engines/advanced-matrix-extensions/overview.html[Intel® Advanced Matrix Extensions]::
+A new built-in accelerator that improves the performance of deep-learning training and inference on the CPU and is ideal for workloads like natural-language processing, recommendation systems and image recognition.
+
+Hashicorp Vault::
+Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+
+This solution also uses a variety of _observability tools_ including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
+
+
+[id="extension-of-mcg"]
+== {amx-rhoai-mcg-pattern}
+
+
+// RHODS pattern description
+The basic {mcg-pattern} has been extended to highlight the *{intel-5th-gen-xeon-processors}* capabilities, offering developers a streamlined pathway to accelerate their workloads through the integration of cutting-edge *{intel-amx}*, providing efficiency and performance optimization in AI workloads.
+
+The basic pattern has been extended with two components: Openshift AI and OpenVINO Toolkit Operator. 
+
+* Openshift AI, serves as a robust AI/ML platform for the creation of AI-driven applications and provides a collaborative environment for data scientists and developers that helps to move easily from experiment to production. It offers Jupyter application with selection of notebook servers, equipped with pre-configured environments and necessary support and optimizations (such as CUDA, PyTorch, Tensorflow, HabanaAI, etc.).
+
+* OpenVINO Toolkit Operator manages OpenVINO components within Openshift environment. First one, OpenVINO™ Model Server (OVMS) is a scalable, high-performance solution for serving machine learning models optimized for Intel® architectures. The other component, that was used in the proposed pattern is Notebook resource. This element integrates Jupyter from OpenShift AI with a container image that includes developer tools from the OpenVINO toolkit. It also enables selecting a defined image OpenVINO™ Toolkit from the Jupyter Spawner choice list.
+
+BERT-Large model is used as an example of AI workload using {intel-amx} in the pattern. The BERT-Large inference is running in the Jupyther Notebook that uses OpenVINO optimizations.
+
+As a side note, BERT_Large is a wide known model used by various enterprise Natural Language Processing workloads. Intel has demonstrated, that *{intel-5th-gen-xeon-processors}* perform up to *1.49* times better in NLP flows on Red Hat OpenShift vs. prior generation of processors- read more:
+https://community.intel.com/t5/Blogs/Tech-Innovation/Data-Center/Level-Up-Your-NLP-applications-on-Red-Hat-OpenShift-and-5th-Gen/post/1572320[Level Up Your NLP applications on Red Hat OpenShift and 5th Gen]
+
+[id="next-steps_mcg-index"]
+== Next steps
+
+* link:mcg-amx-rhoai-getting-started[Deploy the management hub] using Helm.
+* Add a managed cluster to link:mcg-amx-rhoai-managed-cluster[deploy the managed cluster piece using ACM].

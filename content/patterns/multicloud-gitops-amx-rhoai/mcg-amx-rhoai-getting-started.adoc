@@ -1,0 +1,205 @@
+---
+title: Getting started
+weight: 10
+aliases: /multicloud-gitops-amx-rhoai/mcg-amx-rhoai-getting-started/
+---
+
+include::modules/comm-attributes.adoc[]
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+[id="deploying-mcg-pattern"]
+== Deploying the {amx-rhoai-mcg-pattern}
+
+.Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console] and select *Services \-> Containers \-> Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`.
+* The cluster must have worker nodes with Intel AMX feature enabled, so the *5th Generation of Intel Xeon Processors* is highly recommended
+ ** link:../../multicloud-gitops-amx-rhoai/mcg-amx-rhoai-cluster-sizing[Cluster sizing] requirements.
+* Optional: A second OpenShift cluster for multicloud demonstration.
+//Replaced git and podman prereqs with the tooling dependencies page
+* https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
+
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
+
+If you do not have a running Red Hat OpenShift cluster, you can start one on a
+public or private cloud by using https://console.redhat.com/openshift/create[Red Hat Hybrid Cloud Console].
+
+.Procedure
+
+. Fork the https://github.com/validatedpatterns-sandbox/amx-accelerated-rhoai-multicloud-gitops/[amx-accelerated-rhoai-multicloud-gitops] repository on GitHub.
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+git clone git@github.com:your-username/amx-accelerated-rhoai-multicloud-gitops.git
+----
+
+. Create a local copy of the secret values file that can safely include credentials for the config-demo application and edit it if you want to customize the secret. If not, the framework generates a random password.
++
+[source,terminal]
+----
+cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
+----
++
+[WARNING]
+====
+Do not commit this file. You do not want to push personal credentials to GitHub.
+====
+
+. (Optional) You may customize the deployment for your cluster depending on your needs by editing values-global.yaml and values-hub.yaml. To do this run the following commands:
++
+[source,terminal]
+----
+git checkout -b my-branch
+----
++
+[source,terminal]
+----
+vi values-global.yaml
+----
++
+[source,terminal]
+----
+git add values-global.yaml
+----
++
+[source,terminal]
+----
+git commit values-global.yaml
+----
++
+[source,terminal]
+----
+git push origin my-branch
+----
+
+. Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator] - both methods are described below.
+
+[id="deploying-cluster-using-patternsh-file"]
+=== Deploying the cluster by using the pattern.sh file
+
+To deploy the cluster by using the `pattern.sh` file, complete the following steps:
+
+. Login to your cluster by running the following command:
++
+[source,terminal]
+----
+oc login
+----
++
+Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
++
+[source,terminal]
+----
+export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster. Run the following command:
++
+[source,terminal]
+----
+./pattern.sh make install
+----
+
+Verify that the Operators have been installed.
+
+. To verify, in the *OpenShift Container Platform* web console, navigate to *Operators → Installed Operators* page.
+. Check that the following Operators are installed with  `Succeeded` status (Figure 1): 
+* *Advanced Cluster Management for Kubernetes* 
+* *multicluster engine for Kubernetes* 
+* *Red Hat Openshift GitOps*
+* *Validated Patterns Operator*
+* *OpenVINO Toolkit Operator*
+* *Red Hat Openshift AI*
++
+.List of Installed Operators for AMX accelerated Multicloud GitOps with Openshift AI pattern
+image::multicloud-gitops-amx-rhoai/amx-rhoai-installed-operators.png[AMX accelerated Multicloud GitOps Hub with Openshift AI installed operators,role="related thumb right"]
++
+
+
+=== Deploying the cluster by using the Validated Patterns Operator
+
+To install the *Validated Patterns Operator*:
+
+. Log in to the *Openshift Container Platform* web console and select *Operators > OperatorHub*.
+
+. Search for *Validated Patterns Operator*, open it and click *Install*.
+
++
+.Install Validated Patterns Operator step 1
+image::multicloud-gitops-amx-rhoai/amx-rhoai-validated-pattern-operator-1.png[Install Validated Patterns Operator,scale=50]
++
+
+. Choose default settings for the installation mode, namespaces and update strategy and confirm it by clicking *Install*.
+
++
+.Install Validated Patterns Operator step 2
+image::multicloud-gitops-amx-rhoai/amx-rhoai-validated-pattern-operator-2.png[Install Validated Patterns Operator,scale=50]
++
+
+. Select *Operators > Installed Operators*.
+
+. Ensure that *Validated Patterns Operator* is listed in the `openshift-operators` project with a status `Succeeded`.
+
+== Create {amx-rhoai-mcg-pattern}
+
+After a successful installation, open *Validated Patterns Operator* page. Next, go to *Pattern* tab and click *Create Pattern*.
+
+. Set the *Name* field to `multicloud-gitops-amx-rhoai` and *Cluster Group Name* to `hub`, Values must be the same as in the _values-global.yaml_ file (Figure 3).
+
+. As a *Git Config > Target Repo* value, paste the link to your fork. Under *Git Config > Target Revision* write the name of your branch (Figure 3).
+
+. Click *Create* button to create the pattern.
++
+.Create Pattern Form
+image::multicloud-gitops-amx-rhoai/amx-rhoai-create-pattern.png[Create pattern AMX accelerated Multicloud GitOps with Openshift AI]
++
+
+
+Verify that the rest of Operators have been installed:
+
+. To verify, in the *OpenShift Container Platform* web console, navigate to *Operators → Installed Operators* page.
+. Check that the following Operators are installed with  `Succeeded` status (Figure 1): 
+* *Advanced Cluster Management for Kubernetes* 
+* *multicluster engine for Kubernetes*
+* *Red Hat Openshift GitOps*
+* *OpenVINO Toolkit Operator*
+* *Red Hat Openshift AI*
+
+== Verification
+
+Go to the Hub ArgoCD and verify that all applications are synchronized. The URL can be found in *Openshift Container Platform* web console under *Networking > Routes* for the project `multicloud-gitops-amx-rhoai-hub` or use command:
+
+[source,terminal]
+----
+oc -n multicloud-gitops-amx-rhoai-hub get route hub-gitops-server -ojsonpath='{.spec.host}'
+----
+
+All applications should be `Healthy` and `Synced`:
+
+.ArgoCD panel with all applications
+image::multicloud-gitops-amx-rhoai/multicloud-gitops-argocd-amx-rhoai.png[Multicloud GitOps Hub with rhods and openvino toolkit]
+
+
+As part of this pattern, HashiCorp Vault has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
+
+== Start your workload
+
+Now, you are ready to use installed pattern. 
+
+* Test basic application deployment and setup with link:../mcg-amx-rhoai-demo-script/[*Hello World Demo*]. 
+
+* Jump straight to AI workload example with link:../mcg-amx-rhoai-bert-script/[*Intel AMX Demo*].
+
+[id="next-steps_mcg-getting-started"]
+== Next steps
+
+After the management hub is set up and works correctly, attach one or more managed clusters to the architecture.
+
+For instructions on deploying the edge, refer to link:../mcg-amx-rhoai-managed-cluster/[Attach a managed cluster (edge) to the management hub].
+

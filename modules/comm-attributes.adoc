@@ -29,6 +29,7 @@
 :amx-mcg-pattern: Intel AMX accelerated Multicloud GitOps pattern
 :mcg-sgx-hello-world-pattern: Intel SGX protected application in Multicloud GitOps pattern
 :sgx-mcg-pattern: Intel SGX protected Vault for Multicloud GitOps pattern
+:amx-rhoai-mcg-pattern: Intel AMX accelerated Multicloud GitOps pattern with Openshift AI
 :mcg: multicloud GitOps
 :med-pattern: Medical Diagnosis pattern
 :amx-med-pattern: Intel AMX accelerated Medical Diagnosis pattern
@@ -41,14 +42,19 @@
 :helm-chart: Helm chart
 // Intel
 :intel-amx: Intel AMX
-:intel-amx-full: Intel Advanced Matrix Extensions
-:intel-4th-gen-xeon: 4th Generation Intel Xeon
-:intel-4th-gen-xeon-processors: 4th Generation Intel Xeon Scalable Processors
-:intel-4th-gen-xeon-amx: 4th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
+:intel-qat: Intel QAT
 :intel-sgx: Intel SGX
+:intel-amx-full: Intel Advanced Matrix Extensions
+:intel-qat-full: Intel QuickAssist Technology
 :intel-sgx-full: Intel Security Guard Extensions
+:intel-4th-gen-xeon: 4th Generation Intel Xeon
 :intel-5th-gen-xeon: 5th Generation Intel Xeon
+:intel-4th-gen-xeon-processors: 4th Generation Intel Xeon Scalable Processors
 :intel-5th-gen-xeon-processors: 5th Generation Intel Xeon Scalable Processors
+:intel-4th-gen-xeon-amx: 4th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
+:intel-5th-gen-xeon-amx: 5th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
+:intel-4th-gen-xeon-qat: 4th Gen Intel Xeon Scalable processors with Intel QuickAssist (Intel QAT)
+:intel-5th-gen-xeon-qat: 5th Gen Intel Xeon Scalable processors with Intel QuickAssist (Intel QAT)
 :intel-5th-gen-xeon-sgx: 5th Gen Intel Xeon Scalable processors with Intel Security Guard Extensions (Intel SGX)
 //Gramine Shielded Containers
 :gramine: GSC
@@ -161,6 +167,7 @@
 :Azure: Microsoft Azure
 // Red Hat OpenShift AI
 :rh-oai: Red{nbsp}Hat OpenShift Data Science
+:rhoai: Red{nbsp}Hat OpenShift AI
 :oai: OpenShift Data Science
 // Icons
 :grid: grid.png
