@@ -73,4 +73,4 @@ The OpenShift cluster is a standard deployment of 3 control plane nodes and 3 or
 
 The recommended hardware setup:
 
-include::modules/intel-recommended-cluster-sizing.adoc[]
+include::modules/intel-recommended-cluster-sizing-4th-gen.adoc[]

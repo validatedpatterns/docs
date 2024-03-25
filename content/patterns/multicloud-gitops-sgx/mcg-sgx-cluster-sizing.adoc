@@ -1,0 +1,65 @@
+---
+title: Cluster sizing
+weight: 30
+aliases: /multicloud-gitops-sgx/mcg-sgx-cluster-sizing/
+---
+
+include::modules/comm-attributes.adoc[]
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+[id="about-openshift-cluster-sizing-mcg"]
+== About OpenShift cluster sizing for the {sgx-mcg-pattern}
+
+The minimum requirements for an {ocp} cluster depend on your installation platform, for example:
+
+* For AWS, see link:https://docs.openshift.com/container-platform/4.14/installing/installing_aws/preparing-to-install-on-aws.html#requirements-for-installing-ocp-on-aws[Installing {ocp} on AWS].
+
+* For bare-metal, see link:https://docs.openshift.com/container-platform/4.14/installing/installing_bare_metal/installing-bare-metal.html#installation-minimum-resource-requirements_installing-bare-metal[Installing {ocp} on bare metal].
+
+To understand cluster sizing requirements for the {sgx-mcg-pattern}, consider the following components that the {sgx-mcg-pattern} deploys on the datacenter or the hub OpenShift cluster:
+
+|===
+| Name | Kind | Namespace | Description
+
+| multicloud-gitops-sgx-hub
+| Application
+| multicloud-gitops-sgx-hub
+| Hub GitOps management
+
+| Red Hat Advanced Cluster Management
+| Operator
+| open-cluster-management
+| Advance Cluster Management
+
+| Red Hat OpenShift GitOps
+| Operator
+| openshift-operators
+| OpenShift GitOps
+
+| Node Feature Discovery
+| Operator
+| openshift-nfd
+| Manages the detection and labeling of hardware features and configuration (for example {intel-sgx})
+
+| Intel Device Plugins
+| Operator
+| openshift-operators
+| Collection of plugins, `Intel Software Guard Extensions Device Plugin` is used in this pattern
+
+| Red Hat OpenShift Data Foundation
+| Operator
+| openshift-storage
+| Cloud Native storage solution
+|===
+
+[id="mcg-openshift-datacenter-hub-cluster-size"]
+== {sgx-mcg-pattern} with OpenShift clusters sizes
+
+The datacenter hub OpenShift cluster needs to be a bit bigger than the Factory/Edge clusters because this is where the developers will be running pipelines to build and deploy the {sgx-mcg-pattern} on the cluster. The above cluster sizing is close to a minimum size for a Datacenter HUB cluster. In the next few sections we take some snapshots of the cluster utilization while the {sgx-mcg-pattern} is running. Keep in mind that resources will have to be added as more developers are working building their applications.
+
+The recommended clusters sizes for datacenter hub and for managed datacenter are the same in this case:
+
+include::modules/intel-recommended-cluster-sizing-5th-gen-sgx.adoc[]
