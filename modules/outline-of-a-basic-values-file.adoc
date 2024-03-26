@@ -17,11 +17,11 @@ Increasingly, more value files are designed solely for overriding base chart val
 
 *Key sections of values files*:
 
-. *Global*: Global values refer to configuration settings shared across multiple charts within a deployment. These values are distributed among various charts to avoid redundancy and configuration setting repetition, promoting consistency.
+Global:: Global values refer to configuration settings shared across multiple charts within a deployment. These values are distributed among various charts to avoid redundancy and configuration setting repetition, promoting consistency.
 Each pattern includes a `values-global.yaml` file, which contains configurations that are automatically incorporated into the application specification processed by the GitOps operator.
 
 
-. *ClusterGroup*: The ClusterGroup holds a specific significance within validated patterns. It defines clusters that are anticipated to share nearly identical configurations, serving a common architectural purpose. A ClusterGroup may consist of one or many members. Conventionally, there is a main ClusterGroup defined in `main.clusterGroupName` in `values-global.yaml`, acting as the hub or starting point for each pattern. Additional ClusterGroups can be managed by the main ClusterGroup through tools like Red Hat Advanced Cluster Management (RHACM).
+ClusterGroup:: The ClusterGroup holds a specific significance within validated patterns. It defines clusters that are anticipated to share nearly identical configurations, serving a common architectural purpose. A ClusterGroup may consist of one or many members. Conventionally, there is a main ClusterGroup defined in `main.clusterGroupName` in `values-global.yaml`, acting as the hub or starting point for each pattern. Additional ClusterGroups can be managed by the main ClusterGroup through tools like Red Hat Advanced Cluster Management (RHACM).
 
 [NOTE]
 ====

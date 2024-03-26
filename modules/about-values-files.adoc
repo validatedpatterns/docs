@@ -4,7 +4,7 @@
 [id="about-values-files"]
 = About values files
 
-Values files are essential for creating a structured and flexible approach to customize settings in applications, services, or validated patterns. These are a YAML configuration document designed to set parameters and configurations for deploying validated patterns.
+Values files are essential for creating a structured and flexible approach to customize settings in applications, services, or validated patterns. These files are YAML configuration documents designed to set parameters and configurations for deploying validated patterns.
 They act as a central repository for customizations and are important in tailoring patterns to specific requirements, especially in Helm charts for Kubernetes deployments.
 
 *Key characteristics of values files*:
