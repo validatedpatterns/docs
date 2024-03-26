@@ -1,0 +1,14 @@
+---
+menu: learn
+title: Values Files
+weight: 50
+aliases: /values-files/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+
+include::modules/about-values-files.adoc[leveloffset=+1]
+include::modules/outline-of-a-basic-values-file.adoc[leveloffset=+1]
