@@ -1,0 +1,79 @@
+---
+title: Imperative actions
+weight: 40
+aliases: /multicloud-gitops-qat/mcg-qat-imperative-actions/
+---
+
+include::modules/comm-attributes.adoc[]
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+[id="mcg-using-kubernetes-cronjob-imperative-actions"]
+== Using kubernetes cronjobs to apply imperative actions
+
+There is currently no way within Argo CD to apply an imperative action against a cluster. However, you can declaratively apply changes to a cluster using kubernetes cronjob resources. Customers can use their Ansible playbooks to take action against a cluster if necessary.
+
+[WARNING]
+====
+The authors of the Ansible playbooks and roles must ensure that the playbooks are idempotent because they get applied through cronjobs which are set to run every 10 minutes.
+====
+
+Adding your playbooks to the pattern requires the following:
+
+. Move your Ansible configurations to the appropriate directory under Ansible in your forked repository.
+. Define your job as a list, for example:
+
+[source,yaml]
+----
+  imperative:
+    # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
+    # The default schedule is every 10 minutes: imperative.schedule
+    # Total timeout of all jobs is 1h: imperative.activeDeadlineSeconds
+    # imagePullPolicy is set to always: imperative.imagePullPolicy
+    # For additional overrides that apply to the jobs, please refer to the README located in
+    # the top level of this repository.
+    jobs:
+    - name: regional-ca
+      # Ansible playbook to be run
+      playbook: ansible/playbooks/on-hub-get-regional-ca.yml
+      # per playbook timeout in seconds
+      timeout: 234
+      # verbosity: "-v"
+----
+
+== Additional job customizations
+
+The pattern includes override parameters to provide further customization. Refer to the list below for the available overrides.
+
+[source,yaml]
+----
+  imperative:
+    jobs: []
+    # This image contains Ansible + kubernetes.core by default and is used to run the jobs
+    image: registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8:latest
+    namespace: "imperative"
+    # configmap name in the namespace that will contain all helm values
+    valuesConfigMap: "helm-values-configmap"
+    cronJobName: "imperative-cronjob"
+    jobName: "imperative-job"
+    imagePullPolicy: Always
+    # This is the maximum timeout of all the jobs (1h)
+    activeDeadlineSeconds: 3600
+    # By default we run this every 10minutes
+    schedule: "*/10 * * * *"
+    # Schedule used to trigger the vault unsealing (if explicitely enabled)
+    # Set to run every 9 minutes in order for load-secrets to succeed within
+    # a reasonable amount of time (it waits up to 15 mins)
+    insecureUnsealVaultInsideClusterSchedule: "*/9 * * * *"
+    # Increase Ansible verbosity with '-v' or '-vv..'
+    verbosity: ""
+    serviceAccountCreate: true
+    # service account to be used to run the cron pods
+    serviceAccountName: imperative-sa
+    clusterRoleName: imperative-cluster-role
+    clusterRoleYaml: ""
+    roleName: imperative-role
+    roleYaml: ""
+----

@@ -30,6 +30,7 @@
 :mcg-sgx-hello-world-pattern: Intel SGX protected application in Multicloud GitOps pattern
 :sgx-mcg-pattern: Intel SGX protected Vault for Multicloud GitOps pattern
 :amx-rhoai-mcg-pattern: Intel AMX accelerated Multicloud GitOps pattern with Openshift AI
+:qat-mcg-pattern: Intel QAT accelerated Multicloud GitOps pattern
 :mcg: multicloud GitOps
 :med-pattern: Medical Diagnosis pattern
 :amx-med-pattern: Intel AMX accelerated Medical Diagnosis pattern
@@ -43,6 +44,13 @@
 // Intel
 :intel-amx: Intel AMX
 :intel-qat: Intel QAT
+:intel-amx-full: Intel Advanced Matrix Extensions
+:intel-qat-full: Intel QuickAssist Technology
+:intel-4th-gen-xeon: 4th Generation Intel Xeon
+:intel-5th-gen-xeon: 5th Generation Intel Xeon
+:intel-4th-gen-xeon-processors: 4th Generation Intel Xeon Scalable Processors
+:intel-5th-gen-xeon-processors: 5th Generation Intel Xeon Scalable Processors
+:intel-4th-gen-xeon-amx: 4th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
 :intel-sgx: Intel SGX
 :intel-amx-full: Intel Advanced Matrix Extensions
 :intel-qat-full: Intel QuickAssist Technology
@@ -59,6 +67,8 @@
 //Gramine Shielded Containers
 :gramine: GSC
 :gramine-full: Gramine Shielded Containers
+:intel-4th-gen-xeon-qat: 4th Gen Intel Xeon Scalable processors with Intel QuickAssist (Intel QAT)
+:intel-5th-gen-xeon-qat: 5th Gen Intel Xeon Scalable processors with Intel QuickAssist (Intel QAT)
 //Operators
 :validated-patterns-op: Validated Patterns Operator
 :grafana-op: Grafana Operator
