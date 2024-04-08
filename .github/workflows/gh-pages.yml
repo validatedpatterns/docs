@@ -22,7 +22,7 @@ jobs:
       - run: gem install asciidoctor rouge
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: '0.122.0'
           extended: true
