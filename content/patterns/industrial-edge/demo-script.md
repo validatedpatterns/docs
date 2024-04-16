@@ -62,10 +62,6 @@ Follow the procedures [here](../application/#application-changes-using-devops)
 
 Follow the procedures [here](../application/#application-ai-model-changes-with-devops)
 
-### Demo: Turning event streaming between the edge and datacenter
-
-Follow the procedures [here](../application/#turning-on-event-streaming-between-the-edge-and-the-datacenter)
-
 ## Troubleshooting
 
 If you run into any problems, checkout the potential/Known issues list: http://validatedpatterns.io/industrial-edge/troubleshooting/
