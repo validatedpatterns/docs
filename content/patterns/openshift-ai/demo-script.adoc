@@ -1,0 +1,12 @@
+---
+title: Demo Script
+weight: 60
+aliases: /rhoai/demo/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: REFERENCE
+include::modules/comm-attributes.adoc[]
+
+include::modules/rhoai-demo.adoc[leveloffset=+1]

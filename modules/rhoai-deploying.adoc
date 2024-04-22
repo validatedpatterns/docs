@@ -1,0 +1,177 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="deploying-rhoai-pattern"]
+= Deploying the Red Hat OpenShift AI Pattern
+
+.Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *Services \-> Containers \-> Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../multicloud-gitops/mcg-cluster-sizing[sizing your cluster].
+* Optional: A second OpenShift cluster for multicloud demonstration.
+//Replaced git and podman prereqs with the tooling dependencies page
+* https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
+
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
+
+If you do not have a running Red Hat OpenShift cluster, you can start one on a
+public or private cloud by using https://console.redhat.com/openshift/create[Red Hat Hybrid Cloud Console].
+
+.Procedure
+
+. Fork the https://github.com/validatedpatterns-sandbox/openshift-ai[openshift-ai] repository on GitHub.
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+git clone git@github.com:your-username/openshift-ai.git
+----
+
+//. Create a local copy of the secret values file that can safely include credentials. Run the following commands:
+//+
+//[source,terminal]
+//----
+//cp values-secret.yaml.template ~/values-secret-travelops.yaml
+//----
+//+
+//[source,yaml]
+//----
+//version: "2.0"
+//# Ideally you NEVER COMMIT THESE VALUES TO GIT (although if all passwords are
+//# automatically generated inside the vault this should not really matter)
+//
+//secrets:
+//  - name: mysql-credentials
+//    vaultPrefixes:
+//    - global
+//    fields:
+//    - name: rootpasswd
+//      onMissingValue: generate
+//      vaultPolicy: validatedPatternDefaultPolicy
+//
+//# Uncomment the following if you want to enable HTPasswd oAuth 
+//#  - name: htpasswd
+//#    vaultPrefixes:
+//#    - global
+//#    fields:
+//#    - name: htpasswd
+//#      path: '/path/to/users.htpasswd'
+//----
+//+
+//[WARNING]
+//====
+//Do not commit this file. You do not want to push personal credentials to GitHub. If you do not want to customize the secrets, these steps are not needed. The framework generates a random password for the config-demo application.
+//====
+//
+. Customize the deployment for your cluster. Run the following command:
++
+[source,terminal]
+----
+git switch -c my-branch
+----
++
+[source,terminal]
+----
+vi values-hub.yaml
+----
++
+[source,terminal]
+----
+git add values-hub.yaml
+----
++
+[source,terminal]
+----
+git commit values-hub.yaml
+----
++
+[source,terminal]
+----
+git push origin my-branch
+----
+
+. Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator].
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the cluster by using the pattern.sh file
+
+To deploy the cluster by using the `pattern.sh` file, complete the following steps:
+
+. Login to your cluster by running the following command:
++
+[source,terminal]
+----
+ oc login
+----
++
+Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
++
+[source,terminal]
+----
+ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster. Run the following command:
++
+[source,terminal]
+----
+ ./pattern.sh make install
+----
+
+[id="verify-rhoai-pattern-install"]
+== Verify Red Hat OpenShift AI Pattern installation
+
+. Verify that the Operators have been installed.
+ .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
+ .. Set your project to `All Projects` and verify the operators are isntalled and have a status of `Succeeded`.
+. Verify that all applications are synchronized. Under the project `openshift-ai-hub` click the URL for the `hub` gitops `server`. 
++
+image::travelops/ossm-sync-success.png[ArgoCD Applications,link="/images/travelops/ossm-sync-success.png"]
+
++
+As part of this pattern, HashiCorp Vault has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
+
+
+[id="verify-trvlops-dashboards"]
+== Verify installation by checking the TravelOps Dashboards
+
+. Access the Kiali and Travel Control dashboards
+
++
+[source, terminal]
+----
+KIALI=https://$(oc get route -n istio-system kiali -o jsonpath='{.spec.host}')
+echo ${KIALI}
+
+CONTROL=http://$(oc get route -n istio-system istio-ingressgateway -o jsonpath='{.spec.host}')
+echo ${CONTROL}
+----
+
++
+When we see the &#x1F512; icon next to our applications and in the top right hand corner of the dashboard it confirms that mTLS is enabled and active in the mesh.
+
+* The "&#x1F512;" is present next to the logged in user in top right corner of the window.
+* 7 applications in the `travel-agency` tile with the "&#x1F512;" next to `Istio config`
+* 1 application in the `travel-control` tile with the "&#x1F512;" next to `Istio config`
+* 3 applications in the `travel-portal` tile with the "&#x1F512;" next to `Istio config` 
+
+. Review your Kiali dashboard 
++
+image:travelops/ossm-kiali-db-arrows.png[Kiali Dashboard,link="/images/travelops/ossm-kiali-db-arrows.png"]
+
+[id="review-travelops-agency-svc"]
+== Review Travel Agency Application Graph
+
+In the Kiali dashboard we can see how all of the various components interact with each other within the service mesh. Just to get a glimpse of what we are able to see let's take a look at the applications and services in the `travel-agency` namespace.
+
+In the left hand menu:
+
+* click Graph
+* in the `Namespace` dropdown, select `travel-agency`
+* exit the menu
+
+You should see all of the deployments and services that make up the travel-agency application.
+
+image:travelops/travel-agency-svc-kiali.png[Travel Agency,link="/images/travelops/travel-agency-svc-kiali.png"] 
