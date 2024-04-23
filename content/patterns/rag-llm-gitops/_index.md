@@ -84,7 +84,7 @@ cp values-secret.yaml.template ~/values-secret-rag-llm-gitops.yaml
   
 ![Pods](/images/rag-llm-gitops/rag-llm.png)
 
-Note: If the hf-text-generation-server is not running, make sure you have followed the steps to configure a node with GPU from the [instructions](./GPU_provisioning.md) provided above.
+Note: If the hf-text-generation-server is not running, make sure you have followed the steps to configure a node with GPU from the [instructions](/rag-llm-gitops/gpuprovisioning) provided above.
 
 ### 2: Launch the application
 

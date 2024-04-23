@@ -1,3 +1,8 @@
+---
+title: GPU provisioning
+weight: 20
+aliases: /rag-llm-gitops/gpuprovisioning/
+---
 # GPU provisioning
 
 Use the instructions to add nodes with GPU in OpenShift cluster running in AWS cloud. Nodes with GPU will be tainted to allow only pods that required GPU to be scheduled to these nodes
