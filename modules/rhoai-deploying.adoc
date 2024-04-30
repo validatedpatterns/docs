@@ -128,50 +128,28 @@ Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
  .. Set your project to `All Projects` and verify the operators are isntalled and have a status of `Succeeded`.
 . Verify that all applications are synchronized. Under the project `openshift-ai-hub` click the URL for the `hub` gitops `server`. 
 +
-image::travelops/ossm-sync-success.png[ArgoCD Applications,link="/images/travelops/ossm-sync-success.png"]
+image::rhoai/rhods-sync-success.png[ArgoCD Applications,link="/images/rhoai/rhods-sync-success.png"]
 
 +
 As part of this pattern, HashiCorp Vault has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
 
 
-[id="verify-trvlops-dashboards"]
-== Verify installation by checking the TravelOps Dashboards
+[id="verify-rhoai-dashboards"]
+== Verify installation by checking the OpenShift AI Dashboard
 
-. Access the Kiali and Travel Control dashboards
+. Access the OpenShift AI dashboard
 
 +
 [source, terminal]
 ----
-KIALI=https://$(oc get route -n istio-system kiali -o jsonpath='{.spec.host}')
-echo ${KIALI}
-
-CONTROL=http://$(oc get route -n istio-system istio-ingressgateway -o jsonpath='{.spec.host}')
-echo ${CONTROL}
+RHODS=https://$(oc get route -n redhat-ods-applications -o jsonpath='{.spec.host}')
+echo ${RHODS}
 ----
 
-+
-When we see the &#x1F512; icon next to our applications and in the top right hand corner of the dashboard it confirms that mTLS is enabled and active in the mesh.
+You can also get to the dashboard from the OpenShift Console by selecting the application shortcut icon and then selecting the link for Red Hat OpenShift Ai
 
-* The "&#x1F512;" is present next to the logged in user in top right corner of the window.
-* 7 applications in the `travel-agency` tile with the "&#x1F512;" next to `Istio config`
-* 1 application in the `travel-control` tile with the "&#x1F512;" next to `Istio config`
-* 3 applications in the `travel-portal` tile with the "&#x1F512;" next to `Istio config` 
+image:rhoai/rhods-application_menu.png[Application ShortCut,link="/images/rhoai/rhods-application_menu.png"]
 
-. Review your Kiali dashboard 
-+
-image:travelops/ossm-kiali-db-arrows.png[Kiali Dashboard,link="/images/travelops/ossm-kiali-db-arrows.png"]
+Log in to the Dashboard using your OpenShift credentials. You will find an environment that is ready for further configuration. This pattern provides the fundamental platform pieces to support MLOps workflows. The installation of OpenShift Pipelines enables the immediate use of pipelines if that is the desired approach for deployment.
 
-[id="review-travelops-agency-svc"]
-== Review Travel Agency Application Graph
-
-In the Kiali dashboard we can see how all of the various components interact with each other within the service mesh. Just to get a glimpse of what we are able to see let's take a look at the applications and services in the `travel-agency` namespace.
-
-In the left hand menu:
-
-* click Graph
-* in the `Namespace` dropdown, select `travel-agency`
-* exit the menu
-
-You should see all of the deployments and services that make up the travel-agency application.
-
-image:travelops/travel-agency-svc-kiali.png[Travel Agency,link="/images/travelops/travel-agency-svc-kiali.png"] 
+image:rhoai/rhods-ai_dashboard.png[OpenShift AI Dashboard,link="/images/rhoai/rhods-ai_dashboard.png"]
