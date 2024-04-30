@@ -11,8 +11,8 @@ include::modules/comm-attributes.adoc[]
 
 include::modules/rhoai-deploying.adoc[leveloffset=1]
 
-[id="next-steps_getting-started"]
-== Next Steps
+//[id="next-steps_getting-started"]
+//== Next Steps
 
 // To run through the demo, refer to link:..//demo-script[Monitor the Mesh]
 //
