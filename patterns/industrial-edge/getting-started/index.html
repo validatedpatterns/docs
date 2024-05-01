@@ -986,7 +986,31 @@ To verify, in the *OpenShift Container Platform web console, navigate to Operato
 Next steps Deploying the managed cluster applications After the management hub is set up and works correctly, attach one or more managed clusters to the architecture (see diagrams below).
 For instructions on deploying the edge, refer to Managed Cluster Sites.
 Contribute to this pattern: Help &amp; Feedback Report Bugs
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/getting-started/",breadcrumb:"/patterns/multicloud-gitops-portworx/getting-started/"},"https://validatedpatterns.io/patterns/retail/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Retail Pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also sizing your cluster.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/getting-started/",breadcrumb:"/patterns/multicloud-gitops-portworx/getting-started/"},"https://validatedpatterns.io/patterns/openshift-ai/getting-started/":{title:"Getting Started",tags:[],content:` Deploying the Red Hat OpenShift AI Pattern Prerequisites An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select Services -&gt; Containers -&gt; Create cluster.
+The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
+Optional: A second OpenShift cluster for multicloud demonstration.
+Install the tooling dependencies.
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
+If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by using Red Hat Hybrid Cloud Console.
+Procedure Fork the openshift-ai repository on GitHub.
+Clone the forked copy of this repository.
+git clone git@github.com:your-username/openshift-ai.git Customize the deployment for your cluster. Run the following command:
+git switch -c my-branch vi values-hub.yaml git add values-hub.yaml git commit values-hub.yaml git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator.
+Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
+Login to your cluster by running the following command:
+oc login Optional: Set the KUBECONFIG variable for the kubeconfig file path:
+export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
+./pattern.sh make install Verify Red Hat OpenShift AI Pattern installation Verify that the Operators have been installed.
+To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
+Set your project to All Projects and verify the operators are isntalled and have a status of Succeeded.
+Verify that all applications are synchronized. Under the project openshift-ai-hub click the URL for the hub gitops server.
+As part of this pattern, HashiCorp Vault has been installed. Refer to the section on Vault.
+Verify installation by checking the OpenShift AI Dashboard Access the OpenShift AI dashboard
+RHODS=https://$(oc get route -n redhat-ods-applications -o jsonpath=&#39;{.spec.host}&#39;) echo \${RHODS} You can also get to the dashboard from the OpenShift Console by selecting the application shortcut icon and then selecting the link for Red Hat OpenShift Ai
+Log in to the Dashboard using your OpenShift credentials. You will find an environment that is ready for further configuration. This pattern provides the fundamental platform pieces to support MLOps workflows. The installation of OpenShift Pipelines enables the immediate use of pipelines if that is the desired approach for deployment.
+`,url:"https://validatedpatterns.io/patterns/openshift-ai/getting-started/",breadcrumb:"/patterns/openshift-ai/getting-started/"},"https://validatedpatterns.io/patterns/retail/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Retail Pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also sizing your cluster.
 (Optional) A second OpenShift cluster for a second store environment, &ldquo;raleigh&rdquo;.
 A GitHub account
 (Optional) A quay account that can update images; this is if you want to use the pipelines to customize the applications
@@ -2993,7 +3017,48 @@ Who is behind this? Today, a team of Red Hat engineers including Andrew Beekhof 
 Excited or intrigued by what you see here? We’d love to hear your thoughts and ideas! Try the patterns contained here and see below for links to our repositories and issue trackers.
 How can I get involved? Try out what we’ve done and submit issues to our issue trackers.
 We will review pull requests to our pattern repositories.
-`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/":{title:"Intel AMX accelerated Multicloud GitOps with Openshift AI",tags:[],content:` About the Intel AMX accelerated Multicloud GitOps pattern with Openshift AI Use case Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
+`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/openshift-ai/":{title:"OpenShift AI",tags:[],content:` About the Red Hat OpenShift AI pattern Use case Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
+Enable cross-cluster governance and application lifecycle management.
+Securely manage secrets across the deployment.
+Based on the requirements of a specific implementation, certain details might differ. However, all validated patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
+Background The {rhoai-pattern} deployed using OpenShift GitOps and is comprised of Red Hat OpenShift AI and OpenShift Pipelines. This pattern deploys the minimum capabilities necessary for consumers to quickly start implementing their MLOps or AI workloads in an automated way.
+Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds, private or public. This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code will be checked by the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
+About the solution This architecture covers a single cluster for all DevOps and GitOps functionality. However, one could extend this architecture to meet hybrid or multicloud demand using a GitOps approach
+Benefits of Hybrid Multicloud management with GitOps:
+Unify management across cloud environments.
+Dynamic infrastructure security.
+Infrastructural continuous delivery best practices.
+In the following figure, logically, this solution can be viewed as being composed of an automation component, unified management including secrets management, and the clusters under management, all running on top of a user-chosen mixture of on-premise data centers and public clouds.
+Figure 1. Logical diagram of hybrid multi-cloud management with GitOps About the technology The following technologies are used in this solution:
+Red Hat OpenShift Platform An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+Red Hat OpenShift GitOps A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+Red Hat Advanced Cluster Management for Kubernetes Controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale.
+Red Hat OpenShift AI A flexible, scalable MLOps platform with tools to build, deploy, and manage AI-enabled applications. Built using open source technologies, it provides trusted, operationally consistent capabilities for teams to experiment serve models, and deliver innovative apps.
+Red Hat OpenShift Pipelines Red Hat OpenShift Pipelines is a cloud-native, continuous integratino and continuous delivery (CI/CD) solution based on Kubernetes resources. It uses Tekton building blocks to automate deployments across multiple platforms by abstracting away the underlying implementation details. Tekton introduces a number of standard custom resource definitions (CRDs) for defining CI/CD pipelines that are portable across Kubernetes distributions.
+Red Hat Ansible Automation Platform Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+Hashicorp Vault Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+This solution also uses a variety of observability tools including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
+Overview of the architectures The following figure provides a high level architectural overview of the OpenShift AI pattern.
+Figure 2. Overview schematic diagram of the complete solution Subsequent schematic diagrams provide details on:
+Hybrid multi-cloud GitOps
+Dynamic security management
+Hybrid Multicloud GitOps The following figure provides a schematic diagram showing remaining activities associated with setting up the management hub and clusters using Red Hat Advanced Cluster Management.
+Figure 3. Schematic diagram of hybrid multi-cloud management with GitOps Manifest and configuration are set as code template in the form of a Kustomization YAML file. The file describes the desired end state of the managed cluster. When complete, the Kustomization YAML file is pushed into the source control management repository with a version assigned to each update.
+OpenShift GitOps monitors the repository and detects changes in the repository.
+OpenShift GitOps creates and updates the manifest by creating Kubernetes objects on top of Red Hat Advanced Cluster Management.
+Red Hat Advanced Cluster Management provisions, updates, or deletes managed clusters and configuration according to the manifest. In the manifest, you can configure what cloud provider the cluster will be on, the name of the cluster, infrastructure node details and worker node. Governance policy can also be applied as well as provision an agent in the cluster as the bridge between the control center and the managed cluster.
+OpenShift GitOps continuously monitors the code repository and the status of the clusters reported back to Red Hat Advanced Cluster Management. Any configuration drift or in case of any failure, OpenShift GitOps will automatically try to remediate by applying the manifest or by displaying alerts for manual intervention.
+Dynamic security management The following figure provides a schematic diagram showing how secrets are handled in this solution.
+Figure 4. Schematic showing the setup and use of external secrets management During setup, the token to securely access HashiCorp Vault is stored in Ansible Vault. It is encrypted to protect sensitive content.
+Red Hat Advanced Cluster Management for Kubernetes acquires the token from Ansible Vault during install and distributes it among the clusters. As a result, you have centralized control over the managed clusters through RHACM.
+To allow the cluster access to the external vault, you must set up the external secret management with Helm in this study. OpenShift Gitops is used to deploy the external secret object to a managed cluster.
+External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
+Secrets are created in each namespace, where applications can use them.
+Next steps Deploy the Pattern using Helm.
+`,url:"https://validatedpatterns.io/patterns/openshift-ai/",breadcrumb:"/patterns/openshift-ai/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric solutions while maintaining a level of Continuous Integration (CI) over your application.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/":{title:"Intel AMX accelerated Multicloud GitOps with Openshift AI",tags:[],content:` About the Intel AMX accelerated Multicloud GitOps pattern with Openshift AI Use case Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
 Enable cross-cluster governance and application lifecycle management.
 Accelerate AI operations and improve computational performance by using Intel Advanced Matrix Extensions together with Openshift AI operator.
 Securely manage secrets across the deployment.
@@ -3022,10 +3087,7 @@ BERT-Large model is used as an example of AI workload using Intel AMX in the pat
 As a side note, BERT_Large is a wide known model used by various enterprise Natural Language Processing workloads. Intel has demonstrated, that 5th Generation Intel Xeon Scalable Processors perform up to 1.49 times better in NLP flows on Red Hat OpenShift vs. prior generation of processors- read more: Level Up Your NLP applications on Red Hat OpenShift and 5th Gen
 Next steps Deploy the management hub using Helm.
 Add a managed cluster to deploy the managed cluster piece using ACM.
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/",breadcrumb:"/patterns/multicloud-gitops-amx-rhoai/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
-Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric solutions while maintaining a level of Continuous Integration (CI) over your application.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/":{title:"Intel SGX protected application in Multicloud GitOps",tags:[],content:` About the Intel SGX protected application in Multicloud GitOps pattern Use case Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/",breadcrumb:"/patterns/multicloud-gitops-amx-rhoai/"},"https://validatedpatterns.io/patterns/multicloud-gitops-sgx-hello-world/":{title:"Intel SGX protected application in Multicloud GitOps",tags:[],content:` About the Intel SGX protected application in Multicloud GitOps pattern Use case Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
 Enable cross-cluster governance and application lifecycle management.
 Securely manage secrets across the deployment.
 Effectively protect data in use with Intel Software Guard Extensions.
