@@ -1,0 +1,19 @@
+---
+title: Getting Started
+weight: 10
+aliases: /rhoai/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/rhoai-deploying.adoc[leveloffset=1]
+
+//[id="next-steps_getting-started"]
+//== Next Steps
+
+// To run through the demo, refer to link:..//demo-script[Monitor the Mesh]
+//
+//Like what you see, but can't quite put your finger on how you could use a Service Mesh? Check out link:../ideas-for-customization[Ways to customize the Mesh] for some ideas!

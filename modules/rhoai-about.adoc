@@ -1,0 +1,68 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-rhoai-pattern"]
+= About the Red Hat OpenShift AI pattern
+
+Use case::
+
+* Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
+* Enable cross-cluster governance and application lifecycle management.
+* Securely manage secrets across the deployment.
++
+[NOTE]
+====
+Based on the requirements of a specific implementation, certain details might differ. However, all validated patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
+====
+
+Background::
+
+The {rhoai-pattern} deployed using OpenShift GitOps and is comprised of Red Hat OpenShift AI and OpenShift Pipelines. This pattern deploys the minimum capabilities necessary for consumers to quickly start implementing their MLOps or AI workloads in an automated way.
+
+Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds, private or public.
+This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code will be checked by the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
+
+[id="about-solution"]
+== About the solution
+
+This architecture covers a single cluster for all DevOps and GitOps functionality. However, one could extend this architecture to meet hybrid or multicloud demand using a GitOps approach
+
+Benefits of Hybrid Multicloud management with GitOps:
+
+* Unify management across cloud environments.
+* Dynamic infrastructure security.
+* Infrastructural continuous delivery best practices.
+
+In the following figure, logically, this solution can be viewed as being composed of an automation component, unified management including secrets management, and the clusters under management, all running on top of a user-chosen mixture of on-premise data centers and public clouds.
+
+.Logical diagram of hybrid multi-cloud management with GitOps
+image::multicloud-gitops/logical-diagram.png[Logical Architecture]
+
+[id="about-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Platform]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift GitOps]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+
+https://www.redhat.com/en/technologies/management/advanced-cluster-management[Red Hat Advanced Cluster Management for Kubernetes]::
+Controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai[Red Hat OpenShift AI]::
+A flexible, scalable MLOps platform with tools to build, deploy, and manage AI-enabled applications. Built using open source technologies, it provides trusted, operationally consistent capabilities for teams to experiment serve models, and deliver innovative apps. 
+
+https://access.redhat.com/documentation/en-us/red_hat_openshift_pipelines/1.14[Red Hat OpenShift Pipelines]::
+Red Hat OpenShift Pipelines is a cloud-native, continuous integratino and continuous delivery (CI/CD) solution based on Kubernetes resources. It uses Tekton building blocks to automate deployments across multiple platforms by abstracting away the underlying implementation details. Tekton introduces a number of standard custom resource definitions (CRDs) for defining CI/CD pipelines that are portable across Kubernetes distributions.
+
+https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform]::
+Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+
+Hashicorp Vault::
+Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+
+This solution also uses a variety of _observability tools_ including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.

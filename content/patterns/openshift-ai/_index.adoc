@@ -1,0 +1,32 @@
+---
+title: OpenShift AI
+date: 2024-04-22
+tier: sandbox
+summary: This pattern is a starting point for using Red Hat OpenShift AI.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift AI
+- Red Hat Pipelines
+industries:
+- General
+aliases: /rhoai/
+links:
+  install: getting-started
+  help: https://groups.google.com/g/validatedpatterns
+  bugs: https://github.com/validatedpatterns-sandbox/travelops/issues
+ci: rhoai
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/rhoai-about.adoc[leveloffset=+1]
+
+include::modules/rhoai-architecture.adoc[leveloffset=+1]
+
+[id="next-steps_rhoai-index"]
+== Next steps
+
+* link:getting-started[Deploy the Pattern] using Helm.
+
