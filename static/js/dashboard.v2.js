@@ -2,10 +2,17 @@ class Badge {
 
   constructor (base, key, date) {
     this.base = base
+    //this.base = '/ci/vp-results'
+    //this.base = 'https://storage.googleapis.com/vp-results'
     this.key = key
     const fields = key.split('-')
     this.pattern = fields[0]
     this.platform = fields[1]
+      if (fields[fields.length-2] == 'operator') {
+          this.operator = fields[fields.length-5]
+    } else {
+        this.operator = 'N/A'
+    }
     if (fields[2] != 'ci.json') {
 	    this.version = fields[2]
     } else {
@@ -56,6 +63,9 @@ function filterBadges (badges, field, value) {
   }
   if (field === 'date') {
     return badges.filter(badge => badge.date === value)
+  }
+  if (field === 'operator') {
+    return badges.filter(badge => badge.operator === value)
   }
   return badges
 }
@@ -164,6 +174,8 @@ function getUniqueValues (badges, field) {
 	    results.push(b.pattern)
     } else if (field == 'version' && b.version != '' && !results.includes(b.version)) {
 	    results.push(b.version)
+    } else if (field == 'operator' && b.operator != '' && !results.includes(b.operator)) {
+	    results.push(b.operator)
     }
   })
 
@@ -266,19 +278,19 @@ function renderSingleBadge (key, field, linkType, badge_url) {
     var json_obj = JSON.parse(this.responseText)
     var branchLabel = json_obj.patternBranch
     var color = json_obj.color
-    var nightlyLabel = ""
 
     var envLabel = getLabel(field, json_obj)
     if (badge_url.endsWith("stable-badge.json") ) {
-	    var badgeClass = "ci-label-environment-stable";
-	  } else if (badge_url.endsWith("prerelease-badge.json") ) {
-	    var badgeClass = "ci-label-environment-prerelease";
+	var badgeClass = "ci-label-environment-stable";
+    } else if (badge_url.endsWith("prerelease-badge.json") ) {
+	var badgeClass = "ci-label-environment-prerelease";
     } else if (badge_url.endsWith("operator-badge.json") ) {
-	    var badgeClass = "ci-label-environment-prerelease";
+	var badgeClass = "ci-label-environment-prerelease";
+	branchLabel = json_obj.triggerSource +" "+json_obj.triggerVersion;
     } else if (badge_url.endsWith("nightly-badge.json") ) {
-	    var badgeClass = "ci-label-environment-prerelease";
-        nightlyLabel = "(nightly build)"
-  	}
+	var badgeClass = "ci-label-environment-prerelease";
+	branchLabel = "nightly ("+ json_obj.patternBranch+")";
+    }
 
     if ( linkType == "internal") {
       envLink = json_obj.jenkinsURL
@@ -290,7 +302,7 @@ function renderSingleBadge (key, field, linkType, badge_url) {
 
     badgeText = '<span class="ci-label">'
     if (envLink != null) {
-        badgeText += '<a href="' + envLink + '"><span class="' + badgeClass + '"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + ' ' + nightlyLabel + '</span></a>'
+        badgeText += '<a href="' + envLink + '"><span class="' + badgeClass + '"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + '</span></a>'
     } else {
         badgeText += '<span class="' + badgeClass + '"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + '</span>'
     }
@@ -415,6 +427,11 @@ function processBadges (badges, options) {
     htmlText += createFilteredHorizontalTable(badges, 'pattern', null, true, links)
     htmlText += createFilteredHorizontalTable(badges, 'platform', null, true, links)
     htmlText += createFilteredHorizontalTable(badges, 'version', null, true, links)
+
+    if ( options.get('sets').includes('all') || options.get('sets').includes('early'))  {
+	htmlText += createFilteredHorizontalTable(badges, 'operator', null, true, links)
+    }
+      
   }
   document.getElementById(options.get('target')).innerHTML = htmlText
 }
@@ -437,6 +454,7 @@ function getBucketOptions (input) {
   if (bucket != null) {
     buckets.push(bucket)
   } else {
+    //buckets.push('/ci/vp-results.xml')
     buckets.push('https://storage.googleapis.com/vp-results')
     buckets.push('https://vp-ntnx-results.s3.amazonaws.com')
   }
@@ -450,7 +468,7 @@ function getBucketOptions (input) {
 	    options.set(fields[i], value)
     }
   }
-  const sections = [ 'date', 'version', 'platform', 'pattern' ]
+  const sections = [ 'date', 'version', 'platform', 'pattern', 'operator' ]
 
   filter_field = options.get('filter_field')
 
