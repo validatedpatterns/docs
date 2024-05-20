@@ -17,7 +17,7 @@ we wanted to explore and improve as part of the Validated Patterns initiative
 was the secrets handling in GitOps. So we worked out a scheme that stored
 secret material in a dedicated secrets store, using the External Secrets Operator
 to project that secret material into the applications using ESO's powerful and
-convenient abstraction and templating features. At that time, HahsiCorp Vault
+convenient abstraction and templating features. At that time, HashiCorp Vault
 was well supported and popular in the community, as was using ESO to retrieve
 secrets from it. All of the major hyperscaler keystores are supported (AWS,
 Azure, GCP), but multi- or hybrid- cloud solutions that can be "self-contained"

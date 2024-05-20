@@ -67,7 +67,7 @@ Ensure that you commit the changes and push them to GitHub so that GitOps can fe
 [id="deploying-a-managed-cluster-using-rhacm"]
 == Deploying a managed cluster by using Red Hat Advanced Cluster Management
 
-.Prerequistes
+.Prerequisites
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
@@ -91,7 +91,7 @@ Now that RHACM is no longer deploying the managed cluster applications everywher
 [id="deploying-managed-cluster-using-cm-cli-tool"]
 == Optional: Deploying a managed cluster by using `cm-cli` tool
 
-.Prerequistes
+.Prerequisites
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
@@ -130,7 +130,7 @@ cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-path_to
 [id="deploying-managed-cluster-using-clusteradm-tool"]
 == Optional: Deploying a managed cluster by using the `clusteradm` tool
 
-.Prerequistes
+.Prerequisites
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].

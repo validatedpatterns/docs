@@ -337,7 +337,7 @@ git clone https://github.com/red-hat-data-services/jumpstart-library.git
 Xray images are stored in the following path in the repo:
 https://github.com/red-hat-data-services/jumpstart-library/tree/main/demo1-xray-pipeline/base_elements/containers/image-init/base_images
 
-Set environment variables. Create and configure the backet:
+Set environment variables. Create and configure the bucket:
 
 [source,terminal]
 ----

@@ -12,7 +12,7 @@ include::modules/comm-attributes.adoc[]
 [id="demo-intro"]
 
 == Introduction
-The medical diagnosis pattern integrates multiple Red Hat and Open Source technologies together to create an AI/ML workflow that is able to identify signs of pnuemonia in x-ray images. Within this demo a dashboard is automatically created that provides the CPU and Memory metrics for the pod running the risk assessment application. The dashboard also provides visual representation of the AI/ML workflow from the images being generated at the remote medical facitility to running through the image anonymizer, it also includes the image being scanned along with statistics from the workflow - indicating the probability in which a patient may or may not have pnuemonia. 
+The medical diagnosis pattern integrates multiple Red Hat and Open Source technologies together to create an AI/ML workflow that is able to identify signs of pneumonia in x-ray images. Within this demo a dashboard is automatically created that provides the CPU and Memory metrics for the pod running the risk assessment application. The dashboard also provides visual representation of the AI/ML workflow from the images being generated at the remote medical facility to running through the image anonymizer, it also includes the image being scanned along with statistics from the workflow - indicating the probability in which a patient may or may not have pneumonia. 
 
 image:medical-edge/aiml_pipeline.png[link="/medical-edge/aiml_pipeline.png"]
 
@@ -37,7 +37,7 @@ In this demo you will complete the following:
 
 == Getting Started
 
-* Follow the link:../getting-started[Getting Started Guide] to ensure that you have met all of the prequisites
+* Follow the link:../getting-started[Getting Started Guide] to ensure that you have met all of the pre-requisites
 * Review link:../getting-started/#preparing-for-deployment[Preparing for Deployment] for updating the pattern with your cluster values
 
 [NOTE]
@@ -57,7 +57,7 @@ Now that we have deployed the pattern onto our cluster, we can begin to discover
 
 Login to your cluster's console with the `kubeadmin` user
 
-Let's check out what operators were installed - In the accordian menu on the left:
+Let's check out what operators were installed - In the accordion menu on the left:
 
 * click Operators
 * click Installed Operators
@@ -78,7 +78,7 @@ If you started with a new cluster then there were no layered products or operato
 
 === Developer View - Review Changes to cluster
 
-Let’s switch to the developer context by click on `Administrator` in the top left corner of the accordian menu then click `Developer`
+Let’s switch to the developer context by click on `Administrator` in the top left corner of the accordion menu then click `Developer`
 
 * Change projects to `xraylab-1`
 * Click on `Topology`

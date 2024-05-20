@@ -108,7 +108,7 @@ The basic pattern has been extended with two components: Openshift AI and OpenVI
 
 * OpenVINO Toolkit Operator manages OpenVINO components within Openshift environment. First one, OpenVINO™ Model Server (OVMS) is a scalable, high-performance solution for serving machine learning models optimized for Intel® architectures. The other component, that was used in the proposed pattern is Notebook resource. This element integrates Jupyter from OpenShift AI with a container image that includes developer tools from the OpenVINO toolkit. It also enables selecting a defined image OpenVINO™ Toolkit from the Jupyter Spawner choice list.
 
-BERT-Large model is used as an example of AI workload using {intel-amx} in the pattern. The BERT-Large inference is running in the Jupyther Notebook that uses OpenVINO optimizations.
+BERT-Large model is used as an example of AI workload using {intel-amx} in the pattern. The BERT-Large inference is running in the Jupyter Notebook that uses OpenVINO optimizations.
 
 As a side note, BERT_Large is a wide known model used by various enterprise Natural Language Processing workloads. Intel has demonstrated, that *{intel-5th-gen-xeon-processors}* perform up to *1.49* times better in NLP flows on Red Hat OpenShift vs. prior generation of processors- read more:
 https://community.intel.com/t5/Blogs/Tech-Innovation/Data-Center/Level-Up-Your-NLP-applications-on-Red-Hat-OpenShift-and-5th-Gen/post/1572320[Level Up Your NLP applications on Red Hat OpenShift and 5th Gen]

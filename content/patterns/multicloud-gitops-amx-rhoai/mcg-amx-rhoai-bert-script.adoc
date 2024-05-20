@@ -20,9 +20,9 @@ Using {intel-5th-gen-xeon-processors} the kernel detects Intel® AMX at run-time
 
 Before proceeding with this demo steps, please make sure you have your pattern deployed with link:../mcg-amx-rhoai-getting-started[Getting started].
 
-. Verify if the *openvino-notebooks-v2022.3-1* build is completed under *Builds* > *Builds*. Build might take some time and before it is finished it won't be accesible from Openshift AI console.
+. Verify if the *openvino-notebooks-v2022.3-1* build is completed under *Builds* > *Builds*. Build might take some time and before it is finished it won't be accessible from Openshift AI console.
 
-. Open Openhsift AI dashboard and go to *Applications* > *Enabled* window.
+. Open OpenShift AI dashboard and go to *Applications* > *Enabled* window.
 
 . Open Jupyter by clicking *Launch application*.
 

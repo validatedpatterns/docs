@@ -287,7 +287,7 @@ oc -n imperative get secrets vaultkeys -ojsonpath='{.data.vault_data_json}' | ba
 
 . After login go to `secret` catalog and clik *Create secret* and fill all the fields manually (Figure 4):
 
-.. Put `global/config-demo` value in the *Path for this secret* field (the value cames from _values-secret-multicloud-gitops.yaml_ file).
+.. Put `global/config-demo` value in the *Path for this secret* field (the value comes from _values-secret-multicloud-gitops.yaml_ file).
 
 .. Add one *Secret data* key-value pair. Put `secret` as a key (left field). Click *Add* button to confirm.
 

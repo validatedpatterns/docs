@@ -29,7 +29,7 @@ In this demo you will complete the following:
 == Getting Started
 
 * Make sure you have met all the link:/learn/quickstart/#installation_prerequisitesrequirements[requirements]
-* Follow the link:../mcg-getting-started[Getting Started Guide] to ensure that you have met all of the prequisites 
+* Follow the link:../mcg-getting-started[Getting Started Guide] to ensure that you have met all of the prerequisites 
 
 [NOTE]
 ====
