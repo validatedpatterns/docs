@@ -125,7 +125,7 @@ cluster that will be running the demo can be discovered, so rather than requirin
 mechanism that extracted that information and stored it as a Helm variable. Meanwhile, the components of industrial-edge
 that used this information had very opinionated kustomize-based deployment mechanisms and workflows to update them.
 We did not want to change this mechanism at the time, so it was better for us to work out how to apply Helm templating
-on top of a set of of manifests that kustmomize had already rendered. The CMP 1.0 framework was suitable for this, and
+on top of a set of of manifests that kustomize had already rendered. The CMP 1.0 framework was suitable for this, and
 fairly straightforward to use, so we did. However, we did not, at that time, put any thought into parameterizing the
 use of config management plugins; making too radical a change to how the repo server worked would have difficult, and
 would have required injecting a new (and unsupported) image into a product; not something to be undertaken lightly.
@@ -137,7 +137,7 @@ Of course, there is some common wisdom about making assumptions in situations li
 revisit the question of config management plugins in the framework. First, one of our prospective users clearly had an
 architectural need of the framework that was best met using config management plugins; and upstream, Argo CD had come up
 with an entirely new mechanism for implementing CMPs using sidecars. This took the question of rebuilding or
-substituting the repo-server image off the table; but required some changes in the framework to accomodate the new
+substituting the repo-server image off the table; but required some changes in the framework to accommodate the new
 mechanism. Secondly, we learned that the existing plugin framework had been deprecated and was at risk of being removed. It was actually removed upstream in Argo CD 2.9.
 
 Now that the framework supports user-specified sidecar plugins, we would love to hear your feedback. Does our adoption

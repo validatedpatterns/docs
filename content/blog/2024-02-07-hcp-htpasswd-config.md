@@ -14,7 +14,7 @@ blog_tags:
 
 In this blog, we're going to configure our hosted cluster to use `htpasswd` as its authentication provider.
 
-There are several reasons that we would want to do this, but usually it comes down to understanding that the kubeadmin/root users aren't the right way to do things. HTPasswd is a simple but effective way to centrally manage users and provide access to cluster resources when bound to the proper RBAC. In a traditional OpenShift deployment the configuration of the htpasswd oauth is well documented, but with hosted control planes we have to dig a little bit for the answer. This blog walks through the configuration of the oauth provider, and also provids ways that you can verify the configuration works as intended. 
+There are several reasons that we would want to do this, but usually it comes down to understanding that the kubeadmin/root users aren't the right way to do things. HTPasswd is a simple but effective way to centrally manage users and provide access to cluster resources when bound to the proper RBAC. In a traditional OpenShift deployment the configuration of the htpasswd oauth is well documented, but with hosted control planes we have to dig a little bit for the answer. This blog walks through the configuration of the oauth provider, and also provides ways that you can verify the configuration works as intended. 
 
 ### Assumptions
 > The procedures in this blog have been tested against OpenShift `4.13` and `4.14` hostedclusters.
@@ -94,7 +94,7 @@ oauth-openshift-54bc55789b-jtf5m                      2/2     Running   0       
 
 Login using the credentials we created earlier. You can either login to the hosted cluster openshift console or to the api server. 
 
-> Something to be aware of: When using the openshfit console the `htpasswd` provider will not be presented as a choice for logging in. This is because the `kubeadmin` user/password  is removed when the IDP is updated.
+> Something to be aware of: When using the OpenShift console the `htpasswd` provider will not be presented as a choice for logging in. This is because the `kubeadmin` user/password  is removed when the IDP is updated.
 
 ### api server login example:
 
@@ -108,7 +108,7 @@ oc login $(oc whoami –show-server) -u admin -p password
 
 ### Apply RBAC to configured user(s)
 
-You may notice that your user doesn't really have any permissions to the cluster. You will need to grant permissions to the user by applying a Role or ClusterRole. In this example, we are giving our adming user the `cluster-admin` clusterRole. 
+You may notice that your user doesn't really have any permissions to the cluster. You will need to grant permissions to the user by applying a Role or ClusterRole. In this example, we are giving our admin user the `cluster-admin` clusterRole. 
 
 > **NOTE:** You will likely not have admin access to your cluster so you will need to create and export the `kubeconfig` for your hosted cluster to apply the RBAC to your user
 

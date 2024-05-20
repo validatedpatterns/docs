@@ -63,7 +63,7 @@ The pattern includes override parameters to provide further customization. Refer
     activeDeadlineSeconds: 3600
     # By default we run this every 10minutes
     schedule: "*/10 * * * *"
-    # Schedule used to trigger the vault unsealing (if explicitely enabled)
+    # Schedule used to trigger the vault unsealing (if explicitly enabled)
     # Set to run every 9 minutes in order for load-secrets to succeed within
     # a reasonable amount of time (it waits up to 15 mins)
     insecureUnsealVaultInsideClusterSchedule: "*/9 * * * *"

@@ -23,7 +23,7 @@ To be represented in the CI dashboard, testers can create a publicly available J
 
 Example: `medicaldiag-nutanix-4.13-stable-badge.json`
 
-Note: OpenShift verion should be `major.minor` only
+Note: OpenShift version should be `major.minor` only
 
 [id="file-template"]
 == File template

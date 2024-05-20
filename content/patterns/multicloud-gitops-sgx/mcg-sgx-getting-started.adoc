@@ -93,11 +93,11 @@ git commit values-global.yaml
 git push origin my-branch
 ----
 
-. (Optional) The SGX-protected Vault container image is available as a pre-built image and currently, the pattern is configured to use as is. When there is a need to build it on your own and protect it with SGX, then follow <<biuld-docker-image-and-convert-to-sgx,the description below>>.
+. (Optional) The SGX-protected Vault container image is available as a pre-built image and currently, the pattern is configured to use as is. When there is a need to build it on your own and protect it with SGX, then follow <<build-docker-image-and-convert-to-sgx,the description below>>.
 
 . Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator] - both methods are described below.
 
-[id="biuld-docker-image-and-convert-to-sgx"]
+[id="build-docker-image-and-convert-to-sgx"]
 == (Optional) Prepare Vault docker image and convert to SGX
 
 Pre-built protected Vault image is available to pull from https://quay.io/repository/hybridcloudpatterns/sgx-protected-vault?tab=tags&tag=latest[quay.io/hybridcloudpatterns/sgx-protected-vault]. If a user would like to build such an image on their own, there are step-by-step instructions below.
@@ -357,7 +357,7 @@ To install the *Validated Patterns Operator*:
 
 . Search for *Validated Patterns Operator*, open it and click *Install*.
 +
-.Instal Validated Patterns Operator
+.Install Validated Patterns Operator
 image::multicloud-gitops-sgx/sgx-validated-pattern-operator.png[Install Validated Patterns Operator,scale=50]
 +
 . Choose default settings for the installation mode, namespaces and update strategy and confirm it by clicking *Install*.

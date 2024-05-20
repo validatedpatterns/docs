@@ -131,7 +131,7 @@ To install the *Validated Patterns Operator*:
 
 . Search for *Validated Patterns Operator*, open it and click *Install*.
 +
-.Instal Validated Patterns Operator
+.Install Validated Patterns Operator
 image::multicloud-gitops-amx/amx-validated-patter-operator.png[Install Validated Patterns Operator,scale=50]
 +
 . Choose default settings for the installation mode, namespaces and update strategy and confirm it by clicking *Install*.

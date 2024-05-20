@@ -44,6 +44,17 @@ run: ## Runs the container interactively
 update-container: ## Updates the container used for local testing
 	podman pull $(HOMEPAGE_CONTAINER)
 
+.PHONY: spellcheck
+spellcheck: ## Runs a spellchecker on the content/ folder
+	@echo "Running spellchecking on the tree"
+	podman run -it -v $(PWD):/tmp:$(ATTRS) docker.io/jonasbn/github-action-spellcheck:latest
+
+.PHONY: lintwordlist
+lintwordlist: ## Sorts and removes duplicates from spellcheck exception file .wordlist.txt
+	@cp --preserve=all .wordlist.txt /tmp/.wordlist.txt
+	@sort .wordlist.txt | tr '[:upper:]' '[:lower:]' | uniq > /tmp/.wordlist.txt
+	@mv -v /tmp/.wordlist.txt .wordlist.txt
+
 .PHONY: clean
 clean: ## Removes any unneeded spurious files
 	@rm -rvf ./.jekyll-cache ./_site ./tmp super-linter.log dictionary.dic
