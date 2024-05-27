@@ -1,0 +1,63 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="applications-configuration-in-a-clustergroup"]
+= Applications configuration in a ClusterGroup
+
+Configuring applications within a ClusterGroup streamlines the process of defining, configuring, and coordinating software applications efficiently across clustered environments. The "applications" parameter allows you to specify the properties, dependencies, and resources required for each application deployment within the ClusterGroup, ensuring consistent and efficient deployment across multiple clusters.
+
+In this context, applications refer to those defined by the OpenShift GitOps operator. These do not need to be applications in the traditional sense but are discrete units of deployment. The Validated Patterns framework supports any type of application that OpenShift GitOps can manage, but the most commonly used type is a Helm chart co-located in the repository that defines the pattern.
+
+
+[id="Sub-parameters-applications"]
+== Sub-parameters
+
+* *Name*: Specifies the name of the application, providing a unique identifier for management purposes.
+
+* *Namespace*: (Mandatory) :  The namespace that the application will be deployed into.
+
+* *Project*: The OpenShift GitOps project associated with the application, used for OpenShift GitOps grouping.
+
+* *Path*: The path, relative to the pattern repository, that contains the application. For a Helm chart, this should be the top level of the Helm structure, including `chart.yaml`, a `templates` directory, and a `values.yaml` to define default values.
+
+* *Kustomize*: A boolean indicating whether the application is a Kustomize artifact. If true, it will disable Helm chart processing options. Kustomize artifacts are fully supported by the framework.
+
+* *Overrides*: (Optional): Defines value-by-value overrides for a Helm chart. Each override must include a `name` and a `value`. The name specifies the variable being overridden, and the value is what will be used to override it in the template. Overrides have the highest priority among Helm variables.
+
+* *Plugin*: Uses a custom-defined GitOps Config Management Plugin. These plugins offer functionality beyond the standard Helm and Kustomize support provided by the OpenShift GitOps Operator. More information on defining config management plugins in the framework can be found in https://validatedpatterns.io/blog/2023-11-17-argo-configmanagement-plugins/[Argo CD config management plugins in Validated Patterns].
+
+* *IgnoreDifferences*: A structure given to OpenShift GitOps to programmatically not consider differences as “out of sync.” Use this when the data structures are expected to be out of sync because of different (and expected) cluster metadata or security configurations.
+
+* *ExtraValueFiles*: A list of additional value files passed to the Helm chart to render the templates. These files override the defaults in the chart’s `values.yaml`. For hub clusters, the framework automatically parses “automatic” variables.
+
+
+.Examples:
+
+[source,yaml]
+----
+odf:
+      name: odf
+      namespace: openshift-storage
+      project: hub
+      path: charts/hub/openshift-data-foundations
+      extraValueFiles:
+        - '/overrides/values-odf-{{ $.Values.global.clusterPlatform }}-{{ $.Values.global.clusterVersion }}.yaml'
+----
+
+When the framework renders this block, it uses the cluster settings for `global.clusterPlatform` and `global.clusterVersion`. For instance, if there’s a file `/overrides/values-odf-AWS-4.11.yaml`, and the cluster is running on AWS and OpenShift 4.11, those values will be used by the chart.
+The framework ensures that missing value files do not cause errors. If the pattern is running on a different platform or cluster version, this construction will not cause an error; the values will simply be ignored.
+Using variables for `extraValueFiles` is optional. You can also use constant text and paths. The Industrial Edge pattern does this and employs GitOps workflows to edit the values files in place:
+
+[source,yaml]
+----
+test:
+      name: manuela-test
+      namespace: manuela-tst-all
+      project: datacenter
+      path: charts/datacenter/manuela-tst
+      extraValueFiles:
+        - /overrides/values-test-imagedata.yaml
+----
+
+
+
