@@ -1,7 +1,7 @@
 ---
 title: AI Generation with LLM and RAG 
 date: 2022-12-08
-tier: sandbox
+tier: tested
 summary: This pattern demonstrates the deployment of a Chatbot application that leverages the power of Large Language Models (LLMs) in conjunction with the Retrieval-Augmented Generation (RAG) framework running on Red Hat OpenShift.
 rh_products:
 - Red Hat OpenShift Container Platform
