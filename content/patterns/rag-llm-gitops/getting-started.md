@@ -4,11 +4,6 @@ weight: 10
 aliases: /rag-llm-gitops/getting-started/
 ---
 
-:toc:
-:imagesdir: /images
-:_content-type: ASSEMBLY
-include::modules/comm-attributes.adoc[]
-
 ### Demo Scenario
 
 - **Hugging Face Text Generation Inference Server:** The pattern deploys a Hugging Face TGIS server. The server deploys `meta-llama/Llama-2-7b-chat-hf` model. The server will require a GPU node.
