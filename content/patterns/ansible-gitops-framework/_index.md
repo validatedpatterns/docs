@@ -2,7 +2,7 @@
 title: Ansible GitOps Framework
 date: 2024-06-13
 tier: sandbox
-summary: This variant of the framework
+summary: This variant of the framework exists to support GitOps outside of Kubernetes
 rh_products:
 - Red Hat Ansible Automation Platform
 - Red Hat Enterprise Linux
@@ -10,7 +10,7 @@ industries:
 aliases: /agof/
 pattern_logo: ansible-edge.png
 links:
-  install: https://github.com/validated-patterns/agof/
+  install: https://github.com/validatedpatterns/agof/
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/agof/issues
 ---
