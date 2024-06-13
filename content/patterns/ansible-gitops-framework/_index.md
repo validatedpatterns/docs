@@ -2,7 +2,7 @@
 title: Ansible GitOps Framework
 date: 2024-06-13
 tier: sandbox
-summary: This variant of the framework exists to support GitOps outside of Kubernetes
+summary: This variant of the Validated Patterns framework exists to support GitOps outside of Kubernetes.
 rh_products:
 - Red Hat Ansible Automation Platform
 - Red Hat Enterprise Linux
