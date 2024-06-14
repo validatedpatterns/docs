@@ -4,7 +4,7 @@
 [id="subscriptions-configuration-in-a-clustergroup"]
 = Subscription configuration in a ClusterGroup
 
-Configuring subscriptions within a ClusterGroup streamlines access management and resource allocation for users and applications. It also facilitates the creation of a software bill of materials detailing the intended installations for the ClusterGroup.This capability empowers you to establish subscription plans, enforce governance policies, and ensure optimal resource utilization. Through the "subscriptions" parameter, you can define access levels, allocate resources, and promote efficient management and cost optimization within the ClusterGroup environment. 
+Configuring subscriptions within a ClusterGroup streamlines access management and resource allocation for users and applications. It also facilitates the creation of a software bill of materials detailing the intended installations for the ClusterGroup.This capability empowers you to establish subscription plans, enforce governance policies, and ensure optimal resource utilization. Through the `subscriptions` parameter, you can define access levels, allocate resources, and promote efficient management and cost optimization within the ClusterGroup environment. 
 
 Subscriptions are the preferred way of including OpenShift operators in the validated patterns. Known as OLM Packages (OLM for Operator Lifecycle Manager), these subscriptions function similarly to RPM packages for RHEL, with operators responsible for software operation and upgrades.
 

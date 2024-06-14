@@ -4,7 +4,7 @@
 [id="imperative-values-configuration-in-a-clustergroup"]
 = Imperative values configuration in a ClusterGroup
 
-The imperative parameter in a ClusterGroup allows direct specification of essential configurations for managing clustered resources, bypassing default settings. This encompasses tasks requiring cluster-wide access, like distributing certificates or access tokens. Within this framework, a pod (a group of containers) is defined to execute specific functions on each cluster within the ClusterGroup, rerunning jobs periodically. You can specify any container image and associated commands for sequential execution. While not mandatory, Ansible facilitates writing imperative jobs, with all values passed as Ansible and Helm values.
+The `imperative` parameter in a ClusterGroup allows direct specification of essential configurations for managing clustered resources, bypassing default settings. This encompasses tasks requiring cluster-wide access, like distributing certificates or access tokens. Within this framework, a pod (a group of containers) is defined to execute specific functions on each cluster within the ClusterGroup, rerunning jobs periodically. You can specify any container image and associated commands for sequential execution. While not mandatory, Ansible facilitates writing imperative jobs, with all values passed as Ansible and Helm values.
 
 
 [id="Sub-parameters-subscriptions"]
@@ -54,5 +54,5 @@ The "deploy-kubevirt-worker" job is responsible for ensuring that the cluster ru
 
 The "configure-aap-controller" job sets up the Ansible Automation Platform (AAP), a crucial component of the Ansible Edge GitOps platform. This job entitles AAP and sets up projects, jobs, and credentials. Unlike the default container image, this example uses a different image.
 
-Additionally, an optional `clusterRoleYaml` section is defined. By default, the imperative job runs under Role-based access control (RBAC), providing read-only access to all resources within its cluster. However, if a job requires write access to alter or generate settings, such permissions can be specified within the `clusterRoleYaml` section. In the AnsibleEdge scenario, the "deploy-kubevirt-worker" job needs permissions to manipulate (and create) machinesets, while the "configure-aap-controller" job requires read-only access to Kubernetes objects.
+Additionally, an optional `clusterRoleYaml` section is defined. By default, the imperative job runs under Role-based access control (RBAC), providing read-only access to all resources within its cluster. However, if a job requires write access to alter or generate settings, such permissions can be specified within the `clusterRoleYaml` section. In the AnsibleEdge scenario, the "deploy-kubevirt-worker" job needs permissions to manipulate and create machinesets, while the "configure-aap-controller" job requires read-only access to Kubernetes objects.
 

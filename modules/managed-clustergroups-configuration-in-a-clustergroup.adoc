@@ -4,7 +4,7 @@
 [id="managed-clustergroups-configuration-in-a-clustergroup"]
 = Managed cluster groups configuration in a ClusterGroup
 
-Configuring managed cluster groups within a ClusterGroup enhances the organizational structure and simplifies resource management. Through the "managedClusterGroups" parameter, you can define and organize clusters based on specific criteria, promoting efficient management and resource allocation within the ClusterGroup. This functionality streamlines management and coordination tasks across the infrastructure. Managed ClusterGroups mirror the configuration of a single cluster, facilitating the deployment of identical applications or implementing minor configuration adjustments across multiple clusters.
+Configuring managed cluster groups within a ClusterGroup enhances the organizational structure and simplifies resource management. Through the `managedClusterGroups` parameter, you can define and organize clusters based on specific criteria, promoting efficient management and resource allocation within the ClusterGroup. This functionality streamlines management and coordination tasks across the infrastructure. Managed ClusterGroups mirror the configuration of a single cluster, facilitating the deployment of identical applications or implementing minor configuration adjustments across multiple clusters.
 
 This feature implies the existence of a `values-{name}.yaml` file in the pattern directory root, containing the clusterGroup definition for the managed clusterGroup. It can have its subscriptions, applications, namespaces, and projects, which may or may not reflect those of the hub clusterGroup.
 

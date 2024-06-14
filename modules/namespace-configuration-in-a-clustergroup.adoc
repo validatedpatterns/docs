@@ -6,7 +6,7 @@
 
 Namespace configuration within a ClusterGroup enables effective workload management and organization by logically partitioning and isolating resources and applications. This feature enhances security, facilitates resource allocation, and simplifies administrative tasks by creating distinct namespaces within the ClusterGroup. 
 
-The namespace parameter in a Kubernetes Helm chart specifies namespaces within the ClusterGroup, enabling access control enforcement, resource allocation, and workload segregation according to specific requirements or organizational policies.
+The `namespace` parameter in a Kubernetes Helm chart specifies namespaces within the ClusterGroup, enabling access control enforcement, resource allocation, and workload segregation according to specific requirements or organizational policies.
 
 [id="Sub-parameters-namespace"]
 == Sub-parameters

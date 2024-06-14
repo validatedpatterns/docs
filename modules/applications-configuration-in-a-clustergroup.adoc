@@ -4,9 +4,9 @@
 [id="applications-configuration-in-a-clustergroup"]
 = Applications configuration in a ClusterGroup
 
-Configuring applications within a ClusterGroup streamlines the process of defining, configuring, and coordinating software applications efficiently across clustered environments. The "applications" parameter allows you to specify the properties, dependencies, and resources required for each application deployment within the ClusterGroup, ensuring consistent and efficient deployment across multiple clusters.
+Configuring applications within a ClusterGroup streamlines the process of defining, configuring, and coordinating software applications efficiently across clustered environments. The `applications` parameter allows you to specify the properties, dependencies, and resources required for each application deployment within the ClusterGroup, ensuring consistent and efficient deployment across multiple clusters.
 
-In this context, applications refer to those defined by the OpenShift GitOps operator. These do not need to be applications in the traditional sense but are discrete units of deployment. The Validated Patterns framework supports any type of application that OpenShift GitOps can manage, but the most commonly used type is a Helm chart co-located in the repository that defines the pattern.
+In this context, applications refer to those defined by the OpenShift GitOps Operator. These do not need to be applications in the traditional sense but are discrete units of deployment. The Validated Patterns framework supports any type of application that OpenShift GitOps can manage, but the most commonly used type is a Helm chart co-located in the repository that defines the pattern.
 
 
 [id="Sub-parameters-applications"]
