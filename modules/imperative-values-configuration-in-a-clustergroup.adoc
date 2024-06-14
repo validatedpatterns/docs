@@ -7,7 +7,7 @@
 The `imperative` parameter in a ClusterGroup allows direct specification of essential configurations for managing clustered resources, bypassing default settings. This encompasses tasks requiring cluster-wide access, like distributing certificates or access tokens. Within this framework, a pod (a group of containers) is defined to execute specific functions on each cluster within the ClusterGroup, rerunning jobs periodically. You can specify any container image and associated commands for sequential execution. While not mandatory, Ansible facilitates writing imperative jobs, with all values passed as Ansible and Helm values.
 
 
-[id="Sub-parameters-subscriptions"]
+[id="Sub-parameters-imperative"]
 == Sub-parameters
 
 * *Parameter Name*: Specifies the name of the parameter or property to be configured imperatively within the ClusterGroup.
