@@ -1,0 +1,74 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="managed-clustergroups-configuration-in-a-clustergroup"]
+= Managed cluster groups configuration in a ClusterGroup
+
+Configuring managed cluster groups within a ClusterGroup enhances the organizational structure and simplifies resource management. Through the `managedClusterGroups` parameter, you can define and organize clusters based on specific criteria, promoting efficient management and resource allocation within the ClusterGroup. This functionality streamlines management and coordination tasks across the infrastructure. Managed ClusterGroups mirror the configuration of a single cluster, facilitating the deployment of identical applications or implementing minor configuration adjustments across multiple clusters.
+
+This feature implies the existence of a `values-{name}.yaml` file in the pattern directory root, containing the clusterGroup definition for the managed clusterGroup. It can have its subscriptions, applications, namespaces, and projects, which may or may not reflect those of the hub clusterGroup.
+
+
+[id="Sub-parameters-managed-clustergroups"]
+== Sub-parameters
+
+* *Name*: Provides a descriptive identifier for organizational purposes.
+
+* *HelmOverrides*: Adds values to helm-based applications in the managed clustergroup to adjust cluster configuration based on policy. Each override is specified with a name: and value: parameter.
+
+* *ClusterSelector*: Specifies attributes that the Hub cluster’s Red Hat Advanced Cluster Management instance uses to determine whether or not to assign the clusterGroup policy to a cluster joined to it.
+
+
+.Examples:
+
+*ManagedClusterGroups block within the Industrial Edge pattern*:
+
+[source,yaml]
+----
+managedClusterGroups:
+    factory:
+      name: factory
+      helmOverrides:
+      # Values must be strings!
+      - name: clusterGroup.isHubCluster
+        value: "false"
+      clusterSelector:
+        matchLabels:
+          clusterGroup: factory
+        matchExpressions:
+        - key: vendor
+          operator: In
+          values:
+            - OpenShift
+----
+In this example the `helmOverrides` section applies helm overrides to the applications in the declared clusterGroup. The `clusterSelector` has two matching criteria: it seeks a label "clusterGroup" with the value "factory", and the vendor must be "OpenShift". When these conditions are met, the policy is enacted, and the namespaces, projects, subscriptions, and applications outlined in `values-factory.yaml` are applied.
+
+[NOTE]
+====
+Multiple clusters may match a single managedClusterGroup definition, providing flexibility in deployment.
+====
+
+*ManagedClusterGroups block within the retail pattern*:
+
+[source,yaml]
+----
+managedClusterGroups:
+    raleigh:
+      name: store-raleigh
+      helmOverrides:
+      # Values must be strings!
+      - name: clusterGroup.isHubCluster
+        value: "false"
+      clusterSelector:
+        matchLabels:
+          clusterGroup: store-raleigh
+        matchExpressions:
+        - key: vendor
+          operator: In
+          values:
+            - OpenShift
+----
+
+In this example, we look for an OpenShift cluster labeled with "store-raleigh" as its clusterGroup.
+Additionally, the option of implementing more `clusterSelectors` and `overrides` are also possible for specific customization needs.
+

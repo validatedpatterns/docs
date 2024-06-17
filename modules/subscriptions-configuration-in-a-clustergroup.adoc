@@ -1,0 +1,107 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="subscriptions-configuration-in-a-clustergroup"]
+= Subscription configuration in a ClusterGroup
+
+Configuring subscriptions within a ClusterGroup streamlines access management and resource allocation for users and applications. It also facilitates the creation of a software bill of materials detailing the intended installations for the ClusterGroup.This capability empowers you to establish subscription plans, enforce governance policies, and ensure optimal resource utilization. Through the `subscriptions` parameter, you can define access levels, allocate resources, and promote efficient management and cost optimization within the ClusterGroup environment. 
+
+Subscriptions are the preferred way of including OpenShift operators in the validated patterns. Known as OLM Packages (OLM for Operator Lifecycle Manager), these subscriptions function similarly to RPM packages for RHEL, with operators responsible for software operation and upgrades.
+
+
+[id="Sub-parameters-subscriptions"]
+== Sub-parameters
+
+* *Name*: The name of the package to install.
+
+* *Source*: Specifies which catalog to use for packages. The default is “redhat-operators,” which should only be changed if you want to install pre-release operators.
+
+* *SourceNamespace*: Specifies which namespace to use for the catalog. The default is “openshift-marketplace,” which should only be changed if you want to install a pre-release operator.
+
+* *Channel*: Indicates the default “channel” for updates, usually corresponding to major versions of the operator. While operators define a default channel for each major version of OpenShift they support, specifying a particular channel is optional unless you wish to use a non-default one. There is no standard naming convention for channels. They can be named "stable", "development", or "2.9", among others.
+
+* *InstallPlanApproval*: Defaults to “automatic,” allowing the operator to periodically check and update itself. Alternatively, it can be set to “manual,” meaning operators will only upgrade when triggered by an administrator.
+
+* *Config*: Primarily consists of an “env:” key that allows environment variables to be passed to the operator.
+
+* *UseCSV*: Specifies whether to use specific “cluster service versions” for installation. Defaults to false; the channel primarily determines the installed version.
+
+* *StartingCSV*: Determines the lowest “cluster service version” to consider installing. If installPlanApproval is “manual,” only this version will be considered for installation.
+
+* *Disabled*: Optional boolean (defaults to false). Prevents the installation of a subscription specified higher in the value hierarchy. For example, if an Operator is incompatible with Azure, the default pattern may include the installation of the subscription. However, an Azure-specific configuration file could specify disabled: true, thereby skipping the installation of the operator on Azure.
+
+
+.Examples:
+
+*Subscriptions for multicloud-gitops (just ACM)*:
+
+[source,yaml]
+----
+subscriptions:
+    acm:
+      name: advanced-cluster-management
+      namespace: open-cluster-management
+      channel: release-2.10
+----
+
+*Subscriptions for Industrial Edge (many more)*:
+
+[source,yaml]
+----
+subscriptions:
+    acm:
+      name: advanced-cluster-management
+      namespace: open-cluster-management
+
+    amqbroker-prod:
+      name: amq-broker-rhel8
+      namespace: manuela-tst-all
+
+    amqstreams-prod-dev:
+      name: amq-streams
+      namespaces: 
+      - manuela-data-lake
+      - manuela-tst-all
+
+    camelk-prod-dev:
+      name: red-hat-camel-k
+      namespaces: 
+      - manuela-data-lake
+      - manuela-tst-all
+
+    seldon-prod-dev:
+      name: seldon-operator-certified
+      namespaces: 
+      - openshift-operators
+      source: certified-operators
+
+    pipelines:
+      name: openshift-pipelines-operator-rh
+      source: redhat-operators
+      
+    odh:
+      name: opendatahub-operator
+      source: community-operators
+----
+
+*Subscriptions for Ansible Edge GitOps (demonstrating disable and override)*:
+
+[source,yaml]
+----
+subscriptions:
+    acm:
+      name: advanced-cluster-management
+      namespace: open-clustsubscriptions:
+    openshift-data-foundation:
+      disabled: true
+
+    portworx:
+      name: portworx-certified
+      namespace: portworx
+      channel: stable
+      source: certified-operators
+er-management
+      channel: release-2.10
+----
+
+In this example, the values file is intended to override the default settings in the main `values-hub.yaml`. Consequently, the `openshift-data-foundation` application is overridden and disabled, while the `portworx` application is added.

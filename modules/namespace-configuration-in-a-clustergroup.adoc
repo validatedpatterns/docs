@@ -1,0 +1,50 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="namespace-configuration-in-a-clustergroup"]
+= Namespace configuration in a ClusterGroup
+
+Namespace configuration within a ClusterGroup enables effective workload management and organization by logically partitioning and isolating resources and applications. This feature enhances security, facilitates resource allocation, and simplifies administrative tasks by creating distinct namespaces within the ClusterGroup. 
+
+The `namespace` parameter in a Kubernetes Helm chart specifies namespaces within the ClusterGroup, enabling access control enforcement, resource allocation, and workload segregation according to specific requirements or organizational policies.
+
+[id="Sub-parameters-namespace"]
+== Sub-parameters
+
+* *Name*: Specifies the name of the namespace to be created within the ClusterGroup.
+
+* *Labels*: Allows you to assign labels or tags to the namespace for categorization and identification purposes.
+
+* *Annotations*: Provides additional metadata or descriptive information about the namespace for documentation or management purposes.
+
+.Examples:
+
+*Namespaces without extra labels and annotations (from the multicloud gitops pattern)*:
+
+[source,yaml]
+----
+namespaces:
+    - open-cluster-management
+    - vault
+    - golang-external-secrets
+    - config-demo
+    - hello-world
+----
+*Namespaces with Labels and Annotations*:
+
+[source,yaml]
+----
+ namespaces:
+    open-cluster-management: {}
+    vault: {}
+    golang-external-secrets: {}
+    config-demo:
+      labels:
+        app: 'config-demo'
+        tier: 'test'
+      annotations:
+        'test/annotation': true
+    hello-world: {}
+
+----
+In this example, we add “app” and “tier” labels to the config-demo app, and the annotation “test/annotation: true” to it. All other namespaces are created with defaults.

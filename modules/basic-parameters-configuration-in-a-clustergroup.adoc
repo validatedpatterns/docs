@@ -1,0 +1,23 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="basic-parameters-configuration-in-a-clustergroup"]
+= Basic parameters configuration in a ClusterGroup
+
+You can set foundational parameters within a ClusterGroup, including cluster location, version, and networking settings. By configuring these basic parameters, you can establish the initial framework for managing and provisioning clusters within the group. These parameters include:
+
+* *Name*: Assigns a unique identifier to the ClusterGroup, acting as a reference point for identification within the broader infrastructure.
+
+* *TargetCluster*: Specifies the primary cluster(s) associated with the ClusterGroup, guiding management and control within its scope. The default is "in-cluster," which is a reasonable default. However, it can be changed when using the "push" model of OpenShift GitOps.
+
+* *IsHubCluster*: Indicates whether the designated cluster serves as a hub cluster, centralizing coordination and management within the ClusterGroup. Each Validated Pattern may have at most one cluster designated as a Hub cluster. This designation affects the use of Red Hat Advanced Cluster Management within the Validated Patterns framework.
+
+* *SharedValueFiles*: Enables specification of shared values files containing configuration settings shared across multiple clusters within the ClusterGroup, promoting consistency and simplifying configuration management. Each `sharedValueFiles` is applied as a value file to every application designated for installation in the clusterGroup.
+
+* *OperatorgroupExcludes*: Allows exclusion of specific operator groups from being applied to clusters within the ClusterGroup, providing flexibility in customizing operator deployment and management.
+
+* *Projects*: Defines OpenShift GitOps projects to facilitate grouping applications. Each application must reference a project.
+
+By configuring these basic parameters in a ClusterGroup, you can effectively establish the foundational elements necessary for organizing, managing, and coordinating clustered resources. 
+
+

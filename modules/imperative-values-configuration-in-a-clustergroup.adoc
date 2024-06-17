@@ -1,0 +1,58 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="imperative-values-configuration-in-a-clustergroup"]
+= Imperative values configuration in a ClusterGroup
+
+The `imperative` parameter in a ClusterGroup allows direct specification of essential configurations for managing clustered resources, bypassing default settings. This encompasses tasks requiring cluster-wide access, like distributing certificates or access tokens. Within this framework, a pod (a group of containers) is defined to execute specific functions on each cluster within the ClusterGroup, rerunning jobs periodically. You can specify any container image and associated commands for sequential execution. While not mandatory, Ansible facilitates writing imperative jobs, with all values passed as Ansible and Helm values.
+
+
+[id="Sub-parameters-imperative"]
+== Sub-parameters
+
+* *Parameter Name*: Specifies the name of the parameter or property to be configured imperatively within the ClusterGroup.
+
+* *Value*:  Defines the value for the specified parameter, ensuring it is explicitly configured within the ClusterGroup.
+
+* *Scope*: Specifies the scope or context in which the imperative value applies, such as a specific application or resource group within the ClusterGroup.
+
+
+.Examples:
+
+[source,yaml]
+----
+jobs:
+  - name: deploy-kubevirt-worker
+    playbook: ansible/deploy_kubevirt_worker.yml
+    verbosity: -vvv
+  - name: configure-aap-controller
+    playbook: ansible/imperative_configure_controller.yml
+    image: quay.io/hybridcloudpatterns/ansible-edge-gitops-ee:latest
+    verbosity: -vvv
+    timeout: "900"
+
+clusterRoleYaml:
+  - apiGroups:
+      - "*"
+    resources:
+      - machinesets
+    verbs:
+      - "*"
+  - apiGroups:
+      - "*"
+    resources:
+      - "*"
+    verbs:
+      - get
+      - list
+      - watch
+----
+
+In this example, the imperative section defines two jobs, "deploy-kubevirt-worker" and "configure-aap-controller".
+
+The "deploy-kubevirt-worker" job is responsible for ensuring that the cluster runs on AWS. It uses the OpenShift MachineSet API to add a baremetal node for running virtual machines.
+
+The "configure-aap-controller" job sets up the Ansible Automation Platform (AAP), a crucial component of the Ansible Edge GitOps platform. This job entitles AAP and sets up projects, jobs, and credentials. Unlike the default container image, this example uses a different image.
+
+Additionally, an optional `clusterRoleYaml` section is defined. By default, the imperative job runs under Role-based access control (RBAC), providing read-only access to all resources within its cluster. However, if a job requires write access to alter or generate settings, such permissions can be specified within the `clusterRoleYaml` section. In the AnsibleEdge scenario, the "deploy-kubevirt-worker" job needs permissions to manipulate and create machinesets, while the "configure-aap-controller" job requires read-only access to Kubernetes objects.
+

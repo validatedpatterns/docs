@@ -1,0 +1,33 @@
+---
+menu:
+  learn:
+    parent: Values Files
+title: ClusterGroup in Values Files
+weight: 51
+aliases: /values-files/clustergroup-in-values-files/
+---
+
+:toc:
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="clustergroup-in-values-files"]
+= ClusterGroup configuration in values files
+
+ClusterGroup serves as a centralized control mechanism, enabling the grouping of clusters based on specific criteria such as geographic location, project, or application type. This feature enhances cluster management efficiency by facilitating the coordination of multiple clusters within the system.
+
+In the validated patterns framework, the ClusterGroup holds a pivotal role, defined as an individual entity or a collection of clusters, each representing a unique configuration class. This foundational concept uses Helm charts and Kubernetes features to determine its attributes.
+
+Typically, a ClusterGroup represents a singular cluster, serving as the foundation for each validated pattern. However, it can also encompass managed ClusterGroups tailored for replication or scaling efforts. Each pattern requires at least one ClusterGroup, with the primary one often named arbitrarily. This designation is defined in `values-global.yaml` under the key `main.clusterGroupName`, with "Hub" commonly used as a default. Alternatively, other names are acceptable. For example, if `main.clusterGroupName` is "hub," the framework searches for `values-hub.yaml` in the pattern's root directory. It's important to note that the main ClusterGroup is typically a singleton and may incorporate Red Hat Advanced Cluster Management (RHACM) if part of the pattern.
+
+Additionally, the main ClusterGroup can define `managedClusterGroups` in its values file, specifying characteristics and policies for spoke clusters, which can be singletons or groups.
+
+include::modules/basic-parameters-configuration-in-a-clustergroup.adoc[leveloffset=+1]
+include::modules/namespace-configuration-in-a-clustergroup.adoc[leveloffset=+1]
+include::modules/subscriptions-configuration-in-a-clustergroup.adoc[leveloffset=+1]
+include::modules/managed-clustergroups-configuration-in-a-clustergroup.adoc[leveloffset=+1]
+include::modules/applications-configuration-in-a-clustergroup.adoc[leveloffset=+1]
+include::modules/imperative-values-configuration-in-a-clustergroup.adoc[leveloffset=+1]
+
+
