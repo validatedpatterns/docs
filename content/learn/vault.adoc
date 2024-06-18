@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Secrets
 title: HashiCorp Vault
-weight: 61
+weight: 62
 aliases: /secrets/vault/
 ---
 
