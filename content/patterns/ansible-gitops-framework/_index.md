@@ -19,7 +19,7 @@ links:
 
 ## Background
 
-AGOF is an alternative to the OpenShift based Validated Patterns framework, designed to answer the question what a framework for GitOps might work without Kubernetes. AGOF is not a pattern itself; it is a framework for installing Ansible Automation Platform, and then using that as the GitOps engine to drive other pattern work. AGOF comes with code to install VMs in AWS, if desired, or else it can work with previously provisioned VMs, or a functional AAP Controller endpoint.
+Ansible GitOps Framework (AGOF) is an alternative to the OpenShift-based Validated Patterns framework, designed to provide a framework for GitOps without Kubernetes. AGOF is not a pattern itself; it is a framework for installing Ansible Automation Platform (AAP), and then using that as the GitOps engine to drive other pattern work. AGOF comes with code to install VMs in AWS, if desired, or else it can work with previously provisioned VMs, or a functional AAP Controller endpoint.
 
 The Pattern is then expressed as an Infrastructure as Code repository, which will be loaded into AAP.
 
