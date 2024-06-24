@@ -14,7 +14,7 @@ aliases: /ai/
 links:
   install: getting-started
   help: https://groups.google.com/g/validatedpatterns
-  bugs: https://github.com/validatedpatterns-sandbox/rag-llm-gitops/issues
+  bugs: https://github.com/validatedpatterns/rag-llm-gitops/issues
 # uncomment once this exists
 ci: ai
 ---
