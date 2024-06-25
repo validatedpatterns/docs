@@ -1,0 +1,13 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-helm"]
+= About Helm
+
+Helm follows the declarative paradigm where Helm defines the desired state of applications and it manages the deployment and lifecycle of those applications.
+
+== Helm charts
+
+Helm introduces charts, which are packages describing a set of Kubernetes resources ready for deployment. These charts define customizable values for application deployment and include functions for distributing charts and updates.
+
+A Helm chart defines Kubernetes resources that you can deploy. A chart is a collection of files with a defined structure. These files include chart metadata (such as the chart name or version), resource definitions, and supporting material.
