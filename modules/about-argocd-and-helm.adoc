@@ -1,0 +1,16 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-helm-argocd"]
+= About Helm and ArgoCD
+
+ArgoCD integrates with Helm to provide a powerful GitOps-based deployment mechanism. By defining applications as Helm charts and managing them through ArgoCD, you can achieve automated, declarative, and version-controlled deployments in your Kubernetes cluster.
+
+The Validated Patterns framework is built around ArgoCD/OpenShift GitOps Operator is uses Helm to install and configure operators, not replace them. 
+
+ArgoCD within validated patterns uses Helm directly
+
+
+
+== Helm charts
+
