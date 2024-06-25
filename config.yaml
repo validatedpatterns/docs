@@ -4,6 +4,7 @@ title: Validated Patterns
 theme: "patternfly"
 summaryLength: 20
 paginate: 6
+timeout: 300
 params:
   site_logo: /images/validated-patterns.png
 security:
