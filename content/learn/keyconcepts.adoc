@@ -14,3 +14,4 @@ This section describes a set of key concepts essential for creating validated pa
 
 include::modules/about-helm-kustomize.adoc[leveloffset=+1]
 include::modules/about-helm.adoc[leveloffset=+1]
+include::modules/about-argocd-and-helm.adoc[leveloffset=+1]
