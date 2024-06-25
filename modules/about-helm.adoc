@@ -11,3 +11,18 @@ Helm follows the declarative paradigm where Helm defines the desired state of ap
 Helm introduces charts, which are packages describing a set of Kubernetes resources ready for deployment. These charts define customizable values for application deployment and include functions for distributing charts and updates.
 
 A Helm chart defines Kubernetes resources that you can deploy. A chart is a collection of files with a defined structure. These files include chart metadata (such as the chart name or version), resource definitions, and supporting material.
+
+The following diagram shows the structure of a minimal Helm chart: 
+
+----
+sample/
+├── Chart <1>
+├── templates <2>
+│   └── _example.yaml
+└── values.yaml <3>
+----
+
+<1> The `Chart.yaml` file contains chart metadata, such as the name and version of the chart.
+<2> The `templates` directory contains files that define application resources such as
+deployments.
+<3> The `values.yaml` file contains default values for the chart.
