@@ -1,0 +1,16 @@
+---
+layout: default
+title: Key concepts
+menu: learn
+weight: 20
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+This section describes a set of key concepts essential for creating validated pattern. This material provides you with foundational knowledge to get familiar with the validated patterns framework. The content offers a clear and structured starting point, helping you understand and effectively apply these concepts in your projects.
+
+include::modules/about-values-files.adoc[leveloffset=+1]
+include::modules/outline-of-a-basic-values-file.adoc[leveloffset=+1]

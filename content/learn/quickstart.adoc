@@ -2,7 +2,7 @@
 layout: default
 title: Patterns quick start
 menu: learn
-weight: 20
+weight: 30
 ---
 
 :toc:
