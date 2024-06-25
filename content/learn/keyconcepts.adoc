@@ -11,3 +11,6 @@ weight: 20
 include::modules/comm-attributes.adoc[]
 
 This section describes a set of key concepts essential for creating validated pattern. This material provides you with foundational knowledge to get familiar with the validated patterns framework. The content offers a clear and structured starting point, helping you understand and effectively apply these concepts in your projects.
+
+include::modules/about-helm-kustomize.adoc[leveloffset=+1]
+include::modules/about-helm.adoc[leveloffset=+1]
