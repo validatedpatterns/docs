@@ -1,9 +1,9 @@
 ---
 menu:
   learn:
-    parent: About Validated Patterns
+    parent: Key concepts
 title: About ArgoCD and Helm
-weight: 13
+weight: 23
 ---
 
 :toc:

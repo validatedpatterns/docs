@@ -1,9 +1,9 @@
 ---
 menu:
   learn:
-    parent: About Validated Patterns
+    parent: Key concepts
 title: About Helm
-weight: 12
+weight: 22
 ---
 
 :toc:
