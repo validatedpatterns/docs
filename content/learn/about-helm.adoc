@@ -1,0 +1,106 @@
+---
+menu:
+  learn:
+    parent: About Validated Patterns
+title: About Helm
+weight: 12
+---
+
+:toc:
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="about-helm"]
+= About Helm
+
+Helm follows the declarative paradigm where Helm defines the desired state of applications and it manages the deployment and lifecycle of those applications.
+
+== Helm charts
+
+Helm introduces charts, which are packages describing a set of Kubernetes resources ready for deployment. These charts define customizable values for application deployment and include functions for distributing charts and updates.
+
+A Helm chart defines Kubernetes resources that you can deploy. A chart is a collection of files with a defined structure. These files include chart metadata (such as the chart name or version), resource definitions, and supporting material.
+
+The following diagram shows the structure of a minimal Helm chart: 
+
+----
+sample/
+├── Chart <1>
+├── templates <2>
+│   └── example.yaml
+└── values.yaml <3>
+----
+
+<1> The `Chart.yaml` file contains chart metadata, such as the name and version of the chart.
+<2> The `templates` directory contains files that define application resources such as
+deployments.
+<3> The `values.yaml` file contains default values for the chart.
+
+.Example 
+
+The link:https://github.com/validatedpatterns/multicloud-gitops/tree/main/charts/all/config-demo[Multicloud GitOps] validated pattern provides a basic example of how Helm charts are used to deploy an application. 
+
+The `values.yaml` contains the following contents:
+
+[source,YAML]
+----
+---
+secretStore:
+  name: vault-backend
+  kind: ClusterSecretStore
+
+configdemosecret:
+  key: secret/data/global/config-demo
+
+global:
+  hubClusterDomain: hub.example.com
+  localClusterDomain: region-one.example.com
+
+clusterGroup:
+  isHubCluster: true
+----
+
+This file is used to provide configuration values for the Helm chart. When deploying the values are injected into the Kubernetes resources defined in the chart's templates.
+
+The keys defined in `values.yaml` enable variable substitution within the Helm chart templates. This allows the templates to dynamically reference these values. Default values in `values.yaml` ensures that the Helm chart has a baseline configuration, which can be customized as needed. 
+
+Helm automatically creates a `.Values` structure to hold these variables. This structure is used within the templates to access the values defined in `values.yaml`. Any value specified in `values.yaml` can be overridden at deployment time, allowing for flexible and environment-specific configurations.
+
+The `config-demo-external-secret.yaml` contains the following contents: 
+
+[source,YAML]
+----
+---
+apiVersion: "external-secrets.io/v1beta1"
+kind: ExternalSecret
+metadata:
+  name: config-demo-secret
+  namespace: config-demo
+spec:
+  refreshInterval: 15s
+  secretStoreRef:
+    name: {{ .Values.secretStore.name }} 
+    kind: {{ .Values.secretStore.kind }}
+  target:
+    name: config-demo-secret
+    template:
+      type: Opaque
+  dataFrom:
+  - extract:
+      key: {{ .Values.configdemosecret.key }}
+----
+
+The `config-demo-external-secret.yaml` manifest leverages the values defined in the values.yaml file to configure an `ExternalSecret` resource in the validated pattern. This resource pulls secret data from an external secret store in this case, a HashiCorp Vault backend, specified by:
+
+* `secretStore.name` (`vault-backend`)
+* `secretStore.kind` (`ClusterSecretStore`)
+* `configdemosecret.key` (`secret/data/global/config-demo`)
+
+By templating these values using Helm, you can ensure that the configuration is dynamic and can be easily modified using the values.yaml file or overridden at deployment time, providing flexibility and consistency across different environments.
+
+
+
+
+
+

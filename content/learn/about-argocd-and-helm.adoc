@@ -1,0 +1,26 @@
+---
+menu:
+  learn:
+    parent: About Validated Patterns
+title: About ArgoCD and Helm
+weight: 13
+---
+
+:toc:
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="about-helm-argocd"]
+= About ArgoCD and Helm
+
+ArgoCD integrates with Helm to provide a powerful GitOps-based deployment mechanism. By defining applications as Helm charts and managing them through ArgoCD, you can achieve automated, declarative, and version-controlled deployments in your Kubernetes cluster.
+
+The Validated Patterns framework is built around ArgoCD/OpenShift GitOps Operator is uses Helm to install and configure operators, not replace them. 
+
+ArgoCD within validated patterns uses Helm directly
+
+
+
+== Helm charts
+
