@@ -1,9 +1,9 @@
 ---
 menu:
   learn:
-    parent: About Validated Patterns
+    parent: Key concepts
 title: Managing the lifecycle of Kubernetes applications
-weight: 11
+weight: 21
 ---
 
 :toc:
@@ -11,8 +11,8 @@ weight: 11
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-[id="managing-lifecycle-kubernetes-applications"]
-= Managing the lifecycle of Kubernetes applications
+[id="helm-and-kustomize"]
+== Helm and Kustomize
 
 Two options are available to you that allow you to manage the lifecycle of Kubernetes applications you want to deploy with the validated patterns framework. The tools supported are `Kustomize` and `Helm`. 
 
@@ -20,3 +20,38 @@ Two options are available to you that allow you to manage the lifecycle of Kuber
 * *Helm*: Helm is a package manager for Kubernetes, which simplifies the process of defining, installing, and upgrading complex Kubernetes applications. It manages Kubernetes manifests using a packaging format called `Charts`.
 
 Helm is the preferred mechanism for deploying applications in the validated patterns framework, and detailed information about its usage follows.
+
+[id="about-helm"]
+= About Helm
+
+Helm follows the declarative paradigm where Helm defines the desired state of applications and it manages the deployment and lifecycle of those applications.
+
+== Helm charts
+
+Helm introduces charts, which are packages describing a set of Kubernetes resources ready for deployment. These charts define customizable values for application deployment and include functions for distributing charts and updates.
+
+A Helm chart defines Kubernetes resources that you can deploy. A chart is a collection of files with a defined structure. These files include chart metadata (such as the chart name or version), resource definitions, and supporting material.
+
+The following diagram shows the structure of a minimal Helm chart: 
+
+----
+sample/
+├── Chart <1>
+├── templates <2>
+│   └── example.yaml
+└── values.yaml <3>
+----
+
+<1> The `Chart.yaml` file contains chart metadata, such as the name and version of the chart.
+<2> The `templates` directory contains files that define application resources such as
+deployments.
+<3> The `values.yaml` file contains default values for the chart.
+
+[id="about-helm-argocd"]
+= About ArgoCD and Helm
+
+ArgoCD integrates with Helm to provide a powerful GitOps-based deployment mechanism. By defining applications as Helm charts and managing them through ArgoCD, you can achieve automated, declarative, and version-controlled deployments in your Kubernetes cluster.
+
+The Validated Patterns framework is built around ArgoCD/OpenShift GitOps Operator is uses Helm to install and configure operators, not replace them. 
+
+ArgoCD within validated patterns uses Helm directly
