@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Key concepts
 title: Managing the lifecycle of Kubernetes applications
-weight: 21
+weight: 11
 ---
 
 :toc:
