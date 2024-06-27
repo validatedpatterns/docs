@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Key concepts
 title: Managing the lifecycle of Kubernetes applications
-weight: 11
+weight: 21
 ---
 
 :toc:
@@ -12,7 +12,7 @@ weight: 11
 include::modules/comm-attributes.adoc[]
 
 [id="helm-and-kustomize"]
-== Helm and Kustomize
+= Helm and Kustomize
 
 Two options are available to you that allow you to manage the lifecycle of Kubernetes applications you want to deploy with the validated patterns framework. The tools supported are `Kustomize` and `Helm`. 
 
@@ -22,11 +22,11 @@ Two options are available to you that allow you to manage the lifecycle of Kuber
 Helm is the preferred mechanism for deploying applications in the validated patterns framework, and detailed information about its usage follows.
 
 [id="about-helm"]
-= About Helm
+== About Helm
 
 Helm follows the declarative paradigm where Helm defines the desired state of applications and it manages the deployment and lifecycle of those applications.
 
-== Helm charts
+=== Helm charts
 
 Helm introduces charts, which are packages describing a set of Kubernetes resources ready for deployment. These charts define customizable values for application deployment and include functions for distributing charts and updates.
 
@@ -48,10 +48,8 @@ deployments.
 <3> The `values.yaml` file contains default values for the chart.
 
 [id="about-helm-argocd"]
-= About ArgoCD and Helm
+== About ArgoCD and Helm
 
-ArgoCD integrates with Helm to provide a powerful GitOps-based deployment mechanism. By defining applications as Helm charts and managing them through ArgoCD, you can achieve automated, declarative, and version-controlled deployments in your Kubernetes cluster.
+ArgoCD integrates with Helm to provide a powerful GitOps-based deployment mechanism. Validated patterns uses ArgoCD and Helm to streamline application deployment by defining applications as Helm charts stored in Git repositories and using ArgoCD to automate the deployment and synchronization of these applications to Kubernetes clusters. This approach ensures consistency, reliability, and efficiency in managing Kubernetes applications.
 
-The Validated Patterns framework is built around ArgoCD/OpenShift GitOps Operator is uses Helm to install and configure operators, not replace them. 
-
-ArgoCD within validated patterns uses Helm directly
+By defining applications as Helm charts and managing them through ArgoCD, you can achieve automated, declarative, and version-controlled deployments in your Kubernetes cluster. 
