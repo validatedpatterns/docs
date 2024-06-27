@@ -5,7 +5,6 @@ menu: learn
 weight: 20
 ---
 
-:toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
