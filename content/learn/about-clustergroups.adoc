@@ -6,8 +6,6 @@ title: ClusterGroups
 weight: 22
 ---
 
-:toc:
-
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 

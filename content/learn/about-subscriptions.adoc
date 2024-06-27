@@ -6,8 +6,6 @@ title: Subscriptions
 weight: 24
 ---
 
-:toc:
-
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
