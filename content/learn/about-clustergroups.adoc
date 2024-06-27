@@ -1,0 +1,19 @@
+---
+menu:
+  learn:
+    parent: Key concepts
+title: ClusterGroups
+weight: 22
+---
+
+:toc:
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="clustergroups"]
+= About ClusterGroups
+
+In a validated pattern, a ClusterGroup organizes and manages clusters sharing common configurations, policies, or deployment needs, with the default group initially encompassing all clusters unless assigned elsewhere. Multiple cluster groups within a pattern allow for tailored management, enabling specific configurations and policies based on roles, environments, or locations. This segmentation enhances efficiency, consistency, and simplifies complex environments. In the validated patterns framework, a ClusterGroup is a key entity representing either a single cluster or a collection of clusters with unique configurations, determined by Helm charts and Kubernetes features. Typically, a ClusterGroup serves as the foundation for each pattern, with the primary one named in `values-global.yaml`, often referred to as "hub. ManagedClusterGroups can also be defined, specifying characteristics and policies for additional clusters.
+
+Add link to https://validatedpatterns.io/learn/clustergroup-in-values-files/. 
