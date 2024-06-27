@@ -1,0 +1,23 @@
+---
+menu:
+  learn:
+    parent: Key concepts
+title: Subscriptions
+weight: 24
+---
+
+:toc:
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="subscriptions"]
+= About Subscriptions
+
+Subscriptions in a validated pattern typically refer to a methodical approach to managing and deploying applications and services within an OpenShift cluster. Subscriptions within a ClusterGroup in validated patterns streamline access management and resource allocation, allowing administrators to efficiently control user and application permissions, allocate resources precisely, and enforce governance policies. 
+
+By defining subscription plans, organizations can optimize resource utilization and maintain compliance with regulatory standards. Subscriptions also contribute to the creation of a software bill of materials (SBOM), enhancing transparency and security by detailing all intended installations within the ClusterGroup. Managed through the Operator Lifecycle Manager (OLM), these subscriptions ensure continuous operation and upgrades of operators, similar to RPM packages on RHEL, thus maintaining cluster health and security.
+
+To maximize the benefits of subscriptions, it is crucial to align them with organizational needs, integrate automated monitoring and alerting, and regularly review and update subscription plans. Providing comprehensive documentation and training ensures effective and consistent use of subscriptions. This approach leads to improved operational efficiency, security, and cost optimization in OpenShift environments.
+
+
