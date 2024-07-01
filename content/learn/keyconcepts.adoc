@@ -9,4 +9,106 @@ weight: 20
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
+= Key concepts
+
 This section describes a set of key concepts essential for creating validated pattern. This material provides you with foundational knowledge to get familiar with the validated patterns framework. The content offers a clear and structured starting point, helping you understand and effectively apply these concepts in your projects.
+
+[id="helm-and-kustomize"]
+== Helm and Kustomize
+
+Two options are available to you that allow you to manage the lifecycle of Kubernetes applications you want to deploy with the validated patterns framework. The tools supported are `Kustomize` and `Helm`. 
+
+* *Kustomize*: Kustomize is a configuration management tool to make declarative changes to application configurations and components and preserve the original base YAML files. Kustomize allows you to manage Kubernetes resource files in a declarative manner, using a set of layered configurations. This makes it easier to maintain, version, and apply changes to Kubernetes resources without having to modify the original YAML files directly.
+* *Helm*: Helm is a package manager for Kubernetes, which simplifies the process of defining, installing, and upgrading complex Kubernetes applications. It manages Kubernetes manifests using a packaging format called `Charts`.
+
+Helm is the preferred mechanism for deploying applications in the validated patterns framework, and detailed information about its usage follows.
+
+[id="about-helm"]
+== Helm in validated patterns
+
+Helm is the preferred tool for deploying applications within the validated patterns framework. Helm charts are packages that describe a set of Kubernetes resources ready for deployment, including customizable values for application deployment and functions for distributing charts and updates. A Helm chart consists of files structured to include chart metadata (such as name and version), resource definitions, and supporting materials. This structure facilitates clear organization and management of Kubernetes resources.
+
+A minimal Helm chart includes: 
+ 
+----
+sample/
+├── Chart <1>
+├── templates <2>
+│   └── example.yaml
+└── values.yaml <3>
+----
+
+<1> The `Chart.yaml` file contains chart metadata, such as the name and version of the chart.
+<2> The `templates` directory contains files that define application resources such as
+deployments.
+<3> The `values.yaml` file contains default values for the chart.
+
+[id="about-helm-argocd"]
+== ArgoCD and Helm Integration
+
+ArgoCD integrates with Helm to provide a powerful GitOps-based deployment mechanism. The validated patterns framework uses ArgoCD and Helm to streamline application deployment by defining applications as Helm charts stored in Git repositories. ArgoCD automates the deployment and synchronization of these applications to OpenShift clusters, ensuring consistency, reliability, and efficiency in managing Kubernetes applications. This integration supports automated, declarative, and version-controlled deployments, enhancing operational efficiency and maintaining application state across environments. 
+
+[id="clustergroups"]
+== About ClusterGroups
+
+In a validated pattern, a ClusterGroup organizes and manages clusters sharing common configurations, policies, or deployment needs, with the default group initially encompassing all clusters unless assigned elsewhere. Multiple cluster groups within a pattern allow for tailored management, enabling specific configurations and policies based on roles, environments, or locations. This segmentation enhances efficiency, consistency, and simplifies complex environments. In the validated patterns framework, a ClusterGroup is a key entity representing either a single cluster or a collection of clusters with unique configurations, determined by Helm charts and Kubernetes features. Typically, a ClusterGroup serves as the foundation for each pattern, with the primary one named in `values-global.yaml`, often referred to as "hub. ManagedClusterGroups can also be defined, specifying characteristics and policies for additional clusters.
+
+When a managed cluster is joined to to RHACM or a new cluster is deployed with RHACM it should be assigned to at least one clusterGroup
+RHACM sees that this managed cluster is part of a clusterGroup and after setting up the cluster, including the RHACM agent on the managed cluster, it then deploys GitOps and provides it the information about the clusterGroup. 
+GitOps picks up the associated values file and deploys the Operators and configurations/charts.
+
+
+Add link to https://validatedpatterns.io/learn/clustergroup-in-values-files/. 
+
+[id="namespaces"]
+== About Namespaces
+
+Namespaces in a validated pattern are essential for organizing and managing resources within an OpenShift cluster, ensuring security, consistency, and efficient resource allocation. Recommendations for defining namespaces include using consistent naming conventions, ensuring isolation and security through policies and RBAC, setting resource quotas, tailoring configurations to specific environments, and designing namespaces for modularity and reusability across patterns or applications.
+
+[id="subscriptions"]
+== About Subscriptions
+
+Subscriptions in a validated pattern typically refer to a methodical approach to managing and deploying applications and services within an OpenShift cluster. Subscriptions within a ClusterGroup in validated patterns streamline access management and resource allocation, allowing administrators to efficiently control user and application permissions, allocate resources precisely, and enforce governance policies. 
+
+By defining subscription plans, organizations can optimize resource utilization and maintain compliance with regulatory standards. Subscriptions also contribute to the creation of a software bill of materials (SBOM), enhancing transparency and security by detailing all intended installations within the ClusterGroup. Managed through the Operator Lifecycle Manager (OLM), these subscriptions ensure continuous operation and upgrades of operators, similar to RPM packages on RHEL, thus maintaining cluster health and security.
+
+To maximize the benefits of subscriptions, it is crucial to align them with organizational needs, integrate automated monitoring and alerting, and regularly review and update subscription plans. Providing comprehensive documentation and training ensures effective and consistent use of subscriptions. This approach leads to improved operational efficiency, security, and cost optimization in OpenShift environments.
+
+[id="applications"]
+== Applications
+
+The applications section in the Helm values file plays a crucial role in defining and managing the deployment of various applications within an OpenShift cluster. By leveraging Helm charts and adhering to validated patterns, it ensures consistency, best practices, and simplified management, leading to reliable and scalable application deployments.
+
+The path field in each application entry points in the values file points to the location of the Helm chart and associated configuration files. These charts contain the Kubernetes manifests and configuration necessary to deploy the application. Helm charts are used to package Kubernetes applications and manage their deployment in a consistent and reproducible manner.
+
+When these applications are deployed, the following Kubernetes resources are typically created:
+
+* *Deployments*: Define the desired state and replicas for the application's pods.
+* *Services*: Expose the application's pods to other services or external traffic.
+* *ConfigMaps and Secrets*: Store configuration data and sensitive information.
+* *PersistentVolumeClaims (PVCs)*: Request storage resources for the application.
+* *Ingress or Routes*: Provide external access to the application.
+* *RBAC (Role-Based Access Control)*: Define access permissions and roles.
+
+[id="applications"]
+== Secrets
+
+Secrets in validated patterns are configurations that securely store sensitive information, such as passwords, API keys, and certificates, required by applications running in an OpenShift cluster. These secrets are defined and managed as part of the overall validated pattern to ensure consistent, secure, and compliant deployments.
+
+Secrets in validated patterns are crucial for managing sensitive information securely and consistently across OpenShift deployments. They relate directly to OpenShift secrets by leveraging Kubernetes Secret objects, ensuring that applications can securely access necessary confidential data. Defining secrets in validated patterns promotes best practices for security, compliance, and ease of management, integrating seamlessly with the overall application deployment process.
+
+[id="applications"]
+== Values
+
+Values files in a validated pattern are YAML files that provide configuration values for Helm charts. They are essential components that define the configuration settings for deploying applications and managing resources within an OpenShift cluster. They enable flexible, per-cluster customization while ensuring consistency with the overall validated pattern. By organizing configuration values in these files, organizations can achieve efficient, secure, and consistent deployments across multiple OpenShift clusters.
+
+A common pattern is to have a base values file, such as `values-global.yaml`, and then have cluster-specific values files (e.g., values-cluster1.yaml, values-cluster2.yaml). The cluster-specific files override or add to the global settings.
+
+
+
+
+
+
+
+
+
