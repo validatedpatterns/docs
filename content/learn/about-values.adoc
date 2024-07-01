@@ -1,0 +1,17 @@
+---
+menu:
+  learn:
+    parent: Key concepts
+title: About values
+weight: 27
+---
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="applications"]
+= Values
+
+Values files in a validated pattern are YAML files that provide configuration values for Helm charts. They are essential components that define the configuration settings for deploying applications and managing resources within an OpenShift cluster. They enable flexible, per-cluster customization while ensuring consistency with the overall validated pattern. By organizing configuration values in these files, organizations can achieve efficient, secure, and consistent deployments across multiple OpenShift clusters.
+
+A common pattern is to have a base values file, such as `values-global.yaml`, and then have cluster-specific values files (e.g., values-cluster1.yaml, values-cluster2.yaml). The cluster-specific files override or add to the global settings.
