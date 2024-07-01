@@ -3,7 +3,10 @@ layout: default
 title: Key concepts
 menu: learn
 weight: 20
+aliases: /key concepts/
 ---
+
+:toc:
 
 :imagesdir: /images
 :_content-type: ASSEMBLY
