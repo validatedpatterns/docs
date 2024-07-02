@@ -1,20 +1,8 @@
 :_content-type: CONCEPT
 :imagesdir: ../../images
 
-[id="about-values-files"]
-= About values files
-
-Values files are essential for creating a structured and flexible approach to customize settings in applications, services, or validated patterns. These files are YAML configuration documents designed to set parameters and configurations for deploying validated patterns.
-They act as a central repository for customizations and are important in tailoring patterns to specific requirements, especially in Helm charts for Kubernetes deployments.
-
-*Key characteristics of values files*:
-
-. *Plain YAML Format*: Values files are written in YAML, offering a human-readable and easy-to-edit syntax. This simplicity contributes to the accessibility of configuration settings.
-. *Hierarchical Nature*: Values files support a hierarchy of values, allowing you to organize and structure configurations logically. This hierarchy is valuable in handling complex deployments.
-
-
 [id="exploring-values"]
-== Exploring values
+= Exploring values
 
 A value represents a specific configuration or parameter that influences the behavior of a validated pattern. These values may range from simple settings like port numbers to more complex elements such as host names and DNS entries. Their role is to ensure that validated patterns adapt to diverse needs and scenarios, whether they involve straightforward settings or more complex configurations. Values are instrumental in ensuring the efficient and seamless operation of validated patterns.
 
