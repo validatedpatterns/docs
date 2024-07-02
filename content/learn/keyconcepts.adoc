@@ -96,16 +96,24 @@ When these applications are deployed, the following Kubernetes resources are typ
 [id="secrets"]
 == Secrets
 
-Secrets in validated patterns are configurations that securely store sensitive information, such as passwords, API keys, and certificates, required by applications running in an OpenShift cluster. These secrets are defined and managed as part of the overall validated pattern to ensure consistent, secure, and compliant deployments.
+Enterprise applications, especially in multi-cluster and multi-site environments, require robust security measures, including the use of certificates and other secrets to establish trust. Managing these secrets effectively is crucial.
 
-Secrets in validated patterns are crucial for managing sensitive information securely and consistently across OpenShift deployments. They relate directly to OpenShift secrets by leveraging Kubernetes Secret objects, ensuring that applications can securely access necessary confidential data. Defining secrets in validated patterns promotes best practices for security, compliance, and ease of management, integrating seamlessly with the overall application deployment process.
+Ignoring security during the development of distributed enterprise applications can lead to significant technical debt. The DevSecOps model addresses this by emphasizing the need to integrate security early in the development lifecycle, known as "shifting security to the left."
+
+In the OpenShift Container Platform, secrets are used to securely store sensitive information like passwords, API keys, and certificates. These secrets are managed using Kubernetes secret objects within validated patterns, ensuring consistent, secure, and compliant deployments. This approach promotes best practices for security and simplifies the management of sensitive data across OpenShift Container Platform deployments.
 
 [id="values"]
 == Values
 
-Values files in a validated pattern are YAML files that provide configuration values for Helm charts. They are essential components that define the configuration settings for deploying applications and managing resources within an OpenShift cluster. They enable flexible, per-cluster customization while ensuring consistency with the overall validated pattern. By organizing configuration values in these files, organizations can achieve efficient, secure, and consistent deployments across multiple OpenShift clusters.
+Values files are essential for customizing settings in applications, services, or validated patterns, particularly in Kubernetes deployments using Helm charts. These files, written in plain YAML format, provide a structured and flexible approach to set parameters and configurations for deploying validated patterns.
 
-A common pattern is to have a base values file, such as `values-global.yaml`, and then have cluster-specific values files (e.g., values-cluster1.yaml, values-cluster2.yaml). The cluster-specific files override or add to the global settings.
+Key characteristics of values files include:
+
+* Plain YAML Format: The human-readable and easy-to-edit syntax of YAML makes configuration settings accessible and straightforward to manage.
+* Hierarchical Nature: Values files support a hierarchy of values, allowing logical organization and structuring of configurations, which is especially useful in handling complex deployments.
+In the context of Helm charts, values files are crucial components that define configuration settings for deploying applications and managing resources within an OpenShift cluster. They enable flexible, per-cluster customization while ensuring consistency with the overall validated pattern. This ensures that organizations can achieve efficient, secure, and consistent deployments across multiple OpenShift clusters.
+
+A common practice is to use a base values file, such as `values-global.yaml`, for global settings, and then have cluster-specific values files for example `values-cluster1.yaml`, `values-cluster2.yaml` that override or add to the global settings. This approach allows for comprehensive customization while maintaining a centralized and organized configuration structure, promoting best practices for deployment and resource management.
 
 [id="shared values"]
 == Shared values
@@ -114,12 +122,31 @@ Shared values files are YAML files used in a validated pattern to centralize and
 
 Shared values files are a powerful mechanism in a validated pattern, enabling centralized, consistent, and reusable configuration management across multiple clusters and environments. By defining global settings and leveraging cluster-specific overrides, they ensure that configurations are both standardized and flexible enough to accommodate specific needs of individual clusters.
 
+[id="GitOps"]
+== GitOps 
 
+GitOps is a modern way to manage cloud-native systems that are powered by Kubernetes. It leverages a policy-as-code approach to define and manage every layer of the modern application stack - infrastructure, networking application code, and the GitOps pipeline itself.
 
+The key principle of GitOps are: 
 
+* *Declarative*: We need to be able to describe our desired state - either through raw manifests, helm charts or kustomize, or some other automation.
+* *Versioned and Immutability*: Git provides versioned and immutability with git being the single source of truth. Version control and historical context provide insights into changes that have affected the clusters.
+* *Pulled Automatically*: The GitOps controller pull the state automatically to prevent any errors introduced by humans, and it also allows the application an opportunity to heal itself.
+* *Continuously Reconciled*: The GitOps controller has a reconciliation loop that by default runs every 3 minutes. When the reconciler identifies a diff between git and the cluster, it will reconcile the change onto the cluster during the next synchronization.
 
+GitOps within the validated pattern framework ensures that infrastructure and application configurations are managed declaratively, consistently, and securely. GitOps ensures consistency across our environments, platforms and applications. 
 
+[id="RHCM"]
+== Red Hat Advanced Cluster Management (RHCM) 
 
+One of the applications deployed by the Validated patterns Operator is VP in our patterns today Red Hat Advanced Cluster Management (RHCM). RHACM (Red Hat Advanced Cluster Management) is a comprehensive solution designed to manage multiple Kubernetes clusters and enforce policies across those clusters from a single pane of glasssingle control plane. 
+
+RHACM plays a pivotal role in the validated pattern framework by providing robust capabilities for managing Kubernetes clusters and enforcing policies across heterogeneous environments. It supports operational efficiency, scalability, compliance, and security, making it an essential tool for organizations looking to manage their Kubernetes infrastructure effectively.
+
+[id="RHCM"]
+== Tests
+
+Tests within the Validated Pattern Framework are essential components to validate and ensure that the deployed patterns and configurations adhere to operational standards, security protocols, performance expectations, and compliance requirements in Kubernetes and OpenShift environments.
 
 
 
