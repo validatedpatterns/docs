@@ -95,18 +95,18 @@ GitOps is a way to manage cloud-native systems that are powered by Kubernetes. I
 The key principle of GitOps are: 
 
 * *Declarative*: The methodology requires describing the desired state, achieved through raw manifests, helm charts, kustomize, or other forms of automation.
-* *Versioned and Immutability*: Git ensures versioning and immutability, serving as the definitive source of truth. Version control and historical tracking offer insights into changes that impact the clusters.
-* *Pulled Automatically*: The GitOps controller pulls the state automatically to prevent any errors introduced by humans, and it also allows the application an opportunity to heal itself.
-* *Continuously Reconciled*: The GitOps controller has a reconciliation loop that by default runs every 3 minutes. When the reconciler identifies a diff between git and the cluster, it will reconcile the change onto the cluster during the next synchronization.
+* *Versioned and immutability*: Git ensures versioning and immutability, serving as the definitive source of truth. Version control and historical tracking offer insights into changes that impact the clusters.
+* *Pulled automatically*: The GitOps controller pulls the state automatically to prevent any errors introduced by humans, and it also allows the application an opportunity to heal itself.
+* *Continuously reconciled*: The GitOps controller has a reconciliation loop that by default runs every 3 minutes. When the reconciler identifies a diff between git and the cluster, it will reconcile the change onto the cluster during the next synchronization.
 
 GitOps within the validated pattern framework ensures that infrastructure and application configurations are managed declaratively, consistently, and securely. GitOps ensures consistency across our environments, platforms and applications.  
 
-For more information, see link:https://docs.openshift.com/gitops/1.12/understanding_openshift_gitops/what-is-gitops.html[ClusterGroup configuration in values files].
+For more information, see link:https://docs.openshift.com/gitops/1.12/understanding_openshift_gitops/what-is-gitops.html[GitOps].
 
 [id="namespaces"]
 == Namespaces
 
-Namespaces in a validated pattern are essential for organizing and managing resources within an OpenShift Container Platform Container Platform cluster, ensuring security, consistency, and efficient resource allocation. Recommendations for defining namespaces include using consistent naming conventions, ensuring isolation and security through policies and RBAC, setting resource quotas, tailoring configurations to specific environments, and designing namespaces for modularity and reusability across patterns or applications.
+Namespaces in a validated pattern are essential for organizing and managing resources within an OpenShift Container Platform cluster, ensuring security, consistency, and efficient resource allocation. Recommendations for defining namespaces include using consistent naming conventions, ensuring isolation and security through policies and RBAC, setting resource quotas, tailoring configurations to specific environments, and designing namespaces for modularity and reusability across patterns or applications.
 
 For more information, see link:https://validatedpatterns.io/blog/2023-12-15-understanding-namespaces/[Understanding Namespace Creation using the Validated Patterns Framework].
 
@@ -139,7 +139,7 @@ Key characteristics of values files include:
 
 * Plain YAML Format: The human-readable and easy-to-edit syntax of YAML makes configuration settings accessible and straightforward to manage.
 * Hierarchical Nature: Values files support a hierarchy of values, allowing logical organization and structuring of configurations, which is especially useful in handling complex deployments.
-In the context of Helm charts, values files are crucial components that define configuration settings for deploying applications and managing resources within an OpenShift cluster. They enable flexible, per-cluster customization while ensuring consistency with the overall validated pattern. This ensures that organizations can achieve efficient, secure, and consistent deployments across multiple OpenShift Container Platform clusters.
+In the context of Helm charts, values files are crucial components that define configuration settings for deploying applications and managing resources within an OpenShift Container Platform cluster. They enable flexible, per-cluster customization while ensuring consistency with the overall validated pattern. This ensures that organizations can achieve efficient, secure, and consistent deployments across multiple OpenShift Container Platform clusters.
 
 A common practice is to use a base values file, such as `values-global.yaml`, for global settings, and then have cluster-specific values files for example `values-cluster1.yaml`, `values-cluster2.yaml` that override or add to the global settings. This approach allows for comprehensive customization while maintaining a centralized and organized configuration structure, promoting best practices for deployment and resource management.
 
