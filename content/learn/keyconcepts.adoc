@@ -93,19 +93,28 @@ When these applications are deployed, the following Kubernetes resources are typ
 * *Ingress or Routes*: Provide external access to the application.
 * *RBAC (Role-Based Access Control)*: Define access permissions and roles.
 
-[id="applications"]
+[id="secrets"]
 == Secrets
 
 Secrets in validated patterns are configurations that securely store sensitive information, such as passwords, API keys, and certificates, required by applications running in an OpenShift cluster. These secrets are defined and managed as part of the overall validated pattern to ensure consistent, secure, and compliant deployments.
 
 Secrets in validated patterns are crucial for managing sensitive information securely and consistently across OpenShift deployments. They relate directly to OpenShift secrets by leveraging Kubernetes Secret objects, ensuring that applications can securely access necessary confidential data. Defining secrets in validated patterns promotes best practices for security, compliance, and ease of management, integrating seamlessly with the overall application deployment process.
 
-[id="applications"]
+[id="values"]
 == Values
 
 Values files in a validated pattern are YAML files that provide configuration values for Helm charts. They are essential components that define the configuration settings for deploying applications and managing resources within an OpenShift cluster. They enable flexible, per-cluster customization while ensuring consistency with the overall validated pattern. By organizing configuration values in these files, organizations can achieve efficient, secure, and consistent deployments across multiple OpenShift clusters.
 
 A common pattern is to have a base values file, such as `values-global.yaml`, and then have cluster-specific values files (e.g., values-cluster1.yaml, values-cluster2.yaml). The cluster-specific files override or add to the global settings.
+
+[id="shared values"]
+== Shared values
+
+Shared values files are YAML files used in a validated pattern to centralize and manage configuration settings. They define common parameters and settings that can be reused across multiple clusters, applications, and environments. This approach promotes consistency and simplifies configuration management.
+
+Shared values files are a powerful mechanism in a validated pattern, enabling centralized, consistent, and reusable configuration management across multiple clusters and environments. By defining global settings and leveraging cluster-specific overrides, they ensure that configurations are both standardized and flexible enough to accommodate specific needs of individual clusters.
+
+
 
 
 
