@@ -1,0 +1,99 @@
+---
+title: OPEA QnA chat accelerated with Intel Gaudi
+date: 2024-06-01
+validated: false
+summary: This pattern helps you deploy stack enabling Intel Gaudi Accelerator and it also deploys RAG application - Chat QnA
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift Data Foundation
+- Red Hat OpenShift AI
+- Red Hat OpenShift Serverless
+- Red Hat OpenShift Service Mesh
+industries:
+- General
+aliases: /gaudi-rag-chat-qna/
+#pattern_logo: gaudi-rag-chat-qna.png
+links:
+  install: gaudi-rag-chat-qna-getting-started
+  help: https://groups.google.com/g/hybrid-cloud-patterns
+  bugs: https://github.com/validatedpatterns-sandbox/
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+
+[id="about-gaudi-rag-chat-qna-pattern"]
+= About {gcqna-pattern}
+
+Background::
+Validated pattern is based on https://github.com/opea-project/GenAIExamples/tree/main/ChatQnA[OPEA [Open Platform for Enterprise AI\] example - Chat QnA]. OPEA is an ecosystem orchestration framework to integrate performant GenAI technologies & workflows leading to quicker GenAI adoption and business value. Another purpose of this pattern is to deploy whole infrastructre stack enabling Intel Gaudi accelerator. Accelerator is used in the AI inferencing process. Pattern makes use of GitOps approach. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code will be checked by the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
+ 
+
+Components::
+* Kernel Module Management operator (KMM) and HabanaAI operator are responsible for providing Gaudi accelerators within the OpenShift cluster, including drivers and monitoring metrics
+* Node Feature Discovery operator labels all cluster nodes with Gaudi resources available
+* Deploy all required AI Chat microservices:
+** Embedding service - is designed to efficiently convert textual strings into vectorized embeddings, facilitating seamless integration into various machine learning and data processing workflows.
+** Vector Database - stores embedded vectors.
+** Retriever service - is a highly efficient search service designed for handling and retrieving embedding vectors.
+** Reranking service - when provided with a query and a collection of documents, reranking swiftly indexes the documents based on their semantic relevance to the query, arranging them from most to least pertinent.
+** Data preparation service - aims to preprocess the data from various sources (either structured or unstructured data) to text data, and convert the text data to embedding vectors then store them in the database.
+** LLM service - processes input consisting of a query string and associated reranked documents. It constructs a prompt based on the query and documents, which is then used to perform inference with a large language model.
+** Backend service
+** Frontend service
+* Deploy TGI (Text Generation Inference) using Red Hat OpenShift AI
+
+
+[id="about-solution"]
+== About the solution
+
+Following solution is based on https://github.com/opea-project/GenAIExamples/tree/main/ChatQnA[OPEA [Open Platform for Enterprise AI\] example - Chat QnA], but it is additionally wrapped in the Validated Patterns framework. It means that it uses GitOps approach, where every defined component is a microservice and its status can be easily tracked using ArgoCD dashboard. Moreover this approach makes use of OpenShift Data Foundation solution to store all data, like machine learning model on the cluster. AI model in this case is `Llama-2-70b-chat-hf`. High-level structure of Validated Pattern is shown below:
+
+//figure 1 originally
+.Overview of the solution 
+image::/images/gaudi-rag-chat-qna/gaudi-rag-chat-qna-vp-overview.png[OPEA QnA chat accelerated with Intel Gaudi Validated Pattern architecture]
+
+
+* OPEA QnA Chat stack consists of: Embedding service, Vector Database, Retriever, Reranking service, data preparation service, LLM server and back-/frontend applications.
+
+* Gaudi enablement stack consists of: Node Feature Discovery, Kernel Module Management and HabanaAI operators.
+
+* Additionaly validated pattern makes use of OpenShift Data Foundation operator to host S3-like storage, Image Registry to store all built images and Hashicorp Vault to safely keep HuggingFace User token.
+
+
+[id="about-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Platform]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift GitOps]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+
+https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform]::
+Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation[Red Hat OpenShift Data Foundation]::
+It is software-defined storage for containers. Red Hat OpenShift Data Foundation helps teams develop and deploy applications quickly and efficiently across clouds.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai[Red Hat OpenShift AI]::
+Red Hat® OpenShift® AI is a flexible, scalable artificial intelligence (AI) and machine learning (ML) platform that enables enterprises to create and deliver AI-enabled applications at scale across hybrid cloud environments.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/serverless[Red Hat OpenShift Serverless]::
+Red Hat® OpenShift® Serverless simplifies the development of hybrid cloud applications by eliminating the complexities associated with Kubernetes and the infrastructure applications are developed and deployed on. Developers will be able to focus on coding applications instead of managing intricate infrastructure details.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/what-is-openshift-service-mesh[Red Hat OpenShift Service Mesh]::
+Red Hat® OpenShift® Service Mesh provides a uniform way to connect, manage, and observe microservices-based applications. It provides behavioral insight into—and control of—the networked microservices in your service mesh.
+
+Hashicorp Vault::
+Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+
+
+[id="next-steps_mcg-index"]
+== Next steps
+
+* link:gaudi-rag-chat-qna-getting-started[Deploy the pattern].
