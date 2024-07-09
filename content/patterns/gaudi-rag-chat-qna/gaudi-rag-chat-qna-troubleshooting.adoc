@@ -29,7 +29,7 @@ Solution:: Most often this is due to some network errors while downloading the m
 
 Problem:: Builds of OPEA chat resources are failing, they cannot pull images
 
-Solution:: If all Build resources are failing, beacause of pulling image errors please makes ure that there is no proxy issue. Refer to section `Getting started -> Procedure`. Also make sure that Image Registry is properly set up.
+Solution:: If all Build resources are failing, because of pulling image errors please makes ure that there is no proxy issue. Refer to section `Getting started -> Procedure`. Also make sure that Image Registry is properly set up.
 
 
 '''

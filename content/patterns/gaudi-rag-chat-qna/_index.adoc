@@ -56,11 +56,11 @@ Following solution is based on https://github.com/opea-project/GenAIExamples/tre
 image::/images/gaudi-rag-chat-qna/gaudi-rag-chat-qna-vp-overview.png[OPEA QnA chat accelerated with Intel Gaudi Validated Pattern architecture]
 
 
-* OPEA QnA Chat stack consists of: Embedding service, Vector Database, Retriever, Reranking service, data preparation service, LLM server and back-/frontend applications.
+* OPEA QnA Chat stack is composed out of: Embedding service, Vector Database, Retriever, Reranking service, data preparation service, LLM server and back-/frontend applications.
 
 * Gaudi enablement stack consists of: Node Feature Discovery, Kernel Module Management and HabanaAI operators.
 
-* Additionaly validated pattern makes use of OpenShift Data Foundation operator to host S3-like storage, Image Registry to store all built images and Hashicorp Vault to safely keep HuggingFace User token.
+* Additionaly, in this Validated Pattern OpenShift Data Foundation is used to provide an S3-like storage through Ceph RGW, and Image Registry is used to store all built images and Hashicorp Vault to safely keep HuggingFace User token.
 
 
 [id="about-technology"]
@@ -92,6 +92,8 @@ Red Hat® OpenShift® Service Mesh provides a uniform way to connect, manage, an
 Hashicorp Vault::
 Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
 
+https://github.com/opea-project[OPEA]::
+OPEA is an ecosystem orchestration framework to integrate performant GenAI technologies & workflows leading to quicker GenAI adoption and business value.
 
 [id="next-steps_mcg-index"]
 == Next steps

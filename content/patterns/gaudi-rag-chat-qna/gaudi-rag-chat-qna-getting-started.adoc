@@ -17,10 +17,10 @@ include::modules/comm-attributes.adoc[]
 * An {ocp} cluster
  ** To create an {ocp} cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console] and select *Services \-> Containers \-> Create cluster*.
  ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. It was tested with ODF (OpenShift Data Foundation) or LVM Storage solutions. CephFS should be set as a default Storage Class - https://docs.openshift.com/container-platform/4.14/storage/container_storage_interface/persistent-storage-csi-sc-manage.html#change-default-storage-class_persistent-storage-csi-sc-manage[Setup Guide]
- ** link:../../gaudi-rag-chat-qna/gaudi-rag-chat-qna-cluster-sizing[Cluster sizing] requirements.
-* {ocp} Cluster must have Image Registry - https://docs.openshift.com/container-platform/4.14/registry/configuring_registry_storage/configuring-registry-storage-rhodf.html[Setup Guide]
+ ** link:../../gaudi-rag-chat-qna/gaudi-rag-chat-qna-required-hardware[Required hardware].
+* {ocp} Cluster must have a configured Image Registry - https://docs.openshift.com/container-platform/4.14/registry/configuring_registry_storage/configuring-registry-storage-rhodf.html[Setup Guide]
 * A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
-* A HuggingFace account and User Access token, which allows to download AI models
+* A HuggingFace account and User Access token, which allows to download AI models. More about User Access token can be found on https://huggingface.co/docs/hub/en/security-tokens[official HuggingFace website]
 //Replaced git and podman prereqs with the tooling dependencies page
 * https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
 * https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html#getting-started-install-instructions[Install AWS CLI tool] to check status of S3 bucket (RGW storage).
@@ -96,6 +96,12 @@ git push origin my-branch
 ----
 
 . Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator].
++
+[WARNING]
+====
+If you have not set HuggingFace token in secrets file there will be prompt to set the token.
+====
+
 
 [id="deploying-cluster-using-patternsh-file"]
 == Deploying the cluster by using the pattern.sh file
@@ -190,14 +196,14 @@ image::/images/gaudi-rag-chat-qna/gaudi-rag-chat-qna-argocd.png[Gaudi RAG Chat Q
 
 After all components are properly deployed user can proceed to setup Red Hat OpenShift AI. The procedures consists of two manual steps:
 
-. Deploying AI model to S3 bucket (RGW storage) on the cluster
+. Uploading AI model to S3 bucket (RGW storage) on the cluster
 . Deploying TGI
 
 
 [id="setup-rhoai-ai-model"]
-=== Deploy AI model
+=== Upload AI model
 
-. First step is to go to `RHOAI dashboard/Data Science Projects` tab and select `gaudi-llm` project:
+. First step is to go to `RHOAI dashboard/Data Science Projects` tab and select `gaudi-llm` project (If the `gaudi-llm` project is missing user should check if app is ready in ArgoCD dashboard):
 +
 image::/images/gaudi-rag-chat-qna/gaudi-rag-chat-qna-choose-project.png[Select RHOAI project]
 
