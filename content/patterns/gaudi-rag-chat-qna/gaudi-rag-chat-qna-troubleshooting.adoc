@@ -33,3 +33,18 @@ Solution:: If all Build resources are failing, because of pulling image errors p
 
 
 '''
+
+Problem:: TGI or TEI pods are showing errors
+
+Solution:: Consult https://docs.habana.ai/en/latest/PyTorch/Reference/Debugging_Guide/Model_Troubleshooting.html[Troubleshooting PyTorch Model
+] documentation for general Gaudi 2 troubleshooting steps. Gathering extended logs might be helpful, as mentioned in troubleshooting steps for "RuntimeError: tensor does not have a device". Container can then be inspected in /var/log/habana_logs directory to see logs from SynapseAI and other components.
+
+
+'''
+
+Problem:: TGI shows "Cannot allocate connection" or "The condition [ isNicUp(port) ] failed." errors
+
+Solution:: Review https://docs.habana.ai/en/latest/Management_and_Monitoring/Embedded_System_Tools_Guide/Disable_Enable_NICs.html?highlight=external#disable-enable-gaudi-2-external-nics[Disable/Enable NICs] guide. Standalone machines that are not configured for scale up with Gaudi 2 NICs connected to a switch require running "To disable Gaudi external NICs, run the following command" in the "Disable/Enable Gaudi 2 External NICs" section.
+
+
+'''
