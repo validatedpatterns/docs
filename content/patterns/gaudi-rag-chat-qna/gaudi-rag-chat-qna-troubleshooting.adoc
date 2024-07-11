@@ -36,8 +36,7 @@ Solution:: If all Build resources are failing, because of pulling image errors p
 
 Problem:: TGI or TEI pods are showing errors
 
-Solution:: Consult https://docs.habana.ai/en/latest/PyTorch/Reference/Debugging_Guide/Model_Troubleshooting.html[Troubleshooting PyTorch Model
-] documentation for general Gaudi 2 troubleshooting steps. Gathering extended logs might be helpful, as mentioned in troubleshooting steps for "RuntimeError: tensor does not have a device". Container can then be inspected in /var/log/habana_logs directory to see logs from SynapseAI and other components.
+Solution:: Consult https://docs.habana.ai/en/latest/PyTorch/Reference/Debugging_Guide/Model_Troubleshooting.html[Troubleshooting PyTorch Model] documentation for general Gaudi 2 troubleshooting steps. Gathering extended logs might be helpful, as mentioned in troubleshooting steps for "RuntimeError: tensor does not have a device". Container directory `/var/log/habana_logs` should then be inspected to see logs from SynapseAI and other components.
 
 
 '''
