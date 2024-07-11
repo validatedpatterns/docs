@@ -55,20 +55,48 @@ vi ~/values-gaudi-rag-chat-qna.yaml
 Do not commit this file. You do not want to push personal credentials to GitHub. If you do not want to customize the secrets by copying secret, these steps are not needed. User can just type in required HuggingFace User Access Token while installing pattern. In the beginning of the installation process there should appear prompt asking for the HuggingFace User Access Token.
 ====
 
-. Customize the deployment for your cluster. Run the following command:
+
++
+. (Optional) If cluster is behind proxy `values-global.yaml` should be similar to the following:
 +
 [WARNING]
 ====
 If the cluster is behind proxy remember to change proxy values of fields `gaudillm.build_envs` and `gaudillm.runtime_envs` in `values-global.yaml` file to appropriate ones.
 ====
-If there is no proxy issue please change fields `gaudillm.build_envs` and `gaudillm.runtime_envs` in `values-global.yaml` file to the following:
 +
 [source,terminal]
 ----
-gaudillm:
-  build_envs: [] 
-  runtime_envs: []
+  gaudillm:
+    namespace: gaudi-llm
+    build_envs:
+    - name: http_proxy
+      value: http://proxy-internal.cluster1.gaudi.internal:912
+    - name: https_proxy
+      value: http://proxy-internal.cluster1.gaudi.internal:912
+    - name: HTTP_PROXY
+      value: http://proxy-internal.cluster1.gaudi.internal:912
+    - name: HTTPS_PROXY
+      value: http://proxy-internal.cluster1.gaudi.internal:912
+    - name: no_proxy
+      value: .cluster.local,.gaudi.internal,.cluster1.gaudi.internal,.svc,192.168.122.0/24,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.cluster1.gaudi.internal,localhost
+    - name: NO_PROXY
+      value: .cluster.local,.gaudi.internal,.cluster1.gaudi.internal,.svc,192.168.122.0/24,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.cluster1.gaudi.internal,localhost
+    runtime_envs:
+    - name: http_proxy
+      value: http://proxy-internal.cluster1.gaudi.internal:912
+    - name: https_proxy
+      value: http://proxy-internal.cluster1.gaudi.internal:912
+    - name: HTTP_PROXY
+      value: http://proxy-internal.cluster1.gaudi.internal:912
+    - name: HTTPS_PROXY
+      value: http://proxy-internal.cluster1.gaudi.internal:912
+    - name: no_proxy
+      value: .cluster.local,.gaudi.internal,.cluster1.gaudi.internal,.svc,192.168.122.0/24,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.cluster1.gaudi.internal,localhost
+    - name: NO_PROXY
+      value: .cluster.local,.gaudi.internal,.cluster1.gaudi.internal,.svc,192.168.122.0/24,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.cluster1.gaudi.internal,localhost
 ----
+
+. Customize the deployment for your cluster. Run the following command:
 +
 [source,terminal]
 ----
