@@ -306,6 +306,7 @@ genrsa
 gf
 gib
 gid
+gitea
 githubusercontent
 gitlab
 gitops
