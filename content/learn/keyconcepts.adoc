@@ -21,10 +21,11 @@ This section describes a set of key concepts essential for creating validated pa
 
 Two options are available that allow you to manage the lifecycle of Kubernetes applications you want to deploy with the validated patterns framework. The tools supported are `Kustomize` and `Helm`. 
 
-* *Kustomize*: Kustomize is a configuration management tool used to make declarative changes to application configurations and components and preserve the original base YAML files. Kustomize allows you to manage Kubernetes resource files in a declarative manner, using a set of layered configurations. This makes it easier to maintain, version, and apply changes to Kubernetes resources without having to modify the original YAML files directly.
-* *Helm*: Helm is a package manager for Kubernetes, which simplifies the process of defining, installing, and upgrading complex Kubernetes applications. It manages Kubernetes manifests using a packaging format called `Charts`.
+* *Kustomize*: Kustomize is a configuration management tool used to make declarative changes to application configurations and components and preserve the original base YAML files. Kustomize allows you to manage Kubernetes resource files in a declarative manner, using a set of layered configurations. Kustomize excels at managing predefined configurations, but it requires that all customizations be stored as overlays in `Git`. This approach can lead to a proliferation of overlay directories, becoming disorganized and complex to manage as the number of developers and components grows, making them increasingly difficult to read.
 
-Helm is the preferred mechanism for deploying applications in the validated patterns framework, and detailed information about its usage follows.
+* *Helm*: Helm is a package manager for Kubernetes, which simplifies the process of defining, installing, and upgrading complex Kubernetes applications. Instead of ad-hoc patching of YAML files, Helm uses a templating language where variables are defined in the raw YAML and combined with actual values at runtime. This allows for the use of conditionals to adapt configurations to different environments and loops to dynamically create multiple instances consistently, such as generating a list of 12 namespaces. It manages Kubernetes manifests using a packaging format called `Charts`.
+
+Helm's templating capabilities, flexibility in handling variables, and advanced features such as conditionals and loops makes it the preferred mechanism for deploying applications in the validated patterns framework. It streamlines the configuration process, reduces complexity, and enhances maintainability, providing a robust solution for managing Kubernetes deployments.
 
 [id="about-helm"]
 == Helm in validated patterns
@@ -51,18 +52,18 @@ deployments.
 
 ArgoCD integrates with Helm to provide a powerful GitOps-based deployment mechanism. The validated patterns framework uses ArgoCD and Helm to streamline application deployment by defining applications as Helm charts stored in Git repositories. ArgoCD is the tool of choice to apply the desired state of desired application to the target cluster environment. 
 
-ArgoCD automates the deployment and synchronization of these applications to OpenShift Container Platform clusters, ensuring consistency, reliability, and efficiency in managing Kubernetes applications. This integration supports automated, declarative, and version-controlled deployments, enhancing operational efficiency and maintaining application state across environments. The strength of ArgoCD is to help implement continuous deployment for cloud native applications.  
+ArgoCD automates the deployment and synchronization of these applications to OpenShift Container Platform clusters, ensuring consistency, reliability, and efficiency in managing Kubernetes applications. This integration supports automated, declarative, and version-controlled deployments, enhancing operational efficiency and maintaining application state across environments. ArgoCD helps implement continuous deployment for cloud-native applications.
 
 [id="values"]
 == Values
 
-Values files are essential for customizing settings in applications, services, or validated patterns, particularly in Kubernetes deployments using Helm charts. These files, written in plain YAML format, provide a structured and flexible approach to set parameters and configurations for deploying validated patterns.
+Values files are essential for customizing settings in applications, services, or validated patterns, particularly in Kubernetes deployments using Helm charts. These files, written in plain YAML format, provide a structured and flexible approach to set parameters and configurations for deploying validated patterns. The values files contain the variables that drive the configurations of your namespaces, subscriptions, applications, and other resources. The variables defined in your values files are referenced within your Helm chart templates. This ensures consistency and enables dynamic configurations. Combined with the power of the Helm's templating language you can implement conditionals and loops for adaptable and scalable configurations.
 
 Key characteristics of values files include:
 
 * Plain YAML Format: The human-readable and easy-to-edit syntax of YAML makes configuration settings accessible and straightforward to manage.
 * Hierarchical Nature: Values files support a hierarchy of values, allowing logical organization and structuring of configurations, which is especially useful in handling complex deployments.
-In the context of Helm charts, values files are crucial components that define configuration settings for deploying applications and managing resources within an OpenShift Container Platform cluster. They enable flexible, per-cluster customization while ensuring consistency with the overall validated pattern. This ensures that organizations can achieve efficient, secure, and consistent deployments across multiple OpenShift Container Platform clusters.
+In Helm charts, values files define configuration settings for deploying applications and managing resources within an OpenShift Container Platform cluster. They enable flexible, per-cluster customization while ensuring consistency with the overall validated pattern. This ensures that organizations can achieve efficient, secure, and consistent deployments across multiple OpenShift Container Platform clusters.
 
 A common practice is to use a base values file, such as `values-global.yaml`, for global settings, and then have cluster-specific values files for example `values-cluster1.yaml`, `values-cluster2.yaml` that override or add to the global settings. This approach allows for comprehensive customization while maintaining a centralized and organized configuration structure, promoting best practices for deployment and resource management.
 
@@ -89,7 +90,7 @@ When these applications are deployed, the following Kubernetes resources are typ
 
 One of the applications deployed by the Validated Patterns Operator is Red Hat Advanced Cluster Management (RHACM). RHACM is a comprehensive solution designed to manage multiple OpenShift Container Platform clusters, whether that is ten clusters or a thousand clusters and enforce policies across those clusters from a single pane of glass. 
 
-RHACM plays a pivotal role in the validated pattern framework by providing robust capabilities for managing Kubernetes clusters and enforcing policies across heterogeneous environments. It supports operational efficiency, scalability, compliance, and security, making it an essential tool for organizations looking to manage their Kubernetes infrastructure effectively.
+RHACM plays a pivotal role in the validated pattern framework by providing robust capabilities for managing Kubernetes clusters and enforcing policies across heterogeneous environments. RHACM is only installed when a pattern spans multiple clusters. It supports operational efficiency, scalability, compliance, and security, making it an essential tool for organizations looking to manage their Kubernetes infrastructure effectively.
 
 The Validated Patterns framework uses ACM policies to ensure that applications, targeted for specific clusters, are deployed to the appropriate cluster environments. The single pane of glass allows you to see information about your clusters. RHACM supports multiple cloud providers out of the box and it gives you a clear insight into the resources for that cluster using the observability feature. 
 
@@ -123,7 +124,7 @@ For more information, see link:https://docs.openshift.com/gitops/1.12/understand
 
 Namespaces in a validated pattern are essential for organizing and managing resources within an OpenShift Container Platform cluster, ensuring security, consistency, and efficient resource allocation. Recommendations for defining namespaces include using consistent naming conventions, ensuring isolation and security through policies and RBAC, setting resource quotas, tailoring configurations to specific environments, and designing namespaces for modularity and reusability across patterns or applications.
 
-Operators generally create their own namespace. But often you may need another different one however you should check and see if there are expected namespaces with the product. 
+Operators generally create their own namespaces, but you might need to create additional ones. Check if there are expected namespaces with the product before creating new ones. 
 
 For more information, see link:https://validatedpatterns.io/blog/2023-12-15-understanding-namespaces/[Understanding Namespace Creation using the Validated Patterns Framework].
 
