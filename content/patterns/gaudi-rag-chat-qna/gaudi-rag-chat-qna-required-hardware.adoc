@@ -15,7 +15,7 @@ include::modules/comm-attributes.adoc[]
 :imagesdir: ../../images
 
 [id="about-intel-gaudi"]
-= Intel Gaudi
+= Intel® Gaudi®
 
 With the surging demand for the advantages deep learning and generative Al can bring, there's never been a greater need for improved computing performance, efficiency, usability, and choice.
 
