@@ -51,7 +51,7 @@ View and download all of the diagrams above in our open source tooling site.
 
 [Open Diagrams](https://www.redhat.com/architect/portfolio/tool/index.html?#gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/diagrams/rag-demo-vp.drawio)
 
-![Diagram](/images/rag-llm-gitops/diagram.png)
+![Diagram](/images/rag-llm-gitops/diagram-edb.png)
 
 _Figure 6. Proposed demo architecture with OpenShift AI_
 
