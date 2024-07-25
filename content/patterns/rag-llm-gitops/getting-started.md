@@ -51,7 +51,8 @@ View and download all of the diagrams above in our open source tooling site.
 
 [Open Diagrams](https://www.redhat.com/architect/portfolio/tool/index.html?#gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/diagrams/rag-demo-vp.drawio)
 
-![Diagram](images/diagram.png)
+![Diagram](/images/rag-llm-gitops/diagram.png)
+
 _Figure 6. Proposed demo architecture with OpenShift AI_
 
 ### Components deployed
@@ -90,9 +91,9 @@ Following command will take about 5-10 minutes.
 
 Wait till the nodes are provisioned and running.
 
-![Diagram](images/nodes.png)
+![Diagram](/images/rag-llm-gitops/nodes.png)
 
-Alternatiely, follow the [instructions](./GPU_provisioning.md) to manually install GPU nodes, Node Feature Discovery Operator and NVIDIA GPU operator.
+Alternatiely, follow the [instructions](../gpu_provisioning) to manually install GPU nodes, Node Feature Discovery Operator and NVIDIA GPU operator.
 
 ### Deploy application
 
@@ -131,19 +132,19 @@ Following commands will take about 15-20 minutes
 - Select the `rag-llm` project from the drop down.
 - Following pods should be up and running.
 
-![Pods](images/rag-llm.png)
+![Pods](/images/rag-llm-gitops/rag-llm.png)
 
-Note: If the hf-text-generation-server is not running, make sure you have followed the steps to configure a node with GPU from the [instructions](./GPU_provisioning.md) provided above.
+Note: If the hf-text-generation-server is not running, make sure you have followed the steps to configure a node with GPU from the [instructions](../gpu_provisioning) provided above.
 
 ### 2: Launch the application
 
 - Click the `Application box` icon in the header, and select `Retrieval-Augmented-Generation (RAG) LLM Demonstration UI`
 
-![Launch Application](images/launch-application.png)
+![Launch Application](/images/rag-llm-gitops/launch-application.png)
 
 - It should launch the application
 
-  ![Application](images/application.png)
+  ![Application](/images/rag-llm-gitops/application.png)
 
 ### 3: Generate the proposal document
 
@@ -152,7 +153,7 @@ Note: If the hf-text-generation-server is not running, make sure you have follow
 - Enter the product as `RedHat OpenShift`
 - Click the `Generate` button, a project proposal should be generated. The project proposal also contains the reference of the RAG content. The project proposal document can be Downloaded in the form of a PDF document.
 
-  ![Routes](images/proposal.png)
+  ![Routes](/images/rag-llm-gitops/proposal.png)
 
 ### 4: Add an OpenAI provider
 
@@ -164,13 +165,13 @@ You can optionally add additional providers. The application supports the follow
 
 Click on the `Add Provider` tab to add a new provider. Fill in the details and click `Add Provider` button. The provider should be added in the `Providers` dropdown uder `Chatbot` tab.
 
-![Routes](images/add_provider.png)
+![Routes](/images/rag-llm-gitops/add_provider.png)
 
 ### 5: Generate the proposal document using OpenAI provider
 
 Follow the instructions in step 3 to generate the proposal document using the OpenAI provider.
 
-![Routes](images/chatgpt.png)
+![Routes](/images/rag-llm-gitops/chatgpt.png)
 
 ### 6: Rating the provider
 
@@ -185,8 +186,8 @@ By default, Grafana application is deployed in `llm-monitoring` namespace.To lau
   - Click on the grafana-admin-credentials and copy the GF_SECURITY_ADMIN_USER, GF_SECURITY_ADMIN_PASSWORD
 - Launch Grafana Dashboard
   - Click the `Application box` icon in the header, and select `Grafana UI for LLM ratings`
- ![Launch Application](images/launch-application.png)
+ ![Launch Application](/images/rag-llm-gitops/launch-application.png)
   - Enter the Grafana admin credentials.
   - Ratings are displayed for each model.
 
-![Routes](images/monitoring.png)
+![Routes](/images/rag-llm-gitops/monitoring.png)
