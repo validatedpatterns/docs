@@ -52,6 +52,3 @@ _Figure 1. Overview of the validated pattern for RAG Demo with Red Hat OpenShift
 ![Logical](https://gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/images/logical-diagrams/rag-demo-vp-ld.png)
 
 _Figure 2. Logical diagram of the RAG Demo with Red Hat OpenShift._
-
-## Test Plan
-GOTO: [Test Plan](./TESTPLAN.md)
