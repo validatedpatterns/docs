@@ -49,3 +49,5 @@ a valid Kubeconfig file in `~/.kube/config`, so this feature will create that fi
 * `K8S_AUTH_SSL_CA_CERT`: A filename containing the full CA chain for the cluster. Optional.
 
 3. Run `./pattern.sh make token-kubeconfig`. This will generate `~/.kube/config` if it does not already exist. This file can be used by the rest of the pattern tooling.
+
+Optionally, if you do not want to write ~/.kube/config, you can invoke the script directly with an argument to specify which file to write the kubeconfig out to. For example: `./pattern.sh common/scrtips/write-token-kubeconfig.sh ~/testfile` will write the kubeconfig to ~/testfile. It will still not overwrite an existing file.
