@@ -31,6 +31,7 @@
 :sgx-mcg-pattern: Intel SGX protected Vault for Multicloud GitOps pattern
 :amx-rhoai-mcg-pattern: Intel AMX accelerated Multicloud GitOps pattern with Openshift AI
 :qat-mcg-pattern: Intel QAT accelerated Multicloud GitOps pattern
+:gcqna-pattern: OPEA QnA chat accelerated with Intel Gaudi pattern
 :mcg: multicloud GitOps
 :med-pattern: Medical Diagnosis pattern
 :amx-med-pattern: Intel AMX accelerated Medical Diagnosis pattern
@@ -46,6 +47,7 @@
 :intel-qat: Intel QAT
 :intel-amx-full: Intel Advanced Matrix Extensions
 :intel-qat-full: Intel QuickAssist Technology
+:intel-gaudi: Intel Gaudi
 :intel-4th-gen-xeon: 4th Generation Intel Xeon
 :intel-5th-gen-xeon: 5th Generation Intel Xeon
 :intel-4th-gen-xeon-processors: 4th Generation Intel Xeon Scalable Processors

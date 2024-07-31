@@ -1,0 +1,32 @@
+---
+title: Required Hardware
+weight: 30
+aliases: /gaudi-rag-chat-qna/gaudi-rag-chat-qna-required-hardware/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+= Required Hardware
+
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-intel-gaudi"]
+= Intel® Gaudi®
+
+With the surging demand for the advantages deep learning and generative Al can bring, there's never been a greater need for improved computing performance, efficiency, usability, and choice.
+
+Intel® Gaudi® Al accelerators and software are designed to bring a new level of computing advantages and choice to data center training and inference-whether in the cloud or on-premises.
+
+More information can be found on https://www.intel.com/content/www/us/en/products/details/processors/ai-accelerators/gaudi-overview.html[official Gaudi website].
+
+[id="about-recommended-platforms"]
+= Recommended platforms
+
+We have deployed and tested this Validated Pattern on two platforms:
+
+* https://www.supermicro.com/en/products/system/ai/8u/sys-820gh-tnr2[Supermicro AI Training SuperServer SYS-820GH-TNR2]
+* https://www.dell.com/en-us/shop/ipovw/poweredge-xe9680[DELL PowerEdge XE9680 Rack Server]

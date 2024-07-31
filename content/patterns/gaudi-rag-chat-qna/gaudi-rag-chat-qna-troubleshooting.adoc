@@ -1,0 +1,49 @@
+---
+title: Troubleshooting
+weight: 40
+aliases: /gaudi-rag-chat-qna/gaudi-rag-chat-qna-troubleshooting/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: REFERENCE
+include::modules/comm-attributes.adoc[]
+
+[id="troubleshooting-the-pattern-deployment"]
+=== Troubleshooting common Pattern Deployment issues
+
+'''
+Problem:: Validated Pattern installation process is stuck on deploying Vault
+
+Solution:: Most common reason of this is that prerequisites are not satisfied i.e. Image Registry is not set up or CephFs is not set as a default StorageClass. Please refer to section `Getting started -> Prerequisites` and make sure all is done before proceeding to pattern deployment.
+
+
+'''
+
+Problem:: Downloading AI model `Llama-2-70b-chat-hf` using `download-model` Jupyter notebook is failing or TGI deployment fails after model is downloaded
+
+Solution:: Most often this is due to some network errors while downloading the model. If not sure if whole model was downloaded, please clear bucket `model-bucket` in RGW storage using `aws-cli` or any other method, and repeat process of downloading the model.
+
+
+'''
+
+Problem:: Builds of OPEA chat resources are failing, they cannot pull images
+
+Solution:: If all Build resources are failing, because of pulling image errors please makes ure that there is no proxy issue. Refer to section `Getting started -> Procedure`. Also make sure that Image Registry is properly set up.
+
+
+'''
+
+Problem:: TGI or TEI pods are showing errors
+
+Solution:: Consult https://docs.habana.ai/en/latest/PyTorch/Reference/Debugging_Guide/Model_Troubleshooting.html[Troubleshooting PyTorch Model] documentation for general Gaudi 2 troubleshooting steps. Gathering extended logs might be helpful, as mentioned in troubleshooting steps for "RuntimeError: tensor does not have a device". Container directory `/var/log/habana_logs` should then be inspected to see logs from SynapseAI and other components.
+
+
+'''
+
+Problem:: TGI shows "Cannot allocate connection" or "The condition [ isNicUp(port) ] failed." errors
+
+Solution:: Review https://docs.habana.ai/en/latest/Management_and_Monitoring/Embedded_System_Tools_Guide/Disable_Enable_NICs.html?highlight=external#disable-enable-gaudi-2-external-nics[Disable/Enable NICs] guide. Standalone machines that are not configured for scale up with Gaudi 2 NICs connected to a switch require running "To disable Gaudi external NICs, run the following command" in the "Disable/Enable Gaudi 2 External NICs" section.
+
+
+'''
