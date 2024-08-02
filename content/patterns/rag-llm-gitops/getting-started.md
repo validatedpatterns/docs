@@ -4,15 +4,6 @@ weight: 10
 aliases: /rag-llm-gitops/getting-started/
 ---
 
-### Demo Scenario
-
-- **Hugging Face Text Generation Inference Server:** The pattern deploys a Hugging Face TGIS server. The server deploys `meta-llama/Llama-2-7b-chat-hf` model. The server will require a GPU node.
-- **Redis Server:** A Redis Server is deployed to store vector embeddings created from Red Hat product documentation.
-- **Populate VectorDb Job:** The job creates the embeddings and populates the vector database (Redis).
-- **LLM Application:** This is a Chatbot application that can generate a project proposal by augmenting the LLM  with the Red Hat product documentation stored in vector db.
-- **Prometheus:**  Deploys a prometheus instance to store the various metrics from the LLM application and TGIS server.
-- **Grafana:** Deploys Grafana application to visualize the metrics.
-
 ## Deploying the demo
 
 Following commands will take about 15-20 minutes
@@ -30,6 +21,112 @@ cp values-secret.yaml.template ~/values-secret-rag-llm-gitops.yaml
 ./pattern.sh make install
 ```
 
+#### RAG Demo Workflow
+
+![Overview of workflow](https://gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/images/schematic-diagrams/rag-demo-vp-sd.png)
+
+_Figure 3. Schematic diagram for workflow of RAG demo with Red Hat OpenShift._
+
+
+#### RAG Data Ingestion
+
+![ingestion](https://gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/images/schematic-diagrams/rag-demo-vp-ingress-sd.png)
+
+_Figure 4. Schematic diagram for Ingestion of data for RAG._
+
+
+#### RAG Augmented Query
+
+
+![query](https://gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/images/schematic-diagrams/rag-demo-vp-query-sd.png)
+
+_Figure 5. Schematic diagram for RAG demo augmented query._
+
+In Figure 5, we can see RAG augmented query. Llama 2 model is used for language processing, LangChain to
+integrate different tools of the LLM-based application together and to process the PDF
+files and web pages, vector database such as PGVECTOR or REDIS, is used to store vectors, HuggingFace TGI is used to serve the Llama 2 model, Gradio is used for user interface and object storage to store language model and other datasets. Solution components are deployed as microservices in the Red Hat OpenShift cluster.
+
+#### Download diagrams
+View and download all of the diagrams above in our open source tooling site.
+
+[Open Diagrams](https://www.redhat.com/architect/portfolio/tool/index.html?#gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/diagrams/rag-demo-vp.drawio)
+
+![Diagram](/images/rag-llm-gitops/diagram-edb.png)
+
+_Figure 6. Proposed demo architecture with OpenShift AI_
+
+### Components deployed
+
+- **Hugging Face Text Generation Inference Server:** The pattern deploys a Hugging Face TGIS server. The server deploys `mistral-community/Mistral-7B-v0.2` model. The server will require a GPU node.
+- **EDB (PGVECTOR) / Redis Server:** A Vector Database server is deployed to store vector embeddings created from Red Hat product documentation.
+- **Populate VectorDb Job:** The job creates the embeddings and populates the vector database.
+- **LLM Application:** This is a Chatbot application that can generate a project proposal by augmenting the LLM with the Red Hat product documentation stored in vector db.
+- **Prometheus:** Deploys a prometheus instance to store the various metrics from the LLM application and TGIS server.
+- **Grafana:** Deploys Grafana application to visualize the metrics.
+
+## Deploying the demo
+
+Fork the [rag-llm-gitops](https://github.com/validatedpatterns/rag-llm-gitops) repo into your organization
+
+### Cloning repository
+
+```sh
+git clone https://github.com/<<your-username>>/rag-llm-gitops.git
+cd rag-llm-gitops
+oc login --token=<> --server=<> # login to Openshift cluster
+podman machine start
+# Copy values-secret.yaml.template to ~/values-secret-rag-llm-gitops.yaml.
+# You should never check-in these files
+# Add secrets to the values-secret.yaml that needs to be added to the vault.
+cp values-secret.yaml.template ~/values-secret-rag-llm-gitops.yaml
+```
+
+### Provision GPU MachineSet
+
+As a pre-requisite to deploy the application using the validated pattern, GPU nodes should be provisioned along with Node Feature Discovery Operator and NVIDIA GPU operator. To provision GPU Nodes
+
+Following command will take about 5-10 minutes.
+
+```sh
+./pattern.sh make create-gpu-machineset
+```
+
+Wait till the nodes are provisioned and running.
+
+![Diagram](/images/rag-llm-gitops/nodes.png)
+
+Alternatiely, follow the [instructions](../gpu_provisioning) to manually install GPU nodes, Node Feature Discovery Operator and NVIDIA GPU operator.
+
+### Deploy application
+
+***Note:**: This pattern supports two types of vector databases, PGVECTOR and REDIS. By default the pattern will deploy PGVECTOR as a vector DB. To deploy REDIS, change the global.db.type to REDIS in [values-global.yaml](./values-global.yaml).
+
+```yaml
+---
+global:
+  pattern: rag-llm-gitops
+  options:
+    useCSV: false
+    syncPolicy: Automatic
+    installPlanApproval: Automatic
+# Possible value for db.type = [REDIS, PGVECTOR]
+  db:
+    index: docs
+    type: PGVECTOR  <--- Default is PGVECTOR, Change the db type to REDIS for REDIS deployment
+main:
+  clusterGroupName: hub
+  multiSourceConfig:
+    enabled: true
+```
+
+Following commands will take about 15-20 minutes
+
+> **Validated pattern will be deployed**
+
+```sh
+./pattern.sh make install
+```
+
 ### 1: Verify the installation
 
 - Login to the OpenShift web console.
@@ -39,15 +136,15 @@ cp values-secret.yaml.template ~/values-secret-rag-llm-gitops.yaml
 
 ![Pods](/images/rag-llm-gitops/rag-llm.png)
 
-Note: If the hf-text-generation-server is not running, make sure you have followed the steps to configure a node with GPU from the [instructions](/rag-llm-gitops/gpuprovisioning) provided above.
+Note: If the hf-text-generation-server is not running, make sure you have followed the steps to configure a node with GPU from the [instructions](../gpu_provisioning) provided above.
 
 ### 2: Launch the application
 
-- Navigate to routes, Networking --> Routes
+- Click the `Application box` icon in the header, and select `Retrieval-Augmented-Generation (RAG) LLM Demonstration UI`
 
-  ![Routes](/images/rag-llm-gitops/routes.png)
+![Launch Application](/images/rag-llm-gitops/launch-application.png)
 
-- Click on the Location link and it should launch the application
+- It should launch the application
 
   ![Application](/images/rag-llm-gitops/application.png)
 
@@ -90,8 +187,8 @@ By default, Grafana application is deployed in `llm-monitoring` namespace.To lau
   - Navigate to Workloads --> Secrets
   - Click on the grafana-admin-credentials and copy the GF_SECURITY_ADMIN_USER, GF_SECURITY_ADMIN_PASSWORD
 - Launch Grafana Dashboard
-  - Navigate to Networking --> Routes in the llm-monitoring namespace.
-  - Click on the `Location` link for `grafana-route`.
+  - Click the `Application box` icon in the header, and select `Grafana UI for LLM ratings`
+ ![Launch Application](/images/rag-llm-gitops/launch-application.png)
   - Enter the Grafana admin credentials.
   - Ratings are displayed for each model.
 
