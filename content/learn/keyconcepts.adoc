@@ -101,7 +101,7 @@ In a validated pattern, a ClusterGroup organizes and manages clusters sharing co
 
 When joining a managed cluster to Red Hat Advanced Cluster Management (RHACM) or deploying a new cluster with RHACM, it must be assigned to at least one ClusterGroup. RHACM identifies the managed cluster's membership in a ClusterGroup and proceeds to set up the cluster, including installing the RHACM agent. Once the setup is complete, RHACM deploys GitOps and supplies it with information about the ClusterGroup. GitOps then retrieves the associated values file and proceeds to deploy the Operators, configurations, and charts accordingly.
 
-For more information, see link:https://validatedpatterns.io/learn/clustergroup-in-values-files/[ClusterGroup configuration in values files]. 
+For more information, see link:/values-files/clustergroup-in-values-files/[ClusterGroup configuration in values files]. 
 
 [id="GitOps"]
 == GitOps 
@@ -146,7 +146,7 @@ Ignoring security during the development of distributed enterprise applications 
 
 In the OpenShift Container Platform, secrets are used to securely store sensitive information like passwords, API keys, and certificates. These secrets are managed using Kubernetes secret objects within validated patterns, ensuring consistent, secure, and compliant deployments. This approach promotes best practices for security and simplifies the management of sensitive data across OpenShift Container Platform Container Platform deployments.
 
-For more information, see link:https://validatedpatterns.io/learn/secrets/[Secrets].
+For more information, see link:/secrets/secrets-management-in-the-Validated-Patterns-framework/[Overview of secrets management].
 
 [id="shared values"]
 == Shared values
