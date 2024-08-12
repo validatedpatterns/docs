@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Patterns quick start
 title: Importing a cluster
-weight: 21
+weight: 31
 aliases: /learn/importing-a-cluster/
 ---
 
