@@ -67,7 +67,7 @@ In Helm charts, values files define configuration settings for deploying applica
 
 A common practice is to use a base values file, such as `values-global.yaml`, for global settings, and then have cluster-specific values files for example `values-cluster1.yaml`, `values-cluster2.yaml` that override or add to the global settings. This approach allows for comprehensive customization while maintaining a centralized and organized configuration structure, promoting best practices for deployment and resource management.
 
-For more information, see link:https://validatedpatterns.io/learn/values-files/[Values].
+For more information, see link:/values-files/[Exploring values].
 
 [id="applications"]
 == Applications
