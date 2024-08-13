@@ -14,7 +14,7 @@ aliases: /emerging-disease-detection/
 // pattern_logo: emerging-disease-detection.png
 links:
   install: edd-getting-started
-  arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
+  arch: https://www.redhat.com/architect/portfolio/detail/6-enabling-medical-imaging-diagnostics-with-edge
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/emerging-disease-detection/issues
 ci: edd
