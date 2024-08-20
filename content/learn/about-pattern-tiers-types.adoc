@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Workflow
 title: Validated Pattern tiers
-weight: 41
+weight: 61
 ---
 
 :toc:

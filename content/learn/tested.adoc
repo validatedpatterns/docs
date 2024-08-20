@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Workflow
 title: Validated Patterns - Tested tier
-weight: 44
+weight: 64
 aliases: /requirements/tested/
 ---
 
