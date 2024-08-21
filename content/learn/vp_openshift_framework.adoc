@@ -178,6 +178,8 @@ pipeline. Library charts do not define any templates and therefore cannot be dep
 
 These groupings are used by OpenShift GitOps to deploy into the cluster. The configurations for each of the components inside an application are synced every three minutes by OpenShift GitOps to make sure that the site is up to date. The configuration can also be synced manually if you do not wish to wait up to three minutes.
 
+[source,text]
+----
 .
 ├── datacenter
 │   ├── external-secrets
@@ -189,9 +191,11 @@ These groupings are used by OpenShift GitOps to deploy into the cluster. The con
 │   └── manuela-stormshift
 └── secrets
     └── pipeline-setup
-
+----
 The configuration YAML for each component of the application is stored in the templates sub-directory. 
 
+[source,text]
+----
 .
 ├── external-secrets
 │   ├── Chart.yaml
@@ -216,7 +220,7 @@ The configuration YAML for each component of the application is stored in the te
     ├── README.md
     ├── templates
     └── values.yaml
-
+----
 == The `scripts` directory
 
 In some cases, an Operator or Helm chart may require additional configuration. When extra code is needed for deployment, it should be placed in the scripts directory. Typically, consumers of a validated pattern won't interact directly with these scripts, as they are executed by the existing automation (for example through the Makefile or OpenShift GitOps). If extra adjustments are required for your application, place the scripts here and run them through automation. The scripts directory should generally be treated as off-limits unless you're modifying the framework itself.
