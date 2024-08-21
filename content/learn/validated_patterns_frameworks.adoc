@@ -12,21 +12,13 @@ include::modules/comm-attributes.adoc[]
 
 == Introduction
 
-Validated patterns provides two frameworks to deploy applications; the OpenShift-based Validated Patterns framework and the Ansible GitOps Framework (AGOF). 
+Validated patterns provides two frameworks to deploy applications: the OpenShift-based Validated Patterns framework and the Ansible GitOps Framework (AGOF). 
 
-The OpenShift-based Validated Patterns framework is the commonly used way to deploy applications and infrastructure using OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat.
+The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat.
 
-Ansible GitOps Framework (AGOF) is an alternative to the OpenShift-based Validated Patterns framework, designed to provide a framework for GitOps without Kubernetes. AGOF is not a pattern itself; it is a framework for installing Ansible Automation Platform (AAP), and then using that as the GitOps engine to drive other pattern work. AGOF comes with code to install VMs in AWS, if desired, or else it can work with previously provisioned VMs, or a functional AAP Controller endpoint.
+Ansible GitOps Framework (AGOF) is an alternative framework, designed to provide a framework for GitOps without Kubernetes. AGOF is not a pattern itself; it is a framework for installing Ansible Automation Platform (AAP), and then using that as the GitOps engine to drive other pattern work. AGOF comes with code to install VMs in AWS, if desired, or else it can work with previously provisioned VMs, or a functional AAP Controller endpoint.
 
-The goal is, that developers, operators, security, and architects will use either framework to have secure and repeatable day one deployment mechanism and maintenance automation for day two operations.
-
-One of the most important goals of this framework is to provide consistency across any cloud provider - public or private. So while you could automate the handling for each of the cloud providers, the framework utilizes one Kubernetes distribution that runs on public or private clouds - the hybrid and/or multi cloud model.
-
-The framework depends on Red Hat OpenShift Container Platform (OCP). Once you have deployed Red Hat OCP wherever you wish to deploy your cloud native application pattern, then the framework can deploy on that platform in a few easy steps.
-
-A validated pattern has been tested and continues to be tested as the lifecycle of individual parts (Operators) change through release cycles. Red Hat's Quality Engineering team provides Continuous Integration of the pattern for new releases of Red Hat products (Operators).
-
-The validated patterns framework takes advantage of automation technology. It uses Cloud Native automation technology as much as possible. Occasionally the framework resorts to some scripts in order to get a pattern up and running faster.
+The goal with either framework, is that developers, operators, security, and architects build a secure and repeatable day one deployment mechanism and maintenance automation for day two operations.
 
 
 

@@ -14,7 +14,9 @@ include::modules/comm-attributes.adoc[]
 
 == OpenShift framework fundamentals
 
-The OpenShift validated patterns framework uses https://docs.openshift.com/container-platform/4.9/cicd/gitops/understanding-openshift-gitops.html[OpenShift GitOps] (ArgoCD) as the primary driver for deploying patterns and keeping them up to date. Validated patterns use Helm charts as the primary artifacts for GitOps. https://helm.sh/[Helm charts] provide a mechanism for templating that is powerful when building repeatable, automated deployments across different deployment environments (i.e. clouds, data-centers, edge, etc.)
+The OpenShift validated patterns framework uses https://docs.openshift.com/container-platform/latest/cicd/gitops/understanding-openshift-gitops.html[OpenShift GitOps] (ArgoCD) as the primary driver for deploying patterns and keeping them up to date. Validated patterns use Helm charts as the primary artifacts for GitOps. https://helm.sh/[Helm charts] provide a mechanism for templating that is powerful when building repeatable, automated deployments across different deployment environments (i.e. clouds, data-centers, edge, etc.)
+
+The framework provides consistency across any cloud provider - public or private. So while you could automate the handling for each of the cloud providers, the framework utilizes one Kubernetes distribution that runs on public or private clouds - the hybrid and/or multi cloud model.
 
 Many Cloud Native Computing Foundation (CNCF) projects use https://operatorframework.io/[Operators] to manage the lifecycle of their service. Whenever possible, validated patterns will make use of these Operators to deploy the application service.
 
@@ -26,55 +28,75 @@ https://docs.openshift.com/container-platform/4.9/cicd/pipelines/understanding-o
 
 Examining any of the existing patterns reveals the important organizational part of the validated patterns framework. Let's take a look at a couple of the existing validated patterns: Multicluster GitOps and Industrial Edge.
 
+===  Multicluster GitOps
+
 [source,text]
 ----
 ~/g/multicloud-gitops on main ◦ tree -L 2
 .
+├── ansible
+├── ansible.cfg
 ├── charts
 │   └── region
+│   └── all
 ├── common
 │   ├── acm
+|   ├── ansible
+|   ├── Changes.md
 │   ├── clustergroup
 │   ├── common -> .
 │   ├── examples
-│   ├── install
-│   ├── Makefile
-│   ├── Makefile.toplevel
-│   ├── pattern-vault.init
+│   ├── golang-external-secrets
+│   ├── hashicorp-vault
+│   ├── letsencrypt
+|   ├── LICENSE
+|   ├── Makefile
+|   ├── operator-install
+|   ├── README.md
 │   ├── reference-output.yaml
 │   ├── scripts
 │   ├── tests
 │   └── values-global.yaml
 ├── Makefile
+├── overrides
+├── pattern.sh -> ./common/scripts/pattern-util.sh
 ├── README.md
-├── scripts
-│   └── make_common_subtree.sh
+├── tests
 ├── values-global.yaml
+├── values-global-one.yaml
 ├── values-hub.yaml
-└── values-region-one.yaml
-
-11 directories, 11 files
+├── values-secret-multicloud-gitops.yaml
+└── values-secret.yaml.templatecd 
 ----
 
-First we notice some subdirectories: charts, common, and scripts - along with `values-` yaml files.
+First we notice some subdirectories: charts and common, along with `values-` yaml files.
 
+===  Industrial edge
 [source,text]
 ----
 ~/g/industrial-edge on stable-2.0 ◦ tree -L 2
 .
+├── ansible
+├── ansible.cfg
+├── Changes.md
 ├── charts
 │   ├── datacenter
-│   └── factory
+│   └─  factory
+|   └── secrets
 ├── common
 │   ├── acm
+|   ├── ansible
+│   ├── clustergroup
 │   ├── common -> .
 │   ├── examples
-│   ├── install
-│   ├── Makefile
-│   ├── Makefile.toplevel
+│   ├── golang-external-secrets
+│   ├── hashicorp-vault
+│   ├── letsencrypt
+|   ├── LICENSE
+|   ├── operator-install
 │   ├── scripts
-│   ├── site
-│   ├── values-datacenter.yaml
+│   ├── tests
+|   ├── Changes.md
 │   └── values-global.yaml
 ├── docs
 │   ├── images
@@ -83,7 +105,10 @@ First we notice some subdirectories: charts, common, and scripts - along with `v
 │   ├── import-cluster.png
 │   ├── import-with-kubeconfig.png
 │   └── launch-acm-console.png
+├── LICENSE
 ├── Makefile
+├── overrides
+|── pattern.sh -> ./common/scripts/pattern-util.sh
 ├── README.md
 ├── scripts
 │   └── sleep-seed.sh
@@ -91,6 +116,7 @@ First we notice some subdirectories: charts, common, and scripts - along with `v
 ├── values-datacenter.yaml
 ├── values-factory.yaml
 ├── values-global.yaml
+├── values-hub.yaml -> values-datacenter.yaml
 └── values-secret.yaml.template
 
 14 directories, 16 files
