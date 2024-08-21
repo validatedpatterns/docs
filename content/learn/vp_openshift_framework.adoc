@@ -136,7 +136,7 @@ We see the same or similar files in the both patterns directories.
 
 == The `common` directory
 
-The core components that make the Validated Patterns framework work are contained in the common repository. These include:
+The core components that make the Validated Patterns framework are contained in the common repository. These include:
 
 * OpenShift GitOps configuration
 * Supports our clusterGroup and GitOps policies
@@ -149,22 +149,24 @@ The common repository contains all the shared manifests for the Validated Patter
 
 === Breakdown of common repository 
 
-THis table details the key components of the common repository: 
+This table details the key components of the common repository: 
 
 [cols="2,2", options="header"]
 |===
-| Column 1 | Column 2
+| Component | Description
 
-| Value 1  | Value 2
-| Value 3  | Value 4
-| Value 5  | Value 6
-| Value 7  | Value 8
-| Value 9  | Value 10
+| acm  | Contains the helm charts which contains policies and is used to configure the deployment of the Advance Cluster Manager.
+| ansible  | This directory contains the ansible roles and modules that support the secrets management for a pattern.
+| clustergroup | Contains the helm chart used to create namespace, subscriptions, projects, and applications described in the values files. This is the seed for all patterns.
+| golang-external-secrets  | Helm chart for External Secrets Operator that integrates external secret management systems like AWS Secrets Manager, HashiCorp Vault, Google Secrets Manager, Azure Key Vault, IBM Cloud Secrets Manager, Akeyless.
+| hashicorp-vault  | Contains the helm chart for HashiCorp Vault. 
+|operator-install  | Contains the helm chart used by the Validated Patterns Operator to create the openshift-gitops component and create the initial ArgoCD applications for the Validated Pattern.
+| scripts  | Directory which contains utility scripts used by the Validated Pattern Framework.
 |===
 
 == The `charts` directory
 
-This is where validated patterns keep the helm charts for a pattern. The helm charts are used deploy and manage the various components of the applications deployed at a site. By convention, the charts are broken out by site location. You may see `datacenter`, `hub`, `factory`, or other site names in there.
+This is where validated patterns keep the helm charts for a pattern. The helm charts are used to deploy and manage the various components of the applications deployed at a site. By convention, the charts are broken out by site location. You may see `datacenter`, `hub`, `factory`, or other site names in there.
 
 Each site has sub-directories based on application or library component groupings.
 
@@ -176,15 +178,48 @@ pipeline. Library charts do not define any templates and therefore cannot be dep
 
 These groupings are used by OpenShift GitOps to deploy into the cluster. The configurations for each of the components inside an application are synced every three minutes by OpenShift GitOps to make sure that the site is up to date. The configuration can also be synced manually if you do not wish to wait up to three minutes.
 
-image::framework/dir-ie-charts.png[link:"/images/framework/dir-ie-charts.png"]
+.
+├── datacenter
+│   ├── external-secrets
+│   ├── manuela-data-lake
+│   ├── manuela-tst
+│   ├── opendatahub
+│   └── pipelines
+├── factory
+│   └── manuela-stormshift
+└── secrets
+    └── pipeline-setup
 
-The configuration YAML for each component of the application is stored in the templates sub-directory. For example, the Industrial Edge `datacenter` has a application called Kafka. The configuration for Kafka is stored in `kafka/templates`.
+The configuration YAML for each component of the application is stored in the templates sub-directory. 
 
-image::framework/dir-ie-kafka-charts.png[link:"/images/framework/dir-ie-kafka-charts.png"]
+.
+├── external-secrets
+│   ├── Chart.yaml
+│   ├── templates
+│   └── values.yaml
+├── manuela-data-lake
+│   ├── Chart.yaml
+│   ├── templates
+│   └── values.yaml
+├── manuela-tst
+│   ├── Chart.yaml
+│   ├── templates
+│   └── values.yaml
+├── opendatahub
+│   ├── Chart.yaml
+│   ├── templates
+│   └── values.yaml
+└── pipelines
+    ├── Chart.yaml
+    ├── extra
+    ├── images
+    ├── README.md
+    ├── templates
+    └── values.yaml
 
 == The `scripts` directory
 
-Sometimes an Operator and/or the Helm charts still leave some work to be done with regard to final configuration. When extra code is needed to deploy, the extra code is placed in the `scripts` directory. The majority of the time a consumer of a validated pattern will only use this code through the existing automation. I.e. The `Makefile` or OpenShift GitOps will make use of these scripts. So - If there is extra _massaging_ required for your application, put the scripts in here and try to run them from within the automation. It is very unlikely you will need to change the scripts directory. Consider `scripts` out of bounds unless you are modifying the framework.
+In some cases, an Operator or Helm chart may require additional configuration. When extra code is needed for deployment, it should be placed in the scripts directory. Typically, consumers of a validated pattern won't interact directly with these scripts, as they are executed by the existing automation (for example through the Makefile or OpenShift GitOps). If extra adjustments are required for your application, place the scripts here and run them through automation. The scripts directory should generally be treated as off-limits unless you're modifying the framework itself.
 
 == Applications and `values-` files
 
@@ -205,19 +240,19 @@ This is used to set variables for helm charts across the pattern. It contains th
 . *`values-<site>.yaml`*:
 Each specific site requires information regarding what applications and subscriptions are required for that site. This file contains a list of namespaces, applications, subscriptions, the operator versions etc. for that site.
 . *`values-secret.yaml.template`*:
-All patterns require some secrets for artifacts included in the pattern. E.g. credentials for GitHub, AWS, or Quay.io. The framework provides a safe way to load those secrets into a vault for consumption by the pattern. This template file can be copied to your home directory, the secret values applied, and the validated pattern will go look for `values-secrets.yaml` in your home directory. *Do not leave a `values-secrets.yaml` file in your cloned git directory or it may end up in your (often public) Git repository, like GitHub.*
+All patterns require some secrets for artifacts included in the pattern. For example credentials for GitHub, AWS, or Quay.io. The framework provides a safe way to load those secrets into a vault for consumption by the pattern. This template file can be copied to your home directory, the secret values applied, and the validated pattern will go look for `values-secrets.yaml` in your home directory. *Do not leave a `values-secrets.yaml` file in your cloned git directory or it may end up in your (often public) Git repository, like GitHub.*
 
 === Values files can have some overrides.
 
-. Version overrides can be used to set specific values for OCP versions. E.g. *`values-hub-4.12.yaml`* allows you to tweak a specific value for OCP 4.12 on the Hub cluster.
-. Version overrides can be used to set specific values for specific cloud providers. E.g. *`values-AWS.yaml`* would allow you to tweak a specific value for all cluster groups deployed on AWS.
+. Version overrides can be used to set specific values for OCP versions. For example *`values-hub-4.16.yaml`* allows you to tweak a specific value for OCP 4.16 on the Hub cluster.
+. Version overrides can be used to set specific values for specific cloud providers. For example *`values-AWS.yaml`* would allow you to tweak a specific value for all cluster groups deployed on AWS.
 
 === Other combination examples include:
 
 . *`values-hub-Azure.yaml`* only apply this Azure tweak on the hub cluster.
-. *`values-4.12.yaml`* apply these OCP 4.12 tweaks to all cluster groups in this pattern.
+. *`values-4.16.yaml`* apply these OCP 4.16 tweaks to all cluster groups in this pattern.
 
-Current supported cloud providers include *`AWS`*, *`Azure`*, and *`GCP`*.
+Current supported cloud providers include *`AWS`*, *`Azure`*, *`GCP`*, and *Nutanix*.
 
 == Applications & subscriptions
 
