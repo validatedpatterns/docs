@@ -1,0 +1,9 @@
+{{- if (eq .RelPermalink "/patterns/") }}
+  {{- $patterns := where $.Pages "Section" "patterns"}}
+  {{- $patterns_len := $patterns | len }}
+    {{- $pattern_list := slice }}
+    {{- range $index, $pattern :=  $patterns.ByTitle }}
+      {{- $pattern_list = $pattern_list | append (dict $pattern.Title $pattern.Params) }}
+    {{- end }}
+  {{- $pattern_list | jsonify }}
+{{- end }}
