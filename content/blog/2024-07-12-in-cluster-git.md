@@ -84,12 +84,10 @@ git -c http.sslVerify=false clone https://gitea-route-vp-gitea.apps.mcg-hub.aws.
 ```
 In order to avoid the `sslVerify=false` setting you need to download your clusters CA and import it into the git config.
 
-To be able to push changes, for the time being, we will need to convert it to a regular repo by going to 
-`Repository` -> `Settings` -> `Repository` and at the bottom choose `Convert to Regular Repository`.
-
-Once that is done it is best to create a token in gitea under `Settings` -> `Applications` -> `Manage Access Tokens`.
-Create a new token that has repository `Read and Write` permissions. With this token you can clone it once with authentication
-and then push changes to the gitea repository:
+You can create a token in gitea under `Settings` -> `Applications` -> `Manage
+Access Tokens` that repository `Read and Write` permissions. With this token
+you can clone it once with authentication and then push changes to the gitea
+repository:
 ```sh
 git -c http.sslVerify=false clone https://gitea_admin:<token>@gitea-route-vp-gitea.apps.mcg-hub.aws.validatedpatterns.io/gitea_admin/multicloud-gitops.git
 git -c http.sslVerify=false push origin mytestbranch
