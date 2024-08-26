@@ -58,7 +58,7 @@ _Figure 6. Proposed demo architecture with OpenShift AI_
 ### Components deployed
 
 - **Hugging Face Text Generation Inference Server:** The pattern deploys a Hugging Face TGIS server. The server deploys `mistral-community/Mistral-7B-v0.2` model. The server will require a GPU node.
-- **EDB (PGVECTOR) / Redis Server:** A Vector Database server is deployed to store vector embeddings created from Red Hat product documentation.
+- **EDB Postgres for Kubernetes / Redis Server:** A Vector Database server is deployed to store vector embeddings created from Red Hat product documentation
 - **Populate VectorDb Job:** The job creates the embeddings and populates the vector database.
 - **LLM Application:** This is a Chatbot application that can generate a project proposal by augmenting the LLM with the Red Hat product documentation stored in vector db.
 - **Prometheus:** Deploys a prometheus instance to store the various metrics from the LLM application and TGIS server.
@@ -99,7 +99,7 @@ Alternatiely, follow the [instructions](../gpu_provisioning) to manually install
 
 ### Deploy application
 
-***Note:**: This pattern supports two types of vector databases, PGVECTOR and REDIS. By default the pattern will deploy PGVECTOR as a vector DB. To deploy REDIS, change the global.db.type to REDIS in [values-global.yaml](./values-global.yaml).
+***Note:**: This pattern supports two types of vector databases, EDB Postgres for Kubernetes and Redis. By default the pattern will deploy EDB Postgres for Kubernetes as a vector DB. To deploy Redis, change the global.db.type to REDIS in [values-global.yaml](./values-global.yaml).
 
 ```yaml
 ---
@@ -109,10 +109,10 @@ global:
     useCSV: false
     syncPolicy: Automatic
     installPlanApproval: Automatic
-# Possible value for db.type = [REDIS, PGVECTOR]
+# Possible value for db.type = [REDIS, EDB]
   db:
     index: docs
-    type: PGVECTOR  <--- Default is PGVECTOR, Change the db type to REDIS for REDIS deployment
+    type: EDB  <--- Default is EDB, Change the db type to REDIS for Redis deployment
 main:
   clusterGroupName: hub
   multiSourceConfig:
