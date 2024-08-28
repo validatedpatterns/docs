@@ -30,3 +30,12 @@ taxonomies:
   rh_product: 'rh_products'
   other_product: 'other_products'
   blog_tag: 'blog_tags'
+
+mediaTypes:
+  application/json:
+    suffixes:
+    - json
+
+outputFormats:
+  patterns:
+    mediatype: application/json
