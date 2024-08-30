@@ -95,7 +95,7 @@ Wait till the nodes are provisioned and running.
 
 ![Diagram](/images/rag-llm-gitops/nodes.png)
 
-Alternatiely, follow the [instructions](../gpu_provisioning) to manually install GPU nodes, Node Feature Discovery Operator and NVIDIA GPU operator.
+Alternatively, follow the [instructions](../gpu_provisioning) to manually install GPU nodes, Node Feature Discovery Operator and NVIDIA GPU operator.
 
 ### Deploy application
 
@@ -150,7 +150,7 @@ Note: If the hf-text-generation-server is not running, make sure you have follow
 
 ### 3: Generate the proposal document
 
-- It will use the default provider and model configured as part of the application deployment. The default provider is a Hugging Face model server running in the OpenShift. The model server is deployed with this valdiated pattern and requires a node with GPU.
+- It will use the default provider and model configured as part of the application deployment. The default provider is a Hugging Face model server running in the OpenShift. The model server is deployed with this validated pattern and requires a node with GPU.
 - Enter any company name
 - Enter the product as `RedHat OpenShift`
 - Click the `Generate` button, a project proposal should be generated. The project proposal also contains the reference of the RAG content. The project proposal document can be Downloaded in the form of a PDF document.
@@ -165,7 +165,7 @@ You can optionally add additional providers. The application supports the follow
 - OpenAI
 - NVIDIA
 
-Click on the `Add Provider` tab to add a new provider. Fill in the details and click `Add Provider` button. The provider should be added in the `Providers` dropdown uder `Chatbot` tab.
+Click on the `Add Provider` tab to add a new provider. Fill in the details and click `Add Provider` button. The provider should be added in the `Providers` dropdown under `Chatbot` tab.
 
 ![Routes](/images/rag-llm-gitops/add_provider.png)
 
@@ -177,7 +177,7 @@ Follow the instructions in step 3 to generate the proposal document using the Op
 
 ### 6: Rating the provider
 
-You can provide rating to the model by clicking on the `Rate the model` radio button. The rating will be captured as part of the metrics and can help the company which model to deploy in prodcution.
+You can provide rating to the model by clicking on the `Rate the model` radio button. The rating will be captured as part of the metrics and can help the company which model to deploy in production.
 
 ### 7: Grafana Dashboard
 

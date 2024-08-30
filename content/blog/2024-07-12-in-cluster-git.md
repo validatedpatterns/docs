@@ -73,7 +73,7 @@ Once logged in with the `gitea_admin` user whose password is contained in the `g
 you will see the repository that has been configured inside gitea:
 ![gitea-repository-list](/images/gitea-repository-list.png)
 
-Clickin on the repository will show the actual code and the usual git related information (branch, tags, etc):
+Clicking on the repository will show the actual code and the usual git related information (branch, tags, etc):
 ![gitea-repository-show](/images/gitea-repository-show.png)
 
 ## Gitea usage

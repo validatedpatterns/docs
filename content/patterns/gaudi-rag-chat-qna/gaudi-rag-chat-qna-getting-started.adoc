@@ -244,7 +244,7 @@ image::/images/gaudi-rag-chat-qna/gaudi-rag-chat-qna-create-workbench.png[Create
 image::/images/gaudi-rag-chat-qna/gaudi-rag-chat-qna-deploy-notebook-1.png[Deploy Jupyter notebook 1]
 image::/images/gaudi-rag-chat-qna/gaudi-rag-chat-qna-deploy-notebook-2.png[Deploy Jupyter notebook 2]
 
-. After workbench is created go to this Jupyter notebook dashboard and upload Jupter notebook file `/download-model.ipynb` to the file explorer so it looks like this:
+. After workbench is created go to this Jupyter notebook dashboard and upload Jupyter notebook file `/download-model.ipynb` to the file explorer so it looks like this:
 +
 image::/images/gaudi-rag-chat-qna/gaudi-rag-chat-qna-notebook-view.png[Jupyter notebook view]
 
