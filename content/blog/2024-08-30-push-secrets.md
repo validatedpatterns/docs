@@ -27,8 +27,21 @@ secrets across a distributed environment.
 ## How It Works
 
 To illustrate how this feature works, let’s walk through a simple example where
-we push a secret using a PushSecret resource.
+we push an existing kubernetes secret called `existing-secret` into the Vault
+using a PushSecret resource. The existing secret could be the following:
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: existing-secret
+  namespace: hello-world
+data:
+  bar: YmFyCg== # The secret field we are interested in pushing into the vault
+  foo: ....
+```
 
+And here is the `PushSecret` resource that will fetch the `bar` key from the existing
+secret above and push it into the vault.
 ```yaml
 apiVersion: external-secrets.io/v1alpha1
 kind: PushSecret
@@ -42,7 +55,7 @@ spec:
         remoteRef:
           remoteKey: pushsecrets/testme # the remote vault path
           property: baz # the key in the path defined above inside the vault
-        secretKey: bar # The property of the local secret that will be pushed to `baz` in the vault
+        secretKey: bar # The property of the local `existing-secret` secret that will be pushed to `pushsecrets/testme/baz` in the vault
   deletionPolicy: Delete
   refreshInterval: 10s
   secretStoreRefs:
