@@ -192,7 +192,7 @@ These groupings are used by OpenShift GitOps to deploy into the cluster. The con
 └── secrets
     └── pipeline-setup
 ----
-The configuration YAML for each component of the application is stored in the templates sub-directory. 
+The configuration YAML for each component of the application is stored in the templates subdirectory. 
 
 [source,text]
 ----
