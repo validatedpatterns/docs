@@ -1,6 +1,3 @@
-tei
-synapseai
-atest
 aab
 aap
 abd
@@ -59,6 +56,7 @@ arslan
 arslankhanali
 arunhari
 arunkumar
+atest
 atlassian
 atliqsqqydaykmfejpyhfvukgsgywv
 atuc
@@ -77,6 +75,7 @@ baldessari
 baremetal
 baremetal integrations
 baseos
+baz
 bcb
 bck
 bd
@@ -724,6 +723,8 @@ pstools
 pubkey
 publickey
 purpu
+pushsecret
+pushsecrets
 pv
 pvcs
 pxe
@@ -873,6 +874,7 @@ supportmatrix
 sur
 svc
 svg
+synapseai
 synched
 syncpolicy
 sys
@@ -885,6 +887,7 @@ targetport
 tbd
 tcp
 techpreview
+tei
 tekron
 tekton
 tektoncd
@@ -897,6 +900,7 @@ testfile
 testid
 testidtgi
 testlab
+testme
 testsource
 tf
 tgfqgvpdh
