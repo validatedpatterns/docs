@@ -1,150 +1,53 @@
-<!doctype html><html><head><link rel=stylesheet href=https://validatedpatterns.io/sass/patternfly.css><link rel=stylesheet href=/css/custom.css><link rel=stylesheet href=https://validatedpatterns.io/sass/patternfly-addons.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/solid.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/fontawesome.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/brands.css><title>More Secrets Options Now Available with Validated Patterns | Validated Patterns</title></head><body><div class=pf-c-page><header class=pf-c-page__header><div class=pf-c-page__header-brand><a href=/ class=pf-c-page__header-brand-link><img src=/images/validated-patterns.png alt="Validated Patterns"></a></div><div class=pf-c-page__header-tools><nav class="pf-c-nav pf-m-horizontal" role=navigation><ul class=pf-c-nav__list><li class=pf-c-nav__item><a class=pf-c-nav__link href=/patterns/ title=Patterns>Patterns</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/learn/ title="Learn about Validated Patterns">Learn</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/contribute/ title="Contribute to Validated Patterns">Contribute</a></li><li class="pf-c-nav__item pf-m-current"><a class=pf-c-nav__link href=/blog/ title=Blog>Blog</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/ci/ title="CI Status">Status</a></li></ul></nav><form id=search action=https://validatedpatterns.io/search/ method=get><div class=pf-c-search-input><div class=pf-c-input-group><div class=pf-c-search-input__bar><span class=pf-c-search-input__text><span class=pf-c-search-input__icon><i class="fas fa-search fa-fw" aria-hidden=true></i>
+<!doctype html><html><head><link rel=stylesheet href=https://validatedpatterns.io/sass/patternfly.css><link rel=stylesheet href=/css/custom.css><link rel=stylesheet href=https://validatedpatterns.io/sass/patternfly-addons.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/solid.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/fontawesome.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/brands.css><title>Pushing secrets | Validated Patterns</title></head><body><div class=pf-c-page><header class=pf-c-page__header><div class=pf-c-page__header-brand><a href=/ class=pf-c-page__header-brand-link><img src=/images/validated-patterns.png alt="Validated Patterns"></a></div><div class=pf-c-page__header-tools><nav class="pf-c-nav pf-m-horizontal" role=navigation><ul class=pf-c-nav__list><li class=pf-c-nav__item><a class=pf-c-nav__link href=/patterns/ title=Patterns>Patterns</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/learn/ title="Learn about Validated Patterns">Learn</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/contribute/ title="Contribute to Validated Patterns">Contribute</a></li><li class="pf-c-nav__item pf-m-current"><a class=pf-c-nav__link href=/blog/ title=Blog>Blog</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/ci/ title="CI Status">Status</a></li></ul></nav><form id=search action=https://validatedpatterns.io/search/ method=get><div class=pf-c-search-input><div class=pf-c-input-group><div class=pf-c-search-input__bar><span class=pf-c-search-input__text><span class=pf-c-search-input__icon><i class="fas fa-search fa-fw" aria-hidden=true></i>
 </span><input id=search-input name=query class=pf-c-search-input__text-input type=text placeholder=Search aria-label=Search></span></div><button form=search class="pf-c-button pf-m-control" type=submit aria-label=Search value=search>
 <i class="fas fa-arrow-right" aria-hidden=true></i></button></div></div></form></div></header><div class=pf-c-page__sidebar><div class=pf-c-page__sidebar-body><div class="pf-c-nav pf-m-light"><ul class=pf-c-nav__list><li class=pf-c-nav__item><a href=/blog/ class=pf-c-nav__link><span class="pf-c-icon pf-m-md pf-m-inline"><span class=pf-c-icon__content><i class="fas fa-angle-left" aria-hidden=true></i>
-</span></span><span style=padding-left:10px>Back to Blog</span></a></li></ul></div></div></div><main class=pf-c-page__main tabindex=0 data-bs-spy=scroll data-bs-target=#TableOfContents data-bs-offset=50><section class=pf-c-page__main-section><div class=pf-u-display-flex><div class=pf-c-content><h1>More Secrets Options Now Available with Validated Patterns</h1><div style="margin:10px 0">by Martin Jackson</div><div style="margin:10px 0">January 26, 2024</div><div style="margin:20px 0"><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>patterns</span>
-</span><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>secrets</span></span></div><hr class=pf-c-divider><div class=page-abstract><h1 id=more-secrets-options-now-available-with-validated-patterns>More Secrets Options Now Available with Validated Patterns</h1><h2 id=overview>Overview</h2><p>One of the things about the kubernetes application management experience that
-we wanted to explore and improve as part of the Validated Patterns initiative
-was the secrets handling in GitOps. So we worked out a scheme that stored
-secret material in a dedicated secrets store, using the External Secrets Operator
-to project that secret material into the applications using ESO&rsquo;s powerful and
-convenient abstraction and templating features. At that time, HashiCorp Vault
-was well supported and popular in the community, as was using ESO to retrieve
-secrets from it. All of the major hyperscaler keystores are supported (AWS,
-Azure, GCP), but multi- or hybrid- cloud solutions that can be &ldquo;self-contained&rdquo;
-are either less well supported or the solutions themselves lean towards SaaS
-offerings.</p><p>Almost two years later, the secrets landscape has shifted somewhat. As a Red
-Hat project, Validated Patterns initiative gravitates towards Red Hat-supported
-solutions, and neither HashiCorp Vault nor ESO are currently Red Hat supported.
-Meanwhile, the only backend we provided a code path to drive with ESO was Vault.</p><p>This nullifies one of the major reasons we wanted to use ESO in the first place -
-namely, the ability to easily swap out secrets backends in case Vault was not
-usable for some reason. Earlier in 2023, one of our engineers did a proof of
-concept of ESO support using the AWS Secrets Manager backend - demonstrating that
-ESO delivered on its promise of multiple secret store support. Adapting ESO was
-the easy part - the hard part is building more abstraction into the VP secrets
-handling code that runs on pattern install.</p><p>To this end, we decided we would expand secrets support by introducing at least
-one new backend - and we chose the kubernetes backend, because it is self-contained
-(that is, it can be run on-prem and requires no new products or projects to be
-installed), and is a useful vehicle for introducing an abstraction layer for
-validated patterns secret parsing. In addition, dealing with kubernetes secrets
-objects directly has the side effect of enabling us to provide a mechanism for
-users to inject their secrets directly into their patterns, bypassing the need
-to use any secrets manager or ESO at all. This also provides benefits to installations
-where only commercially supported solutions can be installed, since ESO is
-currently not commercially supported by any entity.</p><p>In a nutshell, the new features depend on an abstraction of secret file parsing, so
-that the secrets are held in memory in a datastructure that is then processed and
-loaded by the appropriate backend code.</p><p>Users of the pattern framework will be able to change secrets backends as straightforwardly
-as we can make possible. The only other change the user will need to make (to use another
-ESO backend) is to use the backend&rsquo;s mechanism to refer to keys. (For example: in Vault,
-keys have have names like <code>secret/data/global/config-demo</code>; in the Kubernetes backend
-it would just be the secret object name that&rsquo;s being used to store the secret material,
-such as <code>config-demo</code>).</p><h2 id=chart-changes>Chart changes</h2><p>The clusterSecretStore related chart elements have moved to
-values-global.yaml, specifically <code>global.secretStore.backend</code>. For example, from
-multicloud-gitops:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>global</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>pattern</span>: <span style=color:#ae81ff>multicloud-gitops</span>
-</span></span><span style=display:flex><span>  <span style=color:#f92672>options</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>useCSV</span>: <span style=color:#66d9ef>false</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>syncPolicy</span>: <span style=color:#ae81ff>Automatic</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>installPlanApproval</span>: <span style=color:#ae81ff>Automatic</span>
-</span></span><span style=display:flex><span>  <span style=color:#f92672>secretStore</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>backend</span>: <span style=color:#ae81ff>kubernetes</span>
-</span></span></code></pre></div><p>Previously, the <code>secretStore</code> setting was done per-chart; but ordinarily this
-setting will hold for the entire cluster, which may include many charts. Because
-of this, we will move these settings in our charts. (Older configs will not
-break if they still use vault; and it is still an option to override each
-chart if you want to do that.)</p><p>Individual secret keys used for ESO lookups will need to be overridden or changed
-to use the kubernetes backend.</p><p>This values-global setting is also used by the Ansible workflow to decide which
-backend to inject secrets into.</p><h2 id=the-vault-backend---unchanged-interface-new-plumbing>The &ldquo;vault&rdquo; Backend - Unchanged Interface, New plumbing</h2><p>The vault support now has a new code path to follow, but supports exactly the same
-features in the same ways it always has. Vault is still the default backend for
-patterns, and all existing patterns should be able to adopt the new code path without
-making any changes. Any other experience is a bug we will fix.</p><p>All of the defaults for the new code path are designed to work with existing
-vault-based configurations; the new features are entirely optional and we do not
-expect breakage or regressions to existing vault-based configurations.</p><h2 id=the-kubernetes-backend-new>The &ldquo;kubernetes&rdquo; Backend <em>new</em></h2><p>New features have been introduced to the secrets structure to support the use of the
-Kubernetes ESO backend. See the below details for the new options and how they are processed
-by the <code>kubernetes</code> parsing strategy.</p><h2 id=the-none-backend-new>The &ldquo;none&rdquo; Backend <em>new</em></h2><p>New features have been introduced to the secrets structure to support not using an ESO
-ESO backend, but rather injecting secrets objects directly into the pattern. This violates
-the spirit of GitOps by not recording the details of the deployment in a versioned way.
-However users might want or need to make this tradeoff for different reasons. See the below
-details for the new options and how they are processed by the <code>none</code> parsing strategy.</p><p>At present, any external secret objects will need to be deleted from the repository to use
-the <code>none</code> backend - since the ArgoCD application will not sync when a non-existing CRD is
-referenced.</p><h2 id=how-to-use-a-non-default-backend>How to Use a non-default Backend</h2><p>We have provided Makefile targets to switch between backends. These targets edit the pattern
-configuration files in-place; in keeping with the GitOps philosophy they change the files in
-git that control how the application is deployed.</p><p>These Makefile targets are:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>  secrets-backend-vault                Edits values files to use default Vault+ESO secrets config
-</span></span><span style=display:flex><span>  secrets-backend-kubernetes           Edits values file to use Kubernetes+ESO secrets config
-</span></span><span style=display:flex><span>  secrets-backend-none                 Edits values files to remove secrets manager + ESO
-</span></span></code></pre></div><p>Run the makefile target in your repo to effect the necessary changes. If the command makes changes,
-it will display them in <code>git diff</code> format, and it will be up to you to commit and push the result
-to effect the change. Nothing will change on your cluster until you commit and push.</p><h2 id=using-the-old-system---the-legacy-load-secrets-makefile-target>Using the old system - The <code>legacy-load-secrets</code> Makefile target</h2><p>The existing vault-utils codepath is available via the <code>legacy-load-secrets</code>
-Makefile target. If secrets loading fails, or you just want to use the other
-system, you can run <code>make legacy-load-secrets</code> after <code>make install</code> and it will
-run those scripts and the Ansible playbooks and roles associated with them.</p><h2 id=deprecation-of-v10-secrets>Deprecation of v1.0 Secrets</h2><p>The v1.0 secrets format has not been used in the Validated Patterns framework
-for over a year now. The v2.0 framework is a strict superset of the v1.0
-framework. Support for the v1.0 framework is still available via the
-<code>legacy-load-secrets</code> code path, but this may be removed in the future.</p><h2 id=updates-to-the-secrets-v20-schema>Updates to the Secrets v2.0 Schema</h2><p>New features have been added at both the file level and the per-secret level
-to support the new backends:</p><h3 id=top-level-additions>Top-level Additions</h3><h4 id=secretstorenamespace><code>secretStoreNamespace</code></h4><p>example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span>---
-</span></span><span style=display:flex><span><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;2.0&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>secretStoreNamespace</span>: <span style=color:#e6db74>&#39;validated-patterns-secrets&#39;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>secrets</span>:
-</span></span></code></pre></div><p>A new top-level key has been introduced in the secrets file:
-<code>secretStoreNamespace</code>. This defaults to <code>validated-patterns-secrets</code>. This is
-the namespace that ESO uses as its special secret store, which serves the same
-architectural purpose as vault does in the default installation. (Secrets are
-installed into this namespace as Kubernetes secrets objects, and ESO allows for
-them to be copied or templated out using ESO mechanisms).</p><h4 id=defaultannotations><code>defaultAnnotations</code></h4><p>example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>defaultAnnotations</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>validatedpatterns.io/pattern</span>: <span style=color:#e6db74>&#39;myPattern&#39;</span>
-</span></span></code></pre></div><p>This data structure is a hash, or dictionary. These labels will be applied to all
-secrets objects unless they have per-secret annotations set. Labels are only added to
-kubernetes based secrets objects (using the <code>kubernetes</code> or <code>none</code>) backends. The
-vault loader ignores these settings.</p><h4 id=defaultlabels><code>defaultLabels</code></h4><p>example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>defaultLabels</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>patternType</span>: <span style=color:#e6db74>&#39;edge&#39;</span>
-</span></span><span style=display:flex><span>  <span style=color:#f92672>patternEnvironment</span>: <span style=color:#e6db74>&#39;production&#39;</span>
-</span></span></code></pre></div><p>This data structure is a hash, or dictionary. These labels will be applied to all
-secrets objects unless they have per-secret labels set. Labels are only added to
-kubernetes based secrets objects (using the <code>kubernetes</code> or <code>none</code>) backends. The
-vault loader ignores these settings.</p><h3 id=per-secret-additions>Per-secret Additions</h3><h4 id=targetnamespaces><code>targetNamespaces</code></h4><p>example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>secrets</span>:
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>config-demo</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>targetNamespaces</span>:
-</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>config-demo</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>fields</span>:
-</span></span></code></pre></div><p>This option is ignored by <code>vault</code> and <code>kubernetes</code> backends, and only used by the <code>none</code> backend.
-Normally, you will only need to add your secret to one namespace at a time. However, if you do need
-to copy a secret that is identical except for the namespace it goes into, you can add multiple
-<code>targetNamespaces</code> each namespace specified will get a copy of the secret.</p><p>There is not a default target namespace for the none backend, so omitting this field from a config
-parsed for the <code>none</code> backend is an error.</p><h4 id=labels><code>labels</code></h4><p>example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>secrets</span>:
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>config-demo</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>labels</span>:
-</span></span><span style=display:flex><span>      <span style=color:#f92672>patternType</span>: <span style=color:#e6db74>&#39;edge&#39;</span>
-</span></span><span style=display:flex><span>      <span style=color:#f92672>patternEnvironment</span>: <span style=color:#e6db74>&#39;production&#39;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>fields</span>:
-</span></span></code></pre></div><p>In this case, these labels will only be applied to any <code>config-demo</code> secret objects created
-by the framework. This option is only used by the <code>none</code> and <code>kubernetes</code> backends and
-ignored by the <code>vault</code> backend. If <code>defaultLabels</code> are specified at the top level of the
-file, per-secrets labels will override them.</p><h4 id=annotations><code>annotations</code></h4><p>example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>secrets</span>:
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>config-demo</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>annotations</span>:
-</span></span><span style=display:flex><span>      <span style=color:#f92672>validatedpatterns.io/pattern</span>: <span style=color:#e6db74>&#39;myPattern&#39;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>fields</span>:
-</span></span></code></pre></div><p>In this case, this annotation will only be applied to any <code>config-demo</code> secret objects created
-by the framework. This option is only used by the <code>none</code> and <code>kubernetes</code> backends and
-ignored by the <code>vault</code> backend. If <code>defaultAnnotations</code> are specified at the top level of the
-file, per-secrets annotations will override them.</p><h2 id=under-the-hood---python-and-ansible-code>Under the Hood - Python and Ansible Code</h2><p>The main changes here were to factor out the code that did the file parsing and actual secret
-loading into different modules. The <code>parse_secrets_info</code> module now reads all of the file contents
-and renders all of the secrets it can before turning the process over to an appropriate secrets
-loader.</p><h3 id=the-process_secrets-playbook>The process_secrets playbook</h3><p>The <code>process_secrets</code> understands the backend configured for the different backends from values-global,
-and follows the appropriate strategy.</p><h3 id=parse_secrets_info-ansible-module>parse_secrets_info Ansible Module</h3><p><code>parse_secrets_info</code> understands the different backends, and parses the secrets file into an in-memory
-structure that can then be handed over to a loader specific to the backend. There is an additional
-script, <code>common/scripts/process_secrets/display-secrets-info.sh &lt;secrets_file> &lt;backend_type></code> that
-can be used to view how the secrets are parsed. This will display secrets on the terminal, so use
-with caution. It creates a <code>parsed_secrets</code> structure that should be generally useful, as well as
-<code>vault_policies</code> (Specifically for Vault support). Additionally, it creates a <code>kubernetes_secret_objects</code>
-structure suitable to hand over to the Ansible k8s.core collection directly.</p><h3 id=vault_load_parsed_secrets-ansible-module>vault_load_parsed_secrets Ansible Module</h3><p><code>vault_load_parsed_secrets</code> is responsible for setting up the commands to load the secrets into vault,
-and running them.</p><h3 id=the-k8s_secret_utils-ansible-role>The k8s_secret_utils Ansible Role</h3><p><code>k8s_secret_utils</code> is used for loading both the <code>kubernetes</code> and <code>none</code> backends. It</p><h3 id=changes-to-to-vault_utils-ansible-role>Changes to to vault_utils Ansible Role</h3><p>Some code has been factored out of <code>vault_utils</code> and now lives in roles called <code>cluster_pre_check</code> and
-<code>find_vp_secrets</code> roles. A new task file has been added, <code>push_parsed_secrets.yaml</code> that knows how to use
-the <code>parsed_secrets</code> structure generated by <code>parse_secrets_info</code>. The existing code in the other task files
-remains.</p><h2 id=developing-a-new-backend>Developing a new backend</h2><p>To provide support for an additional backend, the framework will need changes to:</p><ul><li>The <code>golang-external-secrets</code> chart (to support the new provider)</li><li>The shell and ansible framework for loading (understanding the new backend name and
-developing behaviors for it).</li></ul><h2 id=conclusion>Conclusion</h2><p>The Validated Patterns framework strives to offer solutions to real-world problems, and we hope you will find
-these new features useful. If you run into problems, we will do our best to
-<a href=https://github.com/validatedpatterns/common/issues>help</a>!</p></div></div><aside class="pf-c-jump-links pf-m-vertical sticky pf-m-expandable pf-m-non-expandable-on-2xl" aria-label="Table of contents"><div class=pf-c-jump-links__header><div class=pf-c-jump-links__label><h1>Table of Contents</h1></div></div><nav id=TableOfContents><ul class=pf-c-jump-links__list><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#more-secrets-options-now-available-with-validated-patterns>More Secrets Options Now Available with Validated Patterns</a><ul class=pf-c-jump-links__list><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#overview>Overview</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#chart-changes>Chart changes</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#the-vault-backend---unchanged-interface-new-plumbing>The &ldquo;vault&rdquo; Backend - Unchanged Interface, New plumbing</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#the-kubernetes-backend-new>The &ldquo;kubernetes&rdquo; Backend <em>new</em></a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#the-none-backend-new>The &ldquo;none&rdquo; Backend <em>new</em></a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#how-to-use-a-non-default-backend>How to Use a non-default Backend</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#using-the-old-system---the-legacy-load-secrets-makefile-target>Using the old system - The <code>legacy-load-secrets</code> Makefile target</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#deprecation-of-v10-secrets>Deprecation of v1.0 Secrets</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#updates-to-the-secrets-v20-schema>Updates to the Secrets v2.0 Schema</a><ul class=pf-c-jump-links__list><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#top-level-additions>Top-level Additions</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#per-secret-additions>Per-secret Additions</a></li></ul></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#under-the-hood---python-and-ansible-code>Under the Hood - Python and Ansible Code</a><ul class=pf-c-jump-links__list><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#the-process_secrets-playbook>The process_secrets playbook</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#parse_secrets_info-ansible-module>parse_secrets_info Ansible Module</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#vault_load_parsed_secrets-ansible-module>vault_load_parsed_secrets Ansible Module</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#the-k8s_secret_utils-ansible-role>The k8s_secret_utils Ansible Role</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#changes-to-to-vault_utils-ansible-role>Changes to to vault_utils Ansible Role</a></li></ul></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#developing-a-new-backend>Developing a new backend</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#conclusion>Conclusion</a></li></ul></li></ul></nav></aside></div></section><section id=prefooter class="pf-c-page__main-section footer-dark"><div class="pf-l-grid prefooter-menu-grid"><div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md pf-m-offset-1-col-on-md pf-u-mb-lg pf-u-mb-0-on-sm"><div class="pf-l-grid pf-u-py-xl"><div class="pf-l-grid__item pf-m-6-col-on-sm pf-m-4-col-on-md pf-u-ml-md pf-u-ml-0-on-md pf-u-mb-xl pf-u-mb-0-on-md"><p class="pf-c-title footer-menu-title">QUICKLINKS</p><nav aria-label="Quick Links"><ul class="pf-c-list pf-m-plain"><li><i class="prefooter-icon fa-brands fa-github"></i>
+</span></span><span style=padding-left:10px>Back to Blog</span></a></li></ul></div></div></div><main class=pf-c-page__main tabindex=0 data-bs-spy=scroll data-bs-target=#TableOfContents data-bs-offset=50><section class=pf-c-page__main-section><div class=pf-u-display-flex><div class=pf-c-content><h1>Pushing secrets</h1><div style="margin:10px 0">by Michele Baldessari</div><div style="margin:10px 0">August 30, 2024</div><div style="margin:20px 0"><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>patterns</span></span></div><hr class=pf-c-divider><div class=page-abstract><h1 id=pushing-secrets-to-hashicorp-vault>Pushing Secrets to HashiCorp Vault</h1><p>With this post we&rsquo;d like to Introduce a powerful new feature: Push Secrets Across Nodes and Namespaces.</p><h2 id=overview>Overview</h2><p>We’re excited to announce a new feature that enhances the flexibility and
+security of your secret management workflows: you can now use the
+<code>secret/pushsecrets</code> vault path to push secrets from any node or any namespace
+to Vault. This feature allows secrets to be securely retrieved from a different
+namespace or even a different cluster node, making it easier to manage and
+distribute sensitive data across your infrastructure.</p><p>Once stored in the Vault, these secrets can be accessed from either a different
+namespace or a different cluster node, providing a seamless way to manage
+secrets across a distributed environment.</p><h2 id=how-it-works>How It Works</h2><p>To illustrate how this feature works, let’s walk through a simple example where
+we push an existing kubernetes secret called <code>existing-secret</code> into the Vault
+using a PushSecret resource. The existing secret could be the following:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Secret</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>existing-secret</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>hello-world</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>data</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>bar</span>: <span style=color:#ae81ff>YmFyCg==</span> <span style=color:#75715e># The secret field we are interested in pushing into the vault</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>foo</span>: <span style=color:#ae81ff>....</span>
+</span></span></code></pre></div><p>And here is the <code>PushSecret</code> resource that will fetch the <code>bar</code> key from the existing
+secret above and push it into the vault.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>external-secrets.io/v1alpha1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>PushSecret</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>pushsecret</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>hello-world</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>data</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>conversionStrategy</span>: <span style=color:#ae81ff>None</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>match</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>remoteRef</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>remoteKey</span>: <span style=color:#ae81ff>pushsecrets/testme</span> <span style=color:#75715e># the remote vault path</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>property</span>: <span style=color:#ae81ff>baz</span> <span style=color:#75715e># the key in the path defined above inside the vault</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>secretKey</span>: <span style=color:#ae81ff>bar</span> <span style=color:#75715e># The property of the local `existing-secret` secret that will be pushed to `pushsecrets/testme/baz` in the vault</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>deletionPolicy</span>: <span style=color:#ae81ff>Delete</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>refreshInterval</span>: <span style=color:#ae81ff>10s</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>secretStoreRefs</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterSecretStore</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>name</span>: <span style=color:#ae81ff>vault-backend</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>secret</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>name</span>: <span style=color:#ae81ff>existing-secret</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>updatePolicy</span>: <span style=color:#ae81ff>Replace</span>
+</span></span></code></pre></div><p>In this example, the PushSecret resource is defined in the hello-world
+namespace and it will take the key <code>bar</code> of the k8s secret called
+<code>existing-secret</code> and push it to Vault in the <code>pushsecrets/testme</code> path and
+ultimately it will be copied under the <code>baz</code> key/property inside vault.</p><p>Here is some more info on the other yaml fields:</p><ul><li><code>deletionPolicy</code> Determines what happens to the secret when the PushSecret is deleted. In this case, the secret will also be deleted from the Vault.</li><li><code>refreshInterval</code> Sets how often the secret will be refreshed. This is set to 10 seconds in the example, meaning the secret will be checked and updated every 10 seconds.</li><li><code>secretStoreRefs</code> Points to the ClusterSecretStore named vault-backend, which defines where the secret will be stored.</li><li><code>selector</code> Identifies the secret to be pushed. In this case, it is the secret named existing-secret within the hello-world namespace.</li><li><code>updatePolicy</code> Specifies the policy for updating the secret in the Vault. The Replace policy will overwrite any existing secret at the target location with the new value.</li></ul><p>This configuration effectively takes a specific property (baz) from an existing
+secret in the hello-world namespace and pushes it to the Vault path
+secret/pushsecrets/testme. The secret can then be retrieved from any other
+namespace or node that has access to the Vault.</p></div></div><aside class="pf-c-jump-links pf-m-vertical sticky pf-m-expandable pf-m-non-expandable-on-2xl" aria-label="Table of contents"><div class=pf-c-jump-links__header><div class=pf-c-jump-links__label><h1>Table of Contents</h1></div></div><nav id=TableOfContents><ul class=pf-c-jump-links__list><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#pushing-secrets-to-hashicorp-vault>Pushing Secrets to HashiCorp Vault</a><ul class=pf-c-jump-links__list><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#overview>Overview</a></li><li class=pf-c-jump-links__item><a class=pf-c-jump-links__link href=#how-it-works>How It Works</a></li></ul></li></ul></nav></aside></div></section><section id=prefooter class="pf-c-page__main-section footer-dark"><div class="pf-l-grid prefooter-menu-grid"><div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md pf-m-offset-1-col-on-md pf-u-mb-lg pf-u-mb-0-on-sm"><div class="pf-l-grid pf-u-py-xl"><div class="pf-l-grid__item pf-m-6-col-on-sm pf-m-4-col-on-md pf-u-ml-md pf-u-ml-0-on-md pf-u-mb-xl pf-u-mb-0-on-md"><p class="pf-c-title footer-menu-title">QUICKLINKS</p><nav aria-label="Quick Links"><ul class="pf-c-list pf-m-plain"><li><i class="prefooter-icon fa-brands fa-github"></i>
 <a class=footer-link aria-label="GitHub repository" href=https://github.com/validatedpatterns/docs>GitHub repository</a></li><li><i class="prefooter-icon fas fa-check-circle"></i>
 <a class=footer-link aria-label="Available patterns" href=/patterns>Available patterns</a></li></ul></nav></div><div class="pf-l-grid__item pf-m-6-col-on-sm pf-m-4-col-on-md pf-u-mt-lg pf-u-mt-0-on-sm pf-u-ml-md pf-u-ml-0-on-md pf-u-mb-xl pf-u-mb-0-on-md"><p class="pf-c-title footer-menu-title">CONTRIBUTE</p><nav aria-label=Contribute><ul class="pf-c-list pf-m-plain ws-org-pfsite-footer-menu-list"><li><i class="prefooter-icon fas fa-pen"></i>
 <a class=footer-link aria-label="Documentation contributor guidelines" href=/contribute/contribute-to-docs/>Documentation</a></li><li><i class="prefooter-icon fas fa-code"></i>
