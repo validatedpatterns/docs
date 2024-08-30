@@ -54,7 +54,7 @@ Depending on type of EC2 instance creation of the new machines make take some ti
 
 From OperatorHub install Node Feature Discovery Operator , accepting defaults . Once Operator has been installed , create `NodeFeatureDiscovery`instance . Use default entries unless you something specific is needed . Node Feature Discovery Operator will add labels to nodes based on available hardware resources
 
-## Install NVIDI GPU Operator
+## Install NVIDIA GPU Operator
 
 NVIDIA GPU Operator will provision daemonsets with drivers for the GPU to be used by workload running on these nodes . Detailed instructions are available in NVIDIA Documentation [NVIDIA on OpenShift](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html) .  Following simplified steps for specific setup :
 
