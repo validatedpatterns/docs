@@ -26,8 +26,8 @@ The high level steps to create a validated pattern are as follows:
 
 1. *Start with OpenShift Multicloud GitOps*: When creating a validated pattern, begin with OpenShift Multicloud GitOps as your foundation. This is the most fundamental pattern and should serve as your base.
 
-2. *Extend the base pattern with On-Site Assets*: Build on the base pattern by integrating assets developed on-site. These assets might include Helm charts or Kustomize manifests. Ensure that everything required to deploy the pattern, including the desired state and configuration of resources, is included in the repository.
+2. *Extend the base pattern with On-Site assets*: Build on the base pattern by integrating assets developed on-site. These assets might include Helm charts or Kustomize manifests. Ensure that everything required to deploy the pattern, including the desired state and configuration of resources, is included in the repository.
 
-3. *Embed additional commands into manifests*: If you find yourself frequently executing oc apply or similar commands, incorporate these actions into the appropriate manifests within the pattern. This will help streamline and automate the deployment process.
+3. *Embed additional commands into manifests*: If you find yourself frequently executing `oc apply` or similar commands, incorporate these actions into the appropriate manifests within the pattern. This will help streamline and automate the deployment process.
 
 4. *Separate configuration from development sources*: Maintain a clear separation between configuration settings and development source code. This practice ensures better organization and makes it easier to manage configurations independently from the application code.
