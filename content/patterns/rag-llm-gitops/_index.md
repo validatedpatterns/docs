@@ -23,7 +23,14 @@ ci: ai
 
 ## Introduction
 
-This deployment is based on `validated pattern framework` that uses GitOps to easily provision all operators and apps. It deploys a Chatbot application that leverages the power of Large Language Models (LLMs) in conjunction with the Retrieval-Augmented Generation (RAG) framework running on Red Hat OpenShift to generate a project proposal for a given Red Hat product.
+This deployment is based on the `validated pattern framework`, using GitOps for
+seamless provisioning of all operators and applications. It deploys a Chatbot
+application that harnesses the power of Large Language Models (LLMs) combined
+with the Retrieval-Augmented Generation (RAG) framework.
+
+The application uses either the [EDB Postgres for Kubernetes operator](https://catalog.redhat.com/software/container-stacks/detail/5fb41c88abd2a6f7dbe1b37b)
+(default) or Redis to store embeddings of Red Hat products, running on Red Hat
+OpenShift to generate project proposals for specific Red Hat products.
 
 ## Pre-requisites
 
@@ -40,7 +47,7 @@ The goal of this demo is to demonstrate a Chatbot LLM application augmented with
 
 - LLM Application augmented with content from Red Hat product documentation.
 - Multiple LLM providers (OpenAI, Hugging Face, NVIDIA)
-- Vector Database, such as PGVECTOR or REDIS, to store embeddings of RedHat product documentation.
+- Vector Database, such as EDB Postgres for Kubernetes or Redis, to store embeddings of RedHat product documentation
 - Monitoring dashboard to provide key metrics such as ratings
 - GitOps setup to deploy e2e demo (frontend / vector database / served models)
 
