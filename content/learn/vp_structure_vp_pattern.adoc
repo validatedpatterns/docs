@@ -18,16 +18,48 @@ The high level steps to create a validated pattern are as follows:
 
 1. Identify the business case you want to address.  
 2. Use the Multicloud GitOps as a starting point by using the template to create a new Git repository in your local GitHub account.  
-3. Identify the technology components that you need.  In the case of an existing demo you might already know which components are part of the pattern.  
+3. Identify the technology components that you need.   
 4. Ensure that the configuration of those components, and the integration points are handled in the pattern.  
 
+== Best Practices for creating Validated Patterns
 
-== Best Practices for Creating Validated Patterns
+Following these best practices, to create robust, scalable, and maintainable validated patterns that are easy to deploy and manage across various environments.
 
-1. *Start with OpenShift Multicloud GitOps*: When creating a validated pattern, begin with OpenShift Multicloud GitOps as your foundation. This is the most fundamental pattern and should serve as your base.
+1.  **Start with OpenShift Multicloud GitOps**: 
+    - When creating a validated pattern, begin with OpenShift Multicloud GitOps as your foundation. This is the most fundamental pattern and should serve as your base.
 
-2. *Extend the base pattern with On-Site assets*: Build on the base pattern by integrating assets developed on-site. These assets might include Helm charts or Kustomize manifests. Ensure that everything required to deploy the pattern, including the desired state and configuration of resources, is included in the repository.
+2. **Centralize all manifests in a Git Repository**
+   - Ensure that all pattern manifests, configuration files, and desired state definitions are stored in a Git repository. This provides a single source of truth and facilitates the use of GitOps for deployment. 
 
-3. *Embed additional commands into manifests*: If you find yourself frequently executing `oc apply` or similar commands, incorporate these actions into the appropriate manifests within the pattern. This will help streamline and automate the deployment process.
+3. **Include all necessary deployment resources**
+   - The Git repository should include everything required to deploy the pattern, including manifests, configuration, and any additional resources. Avoid relying on manual commands post-deployment; instead, incorporate these into the manifests.
 
-4. *Separate configuration from development sources*: Maintain a clear separation between configuration settings and development source code. This practice ensures better organization and makes it easier to manage configurations independently from the application code.
+4. **Adopt a clear separation of concerns**
+   - Maintain a clear separation between configuration files and development source code. This helps manage complexity and ensures that each aspect of the pattern is independently maintainable.
+
+5. **Leverage GitOps for deployment consistency**
+   - Use GitOps to push the desired state from your Git repository to the Kubernetes cluster. This approach ensures consistency across multiple deployments and clusters.
+
+6. **Use Helm charts for grouping manifests**
+   - If your deployment process involves multiple `oc apply` commands, group these manifests into a Helm chart. This simplifies deployment and integrates well with the pattern framework, which can apply the chart automatically.
+
+7. **Integrate existing automation scripts**
+   - Review existing Ansible scripts or shell scripts that deploy resources. Where possible, convert these scripts into manifests or use the pattern’s framework to apply them imperatively. Avoid adding new scripts, as they often introduce technical debt.
+
+8. **Ensure comprehensive deployment capabilities**
+   - The pattern should be capable of deploying all necessary resources to support the applications it includes. This means that once the pattern is applied, no additional manual steps should be required.
+
+9. **Plan for cluster sizing and storage needs**
+   - Before deploying a pattern, review its cluster sizing and storage requirements. For instance, patterns using Red Hat OpenShift Data Foundation (ODF) may require substantial storage resources. Consult pattern documentation for accurate sizing.
+
+10. **Customize and fork patterns appropriately**
+   - When extending a pattern or deploying it at a customer site, create a personal or organizational fork. This allows for experimentation and customization while facilitating potential contributions back to the upstream pattern repository.
+
+11. **Consider managed cloud services for deployment**
+    - For ease of deployment, especially in public cloud environments, consider using managed OpenShift services like Red Hat OpenShift Service on AWS (ROSA) or Microsoft Azure Red Hat® OpenShift (ARO). These services simplify the setup and management of OpenShift clusters.
+
+12. **Manage Multi-Cluster and Multi-Cloud deployments**
+    - Use the patterns framework to centrally manage multiple clusters and workloads across public and private clouds. Incorporate tools like Red Hat Advanced Cluster Management (RHACM) and Red Hat OpenShift GitOps (ArgoCD) to streamline operations.
+
+13. **Secure secrets across deployments**
+    - Utilize tools such as Hashicorp Vault to manage secrets securely across multi-cloud deployments, ensuring sensitive data is protected.
