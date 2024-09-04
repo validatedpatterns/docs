@@ -42,7 +42,7 @@ _Figure 4. Schematic diagram for Ingestion of data for RAG._
 
 _Figure 5. Schematic diagram for RAG demo augmented query._
 
-In Figure 5, we can see RAG augmented query. Llama 2 model is used for for
+In Figure 5, we can see RAG augmented query. Llama 2 model is used for
 language processing, LangChain to integrate different tools of the LLM-based
 application together and to process the PDF files and web pages, vector
 database provider such as EDB Postgres for Kubernetes or Redis, is used to
