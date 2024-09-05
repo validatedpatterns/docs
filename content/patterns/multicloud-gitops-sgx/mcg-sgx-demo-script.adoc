@@ -28,7 +28,7 @@ In this demo you will complete the following:
 
 == Getting Started
 
-* Make sure you have met all the link:/learn/quickstart/#installation_prerequisitesrequirements[requirements]
+* Make sure you have met all the link:/learn/quickstart/#installation_prerequisites[installation prerequisites]
 * Follow the link:../mcg-sgx-getting-started[Getting Started Guide] to ensure that you have met all of the prerequisites
 
 [NOTE]

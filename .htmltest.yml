@@ -1,2 +1,12 @@
 DirectoryPath: public/
 IgnoreDirectoryMissingTrailingSlash: true
+IgnoreURLs:
+- "https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view"
+- "^../../images.*"
+- "./values-global.yaml"
+- "http://modelmesh-serving.credit-card-fraud:8008/v2/models/credit-card-fraud/infer"
+- "http://modelmesh-serving.credit-fraud-model:8008/v2/models/credit-card-fraud/infer"
+- "http://mlflow-server.mlflow.svc.cluster.local:8080"
+- "http://<route-to-mlflow>.*"
+- "https://<your-uri>/ns/inferencing-app/deployments/credit-fraud-detection-demo/environment"
+HTTPHeaders: {"User-Agent": "curl/8.2.1"}

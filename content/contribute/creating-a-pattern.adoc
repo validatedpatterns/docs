@@ -36,7 +36,7 @@ Therefore the question really is: How do I move my successful architecture solut
 * Create a new branch on your new pattern to perform the initial changes.
 * Deploy the initial new pattern pattern to the cluster.
 
-= Moving to the validated patterns framework
+== Moving to the validated patterns framework
 
 One of the first things that you should do is look at your current implementation of your workload and identify the Kubernetes manifests that are involved in order to run the workloads.
 

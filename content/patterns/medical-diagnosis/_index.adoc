@@ -18,11 +18,11 @@ links:
   bugs: https://github.com/validatedpatterns/medical-diagnosis/issues
 ci: medicaldiag
 ---
+include::modules/comm-attributes.adoc[]
+:_content-type: ASSEMBLY
 
 :toc:
 :imagesdir: /images
-:_content-type: ASSEMBLY
-include::modules/comm-attributes.adoc[]
 
 //Module to be included
 //:_content-type: CONCEPT

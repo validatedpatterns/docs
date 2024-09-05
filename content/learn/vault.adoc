@@ -11,15 +11,15 @@ aliases: /secrets/vault/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-= Deploying HashiCorp Vault in a validated pattern
+[id="deploying-hashicorp-vault-in-a-validated-pattern"]
+== Deploying HashiCorp Vault in a validated pattern
 
-[id="prerequisites"]
-= Prerequisites
+.Prerequisites
 
 You have deployed/installed a validated pattern using the instructions provided for that pattern. This should include setting having logged into the cluster using `oc login` or setting you `KUBECONFIG` environment variable and running a `./pattern.sh make install`.
 
 [id="setting-up-hashicorp-vault"]
-= Setting up HashiCorp Vault
+== Setting up HashiCorp Vault
 
 Any validated pattern that uses HashiCorp Vault already has deployed Vault as part of the `./pattern.sh make install`. To verify that Vault is installed you can first see that the `vault` project exists and then select the Workloads/Pods:
 
@@ -75,11 +75,11 @@ After signing in you will see the secrets that have been created.
 link:/images/secrets/vault-secrets-engine-screen.png[image:/images/secrets/vault-secrets-engine-screen.png[Vault Secrets Engine\]]
 
 [id="unseal"]
-= Unseal
+== Unseal
 
 If you don't see the sign in page but instead see an unseal page, something may have happened the cluster and you need to unseal it again. Make sure that the `imperative/vaultkeys` secret exists and wait for the CronJob called `unseal-vault` inside the `imperative` namespace to run. Alternatively you could unseal the vault manually by running `vault operator` commands inside the `vault-0` pod. See these link:https://developer.hashicorp.com/vault/docs/commands/operator/unseal[instructions] for additional information.
 
 [id="whats-next"]
-= What's next?
+== What's next?
 
 Check with the validated pattern instructions to see if there are further steps you need to perform. Sometimes this might be deploying a pattern on an edge cluster and checking to see if the correct Vault handshaking and updating occurs.

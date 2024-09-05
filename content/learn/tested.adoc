@@ -61,13 +61,13 @@ Qualification is a {solution-name-upstream} Technical Oversight Committee (TOC) 
 * A {tested} pattern must include a test plan covering all features or attributes being highlighted by the demonstration guide. Negative flow tests (such as resiliency or data retention in the presence of network outages) are also limited to scenarios covered by the demonstration guide.
 +
 The test plan must define how to validate if the pattern has been successfully deployed and is functionally operational.
-Example: https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view[Validating an Industrial Edge Deployment].
+Example: link:https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view[Validating an Industrial Edge Deployment].
 
 //TODO: Convert above link to adoc
 
 * A {tested} pattern must nominate at least one currently supported {rh-ocp} release to test against.
 * A {tested} pattern must ensure the test plan passes at least once per quarter.
-* A {tested} pattern must create a publicly available JSON file (for example, in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and {rh-ocp} version. See link:/learn/test-artefacts/[testing artefacts].
+* A {tested} pattern must create a publicly available JSON file (for example, in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and {rh-ocp} version. See link:/learn/test-artifacts/[testing artifacts].
 
 [NOTE]
 ====
@@ -86,6 +86,6 @@ A {tested} pattern *does not* imply an obligation of support for partner or comm
 Teams creating {tested} pattern can provide their own service level agreement (SLA).
 
 A technical document for Quality Engineering (QE) team that defines how to validate if the pattern has been successfully deployed and is functionally operational.
-For example, see https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view[Validating an Industrial Edge Deployment].
+For example, see link:https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view[Validating an Industrial Edge Deployment].
 
 A {tested} pattern meeting additional criteria can be nominated for promotion to the link:/learn/maintained/[Maintained tier].

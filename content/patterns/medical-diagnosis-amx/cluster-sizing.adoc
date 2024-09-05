@@ -14,7 +14,7 @@ include::modules/comm-attributes.adoc[]
 //:_content-type: CONCEPT
 //:imagesdir: ../../images
 [id="about-openshift-cluster-sizing-med"]
-= About OpenShift cluster sizing for the {amx-med-pattern}
+== About OpenShift cluster sizing for the {amx-med-pattern}
 
 The minimum requirements for an {ocp} cluster depend on your installation platform, for example:
 
