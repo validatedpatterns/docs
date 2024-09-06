@@ -1,7 +1,7 @@
 :_content-type: PROCEDURE
 :imagesdir: ../../../images
 
-[id="deploying-edd-pattern"]
+[id="using-edd-pattern"]
 = Using the Emerging Disease Detection pattern
 
 The following steps describes how you can use this pattern in a demo.

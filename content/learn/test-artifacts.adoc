@@ -2,7 +2,7 @@
 menu:
   learn:
     parent: Workflow
-title: Testing Artefacts
+title: Testing Artifacts
 weight: 50
 aliases: /requirements/tested/
 ---
@@ -12,8 +12,8 @@ aliases: /requirements/tested/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-[id="testing-artefacts"]
-= Testing artefacts
+[id="testing-artifacts"]
+= Testing artifacts
 
 To be represented in the CI dashboard, testers can create a publicly available JSON file (for example, in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and {rh-ocp} version.
 

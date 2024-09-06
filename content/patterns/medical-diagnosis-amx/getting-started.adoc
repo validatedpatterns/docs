@@ -14,7 +14,7 @@ include::modules/comm-attributes.adoc[]
 //:_content-type: PROCEDURE
 //:imagesdir: ../../../images
 [id="deploying-med-pattern"]
-= Deploying the {amx-med-pattern}
+== Deploying the {amx-med-pattern}
 
 .Prerequisites
 
@@ -35,7 +35,7 @@ The {amx-med-pattern} does not have a dedicated hub or edge cluster.
 ====
 
 [id="preparing-for-deployment"]
-= Preparing for deployment
+== Preparing for deployment
 .Procedure
 
 . Fork the link:https://github.com/validatedpatterns-sandbox/amx-accelerated-medical-diagnosis[medical-diagnosis] repository on GitHub. You must fork the repository because your fork will be updated as part of the GitOps and DevOps processes.
@@ -206,7 +206,7 @@ Before you run the `./pattern.msh make install` command, ensure that you have th
 //:_content-type: PROCEDURE
 //:imagesdir: ../../../images
 [id="med-deploy-pattern_{context}"]
-= Deploy
+== Deploy
 
 . To apply the changes to your cluster, run the following command:
 +
@@ -232,7 +232,7 @@ This step might take some time, especially for the {ocp-data-short} Operator com
 
 
 [id="typing-secrets-manually-into-vault"]
-== (Optional) Typing secrets into Vault manually 
+=== (Optional) Typing secrets into Vault manually
 
 Log into the Vault using the root token, which can be found by executing the command:
 
@@ -254,7 +254,7 @@ At this point user can type into the Vault secret values specified in 'values-se
 //:_content-type: PROCEDURE
 //:imagesdir: ../../../images
 [id="using-openshift-gitops-to-check-on-application-progress-getting-started"]
-== Using OpenShift GitOps to check on Application progress
+=== Using OpenShift GitOps to check on Application progress
 
 To check the various applications that are being deployed, you can view the progress of the {rh-gitops-short} Operator.
 
@@ -296,7 +296,7 @@ Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the appli
 . Check that all applications are synchronized. There are thirteen different ArgoCD `applications` that are deployed as part of this pattern.
 
 [id="object-storage-setup"]
-== Set up object storage
+=== Set up object storage
 
 Modified version of a Medical Diagnosis pattern requires to use on-prem object storage. Instead of a AWS S3 (or other cloud equivalent) user can set up the Ceph RGW object storage.
 To communicate with its API user can utilize aws-cli. The installation manual is available on https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html#getting-started-install-instructions[Amazon website]
@@ -368,7 +368,7 @@ aws --endpoint https://${CEPH_RGW_ENDPOINT} --no-verify-ssl s3api put-bucket-pol
 //:_content-type: PROCEDURE
 //:imagesdir: ../../../images
 [id="viewing-the-grafana-based-dashboard-getting-started"]
-== Viewing the Grafana based dashboard
+=== Viewing the Grafana based dashboard
 
 . Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for project `openshift-storage``. Click the URL for the `s3-rgw`.
 +
@@ -424,7 +424,7 @@ For other issues please refer to https://validatedpatterns.io/patterns/medical-d
 //:_content-type: PROCEDURE
 //:imagesdir: ../../../images
 [id="making-some-changes-on-the-dashboard-getting-started"]
-== Making some changes on the dashboard
+=== Making some changes on the dashboard
 
 You can change some of the parameters and watch how the changes effect the dashboard.
 

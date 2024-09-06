@@ -21,26 +21,20 @@ Using {intel-5th-gen-xeon-processors} the kernel detects Intel® AMX at run-time
 Before proceeding with this demo steps, please make sure you have your pattern deployed with link:../mcg-amx-rhoai-getting-started[Getting started].
 
 . Verify if the *openvino-notebooks-v2022.3-1* build is completed under *Builds* > *Builds*. Build might take some time and before it is finished it won't be accessible from Openshift AI console.
-
 . Open OpenShift AI dashboard and go to *Applications* > *Enabled* window.
-
 . Open Jupyter by clicking *Launch application*.
-
 . Choose *OpenVINO™ Toolkit v2022.3* notebook image with *X Large* container size and start the notebook server. Server launching will take several minutes. Once it is ready, go to access notebook server.
-
 . On the Jupyter Launcher window choose Notebook with *Python 3 (ipykernel)*.
-
 . Download BERT-large example, that uses AMX accelerator, by typing in the opened notebook:
++
 [source,terminal]
 !wget https://raw.githubusercontent.com/validatedpatterns-sandbox/amx-accelerated-rhoai-multicloud-gitops/main/scripts/BERT.ipynb -O BERT.ipynb
-
 
 . On the left-hand side menu the `BERT.ipynb` script should show up. Open it and run instructions one by one with play button or with `Ctr+Enter` from keyboard.
 
 All necessary tools like https://docs.openvino.ai/2022.3/omz_tools_downloader.html#installation[*Model Downloader*] and https://docs.openvino.ai/2022.3/openvino_inference_engine_tools_benchmark_tool_README.html#doxid-openvino-inference-engine-tools-benchmark-tool-r-e-a-d-m-e[*Benchmark Python Tool*] are built in and ready to use.
 
-
-===== Description of  `BERT.ipynb`
+=== Description of  `BERT.ipynb`
 In case of issues with downloading the script, you can copy the following steps into your notebook and run.
 [source,terminal]
 ----
@@ -65,6 +59,4 @@ In ONEDNN verbose you should see *`avx_512_core_amx`* entry, what confirms that 
 
 .BERT inference log
 image::multicloud-gitops-amx-rhoai/amx-rhoai-bert-logs.png[Logs from amx-app pod]
-
-
 

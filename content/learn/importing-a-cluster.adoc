@@ -113,15 +113,13 @@ If you use the command line tools above you need to explicitly indicate that the
 We do this by adding the label referenced in the managedSite's `clusterSelector`.
 
 1. Find the new cluster.
-
 +
 [source,terminal]
 ----
 oc get managedclusters.cluster.open-cluster-management.io
 ----
 
-1. Apply the label.
-
+2. Apply the label.
 +
 [source,terminal]
 ----

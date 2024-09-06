@@ -13,7 +13,7 @@ include::modules/comm-attributes.adoc[]
 //:_content-type: PROCEDURE
 //:imagesdir: ../../../images
 [id="deploying-med-pattern"]
-= Deploying the {med-pattern}
+== Deploying the {med-pattern}
 
 .Prerequisites
 
@@ -48,7 +48,7 @@ For information about creating the buckets on other cloud providers, see the fol
 //:imagesdir: ../../../images
 
 [id="utilities"]
-= Utilities
+== Utilities
 //AI: Update the use of community and VP post naming tier update
 
 To use the link:https://github.com/validatedpatterns/utilities[utilities] that are available, export some environment variables for your cloud provider.
@@ -76,7 +76,7 @@ image:/videos/bucket-setup.svg[Bucket setup]
 Note the name and URL for the bucket for further pattern configuration. For example, you must update these values in a `values-global.yaml` file, where there is a section for `s3:`
 
 [id="preparing-for-deployment"]
-= Preparing for deployment
+== Preparing for deployment
 .Procedure
 
 . Fork the link:https://github.com/validatedpatterns/medical-diagnosis[medical-diagnosis] repository on GitHub. You must fork the repository because your fork will be updated as part of the GitOps and DevOps processes.
@@ -209,7 +209,7 @@ Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
 ----
 
 [id="check-the-values-files-before-deployment"]
-== Check the values files before deployment
+=== Check the values files before deployment
 
 To ensure that you have the required variables to deploy the {med-pattern}, run the `./pattern.sh make predeploy` command. You can review your values and make updates, if required.
 
@@ -244,7 +244,7 @@ Before you run the `./pattern.msh make install` command, ensure that you have th
 //:_content-type: PROCEDURE
 //:imagesdir: ../../../images
 [id="med-deploy-pattern_{context}"]
-= Deploy
+== Deploy
 
 . To apply the changes to your cluster, run the following command:
 +
@@ -274,7 +274,7 @@ image::/videos/xray-deployment.svg[link="/videos/xray-deployment.svg"]
 //:_content-type: PROCEDURE
 //:imagesdir: ../../../images
 [id="using-openshift-gitops-to-check-on-application-progress-getting-started"]
-== Using OpenShift GitOps to check on Application progress
+=== Using OpenShift GitOps to check on Application progress
 
 To check the various applications that are being deployed, you can view the progress of the {rh-gitops-short} Operator.
 
@@ -320,7 +320,7 @@ Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the appli
 //:_content-type: PROCEDURE
 //:imagesdir: ../../../images
 [id="viewing-the-grafana-based-dashboard-getting-started"]
-== Viewing the Grafana based dashboard
+=== Viewing the Grafana based dashboard
 
 . Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for project `openshift-storage``. Click the URL for the `s3-rgw`.
 +
@@ -367,7 +367,7 @@ image::medical-edge/start-image-flow.png[link="/images/medical-edge/start-image-
 //:_content-type: PROCEDURE
 //:imagesdir: ../../../images
 [id="making-some-changes-on-the-dashboard-getting-started"]
-== Making some changes on the dashboard
+=== Making some changes on the dashboard
 
 You can change some of the parameters and watch how the changes effect the dashboard.
 

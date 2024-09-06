@@ -83,7 +83,7 @@ After the project has been created, create a workbench where we can run Jupyter.
 oc get service mlflow-server -n mlops -o go-template --template='http://{{.metadata.name}}.{{.metadata.namespace}}.svc.cluster.local:8080{{println}}'
 ----
 ** *Key*: `MLFLOW_ROUTE`
-** *Value*: `http://<route-to-mlflow>:<port>`, replacing <route-to-mlflow> and <port> with the route and port that we found in step one. In this case it is `http://mlflow-server.mlflow.svc.cluster.local:8080`
+** *Value*: `http://<route-to-mlflow>:8080`, replacing <route-to-mlflow> and 8080 with the route and port respectfully, that we found in step one. In this case it is `http://mlflow-server.mlflow.svc.cluster.local:8080`
 * *Cluster Storage*: Create new persistent storage - Call it "Credit Fraud Storage" and set the size to 20GB.
 
 Open the workbench and login if needed.

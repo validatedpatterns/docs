@@ -14,7 +14,7 @@ include::modules/comm-attributes.adoc[]
 == Introduction
 The medical diagnosis pattern integrates multiple Red Hat and Open Source technologies together to create an AI/ML workflow that is able to identify signs of pneumonia in x-ray images. Within this demo a dashboard is automatically created that provides the CPU and Memory metrics for the pod running the risk assessment application. The dashboard also provides visual representation of the AI/ML workflow from the images being generated at the remote medical facility to running through the image anonymizer, it also includes the image being scanned along with statistics from the workflow - indicating the probability in which a patient may or may not have pneumonia. 
 
-image:medical-edge/aiml_pipeline.png[link="/medical-edge/aiml_pipeline.png"]
+image::../../images/medical-edge/aiml_pipeline.png[link="/images/medical-edge/aiml_pipeline.png"]
 
 
 [NOTE]
@@ -68,7 +68,7 @@ Let's check out what operators were installed - In the accordion menu on the lef
 Ensure that **All Projects** is selected
 ====
 
-image:medical-edge/admin_developer-contexts.png[link="/medical-edge/admin_developer-contexts.png"]
+image::../../images/medical-edge/admin_developer-contexts.png[link="/images/medical-edge/admin_developer-contexts.png"]
 
 
 If you started with a new cluster then there were no layered products or operators installed. With the Validated Patterns framework we describe or declare what our cluster's desired state is and the GitOps engine does the rest. This includes creating the instance of the operator and any additional configuration between other API's to ensure everything is working together nicely.
@@ -84,7 +84,7 @@ Let’s switch to the developer context by click on `Administrator` in the top l
 * Click on `Topology`
 
 
-image:medical-edge/dev-topology.png[link="/images/medical-edge/dev-topology.png"]
+image::../../images/medical-edge/dev-topology.png[link="/images/medical-edge/dev-topology.png"]
 
 Look at all of the resources that have been created for this demo application. What we see in this interface is the collection of all components required for this AI/ML workflow to properly execute. There are even more resources and configurations that get deployed but because we don't directly interact with them we won't worry too much about them. The take away here is when you utilize the framework you are able to build in automation just like this which allows your developers to focus on their important developer things.
 
@@ -99,8 +99,8 @@ We are deploying this demo using self-signed certificates that are untrusted by 
 * s3-rgw | openshift-storage namespace
 * grafana | xraylab-1 namespace
 
-[source, shell]
-```
+[source,shell]
+----
 IMAGESERVER_ROUTE=https://$(oc get route -n xraylab-1 image-server -o jsonpath='{.spec.host}')
 
 echo $IMAGESERVER_ROUTE
@@ -112,7 +112,7 @@ echo $S3RGW_ROUTE
 GRAFANA_ROUTE=https://$(oc get route -n xraylab-1 grafana -o jsonpath='{.spec.host}')
 
 echo $GRAFANA_ROUTE
-```
+----
 
 [WARNING]
 
@@ -139,13 +139,13 @@ In the Topology menu under the Developer context in the OpenShift Console:
 
 * Search for the `image-generator` application in the Topology console 
 
-image:medical-edge/image-generator.png[link="/medical-edge/image-generator.png"]
+image::../../images/medical-edge/image-generator.png[link="/images/medical-edge/image-generator.png"]
 
 * Click on the `image-generator` application ( you may have to zoom in on the highlighted application)
 * Switch to the `Details` menu in the application menu context
 * Click the `^` next to the pod donut 
 
-image:medical-edge/image-generator-scale.png[link="/medical-edge/image-generator-scale.png"]
+image::../../images/medical-edge/image-generator-scale.png[link="/images/medical-edge/image-generator-scale.png"]
 
 
 [id="demo-dashboard"]
@@ -166,11 +166,11 @@ Within the grafana dashboard:
 * select xraylab-1
 * finally select the XRay Lab folder
 
-image:medical-edge/dashboard.png[link="/medical-edge/dashboard.png"]
+image::../../images/medical-edge/dashboard.png[link="/images/medical-edge/dashboard.png"]
 
-In the dashboard on the right we see the images that have been uploaded, processed and anonymized. Images in the processed view have been through the AI/ML pipeline and images in the lower third are images that have been stripped of Personally Identifiable Information or PII. 
+In the dashboard on the right we see the images that have been uploaded, processed and anonymized. Images in the processed view have been through the AI/ML pipeline and images in the lower third are images that have been stripped of Personally Identifiable Information or PII.
 
-In the lower middle section of the dashboard we can see the distribution of images that are normal, unsure or pneumonia has been detected.  We can also see the number of risk assessment containers running as well as the cpu and memory metrics for the pods. 
+In the lower middle section of the dashboard we can see the distribution of images that are normal, unsure or pneumonia has been detected.  We can also see the number of risk assessment containers running as well as the cpu and memory metrics for the pods.
 
 [id="summary"]
 
