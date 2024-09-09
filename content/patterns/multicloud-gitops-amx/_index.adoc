@@ -44,7 +44,7 @@ Based on the requirements of a specific implementation, certain details might di
 Background::
 Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds, private or public.
 This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code checks the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
-Moreover, organizations are looking for solutions that increase efficiency and at the same time reduce costs, what is possible using *{intel-4th-gen-xeon-processors}* with a new build-in accelerator - *Intel Advanced Matrix Extensions*.
+Moreover, organizations are looking for solutions that increase efficiency and at the same time reduce costs, what is possible using *{intel-5th-gen-xeon-processors}* with a new build-in accelerator - *Intel Advanced Matrix Extensions*.
 
 [id="about-solution"]
 == About the solution
@@ -170,7 +170,7 @@ View and download all of the diagrams above from the link:https://www.redhat.com
 [id="extension-of-mcg"]
 == {amx-mcg-pattern}
 
-The basic {mcg-pattern} has been extended to highlight the *{intel-4th-gen-xeon-processors}* capabilities, offering developers a streamlined pathway to accelerate their workloads through the integration of cutting-edge *{intel-amx}*, fostering efficiency and performance optimization in AI workloads.
+The basic {mcg-pattern} has been extended to highlight the *{intel-5th-gen-xeon-processors}* capabilities, offering developers a streamlined pathway to accelerate their workloads through the integration of cutting-edge *{intel-amx}*, fostering efficiency and performance optimization in AI workloads.
 
 The basic pattern has been extended by the AI application named `amx-app`. It runs Deep Interest Evolution Network (DIEN) inference using the Intel-optimized TensorFlow and measures its accuracy. DIEN is a machine learning model used in the field of recommender systems, particularly in the domain of personalized content recommendation.
 
