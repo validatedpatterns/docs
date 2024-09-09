@@ -58,8 +58,8 @@
             <div class="pf-c-select__menu-group">
               <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-industry">
                 {{ range $name, $taxonomy := .Site.Taxonomies.industries }}
-                <label class="pf-c-check pf-c-select__menu-item" for="industries:{{- $name -}}">
-                  <input class="pf-c-check__input" type="checkbox" id="industries:{{- $name -}}" onclick="filterSelection(this.id)" name="{{- $name | humanize | title  -}}"/>
+                <label class="pf-c-check pf-c-select__menu-item" for="industries:{{- $name | urlize -}}">
+                  <input class="pf-c-check__input" type="checkbox" id="industries:{{- $name | urlize -}}" onclick="filterSelection(this.id)" name="{{- $name | humanize | title  -}}"/>
                   <span class="pf-c-check__label">{{- $name | humanize | title  -}}</span>
                 </label>
                 {{ end }}
@@ -88,8 +88,8 @@
             <div class="pf-c-select__menu-group">
               <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-rh-products">
                 {{ range $name, $taxonomy := .Site.Taxonomies.rh_products }}
-                <label class="pf-c-check pf-c-select__menu-item" for="rh_products:{{- $name -}}">
-                  <input class="pf-c-check__input" type="checkbox" id="rh_products:{{- $name -}}" onclick="filterSelection(this.id)" name="{{ $taxonomy.Page.Title }}"/>
+                <label class="pf-c-check pf-c-select__menu-item" for="rh_products:{{- $name | urlize -}}">
+                  <input class="pf-c-check__input" type="checkbox" id="rh_products:{{- $name | urlize -}}" onclick="filterSelection(this.id)" name="{{ $taxonomy.Page.Title }}"/>
                   <span class="pf-c-check__label wrappable">{{ $taxonomy.Page.Title }}</span>
                 </label>
                 {{ end }}
@@ -118,8 +118,8 @@
             <div class="pf-c-select__menu-group">
               <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-RHproducts">
                 {{ range $name, $taxonomy := .Site.Taxonomies.other_products }}
-                <label class="pf-c-check pf-c-select__menu-item" for="other_products:{{- $name -}}">
-                  <input class="pf-c-check__input" type="checkbox" id="other_products:{{- $name -}}" onclick="filterSelection(this.id)" name="{{ $taxonomy.Page.Title }}"/>
+                <label class="pf-c-check pf-c-select__menu-item" for="other_products:{{- $name | urlize -}}">
+                  <input class="pf-c-check__input" type="checkbox" id="other_products:{{- $name | urlize -}}" onclick="filterSelection(this.id)" name="{{ $taxonomy.Page.Title }}"/>
                   <span class="pf-c-check__label wrappable">{{ $taxonomy.Page.Title }}</span>
                 </label>
                 {{ end }}
