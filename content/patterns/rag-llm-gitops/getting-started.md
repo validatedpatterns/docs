@@ -117,7 +117,7 @@ global:
 # Possible value for db.type = [REDIS, EDB]
   db:
     index: docs
-    type: EDB  <--- Default is EDB, Change the db type to REDIS for Redis deployment
+    type: EDB  # <--- Default is EDB, Change the db type to REDIS for Redis deployment
 main:
   clusterGroupName: hub
   multiSourceConfig:
