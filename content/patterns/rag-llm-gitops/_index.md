@@ -48,8 +48,8 @@ The goal of this demo is to demonstrate a Chatbot LLM application augmented with
 - LLM Application augmented with content from Red Hat product documentation.
 - Multiple LLM providers (OpenAI, Hugging Face, NVIDIA).
 - Vector Database, such as EDB Postgres for Kubernetes, or Redis, to store embeddings of Red Hat product documentation.
-- Monitoring dashboard to provide key metrics such as ratings
-- GitOps setup to deploy e2e demo (frontend / vector database / served models)
+- Monitoring dashboard to provide key metrics such as ratings.
+- GitOps setup to deploy e2e demo (frontend / vector database / served models).
 
 
 ![Overview](https://gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/images/intro-marketectures/rag-demo-vp-marketing-slide.png)
