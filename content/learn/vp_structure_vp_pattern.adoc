@@ -25,7 +25,7 @@ The high level steps to create a validated pattern are as follows:
 
 Following these best practices, to create robust, scalable, and maintainable validated patterns that are easy to deploy and manage across various environments.
 
-1.  **Start with OpenShift Multicloud GitOps**: 
+1.  **Start with OpenShift Multicloud GitOps**
     - When creating a validated pattern, begin with OpenShift Multicloud GitOps as your foundation. This is the most fundamental pattern and should serve as your base.
 
 2. **Centralize all manifests in a Git Repository**

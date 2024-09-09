@@ -28,7 +28,9 @@ https://docs.openshift.com/container-platform/4.9/cicd/pipelines/understanding-o
 
 Examining any of the existing patterns reveals the important organizational part of the validated patterns framework. Let's take a look at a couple of the existing validated patterns: Multicluster GitOps and Industrial Edge.
 
-===  Multicluster GitOps
+===  Multicloud GitOps
+
+The Multicloud GitOps approach enables centralized management of multiple cloud deployments across both public and private clouds, including workloads and the secure handling of secrets across environments. This approach is built on patterns that consist of two key components: a "common" element, which serves as a foundational framework shared by nearly all patterns, and a pattern-specific element that builds on the common framework with tailored content. This section focuses on the standardized directory structure used in Multicloud GitOps repositories for validated patterns in multicloud setups. By following the well-structured directory layout illustrated here, teams can streamline deployment processes across clouds, reduce configuration drift, enhance automation, and maintain a single source of truth for both infrastructure and application code.
 
 [source,text]
 ----
@@ -77,6 +79,7 @@ Examining any of the existing patterns reveals the important organizational part
 First we notice some subdirectories: charts and common, along with `values-` yaml files.
 
 ===  Industrial edge
+
 [source,text]
 ----
 ~/g/industrial-edge on stable-2.0 ◦ tree -L 2
@@ -168,6 +171,11 @@ This table details the key components of the common repository:
 
 This is where validated patterns keep the helm charts for a pattern. The helm charts are used to deploy and manage the various components of the applications deployed at a site. By convention, the charts are broken out by site location. You may see `datacenter`, `hub`, `factory`, or other site names in there.
 
+[NOTE]
+====
+The site naming convention is flexible, allowing users to modify it to suit their environment. 
+====
+
 Each site has sub-directories based on application or library component groupings.
 
 From https://helm.sh/docs/chart_template_guide/getting_started/[Helm documentation:]
@@ -245,6 +253,11 @@ This is used to set variables for helm charts across the pattern. It contains th
 Each specific site requires information regarding what applications and subscriptions are required for that site. This file contains a list of namespaces, applications, subscriptions, the operator versions etc. for that site.
 . *`values-secret.yaml.template`*:
 All patterns require some secrets for artifacts included in the pattern. For example credentials for GitHub, AWS, or Quay.io. The framework provides a safe way to load those secrets into a vault for consumption by the pattern. This template file can be copied to your home directory, the secret values applied, and the validated pattern will go look for `values-secrets.yaml` in your home directory. *Do not leave a `values-secrets.yaml` file in your cloned git directory or it may end up in your (often public) Git repository, like GitHub.*
++
+[NOTE]
+====
+This file has nothing to do with helm and can be copied either to your home directory or to the `~/.config/validatedpatterns/` folder. The naming should be `values-secret-<pattern-name>.yaml`. Ideally it should be encrypted with the ansible-vault.
+====
 
 === Values files can have some overrides.
 
@@ -258,11 +271,9 @@ All patterns require some secrets for artifacts included in the pattern. For exa
 
 Current supported cloud providers include *`AWS`*, *`Azure`*, *`GCP`*, and *Nutanix*.
 
-== Applications & subscriptions
-
 == Environment values and Helm
 
-The reason the above values files exist is to take advantage of Helms ability to use templates and substitute values into your charts. This makes the pattern very portable.
+The purpose of the values files is to leverage Helm's templating capabilities, allowing you to dynamically substitute values into your charts. This makes the pattern very portable.
 
 The following `messaging-route.yaml` example shows how the AMQ messaging service is using values set in the `values-global.yaml` file for Industrial Edge.
 
