@@ -112,6 +112,7 @@ Verify that the Operators have been installed.
 . Check that the following Operators are installed with  `Succeeded` status (Figure 1): 
 * *Advanced Cluster Management for Kubernetes* 
 * *multicluster engine for Kubernetes* 
+* *Node Feature Discovery Operator*
 * *Red Hat Openshift GitOps*
 * *Validated Patterns Operator*
 * *OpenVINO Toolkit Operator*
@@ -167,6 +168,7 @@ Verify that the rest of Operators have been installed:
 . Check that the following Operators are installed with  `Succeeded` status (Figure 1): 
 * *Advanced Cluster Management for Kubernetes* 
 * *multicluster engine for Kubernetes*
+* *Node Feature Discovery Operator*
 * *Red Hat Openshift GitOps*
 * *OpenVINO Toolkit Operator*
 * *Red Hat Openshift AI*
