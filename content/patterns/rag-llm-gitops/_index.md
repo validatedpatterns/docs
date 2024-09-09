@@ -23,14 +23,14 @@ ci: ai
 
 ## Introduction
 
-This deployment is based on the `validated pattern framework`, using GitOps for
+This deployment is based on the _validated pattern framework_, using GitOps for
 seamless provisioning of all operators and applications. It deploys a Chatbot
 application that harnesses the power of Large Language Models (LLMs) combined
 with the Retrieval-Augmented Generation (RAG) framework.
 
 The application uses either the [EDB Postgres for Kubernetes operator](https://catalog.redhat.com/software/container-stacks/detail/5fb41c88abd2a6f7dbe1b37b)
-(default) or Redis to store embeddings of Red Hat products, running on Red Hat
-OpenShift to generate project proposals for specific Red Hat products.
+(default), or Redis, to store embeddings of Red Hat product documentation, running on Red Hat
+OpenShift Container Platform to generate project proposals for specific Red Hat products.
 
 ## Pre-requisites
 
