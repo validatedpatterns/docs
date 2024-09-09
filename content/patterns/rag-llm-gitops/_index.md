@@ -47,7 +47,7 @@ The goal of this demo is to demonstrate a Chatbot LLM application augmented with
 
 - LLM Application augmented with content from Red Hat product documentation.
 - Multiple LLM providers (OpenAI, Hugging Face, NVIDIA)
-- Vector Database, such as EDB Postgres for Kubernetes or Redis, to store embeddings of RedHat product documentation
+- Vector Database, such as EDB Postgres for Kubernetes, or Redis, to store embeddings of Red Hat product documentation.
 - Monitoring dashboard to provide key metrics such as ratings
 - GitOps setup to deploy e2e demo (frontend / vector database / served models)
 
