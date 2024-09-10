@@ -39,3 +39,9 @@ mediaTypes:
 outputFormats:
   patterns:
     mediatype: application/json
+
+menus:
+  main:
+    - name: Workshop
+      url: https://play.validatedpatterns.io
+      weight: 25
