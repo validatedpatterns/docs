@@ -313,6 +313,3 @@ global:
     clustername: ipbabble-f1
     domain: blueprints.rhecoeng.com
 ----
-
-
-test
