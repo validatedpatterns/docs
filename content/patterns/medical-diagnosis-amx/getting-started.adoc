@@ -18,10 +18,11 @@ include::modules/comm-attributes.adoc[]
 
 .Prerequisites
 
-* An OpenShift cluster
- ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *Services* -> *Containers* -> *Create cluster*.
- ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../medical-diagnosis/cluster-sizing[sizing your cluster].
+* An {ocp} cluster
+ ** To create an {ocp} cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console] and select *Services \-> Containers \-> Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. It was tested with ODF (OpenShift Data Foundation) or LVM Storage solutions. CephFS should be set as a default Storage Class - https://docs.openshift.com/container-platform/4.16/storage/container_storage_interface/persistent-storage-csi-sc-manage.html#change-default-storage-class_persistent-storage-csi-sc-manage[Setup Guide]
+ ** link:../../medical-diagnosis-amx/cluster-sizing[Cluster sizing] requirements.
+* {ocp} Cluster must have Image Registry - https://docs.openshift.com/container-platform/4.16/registry/configuring_registry_storage/configuring-registry-storage-rhodf.html[Setup Guide]
 * A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
 * An S3-capable Storage (OpenShift Data Foundation is recommended) set up in your private cloud for the x-ray images
 * The Helm binary, see link:https://helm.sh/docs/intro/install/[Installing Helm]
