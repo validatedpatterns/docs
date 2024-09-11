@@ -20,7 +20,7 @@ So how do you take a current application workload and move it to the Validated P
 
 == Prerequisites
 
-Please make sure you have read the link:/background-on-pattern-development/[background section], including the link:/building-vps/structure/[structure section].
+Please make sure you have read the link:/background-on-pattern-development/[background section], including the link:/ocp-framework/structure/[structure section].
 
 == You're probably not starting from scratch
 
@@ -136,7 +136,7 @@ applications:
 
 In the above example `acm` (ACM) is part of the main `datacenter` deployment, as is `cool-app`. However, `central-kafka` is part of `backend-storage`. All these deployment are on the same datacenter cluster.
 
-The `path:` tag tells OpenShift GitOps where to find the Helm charts needed to deploy this application (refer back to the https://validatedpatterns.io/building-vps/structure/#the-charts-directory[charts directory description] for more details). OpenShift GitOps will continuously monitor for changes to artifacts in that location for updates to apply.
+The `path:` tag tells OpenShift GitOps where to find the Helm charts needed to deploy this application (refer back to the https://validatedpatterns.io/learn/vp_openshift_framework/#_the_charts_directory[charts directory description] for more details). OpenShift GitOps will continuously monitor for changes to artifacts in that location for updates to apply.
 
 Each different site type would have its own values- file listing subscriptions and applications.
 

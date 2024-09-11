@@ -59,4 +59,4 @@ lintwordlist: ## Sorts and removes duplicates from spellcheck exception file .wo
 
 .PHONY: clean
 clean: ## Removes any unneeded spurious files
-	@rm -rvf ./.jekyll-cache ./_site ./tmp super-linter.log dictionary.dic
+	@rm -rvf ./.jekyll-cache ./_site ./tmp super-linter.log dictionary.dic public/*

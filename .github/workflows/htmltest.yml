@@ -12,12 +12,11 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.0.7'
+          ruby-version: '2.7'
 
       - name: Install build dependencies
         run: |
-          gem install asciidoctor -v 2.0.23
-          gem install rouge -v 4.3.0
+          gem install asciidoctor rouge
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
@@ -27,8 +26,11 @@ jobs:
 
       - name: Build
         run: |
-          alias asciidoctor="asciidoctor --attribute=experimental=true --attribute=icons=font"
           hugo --minify
+
+      - name: Display the public/ folders
+        run: |
+          ls -lR public/
 
       - name: Run htmltest
         uses: wjdp/htmltest-action@master
