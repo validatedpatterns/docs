@@ -1,7 +1,7 @@
 ---
 menu: learn
 title: Infrastructure
-weight: 40
+weight: 50
 aliases: /infrastructure/
 ---
 

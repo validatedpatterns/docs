@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Workflow
 title: Validated Patterns - Sandbox tier
-weight: 43
+weight: 63
 aliases: /requirements/community/
 aliases: /requirements/sandbox/
 ---

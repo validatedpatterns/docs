@@ -2,8 +2,8 @@
 layout: default
 title: Key concepts
 menu: learn
-weight: 20
-aliases: /key concepts/
+weight: 30
+aliases: /key-concepts/
 ---
 
 :toc:

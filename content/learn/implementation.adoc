@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Workflow
 title: Implementation requirements
-weight: 42
+weight: 62
 aliases: /requirements/implementation/
 ---
 

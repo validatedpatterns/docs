@@ -1,0 +1,24 @@
+---
+menu: learn
+title: Validated patterns frameworks
+weight: 20
+aliases: /validated-patterns-frameworks/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Introduction
+
+Validated patterns provides two frameworks to deploy applications: the OpenShift-based Validated Patterns framework and the Ansible GitOps Framework (AGOF). 
+
+The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat.
+
+Ansible GitOps Framework (AGOF) is an alternative framework, designed to provide a framework for GitOps without Kubernetes. AGOF is not a pattern itself; it is a framework for installing Ansible Automation Platform (AAP), and then using that as the GitOps engine to drive other pattern work. AGOF comes with code to install VMs in AWS, if desired, or else it can work with previously provisioned VMs, or a functional AAP Controller endpoint.
+
+The goal with either framework, is that developers, operators, security, and architects build a secure and repeatable day one deployment mechanism and maintenance automation for day two operations.
+
+
+
