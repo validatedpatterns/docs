@@ -415,9 +415,8 @@ OpenShift GitOps view should be similar to the following:
 +
 image::medical-diagnosis-amx/gitops-view.png[link="/images/medical-diagnosis-amx/gitops-view.png"]
 +
-All applications should be healthy for pattern to work correctly, even if some applications may be OutOfSync.
-If any application is in 'unhealthy' state common solution is to sync the application. 
-For other issues please refer to https://validatedpatterns.io/patterns/medical-diagnosis/troubleshooting/
+All applications should be healthy for the pattern to work correctly, even if some applications may be OutOfSync. In some cases, ODF (OpenShift Data Foundation) may have an OutOfSync status, but this usually does not impact functionality. 
+If any application is in an 'unhealthy' state, the common solution is to sync the application. For other issues, please refer to https://validatedpatterns.io/patterns/medical-diagnosis-amx/troubleshooting/.
 +
 
 
