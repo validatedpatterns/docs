@@ -9,4 +9,5 @@ IgnoreURLs:
 - "http://mlflow-server.mlflow.svc.cluster.local:8080"
 - "http://<route-to-mlflow>.*"
 - "https://<your-uri>/ns/inferencing-app/deployments/credit-fraud-detection-demo/environment"
+- "/livereload.js*"
 HTTPHeaders: {"User-Agent": "curl/8.2.1"}
