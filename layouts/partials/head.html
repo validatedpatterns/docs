@@ -10,4 +10,10 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.3.0/css/fontawesome.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.3.0/css/brands.css">
   <title>{{ if eq .IsHome false }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
+  {{ if .Params.canonical }}
+  <link rel="canonical" href="{{ .Params.canonical }}">
+{{ else }}
+  <link rel="canonical" href="{{ .Permalink }}">
+{{ end }}
+
 </head>
