@@ -15,9 +15,9 @@ include::modules/comm-attributes.adoc[]
 
 The minimum requirements for an {ocp} cluster depend on your installation platform, for example:
 
-* For AWS, see link:https://docs.openshift.com/container-platform/4.13/installing/installing_aws/preparing-to-install-on-aws.html#requirements-for-installing-ocp-on-aws[Installing {ocp} on AWS].
+* For AWS, see link:https://docs.openshift.com/container-platform/4.16/installing/installing_aws/preparing-to-install-on-aws.html#requirements-for-installing-ocp-on-aws[Installing {ocp} on AWS].
 
-* For bare-metal, see link:https://docs.openshift.com/container-platform/4.13/installing/installing_bare_metal/installing-bare-metal.html#installation-minimum-resource-requirements_installing-bare-metal[Installing {ocp} on bare metal].
+* For bare-metal, see link:https://docs.openshift.com/container-platform/4.16/installing/installing_bare_metal/installing-bare-metal.html#installation-minimum-resource-requirements_installing-bare-metal[Installing {ocp} on bare metal].
 
 To understand cluster sizing requirements for the {amx-mcg-pattern}, consider the following components that the {amx-mcg-pattern} deploys on the datacenter or the hub OpenShift cluster:
 
