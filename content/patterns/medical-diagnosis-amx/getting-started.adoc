@@ -363,7 +363,7 @@ export AWS_SECRET_ACCESS_KEY=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpa
 export CEPH_RGW_ENDPOINT=$(oc -n openshift-storage get route s3-rgw -ojsonpath='{.spec.host}')
 export CEPH_BUCKET_NAME="PUT_NAME_OF_YOUR_BUCKET"
 
-cd medical-diagnosis
+cd amx-accelerated-medical-diagnosis 
 aws --endpoint https://${CEPH_RGW_ENDPOINT} --no-verify-ssl s3api put-bucket-policy --bucket ${CEPH_BUCKET_NAME} --policy file://./bucket-policy.json
 ----
 
