@@ -20,7 +20,7 @@ So how do you take a current application workload and move it to the Validated P
 
 == Prerequisites
 
-Please make sure you have read the link:/background-on-pattern-development/[background section], including the link:/ocp-framework/structure/[structure section].
+Please make sure you have read the xref:introduction_background-on-pattern-development[background section], including the xref:openshift-framework-fundamentals_ocp-framework-structure[structure section].
 
 == You're probably not starting from scratch
 

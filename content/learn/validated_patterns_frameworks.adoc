@@ -10,9 +10,10 @@ aliases: /validated-patterns-frameworks/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
+[id="validated-patterns-frameworks-introduction"]
 == Introduction
 
-Validated patterns provides two frameworks to deploy applications: the OpenShift-based Validated Patterns framework and the Ansible GitOps Framework (AGOF). 
+Validated patterns provides two frameworks to deploy applications: the OpenShift-based Validated Patterns framework and the Ansible GitOps Framework (AGOF).
 
 The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat.
 

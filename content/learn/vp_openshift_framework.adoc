@@ -12,6 +12,7 @@ aliases: /ocp-framework/structure/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
+[id="openshift-framework-fundamentals_ocp-framework-structure"]
 == OpenShift framework fundamentals
 
 The OpenShift validated patterns framework uses https://docs.openshift.com/container-platform/latest/cicd/gitops/understanding-openshift-gitops.html[OpenShift GitOps] (ArgoCD) as the primary driver for deploying patterns and keeping them up to date. Validated patterns use Helm charts as the primary artifacts for GitOps. https://helm.sh/[Helm charts] provide a mechanism for templating that is powerful when building repeatable, automated deployments across different deployment environments (i.e. clouds, data-centers, edge, etc.)

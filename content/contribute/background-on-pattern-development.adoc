@@ -10,6 +10,7 @@ aliases: /background-on-pattern-development/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
+[id="introduction_background-on-pattern-development"]
 == Introduction
 
 This section provides details on how to create a new pattern using the validated patterns framework. Creating a new pattern might start from scratch or it may start from an existing deployment that would benefit from a repeatable framework based on GitOps.
