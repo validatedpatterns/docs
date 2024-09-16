@@ -38,6 +38,7 @@ Deploying HyperShift clusters requires the following:
 |===
 
 Additonally, you will need:
+
 - An openshift cluster that has the multicluster-engine operator deployed and configured
 - You are logged into your management cluster with an appropriately credentialed user
 
