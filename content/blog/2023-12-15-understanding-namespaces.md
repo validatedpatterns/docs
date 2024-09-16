@@ -36,7 +36,7 @@ clusterGroup:
      …
 ```
 
-The Validated Patterns framework, defined by the **clusterGroup** helm chart in the **common** [github repository](https://github.com/validatedpatterns/common/tree/main/clustergroup), accepts two formats for the **namespaces:** section:
+The Validated Patterns framework, defined by the **clusterGroup** helm chart in the **common** [github repository](https://github.com/validatedpatterns/common/tree/v1/clustergroup), accepts two formats for the **namespaces:** section:
 
 * A list object
 * A map object
@@ -45,7 +45,7 @@ If a namespace is described as a list item the Validated Patterns framework will
 
 If a namespace is described as a map object, e.g. **mynamespace:**, the Validated Patterns framework will look for additional elements in the namespace description.  The elements that the Validated Patterns framework looks for are **labels:**, **annotations:**, **operatorGroup:** and **targetNamespaces:**.
 
-The Validated Patterns framework uses a JSON Schema for defining the structure of JSON data for the values files. It provides a contract for what JSON data is required for a given application and how to interact with it. We use the JSON Schema file mostly for validation, documentation, and interaction control of JSON data. You can find the [JSON Schema](https://github.com/validatedpatterns/common/blob/main/clustergroup/values.schema.json) for the **clusterGroup:** section in our Validated Patterns **common** [github repository](https://github.com/validatedpatterns/common/tree/main/clustergroup).
+The Validated Patterns framework uses a JSON Schema for defining the structure of JSON data for the values files. It provides a contract for what JSON data is required for a given application and how to interact with it. We use the JSON Schema file mostly for validation, documentation, and interaction control of JSON data. You can find the [JSON Schema](https://github.com/validatedpatterns/common/blob/v1/clustergroup/values.schema.json) for the **clusterGroup:** section in our Validated Patterns **common** [github repository](https://github.com/validatedpatterns/common/tree/v1/clustergroup).
 
 Let's explore the various methods to create namespaces using the Validated Patterns framework, examining the configurations provided.
 

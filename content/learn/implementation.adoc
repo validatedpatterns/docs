@@ -38,7 +38,7 @@ These are optional or desirable features, but their absence does not hinder the 
 . Patterns must be possible to deploy on any installer-provisioned infrastructure OpenShift cluster (BYO).
 +
 {solution-name-upstream} distinguish between the provisioning and configuration requirements of the initial cluster (`Patterns`) and of clusters or machines that are managed by the initial cluster (`Managed clusters`).
-. Patterns must use a standardized https://github.com/validatedpatterns/common/tree/main/clustergroup[clustergroup] Helm chart as the initial {rh-gitops} application that describes all namespaces, subscriptions, and any other GitOps applications which contain the configuration elements that make up the solution.
+. Patterns must use a standardized https://github.com/validatedpatterns/common/tree/v1/clustergroup[clustergroup] Helm chart as the initial {rh-gitops} application that describes all namespaces, subscriptions, and any other GitOps applications which contain the configuration elements that make up the solution.
 . Managed clusters must operate on the premise of `eventual consistency` (automatic retries, and an expectation of idempotence), which is one of the essential benefits of the GitOps model.
 . Imperative elements must be implemented as idempotent code stored in Git repository.
 
@@ -60,7 +60,7 @@ Such Operators are forbidden to be deployed into an increasing number of custome
 For example, Bucket Notification is a capability in the {med-pattern} that could be used for other solutions.
 . Patterns should use {rh-ansible} to drive the declarative provisioning and management of managed hosts, for example, {rhel-first}. See also `Imperative elements`.
 . Patterns should use {rh-rhacm-first} to manage policy and compliance on any managed clusters.
-. Patterns should use {rh-rhacm} and a https://github.com/validatedpatterns/common/tree/main/acm[standardized RHACM chart] to deploy and configure {rh-gitops-short} to managed clusters.
+. Patterns should use {rh-rhacm} and a https://github.com/validatedpatterns/common/tree/v1/acm[standardized RHACM chart] to deploy and configure {rh-gitops-short} to managed clusters.
 . Managed clusters should be loosely coupled to their hub, and use {rh-gitops-short} to consume applications and configuration directly from Git as opposed to having hard dependencies on a centralized cluster.
 . Managed clusters should use the `pull` deployment model for obtaining their configuration.
 . Imperative elements should be implemented as Ansible playbooks.
