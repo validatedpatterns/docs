@@ -23,7 +23,7 @@ Deploying HyperShift clusters requires the following resources in your environme
 - An openshift cluster that has the multicluster-engine operator deployed and configured
 - You are logged into your management cluster with an appropriately credentialed user
 
-NOTE: Instead of installing these software components locally would be to use the [utility container](https://github.com/validatedpatterns/utility-container)
+NOTE: Instead of installing these software components locally would be to use the https://github.com/validatedpatterns/utility-container[utility container]
 
 [.console-input]
 [source,bash]
