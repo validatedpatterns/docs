@@ -326,6 +326,7 @@ To verify, in the OpenShift Container Platform web console, navigate to Operator
 Check that the following Operators are installed with Succeeded status (Figure 1):
 Advanced Cluster Management for Kubernetes
 multicluster engine for Kubernetes
+Node Feature Discovery Operator
 Red Hat Openshift GitOps
 Validated Patterns Operator
 OpenVINO Toolkit Operator
@@ -345,6 +346,7 @@ To verify, in the OpenShift Container Platform web console, navigate to Operator
 Check that the following Operators are installed with Succeeded status (Figure 1):
 Advanced Cluster Management for Kubernetes
 multicluster engine for Kubernetes
+Node Feature Discovery Operator
 Red Hat Openshift GitOps
 OpenVINO Toolkit Operator
 Red Hat Openshift AI
@@ -834,10 +836,11 @@ Add a dedicated cluster to deploy the factory pieces using ACM
 Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that here
 a. Making configuration changes with GitOps a. Making application changes using DevOps a. Making AI/ML model changes with DevOps
 Uninstalling We currently do not support uninstalling this pattern.
-`,url:"https://validatedpatterns.io/patterns/industrial-edge/getting-started/",breadcrumb:"/patterns/industrial-edge/getting-started/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/getting-started/":{title:"Getting Started",tags:[],content:` Deploying the Intel AMX accelerated Medical Diagnosis pattern Prerequisites An OpenShift cluster
-To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select Services → Containers → Create cluster.
-The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
+`,url:"https://validatedpatterns.io/patterns/industrial-edge/getting-started/",breadcrumb:"/patterns/industrial-edge/getting-started/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/getting-started/":{title:"Getting Started",tags:[],content:` Deploying the Intel AMX accelerated Medical Diagnosis pattern Prerequisites An OpenShift Container Platform cluster
+To create an OpenShift Container Platform cluster, go to the Red Hat Hybrid Cloud console and select Services -&gt; Containers -&gt; Create cluster.
+The cluster must have a dynamic StorageClass to provision PersistentVolumes. It was tested with ODF (OpenShift Data Foundation) or LVM Storage solutions. CephFS should be set as a default Storage Class - Setup Guide
+Cluster sizing requirements.
+OpenShift Container Platform Cluster must have Image Registry - Setup Guide
 A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
 An S3-capable Storage (OpenShift Data Foundation is recommended) set up in your private cloud for the x-ray images
 The Helm binary, see Installing Helm For installation tooling dependencies, see Patterns quick start.
@@ -889,19 +892,20 @@ Second thing to do is to go to ArgoCD dashboard, to xraylab-init application and
 Clone the repository with xray images and push them to the bucket:
 git clone https://github.com/red-hat-data-services/jumpstart-library.git Xray images are stored in the following path in the repo: https://github.com/red-hat-data-services/jumpstart-library/tree/main/demo1-xray-pipeline/base_elements/containers/image-init/base_images
 Set environment variables. Create and configure the bucket:
-export AWS_ACCESS_KEY_ID=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_ACCESS_KEY_ID}&#39; | base64 -d) export AWS_SECRET_ACCESS_KEY=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_SECRET_ACCESS_KEY}&#39; | base64 -d) export CEPH_RGW_ENDPOINT=$(oc -n openshift-storage get route s3-rgw -ojsonpath=&#39;{.spec.host}&#39;) export CEPH_BUCKET_NAME=&#34;PUT_NAME_OF_YOUR_BUCKET&#34; cd jumpstart-library/demo1-xray-pipeline/base_elements/containers/image-init aws --endpoint https://\${CEPH_RGW_ENDPOINT} --no-verify-ssl s3api create-bucket --bucket \${CEPH_BUCKET_NAME} aws --endpoint https://\${CEPH_RGW_ENDPOINT} --no-verify-ssl s3 cp base_images/ s3://\${CEPH_BUCKET_NAME}/ --recursive Ceph RGW bucket needs specific bucket policy to be applied. To apply policy execute following commands:
-export AWS_ACCESS_KEY_ID=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_ACCESS_KEY_ID}&#39; | base64 -d) export AWS_SECRET_ACCESS_KEY=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_SECRET_ACCESS_KEY}&#39; | base64 -d) export CEPH_RGW_ENDPOINT=$(oc -n openshift-storage get route s3-rgw -ojsonpath=&#39;{.spec.host}&#39;) export CEPH_BUCKET_NAME=&#34;PUT_NAME_OF_YOUR_BUCKET&#34; cd medical-diagnosis aws --endpoint https://\${CEPH_RGW_ENDPOINT} --no-verify-ssl s3api put-bucket-policy --bucket \${CEPH_BUCKET_NAME} --policy file://./bucket-policy.json Viewing the Grafana based dashboard Accept the SSL certificates on the browser for the dashboard. In the OpenShift Container Platform web console, go to the Routes for project openshift-storage\`. Click the URL for the s3-rgw.
+export AWS_ACCESS_KEY_ID=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_ACCESS_KEY_ID}&#39; | base64 -d) export AWS_SECRET_ACCESS_KEY=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_SECRET_ACCESS_KEY}&#39; | base64 -d) export CEPH_RGW_ENDPOINT=$(oc -n openshift-storage get route s3-rgw -ojsonpath=&#39;{.spec.host}&#39;) export CEPH_BUCKET_NAME=&#34;PUT_NAME_OF_YOUR_BUCKET&#34; cd jumpstart-library/demo1-xray-pipeline/base_elements/containers/image-init aws --endpoint https://\${CEPH_RGW_ENDPOINT} --no-verify-ssl s3api create-bucket --bucket \${CEPH_BUCKET_NAME} aws --endpoint https://\${CEPH_RGW_ENDPOINT} --no-verify-ssl s3 cp base_images/ s3://\${CEPH_BUCKET_NAME}/ --recursive Note: The CEPH_BUCKET_NAME value should be the same as the bucketSource: &#34;PROVIDE_BUCKET_SOURCE&#34; value specified in the values-global.yaml file.
+Ceph RGW bucket needs specific bucket policy to be applied. To apply policy execute following commands:
+export AWS_ACCESS_KEY_ID=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_ACCESS_KEY_ID}&#39; | base64 -d) export AWS_SECRET_ACCESS_KEY=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpath=&#39;{.data.AWS_SECRET_ACCESS_KEY}&#39; | base64 -d) export CEPH_RGW_ENDPOINT=$(oc -n openshift-storage get route s3-rgw -ojsonpath=&#39;{.spec.host}&#39;) export CEPH_BUCKET_NAME=&#34;PUT_NAME_OF_YOUR_BUCKET&#34; cd amx-accelerated-medical-diagnosis aws --endpoint https://\${CEPH_RGW_ENDPOINT} --no-verify-ssl s3api put-bucket-policy --bucket \${CEPH_BUCKET_NAME} --policy file://./bucket-policy.json Viewing the Grafana based dashboard Accept the SSL certificates on the browser for the dashboard. In the OpenShift Container Platform web console, go to the Routes for project openshift-storage\`. Click the URL for the s3-rgw.
 Ensure that you see some XML and not the access denied error message.
 While still looking at Routes, change the project to xraylab-1. Click the URL for the image-server. Ensure that you do not see an access denied error message. You must to see a Hello World message.
 Turn on the image file flow. There are three ways to go about this.
-You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster.
+You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster).
 $ oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1 Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the xraylab-1 project.
 Right-click on the image-generator pod icon and select Edit Pod count.
 Up the pod count from 0 to 1 and save.
 Alternatively, you can have the same outcome on the Administrator console.
 Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project xraylab-1. Click image-generator and increase the pod count to 1.
 OpenShift GitOps view should be similar to the following:
-All applications should be healthy for pattern to work correctly, even if some applications may be OutOfSync. If any application is in &#39;unhealthy&#39; state common solution is to sync the application. For other issues please refer to https://validatedpatterns.io/patterns/medical-diagnosis/troubleshooting/
+All applications should be healthy for the pattern to work correctly, even if some applications may be OutOfSync. In some cases, ODF (OpenShift Data Foundation) may have an OutOfSync status, but this usually does not impact functionality. If any application is in an &#39;unhealthy&#39; state, the common solution is to sync the application. For other issues, please refer to https://validatedpatterns.io/patterns/medical-diagnosis-amx/troubleshooting/.
 Making some changes on the dashboard You can change some of the parameters and watch how the changes effect the dashboard.
 You can increase or decrease the number of image generators.
 $ oc scale deploymentconfig/image-generator --replicas=2 Check the dashboard.
@@ -960,7 +964,7 @@ Viewing the Grafana based dashboard Accept the SSL certificates on the browser f
 Ensure that you see some XML and not the access denied error message.
 While still looking at Routes, change the project to xraylab-1. Click the URL for the image-server. Ensure that you do not see an access denied error message. You must to see a Hello World message.
 Turn on the image file flow. There are three ways to go about this.
-You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster.
+You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster).
 $ oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1 Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the xraylab-1 project.
 Right-click on the image-generator pod icon and select Edit Pod count.
 Up the pod count from 0 to 1 and save.
@@ -1241,20 +1245,20 @@ About Intel AMX accelerated Medical Diagnosis pattern OpenShift cluster size The
 The recommended hardware setup:
 Node type Number of nodes CPU Memory Storage Control Planes
 3
-4th Generation Intel Xeon Gold 6426Y (16 cores at 2.5 GHz base/3.3 GHz all core turbo/3.0 GHz AMX all core turbo) or better
+2x 5th Generation Intel Xeon Gold 6526Y (16 cores at 2.8 GHz base with Intel AMX) or better
 128 GB (8 x 16 GB DDR5 4800) or more
 NVME SSD 3TB or more
 Workers
 3
-4th Generation Intel Xeon Gold 6438Y+ (32 cores at 2.0 GHz base/2.8 GHz all core turbo/2.4 GHz AMX all core turbo) or better
+2x 5th Generation Intel Xeon Gold 6538Y+ (32 cores at 2.2 GHz base with Intel AMX) or better
 256 GB (16 x 16 GB) or 512 GB (16 x 32GB) DDR5-4800
 NVME SSD 3TB or more
 You might want to add resources when more developers are working on building their applications.
 The pattern was tested in the on-premises environment with following hardware configuration (per cluster):
 Node type Number of nodes CPU Memory Storage Control Planes + Workers
 3 + 3
-4th Generation Intel Xeon Platinum 8460Y+ Processor (40 cores at 2.0 GHz base/2.8 GHz all core turbo/2.6 AMX all core turbo)
-512 GB (16x32GB DDR5 4800)
+2x 5th Generation Intel Xeon Platinum 8568Y+ (48 cores at 2.3 GHz base with Intel AMX)
+512 GB (16x32GB DDR5 5600)
 4x 3.84TB U.2 NVMe PCIe Gen4
 `,url:"https://validatedpatterns.io/patterns/medical-diagnosis-amx/cluster-sizing/",breadcrumb:"/patterns/medical-diagnosis-amx/cluster-sizing/"},"https://validatedpatterns.io/patterns/medical-diagnosis/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:` About OpenShift cluster sizing for the Medical Diagnosis pattern To understand cluster sizing requirements for the Medical Diagnosis pattern, consider the following components that the Medical Diagnosis pattern deploys on the datacenter or the hub OpenShift cluster:
 Name Kind Namespace Description Medical Diagnosis Hub
@@ -1810,20 +1814,20 @@ Intel AMX accelerated Multicloud GitOps pattern with OpenShift clusters sizes Th
 The recommended clusters sizes for datacenter hub and for managed datacenter are the same in this case:
 Node type Number of nodes CPU Memory Storage Control Planes
 3
-4th Generation Intel Xeon Gold 6426Y (16 cores at 2.5 GHz base/3.3 GHz all core turbo/3.0 GHz AMX all core turbo) or better
+2x 5th Generation Intel Xeon Gold 6526Y (16 cores at 2.8 GHz base with Intel AMX) or better
 128 GB (8 x 16 GB DDR5 4800) or more
 NVME SSD 3TB or more
 Workers
 3
-4th Generation Intel Xeon Gold 6438Y+ (32 cores at 2.0 GHz base/2.8 GHz all core turbo/2.4 GHz AMX all core turbo) or better
+2x 5th Generation Intel Xeon Gold 6538Y+ (32 cores at 2.2 GHz base with Intel AMX) or better
 256 GB (16 x 16 GB) or 512 GB (16 x 32GB) DDR5-4800
 NVME SSD 3TB or more
 You might want to add resources when more developers are working on building their applications.
 The pattern was tested in the on-premises environment with following hardware configuration (per cluster):
 Node type Number of nodes CPU Memory Storage Control Planes + Workers
 3 + 3
-4th Generation Intel Xeon Platinum 8460Y+ Processor (40 cores at 2.0 GHz base/2.8 GHz all core turbo/2.6 AMX all core turbo)
-512 GB (16x32GB DDR5 4800)
+2x 5th Generation Intel Xeon Platinum 8568Y+ (48 cores at 2.3 GHz base with Intel AMX)
+512 GB (16x32GB DDR5 5600)
 4x 3.84TB U.2 NVMe PCIe Gen4
 `,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-cluster-sizing/",breadcrumb:"/patterns/multicloud-gitops-amx/mcg-amx-cluster-sizing/"},"https://validatedpatterns.io/patterns/multicloud-gitops-qat/mcg-qat-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Intel QAT accelerated Multicloud GitOps pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
 For AWS, see Installing OpenShift Container Platform on AWS.
@@ -3422,6 +3426,7 @@ Red Hat OpenShift Platform An enterprise-ready Kubernetes container platform bui
 Red Hat OpenShift GitOps A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
 Red Hat Advanced Cluster Management for Kubernetes Controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale.
 Red Hat Ansible Automation Platform Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+Node Feature Discovery Operator Manages the detection of hardware features and configuration in an OpenShift Container Platform cluster by labeling the nodes with hardware-specific information. NFD labels the host with node-specific attributes, such as PCI cards, kernel, operating system version, and so on.
 Red Hat Openshift AI A flexible, scalable MLOps platform with tools to build, deploy, and manage AI-enabled applications. OpenShift AI (previously called Red Hat OpenShift Data Science) supports the full lifecycle of AI/ML experiments and models, on-premise and in the public cloud.
 OpenVINO Toolkit Operator The Operator includes OpenVINO™ Notebooks for development of AI optimized workloads and OpenVINO™ Model Server for deployment that enables AI inference execution at scale, and exposes AI models via gRPC and REST API interfaces.
 Intel® Advanced Matrix Extensions A new built-in accelerator that improves the performance of deep-learning training and inference on the CPU and is ideal for workloads like natural-language processing, recommendation systems and image recognition.
@@ -3772,7 +3777,7 @@ Hashicorp Vault (community) Provides a secure centralized store for dynamic infr
 MLFlow Model Registry (community) A centralized model store, set of APIs, and UI, to collaboratively manage the full lifecycle of an MLflow Model. It provides model lineage (which MLflow experiment and run produced the model), model versioning, model aliasing, model tagging, and annotations.
 Other This solution also uses a variety of observability tools including the Prometheus monitoring and Grafana dashboard that are integrated with OpenShift as well as components of the Observatorium meta-project which includes Thanos and the Loki API.
 Next steps Deploy the management hub using Helm.
-`,url:"https://validatedpatterns.io/patterns/mlops-fraud-detection/",breadcrumb:"/patterns/mlops-fraud-detection/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/":{title:"Intel AMX accelerated Medical Diagnosis",tags:[],content:`About the Medical Diagnosis pattern Background This validated pattern is a modified version of the Medical Diagnosis pattern. It was extended to showcase 4th Generation Intel Xeon Scalable Processors capabilities, especially Intel AMX that speeds up AI workloads. The pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that was previously developed by Red Hat. It includes the same functionality as the original demonstration, but uses the GitOps framework to deploy the pattern including Operators, creation of namespaces, and cluster configuration.
+`,url:"https://validatedpatterns.io/patterns/mlops-fraud-detection/",breadcrumb:"/patterns/mlops-fraud-detection/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/":{title:"Intel AMX accelerated Medical Diagnosis",tags:[],content:`About the Medical Diagnosis pattern Background This validated pattern is a modified version of the Medical Diagnosis pattern. It was extended to showcase 5th Generation Intel Xeon Scalable Processors capabilities, especially Intel AMX that speeds up AI workloads. The pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis that was previously developed by Red Hat. It includes the same functionality as the original demonstration, but uses the GitOps framework to deploy the pattern including Operators, creation of namespaces, and cluster configuration.
 Compared to the original Medical Diagnosis pattern, this one was extended by the Node Feature Discovery Operator, whose task is to detect hardware features and expose them as labels for this node. Red Hat OpenShift Serverless component is modified to assign AI workload to nodes with available Intel AMX feature.
 Moreover, the Machine Learning model was quantized to int8 precision to improve efficiency thanks to Intel AMX, with only marginal accuracy loss.
 This pattern was also adapted to run in on-premise environments.
@@ -3804,7 +3809,7 @@ Enable cross-cluster governance and application lifecycle management.
 Accelerate AI operations and improve computational performance by using Intel Advanced Matrix Extensions.
 Securely manage secrets across the deployment.
 Based on the requirements of a specific implementation, certain details might differ. However, all validated patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
-Background Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds, private or public. This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code checks the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed. Moreover, organizations are looking for solutions that increase efficiency and at the same time reduce costs, what is possible using 4th Generation Intel Xeon Scalable Processors with a new build-in accelerator - Intel Advanced Matrix Extensions.
+Background Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds, private or public. This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code checks the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed. Moreover, organizations are looking for solutions that increase efficiency and at the same time reduce costs, what is possible using 5th Generation Intel Xeon Scalable Processors with a new build-in accelerator - Intel Advanced Matrix Extensions.
 About the solution This architecture covers hybrid and multi-cloud management with GitOps as shown in following figure. At a high level this requires a management hub, for DevOps and GitOps, and infrastructure that extends to one or more managed clusters running on private or public clouds. The automated infrastructure-as-code approach can manage the versioning of components and deploy according to the infrastructure-as-code configuration.
 Benefits of Hybrid Multicloud management with GitOps:
 Unify management across cloud environments.
@@ -3843,7 +3848,7 @@ To allow the cluster access to the external vault, you must set up the external 
 External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
 Secrets are created in each namespace, where applications can use them.
 Additional resources View and download all of the diagrams above from the Red Hat Portfolio Architecture open source tooling site.
-Intel AMX accelerated Multicloud GitOps pattern The basic Multicloud GitOps pattern has been extended to highlight the 4th Generation Intel Xeon Scalable Processors capabilities, offering developers a streamlined pathway to accelerate their workloads through the integration of cutting-edge Intel AMX, fostering efficiency and performance optimization in AI workloads.
+Intel AMX accelerated Multicloud GitOps pattern The basic Multicloud GitOps pattern has been extended to highlight the 5th Generation Intel Xeon Scalable Processors capabilities, offering developers a streamlined pathway to accelerate their workloads through the integration of cutting-edge Intel AMX, fostering efficiency and performance optimization in AI workloads.
 The basic pattern has been extended by the AI application named amx-app. It runs Deep Interest Evolution Network (DIEN) inference using the Intel-optimized TensorFlow and measures its accuracy. DIEN is a machine learning model used in the field of recommender systems, particularly in the domain of personalized content recommendation.
 Since the amx-app application must be running on the node with CPU supporting Intel AMX, Node Feature Discovery Operator (NFD) is deployed as a part of this pattern. NFD manages the detection of hardware features and configuration in an OpenShift Container Platform cluster. It labels the nodes with hardware-specific information. The kernel detects Intel AMX at run-time, so there is no need to enable and configure it separately.
 A deployment of amx-app was created based on instructions from Model Zoo for Intel® Architecture repository - TF DIEN inference and uses intel/recommendation:tf-spr-dien-inference image.
