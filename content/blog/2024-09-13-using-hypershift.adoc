@@ -9,17 +9,39 @@
 ---
 = Getting Started
 
-Hosted Control Planes (aka: HyperShift) is project that enables rapid provisioning and deprovisioning of OpenShift clusters. Use this guide to create and delete your hostedclusters and to interrogate the hostingcluster for compute resource information. 
+Hosted Control Planes (aka: HyperShift) is project that enables rapid provisioning and deprovisioning of OpenShift clusters. Use this guide to create and delete your hostedclusters and to interrogate the hostingcluster for compute resource information. Upstream documentation can be found https://hypershift-docs.netlify.app/[HyperShift Upstream Project Docs]
 
 == PreReqs and Assumptions
 
-Deploying HyperShift clusters requires the following resources in your environment:
+Deploying HyperShift clusters requires the following:
 
-- aws credentials
-- pull secret
-- hcp client
-- aws cli
-- openshift `oc` client
+[cols="4*^,4*.",options="header,+attributes"]
+|===
+|**Resource**|**Default Path**|**Description**|**windows**
+
+|`aws credentials` 
+|`~/.aws/credentials`
+
+|`hcp`
+|`/usr/local/bin`
+| https://developers.redhat.com/content-gateway/rest/browse/pub/mce/clients/hcp-cli
+
+|`aws cli`
+| `/usr/bin/aws`
+| `dnf install awscli1
+
+|`oc`
+|`/usr/bin/oc`
+| https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/
+
+|`Podman`
+| https://podman.io/docs/installation#macos[Download]
+| `dnf install podman`
+| https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md[Install]
+
+|===
+
+Additonally, you will need:
 - An openshift cluster that has the multicluster-engine operator deployed and configured
 - You are logged into your management cluster with an appropriately credentialed user
 
@@ -192,23 +214,35 @@ oc get -o jsonpath='{.spec.infraID}'  hostedcluster <cluster-name> -n clusters
 [#nodepool_scale]
 === How do I scale my nodepools?
 
+Get the available nodepools:
+
 [.console-input]
 [source,bash,subs=attributes+,+macros]
 ----
 oc get nodepools -n clusters 
 ----
 
+.Available nodepools
 [.console-output]
 [source,bash,subs=attributes+,+macros]
 ----
 NAME                         CLUSTER      DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE
-<cluster_name>-us-west-2a   <cluster_name>   3               3               False         False        4.15.27 
+<cluster_name>-us-west-2a   <cluster_name>   1               1               False         False        4.15.27 
 ----
 
+Use `oc scale` to scale up the total number of nodes
 [.console-input]
 [source,bash,subs=attributes+,+macros]
 ----
-oc scale --replicas=<replicas> nodepools/<nodepool_name> -n clusters
+oc scale --replicas=2 nodepools/<nodepool_name> -n clusters
+----
+
+After a few minutes the nodepool will scale up the number of compute resources in the nodepool
+[.console-ouput]
+[source,bash,subs=attributes+,+macros]
+----
+NAME                         CLUSTER      DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE
+<cluster_name>-us-west-2a   <cluster_name>   2               2               False         False        4.15.27 
 ----
 
 [#deployed_region]
@@ -221,7 +255,7 @@ oc get -o jsonpath='{.spec.platform.aws.region}' hostedcluster <cluster-name> -n
 ----
 
 [#supported_versions]
-=== What OpenShift versions can Hosted Control Planes support?
+=== What OpenShift versions are supported in Hosted Control Planes?
 
 [.console-input]
 [source,bash,subs=attributes+,+macros]
@@ -229,6 +263,7 @@ oc get -o jsonpath='{.spec.platform.aws.region}' hostedcluster <cluster-name> -n
 oc get -o yaml cm supported_versions -n hyperShift
 ----
 
+.Supported Versions
 [.console-output]
 [source,yaml,subs=attributes+,+macros]
 ----
@@ -248,6 +283,10 @@ metadata:
 
 [#delete_clusters]
 == Delete a cluster
+
+Deleting a cluster follows the same general process as creating a cluster. In addition to deleting the cluster using the `hcp` binary - we also need to delete the `managedcluster` resource.
+
+.Deleting a Cluster
 [.console.input]
 [source,bash,subs="attributes+,+macros"]
 ----
@@ -267,3 +306,7 @@ IMPORTANT: You will also need to delete the managedcluster resource
 ----
 oc delete managedcluster <cluster_name>
 ----
+
+== Conclusion
+
+Use this blog as a practical guide for creating, deleting and managing your hostedCluster resources using the Hosted Control Planes feature! 
