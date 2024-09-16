@@ -18,10 +18,11 @@ include::modules/comm-attributes.adoc[]
 
 .Prerequisites
 
-* An OpenShift cluster
- ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *Services* -> *Containers* -> *Create cluster*.
- ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../medical-diagnosis/cluster-sizing[sizing your cluster].
+* An {ocp} cluster
+ ** To create an {ocp} cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console] and select *Services \-> Containers \-> Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. It was tested with ODF (OpenShift Data Foundation) or LVM Storage solutions. CephFS should be set as a default Storage Class - https://docs.openshift.com/container-platform/4.16/storage/container_storage_interface/persistent-storage-csi-sc-manage.html#change-default-storage-class_persistent-storage-csi-sc-manage[Setup Guide]
+ ** link:../../medical-diagnosis-amx/cluster-sizing[Cluster sizing] requirements.
+* {ocp} Cluster must have Image Registry - https://docs.openshift.com/container-platform/4.16/registry/configuring_registry_storage/configuring-registry-storage-rhodf.html[Setup Guide]
 * A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
 * An S3-capable Storage (OpenShift Data Foundation is recommended) set up in your private cloud for the x-ray images
 * The Helm binary, see link:https://helm.sh/docs/intro/install/[Installing Helm]
@@ -351,6 +352,8 @@ aws --endpoint https://${CEPH_RGW_ENDPOINT} --no-verify-ssl s3api create-bucket 
 aws --endpoint https://${CEPH_RGW_ENDPOINT} --no-verify-ssl s3 cp base_images/ s3://${CEPH_BUCKET_NAME}/ --recursive
 ----
 
+*Note:* The `CEPH_BUCKET_NAME` value *should be the same* as the `bucketSource: "PROVIDE_BUCKET_SOURCE"` value specified in the `values-global.yaml` file.
+
 Ceph RGW bucket needs specific bucket policy to be applied. To apply policy execute following commands:
 
 [source,terminal]
@@ -360,7 +363,7 @@ export AWS_SECRET_ACCESS_KEY=$(oc -n xraylab-1 get secret s3-secret-bck -ojsonpa
 export CEPH_RGW_ENDPOINT=$(oc -n openshift-storage get route s3-rgw -ojsonpath='{.spec.host}')
 export CEPH_BUCKET_NAME="PUT_NAME_OF_YOUR_BUCKET"
 
-cd medical-diagnosis
+cd amx-accelerated-medical-diagnosis 
 aws --endpoint https://${CEPH_RGW_ENDPOINT} --no-verify-ssl s3api put-bucket-policy --bucket ${CEPH_BUCKET_NAME} --policy file://./bucket-policy.json
 ----
 
@@ -414,9 +417,8 @@ OpenShift GitOps view should be similar to the following:
 +
 image::medical-diagnosis-amx/gitops-view.png[link="/images/medical-diagnosis-amx/gitops-view.png"]
 +
-All applications should be healthy for pattern to work correctly, even if some applications may be OutOfSync.
-If any application is in 'unhealthy' state common solution is to sync the application. 
-For other issues please refer to https://validatedpatterns.io/patterns/medical-diagnosis/troubleshooting/
+All applications should be healthy for the pattern to work correctly, even if some applications may be OutOfSync. In some cases, ODF (OpenShift Data Foundation) may have an OutOfSync status, but this usually does not impact functionality. 
+If any application is in an 'unhealthy' state, the common solution is to sync the application. For other issues, please refer to https://validatedpatterns.io/patterns/medical-diagnosis-amx/troubleshooting/.
 +
 
 

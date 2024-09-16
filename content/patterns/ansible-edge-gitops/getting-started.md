@@ -228,7 +228,7 @@ Please see [OpenShift Virtualization](/ansible-edge-gitops/openshift-virtualizat
 
 A fully functional installation of the Ansible Automation Platform operator is installed on your OpenShift cluster to configure and maintain the VMs for this demo. AAP maintains a dynamic inventory of kiosk machines and can configure a VM from template to fully functional kiosk in about 10 minutes.
 
-## OpenShift [Virtualization](https://docs.openshift.com/container-platform/4.10/virt/about-virt.html)
+## OpenShift [Virtualization](https://docs.openshift.com/container-platform/4.16/virt/about_virt/about-virt.html)
 
 OpenShift Virtualization is a Kubernetes-native way to run virtual machine workloads. It is used in this pattern to host VMs simulating an Edge environment; the chart that configures the VMs is designed to be flexible to allow easy customization to model different VM sizes, mixes, versions and profiles for future pattern development.
 

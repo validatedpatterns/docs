@@ -86,7 +86,7 @@ Controls clusters and applications from a single console, with built-in security
 https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform]::
 Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
 
-https://docs.openshift.com/container-platform/4.14/hardware_enablement/psap-node-feature-discovery-operator.html[Node Feature Discovery Operator]::
+https://docs.openshift.com/container-platform/4.16/hardware_enablement/psap-node-feature-discovery-operator.html[Node Feature Discovery Operator]::
 Manages the detection of hardware features and configuration in an OpenShift Container Platform cluster by labeling the nodes with hardware-specific information. NFD labels the host with node-specific attributes, such as PCI cards, kernel, operating system version, and so on.
 
 https://www.intel.com/content/www/us/en/developer/articles/technical/device-plugins-operator.html[Intel® Device Plugins Operator]::
