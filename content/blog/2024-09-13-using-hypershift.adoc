@@ -1,0 +1,312 @@
+---
+ date: 2024-08-30
+ title: Using HyperShift
+ summary: Lifecycle's of Hosted Control Planes
+ author: jonny rickard
+ blog_tags:
+ - patterns
+ - how-to
+---
+= Getting Started
+
+Hosted Control Planes (aka: HyperShift) is project that enables rapid provisioning and deprovisioning of OpenShift clusters. Use this guide to create and delete your hostedclusters and to interrogate the hostingcluster for compute resource information. Upstream documentation can be found https://hypershift-docs.netlify.app/[HyperShift Upstream Project Docs]
+
+== PreReqs and Assumptions
+
+Deploying HyperShift clusters requires the following:
+
+[cols="4*^,4*.",options="header,+attributes"]
+|===
+|**Resource**|**Default Path**|**Description**|**windows**
+
+|`aws credentials` 
+|`~/.aws/credentials`
+
+|`hcp`
+|`/usr/local/bin`
+| https://developers.redhat.com/content-gateway/rest/browse/pub/mce/clients/hcp-cli
+
+|`aws cli`
+| `/usr/bin/aws`
+| `dnf install awscli1
+
+|`oc`
+|`/usr/bin/oc`
+| https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/
+
+|`Podman`
+| https://podman.io/docs/installation#macos[Download]
+| `dnf install podman`
+| https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md[Install]
+
+|===
+
+Additonally, you will need:
+- An openshift cluster that has the multicluster-engine operator deployed and configured
+- You are logged into your management cluster with an appropriately credentialed user
+
+NOTE: Instead of installing these software components locally would be to use the https://github.com/validatedpatterns/utility-container[utility container]
+
+[.console-input]
+[source,bash]
+----
+podman pull quay.io/hybridcloudpatterns/utility-container:latest
+----
+
+[#create_clusters]
+== Create a cluster
+
+IMPORTANT: Before you create a cluster you will need to generate a STS token for AWS
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+ aws sts get-session-token  --output json > sts-creds.json
+----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+hcp create cluster aws \ 
+  --name <cluster_name> \
+  --infra-id <cluster_name> \
+  --sts-creds /path/to/your/sts-cred.json \
+  --pull-secret /path/to/your/pullsecret.json \
+  --region us-west-2 \
+  --instance-type m5.xlarge \
+  --node-pool-replicas=1 \
+  --role-arn arn:aws:iam::123456789012:role/hcp_cli_role \
+  --base-domain example.com 
+----
+
+[#cluster-ready]
+=== When is the cluster ready?
+
+The hostedCluster creation process takes about 15 minutes to complete. There are multiple ways to determine the state of your cluster. You can manually check the resource state, or you can use the examples below to wait for the resources to change to an available state.
+
+[.console-input]
+[source,bash]
+----
+oc get -n clusters hc,np,managedclusters
+----
+
+.Cluster is NOT READY
+[.console-output]
+[source,bash]
+----
+#hostedCluster
+NAME                                                    VERSION   KUBECONFIG                              PROGRESS    AVAILABLE   PROGRESSING   MESSAGE
+hostedcluster.hypershift.openshift.io/<cluster_name>              <cluster_name>-admin-kubeconfig         Partial     True        False         The hosted control plane is available
+
+#nodePools
+NAME                                                          CLUSTER               DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE
+nodepool.hypershift.openshift.io/<cluster_name>-us-west-2a    <cluster_name>         1               1               False         False        4.16.12                                      
+
+#managedclusters
+NAME                                                              HUB ACCEPTED   MANAGED CLUSTER URLS                                                                         JOINED   AVAILABLE   AGE
+managedcluster.cluster.open-cluster-management.io/<cluster_name>  true           https://a06f2548e7edb4fcea2e993d8e5da2df-e89c361840368138.elb.us-east-2.amazonaws.com:6443   True     True        7m25s
+----
+
+.Cluster is READY
+[.console-output]
+[source,bash]
+----
+#hostedClusters
+NAME                                                  VERSION   KUBECONFIG                          PROGRESS    AVAILABLE   PROGRESSING   MESSAGE
+hostedcluster.hypershift.openshift.io/<cluster_name>  4.16.12   <cluster_name>-admin-kubeconfig     Completed   True        False         The hosted control plane is available
+
+#nodePools
+NAME                                                          CLUSTER              DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE                                 
+nodepool.hypershift.openshift.io/<cluster_name>-us-west-2a   <cluster_name>         1               1               False         False        4.16.12                                      
+
+NAME                                                              HUB ACCEPTED   MANAGED CLUSTER URLS                                                                         JOINED   AVAILABLE   AGE
+managedcluster.cluster.open-cluster-management.io/<cluster_name>  true           https://a06f2548e7edb4fcea2e993d8e5da2df-e89c361840368138.elb.us-east-2.amazonaws.com:6443   True     True        17m
+----
+
+Use the `wait-for` subcommand to watch for the resource state change
+
+[.console-input]
+[source,bash]
+----
+#hostedClusters
+oc wait hc/<cluster_names> --for condition=available -n clusters --timeout 900s
+
+#nodePools
+oc wait np/test2-us-west-2a --for condition=ready -n clusters --timeout 900s
+
+#managedclusters
+oc wait --for condition=ManagedClusterConditionAvailable managedclusters/<cluster_name> --timeout 900s
+----
+
+When completed you will see output similar to the following:
+[.console-output]
+[source,bash]
+----
+#hostedClusters
+hostedcluster.hypershift.openshift.io/<cluster_names> condition met
+
+#nodePools
+nodepool.hypershift.openshift.io/<cluster_name>-us-west-2a condition met
+
+#managedclusters
+managedcluster.cluster.open-cluster-management.io/<cluster_name> condition met
+----
+
+[cluster_kubeadmin]
+=== How do I get the kubeadmin password
+
+Each cluster's kubeadmin secret is stored in the `clusters-<cluster_name>` namespace unless defined elsewhere.
+[.console-input]
+[source,bash,subs=attributes+,+macros]
+----
+oc get secret kubeadmin-password  -n clusters-<cluster_name>
+----
+
+[source,bash]
+----
+NAME                 TYPE     DATA   AGE
+kubeadmin-password   Opaque   1      9m48s
+----
+
+[.console-input]
+[source,bash,subs=attributes+,+macros]
+----
+oc extract secret/kubeadmin-password -n clusters-<cluster_name> --keys=password --to=-
+----
+
+[source,bash]
+----
+# password
+vnkDn-xnmdr-qFdyA-GmQZD
+----
+
+[#cluster_kubeconfig]
+=== How do I get the kubeconfig to the managedcluster
+
+Use the below code snippet to create the kubeconfig for your cluster:
+
+NOTE: This will get the admin kubeconfig for your cluster and save it to a file in the `/tmp` directory.
+
+[.console-input]
+[source,bash,subs=attributes+,+macros]
+----
+oc get hc/<cluster_name> -n clusters -o jsonpath='{.status.controlPlaneEndpoint.host}'
+----
+
+[#cluster_console]
+=== How do I get my cluster openshift console address from the cli?
+
+[.console-input]
+[source,bash,subs=attributes+,+macros]
+----
+hcp create kubeconfig --name <cluster_name> > /tmp/<cluster_name>.kube
+----
+
+[#infraid]
+=== How do I get my cluster infraID?
+
+[.console-input]
+[source,bash,subs=attributes+,+macros]
+----
+oc get -o jsonpath='{.spec.infraID}'  hostedcluster <cluster-name> -n clusters
+----
+
+[#nodepool_scale]
+=== How do I scale my nodepools?
+
+Get the available nodepools:
+
+[.console-input]
+[source,bash,subs=attributes+,+macros]
+----
+oc get nodepools -n clusters 
+----
+
+.Available nodepools
+[.console-output]
+[source,bash,subs=attributes+,+macros]
+----
+NAME                         CLUSTER      DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE
+<cluster_name>-us-west-2a   <cluster_name>   1               1               False         False        4.15.27 
+----
+
+Use `oc scale` to scale up the total number of nodes
+[.console-input]
+[source,bash,subs=attributes+,+macros]
+----
+oc scale --replicas=2 nodepools/<nodepool_name> -n clusters
+----
+
+After a few minutes the nodepool will scale up the number of compute resources in the nodepool
+[.console-ouput]
+[source,bash,subs=attributes+,+macros]
+----
+NAME                         CLUSTER      DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE
+<cluster_name>-us-west-2a   <cluster_name>   2               2               False         False        4.15.27 
+----
+
+[#deployed_region]
+=== What region is a managedcluster deployed to?
+
+[.console-input]
+[source,bash,subs=attributes+,+macros]
+----
+oc get -o jsonpath='{.spec.platform.aws.region}' hostedcluster <cluster-name> -n clusters
+----
+
+[#supported_versions]
+=== What OpenShift versions are supported in Hosted Control Planes?
+
+[.console-input]
+[source,bash,subs=attributes+,+macros]
+----
+oc get -o yaml cm supported_versions -n hyperShift
+----
+
+.Supported Versions
+[.console-output]
+[source,yaml,subs=attributes+,+macros]
+----
+apiVersion: v1
+data:
+  supported-versions: '{"versions":["4.16","4.15","4.14","4.13"]}'
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-05-10T23:53:07Z"
+  labels:
+    hypershift.openshift.io/supported-versions: "true"
+  name: supported-versions
+  namespace: hypershift
+  resourceVersion: "120388899"
+  uid: f5253d56-1a4c-4630-9b01-ee9b16177c76
+----
+
+[#delete_clusters]
+== Delete a cluster
+
+Deleting a cluster follows the same general process as creating a cluster. In addition to deleting the cluster using the `hcp` binary - we also need to delete the `managedcluster` resource.
+
+.Deleting a Cluster
+[.console.input]
+[source,bash,subs="attributes+,+macros"]
+----
+ hcp destroy cluster aws \
+   --name <cluster_name> \
+   --infra-id <cluster_name> \
+   --region us-west-2 \
+   --sts-creds /path/to/your/sts-creds.json \
+   --base-domain example.com \
+   --role-arn arn:aws:iam::123456789012:role/hcp_cli_role 
+----
+
+IMPORTANT: You will also need to delete the managedcluster resource
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc delete managedcluster <cluster_name>
+----
+
+== Conclusion
+
+Use this blog as a practical guide for creating, deleting and managing your hostedCluster resources using the Hosted Control Planes feature! 
