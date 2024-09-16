@@ -1,5 +1,5 @@
 ---
- date: 2024-08-30
+ date: 2024-09-13
  title: Using HyperShift
  summary: Lifecycle's of Hosted Control Planes
  author: jonny rickard
@@ -15,12 +15,9 @@ Hosted Control Planes (aka: HyperShift) is project that enables rapid provisioni
 
 Deploying HyperShift clusters requires the following:
 
-[cols="4*^,4*.",options="header,+attributes"]
+[cols="3*^,3*.",options="header,+attributes"]
 |===
-|**Resource**|**Default Path**|**Description**|**windows**
-
-|`aws credentials` 
-|`~/.aws/credentials`
+|**Resource**|**Default Path**|**Description**
 
 |`hcp`
 |`/usr/local/bin`
@@ -28,7 +25,7 @@ Deploying HyperShift clusters requires the following:
 
 |`aws cli`
 | `/usr/bin/aws`
-| `dnf install awscli1
+| `dnf install awscli2`
 
 |`oc`
 |`/usr/bin/oc`
@@ -37,11 +34,11 @@ Deploying HyperShift clusters requires the following:
 |`Podman`
 | https://podman.io/docs/installation#macos[Download]
 | `dnf install podman`
-| https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md[Install]
 
 |===
 
 Additonally, you will need:
+
 - An openshift cluster that has the multicluster-engine operator deployed and configured
 - You are logged into your management cluster with an appropriately credentialed user
 
