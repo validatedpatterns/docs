@@ -352,7 +352,7 @@ aws --endpoint https://${CEPH_RGW_ENDPOINT} --no-verify-ssl s3api create-bucket 
 aws --endpoint https://${CEPH_RGW_ENDPOINT} --no-verify-ssl s3 cp base_images/ s3://${CEPH_BUCKET_NAME}/ --recursive
 ----
 
-*Uwaga:* Wartość `CEPH_BUCKET_NAME` *powinna być taka sama* jak wartość `bucketSource: "PROVIDE_BUCKET_SOURCE"` podana w pliku `values-global.yaml`.
+*Note:* The `CEPH_BUCKET_NAME` value *should be the same* as the `bucketSource: "PROVIDE_BUCKET_SOURCE"` value specified in the `values-global.yaml` file.
 
 Ceph RGW bucket needs specific bucket policy to be applied. To apply policy execute following commands:
 
