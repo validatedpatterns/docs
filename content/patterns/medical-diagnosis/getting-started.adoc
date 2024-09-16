@@ -336,7 +336,7 @@ image::medical-edge/grafana-routes.png[link="/images/medical-edge/grafana-routes
 
 . Turn on the image file flow. There are three ways to go about this.
 +
-You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster.
+You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster).
 +
 [source,terminal]
 ----
