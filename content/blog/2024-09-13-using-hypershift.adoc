@@ -7,6 +7,7 @@
  - patterns
  - how-to
 ---
+:toc:
 = Getting Started
 
 Hosted Control Planes (aka: HyperShift) is project that enables rapid provisioning and deprovisioning of OpenShift clusters. Use this guide to create and delete your hostedclusters and to interrogate the hostingcluster for compute resource information. Upstream documentation can be found https://hypershift-docs.netlify.app/[HyperShift Upstream Project Docs]
@@ -187,7 +188,7 @@ NOTE: This will get the admin kubeconfig for your cluster and save it to a file 
 [.console-input]
 [source,bash,subs=attributes+,+macros]
 ----
-oc get hc/<cluster_name> -n clusters -o jsonpath='{.status.controlPlaneEndpoint.host}'
+hcp create kubeconfig --name <cluster_name> > /tmp/<cluster_name>.kube
 ----
 
 [#cluster_console]
@@ -196,7 +197,7 @@ oc get hc/<cluster_name> -n clusters -o jsonpath='{.status.controlPlaneEndpoint.
 [.console-input]
 [source,bash,subs=attributes+,+macros]
 ----
-hcp create kubeconfig --name <cluster_name> > /tmp/<cluster_name>.kube
+oc get hc/<cluster_name> -n clusters -o jsonpath='{.status.controlPlaneEndpoint.host}'
 ----
 
 [#infraid]
