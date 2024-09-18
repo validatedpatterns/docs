@@ -20,6 +20,8 @@ AGOF comes with code to install VMs in AWS, if desired, or else it can work with
 
 When there is no access to OpenShift Container Platform, AGOF provides a standalone solution for deploying and managing validated patterns. This framework leverages GitOps principles without relying on OpenShift.
 
+Ansible Automation Platform includes automation controller, a web-based UI interface allows users to define, operate, scale, and delegate automation across their enterprise.
+
 == Pattern directories tour
 
 Examining any of the existing patterns reveals the important organizational part of the validated patterns framework. Let's take a look at a couple of the existing validated patterns: Multicluster GitOps and Industrial Edge.
