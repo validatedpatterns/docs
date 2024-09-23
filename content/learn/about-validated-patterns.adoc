@@ -12,9 +12,9 @@ include::modules/comm-attributes.adoc[]
 [id="about-validated-patterns"]
 = Overview of Validated Patterns
 
-Validated Patterns are an advanced form of reference architectures that provide a streamlined approach to deploying complex business solutions. Unlike traditional architectures, which provide only guidance,  Validated Patterns are deployable, testable software artifacts with automated deployment, enhancing speed, reliability, and consistency across environments. These patterns are rigorously tested blueprints designed to meet specific business needs, reducing deployment risks.
+Validated Patterns are an advanced form of reference architectures that offer a streamlined approach to deploying complex business solutions. Validated Patterns are deployable, testable software artifacts with automated deployment, enhancing speed, reliability, and consistency across environments. These patterns are rigorously tested blueprints designed to meet specific business needs, reducing deployment risks.
 
-Building on traditional architectures, Validated Patterns focus on customer solutions involving multiple Red Hat products. They are based on successful deployments and include example applications and the necessary open-source projects. Users can easily modify these patterns to fit their specific needs.
+Building on traditional architectures, Validated Patterns focus on customer solutions involving multiple Red Hat products. Successful deployments serve as the foundation for these patterns, which include example applications and the necessary open source projects. Users can easily change these patterns to fit their specific needs.
 
 The creation process involves selecting customer use cases, validating the patterns with engineering teams, and developing GitOps-based automation. This automation supports Continuous Integration (CI) pipelines, allowing for proactive updates and maintenance as new product versions are released.
 
@@ -23,7 +23,7 @@ The creation process involves selecting customer use cases, validating the patte
 [id="relationship-to-reference-architectures"]
 == Relationship to reference architectures
 
-Validated Patterns enhance reference architectures with automation and rigorous validation. While reference architectures provide a conceptual framework for building solutions, Validated Patterns go further by providing a deployable software artifact that automates and optimizes the reference architecture framework, ensuring consistent and efficient deployments. This approach allows businesses to implement complex solutions rapidly and with confidence, knowing that the patterns have been thoroughly tested and optimized for their use case.
+Validated Patterns enhance reference architectures with automation and rigorous validation. Reference architectures provide a conceptual framework for building solutions. Validated Patterns take this further by offering a deployable software artifact that automates and optimizes the framework, ensuring consistent and efficient deployments. This approach allows businesses to implement complex solutions rapidly and with confidence, knowing that the patterns have been thoroughly tested and optimized for their use case.
 
 [id="problem-validated-pattern-solve"]
 == The problem Validated Patterns solve
@@ -47,20 +47,20 @@ Validated Patterns are particularly suited for IT architects, advanced developer
 *Examples of Use Cases*:
 
 * *Enterprise-Level Deployments*: Organizations implementing large-scale, multi-tier applications can use Validated Patterns to ensure reliable and consistent deployments across all environments.
-* *Cloud Migration*: Companies transitioning their infrastructure to the cloud can leverage Validated Patterns to automate and streamline the migration process.
+* *Cloud Migration*: Companies transitioning their infrastructure to the cloud can use Validated Patterns to automate and streamline the migration process.
 * *DevOps Pipelines*: Teams relying on continuous integration and continuous deployment (CI/CD) pipelines can use Validated Patterns to automate the deployment of new features and updates, ensuring consistent and repeatable outcomes.
 
 
 [id="validated-patterns-community-and-ecosystem"]
 == The Validated Patterns community and ecosystem
-Validated Patterns are supported by a vibrant community and ecosystem that contribute to their ongoing development and refinement. This community-driven approach ensures that Validated Patterns stay current with the latest technological advancements and industry best practices. The ecosystem includes contributions from various industries and technology partners, ensuring that the patterns are applicable to a wide range of use cases and environments. This collaborative effort keeps the patterns relevant and fosters a culture of continuous improvement within the Red Hat ecosystem.
+A vibrant community and ecosystem support and contribute to the ongoing development and refinement of Validated Patterns. This community-driven approach ensures that Validated Patterns stay current with the latest technological advancements and industry best practices. The ecosystem includes contributions from various industries and technology partners, ensuring that the patterns are applicable to a wide range of use cases and environments. This collaborative effort keeps the patterns relevant and fosters a culture of continuous improvement within the Red Hat ecosystem.
 
 
 
 [id="involvement-in-validated-patterns"]
 == Red Hat's involvement in Validated Patterns
 
-Red Hat plays a pivotal role in the development, validation, and promotion of Validated Patterns. As a leader in open-source solutions, Red Hat leverages its extensive expertise to create and maintain these patterns, ensuring they meet the highest standards of quality and reliability. Red Hat’s involvement extends beyond tool provision; it includes continuous updates to align these patterns with the latest technological advancements and industry needs. This ensures that organizations using Validated Patterns are always equipped with the most effective and up-to-date solutions available. Additionally, Red Hat collaborates closely with the community to expand the catalog of Validated Patterns, making these valuable resources accessible to organizations worldwide.
+Red Hat plays a pivotal role in the development, validation, and promotion of Validated Patterns. As a leader in open source solutions, Red Hat leverages its extensive expertise to create and maintain these patterns, ensuring they meet the highest standards of quality and reliability. Red Hat’s involvement extends beyond tool provision; it includes continuous updates to align these patterns with the latest technological advancements and industry needs. This ensures that organizations using Validated Patterns are always equipped with the most effective and up-to-date solutions available. Additionally, Red Hat collaborates closely with the community to expand the catalog of Validated Patterns, making these valuable resources accessible to organizations worldwide.
 
 [id="deployment-workflows"]
 == Application deployment workflows
@@ -69,15 +69,15 @@ Effective deployment workflows are crucial for ensuring that applications are de
 [id="general-structure"]
 === General structure
 
-All patterns assume an available OpenShift cluster for deploying applications. If no OpenShift cluster is available, you can use https://console.redhat.com/openshift[cloud.redhat.com]. The documentation uses the `oc` command syntax, but `kubectl` can be used interchangeably. For each deployment, it is assumed that the user is logged into a cluster using the `oc login` command or by exporting the `KUBECONFIG` path.
+All patterns assume you have an available OpenShift cluster for deploying applications. If you don't have one, you can use https://console.redhat.com/openshift[cloud.redhat.com]. The documentation uses the `oc` command syntax, but you can use `kubectl` interchangeably. For each deployment, ensure you're logged into a cluster using the `oc login` command or by exporting the `KUBECONFIG` path.
 
 
-The diagram below outlines the general deployment flow for a data center application. Before proceeding, users must create a fork of the pattern repository to allow for changes to operational elements (such as configurations) and application code. These changes can then be successfully pushed to the forked repository as part of DevOps continuous integration (CI). Clone the repository to your local machine, and push future changes to your fork.
+The following diagram outlines the general deployment flow for a data center application. Before proceeding, users must create a fork of the pattern repository to allow for changes to operational elements (such as configurations) and application code. These changes can then be successfully pushed to the forked repository as part of DevOps continuous integration (CI). Clone the repository to your local machine, and push future changes to your fork.
 
 
-image::/images/gitops-datacenter.png[GitOps for Datacenter]
+image::/images/gitops-datacenter.png[GitOps for data center]
 
-. Make a copy of the values file, for example, `values-global.yaml` or `values-hub.yaml`. These values files specify subscriptions, operators, applications, and other details. Additionally, each Validated Pattern contains a `values-secret` template file, which provides secret values required to successfully install the pattern. Patterns do not require committing secret material to git repositories. It is important to *avoid pushing sensitive information to a public repository accessible to others*. The Validated Patterns framework includes components to facilitate the safe use of secrets.
+. In your fork, if needed, edit the values files, such as `values-global.yaml` or `values-hub.yaml`, to customize or personalize your deployment. These values files specify subscriptions, operators, applications, and other details. Additionally, each Validated Pattern contains a `values-secret` template file, which provides secret values required to successfully install the pattern. Patterns do not require committing secret material to git repositories. It is important to *avoid pushing sensitive information to a public repository accessible to others*. The Validated Patterns framework includes components to facilitate the safe use of secrets.
 
 
 . Deploy the application as specified by the pattern, usually by using a `make` command (`make install`). When the workload is deployed, the pattern first deploys the Validated Patterns operator, which in turn installs OpenShift GitOps. OpenShift GitOps then ensures that all components of the pattern, including required operators and application code, are deployed.
@@ -88,7 +88,7 @@ Most patterns also include the deployment of an Advanced Cluster Management (ACM
 [id="edge-patterns"]
 === Edge Patterns
 
-Many patterns include both a data center and one or more edge clusters. The diagram below outlines the general deployment flow for applications on an edge cluster. Edge OpenShift clusters are typically smaller than data center clusters and might be deployed on a three-node cluster that allows workloads on master nodes, or even on a single-node cluster (SNO). These edge clusters can be deployed on bare metal, local virtual machines, or in a public or private cloud.
+Many patterns include both a data center and one or more edge clusters. The following diagram outlines the general deployment flow for applications on an edge cluster. Edge OpenShift clusters are typically smaller than data center clusters and might be deployed on a three-node cluster that allows workloads on master nodes, or even on a single-node cluster (SNO). These edge clusters can be deployed on bare metal, local virtual machines, or in a public or private cloud.
 
 image::/images/gitops-edge.png[GitOps for Edge]
 
