@@ -93,7 +93,7 @@ Many patterns include both a data center and one or more edge clusters. The foll
 image::/images/gitops-edge.png[GitOps for Edge]
 
 [id="gitops-edge"]
-=== GitOps for edge)
+=== GitOps for edge
 
 After provisioning the edge cluster, import or join it with the hub or data center cluster. For more details on Instructions for importing the cluster see, link:https://validatedpatterns.io/learn/importing-a-cluster/[Importing a cluster].
 
