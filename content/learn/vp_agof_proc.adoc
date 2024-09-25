@@ -222,13 +222,16 @@ a| EDA Automation Controller
 
 |===
 
+Once the demo is complete, though, what will happen is that you will have a project (the demo project), an inventory (consisting of the AAP controller), a credential (the private key from ec2), a job template (which runs a fact gather on the AAP controller) and a schedule that will run the job template every 5 minutes
 
 . Log in to `https:{{ ec2_name_prefix }}.{{ domain }}:8443` 
 
 
 === Method 2: Pre-configured VMs Install
 
-This method allows the installation of AAP on pre-configured Red Hat Enterprise Linux (RHEL) VMs. It requires you to provide an inventory file that specifies details about the VMs or instances where AAP will be installed. It is designed for users with existing infrastructure who want to deploy AAP without depending on AWS. If you need to install a pattern on a cluster with a different topology than this, use the API install mechanism.
+This method allows the installation of AAP on pre-configured Red Hat Enterprise Linux (RHEL) VMs. It requires you to provide an inventory file that specifies details about the VMs or instances where AAP will be installed. 
+
+It is designed for users with existing infrastructure who want to deploy AAP without depending on AWS. If you need to install a pattern on a cluster with a different topology than this, use the API install mechanism.
 
 
 
