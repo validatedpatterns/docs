@@ -46,7 +46,7 @@ This method:
 
 You need to provide some key information to a file named `agof_vault.yml` created in your home directory. The key pieces of information needed are: 
 
-* The name of a hosted zone created under Route 53 in AWS. For example this could be `demo-project.aws.validatedpatterns.io`.
+* The name of a hosted zone created under Route 53 in AWS. For example this could be `aws.validatedpatterns.io`.
 
 * Your AWS account `Account ID`
 
@@ -54,7 +54,6 @@ You need to provide some key information to a file named `agof_vault.yml` create
 
 * Your `secret access key`
 
- 
 .Procedure
 
 . Copy the `agof_vault_template.yml` from the cloned `agof` directory to your home directory and rename it `agof_vault.yml`. 
@@ -70,19 +69,19 @@ $ cp ~/agof/agof_vault_template.yml ~/agof_vault.yml
 | Argument | Description
 
 | `aws_account_nbr_vault`
-a|Your AWS account number. This is needed for sharing composer images. 
+a| Your AWS account number. This is needed for sharing composer images.
 
-| `aws_access_key_vault` 
-a|Your AWS access key
+| `aws_access_key_vault`
+a| Your AWS access key.
 
 | `aws_secret_key_vault`
-a| Your AWS secret key
+a| Your AWS secret key.
 
 | `pattern_prefix`
-|A unique prefix to distinguish instances in AWS. Used as the pattern name and in public DNS entries.
+a| A unique prefix to distinguish instances in AWS. Used as the pattern name and in public DNS entries.
 
 | `ec2_region`
-| An AWS region that your account has access to.
+a| An AWS region that your account has access to.
 
 | `offline_token`
 a| A Red Hat offline token used to build the RHEL image on link:https://console.redhat.com[console.redhat.com].
@@ -93,22 +92,22 @@ Click the `GENERATE TOKEN` link at link:https://access.redhat.com/management/api
 ====
 
 | `redhat_username`
-a|Red Hat Subscription username, used to log in to link:https://registry.redhat.io[registry.redhat.io]
+a| Red Hat Subscription username, used to log in to link:https://registry.redhat.io[registry.redhat.io].
 
 | `redhat_password`
-a|Red Hat Subscription password, used to log in to link:https://registry.redhat.io[registry.redhat.io]
+a| Red Hat Subscription password, used to log in to link:https://registry.redhat.io[registry.redhat.io].
 
 | `admin_password`
-| An admin password for AAP Controller and Automation Hub
+a| An admin password for AAP Controller and Automation Hub.
 
 | `manifest_content`
 a| Content for a manifest file to entitle AAP Controller. See below for an example of how to point to a local file.
 
 | `org_number_vault`
-| The Organization Number (Org ID) attached to your Red Hat Subscription for RHEL and AAP.
+a| The Organization Number (Org ID) attached to your Red Hat Subscription for RHEL and AAP.
 
 | `activation_key_vault`
-| The name of an Activation Key to embed in the imagebuilder image.
+a| The name of an Activation Key to embed in the imagebuilder image.
 
 [NOTE]
 ====
@@ -128,12 +127,13 @@ Click the `Load token` link at link:https://console.redhat.com[console.redhat.co
 ====
 
 | `automation_hub_url_certified_vault`
-| Optional: The private automation hub URL for certified content.
+a| Optional: The private automation hub URL for certified content.
 
 | `automation_hub_url_validated_vault`
-| Optional: The private automation hub URL for validated content. 
+a| Optional: The private automation hub URL for validated content.
 
 |===
+
 
 . Edit the file and add the following:
 
@@ -202,7 +202,6 @@ $ /pattern.sh make install
 ----
 
 
-
 .Verification
 
 The default installation provides an AAP 2.4 installation deployed using the Containerized Installer, with services deployed this way:
@@ -223,6 +222,8 @@ a| EDA Automation Controller
 
 |===
 
+
+. Log in to `https:{{ ec2_name_prefix }}.{{ domain }}:8443` 
 
 
 === Method 2: Pre-configured VMs Install
@@ -268,7 +269,13 @@ controller_hostname=192.168.5.207
 
 === Method 3: Custom Ansible controller (API install)
 
-In this method, you provide an existing Ansible Automation Platform (AAP) Controller endpoint, either on bare metal or in a private cloud, without needing AWS or pre-configured VMs. You specify the manifest, endpoint hostname, admin credentials, and pass the installation process to a predefined `controller_config_dir`. This is suitable for complex or custom topologies where you want full control over the deployment.
+In this method, you provide an existing Ansible Automation Platform (AAP) Controller endpoint, either on bare metal or in a private cloud, without needing AWS or pre-configured VMs. 
+
+Specify 
+
+manifest
+endpoint hostname
+admin credentials, and pass the installation process to a predefined `controller_config_dir`. 
 
 
 [source,shell]

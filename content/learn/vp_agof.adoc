@@ -46,11 +46,6 @@ This method is ideal for organizations that prefer deploying AAP on AWS infrastr
 
 *Cons*: This requires AWS infrastructure and credentials. This is not ideal if you're working in an on-premises environment or a cloud platform other than AWS.
 
-[source,shell]
-----
-./pattern.sh make install
-----
-
 === Method 2: Pre-configured VMs Install
 
 This method allows the installation of AAP on pre-configured Red Hat Enterprise Linux (RHEL) VMs. It requires you to provide an inventory file that specifies details about the VMs or instances where AAP will be installed. It is designed for users with existing infrastructure who want to deploy AAP without depending on AWS. If you need to install a pattern on a cluster with a different topology than this, use the API install mechanism.
@@ -66,51 +61,10 @@ The requirements for this mode are as follows:
 * Must be running a version of RHEL that AAP supports
 * Must be properly entitled with a subscription that makes the appropriate AAP repository available
 
-[source,shell]
-----
-./pattern.sh make legacy_from_os_install INVENTORY=(your_inventory_file)
-----
-
-The path to `your_inventory_file` defaults to ~/inventory_agof if you do not specify one.
-
-.Example agof_inventory file
-
-[source,yaml]
-----
-[build_control]
-localhost
-
-[aap_controllers]
-192.168.5.207
-
-[automation_hub]
-
-[eda_controllers]
-
-[aap_controllers:vars]
-
-[automation_hub:vars]
-
-[all:vars]
-ansible_user=myuser
-ansible_ssh_pass=mypass
-ansible_become_pass=mypass
-ansible_remote_tmp=/tmp/.ansible
-username=myuser
-controller_hostname=192.168.5.207
-----
 === Method 3: Custom Ansible controller (API install aka "Bare")
 
 In this method, you provide an existing Ansible Automation Platform (AAP) Controller endpoint, either on bare metal or in a private cloud, without needing AWS or pre-configured VMs. You specify the manifest, endpoint hostname, admin credentials, and pass the installation process to a predefined `controller_config_dir`. This is suitable for complex or custom topologies where you want full control over the deployment.
 
 *Pros*: Provides maximum flexibility and is designed for advanced users who have their own AAP installations, either on-prem or in complex environments that do not fit into the default or AWS-centric model.  
 
-*Cons*: Requires an existing AAP controller, which might not be ideal for users new to AAP or those looking for more hands-off installations.
-
-[source,shell]
-----
-./pattern.sh make api_install
-----
-
-=== Containerized Installer Feature
-It is important to note that AAP 2.4 offers a _containerized installer feature_, currently in Tech Preview. This new method has advantages, such as ease of deployment and managing containerized environments, making it the preferred choice for some. AGOF (Automation Governance on OpenShift Framework) uses this installer by default, and it may become a common method for AAP deployment as it matures.
+*Cons*: Requires an existing AAP controller, which might not be ideal for users new to AAP or those looking for more hands-off installation
