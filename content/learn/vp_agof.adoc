@@ -12,7 +12,7 @@ aliases: /ocp-framework/agof/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-== About the Ansible GitOps framework (AGOF)for validated patternS
+== About the Ansible GitOps framework (AGOF)for validated patterns
 
 The link:/patterns/ansible-gitops-framework/[Ansible GitOps Framework] provides an extensible framework to do GitOps with https://docs.ansible.com/platform.html[Ansible Automation Platform] (AAP), and as such provides useful facilities for developing patterns (community and validated) that function with Ansible Automation Platform as the GitOps engine.
 
@@ -22,7 +22,7 @@ Ansible Automation Platform includes automation controller, a web-based UI inter
 
 The repository at https://github.com/validatedpatterns/agof/[Ansible GitOps Framework] provides code for installing VMs on AWS, if needed. Alternatively, it can be used with existing VMs or a functional AAP Controller endpoint. 
 
-The link:https://github.com/validatedpatterns/agof/[Ansible GitOps Framework] repository contains code to set up the infrastructure for applying `controller_configuration` to an AAP instance. It includes some predefined configurations and practices to make the infrastructure as code repository more user-friendly and standardized. An AGOF pattern for example link:https://https://github.com/mhjacks/agof_demo_config[demo] is primarily an IaC infrastructure as code (IaC) artifact designed to be used with the `controller_configuration` collection.  
+The link:https://github.com/validatedpatterns/agof/[Ansible GitOps Framework] repository contains code to set up the infrastructure for applying `controller_configuration` to an AAP instance. It includes some predefined configurations and practices to make the infrastructure as code repository more user-friendly and standardized. An AGOF pattern for example link:https://github.com/mhjacks/agof_demo_config[demo] is primarily an IaC infrastructure as code (IaC) artifact designed to be used with the `controller_configuration` collection.  
 
 == Role of the Ansible Controller
 
@@ -36,4 +36,81 @@ The webUI provides an intuitive interface to build, monitor, and manage automati
 
 == Ansible framework methods
 
-The default installation provides an AAP 2.4 installation deployed by using the Containerized Installer, with services deployed this way:
+The three main methods for setting up an Ansible framework in relation to Ansible Automation Platform (AAP) 2.4 can be summarized as follows:
+
+=== Method 1: AWS-based install
+
+This method is ideal for organizations that prefer deploying AAP on AWS infrastructure. This default install process in AAP 2.4 uses AWS by default and offers a fully automated setup. It requires AWS credentials, builds an AWS image with Red Hat's ImageBuilder, and sets up AAP within an AWS VPC and subnet. The installer creates all the necessary resources, including AAP Controllers and, optionally, additional components such as Automation Hub.
+
+*Pros*: This is the easiest method if you already use AWS, as it automates the provisioning of resources, including VMs and network configurations.  
+
+*Cons*: This requires AWS infrastructure and credentials. This is not ideal if you're working in an on-premises environment or a cloud platform other than AWS.
+
+[source,shell]
+----
+./pattern.sh make install
+----
+
+=== Method 2: Pre-configured VMs Install
+
+This method allows the installation of AAP on pre-configured Red Hat Enterprise Linux (RHEL) VMs. It requires you to provide an inventory file that specifies details about the VMs or instances where AAP will be installed. It is designed for users with existing infrastructure who want to deploy AAP without depending on AWS. If you need to install a pattern on a cluster with a different topology than this, use the API install mechanism.
+
+*Pros*: Useful if you already have pre-configured VMs or bare-metal instances running RHEL. It allows greater flexibility and control over the environment.  
+
+*Cons*: Requires more manual effort to configure VMs and may need additional customization for non-standard topologies. 
+
+This model has been tested with up to two RHEL VMs (one for AAP and one for Hub).
+
+The requirements for this mode are as follows:
+
+* Must be running a version of RHEL that AAP supports
+* Must be properly entitled with a subscription that makes the appropriate AAP repository available
+
+[source,shell]
+----
+./pattern.sh make legacy_from_os_install INVENTORY=(your_inventory_file)
+----
+
+The path to `your_inventory_file` defaults to ~/inventory_agof if you do not specify one.
+
+.Example agof_inventory file
+
+[source,yaml]
+----
+[build_control]
+localhost
+
+[aap_controllers]
+192.168.5.207
+
+[automation_hub]
+
+[eda_controllers]
+
+[aap_controllers:vars]
+
+[automation_hub:vars]
+
+[all:vars]
+ansible_user=myuser
+ansible_ssh_pass=mypass
+ansible_become_pass=mypass
+ansible_remote_tmp=/tmp/.ansible
+username=myuser
+controller_hostname=192.168.5.207
+----
+=== Method 3: Custom Ansible controller (API install aka "Bare")
+
+In this method, you provide an existing Ansible Automation Platform (AAP) Controller endpoint, either on bare metal or in a private cloud, without needing AWS or pre-configured VMs. You specify the manifest, endpoint hostname, admin credentials, and pass the installation process to a predefined `controller_config_dir`. This is suitable for complex or custom topologies where you want full control over the deployment.
+
+*Pros*: Provides maximum flexibility and is designed for advanced users who have their own AAP installations, either on-prem or in complex environments that do not fit into the default or AWS-centric model.  
+
+*Cons*: Requires an existing AAP controller, which might not be ideal for users new to AAP or those looking for more hands-off installations.
+
+[source,shell]
+----
+./pattern.sh make api_install
+----
+
+=== Containerized Installer Feature
+It is important to note that AAP 2.4 offers a _containerized installer feature_, currently in Tech Preview. This new method has advantages, such as ease of deployment and managing containerized environments, making it the preferred choice for some. AGOF (Automation Governance on OpenShift Framework) uses this installer by default, and it may become a common method for AAP deployment as it matures.
