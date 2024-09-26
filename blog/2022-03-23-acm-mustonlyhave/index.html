@@ -1022,8 +1022,9 @@ The use of this pattern depends on having at least one running Red Hat OpenShift
 If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by using Red Hat Hybrid Cloud Console.
 Procedure Fork the openshift-ai repository on GitHub.
 Clone the forked copy of this repository.
-git clone git@github.com:your-username/openshift-ai.git Customize the deployment for your cluster. Run the following command:
-git switch -c my-branch vi values-hub.yaml git add values-hub.yaml git commit values-hub.yaml git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator.
+git clone git@github.com:your-username/openshift-ai.git If you want a peak under the covers to see what the pattern contains, you can do so with the following command:
+cat values-hub.yaml But don’t worry if it looks intimidating.
+Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator.
 Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
 Login to your cluster by running the following command:
 oc login Optional: Set the KUBECONFIG variable for the kubeconfig file path:
