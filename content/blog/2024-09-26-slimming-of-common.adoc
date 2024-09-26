@@ -1,0 +1,130 @@
+---
+ date: 2024-09-26
+ title: The Slimming of Common
+ summary: Slim down the common/ folder thanks to Argo's multi-source
+ author: Michele Baldessari
+ blog_tags:
+ - patterns
+ - how-to
+---
+:toc:
+
+== Preamble
+
+Historically Validated Patterns, shipped all the helm charts and all the ansible code needed to deploy a pattern within the git repository of the pattern itself. The `common` subfolder in any pattern is a git subtree containing all of the common repository at a certain point in time.
+Some thoughts around the choice of git subtrees can be found https://validatedpatterns.io/blog/2022-03-30-multicloud-gitops/[here]
+
+While having common in a git subtree in every pattern repositories has served us fairly well, it came with a number of trade-offs and less than ideal aspects:
+
+Most people are not really familiar with git subtrees and updating common was fairly cumbersome
+The pieces inside common (helm charts, ansible & scripts) could not be updated independently
+Folks would just change the local common folder and not submit changes to the upstream repository, ultimately causing merge conflicts when updating common or when they eventually merged downstream
+
+At the time ArgoCD did not support https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/[multi-source] so we did not really have many other choices other than shipping the whole of common as a folder.
+Now the multi source feature has become quite stable and it is possible to ship your values overrides for argo in one git repository and your helm charts in another repository (be it in a git repository, in a helm repository or even in an OCI-compliant registry).
+
+So the time has come for us to move all the charts out in their own repositories and while we’re at it we can also move ansible into its own collection. This makes it so that common is really just a collection of scripts to invoke the initial deployment of a pattern via CLI. The need to update the common subtree will be reduced a lot, the charts will be more self-contained and it will be a lot easier to update to newer versions.
+
+== How to update a pattern to the slimmed down common
+
+First of all we need to update common to the latest version available upstream from the
+main branch. This can be done as follows:
+[source,sh]
+----
+# Clone the pattern's repository
+gh repo clone validatedpatterns/multicloud-gitops
+
+# In the patterns' repository add the common remote
+cd multicloud-gitops
+git remote add -f common https://github.com/validatedpatterns/common
+
+# Create a 'slimming' branch where we will be working
+git checkout -b slimming
+
+# Update common from the main branch
+git merge -s subtree -Xtheirs -Xsubtree=common common/main
+----
+
+At this point the pattern's `slimming` branch has the slimmed down version of common.
+
+Then make sure you are using multisource for the clustergroup chart and use the
+`0.9.*` chart.
+
+Note that by default, when unspecificed the default clustergroup chart version when using multisource is `0.8.*`.
+
+Set the following in `values-global.yaml`:
+
+[source,yaml]
+----
+main:
+  multiSourceConfig:
+    enabled: true
+    clusterGroupChartVersion: 0.9.*
+----
+
+Migrate the VP charts in your `values-*.yaml` to the multisource ones. So in multicloud-gitops for example:
+
+Old application description (for the non-slimmed down version of common):
+[source,yaml]
+----
+clusterGroup:
+  applications:
+    acm:
+      name: acm
+      namespace: open-cluster-management
+      project: hub
+      path: common/acm
+----
+
+
+New way of doing it:
+[source,yaml]
+----
+clusterGroup:
+  applications:
+    acm:
+      name: acm
+      namespace: open-cluster-management
+      project: hub
+      chart: acm
+      chartVersion: 0.1.*
+----
+
+Do the above for all the applications having a path that points to common/<...>
+Change any imperative job that references common to the playbook referenced in the collection
+
+Old way:
+[source,yaml]
+----
+imperative:
+  jobs:
+    - name: hello-world
+      playbook: common/ansible/playbooks/hello-world/hello-world.yaml
+----
+
+New way:
+[source,yaml]
+----
+imperative:
+  jobs:
+    - name: hello-world
+      playbook: rhvp.cluster_utils.hello_world
+----
+
+After the above changes are implemented the pattern is not using any helm charts nor ansible bits from common.
+
+== How to reference another external chart
+
+If you need to reference a helm chart that is not in the validated patterns
+chart helm repository, you can simply point to another one. For example:
+
+[source,yaml]
+----
+clusterGroup:
+  applications:
+    test:
+      project: hub
+      chart: nginx
+      chartVersion: 13.2.12
+      repoURL: https://charts.bitnami.com/bitnami
+----
