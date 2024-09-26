@@ -128,3 +128,36 @@ clusterGroup:
       chartVersion: 13.2.12
       repoURL: https://charts.bitnami.com/bitnami
 ----
+
+== How to develop a chart directly from git
+
+It is possible to point the framework directly to a git repository pointing to a helm chart.
+This is especially useful for developing a chart. There are two cases to distinguish here.
+
+. The `clustergroup` chart. This one gets instantiated by the operator, so we need to change things in   the `Pattern` CR.
+Edit the pattern with `oc edit -n openshift-operators patterns` and make sure the Pattern CR has the following:
++
+[source,yaml]
+----
+spec:
+  clusterGroupName: hub
+  multiSourceConfig:
+    enabled: true
+    clusterGroupGitRepoUrl: https://github.com/myorg/clustergroup-chart
+    clusterGroupChartGitRevision: dev-branch
+----
+
+. For all the other charts we just need to add `repoURL`, `path` and the `chartVersion` fields:
++
+[source,yaml]
+----
+clusterGroup:
+  applications:
+    acm:
+      name: acm
+      namespace: open-cluster-management
+      project: hub
+      path: "."
+      chartVersion: dev-branch
+      repoURL: https://github.com/myorg/acm-chart
+----
