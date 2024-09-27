@@ -178,7 +178,7 @@ manifest_content: "Content for a manifest file to entitle AAP Controller. See be
 #manifest_content: "{{ lookup('file', '~/Downloads/manifest_AVP_20230510T202608Z.zip') | b64encode }}"
 
 org_number_vault: "1778713"
-activation_key_vault: "redhat123"
+activation_key_vault: "kevs-agof-key"
 
 # Set these variables to provide your own AMI, or to re-use an AMI previously generated with this process
 #skip_imagebuilder_build: 'boolean: skips imagebuilder build process'
@@ -205,7 +205,6 @@ agof_iac_repo: "https://github.com/mhjacks/agof_demo_config.git"
 ----
 $ ./pattern.sh make install
 ----
-
 
 .Verification
 
