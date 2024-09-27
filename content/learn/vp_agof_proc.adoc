@@ -16,16 +16,16 @@ include::modules/comm-attributes.adoc[]
 
 Whichever method you use to deploy a validated pattern you need to:
 
-. Clone the link:https://github.com/validatedpatterns-demos/agof_minimal_demo[Ansible GitOps Framework Minimal Demo] repository. This is a minimalistic pattern that demonstrates how to use the Ansible GitOps Framework.
+. Clone the link:https://github.com/mhjacks/agof_demo_config[Ansible GitOps Framework Minimal Demo] repository. This is a minimal pattern that demonstrates how to use the Ansible GitOps Framework.
 +
-[source,shell]
+[source,terminal]
 ----
 $ git clone https://github.com/validatedpatterns-demos/agof_minimal_demo.git
 ----
 
 . Clone the link:https://github.com/validatedpatterns/agof[AGOF] repository. This serves as the provisioner for the pattern
 +
-[source,shell]
+[source,terminal]
 ----
 $ git clone https://github.com/validatedpatterns-demos/agof_minimal_demo.git
 ----
@@ -137,8 +137,10 @@ a| Optional: The private automation hub URL for validated content.
 
 . Edit the file and add the following:
 
-* `controller_config_dir:` setting it value to `{{ '~/agof_minimal_demo/config' | expanduser }}`.
-* `db_password:`` setting an appropriate value for the postgres password for the DB instance for example `test`. 
+* `controller_config_dir:` set it's value to `{{ '~/agof_minimal_demo/config' | expanduser }}`.
+* `db_password:` set an appropriate value for the postgres password for the DB instance for example `test`. 
+* `agof_statedir:` set its value to "{{ '~/agof' | expanduser }}"
+* `agof_iac_repo:` set its value to "https://github.com/mhjacks/agof_demo_config.git"
 
 . Optional: Create a subscription manifest by following the guidance at link:https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/htmlred_hat_ansible_automation_platform_operations_guide/assembly-aap-obtain-manifest-files#assembly-aap-obtain-manifest-files[Obtaining a manifest file]
 
@@ -192,19 +194,22 @@ automation_hub_token_vault: 'eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI
 controller_config_dir: "{{ '~/agof_minimal_demo/config' | expanduser }}"
 
 db_password: 'test'
+
+agof_statedir: "{{ '~/agof' | expanduser }}"
+agof_iac_repo: "https://github.com/mhjacks/agof_demo_config.git"
 ----
 
 . Run from the AGOF repository directory the following command : 
 +
 [source,shell]
 ----
-$ /pattern.sh make install
+$ ./pattern.sh make install
 ----
 
 
 .Verification
 
-The default installation provides an AAP 2.4 installation deployed using the Containerized Installer, with services deployed this way:
+The default installation provides an AAP 2.4 installation deployed using the containerized installer, with services deployed this way:
 
 .agof_vault settings
 [cols="30%,70%",options="header"]
@@ -222,9 +227,19 @@ a| EDA Automation Controller
 
 |===
 
-Once the demo is complete, though, what will happen is that you will have a project (the demo project), an inventory (consisting of the AAP controller), a credential (the private key from ec2), a job template (which runs a fact gather on the AAP controller) and a schedule that will run the job template every 5 minutes
+Once the install completes, you will have a project, an inventory (consisting of the AAP controller), a credential (the private key from ec2), a job template (which runs a fact gather on the AAP controller) and a schedule that will run the job template every 5 minutes,
 
-. Log in to `https:{{ ec2_name_prefix }}.{{ domain }}:8443` 
+. Log in to `https:{{ ec2_name_prefix }}.{{ domain }}:8443` with the username `admin` and the password as configured in `admin_password` field of `agof_vault.yml`. 
+
+. Under *Resources* > *Projects* verify the project *Ansible GitOps Framework Minimal Demo* is created with status *Successful*.
+
+. Under *Resources* > *Inventories* verify the inventory *AGOF Demo Inventory* is created with sync status *Success*.
+
+. Under *Resources* > *Templates* verify the job template *Ping Playbook* is created.
+
+. Under *Resources* > *Credentials* verify the ec2 ssh credential *ec2_ssh_credential* is created.
+
+. Under *Views* > *Schedules* verify the schedules are created.
 
 
 === Method 2: Pre-configured VMs Install
@@ -232,8 +247,6 @@ Once the demo is complete, though, what will happen is that you will have a proj
 This method allows the installation of AAP on pre-configured Red Hat Enterprise Linux (RHEL) VMs. It requires you to provide an inventory file that specifies details about the VMs or instances where AAP will be installed. 
 
 It is designed for users with existing infrastructure who want to deploy AAP without depending on AWS. If you need to install a pattern on a cluster with a different topology than this, use the API install mechanism.
-
-
 
 [source,shell]
 ----
