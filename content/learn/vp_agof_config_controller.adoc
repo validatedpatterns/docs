@@ -22,6 +22,95 @@ This approach ensures the automation controller configuration is version-control
 
 For example for the AGOF minimal configuration demo the file https://github.com/mhjacks/agof_demo_config/blob/main/controller_config.yml is used with Ansible's Controller Configuration Collection, allowing the automation and management of Red Hat Ansible Automation Controller (formerly known as Ansible Tower). 
 
+[source,yaml]
+----
+# vim: ft=yaml.ansible
+---
+orgname_vault: 'Demo Organization'
+
+controller_username_vault: 'admin'
+controller_password_vault: '{{ admin_password }}'
+
+controller_username: '{{ controller_username_vault }}'
+controller_password: '{{ controller_password_vault }}'
+
+agof_demo_project_name: 'Ansible GitOps Framework Minimal Demo'
+
+controller_validate_certs: false
+
+controller_configuration_async_retries: 30
+
+controller_settings: []
+
+controller_projects:
+  - name: Demo Project
+    state: absent
+
+  - name: '{{ agof_demo_project_name }}'
+    organization: "{{ orgname_vault }}"
+    scm_branch: main
+    scm_clean: "no"
+    scm_delete_on_update: "no"
+    scm_type: git
+    scm_update_on_launch: "yes"
+    scm_url: 'https://github.com/hybrid-cloud-demos/agof_minimal_demo.git'
+
+controller_organizations:
+  - name: '{{ orgname_vault }}'
+
+controller_inventories:
+  - name: 'AGOF Demo Inventory'
+    organization: '{{ orgname_vault }}'
+
+controller_inventory_sources:
+  - name: 'AGOF Demo Inventory Source'
+    inventory: 'AGOF Demo Inventory'
+    credential: 'ec2_ssh_credential'
+    overwrite: true
+    overwrite_vars: true
+    update_on_launch: true
+    source: scm
+    source_project: '{{ agof_demo_project_name }}'
+    source_path: 'inventory'
+
+controller_credential_types: []
+
+controller_templates:
+  - name: Demo Job Template
+    state: absent
+
+  - name: Ping Playbook
+    organization: "{{ orgname_vault }}"
+    project: '{{ agof_demo_project_name }}'
+    job_type: run
+    playbook: 'ansible/playbooks/ping.yml'
+    inventory: "AGOF Demo Inventory"
+    credentials:
+      - ec2_ssh_credential
+
+controller_schedules:
+  - name: Ping Playbook
+    organization: "{{ orgname_vault }}"
+    unified_job_template: Ping Playbook
+    rrule: DTSTART:20191219T130500Z RRULE:FREQ=MINUTELY;INTERVAL=120
+
+demo_ssh_key_file: '~/{{ ec2_name_prefix }}/{{ ec2_name_prefix }}-private.pem'
+
+controller_credentials:
+  - name: ec2_ssh_credential
+    description: "EC2 SSH credential"
+    organization: '{{ orgname_vault }}'
+    credential_type: Machine
+    inputs:
+      username: 'ec2-user'
+      ssh_key_data: "{{ lookup('file', demo_ssh_key_file) }}"
+      become_method: sudo
+
+controller_launch_jobs:
+  - name: Ping Playbook
+    organization: "{{ orgname_vault }}"
+----
+
 This file automates the creation, updating, or deletion of Ansible Controller objects (organizations, projects, inventories, credentials, templates, schedules). Sensitive information like passwords and keys are pulled dynamically from vaults, ensuring they are not hardcoded in the configuration. The project’s inventory and playbooks are managed through a Git repository, allowing for continuous integration and delivery (CI/CD) practices. Recurring playbook executions are scheduled automatically, eliminating the need for manual job triggers.
 
 == Key sections and parameters
@@ -46,6 +135,7 @@ The Ansible Controller username is retrieved from the vault variable.
 The password is dynamically fetched from the vault.
 
 === Project configuration
+Projects are collections of playbooks that are stored in a Git repository or SCM. This section can define how projects are configured in the Controller.
 
 *`agof_demo_project_name: 'Ansible GitOps Framework Minimal Demo'`*:: 
 This variable holds the name of the project being managed in the controller.
@@ -58,6 +148,8 @@ Two projects are defined:
 For more information see, link:https://github.com/redhat-cop/controller_configuration/blob/devel/roles/projects/README.md[controller_configuration.projects].
 
 === Organizations
+
+Organizations represent a logical grouping for managing resources such as projects and inventories.
 
 *`controller_organizations`*:: 
 Ensures that the organization, defined in `orgname_vault`, exists within the controller. For more information see, link:https://github.com/redhat-cop/controller_configuration/blob/devel/roles/organizations/README.md[controller_configuration.organizations].
@@ -73,6 +165,8 @@ Configures an inventory source tied to the Git project. The inventory is pulled 
 
 === Job templates
 
+Job Templates define a specific playbook run, associating it with inventories, credentials, and other settings.
+
 *`controller_templates`*:: 
 Two job templates are managed:
   * One named *'Demo Job Template'*, marked for deletion.
@@ -87,6 +181,8 @@ Configures a recurring job schedule to run the *'Ping Playbook'* template every 
 
 === Credentials
 
+Credentials store authentication details for accessing external systems like clouds, networks, and SCMs. 
+
 *`controller_credentials`*:: 
 A credential named *'ec2_ssh_credential'* is created with SSH access to the EC2 instances using the private key stored at the path specified in `demo_ssh_key_file`. For more information see, link:https://github.com/redhat-cop/controller_configuration/blob/devel/roles/credentials/README.md[controller_configuration.credentials].
 
@@ -100,3 +196,5 @@ For more information about the controller configuration see:
 * link:https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/html-single/automation_controller_administration_guide/index[Red Hat Automation Controller Admin Guide]
 
 * link:https://github.com/redhat-cop/controller_configuration[Red Hat Communities of Practice Controller Configuration Collection]
+
+* link:https://galaxy.ansible.com/ui/repo/published/infra/controller_configuration/docs/[Galaxy Red Hat Communities of Practice Controller Configuration Collection documentation]

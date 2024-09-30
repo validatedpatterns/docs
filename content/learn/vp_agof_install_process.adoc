@@ -1,0 +1,33 @@
+---
+menu:
+  learn:
+    parent: Validated patterns frameworks
+title: Providing data to controller configuration collection 
+weight: 26
+aliases: /ocp-framework/agof/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Understanding the Ansible GitOps Framework (AGOF) installation process
+
+The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate the deployment and configuration of Ansible Automation Platform (AAP) environments using GitOps principles. It leverages Ansible to manage infrastructure and application provisioning in a declarative, version-controlled way. AGOF provides a structured approach to setting up cloud infrastructure, installing AAP components, and handing over control to the AAP Controller for ongoing automation and management. An overview of the steps involved in configuring a basic demo minimal demo application are listed here: 
+
+=== 1. Pre-Init Environment (Bootstrap Ansible)
+
+* *Ansible Configuration*: The environment is initialized by generating an `ansible.cfg` file, which is configured with Automation Hub and public Galaxy endpoints. This process includes vault configuration to inject the Automation Hub token and install required Ansible collections from `requirements.yml`.
+* *Optional Image Build*: Images are created using Red Hat Image Builder to produce AMIs, which include `cloud-init`, activation keys, and organization details. These images can be reused in future installations.
+
+=== 2. Infrastructure Building (AWS Only)
+
+* *AWS Setup*: The framework sets up AWS infrastructure, including VPC, subnets, and security groups, using predefined roles. It also manages Route53 DNS entries for VMs.
+* *VM Deployment*: Virtual machines are provisioned on EC2 with persistent hostnames and updates to `/etc/hosts` for AWS nodes. DNS entries are updated when IPs change after VM reboots.
+
+=== 3. Handover to Ansible Controller
+
+* *Controller Setup*: The Ansible Automation Platform (AAP) Controller and optionally the Automation Hub are installed and configured. Entitlements are managed via a manifest, and execution environments and collections are downloaded and prepared.
+* *GitOps Mode*: After configuration, AGOF transitions to GitOps mode. All environment changes are managed via Git commits to the repositories used by the controller, ensuring declarative and automated infrastructure management from this point onward.
+

@@ -58,7 +58,7 @@ You need to provide some key information to a file named `agof_vault.yml` create
 
 . Copy the `agof_vault_template.yml` from the cloned `agof` directory to your home directory and rename it `agof_vault.yml`. 
 +
-[source,shell]
+[source,terminal]
 ----
 $ cp ~/agof/agof_vault_template.yml ~/agof_vault.yml
 ----
@@ -201,10 +201,11 @@ agof_iac_repo: "https://github.com/mhjacks/agof_demo_config.git"
 
 . Run from the AGOF repository directory the following command : 
 +
-[source,shell]
+[source,terminal]
 ----
 $ ./pattern.sh make install
 ----
+This command invokes the `controller_configuration` `dispatch` role on the controller endpoint based on the configuration found in the `controller_configuration_dir` and in your `agof_vault.yml` file. This controls all of the controller configuration. Based on the variables defined in the controller configuration, `dispatch` calls the necessary roles and modules in the right order to configure AAP to run your pattern.
 
 .Verification
 
@@ -281,7 +282,6 @@ username=myuser
 controller_hostname=192.168.5.207
 ----
 
-
 === Method 3: Custom Ansible controller (API install)
 
 In this method, you provide an existing Ansible Automation Platform (AAP) Controller endpoint, either on bare metal or in a private cloud, without needing AWS or pre-configured VMs. 
@@ -293,7 +293,16 @@ endpoint hostname
 admin credentials, and pass the installation process to a predefined `controller_config_dir`. 
 
 
-[source,shell]
+[source,terminal]
 ----
 ./pattern.sh make api_install
+----
+
+=== Tearing down the installation 
+
+To tear down the installation run the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make aws_uninstall
 ----
