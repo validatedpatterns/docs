@@ -301,7 +301,7 @@ admin credentials, and pass the installation process to a predefined `controller
 === Tearing down the installation 
 
 To tear down the installation run the following command:
-+
+
 [source,terminal]
 ----
 $ ./pattern.sh make aws_uninstall
