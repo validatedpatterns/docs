@@ -18,9 +18,9 @@ The link:/patterns/ansible-gitops-framework/[Ansible GitOps Framework] provides 
 
 When there is no access to OpenShift Container Platform, AGOF provides a standalone solution for deploying and managing validated patterns. This framework leverages GitOps principles without relying on OpenShift.
 
-Ansible Automation Platform includes automation controller, a web-based UI interface allows users to define, operate, scale, and delegate automation across their enterprise
+Administrators can use Ansible Automation Platform includes automation controller, a web-based UI interface to define, operate, scale, and delegate automation across their enterprise.
 
-The repository at https://github.com/validatedpatterns/agof/[Ansible GitOps Framework] provides code for installing VMs on AWS, if needed. Alternatively, it can be used with existing VMs or a functional AAP Controller endpoint. 
+The repository at https://github.com/validatedpatterns/agof/[Ansible GitOps Framework] provides code for installing VMs on AWS, if needed. It can also be used with existing VMs or a functional AAP Controller endpoint. 
 
 The link:https://github.com/validatedpatterns/agof/[Ansible GitOps Framework] repository contains code to set up the infrastructure for applying `controller_configuration` to an AAP instance. It includes some predefined configurations and practices to make the infrastructure as code repository more user-friendly and standardized. An AGOF pattern for example link:https://github.com/mhjacks/agof_demo_config[demo] is primarily an IaC infrastructure as code (IaC) artifact designed to be used with the `controller_configuration` collection.  
 
@@ -40,7 +40,7 @@ The three main methods for setting up an Ansible framework in relation to Ansibl
 
 === Method 1: AWS-based install
 
-This method is ideal for organizations that prefer deploying AAP on AWS infrastructure. This default install process in AAP 2.4 uses AWS by default and offers a fully automated setup. It requires AWS credentials, builds an AWS image with Red Hat's ImageBuilder, and sets up AAP within an AWS VPC and subnet. The installer creates all the necessary resources, including AAP Controllers and, optionally, additional components such as Automation Hub.
+This method is ideal for organizations that prefer deploying AAP on AWS infrastructure. This default install process in AAP 2.4 uses AWS by default and offers a fully automated setup. It requires AWS credentials, builds an AWS image with Red Hat's ImageBuilder, and sets up AAP within an AWS VPC and subnet. The installation program creates all the necessary resources, including AAP Controllers and, optionally, additional components such as Automation Hub.
 
 *Pros*: This is the easiest method if you already use AWS, as it automates the provisioning of resources, including VMs and network configurations.  
 
@@ -120,76 +120,78 @@ You need to provide some key information to a file named `agof_vault.yml` create
 $ cp ~/agof/agof_vault_template.yml ~/agof_vault.yml
 ----
 +
-.agof_vault settings
-[cols="30%,70%",options="header"]
+
+. Agof vault settings
+
+[cols="30%,70%", options="header"]
 |===
 | Argument | Description
 
 | `aws_account_nbr_vault`
-a| Your AWS account number. This is needed for sharing composer images.
+| Your AWS account number. This is needed for sharing composer images.
 
 | `aws_access_key_vault`
-a| Your AWS access key.
+| Your AWS access key.
 
 | `aws_secret_key_vault`
-a| Your AWS secret key.
+| Your AWS secret key.
 
 | `pattern_prefix`
-a| A unique prefix to distinguish instances in AWS. Used as the pattern name and in public DNS entries.
+| A unique prefix to distinguish instances in AWS. Used as the pattern name and in public DNS entries.
 
 | `ec2_region`
-a| An AWS region that your account has access to.
+| An AWS region that your account has access to.
 
 | `offline_token`
-a| A Red Hat offline token used to build the RHEL image on link:https://console.redhat.com[console.redhat.com].
+| A Red Hat offline token used to build the RHEL image on https://console.redhat.com[console.redhat.com].
 
 [NOTE]
 ====
-Click the `GENERATE TOKEN` link at link:https://access.redhat.com/management/api[Red Hat API Tokens] to create the token. 
+Click the `GENERATE TOKEN` link at https://access.redhat.com/management/api[Red Hat API Tokens] to create the token. 
 ====
 
 | `redhat_username`
-a| Red Hat Subscription username, used to log in to link:https://registry.redhat.io[registry.redhat.io].
+| Red Hat Subscription username, used to log in to https://registry.redhat.io[registry.redhat.io].
 
 | `redhat_password`
-a| Red Hat Subscription password, used to log in to link:https://registry.redhat.io[registry.redhat.io].
+| Red Hat Subscription password, used to log in to https://registry.redhat.io[registry.redhat.io].
 
 | `admin_password`
-a| An admin password for AAP Controller and Automation Hub.
+| An admin password for AAP Controller and Automation Hub.
 
 | `manifest_content`
-a| Content for a manifest file to entitle AAP Controller. See below for an example of how to point to a local file.
+| Content for a manifest file to entitle AAP Controller. See below for an example of how to point to a local file.
 
 | `org_number_vault`
-a| The Organization Number (Org ID) attached to your Red Hat Subscription for RHEL and AAP.
+| The Organization Number (Org ID) attached to your Red Hat Subscription for RHEL and AAP.
 
 | `activation_key_vault`
-a| The name of an Activation Key to embed in the imagebuilder image.
+| The name of an Activation Key to embed in the imagebuilder image.
 
 [NOTE]
 ====
-Click the `Create Activation Keys` link at link:https://console.redhat.com[console.redhat.com] > *Red Hat Enterprise Linux* > *Inventory* > *System Configuration* > *Activation Keys* to create an activation key. 
+Click the `Create Activation Keys` link at https://console.redhat.com[console.redhat.com] > *Red Hat Enterprise Linux* > *Inventory* > *System Configuration* > *Activation Keys* to create an activation key. 
 ====
 
 | `skip_imagebuilder_build`
-a| Set these variables to provide your own AMI, or to re-use an AMI previously generated with this process. When a previously built AMI is found this check does not take place. 
+| Set these variables to provide your own AMI, or to re-use an AMI previously generated with this process. When a previously built AMI is found this check does not take place. 
 #imagebuilder_ami: 'The ID of an AWS AMI image, preferably one that was built with this toolkit'
 
 | `automation_hub_token_vault`
-a| A token associated with your AAP subscription used to retrieve Automation Hub content.
+| A token associated with your AAP subscription used to retrieve Automation Hub content.
 
 [NOTE]
 ====
-Click the `Load token` link at link:https://console.redhat.com[console.redhat.com] > *Ansible Automation Platform* > *Automation Hub* > *Connect to Hub* to generate a token. 
+Click the `Load token` link at https://console.redhat.com[console.redhat.com] > *Ansible Automation Platform* > *Automation Hub* > *Connect to Hub* to generate a token. 
 ====
 
 | `automation_hub_url_certified_vault`
-a| Optional: The private automation hub URL for certified content.
+| Optional: The private automation hub URL for certified content.
 
 | `automation_hub_url_validated_vault`
-a| Optional: The private automation hub URL for validated content.
-
+| Optional: The private automation hub URL for validated content.
 |===
+
 
 
 . Edit the file and add the following:
@@ -224,7 +226,7 @@ pattern_dns_zone: 'aws.validatedpatterns.io'
 ec2_name_prefix: 'foga-testing'
 ec2_region: 'us-east-1'
 
-offline_token: 'eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0NzQzYTkzMC03YmJiLTRkZGQtOTgzMS00ODcxNGRlZDc0YjUifQ.eyJpYXQiOjE3MjY4MjcxNDcsImp0aSI6ImJlNjdhZDQ4LWUzNWQtNDg1Yy04OTM2LTMwMzNmODgwM2Q0MSIsImlzcyI6Imh0dHBzOi8vc3NvLnJlZGhhdC5jb20vYXV0aC9yZWFsbXMvcmVkaGF0LWV4dGVybmFsIiwiYXVkIjoiaHR0cHM6Ly9zc28ucmVkaGF0LmNvbS9hdXRoL3JlYWxtcy9yZWRoYXQtZXh0ZXJuYWwiLCJzdWIiOiJmOjUyOGQ3NmZmLWY3MDgtNDNlZC04Y2Q1LWZlMTZmNGZlMGNlNjpyaG4tc3VwcG9ydC1rcXVpbm4iLCJ0eXAiOiJPZmZsaW5lIiwiYXpwIjoicmhzbS1hcGkiLCJzaWQiOiJhMGQ3YTEzYy1kNDM2LTQ1ZGEtOGZjZi1kOThlY2VjZDczNzkiLCJzY29wZSI6ImJhc2ljIHJvbGVzIHdlYi1vcmlnaW5zIGNsaWVudF90eXBlLnByZV9rYzI1IG9mZmxpbmVfYWNjZXNzIn0.482J5PUtr2TQCl-EUjmIwwCXe-o9_SYCuOABfpunxzGoTOdHevW7LQTGUrJ6FOrNPReuOdIwiA5KijowEVxeRw'
+offline_token: '<insert-token-here>'
 
 redhat_username: 'rhn-support-myusername'
 redhat_password: 'passwd01'
@@ -241,7 +243,7 @@ activation_key_vault: "kevs-agof-key"
 #skip_imagebuilder_build: 'boolean: skips imagebuilder build process'
 #imagebuilder_ami: 'The ID of an AWS AMI image, preferably one that was built with this toolkit'
 
-automation_hub_token_vault: 'eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0NzQzYTkzMC03YmJiLTRkZGQtOTgzMS00ODcxNGRlZDc0YjUifQ.eyJpYXQiOjE3MjY4MjIxNzEsImp0aSI6IjQ2Y2ZjZmU2LTY0ZTgtNDgyYS04Mjc1LWFlZjEzNTY3NjUxMiIsImlzcyI6Imh0dHBzOi8vc3NvLnJlZGhhdC5jb20vYXV0aC9yZWFsbXMvcmVkaGF0LWV4dGVybmFsIiwiYXVkIjoiaHR0cHM6Ly9zc28ucmVkaGF0LmNvbS9hdXRoL3JlYWxtcy9yZWRoYXQtZXh0ZXJuYWwiLCJzdWIiOiJmOjUyOGQ3NmZmLWY3MDgtNDNlZC04Y2Q1LWZlMTZmNGZlMGNlNjpyaG4tc3VwcG9ydC1rcXVpbm4iLCJ0eXAiOiJPZmZsaW5lIiwiYXpwIjoiY2xvdWQtc2VydmljZXMiLCJub25jZSI6IjI1NzQ3MDg1LTc2ZTEtNGIzZS05Y2U2LTE0MjJiNDY1ODAwMiIsInNpZCI6ImEwZDdhMTNjLWQ0MzYtNDVkYS04ZmNmLWQ5OGVjZWNkNzM3OSIsInNjb3BlIjoib3BlbmlkIGJhc2ljIGFwaS5pYW0uc2VydmljZV9hY2NvdW50cyByb2xlcyB3ZWItb3JpZ2lucyBjbGllbnRfdHlwZS5wcmVfa2MyNSBvZmZsaW5lX2FjY2VzcyJ9.pL3Ls9m0-AJqlRWdGnv7HEyIxA-PcQNR0RCtc8vqeMHaTgSME1h6Xd5rysyVzChRAHsPNv_kGwsgfx0DlnQ9jA'
+automation_hub_token_vault: '<insert-token-here>'
 
 # These variables can be set but are optional. The previous (before AAP 2.4) conncept of sync-list was private
 # to an account.
