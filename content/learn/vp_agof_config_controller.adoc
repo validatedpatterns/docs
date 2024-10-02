@@ -14,7 +14,7 @@ include::modules/comm-attributes.adoc[]
 
 == Understanding the Ansible GitOps Framework (AGOF) installation process
 
-The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate the deployment and configuration of Ansible Automation Platform (AAP) environments using GitOps principles. It leverages Ansible to manage infrastructure and application provisioning in a declarative, version-controlled way. AGOF provides a structured approach to setting up cloud infrastructure, installing AAP components, and handing over control to the AAP Controller for ongoing automation and management. An overview of the steps involved in configuring a basic demo minimal demo application are listed here: 
+The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate the deployment and configuration of Ansible Automation Platform (AAP) environments using  link:https://opengitops.dev/[GitOps principles]. It leverages Ansible to manage infrastructure and application provisioning in a declarative, version-controlled way. AGOF provides a structured approach to setting up cloud infrastructure, installing AAP components, and handing over control to the AAP Controller for ongoing automation and management. An overview of the steps involved in configuring a basic demo minimal demo application are listed here: 
 
 === 1. Pre-Init Environment (Bootstrap Ansible)
 
@@ -28,8 +28,8 @@ The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate 
 
 === 3. Handover to Ansible Controller
 
-* *Controller Setup*: The Ansible Automation Platform (AAP) Controller and optionally the Automation Hub are installed and configured. Entitlements are managed via a manifest, and execution environments and collections are downloaded and prepared.
-* *GitOps Mode*: After configuration, AGOF transitions to GitOps mode. All environment changes are managed via Git commits to the repositories used by the controller, ensuring declarative and automated infrastructure management from this point onward.
+* *Controller Setup*: The Ansible Automation Platform (AAP) Controller and optionally the Automation Hub are installed and configured. Entitlements are managed through a manifest, and execution environments and collections are downloaded and prepared.
+* *GitOps Mode*: After configuration, AGOF transitions to GitOps mode. Git commits to the repositories by the controller manage all environment changes, ensuring declarative and automated infrastructure management from this point onward.
 
 == Using the Controller Configuration collection
 
@@ -130,9 +130,13 @@ controller_launch_jobs:
     organization: "{{ orgname_vault }}"
 ----
 
-This file automates the creation, updating, or deletion of Ansible Controller objects (organizations, projects, inventories, credentials, templates, schedules). Sensitive information like passwords and keys are pulled dynamically from vaults, ensuring they are not hardcoded in the configuration. The project’s inventory and playbooks are managed through a Git repository, allowing for continuous integration and delivery (CI/CD) practices. Recurring playbook executions are scheduled automatically, eliminating the need for manual job triggers.
+This file automates the creation, updating, or deletion of Ansible Controller objects (organizations, projects, inventories, credentials, templates, schedules). Sensitive information like passwords and keys are pulled dynamically from vaults, ensuring they are not hardcoded in the configuration. 
 
-== Key sections and parameters
+A a Git repository manages the project’s inventory and playbooks, allowing for continuous integration and delivery (CI/CD) practices. AAP automatically schedules recurring playbook executions, eliminating the need for manual job triggers.
+
+== Key sections and parameters 
+
+This section describes the parameters associated with the Ansible GitOps Framework minimal configuration demo. 
 
 === Vault variables
 

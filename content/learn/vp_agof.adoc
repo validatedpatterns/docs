@@ -30,44 +30,36 @@ In the Ansible GitOps framework, an ansible controller refers to any machine tha
 
 THe link:https://docs.ansible.com/platform.html[Automation controller] is the command and control center for Red Hat Ansible Automation Platform, replacing Ansible Tower. It includes a webUI, API, role-based access control (RBAC), a workflow visualizer, and continuous integration and continuous delivery (CI/CD) integrations to help you organize and manage automation across your enterprise.
 
-The Automation Controller serves as the centralized platform for managing and executing automation across infrastructure. It allows users to create job templates that standardize the deployment and execution of Ansible playbooks, making automation more consistent and reusable. It integrates essential components such as execution environments for consistent automation execution, projects (repositories for automation content), inventories (target endpoints), and credentials (for secure access to resources).
+The Automation Controller serves as the centralized platform for managing and executing automation across infrastructure. Use the Automation Controller to create job templates that standardize the deployment and execution of Ansible playbooks, making automation more consistent and reusable. It integrates essential components such as execution environments for consistent automation execution, projects (repositories for automation content), inventories (target endpoints), and credentials (for secure access to resources).
 
 The webUI provides an intuitive interface to build, monitor, and manage automation workflows, while the API offers seamless integration with other tools, such as CI/CD pipelines or orchestration platforms. Overall, the Automation Controller streamlines the automation lifecycle, ensuring a scalable, secure, and maintainable automation environment.
 
 == Ansible framework methods
 
-The three main methods for setting up an Ansible framework in relation to Ansible Automation Platform (AAP) 2.4 can be summarized as follows:
+The three main methods for setting up an Ansible framework are as follows:
 
 === Method 1: AWS-based install
 
-This method is ideal for organizations that prefer deploying AAP on AWS infrastructure. This default install process in AAP 2.4 uses AWS by default and offers a fully automated setup. It requires AWS credentials, builds an AWS image with Red Hat's ImageBuilder, and sets up AAP within an AWS VPC and subnet. The installation program creates all the necessary resources, including AAP Controllers and, optionally, additional components such as Automation Hub.
+This method is ideal for organizations that prefer deploying AAP on AWS infrastructure. This default install process in AAP 2.4 uses AWS by default and offers a fully automated setup. It requires AWS credentials, builds an AWS image with Red Hat's ImageBuilder, and sets up AAP within an AWS VPC and subnet. The installation program creates all the necessary resources, including AAP Controllers and, optionally, additional components such as the Automation Hub.
 
-*Pros*: This is the easiest method if you already use AWS, as it automates the provisioning of resources, including VMs and network configurations.  
-
-*Cons*: This requires AWS infrastructure and credentials. This is not ideal if you're working in an on-premises environment or a cloud platform other than AWS.
+This is the easiest method if you already use AWS, as it automates the provisioning of resources, including VMs and network configurations. This requires AWS infrastructure and credentials.
 
 === Method 2: Pre-configured VMs Install
 
-This method allows the installation of AAP on pre-configured Red Hat Enterprise Linux (RHEL) VMs. It requires you to provide an inventory file that specifies details about the VMs or instances where AAP will be installed. It is designed for users with existing infrastructure who want to deploy AAP without depending on AWS. If you need to install a pattern on a cluster with a different topology than this, use the API install mechanism.
+This method allows the installation of AAP on pre-configured Red Hat Enterprise Linux (RHEL) VMs. You need to provide an inventory file that specifies details about the VMs or instances where AAP will be installed. It is designed for users with existing infrastructure who want to deploy AAP without depending on AWS. If you need to install a pattern on a cluster with a different topology than this, use the API install mechanism.
 
-*Pros*: Useful if you already have pre-configured VMs or bare-metal instances running RHEL. It allows greater flexibility and control over the environment.  
-
-*Cons*: Requires more manual effort to configure VMs and may need additional customization for non-standard topologies. 
-
-This model has been tested with up to two RHEL VMs (one for AAP and one for Hub).
+THis method is useful if you already have pre-configured VMs or bare-metal instances running RHEL. It allows greater flexibility and control over the environment. Using this method requires more manual effort to configure VMs and might need additional customization for non-standard topologies. This model has been tested with up to two RHEL VMs (one for AAP and one for Hub).
 
 The requirements for this mode are as follows:
 
 * Must be running a version of RHEL that AAP supports
 * Must be properly entitled with a subscription that makes the appropriate AAP repository available
 
-=== Method 3: Custom Ansible controller (API install aka "Bare")
+=== Method 3: Custom Ansible controller (API install)
 
 In this method, you provide an existing Ansible Automation Platform (AAP) Controller endpoint, either on bare metal or in a private cloud, without needing AWS or pre-configured VMs. You specify the manifest, endpoint hostname, admin credentials, and pass the installation process to a predefined `controller_config_dir`. This is suitable for complex or custom topologies where you want full control over the deployment.
 
-*Pros*: Provides maximum flexibility and is designed for advanced users who have their own AAP installations, either on-prem or in complex environments that do not fit into the default or AWS-centric model.  
-
-*Cons*: Requires an existing AAP controller, which might not be ideal for users new to AAP or those looking for more hands-off installation
+This method provides maximum flexibility and is designed for advanced users who have their own AAP installations, either on-prem or in complex environments that do not fit into the default or AWS-centric model. You need an existing AAP controller, which might not be ideal for users new to AAP or those looking for more hands-off installation
 
 == Creating a validated pattern using the AGOF framework
 
@@ -120,9 +112,8 @@ You need to provide some key information to a file named `agof_vault.yml` create
 $ cp ~/agof/agof_vault_template.yml ~/agof_vault.yml
 ----
 +
-
-. Agof vault settings
-
+.Agof vault settings
++
 [cols="30%,70%", options="header"]
 |===
 | Argument | Description
@@ -143,7 +134,7 @@ $ cp ~/agof/agof_vault_template.yml ~/agof_vault.yml
 | An AWS region that your account has access to.
 
 | `offline_token`
-| A Red Hat offline token used to build the RHEL image on https://console.redhat.com[console.redhat.com].
+a| A Red Hat offline token used to build the RHEL image on https://console.redhat.com[console.redhat.com].
 
 [NOTE]
 ====
@@ -166,7 +157,7 @@ Click the `GENERATE TOKEN` link at https://access.redhat.com/management/api[Red 
 | The Organization Number (Org ID) attached to your Red Hat Subscription for RHEL and AAP.
 
 | `activation_key_vault`
-| The name of an Activation Key to embed in the imagebuilder image.
+a| The name of an Activation Key to embed in the imagebuilder image.
 
 [NOTE]
 ====
@@ -178,7 +169,7 @@ Click the `Create Activation Keys` link at https://console.redhat.com[console.re
 #imagebuilder_ami: 'The ID of an AWS AMI image, preferably one that was built with this toolkit'
 
 | `automation_hub_token_vault`
-| A token associated with your AAP subscription used to retrieve Automation Hub content.
+a| A token associated with your AAP subscription used to retrieve Automation Hub content.
 
 [NOTE]
 ====
@@ -192,25 +183,23 @@ Click the `Load token` link at https://console.redhat.com[console.redhat.com] > 
 | Optional: The private automation hub URL for validated content.
 |===
 
-
-
 . Edit the file and add the following:
 
 * `controller_config_dir:` set it's value to `{{ '~/agof_minimal_demo/config' | expanduser }}`.
-* `db_password:` set an appropriate value for the postgres password for the DB instance for example `test`. 
-* `agof_statedir:` set its value to "{{ '~/agof' | expanduser }}"
-* `agof_iac_repo:` set its value to "https://github.com/mhjacks/agof_demo_config.git"
+* `db_password:` sets an appropriate value for the postgres password for the DB instance for example `test`. 
+* `agof_statedir:` set its value to `"{{ '~/agof' | expanduser }}"`
+* `agof_iac_repo:` set its value to `"https://github.com/mhjacks/agof_demo_config.git"`
 
-. Optional: Create a subscription manifest by following the guidance at link:https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/htmlred_hat_ansible_automation_platform_operations_guide/assembly-aap-obtain-manifest-files#assembly-aap-obtain-manifest-files[Obtaining a manifest file]
+. Optional: Create a subscription manifest by following the guidance at link:https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/htmlred_hat_ansible_automation_platform_operations_guide/assembly-aap-obtain-manifest-files#assembly-aap-obtain-manifest-files[Obtaining a manifest file].
 
-.. Update your `agof_vault.yml` file with the path to downloaded manifest zip file. For example add the following: 
+.. Update your `agof_vault.yml` file with the path to the downloaded manifest zip file. For example add the following: 
 +
 [source,shell]
 ----
 controller_license_src_file: '~/Downloads/manifest_<sub_allocation_name>_20240924T131518Z.zip'
 manifest_content: "{{ lookup('file', controller_license_src_file) | b64encode }}"
 ----
-
++
 .Example agof_vault.yml file
 
 [source,yaml]
@@ -255,6 +244,7 @@ controller_config_dir: "{{ '~/agof_minimal_demo/config' | expanduser }}"
 db_password: 'test'
 
 agof_statedir: "{{ '~/agof' | expanduser }}"
+
 agof_iac_repo: "https://github.com/mhjacks/agof_demo_config.git"
 ----
 
@@ -312,9 +302,36 @@ It is designed for users with existing infrastructure who want to deploy AAP wit
 ./pattern.sh make legacy_from_os_install INVENTORY=(your_inventory_file)
 ----
 
-The path to `your_inventory_file` defaults to ~/inventory_agof if you do not specify one.
+The path to `your_inventory_file` defaults to `~/inventory_agof` if you do not specify one.
 
-.Example agof_inventory file
+.Example agof_inventory file for just AAP (default)
+
+[source,yaml]
+----
+[build_control]
+localhost
+
+[aap_controllers]
+192.168.5.207
+
+[automation_hub]
+
+[eda_controllers]
+
+[aap_controllers:vars]
+
+[automation_hub:vars]
+
+[all:vars]
+ansible_user=myuser
+ansible_ssh_pass=mypass
+ansible_become_pass=mypass
+ansible_remote_tmp=/tmp/.ansible
+username=myuser
+controller_hostname=192.168.5.207
+----
+
+.Example agof_inventory file including AAP and Hub
 
 [source,yaml]
 ----
@@ -345,22 +362,19 @@ controller_hostname=192.168.5.207
 
 In this method, you provide an existing Ansible Automation Platform (AAP) Controller endpoint, either on bare metal or in a private cloud, without needing AWS or pre-configured VMs. 
 
-Specify 
+You supply the manifest contents, endpoint hostname, admin username (defaults to "admin"), and admin password, and then the installation hands off to a `controller_config_dir` you define.
 
-manifest
-endpoint hostname
-admin credentials, and pass the installation process to a predefined `controller_config_dir`. 
-
-
+* Run the following command to install using this method:
++
 [source,terminal]
 ----
-./pattern.sh make api_install
+$ ./pattern.sh make api_install
 ----
 
 === Tearing down the installation 
 
-To tear down the installation run the following command:
-
+* To tear down the installation run the following command:
++
 [source,terminal]
 ----
 $ ./pattern.sh make aws_uninstall
