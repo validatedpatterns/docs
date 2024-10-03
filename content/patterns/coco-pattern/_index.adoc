@@ -1,0 +1,34 @@
+---
+title: Confidential Containers pattern
+date: 2024-10-03
+tier: sandbox
+summary: This pattern helps you get started with deploying confidential containers in OpenShift Container Platform
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat Advanced Cluster Management
+- Red Hat OpenShift Sandbox Containers
+industries:
+- General
+aliases: /coco-pattern/
+pattern_logo: multicloud-gitops.png
+links:
+  install: coco-getting-started
+  help: https://groups.google.com/g/validatedpatterns
+  bugs: https://github.com/validatedpatterns/coco-pattern/issues
+  repo: https://github.com/validatedpatterns/coco-pattern
+
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/mcg-about-multicloud-gitops.adoc[leveloffset=+1]
+
+include::modules/mcg-architecture.adoc[leveloffset=+1]
+
+[id="next-steps_mcg-index"]
+== Next steps
+
+* link:mcg-getting-started[Deploy the management hub] using Helm.
+* Add a managed cluster to link:mcg-managed-cluster[deploy the managed cluster piece using ACM].

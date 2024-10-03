@@ -1,0 +1,29 @@
+---
+title: Managed cluster sites
+weight: 20
+aliases: /multicloud-gitops/mcg-managed-cluster/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+//leaving this here on purpose to test H1 headings (with ID) in assemblies and it's impact of TOC
+[id="attach-managed-cluster"]
+= Attach a managed cluster (edge) to the management hub
+
+include::modules/mcg-understanding-rhacm-requirements.adoc[leveloffset=+1]
+
+include::modules/mcg-deploying-managed-cluster-using-rhacm.adoc[leveloffset=+1]
+
+include::modules/comm-deploying-managed-cluster-using-cm-cli-tool.adoc[leveloffset=+1]
+
+include::modules/comm-deploying-managed-cluster-using-clusteradm-tool.adoc[leveloffset=+1]
+
+include::modules/comm-designate-cluster-as-managed-cluster-site.adoc[leveloffset=+2]
+
+
+== Verification
+
+Go to your managed cluster (edge) OpenShift console and check for the `open-cluster-management-agent` pod being launched. It might take a while for the RHACM agent and `agent-addons` to launch. After that, the OpenShift GitOps Operator is installed. On successful installation, launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
