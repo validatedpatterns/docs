@@ -36,26 +36,20 @@ The webUI provides an intuitive interface to build, monitor, and manage automati
 
 == Ansible framework methods
 
-The three main methods for setting up an Ansible framework are as follows:
+The main methods for setting up an Ansible framework are as follows:
 
-=== Method 1: AWS-based install
+[NOTE]
+====
+This section focussed mainly on the AWS based installation method. 
+====
+
+=== AWS based install
 
 This method is ideal for organizations that prefer deploying AAP on AWS infrastructure. This default install process in AAP 2.4 uses AWS by default and offers a fully automated setup. It requires AWS credentials, builds an AWS image with Red Hat's ImageBuilder, and sets up AAP within an AWS VPC and subnet. The installation program creates all the necessary resources, including AAP Controllers and, optionally, additional components such as the Automation Hub.
 
 This is the easiest method if you already use AWS, as it automates the provisioning of resources, including VMs and network configurations. This requires AWS infrastructure and credentials.
 
-=== Method 2: Pre-configured VMs Install
-
-This method allows the installation of AAP on pre-configured Red Hat Enterprise Linux (RHEL) VMs. You need to provide an inventory file that specifies details about the VMs or instances where AAP will be installed. It is designed for users with existing infrastructure who want to deploy AAP without depending on AWS. If you need to install a pattern on a cluster with a different topology than this, use the API install mechanism.
-
-THis method is useful if you already have pre-configured VMs or bare-metal instances running RHEL. It allows greater flexibility and control over the environment. Using this method requires more manual effort to configure VMs and might need additional customization for non-standard topologies. This model has been tested with up to two RHEL VMs (one for AAP and one for Hub).
-
-The requirements for this mode are as follows:
-
-* Must be running a version of RHEL that AAP supports
-* Must be properly entitled with a subscription that makes the appropriate AAP repository available
-
-=== Method 3: Custom Ansible controller (API install)
+=== Custom Ansible controller (API install)
 
 In this method, you provide an existing Ansible Automation Platform (AAP) Controller endpoint, either on bare metal or in a private cloud, without needing AWS or pre-configured VMs. You specify the manifest, endpoint hostname, admin credentials, and pass the installation process to a predefined `controller_config_dir`. This is suitable for complex or custom topologies where you want full control over the deployment.
 
@@ -196,7 +190,7 @@ Click the `Load token` link at https://console.redhat.com[console.redhat.com] > 
 +
 [source,shell]
 ----
-controller_license_src_file: '~/Downloads/manifest_<sub_allocation_name>_20240924T131518Z.zip'
+controller_license_src_file: '~/Downloads/<manifest_filename>.zip'
 manifest_content: "{{ lookup('file', controller_license_src_file) | b64encode }}"
 ----
 +
@@ -205,9 +199,9 @@ manifest_content: "{{ lookup('file', controller_license_src_file) | b64encode }}
 [source,yaml]
 ----
 ---
-aws_account_nbr_vault: '293265215425'
-aws_access_key_vault: 'AKIAIJ6ZIKPAUZGF2643'
-aws_secret_key_vault: 'gMC3Jy3/MZtOosjUDHy0Nl/2mp2HQok1JDfCQGKUR'
+aws_account_nbr_vault: '<AWS_account_ID>'
+aws_access_key_vault: '<AWS_access_key>'
+aws_secret_key_vault: '<AWS_secret_key>'
 
 pattern_prefix: 'foga'
 pattern_dns_zone: 'aws.validatedpatterns.io'
@@ -225,7 +219,7 @@ admin_password: 'redhat123!'
 manifest_content: "Content for a manifest file to entitle AAP Controller. See below for an example of how to point to a local file"
 #manifest_content: "{{ lookup('file', '~/Downloads/manifest_AVP_20230510T202608Z.zip') | b64encode }}"
 
-org_number_vault: "1778713"
+org_number_vault: "<Org-ID>"
 activation_key_vault: "kevs-agof-key"
 
 # Set these variables to provide your own AMI, or to re-use an AMI previously generated with this process
@@ -278,7 +272,7 @@ a| EDA Automation Controller
 
 Once the install completes, you will have a project, an inventory (consisting of the AAP controller), a credential (the private key from ec2), a job template (which runs a fact gather on the AAP controller) and a schedule that will run the job template every 5 minutes,
 
-. Log in to `https:{{ ec2_name_prefix }}.{{ domain }}:8443` with the username `admin` and the password as configured in `admin_password` field of `agof_vault.yml`. 
+. Log in to `https://aap.{{ ec2_name_prefix }}.{{ domain }}:8443` with the username `admin` and the password as configured in `admin_password` field of `agof_vault.yml`. 
 
 . Under *Resources* > *Projects* verify the project *Ansible GitOps Framework Minimal Demo* is created with status *Successful*.
 

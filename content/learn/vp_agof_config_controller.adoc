@@ -147,7 +147,7 @@ This specifies the organization name stored in a vault for security purposes.
 This is the Ansible Controller's username stored in a vault.
 
 *`controller_password_vault: '{{ admin_password }}'`*:: 
-The password is fetched dynamically from a vault for security purposes.
+The initial admin password that AAP is configured with to allow the controller_username to log in. This particular password is not retrieved from a vault.
 
 === Dynamic variables
 
@@ -158,7 +158,7 @@ The Ansible Controller username is retrieved from the vault variable.
 The password is dynamically fetched from the vault.
 
 === Project configuration
-Projects are collections of playbooks that are stored in a Git repository or SCM. This section can define how projects are configured in the Controller.
+Projects are git repositories that can contain inventories and collections (and collections can contain playbooks). 
 
 *`agof_demo_project_name: 'Ansible GitOps Framework Minimal Demo'`*:: 
 This variable holds the name of the project being managed in the controller.
