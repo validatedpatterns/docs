@@ -4,14 +4,16 @@ PODMAN_OPTS ?= -it --security-opt label=disable --pull=newer --net=host
 
 # Do not use selinux labeling when we are using nfs
 FSTYPE=$(shell df -Th . | grep -v Type | awk '{ print $$2 }')
+UNAME=$(shell uname -s)
 ifeq ($(FSTYPE), nfs)
 	ATTRS = "rw"
 else ifeq ($(FSTYPE), nfs4)
 	ATTRS = "rw"
+else ifeq ($(UNAME), Darwin)
+	ATTRS = "rw"
 else
 	ATTRS = "rw,z"
 endif
-
 ##@ Docs tasks
 
 .PHONY: help
