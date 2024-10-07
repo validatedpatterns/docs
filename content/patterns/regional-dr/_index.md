@@ -18,31 +18,29 @@ links:
 
 ## Background
 
-Regional DR architecture is designed for configuring an infrastructure
-architecture with multiple Openshift Container Platform cluster connected
-between them for offering a disaster recovery setup between regions. Currently,
-only active-passive mode is supported. This architecture increases the
-resiliency and maintains the applications running in the supposed case of an
-entire region fails.
+As more and more institution and mission critical organizations are moving 
+in the cloud, the possible impact of having a provider failure, might this be
+only related to only one region, is very high.
 
-There are two kinds of disaster recovery depending on their scope: Metro DR and
-RegionalDR. As their own name suggests, MetroDR refers about Metropolitan Areas
-disasters, in other words, when the disaster covers only a single area of a
-region (Availability Zone), and Regional DR refers to when the entire region
-fails.
+This pattern is designed to prove the resiliency capabilities of Red Hat Openshift 
+in such scenario. 
 
-The synchronization between Availability Zones is faster and can be performed
-synchronous. However, in order don't include a lot of latency on the data
-synchronization process, when data is replicated across regions, it necessary
-includes latencies based on the distance between both regions (e.g. The latency
-between two regions on Europe, will always be less than between Europe and Asia,
-so consider this when designing your infrastructure deployment on the values
-files of the pattern). This is the main reason because this RegionalDR is
-configured in an Active-Passive mode.
+The Regional Disaster Recovery Pattern, is designed to setup an multiple instances 
+of Openshift Container Platform cluster connectedbetween them to prove multi-region 
+resiliency by maintaing the application running in the event of a regional failure. 
 
-It requires an already existing Openshift cluster, which will be used for installing the
-pattern, deploying active and passive clusters manage the application
-scheduling.
+Openshift Data Foundation, which is based on CEPH, can be setup to work in two ways: 
+MetroDR and RegionalDR. 
+As their name suggests, MetroDR is designed to recover from an Availability Zone Failure
+(one area of the region) and can be performed synchronously, while the RegionalDR is 
+best used when the entire region fails, and due to the higher latencies caused by the 
+physical distance, can only be used asynchronously. 
+
+In this scenario we will be working in a  Regional Disaster Recovery setup, and the 
+synchronization parameters can be specified in the value file. 
+
+NOTE: please consider using longer times if you have a large dataset or very long 
+distances between the clusters
 
 ### Prerequisites
 Before installing this pattern, ensure yourself you have the following
@@ -52,22 +50,27 @@ requirements already prepared before continuing:
 
 ### Solution elements
 
-- Deploying a regional fail resilient architecture for testing, demoing and as an architecture reference
+- The pattern is kick-started by ansible and uses ACM to overlook and orchestrate the process 
+- The demo application uses MongoDB writing its data on a Persistent Volume Claim backe by ODF
+- We have developed a DR trigger which will be used to start the DR process 
+- The end user needs to configure which PV's need synchronization and the latencies 
+- ACS Can be used for eventual policies 
+- The clusters are connected by submariner and, to have a faster recovery time, we suggest having 
+  hybernated clusters ready to be used 
 
 ### Red Hat Technologies
 
 - Red Hat Openshift Container Platform
 - Red Hat Enterprise Linux
+- Red Hat Openshift Advanced Cluster Management
+- Red Hat Openshift Advanced Cluster Security
+- Red Hat Openshift Data Foundation
 
 
 ## Operators and Technologies this Pattern Uses
 
-- Red Hat Openshift Container Platform
-- Red Hat Openshift Data Foundation
 - Red Hat Openshift DR Operator
 - Red Hat Openshift GitOps
-- Red Hat Openshift Advanced Cluster Management
-- Red Hat Openshift Advanced Cluster Security
 - Submariner
 
 ## Tested on
@@ -88,11 +91,11 @@ and Physical perspectives.
 
 ## Installation
 This patterns is designed to be installed in an Openshift cluster which will
-work as the control plane for the rest of Openshift clusters. The controller
-cluster will not execute the applications or store any data from them, but it
-will work as the control panel for the interconnection of active-passive
-clusters, coordinating their communication and orchestrating when and where an
-application is going to be deployed.
+work as the orchestrator for the other clusters involved. The Adanced Cluster Manager 
+installed will neither run the applications nor store any data from them, but it
+will take care of the plumbing of the various clusters involved, 
+coordinating their communication and orchestrating when and where an application is 
+going to be deployed.
 
 As part of the pattern configuration, the administrator needs to define both
 clusters installation details as would be done using the Openshift-installer
