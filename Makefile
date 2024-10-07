@@ -5,10 +5,9 @@ UNAME=$(shell uname -s)
 # Also because of the proxy 127.0.0.1 doesn't work as a bind address.
 ifeq ($(UNAME), Darwin)
 	PODMAN_OPTS ?= -it --security-opt label=disable --pull=newer -p 4000:4000
-	HUGO_SERVER_OPTS = "--bind 0.0.0.0" 
+	HUGO_SERVER_OPTS = --bind 0.0.0.0 
 else
 	PODMAN_OPTS ?= -it --security-opt label=disable --pull=newer --net=host
-	HUGO_SERVER_OPTS = ""
 endif
 # Do not use selinux labeling when we are using nfs
 FSTYPE=$(shell df -Th . | grep -v Type | awk '{ print $$2 }')
