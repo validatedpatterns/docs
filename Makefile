@@ -1,12 +1,22 @@
 HOMEPAGE_CONTAINER ?= quay.io/hybridcloudpatterns/homepage-container:latest
+UNAME=$(shell uname -s)
 
-PODMAN_OPTS ?= -it --security-opt label=disable --pull=newer --net=host
-
+# Can't use host networks on MacOS as it's a VM anyway.
+# Also because of the proxy 127.0.0.1 doesn't work as a bind address.
+ifeq ($(UNAME), Darwin)
+	PODMAN_OPTS ?= -it --security-opt label=disable --pull=newer -p 4000:4000
+	HUGO_SERVER_OPTS = --bind 0.0.0.0 
+else
+	PODMAN_OPTS ?= -it --security-opt label=disable --pull=newer --net=host
+endif
 # Do not use selinux labeling when we are using nfs
 FSTYPE=$(shell df -Th . | grep -v Type | awk '{ print $$2 }')
+
 ifeq ($(FSTYPE), nfs)
 	ATTRS = "rw"
 else ifeq ($(FSTYPE), nfs4)
+	ATTRS = "rw"
+else ifeq ($(UNAME), Darwin)
 	ATTRS = "rw"
 else
 	ATTRS = "rw,z"
@@ -30,7 +40,7 @@ build: ## Build the website locally in the public/ folder
 .PHONY: serve
 serve: ## Build the website locally from a container and serve it
 	@echo "Serving via container. Browse to http://localhost:4000"
-	podman run $(PODMAN_OPTS) -v $(PWD):/site:$(ATTRS) --entrypoint hugo $(HOMEPAGE_CONTAINER) server -p 4000
+	podman run $(PODMAN_OPTS) -v $(PWD):/site:$(ATTRS) --entrypoint hugo $(HOMEPAGE_CONTAINER) server -p 4000 $(HUGO_SERVER_OPTS)
 
 .PHONY: htmltest
 htmltest: build ## Runs htmltest against the site to find broken links

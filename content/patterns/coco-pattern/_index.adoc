@@ -2,7 +2,7 @@
 title: Confidential Containers pattern
 date: 2024-10-03
 tier: sandbox
-summary: This pattern helps you get started with deploying confidential containers in OpenShift Container Platform
+summary: This pattern helps you get started with deploying confidential containers in OpenShift Container Platform.
 rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
@@ -10,22 +10,54 @@ rh_products:
 industries:
 - General
 aliases: /coco-pattern/
-pattern_logo: multicloud-gitops.png
+pattern_logo: coco-logo.png
 links:
   install: coco-getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/coco-pattern/issues
-  repo: https://github.com/validatedpatterns/coco-pattern
-
 ---
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-include::modules/mcg-about-multicloud-gitops.adoc[leveloffset=+1]
+= About coco-pattern
 
-include::modules/mcg-architecture.adoc[leveloffset=+1]
+Confidential computing is a technology for securing data in use. It uses a https://en.wikipedia.org/wiki/Trusted_execution_environment[Trusted Execution Environment] provided within the hardware of the processor to prevent access from others who have access to the system.
+https://confidentialcontainers.org/[Confidential containers] is a project to standardize the consumption of confidential computing by making the security boundary for confidential computing to be a Kubernetes pod. [Kata containers](https://katacontainers.io/) is used to establish the boundary via a shim VM.
+
+This pattern uses https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.7/html/user_guide/deploying-on-azure#deploying-cc_azure-cc[Red Hat OpenShift Sandbox Containers] to deploy and configure confidential containers on Microsoft Azure. 
+
+It deploys three copies of 'Hello OpenShift' to demonstrate some of the security boundaries that enforced with confidential containers.
+
+== Requirements
+
+- An an azure account with the link:./coco-pattern-azure-requirements/[required access rights]
+
+
+== Security considerations
+
+**This pattern is a demonstration only and contains configuration that is not best practice**
+
+- The default configuration deploys everything in a single cluster for testing purposes. The https://www.ietf.org/archive/id/draft-ietf-rats-architecture-22.html[RATS] architecture mandates that the Key Broker Service (e.g. https://github.com/confidential-containers/trustee[Trustee]) is in a trusted security zone.
+- The https://github.com/confidential-containers/trustee/tree/main/attestation-service[Attestation Service] has wide open security policies. 
+
+== Future work
+
+* Deploying the environment the 'Trusted' environment including the KBS on a separate cluster to the secured workloads
+* Deploying to alternative environments supporting confidential computing including bare metal x86 clusters; IBM Cloud; IBM Z
+* Finishing the sample AI application
+
+== Architecture
+
+=== Single Cluster
+
+
+=== Multi-cluster architecture
+
+Work in progress
+
+
 
 [id="next-steps_mcg-index"]
 == Next steps

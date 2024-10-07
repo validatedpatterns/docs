@@ -1,0 +1,17 @@
+---
+title: Getting started
+weight: 10
+aliases: /coco-pattern/coco-pattern-getting-started/
+---
+
+:toc:
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+
+[id="deploying-grcq-pattern"]
+
+
+== 
+
