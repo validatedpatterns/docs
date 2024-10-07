@@ -14,7 +14,7 @@ include::modules/comm-attributes.adoc[]
 
 == About the Ansible GitOps framework (AGOF)for validated patterns
 
-The link:/patterns/ansible-gitops-framework/[Ansible GitOps Framework] provides an extensible framework to do GitOps with https://docs.ansible.com/platform.html[Ansible Automation Platform] (AAP), and as such provides useful facilities for developing patterns (community and validated) that function with Ansible Automation Platform as the GitOps engine.
+The link:/patterns/ansible-gitops-framework/[Ansible GitOps Framework] provides an extensible framework to do GitOps with https://docs.ansible.com/platform.html[Ansible Automation Platform] (AAP). It offers useful facilities for developing patterns (community and validated) that work with AAP as the GitOps engine.
 
 When there is no access to OpenShift Container Platform, AGOF provides a standalone solution for deploying and managing validated patterns. This framework leverages GitOps principles without relying on OpenShift.
 
@@ -26,9 +26,9 @@ The link:https://github.com/validatedpatterns/agof/[Ansible GitOps Framework] re
 
 == Role of the Ansible Controller
 
-In the Ansible GitOps framework, an ansible controller refers to any machine that initiates and runs a playbook. This includes systems running ansible core or open source Ansible, where the machine executing the playbooks also acts as the controller. AAP provides the automation controller which is Red Hat's productized ansible controller. 
+In the Ansible GitOps framework, the Ansible Controller refers to any machine that initiates and runs playbooks. This includes systems running Ansible Core or open source Ansible, where the machine executing the playbooks also acts as the controller. The Ansible Automation Platform (AAP) provides the Automation Controller, which is Red Hat’s productized Ansible Controller.
 
-THe link:https://docs.ansible.com/platform.html[Automation controller] is the command and control center for Red Hat Ansible Automation Platform, replacing Ansible Tower. It includes a webUI, API, role-based access control (RBAC), a workflow visualizer, and continuous integration and continuous delivery (CI/CD) integrations to help you organize and manage automation across your enterprise.
+The link:https://docs.ansible.com/platform.html[Automation controller] is the command and control center for Red Hat Ansible Automation Platform, replacing Ansible Tower. It includes a web UI, API, role-based access control (RBAC), a workflow visualizer, and continuous integration and continuous delivery (CI/CD) integrations to help you organize and manage automation across your enterprise.
 
 The Automation Controller serves as the centralized platform for managing and executing automation across infrastructure. Use the Automation Controller to create job templates that standardize the deployment and execution of Ansible playbooks, making automation more consistent and reusable. It integrates essential components such as execution environments for consistent automation execution, projects (repositories for automation content), inventories (target endpoints), and credentials (for secure access to resources).
 
@@ -40,12 +40,12 @@ The main methods for setting up an Ansible framework are as follows:
 
 [NOTE]
 ====
-This section focussed mainly on the AWS based installation method. 
+The focus here is primarily on the AWS-based installation method. 
 ====
 
 === AWS based install
 
-This method is ideal for organizations that prefer deploying AAP on AWS infrastructure. This default install process in AAP 2.4 uses AWS by default and offers a fully automated setup. It requires AWS credentials, builds an AWS image with Red Hat's ImageBuilder, and sets up AAP within an AWS VPC and subnet. The installation program creates all the necessary resources, including AAP Controllers and, optionally, additional components such as the Automation Hub.
+This method is ideal for organizations deploying AAP on AWS infrastructure. In AAP 2.4, the default installation process uses AWS and offers a fully automated setup. It requires AWS credentials and builds an AWS image with Red Hat’s ImageBuilder, setting up AAP within an AWS VPC and subnet. The installation program creates all necessary resources, including AAP Controllers and, optionally, additional components such as the Automation Hub.
 
 This is the easiest method if you already use AWS, as it automates the provisioning of resources, including VMs and network configurations. This requires AWS infrastructure and credentials.
 
@@ -57,7 +57,7 @@ This method provides maximum flexibility and is designed for advanced users who 
 
 == Creating a validated pattern using the AGOF framework
 
-Whichever method you use to deploy a validated pattern you need to:
+To deploy a validated pattern, follow these steps:
 
 . Clone the link:https://github.com/mhjacks/agof_demo_config[Ansible GitOps Framework Minimal Demo] repository. This is a minimal pattern that demonstrates how to use the Ansible GitOps Framework.
 +
@@ -242,7 +242,7 @@ agof_statedir: "{{ '~/agof' | expanduser }}"
 agof_iac_repo: "https://github.com/mhjacks/agof_demo_config.git"
 ----
 
-. Run from the AGOF repository directory the following command : 
+. Run the following command from the AGOF repository directory: 
 +
 [source,terminal]
 ----
@@ -284,75 +284,7 @@ Once the install completes, you will have a project, an inventory (consisting of
 
 . Under *Views* > *Schedules* verify the schedules are created.
 
-
-=== Method 2: Pre-configured VMs Install
-
-This method allows the installation of AAP on pre-configured Red Hat Enterprise Linux (RHEL) VMs. It requires you to provide an inventory file that specifies details about the VMs or instances where AAP will be installed. 
-
-It is designed for users with existing infrastructure who want to deploy AAP without depending on AWS. If you need to install a pattern on a cluster with a different topology than this, use the API install mechanism.
-
-[source,shell]
-----
-./pattern.sh make legacy_from_os_install INVENTORY=(your_inventory_file)
-----
-
-The path to `your_inventory_file` defaults to `~/inventory_agof` if you do not specify one.
-
-.Example agof_inventory file for just AAP (default)
-
-[source,yaml]
-----
-[build_control]
-localhost
-
-[aap_controllers]
-192.168.5.207
-
-[automation_hub]
-
-[eda_controllers]
-
-[aap_controllers:vars]
-
-[automation_hub:vars]
-
-[all:vars]
-ansible_user=myuser
-ansible_ssh_pass=mypass
-ansible_become_pass=mypass
-ansible_remote_tmp=/tmp/.ansible
-username=myuser
-controller_hostname=192.168.5.207
-----
-
-.Example agof_inventory file including AAP and Hub
-
-[source,yaml]
-----
-[build_control]
-localhost
-
-[aap_controllers]
-192.168.5.207
-
-[automation_hub]
-
-[eda_controllers]
-
-[aap_controllers:vars]
-
-[automation_hub:vars]
-
-[all:vars]
-ansible_user=myuser
-ansible_ssh_pass=mypass
-ansible_become_pass=mypass
-ansible_remote_tmp=/tmp/.ansible
-username=myuser
-controller_hostname=192.168.5.207
-----
-
-=== Method 3: Custom Ansible controller (API install)
+=== Custom Ansible controller (API install)
 
 In this method, you provide an existing Ansible Automation Platform (AAP) Controller endpoint, either on bare metal or in a private cloud, without needing AWS or pre-configured VMs. 
 

@@ -12,7 +12,7 @@ aliases: /ocp-framework/agof/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-== Understanding the Ansible GitOps Framework (AGOF) installation process
+== Overview of the Ansible GitOps Framework (AGOF) Installation Process
 
 The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate the deployment and configuration of Ansible Automation Platform (AAP) environments using  link:https://opengitops.dev/[GitOps principles]. It leverages Ansible to manage infrastructure and application provisioning in a declarative, version-controlled way. AGOF provides a structured approach to setting up cloud infrastructure, installing AAP components, and handing over control to the AAP Controller for ongoing automation and management. An overview of the steps involved in configuring a basic demo minimal demo application are listed here: 
 
@@ -29,17 +29,17 @@ The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate 
 === 3. Handover to Ansible Controller
 
 * *Controller Setup*: The Ansible Automation Platform (AAP) Controller and optionally the Automation Hub are installed and configured. Entitlements are managed through a manifest, and execution environments and collections are downloaded and prepared.
-* *GitOps Mode*: After configuration, AGOF transitions to GitOps mode. Git commits to the repositories by the controller manage all environment changes, ensuring declarative and automated infrastructure management from this point onward.
+* *GitOps Mode*: After configuration, AGOF transitions to GitOps mode. GGit commits made by the controller to the repositories manage all environment changes, ensuring declarative and automated infrastructure management from this point onward.
 
-== Using the Controller Configuration collection
+== Controller configuration collection
 
-An AGOF pattern for example https://github.com/mhjacks/agof_demo_config is primarily an IaC (infrastructure as code) artifact designed to be used with the `controller_configuration` collections. 
+An AGOF pattern, for example, https://github.com/mhjacks/agof_demo_config is primarily an IaC (infrastructure as code) artifact designed to be used with the `controller_configuration` collections. 
 
 The AGOF (Ansible GitOps Framework) repository  https://github.com/validatedpatterns/agof contains the code and tools needed to set up a new Ansible Automation Platform (AAP) instance. This setup is automated, using Infrastructure as Code (IaC) practices. It also includes some specific preferences to make it easier for others to publicly share and manage this type of infrastructure setup.
 
 This approach ensures the automation controller configuration is version-controlled, dynamic, and reproducible. This method enables deployment automation with minimal manual intervention, which is useful for managing multiple controller instances or different environments in a CI/CD pipeline.
 
-For example for the AGOF minimal configuration demo the file https://github.com/mhjacks/agof_demo_config/blob/main/controller_config.yml is used with Ansible's Controller Configuration Collection, allowing the automation and management of Red Hat Ansible Automation Controller (formerly known as Ansible Tower). 
+For example, for the AGOF minimal configuration demo the file https://github.com/mhjacks/agof_demo_config/blob/main/controller_config.yml is used with Ansible's Controller Configuration Collection, allowing the automation and management of Red Hat Ansible Automation Controller (formerly known as Ansible Tower). 
 
 [source,yaml]
 ----
@@ -132,7 +132,7 @@ controller_launch_jobs:
 
 This file automates the creation, updating, or deletion of Ansible Controller objects (organizations, projects, inventories, credentials, templates, schedules). Sensitive information like passwords and keys are pulled dynamically from vaults, ensuring they are not hardcoded in the configuration. 
 
-A a Git repository manages the project’s inventory and playbooks, allowing for continuous integration and delivery (CI/CD) practices. AAP automatically schedules recurring playbook executions, eliminating the need for manual job triggers.
+A Git repository manages the project’s inventory and playbooks, allowing for continuous integration and delivery (CI/CD) practices. AAP automatically schedules recurring playbook executions, eliminating the need for manual job triggers.
 
 == Key sections and parameters 
 
