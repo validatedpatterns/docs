@@ -10,8 +10,77 @@ aliases: /coco-pattern/coco-pattern-getting-started/
 include::modules/comm-attributes.adoc[]
 
 
-[id="deploying-grcq-pattern"]
+== Deploying
+
+1. Install an link:../coco-pattern-azure-requirements/[OpenShift Cluster on Azure] 
+
+2. Update the link:../coco-pattern-azure-requirements/#_azure_configuration_required_for_the_validated_pattern[required Azure configuration and secrets]
+
+3. `./pattern.sh make install`
+
+4. Wait: The cluster needs to reboot all nodes at least once, and reprovision the ingress to use the let's encrypt certificates.
+
+5. If the services do not come up use the ArgoCD UI to triage potential timeouts.
+
+== Simple Confidential container tests
+
+The pattern deploys some simple tests of CoCo with this pattern. 
+A "Hello Openshift" (e.g. `curl` to return "Hello Openshift!") application has been deployed in three form factor.
+
+1. A vanilla kubernetes pod at `oc get pods -n hello-openshift standard`
+2. A confidential container `oc get pods -n hello-openshift secure`
+3. A confidential container with a relaxed policy at `oc get pods -n hello-openshift insecure-policy`
+
+In this case the insecure policy is designed to allow a user to be able to exec into the confidential container. 
+Typically this is disabled by an immutable policy established at pod creation time.
 
 
-== 
+Doing a `oc get pods` for either of the pods running a confidential container should show the `runtimeClassName: kata-remote` for the pod.
+
+// Add a azure portal image grab next boot
+Logging into azure once the pods have been provisioned will show that each of these two pods has been provisioned with it's own `Standard_DC2as_v5` virtual machine.
+
+=== `oc exec` testing
+
+In a OpenShift cluster without confidential containers, Role Based Access Control (RBAC), may be used to prevent users from execing into a container to mutate it.
+However:
+
+1. Cluster admins can always circumvent this capability
+2. Anyone logged into the node directly can also circumvent this capability.
+
+Confidential containers can prevent this. Running: `oc exec -n hello-openshift -it secure -- bash` will result in a denial of access, irrespective of the user undertaking the action, including `kubeadmin`.
+For running this with either the standard pod `oc exec -n hello-openshift -it standard -- bash`, or the CoCo pod with the policy disabled `oc exec -n hello-openshift -it insecure-policy -- bash` will allow shell access.
+
+
+
+=== Confidential Data Hub testing
+
+Part of the CoCo VM is a component called the Confidential Data Hub (CDH), which simplifies access to the Trustee Key Broker service for end applications.
+Find out more about how the CDH and Trustee work together https://www.redhat.com/en/blog/introducing-confidential-containers-trustee-attestation-services-solution-overview-and-use-cases[here].
+
+image::coco-pattern/trustee.png[]
+
+The CDH presents to containers within the pod (only), via a localhost URL. The CoCo container with an insecure policy can be used for testing the behaviour.
+
+
+- `oc exec -n hello-openshift -it insecure-policy -- bash` to get a shell into a confidential container
+
+- https://github.com/validatedpatterns/coco-pattern/blob/main/charts/hub/trustee/templates/kbs.yaml[Trustee's configuration] specifies the list of secrets which the KBS can access with the `kbsSecretResources` attribute.
+
+- Secrets within the CDH can be accessed (by default) at `http://127.0.0.1:8006/cdh/resource/default/$K8S_SECRET/$K8S_SECRET_KEY`.
+
+- In this case `http://127.0.0.1:8006/cdh/resource/default/passphrase/passphrase` by default will return a string which was randomly generated when the pattern was deployed.
+
+- This should be the same as result as `oc get secrets -n trustee-operator-system passphrase -o yaml | yq '.data.passphrase'`
+
+- Tailing the logs for the kbs container e.g. `oc logs -n trustee-operator-system kbs-deployment-5b574bccd6-twjxh -f` shows the evidence which is flowing to the KBS from the CDH.
+
+
+
+
+
+
+
+
+
 

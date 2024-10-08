@@ -26,13 +26,14 @@ include::modules/comm-attributes.adoc[]
 Confidential computing is a technology for securing data in use. It uses a https://en.wikipedia.org/wiki/Trusted_execution_environment[Trusted Execution Environment] provided within the hardware of the processor to prevent access from others who have access to the system.
 https://confidentialcontainers.org/[Confidential containers] is a project to standardize the consumption of confidential computing by making the security boundary for confidential computing to be a Kubernetes pod. [Kata containers](https://katacontainers.io/) is used to establish the boundary via a shim VM.
 
-This pattern uses https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.7/html/user_guide/deploying-on-azure#deploying-cc_azure-cc[Red Hat OpenShift Sandbox Containers] to deploy and configure confidential containers on Microsoft Azure. 
+This pattern uses https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.7/html/user_guide/deploying-on-azure#deploying-cc_azure-cc[Red Hat OpenShift sandbox containers] to deploy and configure confidential containers on Microsoft Azure. 
 
 It deploys three copies of 'Hello OpenShift' to demonstrate some of the security boundaries that enforced with confidential containers.
 
 == Requirements
 
 - An an azure account with the link:./coco-pattern-azure-requirements/[required access rights]
+- An OpenShift cluster, within the Azure environment updated beyond 4.16.10
 
 
 == Security considerations
@@ -59,8 +60,7 @@ Work in progress
 
 
 
-[id="next-steps_mcg-index"]
-== Next steps
 
-* link:mcg-getting-started[Deploy the management hub] using Helm.
-* Add a managed cluster to link:mcg-managed-cluster[deploy the managed cluster piece using ACM].
+== References
+- https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.7/html/user_guide/about-osc#about-confidential-containers_about-osc[OpenShift sandboxed containers documentation]
+- https://www.redhat.com/en/blog/exploring-openshift-confidential-containers-solution[OpenShift confidential containers solution blog]
