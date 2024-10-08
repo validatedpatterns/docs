@@ -71,7 +71,7 @@ The CDH presents to containers within the pod (only), via a localhost URL. The C
 
 - In this case `http://127.0.0.1:8006/cdh/resource/default/passphrase/passphrase` by default will return a string which was randomly generated when the pattern was deployed.
 
-- This should be the same as result as `oc get secrets -n trustee-operator-system passphrase -o yaml | yq '.data.passphrase'`
+- This should be the same as result as `oc get secrets -n trustee-operator-system passphrase -o yaml | yq '.data.passphrase'` | base64 -d`
 
 - Tailing the logs for the kbs container e.g. `oc logs -n trustee-operator-system kbs-deployment-5b574bccd6-twjxh -f` shows the evidence which is flowing to the KBS from the CDH.
 
