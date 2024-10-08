@@ -26,6 +26,11 @@ include::modules/comm-attributes.adoc[]
 Confidential computing is a technology for securing data in use. It uses a https://en.wikipedia.org/wiki/Trusted_execution_environment[Trusted Execution Environment] provided within the hardware of the processor to prevent access from others who have access to the system.
 https://confidentialcontainers.org/[Confidential containers] is a project to standardize the consumption of confidential computing by making the security boundary for confidential computing to be a Kubernetes pod. [Kata containers](https://katacontainers.io/) is used to establish the boundary via a shim VM.
 
+A core goal of confidential computing is to use this technology to isolate the workload from both Kubernetes and hypervisor administrators.
+
+image::coco-pattern/isolation.png[Schematic describing the isolation of confidential contains from the hosting system]
+
+
 This pattern uses https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.7/html/user_guide/deploying-on-azure#deploying-cc_azure-cc[Red Hat OpenShift sandbox containers] to deploy and configure confidential containers on Microsoft Azure. 
 
 It deploys three copies of 'Hello OpenShift' to demonstrate some of the security boundaries that enforced with confidential containers.
@@ -51,12 +56,11 @@ It deploys three copies of 'Hello OpenShift' to demonstrate some of the security
 
 == Architecture
 
-=== Single Cluster
+Confidential Containers typically has two environments. A trusted zone, and an untrusted zone. In these zones, Trustee, and the sandbox container operator are deployed, respectively.
 
+** For demonstration purposes the pattern currently is converged on one cluster**
 
-=== Multi-cluster architecture
-
-Work in progress
+image::coco-pattern/overview-schematic.png[Schematic describing the high level architecture of confidential containers]
 
 
 
