@@ -1,0 +1,183 @@
+---
+ date: 2024-10-12
+ title: Validated Patterns in a disconnected Network
+ summary: Install a Validated Pattern on a disconnected network
+ author: Michele Baldessari
+ blog_tags:
+ - patterns
+ - how-to
+---
+:toc:
+
+== Preamble
+
+This document provides a comprehensive guide on how to deploy a Validated
+Pattern, specifically the Multicloud GitOps solution on OpenShift 4.16, onto an
+OpenShift cluster that has been set up in a disconnected network environment. A
+disconnected network, in this context, refers to an infrastructure that is
+isolated from external internet access, which adds additional complexity to the
+deployment process.
+
+By following this guide, you will learn the necessary steps, best practices,
+and specific configurations required to successfully deploy Multicloud GitOps
+in such an environment. We will cover the prerequisite setup, key components
+involved, and how to manage the constraints posed by the lack of direct
+connectivity to external repositories and services. This ensures that even in a
+restricted, air-gapped network, the deployment of this validated pattern can be
+performed smoothly and securely.
+
+
+== Requirements
+
+* One or more openshift clusters deployed in a disconnected network
+* An OCI-compliant registry that is accessible from the disconnected network
+  (referred to as `registry.internal.disconnected.net` in this article)
+* A Git Repository that is accessible from the disconnected network
+* (Optional) A VM in the disconnected network where we run our commands
+
+We won’t cover here how to deploy openshift in a disconnected network, as there
+is more detailed documentation that can be found
+https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/disconnected_environments/index#about-installing-oc-mirror-v2[here]
+
+== Mirroring
+
+The first step needed to deploy a pattern is mirroring all the needed images.
+In most cases this is a very pattern-dependent process, so the exact list of
+needed images will depend on the pattern, on the openshift version and on the
+needed operators.
+
+In this example we use the tool `oc mirror --v2` (note: it is currently in tech
+preview, but the experience is superior compared to the previous release). Here
+is an example of such a configuration file `imageset-config.yaml`:
+
+[source,yaml]
+----
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v2alpha1
+mirror:
+  platform:
+    graph: true
+    channels:
+    - name: stable-4.16
+      type: ocp
+  operators:
+  - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.16
+    packages:
+      - name: lvms-operator
+      - name: advanced-cluster-management
+        channels:
+          - name: release-2.11
+      - name: multicluster-engine
+        channels:
+          - name: stable-2.6
+      - name: openshift-gitops-operator
+        channels:
+          - name: gitops-1.13
+  - catalog: registry.redhat.io/redhat/community-operator-index:v4.16
+    packages:
+      - name: patterns-operator
+  additionalImages:
+  - name: registry.redhat.io/ubi9/ubi-minimal:latest
+  - name: registry.connect.redhat.com/hashicorp/vault:1.17.6-ubi
+  - name: registry.access.redhat.com/ubi8/httpd-24:1-226
+  - name: ghcr.io/external-secrets/external-secrets:v0.10.2-ubi
+  - name: registry.redhat.io/ansible-automation-platform-24/ee-supported-rhel9:latest
+  # VP charts
+  - name: quay.io/hybridcloudpatterns/acm:0.1.3
+  - name: quay.io/hybridcloudpatterns/clustergroup:0.9.5
+  - name: quay.io/hybridcloudpatterns/gitea:0.0.2
+  - name: quay.io/hybridcloudpatterns/golang-external-secrets:0.1.3
+  - name: quay.io/hybridcloudpatterns/hashicorp-vault:0.1.3
+  - name: quay.io/hybridcloudpatterns/utility-container:latest
+  - name: quay.io/hybridcloudpatterns/imperative-container:v1
+  - name: quay.io/hybridcloudpatterns/pattern-install:0.0.3
+  - name: docker.io/gitea/gitea:1.21.11-rootless
+----
+
+We can use this `imageset-config.yaml` file to mirror the needed images on our
+registry. We assume we have a folder (`/var/cache/oc-mirror`) where the tool can
+locally cache the downloaded images before pushing them to the internal
+registry. We copied the imageset-config.yaml in that folder:
+
+[source,sh]
+----
+oc mirror --config=/var/cache/oc-mirror/imageset-config.yaml \
+    --workspace file:///var/cache/oc-mirror/workspace \
+    docker://registry.internal.disconnected.net --v2
+----
+
+Once this command completes the `registry.internal.disconnected` OCI registry
+will contain the mirrored images. The oc mirror command will generate a few
+yaml files that can be found under `/var/cache/oc-mirror/workspace/working-dir/cluster-resources`.
+
+We need to apply them to our cluster:
+
+[source,sh]
+----
+cd /var/cache/oc-mirror/workspace/working-dir/cluster-resources
+oc apply -f cs-community-operator-index-v4-16.yaml \
+  cs-redhat-operator-index-v4-16.yaml idms-oc-mirror.yaml \
+  itms-oc-mirror.yaml
+----
+
+Once these are applied the cluster will be able to fetch the images from the
+internal disconnected registry.
+
+== Git repository changes
+
+Note that we assume here that the git folder you are working on has the
+`origin` remote pointing to the disconnected git server where you will be
+cloning the pattern from. To verify to which git server a remote is pointing to
+you can run the `git remote -v` command.
+
+We will need to tweak a couple of things so that the pattern is aware of which
+catalog sources in openshift contain the different images. Those names were
+defined in the previous mirroring step in the yaml files under
+`/var/cache/oc-mirror/workspace/working-dir/cluster-resources`.
+
+`values-global.yaml`:
+[source,yaml]
+----
+main:
+  multiSourceConfig:
+    enabled: true
+    clusterGroupChartVersion: "0.9.*"
+    helmRepoUrl: registry.internal.disconnected.net/hybridcloudpatterns
+  patternsOperator:
+    source: cs-community-operator-index-v4-16
+  gitops:
+    operatorSource: cs-redhat-operator-index-v4-16
+----
+
+`values-hub.yaml`:
+[source,yaml]
+----
+acm:
+  mce_operator:
+    source: cs-redhat-operator-index-v4-16
+
+clusterGroup:
+  subscriptions:  
+    acm:
+      name: advanced-cluster-management
+       namespace: open-cluster-management
+       channel: release-2.11
+       source: cs-redhat-operator-index-v4-16
+----
+
+== Deploy the pattern
+
+At this point we can clone Multicloud Gitops on to a VM that lives in the
+disconnected network and deploy the pattern. The only thing we need to do first
+is to point the installation script to the mirrored helm chart inside the
+disconnected registry.
+
+[source,sh]
+----
+# Points to the mirrored VP install chart 
+export PATTERN_DISCONNECTED_HOME=registry.internal.disconnected.net/hybridcloudpatterns
+./pattern.sh make install
+----
+
+After a while the cluster will converge to its desired final state and the
+MultiCloud Gitops pattern will be installed successfully.
