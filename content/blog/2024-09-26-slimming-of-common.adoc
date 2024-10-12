@@ -50,7 +50,7 @@ At this point the pattern's `slimming` branch has the slimmed down version of co
 Then make sure you are using multisource for the clustergroup chart and use the
 `0.9.*` chart.
 
-Note that by default, when unspecificed the default clustergroup chart version when using multisource is `0.8.*`.
+Note that by default, when unspecified the default clustergroup chart version when using multisource is `0.8.*`.
 
 Set the following in `values-global.yaml`:
 

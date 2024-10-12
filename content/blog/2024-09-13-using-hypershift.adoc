@@ -38,7 +38,7 @@ Deploying HyperShift clusters requires the following:
 
 |===
 
-Additonally, you will need:
+Additionally, you will need:
 
 - An openshift cluster that has the multicluster-engine operator deployed and configured
 - You are logged into your management cluster with an appropriately credentialed user
@@ -236,7 +236,7 @@ oc scale --replicas=2 nodepools/<nodepool_name> -n clusters
 ----
 
 After a few minutes the nodepool will scale up the number of compute resources in the nodepool
-[.console-ouput]
+[.console-output]
 [source,bash,subs=attributes+,+macros]
 ----
 NAME                         CLUSTER      DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE
