@@ -1,9 +1,10 @@
 ---
 menu:
   learn:
-    parent: Workflow
+    parent: About Validated Patterns
 title: Validated Pattern tiers
-weight: 61
+weight: 11
+aliases: /about-validated-patterns/about-patterns-tiers-types/
 ---
 
 :toc:
