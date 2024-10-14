@@ -179,7 +179,7 @@ Click the `Load token` link at https://console.redhat.com[console.redhat.com] > 
 
 . Edit the file and add the following:
 
-* `controller_config_dir:` set it's value to `{{ '~/agof_minimal_demo/config' | expanduser }}`.
+* `controller_config_dir:` set it's value to `{{ '~/agof_minimal_demo' | expanduser }}`.
 * `db_password:` sets an appropriate value for the postgres password for the DB instance for example `test`. 
 * `agof_statedir:` set its value to `"{{ '~/agof' | expanduser }}"`
 * `agof_iac_repo:` set its value to `"https://github.com/mhjacks/agof_demo_config.git"`
