@@ -233,7 +233,7 @@ automation_hub_token_vault: '<insert-token-here>'
 #automation_hub_url_certified_vault: 'The private automation hub URL for certified content'
 #automation_hub_url_validated_vault: 'The private automation hub URL for validated content'
 
-controller_config_dir: "{{ '~/agof_minimal_demo/config' | expanduser }}"
+controller_config_dir: "{{ '~/agof_minimal_demo' | expanduser }}"
 
 db_password: 'test'
 
