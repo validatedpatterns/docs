@@ -69,6 +69,7 @@ $ git clone git@github.com:mhjacks/agof_demo_config.git
 This is a minimal pattern that demonstrates how to use the Ansible GitOps Framework.
 
 . Clone the link:https://github.com/validatedpatterns/agof[AGOF] repository by running the following command. 
++
 [source,terminal]
 ----
 $ git clone git@github.com:validatedpatterns/agof.git
