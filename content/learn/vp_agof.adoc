@@ -18,7 +18,7 @@ The link:/patterns/ansible-gitops-framework/[Ansible GitOps Framework] provides 
 
 When there is no access to OpenShift Container Platform, AGOF provides a standalone solution for deploying and managing validated patterns. This framework leverages GitOps principles without relying on OpenShift.
 
-Administrators can use Ansible Automation Platform includes automation controller, a web-based UI interface to define, operate, scale, and delegate automation across their enterprise.
+Administrators can use the Ansible Automation Platform, which includes automation controller, a web-based UI interface to define, operate, scale, and delegate automation across their enterprise.
 
 The repository at https://github.com/validatedpatterns/agof/[Ansible GitOps Framework] provides code for installing VMs on AWS, if needed. It can also be used with existing VMs or a functional AAP Controller endpoint. 
 
@@ -59,19 +59,22 @@ This method provides maximum flexibility and is designed for advanced users who 
 
 To deploy a validated pattern, follow these steps:
 
-. Clone the link:https://github.com/mhjacks/agof_demo_config[Ansible GitOps Framework Minimal Demo] repository. This is a minimal pattern that demonstrates how to use the Ansible GitOps Framework.
+. Clone the link:https://github.com/mhjacks/agof_demo_config[Ansible GitOps Framework Minimal Configuration Demo] repository by running the following command:
 +
 [source,terminal]
 ----
-$ git clone https://github.com/validatedpatterns-demos/agof_minimal_demo.git
+$ git clone git@github.com:mhjacks/agof_demo_config.git
 ----
++
+This is a minimal pattern that demonstrates how to use the Ansible GitOps Framework.
 
-. Clone the link:https://github.com/validatedpatterns/agof[AGOF] repository. This serves as the provisioner for the pattern
-+
+. Clone the link:https://github.com/validatedpatterns/agof[AGOF] repository by running the following command. 
 [source,terminal]
 ----
-$ git clone https://github.com/validatedpatterns-demos/agof_minimal_demo.git
+$ git clone git@github.com:validatedpatterns/agof.git
 ----
++
+This serves as the provisioner for the pattern
 
 === Deploying using the AWS-based install method
 
@@ -83,7 +86,7 @@ This method:
 
 . Deploys AAP on that image using the command line installer. 
 
-. Hands over the configuration of the AAP installation to the specified `controller_config_dir`. 
+. Hands over the configuration of the AAP installation to the specified `agof_controller_config_dir`. 
 
 .Prerequisites
 
@@ -179,7 +182,7 @@ Click the `Load token` link at https://console.redhat.com[console.redhat.com] > 
 
 . Edit the file and add the following:
 
-* `controller_config_dir:` set it's value to `{{ '~/agof_minimal_demo' | expanduser }}`.
+* `agof_controller_config_dir:` set it's value to `{{ '~/agof_minimal_demo' | expanduser }}`.
 * `db_password:` sets an appropriate value for the postgres password for the DB instance for example `test`. 
 * `agof_statedir:` set its value to `"{{ '~/agof' | expanduser }}"`
 * `agof_iac_repo:` set its value to `"https://github.com/mhjacks/agof_demo_config.git"`

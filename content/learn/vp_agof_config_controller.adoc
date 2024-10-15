@@ -72,7 +72,7 @@ controller_projects:
     scm_delete_on_update: "no"
     scm_type: git
     scm_update_on_launch: "yes"
-    scm_url: 'https://github.com/hybrid-cloud-demos/agof_minimal_demo.git'
+    scm_url: 'https://github.com/validatedpatterns-demos/agof_minimal_demo.git'
 
 controller_organizations:
   - name: '{{ orgname_vault }}'
