@@ -1,0 +1,70 @@
+---
+title: Azure requirements
+weight: 10
+aliases: /coco-pattern/coco-pattern-azure-requirements/
+---
+
+:toc:
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+:imagesdir: ../../../images
+= Azure requirements
+
+This demo currently has been tested only on azure.
+The configuration tested used the `openshift-install`.
+https://docs.openshift.com/container-platform/4.16/installing/installing_azure/installing-azure-default.html[OpenShift documentation] contains details on how to do this.
+
+The documentation outlines https://docs.openshift.com/container-platform/4.16/installing/installing_azure/installing-azure-account.html[minimum required configuration] for an azure account.
+
+== Changes required
+
+Do not accept default sizes for OpenShift install. It is recommended to up the workers to at least `Standard_D8s_v5`.
+This can be done by using `openshift-install create install-config` first and adjusting the workers under platform e.g.:
+
+[source,yaml]
+----
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  platform:
+    azure:
+      type: Standard_D8s_v5
+  replicas: 3
+----
+
+On a cloud provider the virtual machines for the kata containers use "peer pods" which are running directly on the cloud provider's hypervisor (see the diagram below).
+This means that access is required to the "confidential computing" virtual machine class. On Azure the `Standard_DCas_v5` class of virtual machines are used.
+These virtual machines are *NOT* available in all regions. Users will also need to up the specific limits for `Standard_DC2as_v5` virtual machines.
+
+image::coco-pattern/peer_pods.png[Schematic diagram of peer pods vs standard kata containers]
+
+DNS for the openshift cluster also *MUST* be provided by azure DNS.
+
+== Azure configuration required for the validated pattern
+
+The validated pattern requires access to azure apis to provision peer-pod VMs and to obtain certificates from let's encrypt.
+
+Azure configuration information must be provided in two places:
+
+- The a secret must be loaded using a ../../../learn/secrets-management-in-the-validated-patterns-framework/[values-secret] file.
+  The https://github.com/validatedpatterns/coco-pattern/blob/main/values-secret.yaml.template[`values-secret.yaml.template`] file provides the appropriate structure
+
+- A broader set of information about the cluster is required in https://github.com/validatedpatterns/coco-pattern/blob/main/values-global.yaml[`values-global.yaml`] (see below).
+
+
+[source,yaml]
+----
+global:
+  azure:
+    clientID: '' # Service principle ID
+    subscriptionID: ''
+    tenantID: '' # Tenant ID
+    DNSResGroup: '' # Resource group for the azure DNS hosted zone
+    hostedZoneName: '' # the hosted zone name
+    clusterResGroup: '' # Resource group of the cluster
+    clusterSubnet: '' # subnet of the cluster
+    clusterNSG: '' # network security group of the worker nodes in the cluster
+    clusterRegion: ''
+----
+
