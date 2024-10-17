@@ -1,3 +1,4 @@
+aaaee
 aab
 aap
 abd
@@ -9,6 +10,7 @@ acs
 activedeadlineseconds
 activemq
 actualweight
+additionalimages
 addon
 addons
 addr
@@ -22,6 +24,7 @@ afnmju
 agentless
 agof
 aiml
+akeyless
 akiaiosfodnn
 akiaiosfodnn7example
 akxxxxxxxxxxxxx
@@ -49,6 +52,7 @@ architecturedetail
 argocd
 argocd's
 argoproj
+arn
 aro
 arptn
 arskhan
@@ -63,6 +67,8 @@ atuc
 auditable
 auth
 authenticators
+autorepair
+autoscaling
 avx
 awk
 awsregion
@@ -82,6 +88,7 @@ bd
 bdo
 beekhof
 bh
+bitnami
 bj
 bjp
 bls
@@ -108,8 +115,10 @@ ceph
 cephfs
 cephobjectstoreuser
 cfengine
+cfg
 cgo
 changelog
+chartversion
 chatbot
 chatqna
 chown
@@ -126,6 +135,9 @@ cloudinituser
 cloudprovider
 clusteradm
 clustergroup
+clustergroupchartgitrevision
+clustergroupchartversion
+clustergroupgitrepourl
 clustergroupname
 clustergroups
 clustername
@@ -157,10 +169,13 @@ configur
 conjur
 containerimage
 controlplane
+controlplaneendpoint
 coreos
 cp
 crd
+crds
 creationdate
+creationtimestamp
 credentialtype
 creds
 crohn's
@@ -265,6 +280,7 @@ efg
 efrqurrkuojrlsqhi
 eg
 ejuat
+elb
 embeddings
 enablement
 endcomment
@@ -293,6 +309,7 @@ facto
 fadc
 fc
 fcb
+fcea
 fdggwhsbykeqocze
 featureful
 ffb
@@ -317,6 +334,7 @@ fsv
 fsync
 fvsm
 fx
+gapped
 gaudi
 gaudillm
 gcp
@@ -326,6 +344,7 @@ genaiexamples
 genrsa
 gf
 gh
+ghcr
 gib
 gid
 gitea
@@ -335,6 +354,7 @@ gitops
 gitopsspec
 gitspec
 gkxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+gmqzd
 godebug
 golang
 googlegroups
@@ -366,6 +386,7 @@ hcp
 hdsr
 helloworld
 helmoverrides
+helmrepourl
 highperformance
 hipaa
 hl
@@ -375,6 +396,7 @@ homebrew
 homeoffice
 hostedcluster
 hostedclusters
+hostingcluster
 hostname
 howto
 hpc
@@ -394,7 +416,9 @@ hypershift
 iaa
 iam
 ib
+ibmcloud
 idempotence
+idms
 idp
 iframe
 ignoredifferences
@@ -402,10 +426,13 @@ iio
 iiuc
 ilkka
 im
+imagedata
 imagepullpolicy
 imageregistry
 imagesdir
 imageserver
+imageset
+imagesetconfiguration
 imagestream
 img
 inferencing
@@ -414,6 +441,7 @@ informa
 informat
 informati
 informatio
+infraid
 infraprovider
 ingester
 ingressgateway
@@ -445,6 +473,7 @@ isnicup
 isr
 istio
 istio's
+itms
 iz
 jaeger
 jboss
@@ -517,6 +546,7 @@ letsencrypt
 leveloffset
 lhipbabbledummyhykhq
 lifecycle
+lifecycle's
 lk
 llm
 llms
@@ -529,15 +559,19 @@ looks
 lookups
 lsv
 lvm
+lvms
 machineapi
 machineconfigpool
 machineconfigs
 machineset
+macos
 macosx
 mailto
 maistra
 makefile
+makefiles
 managedcluster
+managedclusterconditionavailable
 managedclustergroups
 managedclusterinfo
 managedclusters
@@ -582,6 +616,7 @@ mq
 mqtt
 multicloud
 multicluster
+multisource
 multisourceconfig
 musthave
 mustnothave
@@ -590,6 +625,7 @@ mv
 mycluster
 mydomain
 mynamespace
+myorg
 mytest
 namespace
 namespaces
@@ -609,6 +645,8 @@ nim
 nlp
 nodb
 nodejs
+nodepool
+nodepools
 nodeport
 noobaa
 nosql
@@ -658,9 +696,11 @@ operatorframework
 operatorgroup
 operatorgroups
 operatorhub
+operatorsource
 opr
 osspa
 osx
+ouput
 outofsync
 overcommitting
 ovms
@@ -677,6 +717,7 @@ pathed
 patternbranch
 patternrepo
 patternsh
+patternsoperator
 pbivukilnpoe
 pci
 pem
@@ -722,6 +763,7 @@ psql
 pstools
 pubkey
 publickey
+pullsecret
 purpu
 pushsecret
 pushsecrets
@@ -732,6 +774,7 @@ py
 qat
 qatlib
 qe
+qfdya
 ql
 qna
 qtgmclkdlnkwcdpvyxarm
@@ -761,8 +804,10 @@ repo
 repolist
 repo's
 repos
+repourl
 reranked
 reranking
+resourceversion
 resync
 reusability
 revisiontimestamp
@@ -782,6 +827,7 @@ rhpds
 rhsm
 rhsmcredential
 rhvalidatedpatterns
+rhvp
 rickard
 roadmaps
 rolename
@@ -860,7 +906,11 @@ storageclassname
 storagecluster
 stormshift
 strimzi
+sts
+subcommand
 subdirectories
+subdirectory
+subfolder
 submodule
 submoduled
 submodules
@@ -948,6 +998,8 @@ unencrypted
 unschedulable
 unsealvault
 untrusted
+updatingconfig
+updatingversion
 upstreaming
 upstream's
 ure
@@ -981,6 +1033,7 @@ vm
 vms
 vnc
 vnfq
+vnkdn
 vnq
 vnw
 vps
@@ -1005,13 +1058,16 @@ xeon
 xeons
 xlarge
 xmqtbdb
+xnmdr
 xp
 xpq
 xray
 xraylab
 xraylabdb
 xrays
+xsubtree
 xsyyu
+xtheirs
 xxxxxxxx
 xyz
 yaml
