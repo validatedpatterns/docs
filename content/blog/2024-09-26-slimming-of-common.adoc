@@ -134,8 +134,7 @@ clusterGroup:
 It is possible to point the framework directly to a git repository pointing to a helm chart.
 This is especially useful for developing a chart. There are two cases to distinguish here.
 
-. The `clustergroup` chart. This one gets instantiated by the operator, so we need to change things in   the `Pattern` CR.
-Edit the pattern with `oc edit -n openshift-operators patterns` and make sure the Pattern CR has the following:
+. The `clustergroup` chart. Tweak `values-global.yaml` as follows:
 +
 [source,yaml]
 ----
