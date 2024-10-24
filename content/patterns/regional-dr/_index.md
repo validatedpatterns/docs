@@ -16,13 +16,32 @@ links:
 
 # OpenShift Regional DR
 
+## Context
+
+As more and more institution and mission critical organizations are moving 
+in the cloud, the possible impact of having a provider failure, might this be
+only related to only one region, is very high.
+
+This pattern is designed to prove the resiliency capabilities of Red Hat Openshift 
+in such scenario. 
+
+The Regional Disaster Recovery Pattern, is designed to setup an multiple instances 
+of Openshift Container Platform cluster connectedbetween them to prove multi-region 
+resiliency by maintaing the application running in the event of a regional failure. 
+
+In this scenario we will be working in a  Regional Disaster Recovery setup, and the 
+synchronization parameters can be specified in the value file. 
+
+NOTE: please consider using longer times if you have a large dataset or very long 
+distances between the clusters
+
+## Background
+
 The _Regional DR Validated Pattern for [Red Hat OpenShift][ocp]_ increases the resiliency
 of your applications by connecting multiple clusters across different regions. This pattern
 uses [Red Hat Advanced Cluster Management][acm] to offer a
 [Red Hat OpenShift Data Foundation][odf]-based multi-region disaster recovery plan if an
 entire region fails.
-
-## Background
 
 [Red Hat OpenShift Data Foundation][odf] offers two solutions for disaster
 recovery: [Metro DR][mdr] and [Regional DR][rdr]. As their name suggests, _Metro
@@ -68,6 +87,14 @@ The _Regional DR Pattern_ leverages [Red Hat OpenShift Data Foundation][odf]'s
 [Regional DR][rdr] solution, automating applications failover between
 [Red Had Advanced Cluster Management][acm] managed clusters in different regions.
 
+- The pattern is kick-started by ansible and uses ACM to overlook and orchestrate the process 
+- The demo application uses MongoDB writing its data on a Persistent Volume Claim backe by ODF
+- We have developed a DR trigger which will be used to start the DR process 
+- The end user needs to configure which PV's need synchronization and the latencies 
+- ACS Can be used for eventual policies 
+- The clusters are connected by submariner and, to have a faster recovery time, we suggest having 
+  hybernated clusters ready to be used 
+
 ### Red Hat Technologies
 - [Red Hat Openshift Container Platform][ocp]
 - [Red Hat Openshift Data Foundation][odf]
@@ -97,11 +124,11 @@ and Physical perspectives.
 
 ## Installation
 This patterns is designed to be installed in an Openshift cluster which will
-work as the control plane for the rest of Openshift clusters. The controller
-cluster will not execute the applications or store any data from them, but it
-will work as the control panel for the interconnection of active-passive
-clusters, coordinating their communication and orchestrating when and where an
-application is going to be deployed.
+work as the orchestrator for the other clusters involved. The Adanced Cluster Manager 
+installed will neither run the applications nor store any data from them, but it
+will take care of the plumbing of the various clusters involved, 
+coordinating their communication and orchestrating when and where an application is 
+going to be deployed.
 
 As part of the pattern configuration, the administrator needs to define both
 clusters installation details as would be done using the Openshift-installer
