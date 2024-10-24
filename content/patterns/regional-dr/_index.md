@@ -6,7 +6,6 @@ summary: This variant of the Validated Patterns framework deploys a Regional Dis
 rh_products:
 - Red Hat OpenShift Container Platform
 industries:
-aliases: /agof/
 pattern_logo: regional-dr.png
 links:
   install: https://github.com/validatedpatterns/regional-resiliency-pattern
