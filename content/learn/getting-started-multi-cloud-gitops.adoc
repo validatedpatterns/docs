@@ -191,8 +191,19 @@ To know the cluster group name for the patterns that you want to deploy, check t
 
 The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
 
+The deployment will not take long but it should deploy successfully.
+
+Verify that the *hello-world* application deployed successfully as follows:
+
+. Navigate to the *Networking* -> *Routes* menu options.
+
+. Select the *hello-world* *Project*. 
+
+. Click on the *Location URL*. THis should reveal the *Hello World!*
+
 For more information about post-installation instructions for a pattern, see its _Getting started_ page.
 
+Alternatively you can deploy the Multicloud GitOps pattern usung the command line script `pattern.sh`
 
 . Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator].
 
