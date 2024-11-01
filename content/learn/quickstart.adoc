@@ -11,79 +11,176 @@ include::modules/comm-attributes.adoc[]
 
 == Patterns quick start overview
 
-This validated pattern quickstart offers a streamlined guide to deploying predefined, reliable configurations and applications in OpenShift Container Platform, ensuring they meet established standards. It provides step-by-step instructions on setup, prerequisites, and configuration, enabling administrators to deploy tested, supportable patterns quickly. These patterns simplify complex deployments by applying reusable configurations suited to various infrastructure and application needs, allowing users to efficiently deploy, manage, and scale applications with GitOps. This approach also reduces the risks and time associated with custom configurations.
+This validated pattern quickstart offers a streamlined guide to deploying predefined, reliable configurations and applications, ensuring they meet established standards. It provides step-by-step instructions on setup, prerequisites, and configuration, enabling administrators to deploy tested, supportable patterns quickly. These patterns simplify complex deployments by applying reusable configurations suited to various infrastructure and application needs, allowing users to efficiently deploy, manage, and scale applications with GitOps. This approach also reduces the risks and time associated with custom configurations.
 
-There are two ways to deploy validated patterns using the OpenShift-based Validated Patterns framework or the Ansible GitOps Framework (AGOF). The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat. 
+There are two ways to deploy validated patterns: through the OpenShift-based Validated Patterns framework or the Ansible GitOps Framework (AGOF). The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat. 
 
-Each pattern can be deployed using the command line. The only requirement is to have `git` and `podman` installed. See the <<installation_prerequisites>> for more information.
+== Getting Started with Validated Patterns
 
-Patterns deployment requires several tools including Helm to install. However, the validated patterns framework removes the need to install and maintain these tools. The `pattern.sh` script uses a container which includes the necessary tools. The use of that container is why you need to install `podman`.
+This guide steps you through the process of deploying your first validated pattern on an OpenShift cluster. By the end of this guide, you'll have a working instance of the Multicloud GitOps pattern, which serves as an excellent foundation for exploring other patterns.
 
-Check the `values-\*.yaml` for changes that are needed before deployment. After changing the `values-*.yaml` files where needed and pushing them to your git repository, you can run `./pattern.sh make install` from your local repository directory and that will deploy the datacenter/hub cluster for a pattern. Edge clusters are deployed by joining/importing them into ACM on the hub.
+=== What You'll Learn
 
-Alternatively to the `./pattern.sh make install` method, you can use the https://operatorhub.io/operator/patterns-operator[validated pattern operator] available in the OpenShift console.
+. Setting up prerequisites for validated patterns
+. Installing and configuring the Validated Patterns Operator
+. Deploying the Multicloud GitOps pattern
+. Managing secrets and configurations
 
-For information on using the Validated Patterns Operator, see link:/infrastructure/using-validated-pattern-operator/[Using the Validated Pattern Operator].
+== Prerequisites
 
-Follow any other post-install instructions for the pattern on that pattern’s Getting started page.
+Before beginning, ensure you have the following:
 
+=== OpenShift Cluster Requirements
 
-== Prerequisite installation instructions [[installation_prerequisites]]
+* A running OpenShift 4.12 or later
+* Cluster-admin privileges
+* At least 8 CPU cores available
+* Minimum 16GB RAM available
 
-== Tested Operating systems
-The following instructions have been tested on the following operating systems:
+=== Storage Requirements
 
-* Red Hat Enterprise Linux 8 and 9
-* CentOS 8 and 9
-* Fedora 36 and onwards
-* Debian Bookworm
-* Ubuntu 22.04
-* Mac OSX Big Sur and onwards
+* A default storage class configured for dynamic provisioning
+* At least 10GB of available storage
 
-=== Red Hat Enterprise Linux 8 and 9
-Make sure that you have both the `appstream` and the `baseos` repositories configured.
-For example on RHEL 8 you will get the following:
+=== Network Requirements
 
-[source,terminal]
+.For connected environments:
+* Access to public container registries
+* Access to GitHub repositories
+
+.For disconnected environments:
+* Local registry with mirrored operator catalogs
+* Local Git repository with pattern manifests
+* Proper network policies configured
+
+== Getting Started with Multicloud GitOps
+
+=== What is Multicloud GitOps?
+
+Multicloud GitOps is a foundational pattern that demonstrates GitOps principles for managing applications across multiple clusters. It provides:
+
+* A GitOps framework using ArgoCD
+* Infrastructure-as-Code practices
+* Multi-cluster management capabilities
+* Template for secure secret management
+
+=== Why Start with this Pattern?
+
+The Multicloud GitOps pattern is recommended as your first pattern because:
+
+. It establishes core GitOps practices
+. Provides a minimal but complete implementation
+. Serves as a foundation for other patterns
+. Demonstrates key validated patterns concepts
+
+[NOTE]
+====
+Other patterns build upon these concepts, making this an ideal starting point for your validated patterns journey.
+====
+
+== Installing the Validated Patterns Operator
+
+. Navigate to the OpenShift OperatorHub
+. Search for "Validated Patterns Operator"
+. Click "Install"
+. Select installation mode:
++
+[source,yaml]
 ----
-sudo dnf repolist
-Updating Subscription Management repositories.
-repo id                               repo name
-rhel-8-for-x86_64-appstream-rpms      Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
-rhel-8-for-x86_64-baseos-rpms         Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
+Installation Mode: All namespaces
+Installed Namespace: openshift-operators
+Update Channel: stable
+Approval Strategy: Automatic
 ----
 
-Install `podman` and `git`:
+== Installing the Multicloud GitOps Pattern
 
-[source,terminal]
-----
-sudo dnf install -y podman git
-----
+=== Creating the Pattern Custom Resource
 
-=== Fedora
-Install `podman` and `git`:
-
-[source,terminal]
+. Create a new YAML file named `pattern-cr.yaml`:
++
+[source,yaml]
 ----
-sudo dnf install -y podman git
-----
-
-=== Debian and derivatives
-Install `podman` and `git`:
-
-[source,terminal]
-----
-sudo apt-get install -y podman git
+apiVersion: ran.openshift.io/v1beta1
+kind: Pattern
+metadata:
+  name: multicloud-gitops
+  namespace: patterns
+spec:
+  version: latest
+  gitSpec:
+    targetRepo: https://github.com/validatedpatterns/multicloud-gitops
+    targetBranch: main
 ----
 
-=== Mac OSX
-Install `podman` and `git`:
+. Apply the Custom Resource:
++
+[source,bash]
+----
+oc apply -f pattern-cr.yaml
+----
 
-[source,terminal]
+=== Verifying the Installation
+
+Monitor the deployment:
+
+[source,bash]
 ----
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install podman git
-# Containers on MacOSX run in a VM which is managed by "podman machine" commands
-podman machine init -v ${HOME}:${HOME} -v /private/tmp/:/private/tmp
-podman machine start
+oc get pods -n patterns
+oc get applications -n openshift-gitops
 ----
+
+== Configuring Secrets
+
+Secret management in validated patterns follows GitOps best practices while maintaining security. Here's how to configure your secrets:
+
+=== Using Vault for Secret Management
+
+. Access the Vault instance deployed by the pattern
+. Initialize Vault and obtain root tokens
+. Configure secret engines:
++
+[source,bash]
+----
+vault secrets enable -path=secret kv-v2
+----
+
+=== Storing Pattern Secrets
+
+. Create a new secret:
++
+[source,bash]
+----
+vault kv put secret/pattern-name/credentials \
+  username="admin" \
+  password="secure-password"
+----
+
+. Reference secrets in your GitOps configurations:
++
+[source,yaml]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pattern-secret
+stringData:
+  credentials: ${vault:secret/data/pattern-name/credentials}
+----
+
+[TIP]
+====
+For more detailed information about secret management, refer to the comprehensive guide at https://validatedpatterns.io/learn/
+====
+
+== Next Steps
+
+* Explore the deployed components in your OpenShift console
+* Review the GitOps repositories created by the pattern
+* Try modifying the configuration to understand the GitOps workflow
+* Consider exploring other validated patterns that build on this foundation
+
+[IMPORTANT]
+====
+Remember to consult the official documentation at validatedpatterns.io for detailed information about specific features and advanced configurations.
+====
