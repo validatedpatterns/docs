@@ -1,10 +1,10 @@
 ---
 menu:
   learn:
-    parent: Infrastructure
+    parent: Patterns quick start
 title: Using the Validated Patterns Operator
 aliases: /infrastructure/using-validated-pattern-operator/
-weight: 50
+weight: 20
 ---
 
 :toc:
