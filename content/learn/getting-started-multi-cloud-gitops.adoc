@@ -44,7 +44,7 @@ Other patterns build upon these concepts, making this an ideal starting point fo
 +
 [source,terminal]
 ----
-oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,DEFAULT:.metadata.annotations."storageclass\.kubernetes\.io/is-default-class"
+$ oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,DEFAULT:.metadata.annotations."storageclass\.kubernetes\.io/is-default-class"
 ----
 +
 * Optional: A second OpenShift cluster for multicloud demonstration.
@@ -58,12 +58,37 @@ public or private cloud by using https://console.redhat.com/openshift/create[Red
 
 .Procedure
 
-. Fork the https://github.com/validatedpatterns/multicloud-gitops[multicloud-gitops] repository on GitHub.
-. Clone the forked copy of this repository.
+. From the https://github.com/validatedpatterns/multicloud-gitops[multicloud-gitops] repository on GitHub, click the Fork button.
+
+. Clone the forked copy of this repository by running the following command.
 +
 [source,terminal]
 ----
-$ git clone git@github.com:your-username/multicloud-gitops.git
+$ git clone git@github.com:<your-username>/multicloud-gitops.git
+----
+
+. Run the following command to set the upstream repository:
++
+[source,terminal]
+----
+$ git remote add -f upstream git@github.com/validatedpatterns/multicloud-gitops.git 
+----
+
+. Verify the setup of your remote repositories by running the following command:
++
+[source,terminal]
+----
+$ git remote -v
+----
++
+.Example output
++
+[source,terminal]
+----
+origin	git@github.com:<your-username>/multicloud-gitops.git (fetch)
+origin	git@github.com:<your-username>/multicloud-gitops.git (push)
+upstream	https://github.com/validatedpatterns/multicloud-gitops.git (fetch)
+upstream	https://github.com/validatedpatterns/multicloud-gitops.git (push)
 ----
 
 . Create a local copy of the secret values file that can safely include credentials. Run the following commands:
@@ -72,45 +97,20 @@ $ git clone git@github.com:your-username/multicloud-gitops.git
 ----
 $ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
 ----
-+
-[source,terminal]
-----
-$ vi ~/values-secret-multicloud-gitops.yaml
-----
-+
-[WARNING]
-====
-Do not commit this file. You do not want to push personal credentials to GitHub. If you do not want to customize the secrets, these steps are not needed. The framework generates a random password for the `config-demo` application.
-====
 
-. Customize the deployment for your cluster. Run the following command:
-+
-[source,terminal]
-----
-$ git checkout -b my-branch
-----
-+
-[source,terminal]
-----
-$ vi values-global.yaml
-----
-+
-[source,terminal]
-----
-$ git add values-global.yaml
-----
-+
-[source,terminal]
-----
-$ git commit values-global.yaml
-----
+. Push your local branch named `my-branch` to the remote repository specified by origin by running the following command:
 +
 [source,terminal]
 ----
 $ git push origin my-branch
 ----
++
+[NOTE]
+====
+The idea of creating a local branch and pushing this to origin allows you scope to customize the base Multicloud GitOps. 
+====
 
-You can install the Multicloud GitOps pattern by using the web console or from command line. 
+You can proceed to install the Multicloud GitOps pattern by using the web console or from command line. 
 
 To install the Multicloud GitOps pattern by using the the web console you must first install the Validated Patterns Operator. The Validated Patterns Operator installs and manages Validated Patterns. 
 
@@ -119,7 +119,7 @@ To install the Multicloud GitOps pattern by using the the web console you must f
 == Installing the {validated-patterns-op}
 
 .Prerequisites
-* Access to an {ocp} cluster using an account with cluster-admin permissions.
+* Access to an {ocp} cluster using an account with `cluster-admin` permissions.
 
 .Procedure
 
@@ -184,7 +184,6 @@ To know the cluster group name for the patterns that you want to deploy, check t
 . Leave *In Cluster Git Server* unchanged. 
 .. Change the *Target Repo* URL to your forked repository URL. For example, change `+https://github.com/validatedpatterns/<pattern_name>+` to `+https://github.com/<your-git-username>/<pattern-name>+`
 .. Optional: You might need to change the *Target Revision* field. The default value is `HEAD`. However, you can also provide a value for a branch, tag, or commit that you want to deploy. For example, `v2.1`, `main`, or a branch that you created, `my-branch`.
-. Ensure that you have made any required changes to your `values-*.yaml` files locally and pushed them to your forked repository on the correct branch or target that you chose in the previous step.
 . Click *Create*.
 
 .Verification
@@ -199,7 +198,7 @@ Verify that the *hello-world* application deployed successfully as follows:
 
 . Select the *hello-world* *Project*. 
 
-. Click on the *Location URL*. THis should reveal:
+. Click on the *Location URL*. This should reveal the following:
 +
 [source,terminal]
 ----
@@ -250,8 +249,3 @@ image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
 
 
 As part of this pattern, HashiCorp Vault has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
-
-
-You can use the {validated-patterns-op} to install and manage {solution-name-upstream}. Use the {hybrid-console-first} to install the {validated-patterns-op}. After installing the Operator, you can create an instance where you can specify the details for your pattern. The {validated-patterns-op} then installs and manages the required assets and artifacts that the pattern requires.
-
-
