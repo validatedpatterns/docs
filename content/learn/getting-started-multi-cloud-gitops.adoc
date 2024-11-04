@@ -171,7 +171,7 @@ The {validated-patterns-op} is successfully installed in the relevant namespace.
 . Click the installed *{validated-patterns-op}*.
 
 . Under the *Details* tab, in the *Provided APIs* section, in the
-*Pattern* box, click *Create Instance* that displays the *Create Pattern* page.
+*Pattern* box, click *Create instance* that displays the *Create Pattern* page.
 
 . On the the *Create Pattern* page, select *Form view* and enter information in the following fields:
 
@@ -199,11 +199,19 @@ Verify that the *hello-world* application deployed successfully as follows:
 
 . Select the *hello-world* *Project*. 
 
-. Click on the *Location URL*. THis should reveal the *Hello World!*
+. Click on the *Location URL*. THis should reveal:
++
+[source,terminal]
+----
+Hello World!
 
+Hub Cluster domain is 'apps.aws-hub-cluster.openshift.org'
+Pod is running on Local Cluster Domain 'apps.aws-hub-cluster.openshift.org'
+----
++ 
 For more information about post-installation instructions for a pattern, see its _Getting started_ page.
 
-Alternatively you can deploy the Multicloud GitOps pattern usung the command line script `pattern.sh`
+Alternatively you can deploy the Multicloud GitOps pattern by using the command line script `pattern.sh`
 
 . Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator].
 
