@@ -110,13 +110,13 @@ $ git push origin my-branch
 The idea of creating a local branch and pushing this to origin allows you scope to customize the base Multicloud GitOps. 
 ====
 
-You can proceed to install the Multicloud GitOps pattern by using the web console or from command line. 
+You can proceed to install the Multicloud GitOps pattern by using the web console or from command line by using the script `./pattern.sh` script. 
 
 To install the Multicloud GitOps pattern by using the the web console you must first install the Validated Patterns Operator. The Validated Patterns Operator installs and manages Validated Patterns. 
 
 //Include Procedure module here
 [id="installing-validated-patterns-operator_{context}"]
-== Installing the {validated-patterns-op}
+== Installing the {validated-patterns-op} using the web console
 
 .Prerequisites
 * Access to an {ocp} cluster using an account with `cluster-admin` permissions.
@@ -186,11 +186,69 @@ To know the cluster group name for the patterns that you want to deploy, check t
 .. Optional: You might need to change the *Target Revision* field. The default value is `HEAD`. However, you can also provide a value for a branch, tag, or commit that you want to deploy. For example, `v2.1`, `main`, or a branch that you created, `my-branch`.
 . Click *Create*.
 
-.Verification
-
 The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
 
+The `config-demo` project when viewed through the *Hub ArgoCD* UI from the nines menu is stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console. 
+
+* Run the following command to load the secrets into the vault:
++
+[source,terminal]
+----
+$ /pattern.sh make load-secrets
+----
++
+[NOTE]
+====
+You must have created a local copy of the secret values file by running the following command:
+
+[source,terminal]
+----
+./pattern.sh make load-secrets
+----
+====
+
 The deployment will not take long but it should deploy successfully.
+
+Alternatively you can deploy the Multicloud GitOps pattern by using the command line script `pattern.sh`
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the cluster by using the pattern.sh file
+
+To deploy the cluster by using the `pattern.sh` file, complete the following steps:
+
+. Log in to your cluster by running the following command:
++
+[source,terminal]
+----
+$ oc login
+----
++
+Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
++
+[source,terminal]
+----
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster. Run the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
+
+. Verify that the Operators have been installed.
+ .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
+ .. Check that the Operator is installed in the `openshift-operators` namespace and its status is `Succeeded`.
+. Verify that all applications are synchronized. Under the project `multicloud-gitops-hub` click the URL for the `hub` gitops `server`. The Vault application is not synched.
++
+image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
+
+As part of installing by using the script `pattern.sh` pattern, HashiCorp Vault is installed. the load-secrets makefile target. Running `./pattern.sh make install` also calls the `load-secrets` makefile target. This `load-secrets` target looks for a yaml file describing the secrets to be loaded into vault and in case it cannot find one it will use the `values-secret.yaml.template` file in the git repo to try and generate random secrets.
+
+For more information, see section on https://validatedpatterns.io/secrets/vault/[Vault].
+
+.Verification
 
 Verify that the *hello-world* application deployed successfully as follows:
 
@@ -207,45 +265,18 @@ Hello World!
 Hub Cluster domain is 'apps.aws-hub-cluster.openshift.org'
 Pod is running on Local Cluster Domain 'apps.aws-hub-cluster.openshift.org'
 ----
-+ 
-For more information about post-installation instructions for a pattern, see its _Getting started_ page.
 
-Alternatively you can deploy the Multicloud GitOps pattern by using the command line script `pattern.sh`
+Verify that the *config-demo* application deployed successfully as follows:
 
-. Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator].
+. Navigate to the *Networking* -> *Routes* menu options.
 
-[id="deploying-cluster-using-patternsh-file"]
-== Deploying the cluster by using the pattern.sh file
+. Select the *config-demo* *Project*. 
 
-To deploy the cluster by using the `pattern.sh` file, complete the following steps:
-
-. Login to your cluster by running the following command:
+. Click on the *Location URL*. This should reveal the following:
 +
 [source,terminal]
 ----
- oc login
+Hub Cluster domain is 'apps.ci-ln-b7ib8bt-76ef8.aws-2.ci.openshift.org'
+Pod is running on Local Cluster Domain 'apps.ci-ln-b7ib8bt-76ef8.aws-2.ci.openshift.org'
+The secret is secret
 ----
-+
-Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
-+
-[source,terminal]
-----
- export KUBECONFIG=~/<path_to_kubeconfig>
-----
-
-. Deploy the pattern to your cluster. Run the following command:
-+
-[source,terminal]
-----
- ./pattern.sh make install
-----
-
-. Verify that the Operators have been installed.
- .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
- .. Check that the Operator is installed in the `openshift-operators` namespace and its status is `Succeeded`.
-. Verify that all applications are synchronized. Under the project `multicloud-gitops-hub` click the URL for the `hub` gitops `server`. The Vault application is not synched.
-+
-image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
-
-
-As part of this pattern, HashiCorp Vault has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
