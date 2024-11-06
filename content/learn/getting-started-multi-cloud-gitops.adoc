@@ -203,7 +203,7 @@ You must have created a local copy of the secret values file by running the foll
 
 [source,terminal]
 ----
-./pattern.sh make load-secrets
+$ ./pattern.sh make load-secrets
 ----
 ====
 
@@ -248,7 +248,7 @@ As part of installing by using the script `pattern.sh` pattern, HashiCorp Vault 
 
 For more information, see section on https://validatedpatterns.io/secrets/vault/[Vault].
 
-.Verification
+.Verification of test pages
 
 Verify that the *hello-world* application deployed successfully as follows:
 
