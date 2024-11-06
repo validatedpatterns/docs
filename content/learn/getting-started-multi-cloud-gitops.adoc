@@ -209,7 +209,7 @@ $ ./pattern.sh make load-secrets
 
 The deployment will not take long but it should deploy successfully.
 
-Alternatively you can deploy the Multicloud GitOps pattern by using the command line script `pattern.sh`
+Alternatively you can deploy the Multicloud GitOps pattern by using the command line script `pattern.sh`. 
 
 [id="deploying-cluster-using-patternsh-file"]
 == Deploying the cluster by using the pattern.sh file
@@ -244,7 +244,7 @@ $ ./pattern.sh make install
 +
 image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
 
-As part of installing by using the script `pattern.sh` pattern, HashiCorp Vault is installed. the load-secrets makefile target. Running `./pattern.sh make install` also calls the `load-secrets` makefile target. This `load-secrets` target looks for a yaml file describing the secrets to be loaded into vault and in case it cannot find one it will use the `values-secret.yaml.template` file in the git repo to try and generate random secrets.
+As part of installing by using the script `pattern.sh` pattern, HashiCorp Vault is installed. Running `./pattern.sh make install` also calls the `load-secrets` makefile target. This `load-secrets` target looks for a yaml file describing the secrets to be loaded into vault and in case it cannot find one it will use the `values-secret.yaml.template` file in the git repo to try and generate random secrets.
 
 For more information, see section on https://validatedpatterns.io/secrets/vault/[Vault].
 
@@ -276,7 +276,7 @@ Verify that the *config-demo* application deployed successfully as follows:
 +
 [source,terminal]
 ----
-Hub Cluster domain is 'apps.ci-ln-b7ib8bt-76ef8.aws-2.ci.openshift.org'
-Pod is running on Local Cluster Domain 'apps.ci-ln-b7ib8bt-76ef8.aws-2.ci.openshift.org'
+Hub Cluster domain is 'apps.aws-hub-cluster.openshift.org'
+Pod is running on Local Cluster Domain 'apps.aws-hub-cluster.openshift.org'
 The secret is secret
 ----
