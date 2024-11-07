@@ -34,7 +34,7 @@ Kubernetes-native way.
 In this blog post, we will explore the various options that are available as of
 today in the Validated Patterns framework for enforcing sequencing for subscriptions.
 Inside applications, Validated Patterns has supported these primitives since the first
-release of Medical Diagnosis.
+release of Medical Diagnosis, and will continue to do so.
 
 Since the focus of Validated Patterns on OpenShift is the OpenShift GitOps Operator, these
 capabilities rely on the use of resource hooks, described in the upstream docs https://argo-cd.readthedocs.io/en/stable/user-guide/resource_hooks/[here].
