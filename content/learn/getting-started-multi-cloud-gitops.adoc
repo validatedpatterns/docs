@@ -47,6 +47,16 @@ Other patterns build upon these concepts, making this an ideal starting point fo
 $ oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,DEFAULT:.metadata.annotations."storageclass\.kubernetes\.io/is-default-class"
 ----
 +
+.Example output
++
+[source,terminal]
+----
+NAME      PROVISIONER       DEFAULT
+gp2-csi   ebs.csi.aws.com   <none>
+gp3-csi   ebs.csi.aws.com   true
+
+----
+
 * Optional: A second OpenShift cluster for multicloud demonstration.
 //Replaced git and podman prereqs with the tooling dependencies page
 * https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
@@ -104,12 +114,13 @@ upstream	https://github.com/validatedpatterns/multicloud-gitops.git (push)
 ----
 $ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
 ----
++
 [NOTE]
 ====
 The `values-secret.yaml` file is placed in your home directory so that it does not get pushed to your git repository. It is based on the `values-secrets.yaml.template` file provided by the pattern in the top level directory. When you create your own patterns you will add your secrets to this file and save. At the moment the focus is on getting started abd familiar with this base Multicloud GitOps pattern. 
 ====
 
-. Create a new feature branch, for example `my-branch` from the main branch for your content:
+. Create a new feature branch, for example `my-branch` from the `main` branch for your content:
 +
 [source,terminal]
 ----
@@ -211,9 +222,9 @@ A pop up may throw up an error `"Oh no! Something went wrong`. It is safe to ign
 
 The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
 
-The `config-demo` project when viewed through the *Hub ArgoCD* UI from the nines menu is stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console. 
+The `config-demo` project when viewed through the *Hub ArgoCD* UI from the nines menu is stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console.
 
-* Run the following command to load the secrets into the vault:
+* To resolve this you need to run the following to load the secrets into the vault:
 +
 [source,terminal]
 ----
@@ -226,7 +237,7 @@ You must have created a local copy of the secret values file by running the foll
 
 [source,terminal]
 ----
-$ ./pattern.sh make load-secrets
+$ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
 ----
 ====
 
@@ -301,5 +312,5 @@ Verify that the *config-demo* application deployed successfully as follows:
 ----
 Hub Cluster domain is 'apps.aws-hub-cluster.openshift.org'
 Pod is running on Local Cluster Domain 'apps.aws-hub-cluster.openshift.org'
-The secret is secret
+The secret is `secret`
 ----
