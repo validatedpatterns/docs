@@ -67,6 +67,13 @@ public or private cloud by using https://console.redhat.com/openshift/create[Red
 $ git clone git@github.com:<your-username>/multicloud-gitops.git
 ----
 
+. Navigate to your repository: Ensure you are in the root directory of your Git repository by using:
++
+[source,terminal]
+----
+$ cd /path/to/your/repository 
+----
+
 . Run the following command to set the upstream repository:
 +
 [source,terminal]
@@ -96,6 +103,17 @@ upstream	https://github.com/validatedpatterns/multicloud-gitops.git (push)
 [source,terminal]
 ----
 $ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
+----
+[NOTE]
+====
+The `values-secret.yaml` file is placed in your home directory so that it does not get pushed to your git repository. It is based on the `values-secrets.yaml.template` file provided by the pattern in the top level directory. When you create your own patterns you will add your secrets to this file and save. At the moment the focus is on getting started abd familiar with this base Multicloud GitOps pattern. 
+====
+
+. Create a new feature branch, for example `my-branch` from the main branch for your content:
++
+[source,terminal]
+----
+$ git checkout -b my-branch main
 ----
 
 . Push your local branch named `my-branch` to the remote repository specified by origin by running the following command:
@@ -185,6 +203,11 @@ To know the cluster group name for the patterns that you want to deploy, check t
 .. Change the *Target Repo* URL to your forked repository URL. For example, change `+https://github.com/validatedpatterns/<pattern_name>+` to `+https://github.com/<your-git-username>/<pattern-name>+`
 .. Optional: You might need to change the *Target Revision* field. The default value is `HEAD`. However, you can also provide a value for a branch, tag, or commit that you want to deploy. For example, `v2.1`, `main`, or a branch that you created, `my-branch`.
 . Click *Create*.
++
+[NOTE]
+====
+A pop up may throw up an error `"Oh no! Something went wrong`. It is safe to ignore this as the install of the Multicloud GitOps pattern appears unaffected. Watch the ArgoCD instances from the *Hub ArgoCD* UI in the nines menu. They will report progressing/healthy etc. on each of the apps they manage. The *Cluster Argo CD* will have the detailed status on each of the apps defined as such in the clustergroup values file. 
+====
 
 The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
 
@@ -194,7 +217,7 @@ The `config-demo` project when viewed through the *Hub ArgoCD* UI from the nines
 +
 [source,terminal]
 ----
-$ /pattern.sh make load-secrets
+$ ./pattern.sh make load-secrets
 ----
 +
 [NOTE]
@@ -254,7 +277,7 @@ Verify that the *hello-world* application deployed successfully as follows:
 
 . Navigate to the *Networking* -> *Routes* menu options.
 
-. Select the *hello-world* *Project*. 
+. From the *Project:* drop down select the *hello-world* project. 
 
 . Click on the *Location URL*. This should reveal the following:
 +
