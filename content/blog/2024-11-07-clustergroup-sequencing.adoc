@@ -81,8 +81,6 @@ apply resources in. The mechanism is described in the ArgoCD upstream docs https
 resources in the numerically next sync-wave are synced. This mechanism gives us a way of having ArgocD help us enforce
 order with objects that it manages.
 
-We can now add sync-waves to Kubernetes manifests in annotations.
-
 == Solution 1: Sync-Waves for Subscriptions in clusterGroup
 
 The Validated Patterns framework now allows Kubernetes https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/[annotations] to be added directly to subscription objects in the clusterGroup. ArgoCD uses annotations
@@ -272,14 +270,14 @@ to "see" and use that storageclass as its default virtualization storage class.
 
 Each subscription is permitted one sequenceJob. Each sequenceJob may have the following attributes:
 
-* syncWave: Defaults to the subscription's syncwave from annotations.
-* resourceType: Resource kind for the resource to watch for.
-* resourceName: Name of the resource to watch for.
-* resourceNamespace: Namespace to watch for the resourceType and resourceName in.
-* hookType: Any of the permissible ArgoCD Resource Hook types. Defaults to "Sync".
-* image: Image of the container to use for the job. Defaults to the Validated Patterns imperative image.
-* command: Command to run inside the container, if the default is not suitable. This also enables you to specify multiple resources to watch for in the same job, or to look for a different condition altogether.
-* disabled: Set this to true in an override if you wish to disable the sequenceJob for some reason (such as running on
+* *syncWave*: Defaults to the subscription's syncwave from annotations.
+* *resourceType*: Resource kind for the resource to watch for.
+* *resourceName*: Name of the resource to watch for.
+* *resourceNamespace*: Namespace to watch for the resourceType and resourceName in.
+* *hookType*: Any of the permissible ArgoCD Resource Hook types. Defaults to "Sync".
+* *image*: Image of the container to use for the job. Defaults to the Validated Patterns imperative image.
+* *command*: Command to run inside the container, if the default is not suitable. This also enables you to specify multiple resources to watch for in the same job, or to look for a different condition altogether.
+* *disabled*: Set this to true in an override if you wish to disable the sequenceJob for some reason (such as running on
 a different version of OpenShift or running on a different cloud platform).
 
 If the sequenceJob is not sufficient for your sequencing needs, we have a more generic interface that you can use
