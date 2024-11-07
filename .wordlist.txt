@@ -502,6 +502,8 @@ kafkatopic
 kafkatopics
 kam
 kamelet
+kasten
+kastendr
 keycloak
 keypair
 keypairs
@@ -1025,6 +1027,7 @@ vdjtkgams
 vdvkgdtuxkeqf
 vectordb
 vectorized
+veeam
 vfio
 vhjpkievife
 virtualmachine
