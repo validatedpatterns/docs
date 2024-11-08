@@ -112,17 +112,11 @@ kind: Subscription
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "10"
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"operators.coreos.com/v1alpha1","kind":"Subscription","metadata":{"annotations":{"argocd.argoproj.io/sync-wave":"10"},"labels":{"app.kubernetes.io/instance":"ansible-edge-gitops-hub"},"name":"kubevirt-hyperconverged","namespace":"openshift-cnv"},"spec":{"channel":"stable","installPlanApproval":"Automatic","name":"kubevirt-hyperconverged","source":"redhat-operators","sourceNamespace":"openshift-marketplace"}}
-  creationTimestamp: "2024-11-07T14:24:31Z"
-  generation: 1
   labels:
     app.kubernetes.io/instance: ansible-edge-gitops-hub
     operators.coreos.com/kubevirt-hyperconverged.openshift-cnv: ""
   name: kubevirt-hyperconverged
   namespace: openshift-cnv
-  resourceVersion: "46763"
-  uid: e9b3892c-9383-41ca-9e8f-ae7be82f012f
 spec:
   channel: stable
   installPlanApproval: Automatic
@@ -135,17 +129,11 @@ kind: Subscription
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "5"
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"operators.coreos.com/v1alpha1","kind":"Subscription","metadata":{"annotations":{"argocd.argoproj.io/sync-wave":"5"},"labels":{"app.kubernetes.io/instance":"ansible-edge-gitops-hub"},"name":"odf-operator","namespace":"openshift-storage"},"spec":{"installPlanApproval":"Automatic","name":"odf-operator","source":"redhat-operators","sourceNamespace":"openshift-marketplace"}}
-  creationTimestamp: "2024-11-07T14:21:12Z"
-  generation: 1
   labels:
     app.kubernetes.io/instance: ansible-edge-gitops-hub
     operators.coreos.com/odf-operator.openshift-storage: ""
   name: odf-operator
   namespace: openshift-storage
-  resourceVersion: "56652"
-  uid: 2d9f026f-50e6-4fc1-ad11-8a6a2a636017
 spec:
   installPlanApproval: Automatic
   name: odf-operator
@@ -207,16 +195,10 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/sync-wave: "5"
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"batch/v1","kind":"Job","metadata":{"annotations":{"argocd.argoproj.io/hook":"Sync","argocd.argoproj.io/sync-wave":"5"},"labels":{"app.kubernetes.io/instance":"ansible-edge-gitops-hub"},"name":"odf-operator-sequencejob","namespace":"openshift-operators"},"spec":{"completions":1,"parallelism":1,"template":{"spec":{"containers":[{"command":["/bin/bash","-c","while [ 1 ];\ndo\n  oc get sc ocs-storagecluster-ceph-rbd \u0026\u0026 break\n  echo \"sc ocs-storagecluster-ceph-rbd not found, waiting...\"\n  sleep 5\ndone\necho \"sc ocs-storagecluster-ceph-rbd found, exiting...\"\nexit 0\n"],"image":"quay.io/hybridcloudpatterns/imperative-container:v1","name":"odf-operator-sequencejob"}],"restartPolicy":"OnFailure"}}}}
-  creationTimestamp: "2024-11-07T16:27:26Z"
-  generation: 1
   labels:
     app.kubernetes.io/instance: ansible-edge-gitops-hub
   name: odf-operator-sequencejob
   namespace: openshift-operators
-  resourceVersion: "201283"
-  uid: 3084075d-bc1f-4e23-b44d-a13c5d184a6a
 spec:
   backoffLimit: 6
   completionMode: NonIndexed
