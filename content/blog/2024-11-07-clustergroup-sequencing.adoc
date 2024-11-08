@@ -46,7 +46,7 @@ Within the framework, we support resource hooks in three ways:
 3. Exposing a new top-level clusterGroup object, extraObjects, that allows users full control of creating their own
 resource hooks.
 
-These features are available in version 0.9.8 and later of the Validated Patterns clustergroup chart.
+These features are available in version 0.9.9 and later of the Validated Patterns clustergroup chart.
 
 == Race Conditions: The Problem
 
