@@ -81,11 +81,11 @@ apply resources in. The mechanism is described in the ArgoCD upstream docs https
 resources in the numerically next sync-wave are synced. This mechanism gives us a way of having ArgocD help us enforce
 order with objects that it manages.
 
-== Solution 1: Sync-Waves for Subscriptions in clusterGroup
+== Solution 1: Sync-Waves for Subscriptions (and/or Applications) in clusterGroup
 
-The Validated Patterns framework now allows Kubernetes https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/[annotations] to be added directly to subscription objects in the clusterGroup. ArgoCD uses annotations
-for Resource Hooks. The clustergoup chart now passes any annotations attached to subscriptions through to the
-subscription object(s) that the clustergroup chart creates. For example:
+The Validated Patterns framework now allows Kubernetes https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/[annotations] to be added directly to subscription objects and application objects in the clusterGroup.
+ArgoCD uses annotations for Resource Hooks. The clustergoup chart now passes any annotations attached to subscriptions
+through to the subscription object(s) that the clustergroup chart creates. For example:
 
 [source,yaml]
 ----
@@ -149,6 +149,9 @@ until their components are healthy before reporting they are healthy themselves,
 In the case of this particular issue, it was not enough. But because all sequencing in ArgoCD requires the use of
 sync-wave annotations, adding the annotation to the subscription object will be necessary for using the other
 solutions.
+
+The sequencing of applications would work the same way, with the same format for adding annotations to the application
+stanzas in the clustergroup.
 
 == Solution 2: The `sequenceJob` attribute for Subscriptions in clusterGroup
 
