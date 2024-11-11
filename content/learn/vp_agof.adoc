@@ -12,7 +12,7 @@ aliases: /ocp-framework/agof/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-== About the Ansible GitOps framework (AGOF)for validated patterns
+== About the Ansible GitOps framework (AGOF) for validated patterns
 
 The link:/patterns/ansible-gitops-framework/[Ansible GitOps Framework] provides an extensible framework to do GitOps with https://docs.ansible.com/platform.html[Ansible Automation Platform] (AAP). It offers useful facilities for developing patterns (community and validated) that work with AAP as the GitOps engine.
 

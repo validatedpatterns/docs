@@ -31,3 +31,5 @@ The Pattern is then expressed as an Infrastructure as Code repository, which wil
 
 - Red Hat Ansible Automation Platform (formerly known as "Ansible Tower")
 - Red Hat Enterprise Linux
+
+For more information and guidance on how to use the AGOF framework, see link:/vp_agof/[About the Ansible GitOps framework (AGOF) for validated patterns].
