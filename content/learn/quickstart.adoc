@@ -55,5 +55,5 @@ Before beginning, ensure you have the following:
 * An OCI-compliant registry that is accessible from the disconnected network 
 * A Git Repository that is accessible from the disconnected network
 
-For more information on disconnected installation, see link:/2024-10-12-disconnected/[Validated Patterns in a disconnected Network].
+For more information on disconnected installation, see link:/blog/2024-10-12-disconnected/[Validated Patterns in a disconnected Network].
 
