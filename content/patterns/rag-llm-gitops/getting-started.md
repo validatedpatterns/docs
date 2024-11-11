@@ -42,11 +42,10 @@ _Figure 4. Schematic diagram for Ingestion of data for RAG._
 
 _Figure 5. Schematic diagram for RAG demo augmented query._
 
-In Figure 5, we can see RAG augmented query. The Mistral-7B model is used for
-language processing. LangChain is used to integrate different tools of the LLM-based
+In Figure 5, we can see RAG augmented query. Community version of [Mistral-7B-Instruct](https://huggingface.co/mistral-community/Mistral-7B-Instruct-v0.3) model is used for language processing. LangChain is used to integrate different tools of the LLM-based
 application together and to process the PDF files and web pages. A vector
 database provider such as EDB Postgres for Kubernetes (or Redis), is used to
-store vectors. HuggingFace TGI is used to serve the Mistral-7B model. Gradio is
+store vectors. [Red Hat OpenShift AI](https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai) to serve the [Mistral-7B-Instruct](https://huggingface.co/mistral-community/Mistral-7B-Instruct-v0.3) model. Gradio is
 used for user interface and object storage to store language model and other
 datasets. Solution components are deployed as microservices in the Red Hat
 OpenShift Container Platform cluster.
@@ -62,7 +61,7 @@ _Figure 6. Proposed demo architecture with OpenShift AI_
 
 ### Components deployed
 
-- **Hugging Face Text Generation Inference Server:** The pattern deploys a Hugging Face TGIS server. The server deploys `mistral-community/Mistral-7B-v0.2` model. The server will require a GPU node.
+- **vLLM Text Generation Inference Server:** The pattern deploys a vLLM Inference Server. The server deploys and serves `mistral-community/Mistral-7B-Instruct-v0.3` model. The server will require a GPU node.
 - **EDB Postgres for Kubernetes / Redis Server:** A Vector Database server is deployed to store vector embeddings created from Red Hat product documentation.
 - **Populate VectorDb Job:** The job creates the embeddings and populates the vector database.
 - **LLM Application:** This is a Chatbot application that can generate a project proposal by augmenting the LLM with the Red Hat product documentation stored in vector db.
@@ -71,19 +70,50 @@ _Figure 6. Proposed demo architecture with OpenShift AI_
 
 ## Deploying the demo
 
-Fork the [rag-llm-gitops](https://github.com/validatedpatterns/rag-llm-gitops) repo into your organization
+To run the demo, ensure the Podman is running on your machine.Fork the [rag-llm-gitops](https://github.com/validatedpatterns/rag-llm-gitops) repo into your organization
+### Login to OpenShift cluster
+
+Replace the token and the api server url in the command below to login to the OpenShift cluster.
+
+```sh
+oc login --token=<token> --server=<api_server_url> # login to Openshift cluster
+```
 
 ### Cloning repository
 
 ```sh
 git clone https://github.com/<<your-username>>/rag-llm-gitops.git
 cd rag-llm-gitops
-oc login --token=<> --server=<> # login to Openshift cluster
-podman machine start
+```
+
+### Configuring model
+
+This pattern deploys community version of [Mistral-7B-Instruct](https://huggingface.co/mistral-community/Mistral-7B-Instruct-v0.3) out of box. Run the following command to configure vault with the model Id.
+
+```sh
 # Copy values-secret.yaml.template to ~/values-secret-rag-llm-gitops.yaml.
 # You should never check-in these files
 # Add secrets to the values-secret.yaml that needs to be added to the vault.
 cp values-secret.yaml.template ~/values-secret-rag-llm-gitops.yaml
+```
+
+To deploy a non-community [Mistral-7b-Instruct](https://huggingface.co/mistralai/) model, grab the [Hugging Face token](https://huggingface.co/settings/tokens) and accept the terms and conditions on the model page. Edit ~/values-secret-rag-llm-gitops.yaml to replace the `model Id` and the `Hugging Face` token.
+
+```sh
+secrets:
+  - name: hfmodel
+    fields:
+    - name: hftoken
+      value: null
+    - name: modelId
+      value: "mistral-community/Mistral-7B-Instruct-v0.3"
+  - name: minio
+    fields:
+    - name: MINIO_ROOT_USER
+      value: minio
+    - name: MINIO_ROOT_PASSWORD
+      value: null
+      onMissingValue: generate
 ```
 
 ### Provision GPU MachineSet
