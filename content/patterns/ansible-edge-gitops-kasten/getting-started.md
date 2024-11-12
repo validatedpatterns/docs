@@ -4,7 +4,7 @@ weight: 10
 aliases: /ansible-edge-gitops-kasten/getting-started/
 ---
 
-# Deploying the Ansible Edge GitOps Pattern
+# Deploying the OpenShift Virtualization Data Protection Pattern
 
 # General Prerequisites
 
@@ -28,7 +28,7 @@ In addition to the OpenShift cluster, you will need to prepare a number of secre
 in the pattern in various ways. To do this, copy the [values-secret.yaml template](https://github.com/kastenhq/ansible-edge-gitops-kasten/blob/main/values-secret.yaml.template) to your home directory as `values-secret.yaml` and replace the explanatory text as follows:
 
 * AWS Credentials (an access key and a secret key). These are used to provision the metal worker in AWS (which hosts
-the VMs) and to access a pre-created S3 bucket for exporting VM backups with Veeam Kasten.
+the VMs) and (by default) to access a pre-created S3 bucket for exporting VM backups with Veeam Kasten.
 
 ```yaml
 ---
