@@ -178,27 +178,36 @@ To install a collection that is not currently installed:
 
     ```sh
     git checkout -b my-branch
-    vi overrides/values-kasten-defaults.yaml
+    vi values-kasten.yaml
     ```
 
     ```yaml
       ---
       kasten:
-        locationProfile:
-          name: default-location-profile
-          bucketName: your-bucket-name      # Replace with the AWS S3 bucket name to store backup data
-          region: us-east-1                 # Replace with the AWS S3 bucket region
-          immutable: false                  # Set true only if AWS S3 bucket was created with Versioning/Object Lock enabled; otherwise false 
-          protectionPeriod: 120h0m0s        # Adjust to specify amount of time for retained RestorePoints to remain immutable. Caution!
+        kdrSecretKey: secret/data/hub/kastendr-passphrase
 
         policyDefaults:
+          locationProfileName: my-location-profile
           presetName: daily-backup
           ignoreExceptions: false
+
+        locationProfileDefaults:
+          secretKey: secret/data/hub/aws-creds
+          immutable: false
+          protectionPeriod: 120h0m0s # 5 Days
+          s3Region: us-east-1
+
+        locationProfiles:
+          location-profile-1:
+            name: my-location-profile               
+            bucketName: your-bucket-name            # REPLACE with the AWS S3 bucket name to store backup data
+            immutable: false                        # SET true only if AWS S3 bucket was created with Versioning/Object Lock enabled; otherwise false
+            protectionPeriod: 168h0m0s # 7 Days     # OPTIONAL, override default immutablility period. Caution, you will not be able to delete backup data for this amount of time!
     ```
 
     ```sh
-    git add overrides/values-kasten-defaults.yaml
-    git commit overrides/values-kasten-defaults.yaml
+    git add values-kasten.yaml
+    git commit values-kasten.yaml
     git push origin my-branch
     ```
 
