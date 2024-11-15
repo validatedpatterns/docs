@@ -1,0 +1,318 @@
+---
+ date: 2024-11-07
+ title: Additional Sequencing Capabilities in clusterGroup
+ summary: How to sequence subscriptions in the Validated Patterns framework
+ author: Martin Jackson
+ blog_tags:
+ - patterns
+ - how-to
+ - sequencing
+ - subscriptions
+---
+:toc:
+
+== Preamble
+
+Ideally, all subscriptions installed in Kubernetes and OpenShift will envision
+all potential conflicts, and will deal gracefully with situations when other
+artifacts installed on the cluster require reconfiguration or different behavior.
+
+Architecturally, we have always said that we prefer eventual consistency, by which
+we mean that in the presence of error conditions the software should be prepared to
+retry until it can achieve the state it wants to be in. In practice that means we
+should be able to install a number of artifacts at the same time, and the artifacts
+themselves should be able to achieve the declarative state expressed in their installation.
+But some software does not work this way (even if its stated goal and intention is to
+work this way) and it is advantageous to be able to impose order of events to create
+better situations for installation. For example, even well-crafted software can be
+subject to different kinds of timing problems, as we will illustrate below.
+
+Because of this, we have introduced a set of capabilties to the Validated Patterns
+clusterGroup chart to enforce sequencing on the objects in a declarative and
+Kubernetes-native way.
+
+In this blog post, we will explore the various options that are available as of
+today in the Validated Patterns framework for enforcing sequencing for subscriptions.
+Inside applications, Validated Patterns has supported these primitives since the first
+release of Medical Diagnosis, and will continue to do so.
+
+Since the focus of Validated Patterns on OpenShift is the OpenShift GitOps Operator, these
+capabilities rely on the use of resource hooks, described in the upstream docs https://argo-cd.readthedocs.io/en/stable/user-guide/resource_hooks/[here].
+
+Within the framework, we support resource hooks in three ways:
+
+1. Supporting annotations directly on subscription objects at the clusterGroup level
+2. Exposing a new optional sequenceJob attribute on subscriptions that uses resource hooks
+3. Exposing a new top-level clusterGroup object, extraObjects, that allows users full control of creating their own
+resource hooks.
+
+These features are available in version 0.9.9 and later of the Validated Patterns clustergroup chart.
+
+== Race Conditions: The Problem
+
+Timing issues are one of the key problems of distributed systems. One of the biggest categories of timing problems
+is https://en.wikipedia.org/wiki/Race_condition[race conditions]. In our context, let's say subscription A reacts to a
+condition in subscription B. Subscription A only checks on that condition during installation time. Thus,
+subscription A's final state depends on when, exactly, subscription B was installed. Even if A and B were both installed
+at the same time, the normal variance of things like how quickly the software was downloaded could result in different
+parts of the installation being run at different times, and potentially different results.
+
+The ideal solution to this problem is for subscription B to always be watching for the presence of subscription A, and
+reconfiguring itself if it sees subscription A being installed. But if subscription B does not want to do this, or
+for some reason cannot do this, or even if a better fix is committed but not yet available, we want to have a set of
+practical solutions in the Validated Patterns framework.
+
+So, in the absence of an ideal fix - where all subscriptions are prepared to deal with all possible race outcomes -
+a very effective way of working around the problem is enforce ordering or sequencing of actions.
+
+== The Specific Race Condition that led to this feature
+
+The specific case that gave rise to the development of this feature is a race condition between OpenShift Data
+Foundation (ODF) and OpenShift Virtualization (OCP-Virt), which will be fixed in a future release of OCP-Virt. The
+condition results when OCP-Virt, on installation, discovers a default storageclass, but then subsequently ODF is
+installed, which OCP-Virt has specific optimizations for, related to how images are managed for VM guests to be
+created. One way to workaround the race condition is to ensure that ODF completes creating its storageclasses before
+the OCP-Virt subscription is allowed to install.
+
+== Sync-Waves and ArgoCD/OpenShift GitOps Resource Hooks
+
+The way that resource hooks are designed to work is by giving ordering hints, so that ArgoCD knows what order to
+apply resources in. The mechanism is described in the ArgoCD upstream docs https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/[here]. When sync-waves are in use, all resouces in the same sync-wave have to be "healthy" before
+resources in the numerically next sync-wave are synced. This mechanism gives us a way of having ArgocD help us enforce
+order with objects that it manages.
+
+== Solution 1: Sync-Waves for Subscriptions (and/or Applications) in clusterGroup
+
+The Validated Patterns framework now allows Kubernetes https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/[annotations] to be added directly to subscription objects and application objects in the clusterGroup.
+ArgoCD uses annotations for Resource Hooks. The clustergoup chart now passes any annotations attached to subscriptions
+through to the subscription object(s) that the clustergroup chart creates. For example:
+
+[source,yaml]
+----
+    openshift-virtualization:
+      name: kubevirt-hyperconverged
+      namespace: openshift-cnv
+      channel: stable
+      annotations:
+        argocd.argoproj.io/sync-wave: "10"
+
+    openshift-data-foundation:
+      name: odf-operator
+      namespace: openshift-storage
+      annotations:
+        argocd.argoproj.io/sync-wave: "5"
+----
+
+will result in a subscription object that includes the annotations:
+
+[source,yaml]
+----
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  labels:
+    app.kubernetes.io/instance: ansible-edge-gitops-hub
+    operators.coreos.com/kubevirt-hyperconverged.openshift-cnv: ""
+  name: kubevirt-hyperconverged
+  namespace: openshift-cnv
+spec:
+  channel: stable
+  installPlanApproval: Automatic
+  name: kubevirt-hyperconverged
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+  labels:
+    app.kubernetes.io/instance: ansible-edge-gitops-hub
+    operators.coreos.com/odf-operator.openshift-storage: ""
+  name: odf-operator
+  namespace: openshift-storage
+spec:
+  installPlanApproval: Automatic
+  name: odf-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+----
+
+With this configuration, any objects created with sync-waves lower than "10" must be healthy before the objects in
+sync-wave "10" sync. In particular, the odf-operator subscription must be healthy before the kubevirt-hyperconverged
+subscription will sync. Similarly, if we defined objects with higher sync-waves than "10", all the resources with
+sync-waves higher than "10" will wait until the resources in "10" are healthy. If the subscriptions in question wait
+until their components are healthy before reporting they are healthy themselves, this might be all you need to do.
+In the case of this particular issue, it was not enough. But because all sequencing in ArgoCD requires the use of
+sync-wave annotations, adding the annotation to the subscription object will be necessary for using the other
+solutions.
+
+The sequencing of applications would work the same way, with the same format for adding annotations to the application
+stanzas in the clustergroup.
+
+== Solution 2: The `sequenceJob` attribute for Subscriptions in clusterGroup
+
+In this situation, we have a subscription that installs an operator, but it is not enough for just the subscriptions
+to be in sync-waves. This is because the subscriptions install operators, and it is the action of the operators
+themselves that we have to sequence. In many of these kinds of situations, we can sequence the action by looking for
+the existence of a single resource. The new `sequenceJob` construct in subscriptions allows for this kind of
+relationship by creating a Job at the same sync-wave precedence as the subscription, and looking for the existence
+of a single arbitrary resource in an arbitrary namespace. The Job then waits for that resource to appear, and when
+it does, it will be seen as "healthy" and will allow future sync-waves to proceed.
+
+In this example, the ODF operator needs to have created a storageclass so that the OCP-Virt operators can use it as
+virtualization storage. If it does not find the kind of storage it wants, it will use the default storageclass
+instead, which may lead to inconsistencies in behavior. We can have the Validated Patterns framework create a
+mostly boilerplate job to look for the needed resource this way:
+
+[source,yaml]
+----
+    openshift-virtualization:
+      name: kubevirt-hyperconverged
+      namespace: openshift-cnv
+      channel: stable
+      annotations:
+        argocd.argoproj.io/sync-wave: "10"
+
+    openshift-data-foundation:
+      name: odf-operator
+      namespace: openshift-storage
+      sequenceJob:
+        resourceType: sc
+        resourceName: ocs-storagecluster-ceph-rbd
+      annotations:
+        argocd.argoproj.io/sync-wave: "5"
+----
+
+Note the addition of the `sequenceJob` section in the odf-operator subscription block. This structure will result
+in the following Job being created alongside the subscriptions:
+
+[source,yaml]
+----
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/sync-wave: "5"
+  labels:
+    app.kubernetes.io/instance: ansible-edge-gitops-hub
+  name: odf-operator-sequencejob
+  namespace: openshift-operators
+spec:
+  backoffLimit: 6
+  completionMode: NonIndexed
+  completions: 1
+  manualSelector: false
+  parallelism: 1
+  podReplacementPolicy: TerminatingOrFailed
+  selector:
+    matchLabels:
+      batch.kubernetes.io/controller-uid: 3084075d-bc1f-4e23-b44d-a13c5d184a6a
+  suspend: false
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        batch.kubernetes.io/controller-uid: 3084075d-bc1f-4e23-b44d-a13c5d184a6a
+        batch.kubernetes.io/job-name: odf-operator-sequencejob
+        controller-uid: 3084075d-bc1f-4e23-b44d-a13c5d184a6a
+        job-name: odf-operator-sequencejob
+    spec:
+      containers:
+      - command:
+        - /bin/bash
+        - -c
+        - |
+          while [ 1 ];
+          do
+            oc get sc ocs-storagecluster-ceph-rbd && break
+            echo "sc ocs-storagecluster-ceph-rbd not found, waiting..."
+            sleep 5
+          done
+          echo "sc ocs-storagecluster-ceph-rbd found, exiting..."
+          exit 0
+        image: quay.io/hybridcloudpatterns/imperative-container:v1
+        imagePullPolicy: IfNotPresent
+        name: odf-operator-sequencejob
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+----
+
+Since the job is created in sync-wave "5" (which it inherits from the subscription it is attached to by default, though
+you can specify a different sync-wave if you prefer), this job must complete before sync-wave "10" starts. So the
+storageclass `ocs-storagecluster-ceph-rbd` must exist before OCP-Virt starts deploying, ensuring that it will be able
+to "see" and use that storageclass as its default virtualization storage class.
+
+Each subscription is permitted one sequenceJob. Each sequenceJob may have the following attributes:
+
+* *syncWave*: Defaults to the subscription's syncwave from annotations.
+* *resourceType*: Resource kind for the resource to watch for.
+* *resourceName*: Name of the resource to watch for.
+* *resourceNamespace*: Namespace to watch for the resourceType and resourceName in.
+* *hookType*: Any of the permissible ArgoCD Resource Hook types. Defaults to "Sync".
+* *image*: Image of the container to use for the job. Defaults to the Validated Patterns imperative image.
+* *command*: Command to run inside the container, if the default is not suitable. This also enables you to specify multiple resources to watch for in the same job, or to look for a different condition altogether.
+* *disabled*: Set this to true in an override if you wish to disable the sequenceJob for some reason (such as running on
+a different version of OpenShift or running on a different cloud platform).
+
+If the sequenceJob is not sufficient for your sequencing needs, we have a more generic interface that you can use
+that places no restrictions on the objects you can add, so you can use it to create different kinds of conditions.
+
+== Solution 3: The `extraObjects` attribute in clusterGroup
+
+The most open-ended solution to the sequencing problem involves defining arbitrary objects under the `extraObjects`
+key for the clustergroup. Here is how you could do that using the example we have been using so far:
+
+[yaml,source]
+----
+extraObjects:
+    wait-for-virt-storageclass:
+      apiVersion: batch/v1
+      kind: Job
+      metadata:
+        name: wait-for-virt-storageclass
+        annotations:
+          argocd.argoproj.io/hook: Sync
+          argocd.argoproj.io/sync-wave: "5"
+      spec:
+        parallelism: 1
+        completions: 1
+        template:
+          spec:
+            restartPolicy: OnFailure
+            containers:
+              - name: wait-for-storage-class
+                image: quay.io/hybridcloudpatterns/imperative-container:v1
+                command:
+                  - /bin/bash
+                  - -c
+                  - |
+                    while [ 1 ];
+                    do
+                      oc get sc ocs-storagecluster-ceph-rbd && break
+                      echo "Storage class ocs-storagecluster-ceph-rbd not found, waiting..."
+                      sleep 5
+                    done
+                    echo "Storage class ocs-storagecluster-ceph-rbd found, exiting"
+                    exit 0
+----
+
+Note that each extraObject has a key and value, and the value will be passed almost unaltered as a Kubernetes manifest.
+The special key `disabled` can be used to disable a specific, named extraObject from being created in subsequent
+overrides.
+
+== Conclusion
+
+Here is hoping that you do not have sequencing problems to solve in your OpenShift deployments. But if you do, we
+hope you will find this feature in Validated Patterns useful. Please let us know, one way or the other, or if you
+find other uses, especially for the `extraObjects` feature.

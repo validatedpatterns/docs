@@ -1,6 +1,5 @@
 ---
 title: OpenShift Virtualization Data Protection with Veeam Kasten
-date: 2024-11-12
 tier: sandbox
 summary: This pattern uses OpenShift Virtualization to simulate an edge environment for VMs, protected by Veeam Kasten.
 rh_products:
@@ -28,7 +27,7 @@ links:
 
 This example extends the standard [Ansible Edge GitOps pattern](https://validatedpatterns.io/patterns/ansible-edge-gitops/) to include automated deployment and configuration of [Veeam Kasten](https://www.veeam.com/products/cloud/kubernetes-data-protection.html), the #1 Kubernetes data protection and mobility solution.
 
-The base pattern explores the possibilities of using an Ansible Automation Platform deployment to manage the configuration of OpenShift Virtualization VMs at the edge. As VMs are inherently stateful workloads, a GitOps approach alone is not sufficient to recover an environment in the event of accidental data loss, malware attack, or infrastructure failure - especially in edge environments where infrastructure may be less resilient or subject to harsh environments.
+This pattern uses **Red Hat OpenShift Virtualization** (the productization of KubeVirt) to provision VMs alongside Kubernetes-native workloads on the cluster. As VMs are inherently stateful workloads, a GitOps approach alone is not sufficient to recover an environment in the event of accidental data loss, malware attack, or infrastructure failure - especially in edge environments where infrastructure may be less resilient or subject to harsh environments. This example extends the standard [Ansible Edge GitOps pattern](https://validatedpatterns.io/patterns/ansible-edge-gitops/) to include automated deployment and configuration of [Veeam Kasten](https://www.veeam.com/products/cloud/kubernetes-data-protection.html), the #1 Kubernetes data protection and mobility solution.
 
 ### Solution elements
 
