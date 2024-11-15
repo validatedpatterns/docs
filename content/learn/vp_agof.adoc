@@ -256,7 +256,7 @@ This command invokes the `controller_configuration` `dispatch` role on the contr
 
 .Verification
 
-The default installation provides an AAP 2.4 installation deployed using the containerized installer, with services deployed this way:
+The default installation provides an AAP 2.4 installation deployed by using the containerized installer, with services deployed this way:
 
 .agof_vault settings
 [cols="30%,70%",options="header"]
@@ -274,7 +274,7 @@ a| EDA Automation Controller
 
 |===
 
-Once the install completes, you will have a project, an inventory (consisting of the AAP controller), a credential (the private key from ec2), a job template (which runs a fact gather on the AAP controller) and a schedule that will run the job template every 5 minutes,
+Once the install completes, you will have a project, an inventory (consisting of the AAP controller), a credential (the private key from ec2), a job template (which runs a fact gather on the AAP controller) and a schedule that will run the job template every 5 minutes.
 
 . Log in to `https://aap.{{ ec2_name_prefix }}.{{ domain }}:8443` with the username `admin` and the password as configured in `admin_password` field of `agof_vault.yml`. 
 
@@ -294,7 +294,7 @@ In this method, you provide an existing Ansible Automation Platform (AAP) Contro
 
 You supply the manifest contents, endpoint hostname, admin username (defaults to "admin"), and admin password, and then the installation hands off to a `controller_config_dir` you define.
 
-* Run the following command to install using this method:
+* Run the following command to install by using this method:
 +
 [source,terminal]
 ----

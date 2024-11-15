@@ -16,12 +16,12 @@ include::modules/comm-attributes.adoc[]
 
 Multicloud GitOps is a foundational pattern that demonstrates GitOps principles for managing applications across multiple clusters. It provides:
 
-* A GitOps framework using ArgoCD
+* A GitOps framework using `ArgoCD`
 * Infrastructure-as-Code practices
 * Multi-cluster management capabilities
 * Template for secure secret management
 
-The Multicloud GitOps pattern is recommended as your first pattern because:
+Red Hat recommend the Multicloud GitOps pattern as your base pattern because:
 
 . It establishes core GitOps practices
 . Provides a minimal but complete implementation
@@ -117,7 +117,7 @@ $ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
 +
 [NOTE]
 ====
-The `values-secret.yaml` file is placed in your home directory so that it does not get pushed to your git repository. It is based on the `values-secrets.yaml.template` file provided by the pattern in the top level directory. When you create your own patterns you will add your secrets to this file and save. At the moment the focus is on getting started abd familiar with this base Multicloud GitOps pattern. 
+Putting the `values-secret.yaml` in your home directory ensures that it does not get pushed to your git repository. It is based on the `values-secrets.yaml.template` file provided by the pattern in the top level directory. When you create your own patterns you will add your secrets to this file and save. At the moment the focus is on getting started and familiar with this base Multicloud GitOps pattern. 
 ====
 
 . Create a new feature branch, for example `my-branch` from the `main` branch for your content:
@@ -127,28 +127,23 @@ The `values-secret.yaml` file is placed in your home directory so that it does n
 $ git checkout -b my-branch main
 ----
 
-. Push your local branch named `my-branch` to the remote repository specified by origin by running the following command:
+. Create a local branch and push it to origin to gain the flexibility needed to customize the base Multicloud GitOps by running the following command:
 +
 [source,terminal]
 ----
 $ git push origin my-branch
 ----
-+
-[NOTE]
-====
-The idea of creating a local branch and pushing this to origin allows you scope to customize the base Multicloud GitOps. 
-====
 
 You can proceed to install the Multicloud GitOps pattern by using the web console or from command line by using the script `./pattern.sh` script. 
 
-To install the Multicloud GitOps pattern by using the the web console you must first install the Validated Patterns Operator. The Validated Patterns Operator installs and manages Validated Patterns. 
+To install the Multicloud GitOps pattern by using the web console you must first install the Validated Patterns Operator. The Validated Patterns Operator installs and manages Validated Patterns. 
 
 //Include Procedure module here
 [id="installing-validated-patterns-operator_{context}"]
 == Installing the {validated-patterns-op} using the web console
 
 .Prerequisites
-* Access to an {ocp} cluster using an account with `cluster-admin` permissions.
+* Access to an {ocp} cluster by using an account with `cluster-admin` permissions.
 
 .Procedure
 
@@ -202,7 +197,7 @@ The {validated-patterns-op} is successfully installed in the relevant namespace.
 . Under the *Details* tab, in the *Provided APIs* section, in the
 *Pattern* box, click *Create instance* that displays the *Create Pattern* page.
 
-. On the the *Create Pattern* page, select *Form view* and enter information in the following fields:
+. On the *Create Pattern* page, select *Form view* and enter information in the following fields:
 
 ** *Name* - A name for the pattern deployment that is used in the projects that you created.
 ** *Labels* - Apply any other labels you might need for deploying this pattern.
@@ -217,12 +212,12 @@ To know the cluster group name for the patterns that you want to deploy, check t
 +
 [NOTE]
 ====
-A pop up may throw up an error `"Oh no! Something went wrong`. It is safe to ignore this as the install of the Multicloud GitOps pattern appears unaffected. Watch the ArgoCD instances from the *Hub ArgoCD* UI in the nines menu. They will report progressing/healthy etc. on each of the apps they manage. The *Cluster Argo CD* will have the detailed status on each of the apps defined as such in the clustergroup values file. 
+A pop-up error with the message "Oh no! Something went wrong." might appear during the process. This error can be safely disregarded as it does not impact the installation of the Multicloud GitOps pattern. Use the Hub ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD instances, which will display states such as progressing, healthy, and so on, for each managed application. The Cluster ArgoCD provides detailed status on each application, as defined in the clustergroup values file.
 ====
 
 The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
 
-The `config-demo` project when viewed through the *Hub ArgoCD* UI from the nines menu is stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console.
+When viewing the `config-demo` project through the Hub `ArgoCD` UI from the nines menu, it appears stuck in a Degraded state. This is the expected behavior when installing using the OpenShift Container Platform console.
 
 * To resolve this you need to run the following to load the secrets into the vault:
 +
@@ -278,7 +273,7 @@ $ ./pattern.sh make install
 +
 image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
 
-As part of installing by using the script `pattern.sh` pattern, HashiCorp Vault is installed. Running `./pattern.sh make install` also calls the `load-secrets` makefile target. This `load-secrets` target looks for a yaml file describing the secrets to be loaded into vault and in case it cannot find one it will use the `values-secret.yaml.template` file in the git repo to try and generate random secrets.
+As part of installing by using the script `pattern.sh` pattern, HashiCorp Vault is installed. Running `./pattern.sh make install` also calls the `load-secrets` makefile target. This `load-secrets` target looks for a YAML file describing the secrets to be loaded into vault and in case it cannot find one it will use the `values-secret.yaml.template` file in the git repository to try to generate random secrets.
 
 For more information, see section on https://validatedpatterns.io/secrets/vault/[Vault].
 
@@ -290,7 +285,7 @@ Verify that the *hello-world* application deployed successfully as follows:
 
 . From the *Project:* drop down select the *hello-world* project. 
 
-. Click on the *Location URL*. This should reveal the following:
+. Click the *Location URL*. This should reveal the following:
 +
 [source,terminal]
 ----
@@ -306,7 +301,7 @@ Verify that the *config-demo* application deployed successfully as follows:
 
 . Select the *config-demo* *Project*. 
 
-. Click on the *Location URL*. This should reveal the following:
+. Click the *Location URL*. This should reveal the following:
 +
 [source,terminal]
 ----
