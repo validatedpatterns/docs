@@ -14,8 +14,6 @@ include::modules/comm-attributes.adoc[]
 [id="importing-a-cluster"]
 == Importing a managed cluster
 
-hello 
-
 Many validated patterns require importing a cluster into a managed group. These groups have specific application sets that will be deployed and managed. Some examples are factory clusters in the Industrial Edge pattern, or development clusters in Multi-cluster DevSecOps pattern.
 
 Red Hat Advanced Cluster Management (RHACM) can be used to create a cluster of a specific cluster group type. You can deploy a specific cluster that way if you have RHACM set up with credentials for deploying clusters. However in many cases an OpenShift cluster has already been created and will be imported into the set of clusters that RHACM is managing.
