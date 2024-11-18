@@ -24,17 +24,21 @@ To deploy a cluster that can be imported into RHACM, use the `openshift-install`
 
 == Importing a cluster using the RHACM User Interface
 
-=== Getting to the RHACM user interface
+After ACM is installed a message regarding a "Web console update is available" is displayed. Follow this guidance to import a cluster: 
 
-After ACM is installed a message regarding a "Web console update is available" will be displayed. Click on the "Refresh web console" link.
+. Access the the RHACM user interface by clicking the "Refresh web console" link.
 
-On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down. This will navigate to the RHACM console and to its "Clusters" section
+. On the upper-left side you'll see a pull down labeled "local-cluster". Select "All Clusters" from this pull down. This will navigate to the RHACM console and to its "Clusters" section
 
-Select the "Import cluster" option.
+. Select the "Import an existing cluster" option.
 
-=== Importing the cluster
+. On the "Import an existing cluster" page, enter the cluster name (arbitrary) and choose `Kubeconfig` as the `Import mode`. 
 
-On the "Import an existing cluster" page, enter the cluster name (arbitrary) and choose Kubeconfig as the "import mode". Add the tag `clusterGroup=` using the appropriate cluster group specified in the pattern. Press `Import`.
+. Add the Additional label `clusterGroup=` using the appropriate cluster group specified in the pattern. 
+
+. Click `Next`. Optionally choose an automation template to run Ansible jobs at different stages of the cluster lifecycle. 
+
+. Click `Next` and on the review screen click `Import` to successfully import the cluster.
 
 Using this method, you are done. Skip to the section in your pattern documentation that describes how you can confirm the pattern deployed correctly on the managed cluster.
 
