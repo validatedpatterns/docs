@@ -1434,7 +1434,93 @@ managedSites: - name: factory clusterSelector: matchLabels: site: factory Rememb
 Deploy a factory cluster For instructions on how to prepare and import a factory cluster please read the section importing a cluster. Use clusterGroup=factory.
 You&rsquo;re done That&rsquo;s it! Go to your factory (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it&rsquo;s finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
 Next up Work your way through the Industrial Edge 2.0 GitOps/DevOps demos
-`,url:"https://validatedpatterns.io/patterns/industrial-edge/factory/",breadcrumb:"/patterns/industrial-edge/factory/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/gpu_provisioning/":{title:"GPU provisioning",tags:[],content:`GPU provisioning Use the instructions to add nodes with GPU in OpenShift cluster running in AWS cloud. Nodes with GPU will be tainted to allow only pods that required GPU to be scheduled to these nodes
+`,url:"https://validatedpatterns.io/patterns/industrial-edge/factory/",breadcrumb:"/patterns/industrial-edge/factory/"},"https://validatedpatterns.io/learn/getting-started-multi-cloud-gitops/":{title:"Getting Started with Multicloud GitOps",tags:[],content:` Getting Started with Multicloud GitOps Multicloud GitOps is a foundational pattern that demonstrates GitOps principles for managing applications across multiple clusters. It provides:
+A GitOps framework using ArgoCD
+Infrastructure-as-Code practices
+Multi-cluster management capabilities
+Template for secure secret management
+Red Hat recommend the Multicloud GitOps pattern as your base pattern because:
+It establishes core GitOps practices
+Provides a minimal but complete implementation
+Serves as a foundation for other patterns
+Demonstrates key validated patterns concepts
+Other patterns build upon these concepts, making this an ideal starting point for your validated patterns journey.
+Deploying the Multicloud GitOps pattern Prerequisites An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select Services -&gt; Containers -&gt; Create cluster.
+The cluster must have a dynamic StorageClass to provision PersistentVolumes. Verify that a dynamic StorageClass exists before creating one by running the following command:
+$ oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,DEFAULT:.metadata.annotations.&#34;storageclass\\.kubernetes\\.io/is-default-class&#34; Example output NAME PROVISIONER DEFAULT gp2-csi ebs.csi.aws.com &lt;none&gt; gp3-csi ebs.csi.aws.com true Optional: A second OpenShift cluster for multicloud demonstration.
+Install the tooling dependencies.
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
+If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by using Red Hat Hybrid Cloud Console.
+Procedure From the multicloud-gitops repository on GitHub, click the Fork button.
+Clone the forked copy of this repository by running the following command.
+$ git clone git@github.com:&lt;your-username&gt;/multicloud-gitops.git Navigate to your repository: Ensure you are in the root directory of your Git repository by using:
+$ cd /path/to/your/repository Run the following command to set the upstream repository:
+$ git remote add -f upstream git@github.com/validatedpatterns/multicloud-gitops.git Verify the setup of your remote repositories by running the following command:
+$ git remote -v Example output origin	git@github.com:&lt;your-username&gt;/multicloud-gitops.git (fetch) origin	git@github.com:&lt;your-username&gt;/multicloud-gitops.git (push) upstream	https://github.com/validatedpatterns/multicloud-gitops.git (fetch) upstream	https://github.com/validatedpatterns/multicloud-gitops.git (push) Create a local copy of the secret values file that can safely include credentials. Run the following commands:
+$ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml Putting the values-secret.yaml in your home directory ensures that it does not get pushed to your git repository. It is based on the values-secrets.yaml.template file provided by the pattern in the top level directory. When you create your own patterns you will add your secrets to this file and save. At the moment the focus is on getting started and familiar with this base Multicloud GitOps pattern.
+Create a new feature branch, for example my-branch from the main branch for your content:
+$ git checkout -b my-branch main Create a local branch and push it to origin to gain the flexibility needed to customize the base Multicloud GitOps by running the following command:
+$ git push origin my-branch You can proceed to install the Multicloud GitOps pattern by using the web console or from command line by using the script ./pattern.sh script.
+To install the Multicloud GitOps pattern by using the web console you must first install the Validated Patterns Operator. The Validated Patterns Operator installs and manages Validated Patterns.
+Installing the Validated Patterns Operator using the web console Prerequisites Access to an OpenShift Container Platform cluster by using an account with cluster-admin permissions.
+Procedure Navigate in the Red Hat Hybrid Cloud Console to the Operators → OperatorHub page.
+Scroll or type a keyword into the Filter by keyword box to find the Operator you want. For example, type validated patterns to find the Validated Patterns Operator.
+Select the Operator to display additional information.
+Choosing a Community Operator warns that Red Hat does not certify Community Operators; you must acknowledge the warning before continuing.
+Read the information about the Operator and click Install.
+On the Install Operator page:
+Select an Update channel (if more than one is available).
+Select a Version (if more than one is available).
+Select an Installation mode:
+All namespaces on the cluster (default) installs the Operator in the default openshift-operators namespace to watch and be made available to all namespaces in the cluster. This option is not always available.
+A specific namespace on the cluster allows you to choose a specific, single namespace in which to install the Operator. The Operator will only watch and be made available for use in this single namespace.
+Select Automatic or Manual approval strategy.
+Click Install to make the Operator available to the selected namespaces on this OpenShift Container Platform cluster.
+Verification To confirm that the installation is successful:
+Navigate to the Operators → Installed Operators page.
+Check that the Operator is installed in the selected namespace and its status is Succeeded.
+Creating the Multicloud GitOps instance Prerequisites The Validated Patterns Operator is successfully installed in the relevant namespace.
+Procedure Navigate to the Operators → Installed Operators page.
+Click the installed Validated Patterns Operator.
+Under the Details tab, in the Provided APIs section, in the Pattern box, click Create instance that displays the Create Pattern page.
+On the Create Pattern page, select Form view and enter information in the following fields:
+Name - A name for the pattern deployment that is used in the projects that you created.
+Labels - Apply any other labels you might need for deploying this pattern.
+Cluster Group Name - Select a cluster group name to identify the type of cluster where this pattern is being deployed. For example, if you are deploying the Industrial Edge pattern, the cluster group name is datacenter. If you are deploying the Multicloud GitOps pattern, the cluster group name is hub.
+To know the cluster group name for the patterns that you want to deploy, check the relevant pattern-specific requirements.
+Expand the Git Config section to reveal the options and enter the required information.
+Leave In Cluster Git Server unchanged.
+Change the Target Repo URL to your forked repository URL. For example, change https://github.com/validatedpatterns/&lt;pattern_name&gt; to https://github.com/&lt;your-git-username&gt;/&lt;pattern-name&gt;
+Optional: You might need to change the Target Revision field. The default value is HEAD. However, you can also provide a value for a branch, tag, or commit that you want to deploy. For example, v2.1, main, or a branch that you created, my-branch.
+Click Create.
+A pop-up error with the message &#34;Oh no! Something went wrong.&#34; might appear during the process. This error can be safely disregarded as it does not impact the installation of the Multicloud GitOps pattern. Use the Hub ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD instances, which will display states such as progressing, healthy, and so on, for each managed application. The Cluster ArgoCD provides detailed status on each application, as defined in the clustergroup values file.
+The Red Hat OpenShift GitOps Operator displays in list of Installed Operators. The Red Hat OpenShift GitOps Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as Red Hat Advanced Cluster Management (RHACM), ensure that you switch to Project:All Projects.
+When viewing the config-demo project through the Hub ArgoCD UI from the nines menu, it appears stuck in a Degraded state. This is the expected behavior when installing using the OpenShift Container Platform console.
+To resolve this you need to run the following to load the secrets into the vault:
+$ ./pattern.sh make load-secrets You must have created a local copy of the secret values file by running the following command:
+$ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml The deployment will not take long but it should deploy successfully.
+Alternatively you can deploy the Multicloud GitOps pattern by using the command line script pattern.sh.
+Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
+Log in to your cluster by running the following command:
+$ oc login Optional: Set the KUBECONFIG variable for the kubeconfig file path:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
+$ ./pattern.sh make install Verify that the Operators have been installed.
+To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
+Check that the Operator is installed in the openshift-operators namespace and its status is Succeeded.
+Verify that all applications are synchronized. Under the project multicloud-gitops-hub click the URL for the hub gitops server. The Vault application is not synched.
+As part of installing by using the script pattern.sh pattern, HashiCorp Vault is installed. Running ./pattern.sh make install also calls the load-secrets makefile target. This load-secrets target looks for a YAML file describing the secrets to be loaded into vault and in case it cannot find one it will use the values-secret.yaml.template file in the git repository to try to generate random secrets.
+For more information, see section on Vault.
+Verification of test pages Verify that the hello-world application deployed successfully as follows:
+Navigate to the Networking → Routes menu options.
+From the Project: drop down select the hello-world project.
+Click the Location URL. This should reveal the following:
+Hello World! Hub Cluster domain is &#39;apps.aws-hub-cluster.openshift.org&#39; Pod is running on Local Cluster Domain &#39;apps.aws-hub-cluster.openshift.org&#39; Verify that the config-demo application deployed successfully as follows:
+Navigate to the Networking → Routes menu options.
+Select the config-demo Project.
+Click the Location URL. This should reveal the following:
+Hub Cluster domain is &#39;apps.aws-hub-cluster.openshift.org&#39; Pod is running on Local Cluster Domain &#39;apps.aws-hub-cluster.openshift.org&#39; The secret is \`secret\` `,url:"https://validatedpatterns.io/learn/getting-started-multi-cloud-gitops/",breadcrumb:"/learn/getting-started-multi-cloud-gitops/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/gpu_provisioning/":{title:"GPU provisioning",tags:[],content:`GPU provisioning Use the instructions to add nodes with GPU in OpenShift cluster running in AWS cloud. Nodes with GPU will be tainted to allow only pods that required GPU to be scheduled to these nodes
 More details can be found in following documents Openshift AI, NVIDIA on OpenShift
 Add machineset The easiest way is to use existing machineset manifest and update certain elements. Use worker machineset manifest and modify some of the entries (naming conventions provided as reference only, use own if required.), keep other entries as is:
 apiVersion: machine.openshift.io/v1beta1 kind: MachineSet metadata: name: &lt;clustername&gt;-gpu-&lt;AWSregion&gt; .............. spec: replicas: 1 selector: matchLabels: ................ machine.openshift.io/cluster-api-machineset: &lt;clustername&gt;-gpu-&lt;AWSregion&gt; template: metadata: labels: ........ machine.openshift.io/cluster-api-machineset: &lt;clustername&gt;-gpu-&lt;AWSregion&gt; spec: ................... metadata: labels: node-role.kubernetes.io/odh-notebook: &#39;&#39; &lt;--- Put your label if needed providerSpec: value: ........................ instanceType: g5.2xlarge &lt;---- Change vm type if needed ............. taints: - effect: NoSchedule key: odh-notebook &lt;--- Use own taint name or skip all together value: &#39;true&#39; Use kubectl or oc command line to create new machineset oc apply -f gpu_machineset.yaml
@@ -1764,7 +1850,27 @@ To tag the cluster as clusterGroup=&lt;managed-cluster-group&gt;, complete the f
 Procedure To find the new cluster, run the following command:
 oc get managedcluster.cluster.open-cluster-management.io To apply the label, run the following command:
 oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster Verification Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. It might take a while for the RHACM agent and agent-addons to launch. After that, the OpenShift GitOps Operator is installed. On successful installation, launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-managed-cluster/",breadcrumb:"/patterns/multicloud-gitops/mcg-managed-cluster/"},"https://validatedpatterns.io/patterns/devsecops/devel-cluster/":{title:"Secured Development Cluster",tags:[],content:`Having a development cluster (devel) join the hub Introduction Development clusters are responsible for building applications and delivering the applications to a secured registry. The development cluster defines a secure pipeline that includes code and image scans and image signing before delivering them to the registry. OpenShift Pipelines is used for the continuous integration (CI). The Quay registry is deployed on the hub and therefore integration is required for the development pipeline to push images to the registry.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-managed-cluster/",breadcrumb:"/patterns/multicloud-gitops/mcg-managed-cluster/"},"https://validatedpatterns.io/learn/quickstart/":{title:"Patterns quick start",tags:[],content:` Patterns quick start overview This validated pattern quickstart offers a streamlined guide to deploying predefined, reliable configurations and applications, ensuring they meet established standards. It provides step-by-step instructions on setup, prerequisites, and configuration, enabling administrators to deploy tested, supportable patterns quickly. These patterns simplify complex deployments by applying reusable configurations suited to various infrastructure and application needs, allowing users to efficiently deploy, manage, and scale applications with GitOps. This approach also reduces the risks and time associated with custom configurations.
+Validated patterns can be deployed using either the OpenShift-based Validated Patterns framework or the Ansible GitOps Framework (AGOF). The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat.
+Getting Started with Validated Patterns This guide steps you through the process of deploying your first validated pattern on an OpenShift cluster. By the end of this guide, you’ll have a working instance of the Multicloud GitOps pattern, which serves as an excellent foundation for exploring other patterns.
+What You’ll Learn Setting up prerequisites for validated patterns
+Installing and configuring the Validated Patterns Operator
+Deploying the Multicloud GitOps pattern
+Managing secrets and configurations
+Prerequisites Before beginning, ensure you have the following:
+OpenShift Cluster Requirements A running OpenShift 4.12 or later
+Cluster-admin privileges
+At least 8 CPU cores available
+Minimum 16GB RAM available
+Storage Requirements A default storage class configured for dynamic provisioning
+At least 10GB of available storage
+Network Requirements For connected environments: Access to public container registries
+Access to GitHub repositories
+For disconnected environments: One or more openshift clusters deployed in a disconnected network
+An OCI-compliant registry that is accessible from the disconnected network
+A Git Repository that is accessible from the disconnected network
+For more information on disconnected installation, see Validated Patterns in a disconnected Network.
+`,url:"https://validatedpatterns.io/learn/quickstart/",breadcrumb:"/learn/quickstart/"},"https://validatedpatterns.io/patterns/devsecops/devel-cluster/":{title:"Secured Development Cluster",tags:[],content:`Having a development cluster (devel) join the hub Introduction Development clusters are responsible for building applications and delivering the applications to a secured registry. The development cluster defines a secure pipeline that includes code and image scans and image signing before delivering them to the registry. OpenShift Pipelines is used for the continuous integration (CI). The Quay registry is deployed on the hub and therefore integration is required for the development pipeline to push images to the registry.
 Development clusters also need to be secured and so one part of the deployment is Advanced Cluster Security with a secured configuration. This allows ACS to monitor and report on security issues on the cluster. ACS secured sites report to an ACS Central application that is deployed on the hub.
 Allow ACM to deploy the devel applications to a subset of clusters By default the devel applications are deployed on any development clusters that ACM knows about.
 managedClusterGroups: - name: devel helmOverrides: - name: clusterGroup.isHubCluster value: &#34;false&#34; clusterSelector: matchLabels: clusterGroup: devel matchExpressions: - key: vendor operator: In values: - OpenShift Remember to commit the changes and push to GitHub so that GitOps can see your changes and apply them.
@@ -1804,11 +1910,61 @@ Back on the hub cluster accept the join request
 clusteradm accept --clusters &lt;store-cluster-name&gt;
 Skip to the next section, Store is joined
 Store is joined You&rsquo;re done That&rsquo;s it! Go to your store (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it&rsquo;s finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
-`,url:"https://validatedpatterns.io/patterns/retail/store/",breadcrumb:"/patterns/retail/store/"},"https://validatedpatterns.io/learn/validated_patterns_frameworks/":{title:"Validated patterns frameworks",tags:[],content:` Introduction Validated patterns provides two frameworks to deploy applications: the OpenShift-based Validated Patterns framework and the Ansible GitOps Framework (AGOF).
-The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat.
-Ansible GitOps Framework (AGOF) is an alternative framework, designed to provide a framework for GitOps without Kubernetes. AGOF is not a pattern itself; it is a framework for installing Ansible Automation Platform (AAP), and then using that as the GitOps engine to drive other pattern work. AGOF comes with code to install VMs in AWS, if desired, or else it can work with previously provisioned VMs, or a functional AAP Controller endpoint.
-The goal with either framework, is that developers, operators, security, and architects build a secure and repeatable day one deployment mechanism and maintenance automation for day two operations.
-`,url:"https://validatedpatterns.io/learn/validated_patterns_frameworks/",breadcrumb:"/learn/validated_patterns_frameworks/"},"https://validatedpatterns.io/learn/vp_openshift_framework/":{title:"Validated pattern structure",tags:[],content:` OpenShift framework fundamentals The OpenShift validated patterns framework uses OpenShift GitOps (ArgoCD) as the primary driver for deploying patterns and keeping them up to date. Validated patterns use Helm charts as the primary artifacts for GitOps. Helm charts provide a mechanism for templating that is powerful when building repeatable, automated deployments across different deployment environments (i.e. clouds, data-centers, edge, etc.)
+`,url:"https://validatedpatterns.io/patterns/retail/store/",breadcrumb:"/patterns/retail/store/"},"https://validatedpatterns.io/learn/getting-started-secret-management/":{title:"Configuring secrets",tags:[],content:` What are secrets Sensitive information referred to as secrets should not be exposed publicly or handled insecurely. This can include passwords, private keys, certificates (particularly the private parts), database connection strings, and other confidential data.
+A simple way to think of secrets is as anything that security teams or responsible system administrators would ensure stays protected and not published in a public space.
+Secrets are crucial for the functioning of applications for example database passwords or cache keys. Without access to these secrets, applications might fail or operate in a significantly impaired manner.
+Secrets often vary between different deployments of the same application for example separate load balancer certificates for different instances. Using the same secret across multiple deployments is generally discouraged as it increases the risk of exposure
+Applications often need secrets to run correctly, making them indispensable. Removing or mishandling secrets can disrupt operations.
+How Validated Patterns implements secrets management Validated Patterns supports the tokenization approach for secret management. Tokenization involves keeping actual secret values out of version control (for example git) by using tokens or references that can pull secrets from secure storage during runtime. An external storage system pulls the real secrets at runtime.
+This approach requires integration with external secret management systems some examples of which are HashiCorp Vault, AWS Secrets Manager, Azure Key Vault, and CyberArk’s Conjur.
+The External Secrets Operator (ESO) is integral to the validated patterns framework, enabling secure secret management by fetching secrets from various secret stores and projecting them into Kubernetes namespaces. ESO supports integration with providers such as HashiCorp Vault, AWS Secrets Manager, Azure Key Vault, GCP, IBM Secrets Manager, and others.
+ESO
+Supports a range of secret providers, ensuring no vendor lock-in.
+Keeps secrets out of version-controlled repositories, using token references in Git instead.
+Allows teams to manage secrets securely while maintaining efficient Git workflows.
+As of November 15, 2024, ESO is not officially supported by Red Hat as a product.
+ESO’s custom file format and utilities streamlines secret management by allowing file references and supporting encrypted secret storage. The design prioritizes security through multi-layer encryption and simplifies key management. In particular the ini key type is especially helpful for handling AWS credentials, where mismanagement could lead to unauthorized use and potential financial or operational issues.
+Validated Patterns primary backend secret store is HashiCorp Vault. HashiCorp Vault acts as a centralized service for securely managing secrets, such as passwords, API keys, and certificates.
+Unlike other secret management systems tied to specific cloud providers for example AWS Secrets Manager or Azure Key Vault, Vault can be deployed across different clouds, on bare-metal systems, and in hybrid environments. This cross-platform support made it a popular and practical choice for maintaining a consistent secrets management strategy.
+Configuring Secrets Secret management in validated patterns follows GitOps best practices while maintaining security. Here’s how to configure your secrets:
+Using Vault for Secret Management Access the Vault instance deployed by the pattern.
+Click the nine box in the UI, choose the Vault and you are taken to the Vault’s UI.
+Log in with the root token from the vaultkeys secret in the imperative space. Retrieve this be running the following command:
+$ oc extract -n imperative secret/vaultkeys --to=- --keys=vault_data_json 2&gt;/dev/null | jq -r &#34;.root_token&#34; Adding a Secret to the Multicloud GitOps Pattern Follow these steps add a new secret to your forked local branch:
+Navigate to the Multicloud GitOps pattern repository by running the following command:
+$ cd &lt;repository-name&gt; Switch to the branch you created in &#34;Getting Started with Multicloud GitOps&#34; by running the following command:
+$ git checkout my-branch Edit the existing ~/values-secret-multicloud-gitops.yaml
+$ vi ~/values-secret-multicloud-gitops.yaml Add the following block to define a new top-level secret called mysecret:
+secrets: - name: mysecret vaultPrefixes: - global fields: - name: foo onMissingValue: generate - name: bar onMissingValue: generate Load the secrets into the Vault by running the following command:
+$ ./pattern.sh make load-secrets Verify the secret in the Vault UI.
+Access the Vault’s web UI.
+From the Dashboard menu navigate to the secret/ secrets engine where your secrets are stored.
+Expand the global folder.
+Verify that the mysecret entry exists and contains the foo and bar fields with auto-generated values.
+Creating a new external secret in OpenShift GitOps Follow these steps to create and deploy a new external secret in your GitOps repository.
+Navigate to the charts/all/config-demo/templates directory in your repository:
+$ cd charts/all/config-demo/templates Create a new YAML file named mysecret-external-secret.yaml:
+$ vi mysecret-external-secret.yaml Open the file in your preferred text editor:
+$ vi mysecret-external-secret.yaml Add the following content to define a new external secret using the format of the existing template:
+--- apiVersion: &#34;external-secrets.io/v1beta1&#34; kind: ExternalSecret metadata: name: config-demo-mysecret (1) namespace: config-demo spec: refreshInterval: 15s (2) secretStoreRef: (3) name: {{ .Values.secretStore.name }} kind: {{ .Values.secretStore.kind }} target: name: config-demo-mysecret template: type: Opaque dataFrom: (4) - extract: key: {{ .Values.configdemomysecret.key }} 1 Specifies the name of the new secret to be created in the config-demo namespace. 2 Sets how frequently the external secret is refreshed. 3 References the Vault or secret store as defined in the Helm values. 4 Uses extract to source all key-value pairs from the specified key in the Vault. Edit the chart’s values.yaml file to reflect this new external secret:
+$ vi ~/multicloud-gitops/charts/all/config-demo/values.yaml Add the following content:
+configdemomysecret: key: secret/data/global/config-demo Add the new file to git:
+$ git add . Commit your changes:
+$ git commit -m &#34;Added mysecret-external-secret to create mysecret-secret in config-demo&#34; Push your branch to the origin of your fork:
+$ git push origin my-branch Ensure that ArgoCD is monitoring the charts/all/config-demo directory.
+Wait for ArgoCD to synchronize and apply the new changes. You can observe the synchronization status in the ArgoCD web UI.
+The new config-demo-mysecret should be created and visible in the config-demo project, populated with the relevant data extracted from the Vault.
+Verify the secret in the Cluster:
+Once ArgoCD has applied the changes, verify that the config-demo-mysecret has been created in the config-demo namespace:
+$ oc get secret config-demo-mysecret -n config-demo Check the contents of the secret if necessary:
+$ oc describe secret config-demo-mysecret -n config-demo Expected output NAME TYPE DATA AGE config-demo-mysecret Opaque 1 25s In the OpenShift Container Platform web console, select the config-demo Project.
+Select the config-demo-mysecret to review the secret details.
+Next Steps Explore the deployed components in your OpenShift console
+Review the GitOps repositories created by the pattern
+Try modifying the configuration to understand the GitOps workflow
+Consider exploring other validated patterns that build on this foundation
+Remember to consult the official documentation at Validated Patterns for detailed information about specific features and advanced configurations.
+`,url:"https://validatedpatterns.io/learn/getting-started-secret-management/",breadcrumb:"/learn/getting-started-secret-management/"},"https://validatedpatterns.io/learn/vp_openshift_framework/":{title:"Validated pattern structure",tags:[],content:` OpenShift framework fundamentals The OpenShift validated patterns framework uses OpenShift GitOps (ArgoCD) as the primary driver for deploying patterns and keeping them up to date. Validated patterns use Helm charts as the primary artifacts for GitOps. Helm charts provide a mechanism for templating that is powerful when building repeatable, automated deployments across different deployment environments (i.e. clouds, data-centers, edge, etc.)
 The framework provides consistency across any cloud provider - public or private. So while you could automate the handling for each of the cloud providers, the framework utilizes one Kubernetes distribution that runs on public or private clouds - the hybrid and/or multi cloud model.
 Many Cloud Native Computing Foundation (CNCF) projects use Operators to manage the lifecycle of their service. Whenever possible, validated patterns will make use of these Operators to deploy the application service.
 Red Hat Advanced Cluster Management (ACM) is primarily used to automate the deployment of edge clusters. It provides subscription information for specific deployment sites.
@@ -1898,7 +2054,7 @@ Manage Multi-Cluster and Multi-Cloud deployments
 Use the patterns framework to centrally manage multiple clusters and workloads across public and private clouds. Incorporate tools like Red Hat Advanced Cluster Management (RHACM) and Red Hat OpenShift GitOps (ArgoCD) to streamline operations.
 Secure secrets across deployments
 Utilize tools such as Hashicorp Vault to manage secrets securely across multi-cloud deployments, ensuring sensitive data is protected.
-`,url:"https://validatedpatterns.io/learn/vp_structure_vp_pattern/",breadcrumb:"/learn/vp_structure_vp_pattern/"},"https://validatedpatterns.io/learn/vp_agof/":{title:"Ansible GitOps Framework",tags:[],content:` About the Ansible GitOps framework (AGOF)for validated patterns The Ansible GitOps Framework provides an extensible framework to do GitOps with Ansible Automation Platform (AAP). It offers useful facilities for developing patterns (community and validated) that work with AAP as the GitOps engine.
+`,url:"https://validatedpatterns.io/learn/vp_structure_vp_pattern/",breadcrumb:"/learn/vp_structure_vp_pattern/"},"https://validatedpatterns.io/learn/vp_agof/":{title:"Ansible GitOps Framework",tags:[],content:` About the Ansible GitOps framework (AGOF) for validated patterns The Ansible GitOps Framework provides an extensible framework to do GitOps with Ansible Automation Platform (AAP). It offers useful facilities for developing patterns (community and validated) that work with AAP as the GitOps engine.
 When there is no access to OpenShift Container Platform, AGOF provides a standalone solution for deploying and managing validated patterns. This framework leverages GitOps principles without relying on OpenShift.
 Administrators can use the Ansible Automation Platform, which includes automation controller, a web-based UI interface to define, operate, scale, and delegate automation across their enterprise.
 The repository at Ansible GitOps Framework provides code for installing VMs on AWS, if needed. It can also be used with existing VMs or a functional AAP Controller endpoint.
@@ -1973,14 +2129,14 @@ Optional: Create a subscription manifest by following the guidance at Obtaining 
 Update your agof_vault.yml file with the path to the downloaded manifest zip file. For example add the following:
 controller_license_src_file: &#39;~/Downloads/&lt;manifest_filename&gt;.zip&#39; manifest_content: &#34;{{ lookup(&#39;file&#39;, controller_license_src_file) | b64encode }}&#34; Example agof_vault.yml file --- aws_account_nbr_vault: &#39;&lt;AWS_account_ID&gt;&#39; aws_access_key_vault: &#39;&lt;AWS_access_key&gt;&#39; aws_secret_key_vault: &#39;&lt;AWS_secret_key&gt;&#39; pattern_prefix: &#39;foga&#39; pattern_dns_zone: &#39;aws.validatedpatterns.io&#39; ec2_name_prefix: &#39;foga-testing&#39; ec2_region: &#39;us-east-1&#39; offline_token: &#39;&lt;insert-token-here&gt;&#39; redhat_username: &#39;rhn-support-myusername&#39; redhat_password: &#39;passwd01&#39; admin_password: &#39;redhat123!&#39; manifest_content: &#34;Content for a manifest file to entitle AAP Controller. See below for an example of how to point to a local file&#34; #manifest_content: &#34;{{ lookup(&#39;file&#39;, &#39;~/Downloads/manifest_AVP_20230510T202608Z.zip&#39;) | b64encode }}&#34; org_number_vault: &#34;&lt;Org-ID&gt;&#34; activation_key_vault: &#34;kevs-agof-key&#34; # Set these variables to provide your own AMI, or to re-use an AMI previously generated with this process #skip_imagebuilder_build: &#39;boolean: skips imagebuilder build process&#39; #imagebuilder_ami: &#39;The ID of an AWS AMI image, preferably one that was built with this toolkit&#39; automation_hub_token_vault: &#39;&lt;insert-token-here&gt;&#39; # These variables can be set but are optional. The previous (before AAP 2.4) conncept of sync-list was private # to an account. #automation_hub_url_certified_vault: &#39;The private automation hub URL for certified content&#39; #automation_hub_url_validated_vault: &#39;The private automation hub URL for validated content&#39; controller_config_dir: &#34;{{ &#39;~/agof_minimal_demo&#39; | expanduser }}&#34; db_password: &#39;test&#39; agof_statedir: &#34;{{ &#39;~/agof&#39; | expanduser }}&#34; agof_iac_repo: &#34;https://github.com/mhjacks/agof_demo_config.git&#34; Run the following command from the AGOF repository directory:
 $ ./pattern.sh make install This command invokes the controller_configuration dispatch role on the controller endpoint based on the configuration found in the controller_configuration_dir and in your agof_vault.yml file. This controls all of the controller configuration. Based on the variables defined in the controller configuration, dispatch calls the necessary roles and modules in the right order to configure AAP to run your pattern.
-Verification The default installation provides an AAP 2.4 installation deployed using the containerized installer, with services deployed this way:
+Verification The default installation provides an AAP 2.4 installation deployed by using the containerized installer, with services deployed this way:
 Table 2. agof_vault settings URL Service https:{{ ec2_name_prefix }}.{{ domain }}:8443
 Controller API.
 https:{{ ec2_name_prefix }}.{{ domain }}:8444/
 Private Automation Hub
 https:/{{ ec2_name_prefix }}.{{ domain }}:8445/\`
 EDA Automation Controller
-Once the install completes, you will have a project, an inventory (consisting of the AAP controller), a credential (the private key from ec2), a job template (which runs a fact gather on the AAP controller) and a schedule that will run the job template every 5 minutes,
+Once the install completes, you will have a project, an inventory (consisting of the AAP controller), a credential (the private key from ec2), a job template (which runs a fact gather on the AAP controller) and a schedule that will run the job template every 5 minutes.
 Log in to https://aap.{{ ec2_name_prefix }}.{{ domain }}:8443 with the username admin and the password as configured in admin_password field of agof_vault.yml.
 Under Resources &gt; Projects verify the project Ansible GitOps Framework Minimal Demo is created with status Successful.
 Under Resources &gt; Inventories verify the inventory AGOF Demo Inventory is created with sync status Success.
@@ -1989,7 +2145,7 @@ Under Resources &gt; Credentials verify the ec2 ssh credential ec2_ssh_credentia
 Under Views &gt; Schedules verify the schedules are created.
 Custom Ansible controller (API install) In this method, you provide an existing Ansible Automation Platform (AAP) Controller endpoint, either on bare metal or in a private cloud, without needing AWS or pre-configured VMs.
 You supply the manifest contents, endpoint hostname, admin username (defaults to &#34;admin&#34;), and admin password, and then the installation hands off to a controller_config_dir you define.
-Run the following command to install using this method:
+Run the following command to install by using this method:
 $ ./pattern.sh make api_install Tearing down the installation To tear down the installation run the following command:
 $ ./pattern.sh make aws_uninstall `,url:"https://validatedpatterns.io/learn/vp_agof/",breadcrumb:"/learn/vp_agof/"},"https://validatedpatterns.io/learn/vp_agof_config_controller/":{title:"Using the Controller Configuration collection",tags:[],content:` Overview of the Ansible GitOps Framework (AGOF) Installation Process The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate the deployment and configuration of Ansible Automation Platform (AAP) environments using GitOps principles. It leverages Ansible to manage infrastructure and application provisioning in a declarative, version-controlled way. AGOF provides a structured approach to setting up cloud infrastructure, installing AAP components, and handing over control to the AAP Controller for ongoing automation and management. An overview of the steps involved in configuring a basic demo minimal demo application are listed here:
 1. Pre-Init Environment (Bootstrap Ansible) Ansible Configuration: The environment is initialized by generating an ansible.cfg file, which is configured with Automation Hub and public Galaxy endpoints. This process includes vault configuration to inject the Automation Hub token and install required Ansible collections from requirements.yml.
@@ -2530,7 +2686,11 @@ Allow ACM to deploy the production application to a subset of secured clusters B
 Deploy a Production (prod) cluster For instructions on how to prepare and import a production (prod) cluster please read the section importing a cluster. Use clusterGroup=prod.
 You are done importing the production cluster That&rsquo;s it! Go to your production OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it&rsquo;s finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
 Next up Work your way through the Multicluster DevSecOps GitOps/DevOps demos (TBD)
-`,url:"https://validatedpatterns.io/patterns/devsecops/production-cluster/",breadcrumb:"/patterns/devsecops/production-cluster/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/ansible-automation-platform/":{title:"Ansible Automation Platform",tags:[],content:`Ansible Automation Platform How it&rsquo;s installed See the installation details here.
+`,url:"https://validatedpatterns.io/patterns/devsecops/production-cluster/",breadcrumb:"/patterns/devsecops/production-cluster/"},"https://validatedpatterns.io/learn/validated_patterns_frameworks/":{title:"Validated patterns frameworks",tags:[],content:` Introduction Validated patterns provides two frameworks to deploy applications: the OpenShift-based Validated Patterns framework and the Ansible GitOps Framework (AGOF).
+The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat.
+Ansible GitOps Framework (AGOF) is an alternative framework, designed to provide a framework for GitOps without Kubernetes. AGOF is not a pattern itself; it is a framework for installing Ansible Automation Platform (AAP), and then using that as the GitOps engine to drive other pattern work. AGOF comes with code to install VMs in AWS, if desired, or else it can work with previously provisioned VMs, or a functional AAP Controller endpoint.
+The goal with either framework, is that developers, operators, security, and architects build a secure and repeatable day one deployment mechanism and maintenance automation for day two operations.
+`,url:"https://validatedpatterns.io/learn/validated_patterns_frameworks/",breadcrumb:"/learn/validated_patterns_frameworks/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/ansible-automation-platform/":{title:"Ansible Automation Platform",tags:[],content:`Ansible Automation Platform How it&rsquo;s installed See the installation details here.
 How to Log In The default login user is admin and the password is generated randomly at install time; you will need the password to login in to the AAP interface. You do not have to log in to the interface - the pattern will configure the AAP instance; the pattern retrieves the password using the same technique as the ansible_get_credentials.sh script described below. If you want to inspect the AAP instance, or change any aspects of its configuration, there are two ways to login and look at it. Both mechanisms are equivalent; you get the same password to the same instance using either technique.
 Via the OpenShift Console In the OpenShift console, navigate to Workloads &gt; Secrets and select the &ldquo;ansible-automation-platform&rdquo; project if you want to limit the number of Secrets you can see.
 The Secret you are looking for is in the ansible-automation-platform project and is named controller-admin-password. If you click on it, you can see the Data.password field. It is shown revealed below to show that it is the same as what is shown by the script method of retrieving it below:
@@ -2670,25 +2830,7 @@ TBD - screen shots
 Pipeline 4: Build, Scan, Sign and Push to Prod Pipeline 4 demonstrates a more complete pipeline that builds, scans and also signs the image before pushing.
 Pipeline 4 is the preferred DevSecOps approach and can be modified to include more security based tasks. E.g. when using a base image for a build, the signature of that image can be checked before the build step even starts.
 TBD - screen shots
-`,url:"https://validatedpatterns.io/patterns/devsecops/secure-supply-chain-demo/",breadcrumb:"/patterns/devsecops/secure-supply-chain-demo/"},"https://validatedpatterns.io/learn/quickstart/":{title:"Patterns quick start",tags:[],content:` Patterns quick start Each pattern can be deployed using the command line. The only requirement is to have git and podman installed. See the Prerequisite installation instructions for more information.
-Patterns deployment requires several tools including Helm to install. However, the validated patterns framework removes the need to install and maintain these tools. The pattern.sh script uses a container which includes the necessary tools. The use of that container is why you need to install podman.
-Check the values-*.yaml for changes that are needed before deployment. After changing the values-*.yaml files where needed and pushing them to your git repository, you can run ./pattern.sh make install from your local repository directory and that will deploy the datacenter/hub cluster for a pattern. Edge clusters are deployed by joining/importing them into ACM on the hub.
-Alternatively to the ./pattern.sh make install method, you can use the validated pattern operator available in the OpenShift console.
-For information on using the Validated Patterns Operator, see Using the Validated Pattern Operator.
-Follow any other post-install instructions for the pattern on that pattern’s Getting started page.
-Prerequisite installation instructions Tested Operating systems The following instructions have been tested on the following operating systems:
-Red Hat Enterprise Linux 8 and 9
-CentOS 8 and 9
-Fedora 36 and onwards
-Debian Bookworm
-Ubuntu 22.04
-Mac OSX Big Sur and onwards
-Red Hat Enterprise Linux 8 and 9 Make sure that you have both the appstream and the baseos repositories configured. For example on RHEL 8 you will get the following:
-sudo dnf repolist Updating Subscription Management repositories. repo id repo name rhel-8-for-x86_64-appstream-rpms Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs) rhel-8-for-x86_64-baseos-rpms Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs) Install podman and git:
-sudo dnf install -y podman git Fedora Install podman and git:
-sudo dnf install -y podman git Debian and derivatives Install podman and git:
-sudo apt-get install -y podman git Mac OSX Install podman and git:
-/bin/bash -c &#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&#34; brew install podman git # Containers on MacOSX run in a VM which is managed by &#34;podman machine&#34; commands podman machine init -v \${HOME}:\${HOME} -v /private/tmp/:/private/tmp podman machine start `,url:"https://validatedpatterns.io/learn/quickstart/",breadcrumb:"/learn/quickstart/"},"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting common Pattern Deployment issues Problem Validated Pattern installation process is stuck on deploying Vault
+`,url:"https://validatedpatterns.io/patterns/devsecops/secure-supply-chain-demo/",breadcrumb:"/patterns/devsecops/secure-supply-chain-demo/"},"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting common Pattern Deployment issues Problem Validated Pattern installation process is stuck on deploying Vault
 Solution Most common reason of this is that prerequisites are not satisfied i.e. Image Registry is not set up or CephFs is not set as a default StorageClass. Please refer to section Getting started → Prerequisites and make sure all is done before proceeding to pattern deployment.
 Problem Downloading AI model Llama-2-70b-chat-hf using download-model Jupyter notebook is failing or TGI deployment fails after model is downloaded
 Solution Most often this is due to some network errors while downloading the model. If not sure if whole model was downloaded, please clear bucket model-bucket in RGW storage using aws-cli or any other method, and repeat process of downloading the model.
@@ -2801,10 +2943,14 @@ $ oc get -n xraylab-1 kafkasource Example output NAME TOPICS BOOTSTRAPSERVERS RE
 Red Hat Advanced Cluster Management (RHACM) can be used to create a cluster of a specific cluster group type. You can deploy a specific cluster that way if you have RHACM set up with credentials for deploying clusters. However in many cases an OpenShift cluster has already been created and will be imported into the set of clusters that RHACM is managing.
 While you can create and deploy in this manner this section concentrates on importing an existing cluster and designating a specific managed cluster group type.
 To deploy a cluster that can be imported into RHACM, use the openshift-install program provided at console.redhat.com. You will need login credentials.
-Importing a cluster using the RHACM User Interface Getting to the RHACM user interface After ACM is installed a message regarding a &#34;Web console update is available&#34; will be displayed. Click on the &#34;Refresh web console&#34; link.
+Importing a cluster using the RHACM User Interface After ACM is installed a message regarding a &#34;Web console update is available&#34; is displayed. Follow this guidance to import a cluster:
+Access the the RHACM user interface by clicking the &#34;Refresh web console&#34; link.
 On the upper-left side you’ll see a pull down labeled &#34;local-cluster&#34;. Select &#34;All Clusters&#34; from this pull down. This will navigate to the RHACM console and to its &#34;Clusters&#34; section
-Select the &#34;Import cluster&#34; option.
-Importing the cluster On the &#34;Import an existing cluster&#34; page, enter the cluster name (arbitrary) and choose Kubeconfig as the &#34;import mode&#34;. Add the tag clusterGroup= using the appropriate cluster group specified in the pattern. Press Import.
+Select the &#34;Import an existing cluster&#34; option.
+On the &#34;Import an existing cluster&#34; page, enter the cluster name (arbitrary) and choose Kubeconfig as the Import mode.
+Add the Additional label clusterGroup= using the appropriate cluster group specified in the pattern.
+Click Next. Optionally choose an automation template to run Ansible jobs at different stages of the cluster lifecycle.
+Click Next and on the review screen click Import to successfully import the cluster.
 Using this method, you are done. Skip to the section in your pattern documentation that describes how you can confirm the pattern deployed correctly on the managed cluster.
 Other potential import tools There are a two other known ways to join a cluster to the RHACM hub. These methods are not supported but have been tested once. The patterns team no longer tests these methods. If these methods become supported we will maintain the documentation here.
 Using the cm-cli tool
@@ -3900,7 +4046,8 @@ You can create a token in gitea under Settings -&gt; Applications -&gt; Manage A
 git -c http.sslVerify=false clone https://gitea_admin:&lt;token&gt;@gitea-route-vp-gitea.apps.mcg-hub.aws.validatedpatterns.io/gitea_admin/multicloud-gitops.git git -c http.sslVerify=false push origin mytestbranch Note: The conversion from gitea mirror to regular repository is needed unless the upstream issue gets implemented.
 `,url:"https://validatedpatterns.io/blog/2024-07-12-in-cluster-git/",breadcrumb:"/blog/2024-07-12-in-cluster-git/"},"https://validatedpatterns.io/patterns/ansible-gitops-framework/":{title:"Ansible GitOps Framework",tags:[],content:`Ansible GitOps Framework Background Ansible GitOps Framework (AGOF) is an alternative to the OpenShift-based Validated Patterns framework, designed to provide a framework for GitOps without Kubernetes. AGOF is not a pattern itself; it is a framework for installing Ansible Automation Platform (AAP), and then using that as the GitOps engine to drive other pattern work. AGOF comes with code to install VMs in AWS, if desired, or else it can work with previously provisioned VMs, or a functional AAP Controller endpoint.
 The Pattern is then expressed as an Infrastructure as Code repository, which will be loaded into AAP.
-Solution elements How to use a GitOps approach to manage non-Kubernetes workloads Red Hat Technologies Red Hat Ansible Automation Platform (formerly known as &ldquo;Ansible Tower&rdquo;) Red Hat Enterprise Linux `,url:"https://validatedpatterns.io/patterns/ansible-gitops-framework/",breadcrumb:"/patterns/ansible-gitops-framework/"},"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/":{title:"OPEA QnA chat accelerated with Intel Gaudi",tags:[],content:`About OPEA QnA chat accelerated with Intel Gaudi pattern Background Validated pattern is based on OPEA [Open Platform for Enterprise AI] example - Chat QnA. OPEA is an ecosystem orchestration framework to integrate performant GenAI technologies &amp; workflows leading to quicker GenAI adoption and business value. Another purpose of this pattern is to deploy whole infrastructure stack enabling Intel Gaudi accelerator. Accelerator is used in the AI inferencing process. Pattern makes use of GitOps approach. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code will be checked by the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
+Solution elements How to use a GitOps approach to manage non-Kubernetes workloads Red Hat Technologies Red Hat Ansible Automation Platform (formerly known as &ldquo;Ansible Tower&rdquo;) Red Hat Enterprise Linux For more information and guidance on how to use the AGOF framework, see About the Ansible GitOps framework (AGOF) for validated patterns.
+`,url:"https://validatedpatterns.io/patterns/ansible-gitops-framework/",breadcrumb:"/patterns/ansible-gitops-framework/"},"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/":{title:"OPEA QnA chat accelerated with Intel Gaudi",tags:[],content:`About OPEA QnA chat accelerated with Intel Gaudi pattern Background Validated pattern is based on OPEA [Open Platform for Enterprise AI] example - Chat QnA. OPEA is an ecosystem orchestration framework to integrate performant GenAI technologies &amp; workflows leading to quicker GenAI adoption and business value. Another purpose of this pattern is to deploy whole infrastructure stack enabling Intel Gaudi accelerator. Accelerator is used in the AI inferencing process. Pattern makes use of GitOps approach. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code will be checked by the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
 Components Kernel Module Management operator (KMM) and HabanaAI operator are responsible for providing Gaudi accelerators within the OpenShift cluster, including drivers and monitoring metrics
 Node Feature Discovery operator labels all cluster nodes with Gaudi resources available
 AI Chat microservices:
