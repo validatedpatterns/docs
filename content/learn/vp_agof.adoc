@@ -188,7 +188,7 @@ Click the `Load token` link at https://console.redhat.com[console.redhat.com] > 
 * `agof_statedir:` set its value to `"{{ '~/agof' | expanduser }}"`
 * `agof_iac_repo:` set its value to `"https://github.com/mhjacks/agof_demo_config.git"`
 
-. Optional: Create a subscription manifest by following the guidance at link:https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/htmlred_hat_ansible_automation_platform_operations_guide/assembly-aap-obtain-manifest-files#assembly-aap-obtain-manifest-files[Obtaining a manifest file].
+. Optional: Create a subscription manifest by following the guidance at link:https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/html-single/red_hat_ansible_automation_platform_operations_guide/index#proc-create-subscription-allocation_obtain-manifest[Obtaining a manifest file].
 
 .. Update your `agof_vault.yml` file with the path to the downloaded manifest zip file. For example add the following: 
 +
