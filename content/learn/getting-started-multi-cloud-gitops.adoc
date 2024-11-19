@@ -1,0 +1,311 @@
+---
+menu:
+  learn:
+    parent: Patterns quick start
+title: Getting Started with Multicloud GitOps
+aliases: /infrastructure/using-validated-pattern-operator/
+weight: 20
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Getting Started with Multicloud GitOps
+
+Multicloud GitOps is a foundational pattern that demonstrates GitOps principles for managing applications across multiple clusters. It provides:
+
+* A GitOps framework using `ArgoCD`
+* Infrastructure-as-Code practices
+* Multi-cluster management capabilities
+* Template for secure secret management
+
+Red Hat recommend the Multicloud GitOps pattern as your base pattern because:
+
+. It establishes core GitOps practices
+. Provides a minimal but complete implementation
+. Serves as a foundation for other patterns
+. Demonstrates key validated patterns concepts
+
+[NOTE]
+====
+Other patterns build upon these concepts, making this an ideal starting point for your validated patterns journey.
+====
+
+== Deploying the Multicloud GitOps pattern
+
+.Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *Services \-> Containers \-> Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. Verify that a dynamic `StorageClass` exists before creating one by running the following command: 
++
+[source,terminal]
+----
+$ oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,DEFAULT:.metadata.annotations."storageclass\.kubernetes\.io/is-default-class"
+----
++
+.Example output
++
+[source,terminal]
+----
+NAME      PROVISIONER       DEFAULT
+gp2-csi   ebs.csi.aws.com   <none>
+gp3-csi   ebs.csi.aws.com   true
+
+----
+
+* Optional: A second OpenShift cluster for multicloud demonstration.
+//Replaced git and podman prereqs with the tooling dependencies page
+* https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
+
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
+
+If you do not have a running Red Hat OpenShift cluster, you can start one on a
+public or private cloud by using https://console.redhat.com/openshift/create[Red Hat Hybrid Cloud Console].
+
+.Procedure
+
+. From the https://github.com/validatedpatterns/multicloud-gitops[multicloud-gitops] repository on GitHub, click the Fork button.
+
+. Clone the forked copy of this repository by running the following command.
++
+[source,terminal]
+----
+$ git clone git@github.com:<your-username>/multicloud-gitops.git
+----
+
+. Navigate to your repository: Ensure you are in the root directory of your Git repository by using:
++
+[source,terminal]
+----
+$ cd /path/to/your/repository 
+----
+
+. Run the following command to set the upstream repository:
++
+[source,terminal]
+----
+$ git remote add -f upstream git@github.com/validatedpatterns/multicloud-gitops.git 
+----
+
+. Verify the setup of your remote repositories by running the following command:
++
+[source,terminal]
+----
+$ git remote -v
+----
++
+.Example output
++
+[source,terminal]
+----
+origin	git@github.com:<your-username>/multicloud-gitops.git (fetch)
+origin	git@github.com:<your-username>/multicloud-gitops.git (push)
+upstream	https://github.com/validatedpatterns/multicloud-gitops.git (fetch)
+upstream	https://github.com/validatedpatterns/multicloud-gitops.git (push)
+----
+
+. Create a local copy of the secret values file that can safely include credentials. Run the following commands:
++
+[source,terminal]
+----
+$ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
+----
++
+[NOTE]
+====
+Putting the `values-secret.yaml` in your home directory ensures that it does not get pushed to your git repository. It is based on the `values-secrets.yaml.template` file provided by the pattern in the top level directory. When you create your own patterns you will add your secrets to this file and save. At the moment the focus is on getting started and familiar with this base Multicloud GitOps pattern. 
+====
+
+. Create a new feature branch, for example `my-branch` from the `main` branch for your content:
++
+[source,terminal]
+----
+$ git checkout -b my-branch main
+----
+
+. Create a local branch and push it to origin to gain the flexibility needed to customize the base Multicloud GitOps by running the following command:
++
+[source,terminal]
+----
+$ git push origin my-branch
+----
+
+You can proceed to install the Multicloud GitOps pattern by using the web console or from command line by using the script `./pattern.sh` script. 
+
+To install the Multicloud GitOps pattern by using the web console you must first install the Validated Patterns Operator. The Validated Patterns Operator installs and manages Validated Patterns. 
+
+//Include Procedure module here
+[id="installing-validated-patterns-operator_{context}"]
+== Installing the {validated-patterns-op} using the web console
+
+.Prerequisites
+* Access to an {ocp} cluster by using an account with `cluster-admin` permissions.
+
+.Procedure
+
+. Navigate in the {hybrid-console-first} to the *Operators* → *OperatorHub* page.
+
+. Scroll or type a keyword into the *Filter by keyword* box to find the Operator you want. For example, type `validated patterns` to find the {validated-patterns-op}.
+
+. Select the Operator to display additional information.
++
+[NOTE]
+====
+Choosing a Community Operator warns that Red Hat does not certify Community Operators; you must acknowledge the warning before continuing.
+====
+
+. Read the information about the Operator and click *Install*.
+
+. On the *Install Operator* page:
+
+.. Select an *Update channel* (if more than one is available).
+
+.. Select a *Version* (if more than one is available).
+
+.. Select an *Installation mode*:
+*** *All namespaces on the cluster (default)* installs the Operator in the default `openshift-operators` namespace to watch and be made available to all namespaces in the cluster. This option is not always available.
+*** *A specific namespace on the cluster* allows you to choose a specific, single namespace in which to install the Operator. The Operator will only watch and be made available for use in this single namespace.
+
+.. Select *Automatic* or *Manual* approval strategy.
+
+. Click *Install* to make the Operator available to the selected namespaces on this {ocp} cluster.
+
+.Verification
+To confirm that the installation is successful:
+
+. Navigate to the *Operators* → *Installed Operators* page.
+
+. Check that the Operator is installed in the selected namespace and its status is `Succeeded`.
+
+//Include Procedure module here
+[id="create-pattern-instance_{context}"]
+== Creating the Multicloud GitOps instance
+
+.Prerequisites
+The {validated-patterns-op} is successfully installed in the relevant namespace.
+
+.Procedure
+
+. Navigate to the *Operators* → *Installed Operators* page.
+
+. Click the installed *{validated-patterns-op}*.
+
+. Under the *Details* tab, in the *Provided APIs* section, in the
+*Pattern* box, click *Create instance* that displays the *Create Pattern* page.
+
+. On the *Create Pattern* page, select *Form view* and enter information in the following fields:
+
+** *Name* - A name for the pattern deployment that is used in the projects that you created.
+** *Labels* - Apply any other labels you might need for deploying this pattern.
+** *Cluster Group Name* - Select a cluster group name to identify the type of cluster where this pattern is being deployed. For example, if you are deploying the {ie-pattern}, the cluster group name is `datacenter`. If you are deploying the {mcg-pattern}, the cluster group name is `hub`.
++
+To know the cluster group name for the patterns that you want to deploy, check the relevant pattern-specific requirements.
+. Expand the *Git Config* section to reveal the options and enter the required information.
+. Leave *In Cluster Git Server* unchanged. 
+.. Change the *Target Repo* URL to your forked repository URL. For example, change `+https://github.com/validatedpatterns/<pattern_name>+` to `+https://github.com/<your-git-username>/<pattern-name>+`
+.. Optional: You might need to change the *Target Revision* field. The default value is `HEAD`. However, you can also provide a value for a branch, tag, or commit that you want to deploy. For example, `v2.1`, `main`, or a branch that you created, `my-branch`.
+. Click *Create*.
++
+[NOTE]
+====
+A pop-up error with the message "Oh no! Something went wrong." might appear during the process. This error can be safely disregarded as it does not impact the installation of the Multicloud GitOps pattern. Use the Hub ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD instances, which will display states such as progressing, healthy, and so on, for each managed application. The Cluster ArgoCD provides detailed status on each application, as defined in the clustergroup values file.
+====
+
+The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
+
+When viewing the `config-demo` project through the Hub `ArgoCD` UI from the nines menu, it appears stuck in a Degraded state. This is the expected behavior when installing using the OpenShift Container Platform console.
+
+* To resolve this you need to run the following to load the secrets into the vault:
++
+[source,terminal]
+----
+$ ./pattern.sh make load-secrets
+----
++
+[NOTE]
+====
+You must have created a local copy of the secret values file by running the following command:
+
+[source,terminal]
+----
+$ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
+----
+====
+
+The deployment will not take long but it should deploy successfully.
+
+Alternatively you can deploy the Multicloud GitOps pattern by using the command line script `pattern.sh`. 
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the cluster by using the pattern.sh file
+
+To deploy the cluster by using the `pattern.sh` file, complete the following steps:
+
+. Log in to your cluster by running the following command:
++
+[source,terminal]
+----
+$ oc login
+----
++
+Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
++
+[source,terminal]
+----
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster. Run the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
+
+. Verify that the Operators have been installed.
+ .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
+ .. Check that the Operator is installed in the `openshift-operators` namespace and its status is `Succeeded`.
+. Verify that all applications are synchronized. Under the project `multicloud-gitops-hub` click the URL for the `hub` gitops `server`. The Vault application is not synched.
++
+image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
+
+As part of installing by using the script `pattern.sh` pattern, HashiCorp Vault is installed. Running `./pattern.sh make install` also calls the `load-secrets` makefile target. This `load-secrets` target looks for a YAML file describing the secrets to be loaded into vault and in case it cannot find one it will use the `values-secret.yaml.template` file in the git repository to try to generate random secrets.
+
+For more information, see section on https://validatedpatterns.io/secrets/vault/[Vault].
+
+.Verification of test pages
+
+Verify that the *hello-world* application deployed successfully as follows:
+
+. Navigate to the *Networking* -> *Routes* menu options.
+
+. From the *Project:* drop down select the *hello-world* project. 
+
+. Click the *Location URL*. This should reveal the following:
++
+[source,terminal]
+----
+Hello World!
+
+Hub Cluster domain is 'apps.aws-hub-cluster.openshift.org'
+Pod is running on Local Cluster Domain 'apps.aws-hub-cluster.openshift.org'
+----
+
+Verify that the *config-demo* application deployed successfully as follows:
+
+. Navigate to the *Networking* -> *Routes* menu options.
+
+. Select the *config-demo* *Project*. 
+
+. Click the *Location URL*. This should reveal the following:
++
+[source,terminal]
+----
+Hub Cluster domain is 'apps.aws-hub-cluster.openshift.org'
+Pod is running on Local Cluster Domain 'apps.aws-hub-cluster.openshift.org'
+The secret is `secret`
+----

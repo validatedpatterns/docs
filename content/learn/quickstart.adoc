@@ -2,84 +2,58 @@
 layout: default
 title: Patterns quick start
 menu: learn
-weight: 40
+weight: 20
 ---
 
 :toc:
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-== Patterns quick start
+== Patterns quick start overview
 
-Each pattern can be deployed using the command line. The only requirement is to have `git` and `podman` installed. See the <<installation_prerequisites>> for more information.
+This validated pattern quickstart offers a streamlined guide to deploying predefined, reliable configurations and applications, ensuring they meet established standards. It provides step-by-step instructions on setup, prerequisites, and configuration, enabling administrators to deploy tested, supportable patterns quickly. These patterns simplify complex deployments by applying reusable configurations suited to various infrastructure and application needs, allowing users to efficiently deploy, manage, and scale applications with GitOps. This approach also reduces the risks and time associated with custom configurations.
 
-Patterns deployment requires several tools including Helm to install. However, the validated patterns framework removes the need to install and maintain these tools. The `pattern.sh` script uses a container which includes the necessary tools. The use of that container is why you need to install `podman`.
+Validated patterns can be deployed using either the OpenShift-based Validated Patterns framework or the Ansible GitOps Framework (AGOF). The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat. 
 
-Check the `values-\*.yaml` for changes that are needed before deployment. After changing the `values-*.yaml` files where needed and pushing them to your git repository, you can run `./pattern.sh make install` from your local repository directory and that will deploy the datacenter/hub cluster for a pattern. Edge clusters are deployed by joining/importing them into ACM on the hub.
+== Getting Started with Validated Patterns
 
-Alternatively to the `./pattern.sh make install` method, you can use the https://operatorhub.io/operator/patterns-operator[validated pattern operator] available in the OpenShift console.
+This guide steps you through the process of deploying your first validated pattern on an OpenShift cluster. By the end of this guide, you'll have a working instance of the Multicloud GitOps pattern, which serves as an excellent foundation for exploring other patterns.
 
-For information on using the Validated Patterns Operator, see link:/infrastructure/using-validated-pattern-operator/[Using the Validated Pattern Operator].
+=== What You'll Learn
 
-Follow any other post-install instructions for the pattern on that pattern’s Getting started page.
+. Setting up prerequisites for validated patterns
+. Installing and configuring the Validated Patterns Operator
+. Deploying the Multicloud GitOps pattern
+. Managing secrets and configurations
 
+== Prerequisites
 
-== Prerequisite installation instructions [[installation_prerequisites]]
+Before beginning, ensure you have the following:
 
-== Tested Operating systems
-The following instructions have been tested on the following operating systems:
+=== OpenShift Cluster Requirements
 
-* Red Hat Enterprise Linux 8 and 9
-* CentOS 8 and 9
-* Fedora 36 and onwards
-* Debian Bookworm
-* Ubuntu 22.04
-* Mac OSX Big Sur and onwards
+* A running OpenShift 4.12 or later
+* Cluster-admin privileges
+* At least 8 CPU cores available
+* Minimum 16GB RAM available
 
-=== Red Hat Enterprise Linux 8 and 9
-Make sure that you have both the `appstream` and the `baseos` repositories configured.
-For example on RHEL 8 you will get the following:
+=== Storage Requirements
 
-[source,terminal]
-----
-sudo dnf repolist
-Updating Subscription Management repositories.
-repo id                               repo name
-rhel-8-for-x86_64-appstream-rpms      Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
-rhel-8-for-x86_64-baseos-rpms         Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
-----
+* A default storage class configured for dynamic provisioning
+* At least 10GB of available storage
 
-Install `podman` and `git`:
+=== Network Requirements
 
-[source,terminal]
-----
-sudo dnf install -y podman git
-----
+.For connected environments:
 
-=== Fedora
-Install `podman` and `git`:
+* Access to public container registries
+* Access to GitHub repositories
 
-[source,terminal]
-----
-sudo dnf install -y podman git
-----
+.For disconnected environments:
 
-=== Debian and derivatives
-Install `podman` and `git`:
+* One or more openshift clusters deployed in a disconnected network
+* An OCI-compliant registry that is accessible from the disconnected network 
+* A Git Repository that is accessible from the disconnected network
 
-[source,terminal]
-----
-sudo apt-get install -y podman git
-----
+For more information on disconnected installation, see link:/blog/2024-10-12-disconnected/[Validated Patterns in a disconnected Network].
 
-=== Mac OSX
-Install `podman` and `git`:
-
-[source,terminal]
-----
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install podman git
-# Containers on MacOSX run in a VM which is managed by "podman machine" commands
-podman machine init -v ${HOME}:${HOME} -v /private/tmp/:/private/tmp
-podman machine start
-----

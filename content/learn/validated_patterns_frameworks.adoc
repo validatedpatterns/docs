@@ -1,7 +1,7 @@
 ---
 menu: learn
 title: Validated patterns frameworks
-weight: 20
+weight: 30
 aliases: /validated-patterns-frameworks/
 ---
 
@@ -19,6 +19,3 @@ The OpenShift-based validated patterns framework is the most common method for d
 Ansible GitOps Framework (AGOF) is an alternative framework, designed to provide a framework for GitOps without Kubernetes. AGOF is not a pattern itself; it is a framework for installing Ansible Automation Platform (AAP), and then using that as the GitOps engine to drive other pattern work. AGOF comes with code to install VMs in AWS, if desired, or else it can work with previously provisioned VMs, or a functional AAP Controller endpoint.
 
 The goal with either framework, is that developers, operators, security, and architects build a secure and repeatable day one deployment mechanism and maintenance automation for day two operations.
-
-
-
