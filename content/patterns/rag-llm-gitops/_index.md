@@ -28,6 +28,8 @@ seamless provisioning of all operators and applications. It deploys a Chatbot
 application that harnesses the power of Large Language Models (LLMs) combined
 with the Retrieval-Augmented Generation (RAG) framework.
 
+The pattern uses the [Red Hat OpenShift AI](https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai) to deploy and serve LLM models at scale.
+
 The application uses either the [EDB Postgres for Kubernetes operator](https://catalog.redhat.com/software/container-stacks/detail/5fb41c88abd2a6f7dbe1b37b)
 (default), or Redis, to store embeddings of Red Hat product documentation, running on Red Hat
 OpenShift Container Platform to generate project proposals for specific Red Hat products.
@@ -41,16 +43,17 @@ OpenShift Container Platform to generate project proposals for specific Red Hat 
 
 ## Demo Description & Architecture
 
-The goal of this demo is to demonstrate a Chatbot LLM application augmented with data from Red Hat product documentation running on Red Hat OpenShift. It deploys an LLM application that connects to multiple LLM providers such as OpenAI, Hugging Face, and NVIDIA NIM. The application generates a project proposal for a Red Hat product
+The goal of this demo is to demonstrate a Chatbot LLM application augmented with data from Red Hat product documentation running on [Red Hat OpenShift AI](https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai). It deploys an LLM application that connects to multiple LLM providers such as OpenAI, Hugging Face, and NVIDIA NIM.
+The application generates a project proposal for a Red Hat product.
 
 ### Key Features
 
+- Leveraging [Red Hat OpenShift AI](https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai) to deploy and serve LLM models powered by NVIDIA GPU accelerator.
 - LLM Application augmented with content from Red Hat product documentation.
 - Multiple LLM providers (OpenAI, Hugging Face, NVIDIA).
 - Vector Database, such as EDB Postgres for Kubernetes, or Redis, to store embeddings of Red Hat product documentation.
 - Monitoring dashboard to provide key metrics such as ratings.
 - GitOps setup to deploy e2e demo (frontend / vector database / served models).
-
 
 ![Overview](https://gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/images/intro-marketectures/rag-demo-vp-marketing-slide.png)
 
