@@ -1,5 +1,5 @@
 ---
-menu: learn
+menu: contribute
 title: Contributing and managing patterns
 weight: 50
 aliases: /contributing-and-managing-patterns/
