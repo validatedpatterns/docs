@@ -1,5 +1,6 @@
 ---
 title: Connected Vehicle Architecture
+date: 2022-12-14
 tier: sandbox
 Summary: A distributed cloud-native application that implements key aspects of a modern IoT architecture.
 rh_products:

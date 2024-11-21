@@ -1,6 +1,6 @@
 ---
 title: Multicloud GitOps with Portworx Enterprise
-date: 2023-18-05
+date: 2023-05-18
 tier: sandbox
 summary: This pattern helps you develop and deploy applications on an open hybrid cloud in a stable, simple, and secure way. It includes persistent storage for stateful applications.
 rh_products:

@@ -1,5 +1,6 @@
 ---
 title: OpenShift Virtualization Data Protection with Veeam Kasten
+date: 2024-11-06
 tier: sandbox
 summary: This pattern uses OpenShift Virtualization to simulate an edge environment for VMs, protected by Veeam Kasten.
 rh_products:
