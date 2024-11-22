@@ -74,11 +74,32 @@ function renderFilterItem(type, name, linkTitle) {
   return filterItem;
 }
 
+function renderFilterButtons(filterButtonTypes, name) {
+  if (filterButtonTypes.length > 1) {
+    var filterButtons = '<div class="pf-c-toggle-group pf-m-compact">';
+    var firstSelected = "";
+    for (item = 0; item < filterButtonTypes.length; item++) {
+      firstSelected = "";
+      console.log(item)
+      if (item == 0) { firstSelected = " pf-m-selected"; }
+      filterButtons += '<div class="pf-c-toggle-group__item">' +
+        '<button class="pf-c-toggle-group__button' + firstSelected + '" type="button" id="' + name + "_button:" + filterButtonTypes[item].toLowerCase() + '" onclick="changeFilterType(this.id)">' +
+          '<span class="pf-c-toggle-group__text">' + filterButtonTypes[item] + '</span>' +
+        '</button>' +
+      '</div>'
+    }
+    filterButtons += '</div>'
+    return filterButtons;
+  }
+  return "";
+}
+
 function renderFilter(elementId, filterType, filterData) {
-  for (item = 0; item < filterData.length; item++) {
-    const element = document.getElementById(elementId);
-    element.innerHTML += renderFilterItem(filterType, filterData[item].Name, filterData[item].LinkTitle);
+  const element = document.getElementById(elementId);
+  for (item = 0; item < filterData.filter_list.length; item++) {
+    element.innerHTML += renderFilterItem(filterType, filterData.filter_list[item].Name, filterData.filter_list[item].LinkTitle);
   };
+  element.innerHTML += renderFilterButtons(filterData.filter_types, filterType);
 }
 
 function renderLabel(tier) {
@@ -124,14 +145,23 @@ function renderFilteredCards(patterns, filter_categories) {
   patternLoaderSpinner.innerHTML = renderSpinner();
   var filter = new Object();
   var filteredPatterns = [];
+  var filterType = new Object();
   var sortValue = document.getElementById("select-pattern-sort");
   for (const [category, terms] of Object.entries(filter_categories)) {
-    for (item = 0; item < terms.length; item++) {
-      var checkboxId = category + ":" + cleanString(terms[item].Name);
+    for (item = 0; item < terms.filter_list.length; item++) {
+      var checkboxId = category + ":" + cleanString(terms.filter_list[item].Name);
       var checkbox = document.getElementById(checkboxId);
       if (checkbox.checked) {
         if (filter[category] == undefined) { filter[category] = [] };
-        filter[category].push(terms[item].LinkTitle);
+        filter[category].push(terms.filter_list[item].LinkTitle);
+      };
+    };
+    for (item = 0; item < terms.filter_types.length; item++) {
+      var filterTypeID = category + "_button:" + terms.filter_types[item].toLowerCase();
+      var filterTypeItem = document.getElementById(filterTypeID);
+      console.log(filterTypeItem)
+      if (filterTypeItem != null && filterTypeItem.classList.contains("pf-m-selected")) {
+        filterType[category] = terms.filter_types[item].toLowerCase();
       };
     };
   };
@@ -147,7 +177,9 @@ function renderFilteredCards(patterns, filter_categories) {
       } else if (typeof(patterns[item].Params[category]) == "object" && patterns[item].Params[category] != null) {
         var patternTerms = patterns[item].Params[category].map(v => v.toLowerCase());
         var filterTerms = terms.map(v => v.toLowerCase());
-        if(filterTerms.every(r => patternTerms.includes(r))) {
+        if(filterType[category] == "and" && filterTerms.every(r => patternTerms.includes(r))) {
+          checksPassed[category] = true;
+        } else if (filterType[category] == "or" && filterTerms.some(r => patternTerms.includes(r))) {
           checksPassed[category] = true;
         };
       };
@@ -186,6 +218,22 @@ function filterSelection(filter) {
   // Declaring variables
   const patternsData = getData()
   patternsData.then(output => {
+    renderFilteredCards(output.patterns, output.filter_categories)
+  });
+}
+
+function changeFilterType(id) {
+  var filterType = id.split(":");
+  var filter_category = filterType[0].replace('_button','');
+  const patternsData = getData();
+  patternsData.then(output => {
+    for (item = 0; item < output.filter_categories[filter_category].filter_types.length; item++) {
+      var unselectId = filter_category + "_button:" + output.filter_categories[filter_category].filter_types[item].toLowerCase()
+      const unselectButton = document.getElementById(unselectId);
+      unselectButton.classList.remove("pf-m-selected");
+    }
+    const selectButton = document.getElementById(id);
+    selectButton.classList.add("pf-m-selected");
     renderFilteredCards(output.patterns, output.filter_categories)
   });
 }

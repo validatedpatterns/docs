@@ -14,6 +14,8 @@
   {{- range $index, $rh_product :=  $rh_products.Alphabetical }}
     {{- $rh_products_list = $rh_products_list | append (dict "Name" $rh_product.Name "LinkTitle" $rh_product.Page.LinkTitle) }}
   {{- end }}
+  {{- $rh_products_filter_types := slice "AND" "OR" }}
+  {{- $rh_products_dict := dict "filter_list" $rh_products_list "filter_types" $rh_products_filter_types }}
 
   {{/* Other Products */}}
   {{- $other_products := .Site.Taxonomies.other_products }}
@@ -21,6 +23,8 @@
   {{- range $index, $other_product :=  $other_products.Alphabetical }}
     {{- $other_products_list = $other_products_list | append (dict "Name" $other_product.Name "LinkTitle" $other_product.Page.LinkTitle) }}
   {{- end }}
+  {{- $other_products_filter_types := slice "AND" "OR" }}
+  {{- $other_products_dict := dict "filter_list" $other_products_list "filter_types" $other_products_filter_types }}
 
   {{/* Industries */}}
   {{- $industries := .Site.Taxonomies.industries }}
@@ -28,13 +32,17 @@
   {{- range $index, $industry :=  $industries.Alphabetical }}
     {{- $industries_list = $industries_list | append (dict "Name" $industry.Name "LinkTitle" $industry.Page.LinkTitle) }}
   {{- end }}
+  {{- $industries_filter_types := slice "AND" "OR" }}
+  {{- $industries_dict := dict "filter_list" $industries_list "filter_types" $industries_filter_types }}
 
   {{/* Tiers */}}
   {{- $tiers_list := slice -}}
   {{- $tiers_list = $tiers_list | append (dict "Name" "maintained" "LinkTitle" "Maintained") }}
   {{- $tiers_list = $tiers_list | append (dict "Name" "tested" "LinkTitle" "Tested") }}
   {{- $tiers_list = $tiers_list | append (dict "Name" "sandbox" "LinkTitle" "Sandbox") }}
+  {{- $tiers_filter_types := slice "OR" }}
+  {{- $tiers_dict := dict "filter_list" $tiers_list "filter_types" $tiers_filter_types }}
 
-  {{- $filter_categories := dict "rh_products" $rh_products_list "other_products" $other_products_list "industries" $industries_list "tier" $tiers_list -}}
+  {{- $filter_categories := dict "rh_products" $rh_products_dict "other_products" $other_products_dict "industries" $industries_dict "tier" $tiers_dict -}}
   {{- dict "patterns" $pattern_list "filter_categories" $filter_categories | jsonify }}
 {{- end }}
