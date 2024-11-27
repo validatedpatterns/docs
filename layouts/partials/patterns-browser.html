@@ -25,45 +25,35 @@
       {{ $patterns := where $.Pages "Section" "patterns"}}
       <div class="pf-l-stack pf-m-gutter">
         <div class="pf-l-stack__item pf-u-text-align-right pattern-count-style">
-          <span id="pattern-count">{{- len $patterns -}}</span> of {{ len $patterns }}  patterns displayed
+          <label class="pf-c-form__label" for="form-vertical-name">
+            <span class="pf-c-form__label-text">Sort:</span>
+          </label>
+          <select
+            class
+            id="select-pattern-sort"
+            name="select-pattern-sort"
+            aria-label="Selector for pattern sort"
+            onchange="filterSelection()"
+          >
+            <option value="atoz" selected>A to Z</option>
+            <option value="ztoa">Z to A</option>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+          </select>
+        </div>
+        <div class="pf-l-stack__item pf-u-text-align-right pattern-count-style" id="pattern-counter">
+        </div>
+        <div class="pf-l-stack__item" id="patternLoaderSpinner">
         </div>
         <div class="pf-l-stack__item">
-          <div class="pf-l-gallery pf-m-gutter" style="--pf-l-gallery--GridTemplateColumns--min: 300px;">
-            {{ range $pattern :=  $patterns.ByTitle }}
-              {{ $data := newScratch }}
-              {{ $data.Set "tags" slice }}
-              {{ $params := .Params }}
-              {{ range $taxonomyname, $taxonomy := .Site.Taxonomies }}
-
-                {{ if isset $params $taxonomyname }}
-                  {{ range $term := $pattern.Param $taxonomyname }}
-                    {{ $taglist := $data.Get "tags" }}
-                    {{ $taglist := $taglist | append (string (printf "%s:%s" $taxonomyname ($term | urlize) | printf "%s" )) }}
-                    {{ $data.Set "tags" $taglist }}
-                  {{ end }}
-
-                {{ end }}
-              {{ end }}
-              {{ $taglist := $data.Get "tags" }}
-              {{ $validated := .Param "tier" }}
-              {{ if (eq $validated "maintained" ) }}
-                {{ .Scratch.Set "patterntype" "type:maintained" }}
-              {{ else if (eq $validated "tested" ) }}
-                {{ .Scratch.Set "patterntype" "type:tested" }}
-              {{ else }}
-                  {{ .Scratch.Set "patterntype" "type:sandbox" }}
-              {{ end }}
-              {{ $patterntype := .Scratch.Get "patterntype"  }}
-              <div class="pf-l-gallery__item filterDiv" tag-data="{{ delimit $taglist " " }} {{ $patterntype }}" style="display: grid;">
-                {{ .Render "summary-with-image" }}
-              </div>
-            {{ end }}
+          <div class="pf-l-gallery pf-m-gutter" style="--pf-l-gallery--GridTemplateColumns--min: 300px;" id="patternCards">
           </div>
         </div>
       </div>
     </div>
     </div>
-    <script src="{{ "js/filter.js" | relURL }}"></script>
+    <div id="debug"></div>
+    <script src="{{ "js/patterns-browser-v2.js" | relURL }}"></script>
   </section>
   {{ partial "footer.html" . }}
 </main>

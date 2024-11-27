@@ -1,5 +1,6 @@
 ---
 title: Cockroach
+date: 2022-12-14
 tier: sandbox
 Summary: A multicloud pattern using cockroachdb and submariner, deployed via RHACM.
 rh_products:

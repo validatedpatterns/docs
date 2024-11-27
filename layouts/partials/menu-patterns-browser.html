@@ -20,19 +20,7 @@
           <div class="pf-c-accordion__expanded-content-body">
             <a href="/learn/about-pattern-tiers-types/">What do these tiers mean?</a>
             <div class="pf-c-select__menu-group">
-              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-patterntype">
-                <label class="pf-c-check pf-c-select__menu-item" for="type:maintained">
-                  <input class="pf-c-check__input" type="checkbox" onclick="filterSelection(this.id)" id="type:maintained" name="maintained"/>
-                  <span class="pf-c-check__label">Maintained</span>
-                </label>
-                <label class="pf-c-check pf-c-select__menu-item" for="type:tested">
-                  <input class="pf-c-check__input" type="checkbox" onclick="filterSelection(this.id)" id="type:tested" name="tested"/>
-                  <span class="pf-c-check__label">Tested</span>
-                </label>
-                <label class="pf-c-check pf-c-select__menu-item" for="type:sandbox">
-                  <input class="pf-c-check__input" type="checkbox" onclick="filterSelection(this.id)" id="type:sandbox" name="sandbox"/>
-                  <span class="pf-c-check__label">Sandbox</span>
-                </label>
+              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-patterntype" id="TiersItems">
               </fieldset>
           </div>
           </div>
@@ -56,13 +44,7 @@
         <div id="collapseIndustries" class="pf-c-accordion__expanded-content collapse" aria-labelledby="industriesHeading" data-bs-parent="#patternsAccordionNav">
           <div class="pf-c-accordion__expanded-content-body">
             <div class="pf-c-select__menu-group">
-              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-industry">
-                {{ range $name, $taxonomy := .Site.Taxonomies.industries }}
-                <label class="pf-c-check pf-c-select__menu-item" for="industries:{{- $name | urlize -}}">
-                  <input class="pf-c-check__input" type="checkbox" id="industries:{{- $name | urlize -}}" onclick="filterSelection(this.id)" name="{{- $name | humanize | title  -}}"/>
-                  <span class="pf-c-check__label">{{- $name | humanize | title  -}}</span>
-                </label>
-                {{ end }}
+              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-industry" id="IndustriesItems">
               </fieldset>
             </div>
           </div>
@@ -86,13 +68,7 @@
         <div id="collapseRhProducts" class="pf-c-accordion__expanded-content collapse" aria-labelledby="productHeading" data-bs-parent="#patternsAccordionNav">
           <div class="pf-c-accordion__expanded-content-body">
             <div class="pf-c-select__menu-group">
-              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-rh-products">
-                {{ range $name, $taxonomy := .Site.Taxonomies.rh_products }}
-                <label class="pf-c-check pf-c-select__menu-item" for="rh_products:{{- $name | urlize -}}">
-                  <input class="pf-c-check__input" type="checkbox" id="rh_products:{{- $name | urlize -}}" onclick="filterSelection(this.id)" name="{{ $taxonomy.Page.Title }}"/>
-                  <span class="pf-c-check__label wrappable">{{ $taxonomy.Page.Title }}</span>
-                </label>
-                {{ end }}
+              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-rh-products" id="RhProductsItems">
               </fieldset>
             </div>
           </div>
@@ -116,13 +92,7 @@
         <div id="collapseOtherProducts" class="pf-c-accordion__expanded-content collapse" aria-labelledby="otherProductHeading" data-bs-parent="#patternsAccordionNav">
           <div class="pf-c-accordion__expanded-content-body">
             <div class="pf-c-select__menu-group">
-              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-RHproducts">
-                {{ range $name, $taxonomy := .Site.Taxonomies.other_products }}
-                <label class="pf-c-check pf-c-select__menu-item" for="other_products:{{- $name | urlize -}}">
-                  <input class="pf-c-check__input" type="checkbox" id="other_products:{{- $name | urlize -}}" onclick="filterSelection(this.id)" name="{{ $taxonomy.Page.Title }}"/>
-                  <span class="pf-c-check__label wrappable">{{ $taxonomy.Page.Title }}</span>
-                </label>
-                {{ end }}
+              <fieldset class="pf-c-select__menu-fieldset" aria-labelledby="select-checkbox-expanded-selected-group-otherproducts" id="OtherProductsItems">
               </fieldset>
             </div>
           </div>
