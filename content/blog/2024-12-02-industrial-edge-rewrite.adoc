@@ -1,0 +1,89 @@
+---
+ date: 2024-11-28
+ title: Industrial Edge Pattern Rewrite
+ summary: The Industrial Edge Pattern has been update to use new components
+ author: Michele Baldessari
+ blog_tags:
+ - patterns
+ - how-to
+ - industrial-edge
+---
+:toc:
+:imagesdir: /images
+
+== Preamble
+
+For a long time the Industrial Edge pattern was using an old version of the
+Seldon operator to take care of Machine Learning parts of the pattern. 
+
+This caused a few inconveniences: namely you could not install the pattern on
+OpenShift 4.14 and later versions because the operator has never been released
+for those versions. We also removed the S3 dependency so the pattern can now be
+installed on any cloud platform and is not limited to AWS any longer.
+
+Here is a display of the some of the components installed out of the box:
+
+image::industrial-edge/nine-box.png[nine-box]
+
+== Improvements 
+
+The pattern underwent a number of improvements:
+
+* *RHOAI* We now install the Red Hat maintained RHAOI operator and its
+  components and use those for data analysis, and inference in the pattern.
+* *In-cluster Gitea* Now by default the industrial edge pattern will deploy
+  using the in-cluster gitea feature, which means there is no need to fork the
+  pattern at all. An in-cluster gitea instance will be deployed automatically
+  and every component (pipelines, AI notebooks, argo applications, etc) will
+  point to it out of the box.
+* *In-cluster ODF* we now use the in-cluster ODF operator (driven by a helm
+  chart that is used across different patterns), so we do not rely on external
+  storage any longer
+* *In-cluster S3* we rely on the object storage capabilities exposed by ODF
+  which allows us to drop any dependency on external S3 allowing this pattern
+  to be installed on any cloud platform
+* *OpenShift Pipelines* a larger rewrite was undertaken simplifying the
+  pipelines, avoiding some yaml duplication through helm and by consolidating
+  things on to a few pipelines. Most tasks have been parallelized so the time
+  needed to run them has been reduced substantially
+* *Misc* in the old version of the pattern there were still a place where we
+  had a demo password encoded in the yaml file. Now we autogenerate it inside
+  the cluster and push things around through External Secrets.
+* *Misc* By default now the jupyter notebook comes preloaded with some
+  notebooks automatically
+
+== In-cluster gitea
+
+The in-cluster gitea feature is documented http://localhost:4000/blog/2024-07-12-in-cluster-git/[here] a bit more.
+The pattern will automatically import the upstream github repositories of both the pattern and manuela-dev.
+
+image::industrial-edge/gitea.png[gitea]
+
+== RHOAI ==
+
+We use the new RHOAI components, whith preconfigured accesses to the S3 buckets
+used to store the models, a Data science pipeline and preconfigured Jupyter Notebooks.
+
+image::industrial-edge/jupyter.png[jupyter-notebook]
+
+[cols="a,a", frame=none, grid=none]
+|===
+| image::industrial-edge/training-pipeline2.png[training-pipeline2]
+| image::industrial-edge/training-pipeline.png[training-pipeline]
+|===
+
+
+== OpenShift Pipelines ==
+
+The pipelines have been completely rewritten in order to simplify them, reduce the
+duplication and to parallelize the runs.
+
+image::industrial-edge/new-pipeline.png[new-pipelines]
+
+
+The rewrite has been possible thanks to the following people:
+
+* _Max Murakami_
+* _Akos Eros_
+* _Martin Jackson_
+* _Michele Baldessari_
