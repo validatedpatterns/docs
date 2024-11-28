@@ -129,6 +129,8 @@ It includes, among other components::
 
 [**Red Hat Data Foundation**](https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation?intcmp=7013a00000318EWAAY) is software-defined storage for containers. Engineered as the data and storage services platform for Red Hat OpenShift, Red Hat Data Foundation helps teams develop and deploy applications quickly and efficiently across clouds. It is based on the open source Ceph, Rook, and Noobaa projects.
 
+[**Red Hat OpenShift AI**](https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai) Red Hat® OpenShift® AI is a flexible, scalable artificial intelligence (AI) and machine learning (ML) platform that enables enterprises to create and deliver AI-enabled applications at scale across hybrid cloud environments.
+
 [**Red Hat Advanced Cluster Management for Kubernetes (RHACM)**](https://www.redhat.com/en/technologies/management/advanced-cluster-management?intcmp=7013a00000318EWAAY) controls clusters and applications from a single console, with built-in security policies. It extends the value of Red Hat OpenShift by deploying applications, managing multiple clusters, and enforcing policies across multiple clusters at scale.
 
 [**Red Hat Enterprise Linux**](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux?intcmp=7013a00000318EWAAY) is the world’s leading enterprise Linux platform. It’s an open source operating system (OS). It’s the foundation from which you can scale existing apps—and roll out emerging technologies—across bare-metal, virtual, container, and all types of cloud environments.
@@ -195,6 +197,8 @@ GitOps is an operational framework that takes DevOps best practices used for app
 
 ### Secrets exchange and management
 
+FIXME(bandini): This image is missing ESO on the spoke and it needs to drop the secrets from ACM. Also the secrets to cloud is totally non obvious . The cloud should be a laptop if anything
+
 [![Secret exchange and management](/images/industrial-edge/edge-mfg-security-sd.png)](/images/industrial-edge/edge-mfg-security-sd.png)
 
 _Figure 8: Schematic view of secrets exchange and management in an Industrial Edge solution._
@@ -236,10 +240,13 @@ View and download all of the diagrams above in our open source tooling site.
 [[Open Diagrams]](https://www.redhat.com/architect/portfolio/tool/index.html?#gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/diagrams/edge-manufacturing-efficiency.drawio)
 
 
+
 ## Pattern Structure
 
+FIXME(bandini): We should probably drop this
 <iframe src="https://slides.com/beekhof/hybrid-cloud-patterns/embed" width="800" height="600" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 ## Presentation
 
+FIXME(bandini): We should probably drop or refresh this one?
 View a presentation slide deck about Industrial Edge [here](https://speakerdeck.com/rhvalidatedpatterns/industrial-edge)
