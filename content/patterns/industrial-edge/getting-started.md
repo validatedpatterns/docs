@@ -10,7 +10,6 @@ aliases: /industrial-edge/getting-started/
 
 1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../industrial-edge/cluster-sizing).
 1. (Optional) A second OpenShift cluster for edge/factory
-1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 1. A quay account with the following repositories set as public:
 
     - http-ionic
@@ -20,7 +19,7 @@ aliases: /industrial-edge/getting-started/
     - iot-frontend
     - iot-software-sensor
 
-The use of this blueprint depends on having at least one running Red Hat
+The use of this pattern depends on having at least one running Red Hat
 OpenShift cluster. It is desirable to have a cluster for deploying the data
 center assets and a separate cluster(s) for the factory assets.
 
@@ -117,17 +116,6 @@ For installation tooling dependencies, see [Patterns quick start](/learn/quickst
       #username: PLAINTEXT
       email: SOMEWHERE@EXAMPLE.COM
       dev_revision: main
-
-   s3:
-      bucket:
-         name: BUCKETNAME
-         region: AWSREGION
-         message:
-         aggregation:
-            count: 50
-         custom:
-         endpoint:
-            enabled: false
    ```
 
    ```sh
