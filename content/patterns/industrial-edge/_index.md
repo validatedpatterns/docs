@@ -23,13 +23,34 @@ ci: manuela
 
 # Industrial Edge Pattern
 
-_Red Hat  Validated Patterns are detailed deployments created for different use cases. These pre-defined computing configurations bring together the Red Hat portfolio and technology ecosystem to help you stand up your architectures faster. Example application code is provided as a demonstration, along with the various open source projects and Red Hat products required for the deployment to work. Users can then modify the pattern for their own specific application._
+_Red Hat  Validated Patterns are detailed deployments created for different use
+cases. These pre-defined computing configurations bring together the Red Hat
+portfolio and technology ecosystem to help you stand up your architectures
+faster. Example application code is provided as a demonstration, along with the
+various open source projects and Red Hat products required for the deployment
+to work. Users can then modify the pattern for their own specific application._
 
-**Use Case:** Boosting manufacturing efficiency and product quality with artificial intelligence/machine learning (AI/ML) out to the edge of the network.
+**Use Case:** Boosting manufacturing efficiency and product quality with
+artificial intelligence/machine learning (AI/ML) out to the edge of the
+network.
 
-**Background:** Microcontrollers and other types of simple computers have long been widely used on factory floors and processing plants to monitor and control the many machines required to implement the many machines required to implement many modern manufacturing workflows.
-The manufacturing industry has consistently used technology to fuel innovation, production optimization, and operations. However, historically, control systems were mostly “dumb” in that they mostly took actions in response to pre-programmed triggers and heuristics. For example, predictive maintenance commonly took place on either a set length of time or the number of hours was in service.
-Supervisory control and data acquisition (SCADA) has often been used to collectively describe these hardware and software systems, which mostly functioned independently of the company’s information technology (IT) systems. Companies increasingly see the benefit of bridging these operational technology (OT) systems with their IT. Factory systems can be much more flexible as a result. They can also benefit from newer technologies such as AI/ML, thereby allowing for tasks like maintenance to be scheduled based on multiple real-time measurements rather than simple programmed triggers while bringing processing power closer to data.
+**Background:** Microcontrollers and other types of simple computers have long
+been widely used on factory floors and processing plants to monitor and control
+the many machines required to implement the many machines required to implement
+many modern manufacturing workflows. The manufacturing industry has
+consistently used technology to fuel innovation, production optimization, and
+operations. However, historically, control systems were mostly “dumb” in that
+they mostly took actions in response to pre-programmed triggers and heuristics.
+For example, predictive maintenance commonly took place on either a set length
+of time or the number of hours was in service. Supervisory control and data
+acquisition (SCADA) has often been used to collectively describe these hardware
+and software systems, which mostly functioned independently of the company’s
+information technology (IT) systems. Companies increasingly see the benefit of
+bridging these operational technology (OT) systems with their IT. Factory
+systems can be much more flexible as a result. They can also benefit from newer
+technologies such as AI/ML, thereby allowing for tasks like maintenance to be
+scheduled based on multiple real-time measurements rather than simple
+programmed triggers while bringing processing power closer to data.
 
 
 ## Solution Overview
@@ -40,17 +61,23 @@ Supervisory control and data acquisition (SCADA) has often been used to collecti
 _Figure 1. Industrial edge solution overview._
 
 
-Figure 1 provides an overview of the industrial edge solution. It is applicable across a number of verticals including manufacturing.
+Figure 1 provides an overview of the industrial edge solution. It is applicable
+across a number of verticals including manufacturing.
 
 This solution:
 - Provides real-time insights from the edge to the core datacenter
 - Secures GitOps and DevOps management across core and factory sites
 - Provides AI/ML tools that can reduce maintenance costs
 
-Different roles within an organization have different concerns and areas of focus when working with this distributed AL/ML architecture across two logical types of sites: the core datacenter and the factories. (As shown in Figure 2.)
+Different roles within an organization have different concerns and areas of
+focus when working with this distributed AL/ML architecture across two logical
+types of sites: the core datacenter and the factories. (As shown in Figure 2.)
 
-- **The core datacenter**. This is where data scientists, developers, and operations personnel apply the changes to their models, application code, and configurations.
-- **The factories**. This is where new applications, updates and operational changes are deployed to improve quality and efficiency in the factory..
+- **The core datacenter**. This is where data scientists, developers, and
+  operations personnel apply the changes to their models, application code, and
+  configurations.
+- **The factories**. This is where new applications, updates and operational
+  changes are deployed to improve quality and efficiency in the factory..
 
 
 [![Industrial Edge Architecture](/images/ai-ml-architecture.png)](/images/ai-ml-architecture.png)
@@ -63,9 +90,22 @@ _Figure 3. Overall data flows of solution._
 
 Figure 3 provides a different high-level view of the solution with a focus on the two major dataflow streams.
 
-1. Moving sensor data and events from the operational/shop floor edge towards the core. The idea is to centralize as much as possible, but decentralize as needed. For example, sensitive production data might not be allowed to leave the premises. Think of a temperature curve of an industrial oven; it might be considered crucial intellectual property of the customer. Or the sheer amount of raw data (maybe 10,000 events per second) might be too expensive to transfer to a cloud datacenter. In the above diagram, this is from left to right. In other diagrams the edge / operational level is usually at the bottom and the enterprise/cloud level at the top. Thus, this is also referred to as northbound traffic.
+1. Moving sensor data and events from the operational/shop floor edge towards
+   the core. The idea is to centralize as much as possible, but decentralize as
+   needed. For example, sensitive production data might not be allowed to leave
+   the premises. Think of a temperature curve of an industrial oven; it might
+   be considered crucial intellectual property of the customer. Or the sheer
+   amount of raw data (maybe 10,000 events per second) might be too expensive
+   to transfer to a cloud datacenter. In the above diagram, this is from left
+   to right. In other diagrams the edge / operational level is usually at the
+   bottom and the enterprise/cloud level at the top. Thus, this is also
+   referred to as northbound traffic.
 
-2. Push code, configuration, master data, and machine learning models from the core (where development, testing, and training is happening) towards the edge / shop floors. As there might be 100 plants with 1000s of lines, automation and consistency is key. In the above diagram, this is from right to left, in a top/down view, it is called southbound traffic.
+2. Push code, configuration, master data, and machine learning models from the
+   core (where development, testing, and training is happening) towards the
+   edge / shop floors. As there might be 100 plants with 1000s of lines,
+   automation and consistency is key. In the above diagram, this is from right
+   to left, in a top/down view, it is called southbound traffic.
 
 
 ## Logical Diagrams
