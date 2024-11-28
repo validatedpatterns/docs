@@ -137,25 +137,53 @@ It includes, among other components::
 
 ### Edge manufacturing with messaging and ML
 
+FIXME(bandini): This image will need a couple of tweaks
+
 [![Data interaction of various Industrial Edge components](/images/industrial-edge/edge-mfg-devops-data-sd.png)](/images/industrial-edge/edge-mfg-devops-data-sd.png)
 
 _Figure 5: Industrial Edge solution showing messaging and ML components schematically._
 
-As shown in Figure 5, data coming from sensors is transmitted over MQTT (Message Queuing Telemetry Transport) to Red Hat AMQ, which routes sensor data for two purposes: model development in the core data center and live inference in the factory data centers. The data is then relayed on to Red Hat AMQ for further distribution within the factory datacenter and out to the core datacenter. MQTT is the most commonly used messaging protocol for Internet of Things (IoT) applications.
+As shown in Figure 5, data coming from sensors is transmitted over MQTT
+(Message Queuing Telemetry Transport) to Red Hat AMQ, which routes sensor data
+for two purposes: model development in the core data center and live inference
+in the factory data centers. The data is then relayed on to Red Hat AMQ for
+further distribution within the factory datacenter and out to the core
+datacenter. MQTT is the most commonly used messaging protocol for Internet
+of Things (IoT) applications.
 
-The lightweight Apache Camel K, a lightweight integration framework built on Apache Camel that runs natively on Kubernetes, provides MQTT (Message Queuing Telemetry Transport) integration that normalizes and routes sensor data to the other components.
+The lightweight Apache Camel K, a lightweight integration framework built on
+Apache Camel that runs natively on Kubernetes, provides MQTT (Message Queuing
+Telemetry Transport) integration that normalizes and routes sensor data to the
+other components.
 
-That sensor data is mirrored into a data lake that is provided by Red Hat OpenShift Data Foundation. Data scientists then use various tools from the open source Open Data Hub project to perform model development and training, pulling and analyzing content from the data lake into notebooks where they can apply ML frameworks.
+FIXME(bandini): is data lake really provided by ODF?
+That sensor data is mirrored into a data lake that is provided by Red Hat
+OpenShift Data Foundation. Data scientists then use various tools from the open
+source Open Data Hub project to perform model development and training, pulling
+and analyzing content from the data lake into notebooks where they can apply ML
+frameworks.
 
-Once the models have been tuned and are deemed ready for production, the artifacts are committed to git which kicks off an image build of the model using OpenShift Pipelines (based on the upstream Tekton), a serverless CI/CD system that runs pipelines with all the required dependencies in isolated containers.
+Once the models have been tuned and are deemed ready for production, the
+artifacts are committed to git which kicks off an image build of the model
+using OpenShift Pipelines (based on the upstream Tekton), a serverless CI/CD
+system that runs pipelines with all the required dependencies in isolated
+containers.
 
-The model image is pushed into OpenShift’s  integrated registry running in the core datacenter which is then pushed back down to the factory datacenter for use in inference.
+The model image is pushed into OpenShift’s integrated registry running in the
+core datacenter which is then pushed back down to the factory datacenter for
+use in inference.
+
+FIXME(bandini): This image will need a couple of tweaks
 
 [![Using network segragation to protect factories and operations infrastructure from cyber attacks](/images/industrial-edge/edge-mfg-devops-network-sd.png)](/images/industrial-edge/edge-mfg-devops-network-sd.png)
 
 _Figure 6: Industrial Edge solution showing network flows schematically._
 
-As shown in Figure 6, in order to protect the factories and operations infrastructure from cyber attacks, the operations network needs to be segregated from the enterprise IT network and the public internet. The factory machinery, controllers, and devices need to be further segregated from the factory data center and need to be protected behind a firewall.
+As shown in Figure 6, in order to protect the factories and operations
+infrastructure from cyber attacks, the operations network needs to be
+segregated from the enterprise IT network and the public internet. The factory
+machinery, controllers, and devices need to be further segregated from the
+factory data center and need to be protected behind a firewall.
 
 ### Edge manufacturing with GitOps
 
