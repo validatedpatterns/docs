@@ -8,13 +8,14 @@ aliases: /industrial-edge/getting-started/
 
 # Prerequisites
 
-1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../industrial-edge/cluster-sizing).
+1. An OpenShift cluster (Go to [the OpenShift
+   console](https://console.redhat.com/openshift/create)). Cluster must have a
+   dynamic StorageClass to provision PersistentVolumes. See also [sizing your
+   cluster](../../industrial-edge/cluster-sizing).
 1. (Optional) A second OpenShift cluster for edge/factory
-1. A quay account with the following repositories set as public:
+1. (Optional) A quay account with the following repositories set as public:
 
-    - http-ionic
     - httpd-ionic
-    - iot-anomaly-detection
     - iot-consumer
     - iot-frontend
     - iot-software-sensor
@@ -34,100 +35,9 @@ For installation tooling dependencies, see [Patterns quick start](/learn/quickst
 
 # How to deploy
 
-1. Fork the [industrial-edge](https://github.com/validatedpatterns/industrial-edge) repository on GitHub.  It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
+1. Clone the [industrial-edge](https://github.com/validatedpatterns/industrial-edge) repository on GitHub.
 
-1. Fork the [manuela-dev](https://github.com/validatedpatterns-demos/manuela-dev) repository on GitHub.  It is necessary to fork this repository because the GitOps framework will push tags to this repository that match the versions of software that it will deploy.
-
-1. Clone the forked copy of the `industrial-edge` repository. Create a deployment branch using the branch `v2.3`.
-
-   ```sh
-   git clone git@github.com:{your-username}/industrial-edge.git
-   cd industrial-edge
-   git checkout v2.3
-   git switch -c deploy-v2.3
-   ```
-
-1. A `values-secret-industrial-edge.yaml` file is used to automate setup of secrets needed for:
-
-   - A git repository hosted on a service such as GitHub, GitLab, or so on.
-   - A container image registry (E.g. Quay)
-   - S3 storage (E.g. AWS)
-
-   DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub.
-
-   ```sh
-   cp values-secret.yaml.template ~/values-secret-industrial-edge.yaml
-   vi ~/values-secret-industrial-edge.yaml
-   ```
-
-1. Customize the following secret values.
-
-   ```yaml
-   version: "2.0"
-   secrets:
-   - name: imageregistry
-         fields:
-       # E.G. Quay -> Robot Accounts -> Robot Login
-       - name: username
-         value: <Your-Robot-Account>
-       - name: password
-         value: <Your-RobotAccount-Password>
-
-     - name: git
-       fields:
-       # Go to: https://github.com/settings/tokens
-       - name: username
-         value: <github-user>
-       - name: password
-         value: <github-token>
-
-     - name: aws
-       fields:
-       - name: aws_access_key_id
-         ini_file: ~/.aws/credentials
-         ini_key: aws_access_key_id
-       - name: aws_secret_access_key
-         ini_file: ~/.aws/credentials
-         ini_key: aws_secret_access_key
-   ```
-
-1. Customize the deployment for your cluster. Change the appropriate values in `values-global.yaml`
-
-   ```yaml
-   main:
-   clusterGroupName: datacenter
-
-   global:
-   pattern: industrial-edge
-
-   options:
-      useCSV: False
-      syncPolicy: Automatic
-      installPlanApproval: Automatic
-
-   imageregistry:
-      account: PLAINTEXT
-      hostname: quay.io
-      type: quay
-
-   git:
-      hostname: github.com
-      account: PLAINTEXT
-      #username: PLAINTEXT
-      email: SOMEWHERE@EXAMPLE.COM
-      dev_revision: main
-   ```
-
-   ```sh
-   vi values-global.yaml
-   git add values-global.yaml
-   git commit -m "Added personal values to values-global" values-global.yaml
-   git push origin deploy-v2.3
-   ```
-
-1. You can deploy the pattern using the [Validated Patterns Operator](/infrastructure/using-validated-pattern-operator/) directly. If you deploy the pattern using the Validated Patterns Operator, installed through `Operator Hub`, you will need to run `./pattern.sh make load-secrets` through a terminal session on your laptop or bastion host.
-
-1. If you deploy the pattern through a terminal session on your laptop or bastion host login to your cluster by using the `oc login` command or by exporting the `KUBECONFIG` file.
+1. On your laptop or bastion host login to your cluster by using the `oc login` command or by exporting the `KUBECONFIG` file.
 
    ```sh
    oc login
@@ -139,12 +49,13 @@ For installation tooling dependencies, see [Patterns quick start](/learn/quickst
    export KUBECONFIG=~/my-ocp-cluster/auth/kubeconfig
    ```
 
-1. Apply the changes to your cluster from the root directory of the pattern.
+1. Deploy the industrial edge pattern:
 
    ```sh
+   cd <path-to-cloned-github-repository>
    ./pattern.sh make install
    ```
- The `make install` target deploys the Validated Patterns Operator, all the resources that are defined in the `values-datacenter.yaml` and runs the `make load-secrets` target to load the secrets configured in your `values-secrets-industrial-edge.yaml` file.
+ The `make install` target deploys the Validated Patterns Operator, all the resources that are defined in the `values-datacenter.yaml`
 
 # Validating the Environment
 

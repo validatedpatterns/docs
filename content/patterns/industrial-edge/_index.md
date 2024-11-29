@@ -8,6 +8,7 @@ rh_products:
 - Red Hat Advanced Cluster Management
 - Red Hat Quay
 - Red Hat AMQ
+- Red Hat OpenShift AI
 industries:
 - Industrial
 - Manufacturing
@@ -211,7 +212,7 @@ For logical, physical and dataflow diagrams, please see excellent work done by t
 
 This scenario is derived from the [MANUela work](https://github.com/sa-mw-dach/manuela) done by Red Hat Middleware Solution Architects in Germany in 2019/20. The name MANUela stands for MANUfacturing Edge Lightweight Accelerator, you will see this acronym in a lot of artifacts. It was developed on a platform called [stormshift](https://github.com/stormshift/documentation).
 
-The demo has been updated 2021 with an advanced GitOps framework.
+The demo has been updated with an advanced GitOps framework.
 
 [![Demo Scenario](/images/industrial-edge/highleveldemodiagram.png)](/images/industrial-edge/highleveldemodiagram.png)
 
