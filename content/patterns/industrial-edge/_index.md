@@ -241,7 +241,6 @@ View and download all of the diagrams above in our open source tooling site.
 [[Open Diagrams]](https://www.redhat.com/architect/portfolio/tool/index.html?#gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/diagrams/edge-manufacturing-efficiency.drawio)
 
 
-
 ## Pattern Structure
 
 FIXME(bandini): We should probably drop this

@@ -13,12 +13,6 @@ aliases: /industrial-edge/getting-started/
    dynamic StorageClass to provision PersistentVolumes. See also [sizing your
    cluster](../../industrial-edge/cluster-sizing).
 1. (Optional) A second OpenShift cluster for edge/factory
-1. (Optional) A quay account with the following repositories set as public:
-
-    - httpd-ionic
-    - iot-consumer
-    - iot-frontend
-    - iot-software-sensor
 
 The use of this pattern depends on having at least one running Red Hat
 OpenShift cluster. It is desirable to have a cluster for deploying the data
@@ -89,22 +83,13 @@ For installation tooling dependencies, see [Patterns quick start](/learn/quickst
 
    You can find the ArgoCD application links listed under the nine box **Red Hat applications** in the OpenShift Container Platform web console.
 
-   FIXME(bandini): needs a newer image
-   ![ArgoCD Links](/images/ocp-applications-menu.png)
+   ![ArgoCD Links](/images/industrial-edge/nine-box.png)
 
    The most important ArgoCD instance to examine at this point is `data-center-gitops-server`. This is where all the applications for the datacenter, including the test environment, can be tracked.
 
-   
-1. Apply the secrets from the `values-secret-industrial-edge.yaml` to the secrets management Vault. This can be done through Vault's UI - manually without the file. The required secrets and scopes are:
+1. Check that all applications are synchronised. It should look a bit like the following:
 
-   FIXME(bandini): This is terrible worded and with the registry work we can drop the whole thing.
-   - **secret/hub/imageregistry** Quay or DockerHub *username* & *password*
-
-   Using the Vault UI check that the secrets have been setup.
-
-   For more information on secrets management see [here](/secrets). For information on Hashicorp's Vault see [here](/secrets/vault)
-
-1. Check that all applications are synchronised
+   ![ArgoCD Apps](/images/industrial-edge/datacenter-argocd-apps.png)
 
 ## Next Steps
 
@@ -113,9 +98,9 @@ Once the data center has been setup correctly and confirmed to be working, you c
 1. Add a dedicated cluster to [deploy the factory pieces using ACM](/industrial-edge/factory)
 2. Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](../application/)
 
-   a. Making [configuration changes](https://validatedpatterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
-   a. Making [application changes](https://validatedpatterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
-   a. Making [AI/ML model changes](https://validatedpatterns.io/industrial-edge/application/#application-ai-model-changes-with-devops) with DevOps
+   1. Making [configuration changes](https://validatedpatterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
+   2. Making [application changes](https://validatedpatterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
+   3. Making [AI/ML model changes](https://validatedpatterns.io/industrial-edge/application/#application-ai-model-changes-with-devops) with DevOps
 
 # Uninstalling
 
@@ -123,4 +108,4 @@ We currently do not support uninstalling this pattern.
 
 # Help & Feedback
 
-[Help & Feedback](https://groups.google.com/g/validatedpatterns) [Report Bugs](https://github.com/validatedpatterns/industrial-edge/issues)
+[Help & Feedback](https://groups.google.com/g/validatedpatterns) - [Report Bugs](https://github.com/validatedpatterns/industrial-edge/issues)
