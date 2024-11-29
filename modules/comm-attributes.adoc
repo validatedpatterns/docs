@@ -38,6 +38,8 @@
 :med: medical diagnosis
 :multi-devsec-pattern: Multi-cluster DevSecOps pattern
 :multi-devsec: multi-cluster DevSecOps
+:trvlops-pattern: TravelOps pattern
+:rhoai-pattern: Red Hat OpenShift AI pattern
 // Associated products
 :hashicorp-vault: HashiCorp Vault
 :hashicorp-vault-short: Vault
