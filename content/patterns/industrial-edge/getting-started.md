@@ -148,75 +148,54 @@ For installation tooling dependencies, see [Patterns quick start](/learn/quickst
 
 # Validating the Environment
 
-1. In the OpenShift Container Platform web console, navigate to the **Operators → OperatorHub** page.
-2. Verify that the following Operators are installed on the HUB cluster:
+1. Verify that the following Operators are installed on the HUB cluster:
 
    ```text
-   Operator Name                  Namespace
-   ------------------------------------------------------
-   advanced-cluster-management    open-cluster-management
-   amq-broker-rhel8               manuela-tst-all
-   amq-streams                    manuela-data-lake
-   red-hat-camel-k                manuela-data-lake
-   seldon-operator                manuela-ml-workspace
-   openshift-pipelines-operator-  openshift-operators
-   opendatahub-operator           openshift-operators
-   patterns-operator              openshift-operators
+   $ oc get operators.operators.coreos.com -A
+   NAME                                                  AGE
+   advanced-cluster-management.open-cluster-management   3h8m
+   amq-broker-rhel8.manuela-tst-all                      3h8m
+   amq-streams.manuela-data-lake                         3h8m
+   amq-streams.manuela-tst-all                           3h8m
+   camel-k.manuela-data-lake                             3h8m
+   camel-k.manuela-tst-all                               3h8m
+   mcg-operator.openshift-storage                        3h7m
+   multicluster-engine.multicluster-engine               3h4m
+   ocs-client-operator.openshift-storage                 3h7m
+   ocs-operator.openshift-storage                        3h7m
+   odf-csi-addons-operator.openshift-storage             3h7m
+   odf-operator.openshift-storage                        3h8m
+   odf-prometheus-operator.openshift-storage             3h7m
+   openshift-gitops-operator.openshift-operators         3h11m
+   openshift-pipelines-operator-rh.openshift-operators   3h8m
+   patterns-operator.openshift-operators                 3h12m
+   recipe.openshift-storage                              3h7m
+   rhods-operator.redhat-ods-operator                    3h8m
+   rook-ceph-operator.openshift-storage                  3h7m
    ```
 
 1. Access the ArgoCD environment
 
-   You can find the ArgoCD application links listed under the **Red Hat applications** in the OpenShift Container Platform web console.
+   You can find the ArgoCD application links listed under the nine box **Red Hat applications** in the OpenShift Container Platform web console.
 
+   FIXME(bandini): needs a newer image
    ![ArgoCD Links](/images/ocp-applications-menu.png)
-
-   You can also obtain the ArgoCD URLs and passwords (optional) by displaying the fully qualified domain names, and matching login credentials, for all ArgoCD instances:
-
-   ```sh
-   ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
-   CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
-   eval $CMD
-   ```
-
-   The result should look something like:
-
-   ```text
-   NAME                       HOST/PORT                                                                                         PATH      SERVICES                   PORT    TERMINATION            WILDCARD
-   datacenter-gitops-server   datacenter-gitops-server-industrial-edge-datacenter.apps.mycluster.mydomain.com          datacenter-gitops-server   https   passthrough/Redirect   None
-   # admin.password
-   REDACTED
-
-   NAME                    HOST/PORT                                                                                   PATH   SERVICES                PORT    TERMINATION            WILDCARD
-   factory-gitops-server   factory-gitops-server-industrial-edge-factory.apps.mycluster.mydomain.com          factory-gitops-server   https   passthrough/Redirect   None
-   # admin.password
-   REDACTED
-
-   NAME                      HOST/PORT                                                                              PATH   SERVICES                  PORT    TERMINATION            WILDCARD
-   cluster                   cluster-openshift-gitops.apps.mycluster.mydomain.com                          cluster                   8080    reencrypt/Allow        None
-   kam                       kam-openshift-gitops.apps.mycluster.mydomain.com                              kam                       8443    passthrough/None       None
-   openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.mycluster.mydomain.com          openshift-gitops-server   https   passthrough/Redirect   None
-   # admin.password
-   REDACTED
-   ```
 
    The most important ArgoCD instance to examine at this point is `data-center-gitops-server`. This is where all the applications for the datacenter, including the test environment, can be tracked.
 
+   
 1. Apply the secrets from the `values-secret-industrial-edge.yaml` to the secrets management Vault. This can be done through Vault's UI - manually without the file. The required secrets and scopes are:
 
-   - **secret/hub/git** git *username* & *password* (GitHub token)
+   FIXME(bandini): This is terrible worded and with the registry work we can drop the whole thing.
    - **secret/hub/imageregistry** Quay or DockerHub *username* & *password*
-   - **secret/hub/aws** - AWS values read from your *~/.aws/credentials*
 
    Using the Vault UI check that the secrets have been setup.
 
    For more information on secrets management see [here](/secrets). For information on Hashicorp's Vault see [here](/secrets/vault)
 
-1. Check all applications are synchronised
+1. Check that all applications are synchronised
 
 ## Next Steps
-
-[Help & Feedback](https://groups.google.com/g/validatedpatterns){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Report Bugs](https://github.com/validatedpatterns/industrial-edge/issues){: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 Once the data center has been setup correctly and confirmed to be working, you can:
 
@@ -230,3 +209,7 @@ Once the data center has been setup correctly and confirmed to be working, you c
 # Uninstalling
 
 We currently do not support uninstalling this pattern.
+
+# Help & Feedback
+
+[Help & Feedback](https://groups.google.com/g/validatedpatterns) [Report Bugs](https://github.com/validatedpatterns/industrial-edge/issues)
