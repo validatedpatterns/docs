@@ -42,6 +42,10 @@ The pattern underwent a number of improvements:
 * *In-cluster S3* we rely on the object storage capabilities exposed by ODF
   which allows us to drop any dependency on external S3 allowing this pattern
   to be installed on any cloud platform
+* *In-cluster image registry* by default we rely on using the in cluster registry
+  to push the image builds from pipelines. This simplifies the deployment as it
+  does not require any steps to try the pattern out. An external image registry
+  can still be used if desired.
 * *OpenShift Pipelines* a larger rewrite was undertaken simplifying the
   pipelines, avoiding some yaml duplication through helm and by consolidating
   things on to a few pipelines. Most tasks have been parallelized so the time
