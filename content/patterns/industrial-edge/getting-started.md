@@ -81,13 +81,16 @@ For installation tooling dependencies, see [Patterns quick start](/learn/quickst
 
 1. Access the ArgoCD environment
 
-   You can find the ArgoCD application links listed under the nine box **Red Hat applications** in the OpenShift Container Platform web console.
+   You can find the ArgoCD application links listed under the nine box **Red
+   Hat applications** in the OpenShift Container Platform web console.
 
    ![ArgoCD Links](/images/industrial-edge/nine-box.png)
 
-   The most important ArgoCD instance to examine at this point is `data-center-gitops-server`. This is where all the applications for the datacenter, including the test environment, can be tracked.
+   The most important ArgoCD instance to examine at this point is the
+   `Datacenter ArgoCD`. This is where all the applications for the datacenter,
+   including the test environment, can be tracked.
 
-1. Check that all applications are synchronised. It should look a bit like the following:
+1. Check that all applications are synchronised. It should look like the following:
 
    ![ArgoCD Apps](/images/industrial-edge/datacenter-argocd-apps.png)
 
@@ -95,8 +98,18 @@ For installation tooling dependencies, see [Patterns quick start](/learn/quickst
 
 Once the data center has been setup correctly and confirmed to be working, you can:
 
-1. Add a dedicated cluster to [deploy the factory pieces using ACM](/industrial-edge/factory)
-2. Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](../application/)
+1. Add a dedicated cluster to [deploy the factory pieces using ACM](/industrial-edge/factory);
+   By default the `factory` applications defined in the `values-factory.yaml` file
+   are deployed on all clusters imported into ACM and that have the label
+   `clusterGroup=factory`
+
+   For instructions on how to prepare and import a factory cluster please read the
+   section [importing a cluster](/learn/importing-a-cluster). Use
+   `clusterGroup=factory`.
+
+2. Once the data center and the factory have been deployed you will want to
+   check out and test the Industrial Edge 2.0 demo code. You can find that
+   [here](../application/)
 
    1. Making [configuration changes](https://validatedpatterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
    2. Making [application changes](https://validatedpatterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
