@@ -111,10 +111,6 @@ Once the data center has been setup correctly and confirmed to be working, you c
    check out and test the Industrial Edge 2.0 demo code. You can find that
    [here](../application/)
 
-   1. Making [configuration changes](https://validatedpatterns.io/industrial-edge/application/#configuration-changes-with-gitops) with GitOps
-   2. Making [application changes](https://validatedpatterns.io/industrial-edge/application/#application-changes-using-devops) using DevOps
-   3. Making [AI/ML model changes](https://validatedpatterns.io/industrial-edge/application/#application-ai-model-changes-with-devops) with DevOps
-
 # Uninstalling
 
 We currently do not support uninstalling this pattern.

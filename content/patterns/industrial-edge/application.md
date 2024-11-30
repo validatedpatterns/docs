@@ -8,23 +8,17 @@ aliases: /industrial-edge/application/
 
 ## Background
 
-Up until now the Industrial Edge 2.0 validated patterns has focused primarily on successfully deploying the architectural pattern. Now it is time to see GitOps and DevOps in action as we go through a number of demonstrations to change both configuration information and the applications that we are deploying.
+Up until now the Industrial Edge 2.0 validated patterns has focused primarily
+on successfully deploying the architectural pattern. Now it is time to see
+GitOps and DevOps in action as we go through a number of demonstrations to
+change both configuration information and the applications that we are
+deploying.
 
-If you have already deployed the data center and optionally a factory (edge) cluster, then you have already seen several applications deployed in the OpenShift GitOps console. If you haven't done this then we recommend you deploy the data center after you have setup the Quay repositories described below.
+If you have already deployed the data center and optionally a factory (edge)
+cluster, then you have already seen several applications deployed in the
+OpenShift GitOps console.
 
 ## Prerequisite preparation
-
-### Quay public registry setup
-
-In the [Quay.io](https://quay.io) registry please ensure you have the following repositories and that they are set for public access. Replace your-org with the name of your organization or Quay.io username.
-
-* _your-org_/iot-software-sensor
-* _your-org_/iot-consumer
-* _your-org_/iot-frontend
-* _your-org_/iot-anomaly-detection
-* _your-org_/http-ionic
-
-These repositories are needed in order to provide container images built at the data center to be consumed by the factories (edge).
 
 ### Local laptop/workstation
 
@@ -32,39 +26,52 @@ Make sure you have `git` and OpenShift's `oc` command-line clients.
 
 ### OpenShift Cluster
 
-Make sure you have the `kubeadmin` administrator login for the data center cluster. Use this or the `kubeconfig` (export the path) to provide administrator access to your data center cluster. It is not required that you have access to the edge (factory) clusters. GitOps and DevOps will take care of the edge clusters.
-
-### GitHub account
-
-You will need to login into GitHub and be able to fork two repositories.
-
-* validatedpatterns/industrial-edge
-* validatedpatterns-demos/manuela-dev
+Make sure you have the `kubeadmin` administrator login for the data center
+cluster. Use this or the `kubeconfig` (export the path) to provide
+administrator access to your data center and factory/edge clusters.
 
 ## Configuration changes with GitOps
 
-There will may be times where you need to change the configuration of some of the edge devices in one or more of your factories. In our example, we have various sensors at the factory. Modification can be made to these sensors using `ConfigMaps`.
+There will may be times where you need to change the configuration of some of
+the edge devices in one or more of your factories. In our example, we have
+various sensors at the factory. Modification can be made to these sensors using
+`ConfigMaps`.
 
+FIXME(bandini): this needs renaming of the seldon bits and update in general
 [![highleveldemodiagram](/images/industrial-edge/highleveldemodiagram.png)](/images/industrial-edge/highleveldemodiagram.png)
 
-In this demonstration we will turn on a temperature sensor for sensor #2. We will first do this in the data center because this will demonstrate the power of GitOps without having to involve the edge/factory.  However if you do have an factory joined using Advanced Cluster Management, then the changes will make their way out to the factory. But it is not necessary for the demo as we have a complete test environment on the data center.
+In this demonstration we will turn on a temperature sensor for sensor #2. We
+will first do this in the data center because this will demonstrate the power
+of GitOps without having to involve the edge/factory.  However if you do have
+an factory joined using Advanced Cluster Management, then the changes will make
+their way out to the factory. But it is not necessary for the demo as we have a
+complete test environment on the data center.
 
-Make sure you are able to see the dashboard application in a tab on your browser. You can find the URL for the dashboard application by looking at the following in your OpenShift console.
+Make sure you are able to see the dashboard application in a tab on your
+browser. You can find the URL for the dashboard application by looking at the
+following in your OpenShift console.
 
 [![network-routing-line-dashboard](/images/industrial-edge/network-routing-line-dashboard.png)](/images/industrial-edge/network-routing-line-dashboard.png)
 
-Select Networking->Routes on the left-hand side of the console. Using the Projects pull-down, select `manuela-tst-all`. Click on the URL under the Location column for the route Name `line-dashboard`. this will launch the line-dashboard monitoring application in a browser tab. The URL will look like:
+Select Networking->Routes on the left-hand side of the console. Using the
+Projects pull-down, select `manuela-tst-all`. Click on the URL under the
+Location column for the route Name `line-dashboard`. this will launch the
+line-dashboard monitoring application in a browser tab. The URL will look like:
 
 `line-dashboard-manuela-tst-all.apps.*cluster-name*.*domain*`
 
-Once the the application is open in your browser, click on the “Realtime Data” Navigation on the left and wait a bit. Data should be visualized as received. Note that there is only vibration data shown! If you wait a bit more (usually every 2-3 minutes), you will see an anomaly and alert on it.
+Once the the application is open in your browser, click on the “Realtime Data”
+Navigation on the left and wait a bit. Data should be visualized as received.
+Note that there is only vibration data shown! If you wait a bit more (usually
+every 2-3 minutes), you will see an anomaly and alert on it.
 
 [![app-line-dashboard-before](/images/industrial-edge/app-line-dashboard-before.png)](/images/industrial-edge/app-line-dashboard-before.png)
 
-Now let's turn on the temperature sensor. Using you favorite editor, edit the following file:
+Now let's turn on the temperature sensor. Using you favorite editor, edit the
+following file:
 
 ```sh
-industrial-edge/charts/data-center/manuela-test/templates/machine-sensor/machine-sensor-2-configmap.yaml
+industrial-edge/charts/datacenter/manuela-tst/templates/machine-sensor/machine-sensor-2-configmap.yaml
 ```
 
 Change `SENSOR_TEMPERATURE_ENABLED: "false"` to `SENSOR_TEMPERATURE_ENABLED: "true"`.
