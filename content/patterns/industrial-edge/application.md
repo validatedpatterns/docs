@@ -133,44 +133,26 @@ gitea which will roll out the change to the production factory!
 
 ## Application AI model changes with DevOps
 
-After a successful deployment of Industrial Edge 2.0, check to see that Jupyter Hub is running. To do this go to project `manuela-ml-workspace` check that `jupyterhub` pods are up and running.
+On the OpenShift console click on the nine-box and choose `Red Hat OpenShift AI`. You'll be taken
+to the AI console which will look like the following:
 
-[![jupyerhub-pods](/images/industrial-edge/jupyterhub-pods.png)](/images/industrial-edge/jupyterhub-pods.png)
+[![rhoai-console](/images/industrial-edge/rhoai-console-home.png)](/images/industrial-edge/rhoai-console-home.png)
 
-Then, in the same project `manuela-ml-namespace`, select Networking/Routes and click on the URL associated with `jupyterhub` in the Location column.
+Click on `Data Science Projects` on the left sidebar and choose the `ml-development` project. You'll
+be taken to the project which will contain a couple of workbenches and a model:
 
-[![jupyterhub-url](/images/industrial-edge/jupyterhub-url.png)](/images/industrial-edge/jupyterhub-url.png)
+[![rhoai-ml-development](/images/industrial-edge/rhoai-ml-development.png)](/images/industrial-edge/rhoai-ml-development.png)
 
-This will bring you to a web page at an address in the following format:
+Clicking on the `JupyterLab` workbench you'll be taken to the notebook where data analysis for this 
+pattern is being done. The `manuela-dev` code will be preloaded in the notebook and you can click
+on the left file browser on `manuela-dev/ml-models/anomaly-detection/1-preprocessing.ipynb`:
 
-* `jupyterhub-manuela-ml-workspace.apps.*clustername*.*your-domain*`
+[![notebook-console](/images/industrial-edge/notebook-console.png)](/images/industrial-edge/notebook-console.png)
 
-Options for different types of Jupyter servers are shown. There are two options that are useful for this demo.
+After opening the notebook successfully, walk through the demonstration by
+pressing play and iterating through the commands in the playbook. Jupyter
+playbooks are interactive and you may make changes and also save those changes.
 
-* Standard Data Science. Select this notebook image for simpler notebooks like `Data Analyses.ipynb`
-* Tensorflow Notebook Image. Select this notebook image for more a complex notebook that require Tensorflow. E.g. `Anomaly Detection-using-TF-and-Deep-Learning.ipynb`
-
-At the bottom of the screen there is a `Start server` button. Select the type of Notebook server image and press `Start server`.
-
-[![jupyterhub-init-console](/images/industrial-edge/jupyterhub-init-console.png)](/images/industrial-edge/jupyterhub-init-console.png)
-
-Selecting Tensorflow notebook image:
-
-[![jupyter-tf-server](/images/industrial-edge/jupyter-tf-server.png)](/images/industrial-edge/jupyter-tf-server.png)
-
-On the next screen upload the following files from `manuela-dev/ml-models/anomaly-detection`:
-
-* One of the Jupyter notebooks
-  * `Data-Analyses.ipynb` for a somewhat simpler demo
-  * `Anomaly Detection-using-TF-and-Deep-Learning.ipynb` for a Tensorflow demo.
-* raw-data.cvs
-
-[![upload-ml-files](/images/industrial-edge/upload-ml-files.png)](/images/industrial-edge/upload-ml-files.png)
-
-Open the notebook by double clicking on the notebook file (ending in `.ipynb`)
-
-[![anomaly-detection-notebook](/images/industrial-edge/anomaly-detection-notebook.png)](/images/industrial-edge/anomaly-detection-notebook.png)
-
-After opening the notebook successfully, walk through the demonstration by pressing play and iterating through the commands in the playbook. Jupyter playbooks are interactive and you may make changes and also save those changes. Also, some steps in the notebook take milliseconds, however, other steps can take a long time (up to an hour), so check on the completion of steps.
-
-Remember that changes to the notebook will require downloading, committing, and pushing that notebook to the git repository so that it gets redeployed to the factories.
+Running through all the six notebooks will automatically regenerate the anomaly
+model, prepare the data for the training and push the changes to the internal
+gitea so the inference service can pick up the new model.
