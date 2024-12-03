@@ -217,7 +217,7 @@ of artifacts. It was developed on a platform called
 
 The demo has been updated with an advanced GitOps framework.
 
-[![Demo Scenario](/images/industrial-edge/highleveldemodiagram.png)](/images/industrial-edge/highleveldemodiagram.png)
+[![Demo Scenario](/images/industrial-edge/highleveldemodiagram-v2.png)](/images/industrial-edge/highleveldemodiagram-v2.png)
 
 _Figure 9. High-level demo summary. The specific example is machine condition monitoring based on sensor data in an industrial setting, using AI/ML. It could be easily extended to other use cases such as predictive maintenance, or other verticals._
 
