@@ -33,8 +33,7 @@ the edge devices in one or more of your factories. In our example, we have
 various sensors at the factory. Modification can be made to these sensors using
 `ConfigMaps`.
 
-FIXME(bandini): this needs renaming of the seldon bits and update in general
-[![highleveldemodiagram](/images/industrial-edge/highleveldemodiagram.png)](/images/industrial-edge/highleveldemodiagram.png)
+[![highleveldemodiagram](/images/industrial-edge/highleveldemodiagram-v2.png)](/images/industrial-edge/highleveldemodiagram-v2.png)
 
 In this demonstration we will turn on a temperature sensor for sensor #2. We
 will first do this in the data center because this will demonstrate the power

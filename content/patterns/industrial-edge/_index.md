@@ -140,8 +140,6 @@ It includes, among other components::
 
 ### Edge manufacturing with messaging and ML
 
-FIXME(bandini): This image will need a couple of tweaks
-
 [![Data interaction of various Industrial Edge components](/images/industrial-edge/edge-mfg-devops-data-sd.png)](/images/industrial-edge/edge-mfg-devops-data-sd.png)
 
 _Figure 5: Industrial Edge solution showing messaging and ML components schematically._
@@ -159,7 +157,6 @@ Apache Camel that runs natively on Kubernetes, provides MQTT (Message Queuing
 Telemetry Transport) integration that normalizes and routes sensor data to the
 other components.
 
-FIXME(bandini): is data lake really provided by ODF?
 That sensor data is mirrored into a data lake that is provided by Red Hat
 OpenShift Data Foundation. Data scientists then use various tools from the open
 source Open Data Hub project to perform model development and training, pulling
@@ -175,8 +172,6 @@ containers.
 The model image is pushed into OpenShift’s integrated registry running in the
 core datacenter which is then pushed back down to the factory datacenter for
 use in inference.
-
-FIXME(bandini): This image will need a couple of tweaks
 
 [![Using network segragation to protect factories and operations infrastructure from cyber attacks](/images/industrial-edge/edge-mfg-devops-network-sd.png)](/images/industrial-edge/edge-mfg-devops-network-sd.png)
 
@@ -194,23 +189,31 @@ factory data center and need to be protected behind a firewall.
 
 _Figure 7: Industrial Edge solution showing a schematic view of the GitOps workflows._
 
-GitOps is an operational framework that takes DevOps best practices used for application development such as version control, collaboration, compliance, and CI/CD, and applies them to infrastructure automation. Figure 6 shows how, for these industrial edge manufacturing environments, GitOps provides a consistent, declarative approach to managing individual cluster changes and upgrades across the centralized and edge sites. Any changes to configuration and applications can be automatically pushed into operational systems at the factory.
+GitOps is an operational framework that takes DevOps best practices used for
+application development such as version control, collaboration, compliance, and
+CI/CD, and applies them to infrastructure automation. Figure 6 shows how, for
+these industrial edge manufacturing environments, GitOps provides a consistent,
+declarative approach to managing individual cluster changes and upgrades across
+the centralized and edge sites. Any changes to configuration and applications
+can be automatically pushed into operational systems at the factory.
 
 ### Secrets exchange and management
 
-FIXME(bandini): This image is missing ESO on the spoke and it needs to drop the secrets from ACM. Also the secrets to cloud is totally non obvious . The cloud should be a laptop if anything
-
-[![Secret exchange and management](/images/industrial-edge/edge-mfg-security-sd.png)](/images/industrial-edge/edge-mfg-security-sd.png)
-
-_Figure 8: Schematic view of secrets exchange and management in an Industrial Edge solution._
-
-Authentication is used to securely deploy and update components across multiple locations. The credentials are stored using a secrets management solution like Hashicorp Vault. The external secrets component is used to integrate various secrets management tools (AWS Secrets Manager, Google Secrets Manager, Azure Key Vault). As shown in Figure 7, these secrets are then passed to Red Hat Advanced Cluster Management for Kubernetes (RHACM) which pushes the secrets to the RHACM agent at the edge clusters based on policy. RHACM is also responsible for providing secrets to OpenShift for GitOps workflows( using Tekton and Argo CD).
-
-For logical, physical and dataflow diagrams, please see excellent work done by the [Red Hat Portfolio Architecture team](https://www.redhat.com/architect/portfolio/detail/26)
+Authentication is used to securely deploy and update components across multiple
+locations. The credentials are stored using a secrets management solution like
+Hashicorp Vault on the hub. The external secrets component is used to integrate various
+secrets management tools (AWS Secrets Manager, Google Secrets Manager, Azure
+Key Vault). These secrets are then pulled from the HUB's Vault on to the different 
+factory clusters.
 
 ## Demo Scenario
 
-This scenario is derived from the [MANUela work](https://github.com/sa-mw-dach/manuela) done by Red Hat Middleware Solution Architects in Germany in 2019/20. The name MANUela stands for MANUfacturing Edge Lightweight Accelerator, you will see this acronym in a lot of artifacts. It was developed on a platform called [stormshift](https://github.com/stormshift/documentation).
+This scenario is derived from the [MANUela
+work](https://github.com/sa-mw-dach/manuela) done by Red Hat Middleware
+Solution Architects in Germany in 2019/20. The name MANUela stands for
+MANUfacturing Edge Lightweight Accelerator, you will see this acronym in a lot
+of artifacts. It was developed on a platform called
+[stormshift](https://github.com/stormshift/documentation).
 
 The demo has been updated with an advanced GitOps framework.
 
