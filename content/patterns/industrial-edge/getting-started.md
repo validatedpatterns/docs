@@ -98,18 +98,22 @@ For installation tooling dependencies, see [Patterns quick start](/learn/quickst
 
 Once the data center has been setup correctly and confirmed to be working, you can:
 
-1. Add a dedicated cluster to [deploy the factory pieces using ACM](/industrial-edge/factory);
+1. Add a dedicated cluster to the main datacenter hub cluster.
+
    By default the `factory` applications defined in the `values-factory.yaml` file
    are deployed on all clusters imported into ACM and that have the label
    `clusterGroup=factory`
 
    For instructions on how to prepare and import a factory cluster please read the
    section [importing a cluster](/learn/importing-a-cluster). Use
-   `clusterGroup=factory`.
+   `clusterGroup=factory` as the label.
 
 2. Once the data center and the factory have been deployed you will want to
    check out and test the Industrial Edge 2.0 demo code. You can find that
-   [here](../application/)
+   [here](../application/). The argo applications on the factory cluster will look
+   like the following:
+
+   ![ArgoCD Factory Apps](/images/industrial-edge/factory-apps.png)
 
 # Uninstalling
 
