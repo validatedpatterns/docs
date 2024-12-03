@@ -10,18 +10,6 @@ aliases: /industrial-edge/cluster-sizing/
 The **Industrial-Edge** pattern has been tested in the following Certified Cloud Providers.
 
 <!--supportmatrix-qe-start-->
-<style>
-table {
-    border-collapse: collapse;
-}
-table, th, td {
-   border: none;
-}
-blockquote {
-    border-left: none;
-    padding-left: 10px;
-}
-</style>
 | **Certified Cloud Providers** | 4.8 | 4.9 | 4.10 |
 | :---- | :---- | :---- | :---- |
 | Amazon Web Services|     |    | X |
