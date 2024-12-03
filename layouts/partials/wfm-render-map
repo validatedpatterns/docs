@@ -1,0 +1,102 @@
+#!/bin/python
+import xml.etree.ElementTree as ET
+import glob
+import subprocess
+import argparse
+import yaml
+import os
+import shutil
+from urllib.parse import urlparse
+from urllib.request import urlretrieve
+
+def load_context_map(map_file):
+    with open(map_file, 'r') as file:
+        root = yaml.safe_load(file)
+    return root
+
+def render_output(input_filename, attrs, id):
+    asciidoctor_command = ["asciidoctor", input_filename, "-a", "nofooter", "-a", "webfonts!", "-a", "stylesheet!", "-b", "xhtml5", "-o", "-"]
+    asciidoctor_command.extend(attrs)
+    asciidoctor_output = subprocess.Popen(asciidoctor_command, stdout=subprocess.PIPE)
+
+    xpath_command = ["xpath", "-e", "/html/body", "-q"]
+    xpath_output = subprocess.Popen(xpath_command, stdin=asciidoctor_output.stdout, stdout=subprocess.PIPE)
+
+    xmlstarlet_command = ["xmlstarlet", "ed", "--omit-decl", "-r", "/body", "-v", "div"]
+    xmlstarlet_output = subprocess.Popen(xmlstarlet_command, stdin=xpath_output.stdout, stdout=subprocess.PIPE)
+
+    final_output, _ = xmlstarlet_output.communicate()
+
+    if id is None:
+        output_filename = os.path.basename(input_filename).split('.')[0]
+    else:
+        output_filename = id
+
+    with open("output/%s.html" % output_filename , "w") as output_file:
+        output_file.write(final_output.decode('utf-8'))
+
+def download_file(url):
+    remote_filename = urlparse(url)
+    local_filename = os.path.basename(remote_filename.path)
+    urlretrieve(url, local_filename)
+    return local_filename
+
+def convert_href(link, self_context):
+    if link.startswith(("self.", "ext.")):
+        if link.startswith("self."):
+            link = link.removeprefix("self.")
+            link = self_context + '.' + link
+        elif link.startswith("ext."):
+            link = link.removeprefix("ext.")
+        ids = link.split('.')
+        context_id = ids[0]
+        module_id = ids[1]
+        link = "/context/%s/module/%s" % (context_id, module_id)
+    return link
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser("wfm-render-map")
+    parser.add_argument("map_file", help="The content map to render")
+    args = parser.parse_args()
+    root = load_context_map(args.map_file)
+    attrs = []
+
+    shutil.rmtree('output', ignore_errors=True)
+    os.mkdir('output')
+
+    if "attributes" in root.keys():
+        for attr in root['attributes']:
+            attrs+=['-a',"%s=%s" % (attr, root['attributes'][attr])]
+
+    for module in root['modules']:
+        if "id" in module.keys():
+            id = module['id']
+        else:
+            id = None
+
+        if "file" in module.keys():
+            render_output(module['file'] + ".adoc", attrs, id)
+        elif "pull" in module.keys():
+            downloaded_adoc = download_file(module['pull'])
+            render_output(downloaded_adoc, attrs, id)
+            os.remove(downloaded_adoc)
+
+    for file in glob.glob("output/*.html"):
+        tree = ET.parse(file)
+        html_root = tree.getroot()
+        for link in html_root.findall(".//a"):
+            link.attrib['href'] = convert_href(link.attrib['href'], root['id'])
+        tree.write(file)
+
+    for index, module in enumerate(root['modules']):
+        if "id" not in module:
+            if "file" in module:
+                module["id"] = os.path.basename(module['file'])
+            elif "pull" in module:
+                module["id"] = os.path.basename(module['pull']).split('.')[0]
+        module.pop("file", None)
+        module.pop("pull", None)
+        root['modules'][index] = module
+    output_map_filename = root["id"]
+    with open("output/%s.yaml" % output_map_filename , "w") as output_map_file:
+        yaml.dump(root, output_map_file)

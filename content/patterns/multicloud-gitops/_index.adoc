@@ -1,6 +1,11 @@
 ---
 title: Multicloud GitOps
 date: 2021-12-11
+authors:
+  - Dan Macpherson
+  - Avani Bhatt
+  - Andrew Beekhof
+company: Red Hat
 tier: maintained
 summary: This pattern helps you develop and deploy applications on an open hybrid cloud in a stable, simple, and secure way.
 rh_products:
