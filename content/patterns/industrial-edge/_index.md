@@ -239,14 +239,3 @@ To deploy the Industrial Edge Pattern demo yourself, follow the [demo script](de
 View and download all of the diagrams above in our open source tooling site.
 
 [[Open Diagrams]](https://www.redhat.com/architect/portfolio/tool/index.html?#gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/diagrams/edge-manufacturing-efficiency.drawio)
-
-
-## Pattern Structure
-
-FIXME(bandini): We should probably drop this
-<iframe src="https://slides.com/beekhof/hybrid-cloud-patterns/embed" width="800" height="600" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-## Presentation
-
-FIXME(bandini): We should probably drop or refresh this one?
-View a presentation slide deck about Industrial Edge [here](https://speakerdeck.com/rhvalidatedpatterns/industrial-edge)
