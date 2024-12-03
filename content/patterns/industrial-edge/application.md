@@ -99,7 +99,7 @@ it. In the `manuela-dev` repository there is a file
 `components/iot-frontend/src/app/app.component.html`. Let's change the 
 `<ion-title>IoT Dashboard</ion-title>` to something else, say, 
 `<ion-title>IoT Dashboard - DEVOPS was here!</ion-title>`. We do this in the 
-gitea web interface directly cliking on the editing icon for the file:
+gitea web interface directly clicking on the editing icon for the file:
 
 [![gitea-iot-edit](/images/industrial-edge/gitea-iot-edit.png)](/images/industrial-edge/gitea-iot-edit.png)
 
