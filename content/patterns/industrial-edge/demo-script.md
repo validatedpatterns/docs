@@ -2,8 +2,9 @@
 
 ## Objectives
 
-There's no experience like hands-on experience and being able to see industrial edge scenarios. This is a demo for the Industrial Edge Validated Pattern using the latest product and technology improvements.
-
+There's no experience like hands-on experience and being able to see industrial
+edge scenarios. This is a demo for the Industrial Edge Validated Pattern using
+the latest product and technology improvements.
 
 * Show Red Hat Operators being deployed
 * Show available Red Hat Pipelines for the Industrial Edge pattern
@@ -13,20 +14,19 @@ There's no experience like hands-on experience and being able to see industrial 
 * Show the datacenter-gitops-server view
 * Show the factory-gitops-server view
 
-
 #### For Information on the Red Hat Validated Patterns, visit our [website](https://validatedpatterns.io)
 
 ## See the pattern in action
 
 Watch the following video for a demonstration of [OpenShift Pipelines in the Industrial Edge Pattern](https://www.youtube.com/watch?v=BMUiaCm6pZ8)
 
-In this article, we give an overview of the demo and step by step instructions on how to get started. 
+In this article, we give an overview of the demo and step by step instructions on how to get started.
 
 ## Getting Started
 
 **_NOTE:_** This demo takes a "bring your own cluster" approach, which means this pattern/demo will not deploy any OpenShift clusters.
 
-This demo script begins after the completion of you running `./pattern.sh make install` from our [Getting Started Guide](../getting-started) 
+This demo script begins after the completion of you running `./pattern.sh make install` from our [Getting Started Guide](../getting-started)
 
 ### Demo: Quick Health Check
 **_NOTE:_** This is a complex setup, and sometimes things can go wrong. Do a quick check of the essentials:
@@ -68,7 +68,8 @@ If you run into any problems, checkout the potential/Known issues list: http://v
 
 ## Summary
 
-In this demo we: , we show you how to get started with the Industrial Edge Validated Pattern. In 
+In this demo we show you how to get started with the Industrial Edge Validated Pattern.
+More specifically, we:
 
 * Show you how to get started with the Industrial Edge Pattern
 * Make configuration changes with GitOps
