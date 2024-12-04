@@ -68,6 +68,12 @@ Now let's turn on the temperature sensor. Go to the gitea link on the nine box l
 
 [![gitea-signin](/images/industrial-edge/gitea-signin.png)](/images/industrial-edge/gitea-signin.png)
 
+You can run the following command to obtain the gitea user's password automatically:
+
+```
+oc extract -n vp-gitea secret/gitea-admin-secret --to=- --keys=password 2>/dev/null
+```
+
 In the `industrial-edge` repository, edit the file called
 `charts/datacenter/manuela-tst/templates/machine-sensor/machine-sensor-2-configmap.yaml`
 and change `SENSOR_TEMPERATURE_ENABLED: "false"` to `SENSOR_TEMPERATURE_ENABLED: "true"`.

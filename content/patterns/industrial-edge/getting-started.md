@@ -26,6 +26,10 @@ service](https://console.redhat.com/openshift/create).
 
 For installation tooling dependencies, see [Patterns quick start](/learn/quickstart)
 
+The Industrial Edge pattern installs an in-cluster gitea instance by default. This 
+means that there is no need to fork the pattern's git repository and that ArgoCD will point
+directly at the in-cluster git repository. Changes should be done there and not on github.
+See this [post](https://validatedpatterns.io/blog/2024-07-12-in-cluster-git/) for more information.
 
 # How to deploy
 
