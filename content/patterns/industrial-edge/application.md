@@ -8,172 +8,156 @@ aliases: /industrial-edge/application/
 
 ## Background
 
-Up until now the Industrial Edge 2.0 validated patterns has focused primarily on successfully deploying the architectural pattern. Now it is time to see GitOps and DevOps in action as we go through a number of demonstrations to change both configuration information and the applications that we are deploying.
+Up until now the Industrial Edge 2.0 validated patterns has focused primarily
+on successfully deploying the architectural pattern. Now it is time to see
+GitOps and DevOps in action as we go through a number of demonstrations to
+change both configuration information and the applications that we are
+deploying.
 
-If you have already deployed the data center and optionally a factory (edge) cluster, then you have already seen several applications deployed in the OpenShift GitOps console. If you haven't done this then we recommend you deploy the data center after you have setup the Quay repositories described below.
+If you have already deployed the data center and optionally a factory (edge)
+cluster, then you have already seen several applications deployed in the
+OpenShift GitOps console.
 
 ## Prerequisite preparation
 
-### Quay public registry setup
-
-In the [Quay.io](https://quay.io) registry please ensure you have the following repositories and that they are set for public access. Replace your-org with the name of your organization or Quay.io username.
-
-* _your-org_/iot-software-sensor
-* _your-org_/iot-consumer
-* _your-org_/iot-frontend
-* _your-org_/iot-anomaly-detection
-* _your-org_/http-ionic
-
-These repositories are needed in order to provide container images built at the data center to be consumed by the factories (edge).
-
-### Local laptop/workstation
-
-Make sure you have `git` and OpenShift's `oc` command-line clients.
-
 ### OpenShift Cluster
 
-Make sure you have the `kubeadmin` administrator login for the data center cluster. Use this or the `kubeconfig` (export the path) to provide administrator access to your data center cluster. It is not required that you have access to the edge (factory) clusters. GitOps and DevOps will take care of the edge clusters.
-
-### GitHub account
-
-You will need to login into GitHub and be able to fork two repositories.
-
-* validatedpatterns/industrial-edge
-* validatedpatterns-demos/manuela-dev
+Make sure you have the `kubeadmin` administrator login for the data center
+cluster. Use this or the `kubeconfig` (export the path) to provide
+administrator access to your data center and factory/edge clusters.
 
 ## Configuration changes with GitOps
 
-There will may be times where you need to change the configuration of some of the edge devices in one or more of your factories. In our example, we have various sensors at the factory. Modification can be made to these sensors using `ConfigMaps`.
+There will may be times where you need to change the configuration of some of
+the edge devices in one or more of your factories. In our example, we have
+various sensors at the factory. Modification can be made to these sensors using
+`ConfigMaps`.
 
-[![highleveldemodiagram](/images/industrial-edge/highleveldemodiagram.png)](/images/industrial-edge/highleveldemodiagram.png)
+[![highleveldemodiagram](/images/industrial-edge/highleveldemodiagram-v2.png)](/images/industrial-edge/highleveldemodiagram-v2.png)
 
-In this demonstration we will turn on a temperature sensor for sensor #2. We will first do this in the data center because this will demonstrate the power of GitOps without having to involve the edge/factory.  However if you do have an factory joined using Advanced Cluster Management, then the changes will make their way out to the factory. But it is not necessary for the demo as we have a complete test environment on the data center.
+In this demonstration we will turn on a temperature sensor for sensor #2. We
+will first do this in the data center because this will demonstrate the power
+of GitOps without having to involve the edge/factory.  However if you do have
+an factory joined using Advanced Cluster Management, then the changes will make
+their way out to the factory. But it is not necessary for the demo as we have a
+complete test environment on the data center.
 
-Make sure you are able to see the dashboard application in a tab on your browser. You can find the URL for the dashboard application by looking at the following in your OpenShift console.
+Make sure you are able to see the dashboard application in a tab on your
+browser. You can find the URL for the dashboard application by looking at the
+following in your OpenShift console.
 
 [![network-routing-line-dashboard](/images/industrial-edge/network-routing-line-dashboard.png)](/images/industrial-edge/network-routing-line-dashboard.png)
 
-Select Networking->Routes on the left-hand side of the console. Using the Projects pull-down, select `manuela-tst-all`. Click on the URL under the Location column for the route Name `line-dashboard`. this will launch the line-dashboard monitoring application in a browser tab. The URL will look like:
+Select Networking->Routes on the left-hand side of the console. Using the
+Projects pull-down, select `manuela-tst-all`. Click on the URL under the
+Location column for the route Name `line-dashboard`. this will launch the
+line-dashboard monitoring application in a browser tab. The URL will look like:
 
 `line-dashboard-manuela-tst-all.apps.*cluster-name*.*domain*`
 
-Once the the application is open in your browser, click on the “Realtime Data” Navigation on the left and wait a bit. Data should be visualized as received. Note that there is only vibration data shown! If you wait a bit more (usually every 2-3 minutes), you will see an anomaly and alert on it.
+Once the the application is open in your browser, click on the “Realtime Data”
+Navigation on the left and wait a bit. Data should be visualized as received.
+Note that there is only vibration data shown! If you wait a bit more (usually
+every 2-3 minutes), you will see an anomaly and alert on it.
 
 [![app-line-dashboard-before](/images/industrial-edge/app-line-dashboard-before.png)](/images/industrial-edge/app-line-dashboard-before.png)
 
-Now let's turn on the temperature sensor. Using you favorite editor, edit the following file:
+Now let's turn on the temperature sensor. Go to the gitea link on the nine box login using the
+`gitea_admin` user and the autogenerated password that can be found in the secret called
+`gitea-admin-secret` in the `vp-gitea` namespace:
 
-```sh
-industrial-edge/charts/data-center/manuela-test/templates/machine-sensor/machine-sensor-2-configmap.yaml
+[![gitea-signin](/images/industrial-edge/gitea-signin.png)](/images/industrial-edge/gitea-signin.png)
+
+You can run the following command to obtain the gitea user's password automatically:
+
+```
+oc extract -n vp-gitea secret/gitea-admin-secret --to=- --keys=password 2>/dev/null
 ```
 
-Change `SENSOR_TEMPERATURE_ENABLED: "false"` to `SENSOR_TEMPERATURE_ENABLED: "true"`.
+In the `industrial-edge` repository, edit the file called
+`charts/datacenter/manuela-tst/templates/machine-sensor/machine-sensor-2-configmap.yaml`
+and change `SENSOR_TEMPERATURE_ENABLED: "false"` to `SENSOR_TEMPERATURE_ENABLED: "true"`.
 
-Then change and commit this to your git repository so that the change will be picked up by OpenShift GitOps (ArgoCD).
+[![gitea-edit](/images/industrial-edge/gitea-edit.png)](/images/industrial-edge/gitea-edit.png)
+[![gitea-commit](/images/industrial-edge/gitea-commit.png)](/images/industrial-edge/gitea-commit.png)
 
-```sh
-git add industrial-edge-charts/data/center/manuela-test/templates/machine-sensor/machine-sensor-2-configmap.yaml
-git commit -m "Turned on temprature sensor for machine sensor #2"
-git push
-```
+Then change and commit this to your git repository so that the change will be
+picked up by OpenShift GitOps (ArgoCD).
 
-You can track the progress of this commit/push in your OpenShift GitOps console in the `manuela-test-all` application. You will notice components regarding machine-sensor-2 getting sync-ed. You can speed this up by manually pressing the Refresh button.
+You can track the progress of this commit/push in your OpenShift GitOps console
+in the `manuela-test-all` application. You will notice components regarding
+machine-sensor-2 getting sync-ed. You can speed this up by manually pressing
+the Refresh button.
 
 [![argocd-line-dashboard](/images/industrial-edge/argocd-line-dashboard.png)](/images/industrial-edge/argocd-line-dashboard.png)
 
 The dashboard app should pickup the change automatically, once data from the temperature sensor is received.
 Sometimes a page/tab refreshed is needed for the change to be picked up.
 
-[![app-line-dashboard](/images/industrial-edge/app-line-dashboard.png)](/images/industrial-edge/app-line-dashboard.png)
+[![app-line-dashboard](/images/industrial-edge/argocd-machine-sensor2.png)](/images/industrial-edge/argocd-machine-sensor2.png)
 
 ## Application changes using DevOps
 
-The `line-dashboard` application has temperature sensors. In this demonstration we are going to make a simple change to that application, rebuild and redeploy it. In the `manuela-dev` repository there is a file `components/iot-consumer/index.js`. This JavaScript program consumes message data coming from the line servers and one of functions it performs is to check the temperature to see if it has exceeded a threshold. There is three lines of code in there that does some Celsius to Fahrenheit conversion.
+The `line-dashboard` application has temperature sensors. In this demonstration
+we are going to make a simple change to that application, rebuild and redeploy
+it. In the `manuela-dev` repository there is a file
+`components/iot-frontend/src/app/app.component.html`. Let's change the
+`<ion-title>IoT Dashboard</ion-title>` to something else, say,
+`<ion-title>IoT Dashboard - DEVOPS was here!</ion-title>`. We do this in the
+gitea web interface directly clicking on the editing icon for the file:
 
-Depending on the state of your `manuela-dev` repository this may or may not be commented out. Ideally for the demonstration you would want it  uncommented and therefore effective.  What this means is that while the labels on the frontend application are showing Celsius, the data is actually in Fahrenheit. This is a good place to start because that data won't make any sense.
+[![gitea-iot-edit](/images/industrial-edge/gitea-iot-edit.png)](/images/industrial-edge/gitea-iot-edit.png)
 
-[![fahrenheit-temp](/images/industrial-edge/fahrenheit-temp.png)](/images/industrial-edge/fahrenheit-temp.png)
+We can now kick off the pipeline called `build-and-test-iot-frontend` that will do the following:
+1. Rebuild the image from the manuela-dev code
+2. Push the change on the hub datacenter in the manuela-tst-all namespace
+3. Create a PR in gitea
 
-Machines running over 120C is not normal.  However examining the code explains why. There is an erroneous conversion taking place. What must happen is we remove or comment out this code.
-
-[![uncommented-code](/images/industrial-edge/uncommented-code.png)](/images/industrial-edge/uncommented-code.png)
-
-If you haven't deployed the uncommented code it might be best to prepare that before the demonstration. After pointing out the problem, comment out the code.
-
-[![commented-code](/images/industrial-edge/commented-code.png)](/images/industrial-edge/commented-code.png)
-
-Now that the erroneous conversion code has been commented out it is is time rebuild and redeploy. First commit and push the code to the repository. While in the directory for your `manuela-dev` repository run the following commands. The `components/iot-consumer/index.js` file should be the only changed file.
-
+To start the pipeline run we can just run the following command from our terminal:
 ```sh
-git add components/iot-consumer/index.js
-git commit -m "commented out C to F temp conversion"
-git push
+make build-and-test-iot-frontend
 ```
 
-Now its time to kick off the CI pipeline. Due to the need for GitHub secrets and Quay secrets as part of this process, we currently can't use the OpenShift console's Pipelines to kick off the pipeline in the demo environment. Instead, use the command-line. While in the `industrial-edge` repository directory, run the following:
+The pipeline will look a bit like the following:
 
-```sh
-make build-and-test
-```
+[![tekton-pipeline](/images/industrial-edge/pipeline-iot-frontend.png)](/images/industrial-edge/pipeline-iot-frontend.png)
 
-This build takes some time because the pipeline is rebuilding all the images. You can monitor the pipeline's progress in the Openshift console's pipelines section.
+After the pipeline completed the `manuela-test` application in Argo will eventually refresh and push the
+changes to the cluster and the line dash board route in the `manuela-tst-all` namespace will have picked up
+the changes:
 
-Alternatively you can can try and run the shorter `build-iot-consumer` pipeline run in the OpenShift console. This should just run and test the specific application.
+[![linedashboard-devops](/images/industrial-edge/line-dashboard-devops.png)](/images/industrial-edge/line-dashboard-devops.png)
 
-[![build-and-test-pipeline](/images/industrial-edge/build-and-test-pipeline.png)](/images/industrial-edge/build-and-test-pipeline.png)
+The pipeline will also have created a PR in gitea, like the following one:
 
-You can also see some updates happening in the `manuela-tst` application in OpenShift GitOps (ArgoCD).
+[![gitea-pipeline-pr](/images/industrial-edge/gitea-pipeline-pr.png)](/images/industrial-edge/gitea-pipeline-pr.png)
 
-When the pipeline is complete check the `lines-dashboard` application again in the browser. More reasonable, Celsius, temperatures are displayed. (Compare with above.)
-
-[![celsius-temp](/images/industrial-edge/celsius-temp.png)](/images/industrial-edge/celsius-temp.png)
-
-The steps above have successfully applied the change to the Manuela test environment at the data center. In order for these changes to be pushed out to the factories it must be accepted and pushed to the Git repository. Examine the project in GitHub. There is a new Pull Request (PR) called **Pull request created by Tekton task github-add-pull-request**. Select that PR and merge the pull request.
-
-[![tekton-pull-request](/images/industrial-edge/tekton-pull-request.png)](/images/industrial-edge/tekton-pull-request.png)
-
-OpenShift GitOps will see the new change and apply it out to the factories.
+Now an operator can verify that the change is correct on the datacenter in the
+`manuela-tst-all` line dashboard and if deemed correct, he can merge the PR in
+gitea which will roll out the change to the production factory!
 
 ## Application AI model changes with DevOps
 
-After a successful deployment of Industrial Edge 2.0, check to see that Jupyter Hub is running. To do this go to project `manuela-ml-workspace` check that `jupyterhub` pods are up and running.
+On the OpenShift console click on the nine-box and choose `Red Hat OpenShift AI`. You'll be taken
+to the AI console which will look like the following:
 
-[![jupyerhub-pods](/images/industrial-edge/jupyterhub-pods.png)](/images/industrial-edge/jupyterhub-pods.png)
+[![rhoai-console](/images/industrial-edge/rhoai-console-home.png)](/images/industrial-edge/rhoai-console-home.png)
 
-Then, in the same project `manuela-ml-namespace`, select Networking/Routes and click on the URL associated with `jupyterhub` in the Location column.
+Click on `Data Science Projects` on the left sidebar and choose the `ml-development` project. You'll
+be taken to the project which will contain a couple of workbenches and a model:
 
-[![jupyterhub-url](/images/industrial-edge/jupyterhub-url.png)](/images/industrial-edge/jupyterhub-url.png)
+[![rhoai-ml-development](/images/industrial-edge/rhoai-ml-development.png)](/images/industrial-edge/rhoai-ml-development.png)
 
-This will bring you to a web page at an address in the following format:
+Clicking on the `JupyterLab` workbench you'll be taken to the notebook where data analysis for this
+pattern is being done. The `manuela-dev` code will be preloaded in the notebook and you can click
+on the left file browser on `manuela-dev/ml-models/anomaly-detection/1-preprocessing.ipynb`:
 
-* `jupyterhub-manuela-ml-workspace.apps.*clustername*.*your-domain*`
+[![notebook-console](/images/industrial-edge/notebook-console.png)](/images/industrial-edge/notebook-console.png)
 
-Options for different types of Jupyter servers are shown. There are two options that are useful for this demo.
+After opening the notebook successfully, walk through the demonstration by
+pressing play and iterating through the commands in the playbook. Jupyter
+playbooks are interactive and you may make changes and also save those changes.
 
-* Standard Data Science. Select this notebook image for simpler notebooks like `Data Analyses.ipynb`
-* Tensorflow Notebook Image. Select this notebook image for more a complex notebook that require Tensorflow. E.g. `Anomaly Detection-using-TF-and-Deep-Learning.ipynb`
-
-At the bottom of the screen there is a `Start server` button. Select the type of Notebook server image and press `Start server`.
-
-[![jupyterhub-init-console](/images/industrial-edge/jupyterhub-init-console.png)](/images/industrial-edge/jupyterhub-init-console.png)
-
-Selecting Tensorflow notebook image:
-
-[![jupyter-tf-server](/images/industrial-edge/jupyter-tf-server.png)](/images/industrial-edge/jupyter-tf-server.png)
-
-On the next screen upload the following files from `manuela-dev/ml-models/anomaly-detection`:
-
-* One of the Jupyter notebooks
-  * `Data-Analyses.ipynb` for a somewhat simpler demo
-  * `Anomaly Detection-using-TF-and-Deep-Learning.ipynb` for a Tensorflow demo.
-* raw-data.cvs
-
-[![upload-ml-files](/images/industrial-edge/upload-ml-files.png)](/images/industrial-edge/upload-ml-files.png)
-
-Open the notebook by double clicking on the notebook file (ending in `.ipynb`)
-
-[![anomaly-detection-notebook](/images/industrial-edge/anomaly-detection-notebook.png)](/images/industrial-edge/anomaly-detection-notebook.png)
-
-After opening the notebook successfully, walk through the demonstration by pressing play and iterating through the commands in the playbook. Jupyter playbooks are interactive and you may make changes and also save those changes. Also, some steps in the notebook take milliseconds, however, other steps can take a long time (up to an hour), so check on the completion of steps.
-
-Remember that changes to the notebook will require downloading, committing, and pushing that notebook to the git repository so that it gets redeployed to the factories.
+Running through all the six notebooks will automatically regenerate the anomaly
+model, prepare the data for the training and push the changes to the internal
+gitea so the inference service can pick up the new model.
