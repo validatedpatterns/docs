@@ -48,8 +48,6 @@ The application generates a project proposal for a Red Hat product.
 - Monitoring dashboard to provide key metrics such as ratings.
 - GitOps setup to deploy e2e demo (frontend / vector database / served models).
 
-<<<<<<< HEAD
-=======
 #### RAG Demo Workflow
 
 ![Overview of workflow](https://gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/images/schematic-diagrams/rag-demo-vp-sd.png)
@@ -99,7 +97,6 @@ _Figure 6. Proposed demo architecture with OpenShift AI_
 - **Grafana:** Deploys Grafana application to visualize the metrics.
 
 
->>>>>>> 9e55287b (TELCODOCS-2134 updating AI pattern)
 ![Overview](https://gitlab.com/osspa/portfolio-architecture-examples/-/raw/main/images/intro-marketectures/rag-demo-vp-marketing-slide.png)
 
 _Figure 1. Overview of the validated pattern for RAG Demo with Red Hat OpenShift_
