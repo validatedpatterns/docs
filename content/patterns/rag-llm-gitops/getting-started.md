@@ -19,7 +19,7 @@ aliases: /rag-llm-gitops/getting-started/
    ```sh
    $ git clone git@github.com:your-username/multicloud-gitops.git
    ```
-3. Navigate to your repository: Ensure you are in the root directory of your git repository by using the following command:
+3. Go to your repository: Ensure you are in the root directory of your git repository by using the following command:
 
   ```sh
   $ cd rag-llm-gitops
@@ -46,7 +46,7 @@ $ git checkout -b my-test-branch main
 6. Run the following command to push `my-test-branch` to the origin remote repository:
 
   ```sh
-  $ git push origin my-branch
+  $ git push origin my-test-branch
   ```
 6. Ensure you have logged in to the cluster at both command line and the console by using the login credentials presented to you when you installed the cluster. For example: 
 
