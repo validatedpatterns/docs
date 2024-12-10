@@ -90,10 +90,11 @@ $ git checkout -b my-test-branch main
 
 ## Verify the Installation
 
-- Login to the OpenShift web console.
-- Navigate to the Workloads --> Pods.
-- Select the `rag-llm` project from the drop down.
-- Following pods should be up and running.
+1. In the OpenShift web console go to the **Workloads** > **Pods** menu. 
+
+2. Select the `rag-llm` project from the drop down.
+
+3. Following pods should be up and running.
 
 ![Pods](/images/rag-llm-gitops/rag-llm.png)
 
