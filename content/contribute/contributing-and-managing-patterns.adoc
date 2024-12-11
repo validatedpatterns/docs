@@ -1,0 +1,190 @@
+---
+menu: contribute
+title: Contributing and managing patterns
+weight: 50
+aliases: /contributing-and-managing-patterns/
+---
+
+:toc:
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="contributing to patterns"]
+= Contributing to patterns
+
+To contribute, add the upstream repository as an additional remote and work on a branch other than the main branch. Merge changes into the main branch to align with GitOps workflows. This approach simplifies upstream contributions. Contributions from your forked main branch typically include:
+
+. Customizations to `values-global.yaml` and other installation-specific files.
+. Commits made by Tekton and other automated processes unique to your setup.
+
+*To isolate changes for upstream contributions*
+
+. Run the following command to add the upstream repository as a remote:
++
+[source,terminal]
+----
+$ git remote add hcp https://github.com/validatedpatterns/industrial-edge
+---- 
+
+. Fetch branches from all remotes: 
++
+[source,terminal]
+----
+$ git fetch --all
+----
+
+.  Create a branch named `hcp-main` and track `hcp/main`:
++
+[source,terminal]
+----
+$ git branch -b hcp-main -t hcp/main
+----
+
+. Make your changes on the `hcp-main` branch as needed.
+  
+. Push your changes to your fork’s `hcp-main` branch:
+
++ 
+[source,terminal]
+----
+$ git push origin hcp-main
+----
+
+*To update `hcp-main` branch with upstream changes*
+
+. Run the following command to check out the `hcp-main` branch:
+
++
+[source,terminal]
+----
+$ git checkout hcp-main
+----
+
+. Pull the latest changes from the upstream repository and rebase:
++
+[source,terminal]
+----
+$ git pull --rebase
+----
+
+. Reflect these changes in your forked repository (useful for submitting a PR later):
++ 
+[source,terminal]
+----
+$ git push origin hcp-main
+----
+
+*To integrate upstream pattern changes into your local GitOps process*
+
+. Run the following command to check out the main branch:
++
+[source,terminal]
+----
+$ git checkout main
+----
+
+. Merge changes from the `hcp-main` branch into your main branch:
++
+[source,terminal]
+----
+$ git merge hcp-main
+----
+
+. Push the merged changes to your fork’s main branch:
++
+[source,terminal]
+----
+$ git push origin main
+----
+
+This workflow ensures that the `hcp-main` branch:
+
+. Remains separate from changes made by your local GitOps processes.
+. Can be merged or cherry-picked into your local main branch for use in GitOps workflows (useful for tracking submodule updates, such as common).
+. Serves as a solid basis for Pull Requests upstream, as it will not include local configuration differences or local GitOps commits.
+
+[id="changing-subtrees"]
+== Changing subtrees
+
+The Git subtree feature promotes modularity by enabling multiple patterns to share a common base. Over time, functionality is moved into the common directory to isolate pattern-specific components as standard usage practices emerge. This approach strengthens tools in the common directory, adds features, and simplifies the development of new patterns. The common subtree is typically maintained during routine updates, and pulling changes from upstream includes any updates from the common directory.
+
+You only need to modify subtrees if you want to test changes in the common area of the pattern repositories or contribute to the common repository alongside one of the patterns. Using the pattern alone does not require changing subtrees.
+
+For most cases involving the use and consumption of the pattern, users do not need to know that the pattern uses a subtree.
+
+[source,terminal]
+----
+$ git clone https://github.com/<your-workspace>/industrial-edge
+----
+
+If you want to modify and track your version of common, fork and clone the common repository separately:
+
+
+[source,terminal]
+----
+$ git clone https://github.com/<your-workspace>/common
+----
+
+Make changes in your fork’s main branch or create a new branch for your modifications.
+
+To track these changes in your fork of the pattern repository (example, `industrial-edge`), replace the common subtree with your forked version. To simplify this process use:
+
+[source,terminal]
+----
+$ common/scripts/make_common_subtree.sh <subtree_repo> <subtree_branch> <subtree_remote_name>
+----
+
+This script sets up a new remote in your local working directory with the specified repository. It replaces the common directory with the specified fork and branch, commits the change, but does not push it.
+
+For example:
+
+[source,terminal]
+----
+$ common/scripts/make_common_subtree.sh https://github.com/mhjacks/common.git wip-main common-subtree
+----
+
+This replaces the common directory in the current repository with the wip-main branch from mhjacks's common repository and names the remote `common-subtree`.
+
+To pull changes from mhjacks's wip-main branch into the parent repository:
+
+[source,terminal]
+----
+$ git subtree pull --prefix common common-subtree wip-main
+----
+
+Running the script without arguments defaults to:
+
+[source,terminal]
+----
+$ common/scripts/make_common_subtree.sh https://github.com/validatedpatterns/common.git main common-subtree
+----
+
+These are the default settings for the repository configuration.
+
+[id="subtree-compared-to-submodule"]
+== Subtree compared to Submodule
+
+Ensuring patterns are easily shareable across multiple projects has been a key priority. While technically possible, sharing changes between unrelated Git repositories often involves a manual and error-prone process. The goal is to provide a seamless "pull" experience, where a single git pull action updates shared pattern components. For repository sharing, two main strategies were considered: submodules and subtrees. Initially, submodules were used, but the approach later transitioned to subtrees.
+
+Subtrees integrate the history of another repository into a parent repository, offering many benefits of submodules without most of their drawbacks. Atlassian provides useful documentation on subtrees, which explains their advantages in more detail. For more information see, link:https://www.atlassian.com/blog/developer[Developer's blog] and link:https://www.atlassian.com/git/tutorials/git-subtree[Git subtree]. 
+
+Submodules presented unavoidable challenges, such as:
+
+* Remembering to check out repositories with `--recurse-submodules` or running `git submodule init && git submodule sync`. The common directory often appeared empty without these steps.
+* Ensuring compatibility between submodule-based repositories and other tools. While tools like ArgoCD and Tekton Pipelines supported submodules well, compatibility concerns remained.
+* Switching branches where different revisions of submodules were referenced often resulted in out-of-sync states. This behavior, although is correct, could be confusing.
+* Submodules required mirroring more repositories in disconnected environments.
+* Working with forked submodules meant maintaining two separate repositories and multiple branches in each.
+
+Subtrees also have challenges. For example, it is easier to diverge from the upstream version of the subtree, and users may not realize that a subtree is in use when cloning a repository. This can be considered a feature, but might lead to conflicts when updating to a newer version. Additionally, subtrees are less commonly understood, which can result in unexpected issues, such as:
+
+
+* Cherry picking from a subtree commit into the parent puts the change in the parent location, not the subtree.
+
+[id="contributing-to-patterns-using-common-subtrees"]
+== Contributing to Patterns using Common Subtrees
+
+After forking the common repository and modifying your subtree for testing, you can propose changes to [https://github.com/validatedpatterns/common.git] for integration into other patterns. Making changes to the upstream common for a specific pattern involves two steps:
+
+. Submit a PR to update the upstream common.
+. Submit a PR to update the pattern repository with the modified common.
