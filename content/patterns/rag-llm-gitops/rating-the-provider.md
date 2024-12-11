@@ -6,46 +6,23 @@ aliases: /rag-llm-gitops/getting-started/
 
 # Rating the provider
 
-You can provide rating to the model by clicking on the `Rate the model` radio button. The rating will be captured as part of the metrics and can help the company which model to deploy in production.
+You can provide rating to the model by clicking on the `Rate the model` radio button. The rating are captured as part of the metrics and can help the company decide which model to deploy in production.
 
 ## Grafana Dashboard
 
-By default, Grafana application is deployed in `llm-monitoring` namespace. Launch the Grafana Dashboard, by running the following instructions:
+By default, the Grafana application is deployed in the `llm-monitoring` namespace. You can track the ratings by logging in to the Grafana Dashboard by following the steps below. 
 
-- Grab the credentials of Grafana Application
-  - Navigate to Workloads --> Secrets
-  - Click on the grafana-admin-credentials and copy the GF_SECURITY_ADMIN_USER, GF_SECURITY_ADMIN_PASSWORD
-- Launch Grafana Dashboard
-  - Click the `Application box` icon in the header, and select `Grafana UI for LLM ratings`
+1. In the OpenShift web console go to **Workloads** > **Secrets**.
+
+2. Click on the `ai-llm-grafana-admin-credentials` scroll down. 
+
+3. Launch Grafana Dashboard by clicking the `Application box` icon in the header, and select `Grafana UI for LLM ratings`. 
+
+4. In the top right hand corner click `Sign in`
  ![Launch Application](/images/rag-llm-gitops/launch-application.png)
-  - Enter the Grafana admin credentials.
-  - Ratings are displayed for each model.
+
+5. Enter the Grafana admin credentials. Copy the `GF_SECURITY_ADMIN_USER`, `GF_SECURITY_ADMIN_PASSWORD` from `ai-llm-grafana-admin-credentials` screen in the OpenShift web console. 
+
+6. Ratings are displayed for each model. 
 
 ![Routes](/images/rag-llm-gitops/monitoring.png)
-
-
-
-
-### Deploy application
-
-**Note**: This pattern supports two types of vector databases, EDB Postgres for Kubernetes, and Redis. By default the pattern will deploy EDB Postgres for Kubernetes as a vector database. To deploy Redis, change the `global.db.type` parameter to the `REDIS` value in [values-global.yaml](./values-global.yaml).
-
-```yaml
----
-global:
-  pattern: rag-llm-gitops
-  options:
-    useCSV: false
-    syncPolicy: Automatic
-    installPlanApproval: Automatic
-# Possible value for db.type = [REDIS, EDB]
-  db:
-    index: docs
-    type: EDB  # <--- Default is EDB, Change the db type to REDIS for Redis deployment
-main:
-  clusterGroupName: hub
-  multiSourceConfig:
-    enabled: true
-```
-
-
