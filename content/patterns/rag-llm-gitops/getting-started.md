@@ -96,8 +96,6 @@ aliases: /rag-llm-gitops/getting-started/
 
 ![Pods](/images/rag-llm-gitops/rag-llm.png)
 
-Note: If the hf-text-generation-server is not running, make sure you have followed the steps to configure a node with GPU from the [instructions](../gpu_provisioning) provided above.
-
 ### Launch the application
 
 - Click the `Application box` icon in the header, and select `Retrieval-Augmented-Generation (RAG) LLM Demonstration UI`
@@ -110,9 +108,10 @@ Note: If the hf-text-generation-server is not running, make sure you have follow
 
 ### Generate the proposal document
 
-- It will use the default provider and model configured as part of the application deployment. The default provider is a Hugging Face model server running in the OpenShift. The model server is deployed with this validated pattern and requires a node with GPU.
-- Enter any company name
-- Enter the product as `RedHat OpenShift`
+- It will use the default provider and model configured as part of the application deployment. The default provider is `Mistral-7B-Instruct` a model available on Hugging Face. It is a fine-tuned version of the base `Mistral-7B` model. The model server is deployed with this validated pattern and requires a node with GPU.
+
+- Enter any company name for example Microsoft.
+- Enter the product as `RedHat OpenShift AI`
 - Click the `Generate` button, a project proposal should be generated. The project proposal also contains the reference of the RAG content. The project proposal document can be Downloaded in the form of a PDF document.
 
   ![Routes](/images/rag-llm-gitops/proposal.png)
