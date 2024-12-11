@@ -22,25 +22,42 @@ Patterns are designed to be composed of multiple components, that consumers and 
 +
 `git clone git@github.com:<your-workspace>/industrial-edge.git`
 
-. Create a local copy of the Helm values file to safely include credentials.
-+
-[NOTE]
-====
-Do not commit this file as it may contain sensitive credentials.
-====
-+
+. If you want to customize credentials, create a local copy of the secrets values file. Do not push the secrets file to GitHub.
+
+.. Create a local copy of the secrets template file:
 [source,terminal]
++
 ----
 $ cp values-secret.yaml.template ~/values-secret.yaml
-$ vi ~/values-secret.yaml
 ----
-
-. Customize the deployment for your cluster.
+.. Edit the file and securely add your cluster-specific credentials:
 +
 [source,terminal]
+
+----
+$ vi ~/values-secret.yaml
+---- 
+
+. Customize the deployment for your cluster. Customization involves updating the `values-global.yaml` file with configurations specific to your cluster environment.
+.. Edit the `values-global.yaml` file:
++
+[source,terminal]
++
 ----
 $ vi values-global.yaml
+----
+.. Commit the updated `values-global.yaml` file to the repository:
++
+[source,terminal]
++
+----
 $ git commit values-global.yaml
+----
+.. Push the committed changes:
++
+[source,terminal]
+
+----
 $ git push
 ----
 
