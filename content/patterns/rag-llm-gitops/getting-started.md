@@ -152,7 +152,7 @@ aliases: /rag-llm-gitops/getting-started/
 
 - Click the `Application box` icon in the header, and select `Retrieval-Augmented-Generation (RAG) LLM Demonstration UI`
 
-  ![Launch Application](/images/rag-llm-gitops/launch-application.png)
+  ![Launch Application](/images/rag-llm-gitops/launch-application-main_menu.png)
 
 - It should launch the application
 
