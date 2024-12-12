@@ -26,11 +26,11 @@ You can optionally add additional providers. The application supports the follow
 
 3. Click the `Add Provider` button.
 
-   ![Addprovider](/images/rag-llm-gitops/add_provider.png)
+   ![Addprovider](/images/rag-llm-gitops/provider-1.png)
 
 4. Complete the details and click the `Add` button. 
 
-   ![Addprovider](/images/rag-llm-gitops/add_provider-1.png)
+   ![Addprovider](/images/rag-llm-gitops/provider-2.png)
 
 The provider is now available to select in the `Providers` dropdown under the `Chatbot` tab.
 
