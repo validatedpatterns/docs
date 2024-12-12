@@ -65,7 +65,7 @@ aliases: /rag-llm-gitops/getting-started/
 4. Clone the forked repository by running the following command: 
 
    ```sh
-   $ git clone git@github.com:your-username/multicloud-gitops.git
+   $ git clone git@github.com:your-username/rag-llm-gitops.git
    ```
 5. Go to your repository: Ensure you are in the root directory of your git repository by using the following command:
 
@@ -160,7 +160,7 @@ aliases: /rag-llm-gitops/getting-started/
 
 ### Generate the proposal document
 
-- The demo which generates a proposal document uses the default provider `Mistral-7B-Instruct` a model available on Hugging Face. It is a fine-tuned version of the base `Mistral-7B` model. 
+- The demo generates a proposal document using the default provider `Mistral-7B-Instruct`; a model available on Hugging Face. It is a fine-tuned version of the base `Mistral-7B` model. 
 
 - Enter any company name for example `Microsoft`.
 - Enter the product as `RedHat OpenShift AI`
