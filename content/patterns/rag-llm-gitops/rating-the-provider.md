@@ -19,10 +19,11 @@ By default, the Grafana application is deployed in the `llm-monitoring` namespac
 3. Launch Grafana Dashboard by clicking the `Application box` icon in the header, and select `Grafana UI for LLM ratings`. 
 
 4. In the top right hand corner click `Sign in`
- ![Launch Application](/images/rag-llm-gitops/launch-application.png)
+
+   ![Launch Application](/images/rag-llm-gitops/launch-application.png)
 
 5. Enter the Grafana admin credentials. Copy the `GF_SECURITY_ADMIN_USER`, `GF_SECURITY_ADMIN_PASSWORD` from `ai-llm-grafana-admin-credentials` screen in the OpenShift web console. 
 
 6. Ratings are displayed for each model. 
 
-![Routes](/images/rag-llm-gitops/monitoring.png)
+   ![Routes](/images/rag-llm-gitops/monitoring.png)
