@@ -1,7 +1,7 @@
 ---
 title: Rating the provider
 weight: 11
-aliases: /rag-llm-gitops/getting-started/
+aliases: /rag-llm-gitops/rating-provider/
 ---
 
 # Rating the provider
