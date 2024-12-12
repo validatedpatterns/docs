@@ -93,13 +93,13 @@ aliases: /rag-llm-gitops/getting-started/
 
 9. By default the pattern deploys the EDB Postgres for Kubernetes as a vector database. To deploy Redis, change the `global.db.type` parameter to the `REDIS` value in your local branch in `values-global.yaml`. For more information see, [Deploying a different databases](/rag-llm-gitops/deploy-different-db/) to change the vector database.
 
-10. By default instance types for the GPU nodes are `g5.2xlarge`. Follow the [Customize GPU provisioning nodes](/rag-llm-gitops/gpuprovisioning) to change the GPU instance types.
+10. By default instance types for the GPU nodes are `g5.2xlarge`. Follow the [Customize GPU provisioning nodes](/rag-llm-gitops/gpuprovisioning/) to change the GPU instance types.
 
 11. Run the following command to push `my-test-branch` (including any changes) to the origin remote repository:
 
-   ```sh
-   $ git push origin my-test-branch
-   ```
+    ```sh
+    $ git push origin my-test-branch
+    ```
 12. Ensure you have logged in to the cluster at both command line and the console by using the login credentials presented to you when you installed the cluster. For example: 
 
     ```sh
