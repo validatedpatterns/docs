@@ -1,7 +1,7 @@
 ---
 title: Deploying a different database 
 weight: 12
-aliases: /rag-llm-gitops/getting-started/
+aliases: /rag-llm-gitops/deploy-different-db/
 ---
 
 # Deploying a different database
@@ -19,7 +19,10 @@ global:
 # Possible value for db.type = [REDIS, EDB]
   db:
     index: docs
-    type: EDB  # <--- Default is EDB, Change the db type to REDIS for Redis deployment
+    type: EDB
+# Add for model ID
+  model:
+      modelId: mistral-community/Mistral-7B-Instruct-v0.3
 main:
   clusterGroupName: hub
   multiSourceConfig:

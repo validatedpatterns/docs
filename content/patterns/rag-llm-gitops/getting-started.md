@@ -8,14 +8,14 @@ aliases: /rag-llm-gitops/getting-started/
 
 - Podman
 - You have the OpenShift Container Platform installation program and the pull secret for your cluster. You can get these from [Install OpenShift on AWS with installer-provisioned infrastructure](https://console.redhat.com/openshift/install/aws/installer-provisioned). 
-- Red Hat Openshift cluster running in AWS. Supported regions are `us-west-2` and `us-east-1`. For more information about installing on AWS see, [Installation methods](https://docs.openshift.com/container-platform/latest/installing/installing_aws/preparing-to-install-on-aws.html). 
+- Red Hat Openshift cluster running in AWS. 
 
 ## Procedure
 
 1. Create the installation configuration file using the steps described in [Creating the installation configuration file](https://docs.openshift.com/container-platform/4.17/installing/installing_aws/ipi/installing-aws-customizations.html#installation-initializing_installing-aws-customizations). 
 
    > **Note:**  
-   > This deploys everything you need to run the demo application including the Nividia GPU Operator and the Node Feature Discovery Operator used to determine your GPU nodes. 
+   > Supported regions are `us-west-2` and `us-east-1`. For more information about installing on AWS see, [Installation methods](https://docs.openshift.com/container-platform/latest/installing/installing_aws/preparing-to-install-on-aws.html). 
    > 
 
 2. Customize the generated `install-config.yaml` creating one control plane node with instance type `m5a.2xlarge` and 3 worker nodes with instance type `p3.2xlarge`. A sample YAML file is shown here: 
@@ -91,48 +91,52 @@ aliases: /rag-llm-gitops/getting-started/
    $ git checkout -b my-test-branch main
    ```
 
-9. Run the following command to push `my-test-branch` to the origin remote repository:
+9. By default the pattern deploys the EDB Postgres for Kubernetes as a vector database. To deploy Redis, change the `global.db.type` parameter to the `REDIS` value in your local branch in `values-global.yaml`. For more information see, [Deploying a different databases](/rag-llm-gitops/deploy-different-db/) to change the vector database.
+
+10. By default instance types for the GPU nodes are `g5.2xlarge`. Follow the [Customize GPU provisioning nodes](/rag-llm-gitops/gpuprovisioning) to change the GPU instance types.
+
+11. Run the following command to push `my-test-branch` (including any changes) to the origin remote repository:
 
    ```sh
    $ git push origin my-test-branch
    ```
-10. Ensure you have logged in to the cluster at both command line and the console by using the login credentials presented to you when you installed the cluster. For example: 
+12. Ensure you have logged in to the cluster at both command line and the console by using the login credentials presented to you when you installed the cluster. For example: 
 
-   ```sh
-   INFO Install complete!
-   INFO Run 'export KUBECONFIG=<your working directory>/auth/kubeconfig' to manage the cluster with 'oc', the OpenShift CLI.
-   INFO The cluster is ready when 'oc login -u kubeadmin -p <provided>' succeeds (wait a few minutes).
-   INFO Access the OpenShift web-console here: https://console-openshift-console.apps.demo1.openshift4-beta-abcorp.com
-   INFO Login to the console with user: kubeadmin, password: <provided>
-   ```
-11. Add GPU nodes to your existing cluster deployment by running the following command: 
+    ```sh
+    INFO Install complete!
+    INFO Run 'export KUBECONFIG=<your working directory>/auth/kubeconfig' to manage the cluster with 'oc', the OpenShift CLI.
+    INFO The cluster is ready when 'oc login -u kubeadmin -p <provided>' succeeds (wait a few minutes).
+    INFO Access the OpenShift web-console here: https://console-openshift-console.apps.demo1.openshift4-beta-abcorp.com
+    INFO Login to the console with user: kubeadmin, password: <provided>
+    ```
+13. Add GPU nodes to your existing cluster deployment by running the following command: 
 
-   ```sh
-   $ ./pattern.sh make create-gpu-machineset
-   ```
-   > **Note:**  
-   > You may need to create a file `config` in your home directory and populate it with the region name.  
-   > 1. Run the following:  
-   > ```sh
-   > vi ~/.aws/config
-   > ```  
-   > 2. Add the following:  
-   > ```sh
-   > [default]
-   > region = us-east-1
-   > ```
+    ```sh
+    $ ./pattern.sh make create-gpu-machineset
+    ```
+    > **Note:**  
+    > You may need to create a file `config` in your home directory and populate it with the region name.  
+    > 1. Run the following:  
+    > ```sh
+    > vi ~/.aws/config
+    > ```  
+    > 2. Add the following:  
+    > ```sh
+    > [default]
+    > region = us-east-1
+    > ```
 
-12. Adding the GPU nodes should take about 5-10 minutes. You can verify the addition of these `g5.2xlarge` nodes in the OpenShift web console under **Compute** > **Nodes**.   
+14. Adding the GPU nodes should take about 5-10 minutes. You can verify the addition of these `g5.2xlarge` nodes in the OpenShift web console under **Compute** > **Nodes**.   
 
-13. Install the pattern with the demo application by running the following command: 
+15. Install the pattern with the demo application by running the following command: 
 
-   ```sh
-   $ ./pattern.sh make install
-   ``` 
+    ```sh
+    $ ./pattern.sh make install
+    ``` 
 
-   > **Note:**  
-   > This deploys everything you need to run the demo application including the Nividia GPU Operator and the Node Feature Discovery Operator used to determine your GPU nodes. 
-   > 
+    > **Note:**  
+    > This deploys everything you need to run the demo application including the Nividia GPU Operator and the Node Feature Discovery Operator used to determine your GPU nodes. 
+    > 
 
 ## Verify the Installation
 
