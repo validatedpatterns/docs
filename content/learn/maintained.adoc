@@ -1,14 +1,14 @@
 ---
 menu:
-  learn:
-    parent: Workflow
+  contribute:
+    parent: Contributing and managing patterns
 title: Validated Patterns - Maintained tier
-weight: 65
-aliases: /requirements/maintained/
+weight: 54
+aliases: /contribute/maintained/
 ---
 
 :toc:
-
+:imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
@@ -36,7 +36,7 @@ In limited cases, the {solution-name-upstream} team may consider taking on that 
 == Requirements for the {maintained} tier
 
 The {maintained} patterns have deliverable and requirements in addition to those
-specified for the link:/requirements/tested/[Tested tier].
+specified for the link:/contribute/tested/[Tested tier].
 
 The requirements are categorized as follows:
 
@@ -52,7 +52,7 @@ These are optional or desirable features, but their absence does not hinder the 
 
 A {maintained} pattern must continue to meet the following criteria to remain in {maintained} tier:
 
-* A {maintained} pattern must conform to the common technical link:/requirements/implementation/[implementation requirements].
+* A {maintained} pattern must conform to the common technical link:/contribute/implementation/[implementation requirements].
 * A {maintained} pattern must only make use of components that are either supported, or easily substituted for supportable equivalents, for example, HashiCorp vault which has community and enterprise variants.
 * A {maintained} pattern must *not* rely on functionality in tech-preview, or hidden behind feature gates.
 * A {maintained} pattern must have their architectures reviewed by a representative of each Red Hat product they consume to ensure consistency with the product teams` intentions and roadmaps. Your patterns SME (eg. services rep) can help coordinate this.

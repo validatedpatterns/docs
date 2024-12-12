@@ -1,14 +1,14 @@
 ---
 menu:
-  learn:
-    parent: Workflow
+  contribute:
+    parent: Contributing and managing patterns
 title: Validated Patterns - Tested tier
-weight: 64
-aliases: /requirements/tested/
+weight: 53
+aliases: /contribute/tested/
 ---
 
 :toc:
-
+:imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
@@ -35,7 +35,7 @@ In limited cases, the {solution-name-upstream} team may consider taking on that 
 [id="requirements-tested-tier"]
 == Requirements for the {tested} tier
 
-A {tested} patterns have deliverable and requirements in addition to those specified for the link:/requirements/sandbox/[Sandbox tier].
+A {tested} patterns have deliverable and requirements in addition to those specified for the link:/contribute/sandbox/[Sandbox tier].
 
 The requirements are categorized as follows:
 
@@ -51,7 +51,7 @@ These are optional or desirable features, but their absence does not hinder the 
 
 A {tested} pattern must continue to meet the following criteria to remain in the {tested} tier:
 
-* A {tested} pattern must conform to the common technical link:/requirements/implementation/[implementation requirements].
+* A {tested} pattern must conform to the common technical link:/contribute/implementation/[implementation requirements].
 * A {tested} pattern must be meaningful without specialized hardware, including flavors of architectures not explicitly supported.
 +
 Qualification is a {solution-name-upstream} Technical Oversight Committee (TOC) decision with input from the pattern owner.
@@ -88,4 +88,4 @@ Teams creating {tested} pattern can provide their own service level agreement (S
 A technical document for Quality Engineering (QE) team that defines how to validate if the pattern has been successfully deployed and is functionally operational.
 For example, see link:https://docs.google.com/document/d/12KQhdzjVIsxRURTnWAckiEMB3_96oWBjtlTXi1q73cg/view[Validating an Industrial Edge Deployment].
 
-A {tested} pattern meeting additional criteria can be nominated for promotion to the link:/learn/maintained/[Maintained tier].
+A {tested} pattern meeting additional criteria can be nominated for promotion to the link:/contribute/maintained/[Maintained tier].
