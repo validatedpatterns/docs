@@ -3,7 +3,7 @@ menu:
   contribute:
     parent: Contributing and managing patterns
 title: Implementation requirements
-weight: 51
+weight: 52
 aliases: /contribute/implementation/
 ---
 

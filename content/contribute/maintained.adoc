@@ -3,7 +3,7 @@ menu:
   contribute:
     parent: Contributing and managing patterns
 title: Validated Patterns - Maintained tier
-weight: 54
+weight: 55
 aliases: /contribute/maintained/
 ---
 
@@ -52,15 +52,15 @@ These are optional or desirable features, but their absence does not hinder the 
 
 A {maintained} pattern must continue to meet the following criteria to remain in {maintained} tier:
 
-* A {maintained} pattern must conform to the common technical link:/contribute/implementation/[implementation requirements].
-* A {maintained} pattern must only make use of components that are either supported, or easily substituted for supportable equivalents, for example, HashiCorp vault which has community and enterprise variants.
-* A {maintained} pattern must *not* rely on functionality in tech-preview, or hidden behind feature gates.
-* A {maintained} pattern must have their architectures reviewed by a representative of each Red Hat product they consume to ensure consistency with the product teams` intentions and roadmaps. Your patterns SME (eg. services rep) can help coordinate this.
-* A {maintained} pattern must include a link to a hosted presentation (Google Slides or similar) intended to promote the solution.  The focus should be on the architecture and business problem being solved.  No customer, or otherwise sensitive, information should be included.
-* A {maintained} pattern must include test plan automation that runs on every change to the pattern, or a schedule no less frequently than once per week.
-* A {maintained} pattern must be tested on all currently supported {rh-ocp} extended update support (EUS) releases.
-* A {maintained} pattern must fix breakage in timely manner.
-* A {maintained} pattern must document their support policy.
+. A {maintained} pattern must conform to the common technical link:/contribute/implementation/[implementation requirements].
+. A {maintained} pattern must only make use of components that are either supported, or easily substituted for supportable equivalents, for example, HashiCorp vault which has community and enterprise variants.
+. A {maintained} pattern must *not* rely on functionality in tech-preview, or hidden behind feature gates.
+. A {maintained} pattern must have their architectures reviewed by a representative of each Red Hat product they consume to ensure consistency with the product teams` intentions and roadmaps. Your patterns SME (eg. services rep) can help coordinate this.
+. A {maintained} pattern must include a link to a hosted presentation (Google Slides or similar) intended to promote the solution.  The focus should be on the architecture and business problem being solved.  No customer, or otherwise sensitive, information should be included.
+. A {maintained} pattern must include test plan automation that runs on every change to the pattern, or a schedule no less frequently than once per week.
+. A {maintained} pattern must be tested on all currently supported {rh-ocp} extended update support (EUS) releases.
+. A {maintained} pattern must fix breakage in timely manner.
+. A {maintained} pattern must document their support policy.
 +
 
 The individual products used in a {solution-name-upstream} are backed by the full {redhat} support experience conditional on the customer's subscription to those products, and the individual products`s support policy.
@@ -79,4 +79,4 @@ The {maintained} patterns *do not* imply an obligation of support for partner or
 [id="can-maintained-tier"]
 === Can
 
-* If you are creating {solution-name-upstream}, you can provide your own SLA.
+. If you are creating {solution-name-upstream}, you can provide your own SLA.
