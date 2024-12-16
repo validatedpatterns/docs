@@ -1,14 +1,14 @@
 ---
 menu:
-  learn:
-    parent: Workflow
+  contribute:
+    parent: Contributing and managing patterns
 title: Implementation requirements
-weight: 62
-aliases: /requirements/implementation/
+weight: 52
+aliases: /contribute/implementation/
 ---
 
 :toc:
-
+:imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 

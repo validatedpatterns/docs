@@ -1,15 +1,14 @@
 ---
 menu:
-  learn:
-    parent: Workflow
+  contribute:
+    parent: Contributing and managing patterns
 title: Validated Patterns - Sandbox tier
-weight: 63
-aliases: /requirements/community/
-aliases: /requirements/sandbox/
+weight: 53
+aliases: /contribute/sandbox/
 ---
 
 :toc:
-
+:imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
@@ -48,15 +47,15 @@ These are optional or desirable features, but their absence does not hinder the 
 === Must
 A {sandbox} pattern must continue to meet the following criteria to remain in the {sandbox} tier:
 
-* A {sandbox} pattern must conform to the common technical link:/requirements/implementation/[implementation requirements].
-* A {sandbox} pattern must be able to be deployed onto a freshly deployed OpenShift cluster without prior modification or tuning.
-* A {sandbox} pattern must include a top-level README file that highlights the business problem and how the pattern solves it.
-* A {sandbox} pattern must include an architecture drawing. The specific tool or format is flexible as long as the meaning is clear.
-* A {sandbox} pattern must undergo an informal technical review by a community leader to ensure that it meets basic reuse standards.
-* A {sandbox} pattern must undergo an informal architecture review by a community leader to ensure that the solution has the right components, and they are generally being used as intended. For example, not using a database as a message bus.
+. A {sandbox} pattern must conform to the common technical link:/contribute/implementation/[implementation requirements].
+. A {sandbox} pattern must be able to be deployed onto a freshly deployed OpenShift cluster without prior modification or tuning.
+. A {sandbox} pattern must include a top-level README file that highlights the business problem and how the pattern solves it.
+. A {sandbox} pattern must include an architecture drawing. The specific tool or format is flexible as long as the meaning is clear.
+. A {sandbox} pattern must undergo an informal technical review by a community leader to ensure that it meets basic reuse standards.
+. A {sandbox} pattern must undergo an informal architecture review by a community leader to ensure that the solution has the right components, and they are generally being used as intended. For example, not using a database as a message bus.
 +
 As community leaders, contributions from within {redhat} might be subject to a higher level of scrutiny. While we strive to be inclusive, the community will have quality standards and generally using the framework does not automatically imply a solution is suitable for the community to endorse/publish.
-* A {sandbox} pattern must document their support policy.
+. A {sandbox} pattern must document their support policy.
 
 [NOTE]
 ====
@@ -67,6 +66,6 @@ The {solution-name-upstream} team commits to maintaining the framework, but will
 [id="can-sandbox-tier"]
 === Can
 
-* A {sandbox} pattern (including works-in-progress) can be hosted in the link:https://github.com/validatedpatterns-sandbox[https://github.com/validatedpatterns-sandbox] GitHub organization.
-* A {sandbox} pattern can be listed on the link:https://validatedpatterns.io[https://validatedpatterns.io] site.
-* A {sandbox} pattern meeting additional criteria can be nominated for promotion to the link:/learn/tested/[Tested tier].
+. A {sandbox} pattern (including works-in-progress) can be hosted in the link:https://github.com/validatedpatterns-sandbox[https://github.com/validatedpatterns-sandbox] GitHub organization.
+. A {sandbox} pattern can be listed on the link:https://validatedpatterns.io[https://validatedpatterns.io] site.
+. A {sandbox} pattern meeting additional criteria can be nominated for promotion to the link:/contribute/tested/[Tested tier].

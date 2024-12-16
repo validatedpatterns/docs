@@ -1,10 +1,10 @@
 ---
 menu:
-  learn:
-    parent: Workflow
+  contribute:
+    parent: Contributing and managing patterns
 title: Testing Artifacts
-weight: 50
-aliases: /requirements/tested/
+weight: 51
+aliases: /contribute/test-artifacts/
 ---
 
 :toc:
