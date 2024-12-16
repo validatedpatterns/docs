@@ -4,46 +4,70 @@
 [id="understanding-acm-requirements-managed-cluster"]
 = Understanding Red Hat Advanced Cluster Management requirements
 
-By default, Red Hat Advanced Cluster Management (RHACM) manages the `clusterGroup` applications that are deployed on all clusters. In the `value-hub.yaml` file, add a `managedClusterCgroup` for each cluster or group of clusters that you want to manage as one.
+By default, Red Hat Advanced Cluster Management (RHACM) manages the `clusterGroup` applications that are deployed on all clusters. 
+
+Add a `managedClusterGroup` for each cluster or group of clusters that you want to manage by following this procedure. 
+
+.Procedure
+
+. Switch to your locally created feature branch by running the following command:
++
+[source,terminal]
+----
+$ git checkout my-branch main
+----
+
+. In the `value-hub.yaml` file, add a `managedClusterGroup` for each cluster or group of clusters that you want to manage as one.
 
 [source,yaml]
 ----
-  managedClusterGroups:
-  - name: region-one
+managedClusterGroups:
+  exampleRegion:
+    name: group-one
+    acmlabels:
+      - name: clusterGroup
+        value: group-one
     helmOverrides:
-    - name: clusterGroup.isHubCluster
-      value: false
-    clusterSelector:
-      matchLabels:
-        clusterGroup: region-one
+      - name: clusterGroup.isHubCluster
+        value: false
 ----
 
-The above YAML file segment deploys the `clusterGroup` applications on managed clusters with the label `clusterGroup=region-one`. Specific subscriptions and Operators, applications and projects for that `clusterGroup` are then managed in a `value-region-one.yaml` file. For example:
+The above YAML file segment deploys the `clusterGroup` applications on managed clusters with the label `clusterGroup=group-one`. Specific subscriptions and Operators, applications and projects for that `clusterGroup` are then managed in a `value-group-one.yaml` file. 
+
+For example:
 
 [source,yaml]
 ----
+clusterGroup:
+  name: group-one
+  isHubCluster: false
   namespaces:
     - config-demo
-
+    - hello-world
+    - golang-external-secrets
+  # The only subscription on spokes is gitops which gets managed by ACM
+  # subscriptions:
   projects:
+    - eso
     - config-demo
-
+    - hello-world
   applications:
+    golang-external-secrets:
+      name: golang-external-secrets
+      namespace: golang-external-secrets
+      project: eso
+      chart: golang-external-secrets
+      chartVersion: 0.1.*
     config-demo:
       name: config-demo
       namespace: config-demo
       project: config-demo
       path: charts/all/config-demo
-
-  #Subscriptions can be added too - multicloud-gitops at present does not require subscriptions on its managed clusters
-  #subscriptions:
-.  #  example-subscription
-  #    name: example-operator
-  #    namespace: example-namespace
-  #    channel: example-channel
-  #    csv: example-operator.v1.0.0
-
-  subscriptions:
+    hello-world:
+      name: hello-world
+      namespace: hello-world
+      project: hello-world
+      path: charts/all/hello-world
 ----
 
 [IMPORTANT]

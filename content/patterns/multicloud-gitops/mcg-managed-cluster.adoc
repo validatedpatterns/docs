@@ -13,6 +13,8 @@ include::modules/comm-attributes.adoc[]
 [id="attach-managed-cluster"]
 = Attach a managed cluster (edge) to the management hub
 
+When you install the multi-cloud GitOps pattern, a hub cluster is setup. The hub cluster serves as the central point for managing and deploying applications across multiple clusters.
+
 include::modules/mcg-understanding-rhacm-requirements.adoc[leveloffset=+1]
 
 include::modules/mcg-deploying-managed-cluster-using-rhacm.adoc[leveloffset=+1]
