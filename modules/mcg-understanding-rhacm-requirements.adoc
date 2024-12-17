@@ -18,7 +18,7 @@ $ git checkout my-branch main
 ----
 
 . In the `value-hub.yaml` file, add a `managedClusterGroup` for each cluster or group of clusters that you want to manage as one.
-
++
 [source,yaml]
 ----
 managedClusterGroups:
@@ -31,11 +31,11 @@ managedClusterGroups:
       - name: clusterGroup.isHubCluster
         value: false
 ----
-
++
 The above YAML file segment deploys the `clusterGroup` applications on managed clusters with the label `clusterGroup=group-one`. Specific subscriptions and Operators, applications and projects for that `clusterGroup` are then managed in a `value-group-one.yaml` file. 
-
++
 For example:
-
++
 [source,yaml]
 ----
 clusterGroup:

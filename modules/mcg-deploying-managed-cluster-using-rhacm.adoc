@@ -14,13 +14,13 @@
 +
 [NOTE]
 ====
-After RHACM is installed, a message regarding a *Web console update is available*" might be displayed. Follow the instructions and click the *Refresh web console* link.
+After RHACM is installed, a message regarding a *Web console update is available* might be displayed. Follow the instructions and click the *Refresh web console* link.
 ====
 
 .Procedure
 
 . In the left navigation panel of web console, click *local-cluster*. Select *All Clusters*. The RHACM web console is displayed with *Cluster** on the left navigation panel.
 . On the *Managed clusters* tab, click *Import cluster*.
-. On the *Import an existing cluster* page, enter the cluster name and choose *KUBECONFIG* as the "import mode". Add the tag `clusterGroup=region-one`. Click *Import*.
+. On the *Import an existing cluster* page, enter the cluster name and choose *KUBECONFIG* as the "import mode". Add the tag `clusterGroup=group-one`. Click *Import*.
 
 Now that RHACM is no longer deploying the managed cluster applications everywhere, you must indicate that the new cluster has the managed cluster role.
