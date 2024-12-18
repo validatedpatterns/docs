@@ -27,7 +27,7 @@ Other patterns build upon these concepts, making this an ideal starting point fo
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *Services \-> Containers \-> Create cluster*.
+ ** Select *OpenShift \-> Create cluster*.
  ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. Verify that a dynamic `StorageClass` exists before creating one by running the following command: 
 +
 [source,terminal]
@@ -256,7 +256,7 @@ $ ./pattern.sh make install
 . Verify that the Operators have been installed.
  .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
  .. Check that *{rh-gitops} Operator* is installed in the `openshift-operators` namespace and its status is `Succeeded`.
-. Verify that all applications are synchronized. Under *Networking \-> Routes \* select the *Location URL* associated with the *hub-gitops-server* . All application are report status as `Synched`. 
+. Verify that all applications are synchronized. Under *Networking \-> Routes* select the *Location URL* associated with the *hub-gitops-server* . All application are report status as `Synched`. 
 +
 image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
 
