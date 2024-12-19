@@ -9,18 +9,148 @@ One of the major goals of the Validated Patterns development process is to creat
 You can customize this demo in different ways.
 
 [id="split-config-demo"]
-== Split the config-demo across hub and regional clusters
+== Customizing the config-demo across hub and regional clusters
 
 Currently hub and regional clusters are reusing the exact same helm chart found at `charts/all/config-demo`. 
 
-The first customization step could be to split the demo app in two separate charts: 
+Follow this procedure to split the `config-demo` application across the `hub` and `regional` clusters:
 
-* One in `charts/hub/config-demo` 
-* One in `charts/region/config-demo`. 
+. Ensure you are in your locally created feature branch by running the following command:
++
+[source,terminal]
+----
+$ git checkout my-branch main
+----
 
-`charts/all/config-demo` has been copied to `charts/hub/config-demo` and `charts/region/config-demo`, you need to include them in the respective `values-hub.yaml` and `values-region-one.yaml`, respectively.
+. Run the following commands to create the `charts/hub` directory (the region directory already exists):
++
+[source,terminal]
+----
+$ mkdir -p charts/hub
+----
 
-After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
+. Copy the `charts/all/config-demo` to `charts/hub/config-demo` by running the following command:
++
+[source,terminal]
+----
+$ cp -r charts/all/config-demo charts/hub/config-demo
+----
+
+. Copy the `charts/all/config-demo` to `charts/region/config-demo` by running the following command:
++
+[source,terminal]
+----
+$ cp -r charts/all/config-demo charts/region/config-demo
+----
+
+. Edit `config-demo-cm.yaml` in `charts/hub/config-demo/templates` add the line `This is the hub cluster patched version via git`: 
++
+[source,terminal]
+----
+</head>
+   <body>
+     <h1>
+     This is the hub cluster patched version via git <br>
+     Hub Cluster domain is '{{ .Values.global.hubClusterDomain }}' <br>
+     Pod is running on Local Cluster Domain '{{ .Values.global.localClusterDomain }}' <br>
+     </h1>
+     <h2>
+     The secret is <a href="/secret/secret">secret</a>
+----
+
+. Edit `config-demo-cm.yaml` in `charts/hub/config-demo/templates` add the line `This is the hub cluster patched version via git`: 
++
+[source,terminal]
+----
+</head>
+   <body>
+     <h1>
+     This is the hub cluster patched version via git <br>
+     Hub Cluster domain is '{{ .Values.global.hubClusterDomain }}' <br>
+     Pod is running on Local Cluster Domain '{{ .Values.global.localClusterDomain }}' <br>
+     </h1>
+     <h2>
+     The secret is <a href="/secret/secret">secret</a>
+----
+
+. In the root directory of your repository, edit the `values-hub.yaml` file and modify the path as follows:
++
+[source,yaml]
+----
+config-demo:
+  name: config-demo
+  namespace: config-demo
+  project: config-demo
+  path: charts/hub/config-demo
+----
+
+. In the root directory of your repository, edit the `values-group-one.yaml` file and modify the path as follows:
++
+[source,yaml]
+----
+config-demo:
+  name: config-demo
+  namespace: config-demo
+  project: config-demo
+  path: charts/region/config-demo
+----
+
+. Add the changes to the staging area by running the following command:
++
+[source,terminal]
+----
+$ git add .
+----
+
+. Commit the changes by running the following command:
++
+[source,terminal]
+----
+$ git commit -a -m "test another change"
+----
+
+. Push the change to the remote repository by running the following command:
++
+[source,terminal]
+----
+$ git push origin my-branch
+----
+
+ArgoCD will apply the change to the `config-demo` application.
+
+Verify that the update to the *config-demo* application is successfully applied to your hub cluster as follows:
+
+. In the OpenShift console associated with your hub cluster go to the *Networking* -> *Routes* menu options.
+
+. From the *Project:* drop down select the *config-demo* project. 
+
+. Click the *Location* URL. This should reveal the following:
++
+[source,terminal]
+----
+This is the hub cluster patched version via git
+Hub Cluster domain is 'apps.kevstestcluster.aws.validatedpatterns.io'
+Pod is running on Local Cluster Domain 'apps.kevstestcluster.aws.validatedpatterns.io'
+
+The secret is secret
+----
+
+Verify that the update to the *config-demo* application is successfully applied to your managed cluster as follows:
+
+. In the OpenShift console associated with your hub cluster go to the *Networking* -> *Routes* menu options.
+
+. From the *Project:* drop down select the *config-demo* project. 
+
+. Click the *Location* URL. This should reveal the following:
++
+[source,terminal]
+----
+This is the managed cluster
+Hub Cluster domain is 'apps.kevstestcluster.aws.validatedpatterns.io'
+Pod is running on Local Cluster Domain 'apps.ci-ln-cf2475b-76ef8.aws-2.ci.openshift.org'
+
+The secret is secret
+----
 
 == Rest API addition
 

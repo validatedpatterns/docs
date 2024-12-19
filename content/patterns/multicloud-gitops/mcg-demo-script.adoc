@@ -73,6 +73,13 @@ make a small change to the `hello-world` application to see how the GitOps frame
     Hub Cluster domain is '{{ .Values.global.hubClusterDomain }}' <br>
 ----
 
+. Add the changes to the staging area by running the following command:
++
+[source,terminal]
+----
+$ git add -u
+----
+
 . Commit this change by running the following command:
 +
 [source,terminal]
