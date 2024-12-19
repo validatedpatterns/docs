@@ -11,7 +11,14 @@ You can customize this demo in different ways.
 [id="split-config-demo"]
 == Split the config-demo across hub and regional clusters
 
-Currently hub and regional clusters are reusing the exact same helm chart found at `charts/all/config-demo`. The first customization step could be to split the demo app in two separate charts: one in `charts/hub/config-demo` and one in `charts/region/config-demo`. Once `charts/all/config-demo` has been copied to `charts/hub/config-demo` and `charts/region/config-demo`, you need to include them in the respective `values-hub.yaml` and `values-region-one.yaml`, respectively.
+Currently hub and regional clusters are reusing the exact same helm chart found at `charts/all/config-demo`. 
+
+The first customization step could be to split the demo app in two separate charts: 
+
+* One in `charts/hub/config-demo` 
+* One in `charts/region/config-demo`. 
+
+`charts/all/config-demo` has been copied to `charts/hub/config-demo` and `charts/region/config-demo`, you need to include them in the respective `values-hub.yaml` and `values-region-one.yaml`, respectively.
 
 After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
 

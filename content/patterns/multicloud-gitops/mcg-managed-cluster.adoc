@@ -1,6 +1,6 @@
 ---
 title: Managed cluster sites
-weight: 20
+weight: 30
 aliases: /multicloud-gitops/mcg-managed-cluster/
 ---
 
@@ -39,7 +39,7 @@ It might take a while for the RHACM agent and `agent-addons` to launch.
 
 . Check the *Red Hat OpenShift GitOps Operator* is installed. 
 
-. Launch the *Group-One OpenShift ArgoCD* console from the top right nines menu of the OpenShift console.
+. Launch the *Group-One OpenShift ArgoCD* console from nines menu in the top right of the OpenShift console. Verify the applications report the status `Healthy` and `Synched`.
 
 Verify that the *hello-world* application deployed successfully as follows:
 

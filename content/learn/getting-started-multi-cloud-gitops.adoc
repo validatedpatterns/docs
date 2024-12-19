@@ -219,7 +219,7 @@ A pop-up error with the message "Oh no! Something went wrong." might appear duri
 
 The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
 
-Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. The viewing the         `config-demo` project  it appears stuck in a Degraded state. This is the expected behavior when installing using the OpenShift Container Platform console.
+Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. The `config-demo` project  appears stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console.
 
 * To resolve this you need to run the following to load the secrets into the vault:
 +

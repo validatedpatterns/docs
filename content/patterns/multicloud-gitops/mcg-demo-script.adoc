@@ -1,6 +1,6 @@
 ---
-title: Demo Script
-weight: 60
+title: Verifying the MultiCloud GitOps pattern
+weight: 20
 aliases: /multicloud-gitops/demo/
 ---
 
@@ -11,111 +11,109 @@ include::modules/comm-attributes.adoc[]
 
 [id="demo-intro"]
 
-== Introduction
-The multicloud gitops pattern is designed to be an entrypoint into the Validated Patterns framework. For more information on Validated Patterns visit our link:/[documentation site]
+== Verifying the MultiCloud GitOps pattern
 
-[id="demo-objectives"]
+The MultiCloud GitOps is designed to be an entrypoint into the Validated Patterns framework. The pattern includes two applications that can help you verify the installation. The `hello-world` application is a simple web page that prints "Hello World!" and the `config-demo` application is a simple web page that prints a secret that is loaded into the vault. 
 
-== Objectives
-
-In this demo you will complete the following:
-
-* Prepare your local workstation
-* Deploy the pattern
-* Extend the pattern with a small tweak
-
-[id="getting-started"]
-
-== Getting Started
-
-* Make sure you have met all the link:/learn/quickstart/#installation_prerequisites[installation prerequisites]
-* Follow the link:../mcg-getting-started[Getting Started Guide] to ensure that you have met all of the prerequisites 
-
-[NOTE]
-====
-This demo begins after `./pattern.sh make install` has been executed
-====
-
-[id="demo"]
-
-== Demo
-
-Now that we have deployed the pattern onto our cluster, with `origin` pointing to your fork and using `my-branch` as the name of the used branch, we can begin to discover what has happened.
-You should be able to click on the nine-box and see the following entries:
-
-image:multicloud-gitops/nine-box.png[]
-
-If you now click on the "Hub ArgoCD" menu entry you will be taken to the ArgoCD instance with all the applications.
-
-image:multicloud-gitops/hub-argocd.png[]
+Verify the applications are successfully deployed by following this procedure. 
 
 
+.Procedure 
+. Check the *Red Hat OpenShift GitOps Operator* is installed. 
 
-[id="secrets"]
+. Launch the *Hub OpenShift ArgoCD* console from nines menu in the top right of the OpenShift console and verify the applications report the status `Healthy` and `Synched`.
 
-=== Secrets loading
+Verify that the *hello-world* application deployed successfully as follows:
 
-By default in the MultiCloud GitOps pattern the secrets get loaded automatically via an out of band process inside the vault running in the OCP cluster. This means that running `./pattern.sh make install` will also call the `load-secrets` makefile target.
-This `load-secrets` target will look for a yaml file describing the secrets to be loaded into vault and in case it cannot find one it will use the `values-secret.yaml.template` file in the git repo to try and generate random secrets.
+. In the OpenShift console go to the *Networking* -> *Routes* menu options.
 
-Let's copy the template to our home folder and reload the secrets:
+. From the *Project:* drop down select the *hello-world* project. 
+
+. Click the *Location* URL. This should reveal the following:
++
 [source,terminal]
-cp ./values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
-./pattern.sh make load-secrets
+----
+Hello World!
 
+Hub Cluster domain is 'apps.aws-hub-cluster.openshift.org'
+Pod is running on Local Cluster Domain 'apps.aws-hub-cluster.openshift.org'
+----
 
-At this point if the `config-demo` application was not green already it should become green in the ArgoCD user interface.
+Verify that the *config-demo* application deployed successfully as follows:
 
+. In the OpenShift console go to the *Networking* -> *Routes* menu options.
 
-[id="verify"]
+. From the *Project:* drop down select the *config-demo* project. 
 
-=== Verify the test web pages
+. Click the *Location* URL. This should reveal the following:
++
+[source,terminal]
+----
+Hub Cluster domain is 'apps.aws-hub-cluster.openshift.org'
+Pod is running on Local Cluster Domain 'apps.aws-hub-cluster.openshift.org'
+The secret is `secret`
+----
 
-If you now click on the `Routes` in the `Networking` menu entry you will see the following network routes:
+=== Customize the  web page
 
-image:multicloud-gitops/network-routes.png[]
+make a small change to the `hello-world` application to see how the GitOps framework applies the change. 
 
-Clicking on the `hello-world` application should show a small demo app that prints "Hello World!":
+.Procedure
 
-image:multicloud-gitops/hello-world.png[]
+. Edit `charts/all/hello-world/templates/hello-world-cm.yaml` adding the line `This is a patched version via git`` as shown below:
++
+[source,terminal]
+----
+</head>
+  <body>
+    <h1>Hello World!</h1>
++   <h1>This is a patched version via git</h1>
+    <br/>
+    <h2>
+    Hub Cluster domain is '{{ .Values.global.hubClusterDomain }}' <br>
+----
 
-Once the secrets are loaded correctly inside the vault, clicking on the `config-demo` route should display a small application where said secret is shown:
+. Commit this change by running the following command:
++
+[source,terminal]
+----
+$ git commit -a -m "test a change"
+----
 
-image:multicloud-gitops/config-demo.png[]
+. Push the change to the remote repository by running the following command:
++
+[source,terminal]
+----
+$ git push origin my-branch
+----
 
-=== Make a small change to the test web pages
+ArgoCD will apply the change to the `hello-world` application.
 
-Now we can try and tweak the hello-world application and add the below line in
-the `charts/all/hello-world/templates/hello-world-cm.yaml` file:
-[source,patch]
-diff --git a/charts/all/hello-world/templates/hello-world-cm.yaml b/charts/all/hello-world/templates/hello-world-cm.yaml
-index e59561ca..bd416bc6 100644
---- a/charts/all/hello-world/templates/hello-world-cm.yaml
-+++ b/charts/all/hello-world/templates/hello-world-cm.yaml
-@@ -14,6 +14,7 @@ data:
-     	</head>
-       	<body>
-         	<h1>Hello World!</h1>
-+        	<h1>This is a patched version via git</h1>
-         	<br/>
-         	<h2>
-         	Hub Cluster domain is '{{ .Values.global.hubClusterDomain }}' <br>
+Verify that the update to the *hello-world* application is successfully applied as follows:
 
+. In the OpenShift console go to the *Networking* -> *Routes* menu options.
 
-Once we commit the above change via `git commit -a -m "test a change"` and run
-`git push origin my-branch` we will be able to observe argo applying the above
-change:
+. From the *Project:* drop down select the *hello-world* project. 
 
-image:multicloud-gitops/config-demo-patched.png[]
+. Click the *Location* URL. This should reveal the following:
++
+[source,terminal]
+----
+Hello World!
+
+This is a patched version via git
+
+Hub Cluster domain is 'apps.aws-hub-cluster.openshift.org'
+Pod is running on Local Cluster Domain 'apps.aws-hub-cluster.openshift.org'
+----
 
 [id="summary"]
 
 == Summary
 
-You did it! You have completed the deployment of the MultiCloud GitOps pattern
-and you made a small local change and applied it via GitOps! Hopefully you are
-getting ideas of how you can take advantage of our GitOps framework to deploy
-and manage your applications. 
+You did it! You have completed the deployment of the MultiCloud GitOps pattern and you made a small local change and applied it using GitOps. 
 
-For more information on Validated Patterns visit our
-link:https://validatedpatterns.io/[website]
+Hopefully you are getting ideas of how you can take advantage of our GitOps framework to deploy and manage your applications. 
+
+For more information about Validated Patterns visit our
+link:https://validatedpatterns.io/[website].
