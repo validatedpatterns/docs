@@ -27,7 +27,7 @@ Other patterns build upon these concepts, making this an ideal starting point fo
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *OpenShift \-> Create cluster*.
+ ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
  ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. Verify that a dynamic `StorageClass` exists before creating one by running the following command: 
 +
 [source,terminal]
