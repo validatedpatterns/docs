@@ -39,7 +39,7 @@ Other patterns build upon these concepts, making this an ideal starting point fo
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *Services \-> Containers \-> Create cluster*.
+ ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
  ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. Verify that a dynamic `StorageClass` exists before creating one by running the following command: 
 +
 [source,terminal]
@@ -56,6 +56,8 @@ gp2-csi   ebs.csi.aws.com   <none>
 gp3-csi   ebs.csi.aws.com   true
 
 ----
++
+For more information about creating a dynamic `StorageClass`, see the https://docs.openshift.com/container-platform/latest/storage/dynamic-provisioning.html[Dynamic provisioning].
 
 * Optional: A second OpenShift cluster for multicloud demonstration.
 //Replaced git and podman prereqs with the tooling dependencies page
@@ -167,8 +169,8 @@ Choosing a Community Operator warns that Red Hat does not certify Community Oper
 .. Select a *Version* (if more than one is available).
 
 .. Select an *Installation mode*:
-*** *All namespaces on the cluster (default)* installs the Operator in the default `openshift-operators` namespace to watch and be made available to all namespaces in the cluster. This option is not always available.
-*** *A specific namespace on the cluster* allows you to choose a specific, single namespace in which to install the Operator. The Operator will only watch and be made available for use in this single namespace.
++
+The only supported mode for this Operator is *All namespaces on the cluster (default)*. This installs the Operator in the default `openshift-operators` namespace to watch and be made available to all namespaces in the cluster. This option is not always available.
 
 .. Select *Automatic* or *Manual* approval strategy.
 
@@ -217,7 +219,7 @@ A pop-up error with the message "Oh no! Something went wrong." might appear duri
 
 The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
 
-When viewing the `config-demo` project through the Hub `ArgoCD` UI from the nines menu, it appears stuck in a Degraded state. This is the expected behavior when installing using the OpenShift Container Platform console.
+Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. The `config-demo` project  appears stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console.
 
 * To resolve this you need to run the following to load the secrets into the vault:
 +

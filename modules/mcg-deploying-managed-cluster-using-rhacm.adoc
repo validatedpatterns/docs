@@ -8,19 +8,23 @@
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *Services* -> *Containers* -> *Create cluster*.
+ ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
 
 * Red Hat Advanced Cluster Management (RHACM) web console to join the managed cluster to the management hub
 +
 [NOTE]
 ====
-After RHACM is installed, a message regarding a *Web console update is available*" might be displayed. Follow the instructions and click the *Refresh web console* link.
+After RHACM is installed, a message regarding a *Web console update is available* might be displayed. Follow the instructions and click the *Refresh web console* link.
 ====
 
 .Procedure
 
-. In the left navigation panel of web console, click *local-cluster*. Select *All Clusters*. The RHACM web console is displayed with *Cluster** on the left navigation panel.
-. On the *Managed clusters* tab, click *Import cluster*.
-. On the *Import an existing cluster* page, enter the cluster name and choose *KUBECONFIG* as the "import mode". Add the tag `clusterGroup=region-one`. Click *Import*.
-
-Now that RHACM is no longer deploying the managed cluster applications everywhere, you must indicate that the new cluster has the managed cluster role.
+. In the left navigation panel of the web console associated with your deployed hub cluster, click *local-cluster*. Select *All Clusters*. The RHACM web console is displayed.
+. In the *Managing clusters just got easier* window, click *Import an existing cluster*.
+.. Enter the cluster name (you can get this from the login token string for example https://api.<cluster-name>.<domain>:6443)
+.. You can leave the *Cluster set* blank. 
+.. In the *Additional labels* dialog box enter the `key=value` as `clusterGroup=group-one`.
+.. Choose *KubeConfig* as the "Import mode". 
+.. In the *KubeConfig* window paste your KubeConfig content. Click *Next*.
+. You can skip the *Automation* screen. Click *Next*.
+. Review the summary details and click *Import*.
