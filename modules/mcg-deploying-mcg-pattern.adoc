@@ -234,21 +234,32 @@ Alternatively you can deploy the Multicloud GitOps pattern by using the command 
 
 To deploy the cluster by using the `pattern.sh` script, complete the following steps:
 
-. Log in to your cluster by running the following command:
+. Navigate to the root directory of the cloned repository by running the following command:
 +
 [source,terminal]
 ----
-$ oc login
+$ cd /path/to/your/repository
 ----
+
+. Log in to your cluster by running the following this procedure:
+
+.. Obtain an API token by visiting https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request
+
+.. Log in with this retrieved token by running the following command:
 +
-Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
+[source,terminal]
+----
+$ oc login --token=sha256~AUv_4DGQoFMVzmdO3cg3v4vnUuaV3lYcy6N2SCwVOz4 --server=https://api.<your-cluster>.<domain>:6443
+----
+
+Alternatively log in by running the following command: 
 +
 [source,terminal]
 ----
 $ export KUBECONFIG=~/<path_to_kubeconfig>
 ----
 
-. Deploy the pattern to your cluster. Run the following command:
+. Deploy the pattern to your cluster by running the following command:
 +
 [source,terminal]
 ----
