@@ -1,6 +1,6 @@
 ---
 title: Cluster sizing
-weight: 30
+weight: 40
 aliases: /multicloud-gitops/mcg-cluster-sizing/
 ---
 

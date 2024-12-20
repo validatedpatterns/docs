@@ -10,16 +10,38 @@ To tag the cluster as `clusterGroup=<managed-cluster-group>`, complete the follo
 
 .Procedure
 
-. To find the new cluster, run the following command:
+. To list all managed clusters, run the following command:
 +
 [source,terminal]
 ----
-oc get managedcluster.cluster.open-cluster-management.io
+$ oc get managedcluster.cluster.open-cluster-management.io
+----
++
+This will display a list of managed clusters registered in ACM, including their names and statuses.
+
+. Once you identify the target cluster for example `YOURCLUSTER`, label it with the desired key-value pair to associate it with a group or category. To apply the label, run the following command:
++
+[source,terminal]
+----
+$ oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster
 ----
 
-. To apply the label, run the following command:
+.Verification
+
+. Confirm that the label was applied by running the following command: 
 +
 [source,terminal]
 ----
-oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster
+$ oc get managedcluster.cluster.open-cluster-management.io/YOURCLUSTER --show-labels
 ----
++
+This will display the labels associated with the cluster, verifying that the new label has been successfully added..
+
+. Optional: If you’re grouping clusters under a clusterGroup for example `factory`, `devel`, or `prod`, add the clusterGroup label also by running the following command:
++
+[source,terminal]
+----
+$ oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER clusterGroup=<group-name>
+----
++
+Replace `<group-name>` with the appropriate value, such as `factory`.
