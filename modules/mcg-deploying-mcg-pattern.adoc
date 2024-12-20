@@ -44,7 +44,7 @@ gp2-csi   ebs.csi.aws.com   <none>
 gp3-csi   ebs.csi.aws.com   true
 ----
 +
-For more information about creating a dynamic `StorageClass`, see the https://docs.openshift.com/container-platform/latest/storage/dynamic-provisioning.html[Dynamic provisioning].
+For more information about creating a dynamic `StorageClass`, see the https://docs.openshift.com/container-platform/latest/storage/dynamic-provisioning.html[Dynamic provisioning] documentation.
 
 * Optional: A second OpenShift cluster for multicloud demonstration.
 //Replaced git and podman prereqs with the tooling dependencies page
@@ -230,9 +230,9 @@ The deployment will not take long but it should deploy successfully.
 Alternatively you can deploy the Multicloud GitOps pattern by using the command line script `pattern.sh`. 
 
 [id="deploying-cluster-using-patternsh-file"]
-== Deploying the cluster by using the pattern.sh file
+== Deploying the cluster by using the pattern.sh script
 
-To deploy the cluster by using the `pattern.sh` file, complete the following steps:
+To deploy the cluster by using the `pattern.sh` script, complete the following steps:
 
 . Log in to your cluster by running the following command:
 +
