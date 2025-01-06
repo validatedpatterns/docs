@@ -33,6 +33,10 @@ $ oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisi
 NAME      PROVISIONER       DEFAULT
 gp2-csi   ebs.csi.aws.com   <none>
 gp3-csi   ebs.csi.aws.com   true
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6f4d67c21 (TELCODOCS-2143 Updating Medical diags documentation)
 ----
 +
 For more information about creating a dynamic `StorageClass`, see the https://docs.openshift.com/container-platform/latest/storage/dynamic-provisioning.html[Dynamic provisioning].
@@ -64,7 +68,6 @@ For the official documentation on creating the buckets on AWS and other cloud pr
 //AI: Update the use of community and VP post naming tier update
 
 Follow this procedure to use the scripts provided in the link:https://github.com/validatedpatterns/utilities[utilities] repo to configure and S3 bucket in your AWS environment for the x-ray images.
-
 .Procedure
 
 . Fork the link:https://github.com/validatedpatterns/utilities[utilities] repository on GitHub. Forking the repository allows you to update the repository as part of the GitOps and DevOps processes.
@@ -89,7 +92,6 @@ $ cd utilities
 ----
 git remote add -f upstream git@github.com:validatedpatterns/utilities.git
 ----
-
 . Change to the `aws-tools` directory:
 +
 [source,terminal]
@@ -121,10 +123,15 @@ $ python s3-create.py -b kevtest-bucket -r us-east-1 -p
 +
 [source,terminal]
 ----
-$ python s3-sync-buckets.py -s validated-patterns-md-xray -t kevtest-bucket -r us-east-1
+$ python s3-sync-buckets.py -s validated-patterns-md-xray -t mytest-bucket -r us-east-1
 ----
++
+[NOTE]
+====
+You can do this on the cloud providers console as well.
+====
 
-Note the name of the bucket for further pattern configuration. Later you will update the `bucketSource` in the `values-global.yaml` file, where there is a section for `s3:`.
+Note the name of the bucket for further pattern configuration. Later you will update the `bucketSource` in the `values-global.yaml` file, where there is a section for `s3:`
 
 [id="preparing-for-deployment"]
 == Preparing for deployment
@@ -251,11 +258,12 @@ $ git checkout -b my-branch
 $ vi values-global.yaml
 ----
 +
-.Example edited `values-global.yaml` file
++
+.Example `values-global.yaml` file
 +
 [source,yaml]
 ----
-global:
+ global:
   pattern: xray
 
   options:
@@ -265,10 +273,23 @@ global:
 
   datacenter:
     storageClassName: gp3-csi
-    cloudProvider: aws
-    region: us-east-1
-    clustername: mytestcluster
-    domain: aws.validatedpatterns.io
+
+  xraylab:
+    namespace: "xraylab-1"
+
+    s3:
+      # Values for S3 bucket access
+      # bucketSource: "provide s3 bucket name where images are stored"
+      bucketSource: global:
+  pattern: xray
+
+  options:
+    useCSV: False
+    syncPolicy: Automatic
+    installPlanApproval: Automatic
+
+  datacenter:
+    storageClassName: gp3-csi
 
   xraylab:
     namespace: "xraylab-1"
@@ -286,13 +307,13 @@ main:
     enabled: true
     clusterGroupChartVersion: 0.9.*
 
-# Example Configuration
-  #datacenter:
-  #  cloudProvider: aws
-  #  storageClassName: gp2
-  #  region: us-east-1
-  #  clustername: example-sample
-  #  domain: patterns.redhat.com
+
+  datacenter:
+    cloudProvider: aws
+    storageClassName: gp3-csi
+    region: us-east-1
+    clustername: mytestcluster
+    domain: aws.validatedpatterns.io
 ----
 
 .  Add `values-global.yaml` to the staging area:
