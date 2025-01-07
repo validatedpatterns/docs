@@ -71,6 +71,7 @@ For the official documentation on creating the buckets on AWS and other cloud pr
 //AI: Update the use of community and VP post naming tier update
 
 Follow this procedure to use the scripts provided in the link:https://github.com/validatedpatterns/utilities[utilities] repo to configure and S3 bucket in your AWS environment for the x-ray images.
+
 .Procedure
 
 . Fork the link:https://github.com/validatedpatterns/utilities[utilities] repository on GitHub. Forking the repository allows you to update the repository as part of the GitOps and DevOps processes.
@@ -95,6 +96,7 @@ $ cd medical-diagnosis
 ----
 git remote add -f upstream git@github.com:validatedpatterns/utilities.git
 ----
+
 . Change to the `aws-tools` directory:
 +
 [source,terminal]
@@ -119,41 +121,7 @@ Ensure that you replace values with your keys
 +
 [source,terminal]
 ----
-$ python s3-create.py -b global:
-  pattern: xray
-
-  options:
-    useCSV: False
-    syncPolicy: Automatic
-    installPlanApproval: Automatic
-
-  datacenter:
-    storageClassName: gp3-csi
-
-  xraylab:
-    namespace: "xraylab-1"
-
-    s3:
-      # Values for S3 bucket access
-      # bucketSource: "provide s3 bucket name where images are stored"
-      bucketSource: kevtest-bucket
-      # Bucket base name used for image-generator and image-server applications.
-      bucketBaseName: "xray-source"
-
-main:
-  clusterGroupName: hub
-  multiSourceConfig:
-    enabled: true
-    clusterGroupChartVersion: 0.9.*
-
-
-  datacenter:
-    cloudProvider: aws
-    storageClassName: gp3-csi
-    region: us-east-1
-    clustername: kevstestcluster
-    domain: aws.validatedpatterns.io
- -r us-west-2 -p
+$ python s3-create.py -b kevtest-bucket -r us-east-1 -p
 ----
 
 . Copy over the data from the validated patterns public bucket to the created bucket for your demo. 
@@ -162,11 +130,6 @@ main:
 ----
 $ python s3-sync-buckets.py -s validated-patterns-md-xray -t mytest-bucket -r us-east-1
 ----
-+
-[NOTE]
-====
-You can do this on the cloud providers console as well.
-====
 
 Note the name of the bucket for further pattern configuration. Later you will update the `bucketSource` in the `values-global.yaml` file, where there is a section for `s3:`
 
@@ -263,7 +226,6 @@ $ git checkout -b my-branch
 ----
 $ vi values-global.yaml
 ----
-+
 +
 .Example `values-global.yaml` file
 +
