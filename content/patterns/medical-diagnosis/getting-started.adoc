@@ -68,6 +68,7 @@ For the official documentation on creating the buckets on AWS and other cloud pr
 //AI: Update the use of community and VP post naming tier update
 
 Follow this procedure to use the scripts provided in the link:https://github.com/validatedpatterns/utilities[utilities] repo to configure and S3 bucket in your AWS environment for the x-ray images.
+
 .Procedure
 
 . Fork the link:https://github.com/validatedpatterns/utilities[utilities] repository on GitHub. Forking the repository allows you to update the repository as part of the GitOps and DevOps processes.
@@ -92,6 +93,7 @@ $ cd utilities
 ----
 git remote add -f upstream git@github.com:validatedpatterns/utilities.git
 ----
+
 . Change to the `aws-tools` directory:
 +
 [source,terminal]
@@ -125,11 +127,6 @@ $ python s3-create.py -b kevtest-bucket -r us-east-1 -p
 ----
 $ python s3-sync-buckets.py -s validated-patterns-md-xray -t mytest-bucket -r us-east-1
 ----
-+
-[NOTE]
-====
-You can do this on the cloud providers console as well.
-====
 
 Note the name of the bucket for further pattern configuration. Later you will update the `bucketSource` in the `values-global.yaml` file, where there is a section for `s3:`
 
@@ -257,7 +254,6 @@ $ git checkout -b my-branch
 ----
 $ vi values-global.yaml
 ----
-+
 +
 .Example `values-global.yaml` file
 +
