@@ -1,0 +1,87 @@
+---
+ date: 2025-01-09
+ title: AGOF v2
+ summary: New features and options available in AGOF for Version 2
+ author: Martin Jackson
+ blog_tags:
+ - patterns
+ - how-to
+ - ansible
+ - ansible edge gitops
+ - federated edge observability
+---
+:toc:
+:imagesdir: /images
+
+== Introduction
+
+Since very nearly the beginning of the Validated Patterns initiative, we have
+been very interested in the inclusion of other frameworks in addition to Kubernetes
+and OpenShift as targets for GitOps methodologies, and tools in addition to ArgoCD
+as means to apply those methodologies.
+
+To this end, one of the earliest Validated Patterns was https://validatedpatterns.io/patterns/ansible-edge-gitops/[Ansible Edge GitOps].
+One of the driving motivations there was to show that GitOps as a methodology and
+practice is applicable to RHEL targets as well, and that Ansible Automation Platform
+can be the GitOps controller that applies a known, desired state configuration (in
+this case to VMs).
+
+In the time since Ansible Edge GitOps was first developed, the strategic significance
+of OpenShift Virtualization has increased. Ansible Automation Platform has grown
+significantly in capabilities and features, introducing the Automation Hub and Event-Driven
+Ansible components. The maturity and adoption of the Ansible Configuration as Code tools
+have similarly improved.
+
+Further, one of the consistent pieces of feedback we received about Ansible Edge GitOps
+was some variation of "How is VMs running in AWS 'Edge'?" This was a very fair point; the
+reason we implemented the pattern that way was because we did not want users to be required
+to supply their own devices to be able to run the pattern and see it in action. However, the
+path we chose for that also effectively precluded users from being able to easily run the
+pattern against physical devices if they did have them. And while it was possible, in theory,
+to extract the HMI demo component from the pattern, it was difficult. In short, the pattern
+was too monolithic and thus too hard to customize.
+
+With the release of Ansible Automation Platform 2.5, and an invitation to work on a problem
+related to the initial Ansible Edge GitOps problem set (Ansible Edge focused on the application
+delivery and configuration use case), we had an opportunity to re-examine the underlying
+architecture of the pattern and see if we could improve on it. The result is Federated Edge
+Observability, which focuses on a solution to manage remote edge nodes, including telemetry
+collection, federation, and visualization components.
+
+== Removals
+
+The transition from AAP 2.4 to AAP 2.5 represents a much larger jump than one might think
+based on SemVer numbering. (Note: Ansible Automation Platform does not claim adherence
+to the SemVer standard.)
+
+The main thing that impacts AGOF is the addition of the Platform or Gateway API. This enables
+a number of useful features, but represents a radical departure from the installation scheme
+that was used previously for the containerized installer, which was the focus of AGOF installations.
+The new gateway API allows all of the AAP components to function on a single server as a unified
+whole, as opposed to each service running on the same server but without essential knowledge of
+other services that might be running on the same node. This also meant that in a typical single-node
+containzerized install, none of the services would be listening on the "normal" HTTPS port (443),
+which may have been surprising.
+
+The AAP Gateway component now functions as a gateway layer, that brokers access to the other
+components of Ansible Automation Platform. The Gateway listens on port 443 and dispatches
+requests to the various components as appropriate. Further, the role-based access control (RBAC)
+components of AAP have moved into the Gateway component, which allows for a more coherent
+approach to RBAC, but results in some changes that are not backwards compatible with previous
+versions. Further, the AAP Operator as it installs on OpenShift has seen substantial development
+and partly due to the Gateway, has been changed in ways that are not always backwards compatible
+with version 2.4 and previous.
+
+Because previous versions of AGOF (v1) support AAP versions 2.4 and below, and because it is
+reasonable to expect that future versions of AAP will follow the 2.5 architecture, we made the
+decision that AGOF v2 would drop support for AAP 2.4 and below, and only support AAP 2.5 and
+following releases.
+
+== OpenShift Support
+
+== AGOF v2: Repositories for a Pattern and their Purposes
+
+== Charts for Ansible Validated Patterns
+
+== In Action: Federated Edge Observability
+
