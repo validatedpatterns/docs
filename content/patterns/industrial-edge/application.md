@@ -68,9 +68,14 @@ The pipeline will also have created a PR in gitea, such as the following one:
 
 Verify that the change is correct on the datacenter in the `manuela-tst-all` line dashboard and if deemed correct, you can merge the PR in gitea which will roll out the change to the production factory!
 
-## Application AI model changes with DevOps
+## AI model changes with MLOps
 
-1. On the OpenShift console click the nine-box and select `Red Hat OpenShift AI`. The AI console will open, appearing as follows:
+So far, we have looked at automating the deployment of changes to the application's configuration and code. Let's now explore how we can use OpenShift AI to automate the lifecycle of the application's machine learning model, using similar means in terms of CI/CD and GitOps. For this, we'll switch to the persona of a data scientist or ML engineer working on training and deploying the anomaly detection model.
+
+### Logging into the OpenShift AI workbench
+
+On the OpenShift console click on the nine-box and choose `Red Hat OpenShift AI`. You'll be taken
+to the AI console which will look like the following:
 
     [![rhoai-console](/images/industrial-edge/rhoai-console-home.png)](/images/industrial-edge/rhoai-console-home.png)
 
@@ -78,13 +83,27 @@ Verify that the change is correct on the datacenter in the `manuela-tst-all` lin
 
     [![rhoai-ml-development](/images/industrial-edge/rhoai-ml-development.png)](/images/industrial-edge/rhoai-ml-development.png)
 
-3. Click the `JupyterLab` workbench to open the notebook where this pattern's data analysis is performed. The `manuela-dev` code will be preloaded in the notebook. 
+Clicking on the `JupyterLab` workbench you'll be taken to the notebook where we can explore and analyze the machine data and prototype the code for training the anomaly detection model.
 
-4. click the left file browser on `manuela-dev/ml-models/anomaly-detection/1-preprocessing.ipynb`:
+### Interactive model development and staging
 
-    [![notebook-console](/images/industrial-edge/notebook-console.png)](/images/industrial-edge/notebook-console.png)
+The `manuela-dev` code will be preloaded in the notebook and provide access to the Jupyter notebooks and Python modules that implement the model CI/CD steps. In the file browser on the left, navigate to`manuela-dev/ml-models/anomaly-detection/`. You can double click on the Jupyter notebooks (`.ipynb` files) to see the code and the output of the notebooks:
+[![notebook-console](/images/industrial-edge/notebook-console.png)](/images/industrial-edge/notebook-console.png)
+
+Notebooks are popular among data scientists for interactive data analysis and machine learning experiments. After opening the notebook, walk through the demonstration by
+pressing play and iterating through the commands in the playbook. Jupyter
+playbooks are interactive and you may make changes and also save those changes.
 
 After opening the notebook successfully, walk through the demonstration by pressing play and iterating through the commands in the playbooks. Jupyter playbooks are interactive and you might make changes and also save those changes.
 
 Running through all the six notebooks will automatically regenerate the anomaly model, prepare the data for the training and push the changes to the internal
 gitea so the inference service can pick up the new model.
+
+### Automated model CI/CD
+
+Training machine learning models for production use cases usually involves ingesting large volumes of data and training for hours or longer. It's a process that should be executed in an automated fashion for repeatability, scalability, observability, and auditability. And we may want to run this process on a pre-defined schedule, say once a week at a certain time. All of this calls for Pipelines!
+
+In the file browser on the left, open the `pipelines` folder. This folder contains Python modules corresponding to the Jupyter notebooks in the parent folder. These modules are intended to be run as scripts within the model CI/CD pipeline. The "gluing" of these steps into a proper pipeline is done within the Elyra pipeline definition file `training.pipeline`. Double clicking this file will open the Elyra pipeline editor and visualize the pipeline steps and their order of execution:
+
+[![elyra-pipeline](/images/industrial-edge/elyra-pipeline.png)](/images/industrial-edge/elyra-pipeline.png)
+
