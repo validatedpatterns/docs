@@ -33,10 +33,6 @@ $ oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisi
 NAME      PROVISIONER       DEFAULT
 gp2-csi   ebs.csi.aws.com   <none>
 gp3-csi   ebs.csi.aws.com   true
-<<<<<<< HEAD
-=======
-
->>>>>>> 6f4d67c21 (TELCODOCS-2143 Updating Medical diags documentation)
 ----
 +
 For more information about creating a dynamic `StorageClass`, see the https://docs.openshift.com/container-platform/latest/storage/dynamic-provisioning.html[Dynamic provisioning].
@@ -255,11 +251,11 @@ $ git checkout -b my-branch
 $ vi values-global.yaml
 ----
 +
-.Example `values-global.yaml` file
+.Example edited `values-global.yaml` file
 +
 [source,yaml]
 ----
- global:
+global:
   pattern: xray
 
   options:
@@ -269,23 +265,11 @@ $ vi values-global.yaml
 
   datacenter:
     storageClassName: gp3-csi
-
-  xraylab:
-    namespace: "xraylab-1"
-
-    s3:
-      # Values for S3 bucket access
-      # bucketSource: "provide s3 bucket name where images are stored"
-      bucketSource: global:
-  pattern: xray
-
-  options:
-    useCSV: False
-    syncPolicy: Automatic
-    installPlanApproval: Automatic
-
-  datacenter:
+    cloudProvider: aws
     storageClassName: gp3-csi
+    region: us-east-1
+    clustername: mytestcluster
+    domain: aws.validatedpatterns.io
 
   xraylab:
     namespace: "xraylab-1"
@@ -303,13 +287,13 @@ main:
     enabled: true
     clusterGroupChartVersion: 0.9.*
 
-
-  datacenter:
-    cloudProvider: aws
-    storageClassName: gp3-csi
-    region: us-east-1
-    clustername: mytestcluster
-    domain: aws.validatedpatterns.io
+# Example Configuration
+  #datacenter:
+  #  cloudProvider: aws
+  #  storageClassName: gp2
+  #  region: us-east-1
+  #  clustername: example-sample
+  #  domain: patterns.redhat.com
 ----
 
 .  Add `values-global.yaml` to the staging area:
