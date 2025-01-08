@@ -227,11 +227,11 @@ $ git checkout -b my-branch
 $ vi values-global.yaml
 ----
 +
-.Example `values-global.yaml` file
+.Example edited `values-global.yaml` file
 +
 [source,yaml]
 ----
- global:
+global:
   pattern: xray
 
   options:
@@ -241,23 +241,11 @@ $ vi values-global.yaml
 
   datacenter:
     storageClassName: gp3-csi
-
-  xraylab:
-    namespace: "xraylab-1"
-
-    s3:
-      # Values for S3 bucket access
-      # bucketSource: "provide s3 bucket name where images are stored"
-      bucketSource: global:
-  pattern: xray
-
-  options:
-    useCSV: False
-    syncPolicy: Automatic
-    installPlanApproval: Automatic
-
-  datacenter:
+    cloudProvider: aws
     storageClassName: gp3-csi
+    region: us-east-1
+    clustername: mytestcluster
+    domain: aws.validatedpatterns.io
 
   xraylab:
     namespace: "xraylab-1"
@@ -275,13 +263,13 @@ main:
     enabled: true
     clusterGroupChartVersion: 0.9.*
 
-
-  datacenter:
-    cloudProvider: aws
-    storageClassName: gp3-csi
-    region: us-east-1
-    clustername: mytestcluster
-    domain: aws.validatedpatterns.io
+# Example Configuration
+  #datacenter:
+  #  cloudProvider: aws
+  #  storageClassName: gp2
+  #  region: us-east-1
+  #  clustername: example-sample
+  #  domain: patterns.redhat.com
 ----
 
 .  Add `values-global.yaml` to the staging area:
@@ -354,7 +342,7 @@ To confirm that the installation is successful:
 
 //Include Procedure module here
 [id="create-pattern-instance_{context}"]
-== Creating the Multicloud GitOps instance
+== Creating the Medical Diagnosis GitOps instance
 
 .Prerequisites
 The {med-pattern} is successfully installed in the relevant namespace.
@@ -388,7 +376,7 @@ A pop-up error with the message "Oh no! Something went wrong." might appear duri
 
 The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
 
-Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. The `config-demo` project  appears stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console.
+Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. The `something` project  appears stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console.
 
 * To resolve this you need to run the following to load the secrets into the vault:
 +
@@ -440,7 +428,7 @@ $ ./pattern.sh make install
 . Verify that the Operators have been installed.
  .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
  .. Check that the Operator is installed in the `openshift-operators` namespace and its status is `Succeeded`.
-. Verify that all applications are synchronized. Under the project `multicloud-gitops-hub` click the URL for the `hub` gitops `server`. The Vault application is not synched.
+. Verify that all applications are synchronized. Under the project `yada-yada-hub` click the URL for the `hub` gitops `server`. The Vault application is not synched.
 +
 image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
 
@@ -450,4 +438,122 @@ For more information, see section on https://validatedpatterns.io/secrets/vault/
 
 .Verification 
 
+To check the various applications that are being deployed, you can view the progress of the {rh-gitops-short} Operator.
 
+. Obtain the ArgoCD URLs and passwords.
++
+The URLs and login credentials for ArgoCD change depending on the pattern name and the site names they control.  Follow the instructions below to find them, however you choose to deploy the pattern.
++
+Display the fully qualified domain names, and matching login credentials, for
+all ArgoCD instances:
++
+[source,terminal]
+----
+ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
+CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
+eval $CMD
+----
++
+.Example output
++
+[source,text]
+----
+NAME                       HOST/PORT                                                                                      PATH   SERVICES                   PORT    TERMINATION            WILDCARD
+hub-gitops-server   hub-gitops-server-medical-diagnosis-hub.apps.wh-medctr.blueprints.rhecoeng.com          hub-gitops-server   https   passthrough/Redirect   None
+# admin.password
+xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH
+NAME                      HOST/PORT                                                                         PATH   SERVICES                  PORT    TERMINATION            WILDCARD
+cluster                   cluster-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com                          cluster                   8080    reencrypt/Allow        None
+kam                       kam-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com                              kam                       8443    passthrough/None       None
+openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com          openshift-gitops-server   https   passthrough/Redirect   None
+# admin.password
+FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6
+----
++
+[IMPORTANT]
+====
+Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the applications for the pattern in this instance.
+====
+
+. Check that all applications are synchronized. There are thirteen different ArgoCD `applications` that are deployed as part of this pattern.
+
+
+//Module to be included
+//:_content-type: PROCEDURE
+//:imagesdir: ../../../images
+[id="viewing-the-grafana-based-dashboard-getting-started"]
+=== Viewing the Grafana based dashboard
+
+. Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for project `openshift-storage``. Click the URL for the `s3-rgw`.
++
+image::medical-edge/storage-route.png[link="/images/medical-edge/storage-route.png"]
++
+Ensure that you see some XML and not the access denied error message.
++
+image::medical-edge/storage-rgw-route.png[link="/images/medical-edge/storage-rgw-route.png"]
+
+. While still looking at Routes, change the project to `xraylab-1`. Click the URL for the `image-server`. Ensure that you do not see an access denied error message. You must to see a `Hello World` message.
++
+image::medical-edge/grafana-routes.png[link="/images/medical-edge/grafana-routes.png"]
+
+. Turn on the image file flow. There are three ways to go about this.
++
+You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster).
++
+[source,terminal]
+----
+$ oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1
+----
++
+Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the `xraylab-1` project.
++
+image::medical-edge/dev-topology.png[link="/images/medical-edge/dev-topology.png"]
++
+Right-click on the `image-generator` pod icon and select `Edit Pod count`.
++
+image::medical-edge/dev-topology-menu.png[link="/images/medical-edge/dev-topology-menu.png"]
++
+Up the pod count from `0` to `1` and save.
++
+image::medical-edge/dev-topology-pod-count.png[link="/images/medical-edge/dev-topology-pod-count.png"]
++
+Alternatively, you can have the same outcome on the Administrator console.
++
+Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project `xraylab-1`.
+Click `image-generator` and increase the pod count to 1.
++
+image::medical-edge/start-image-flow.png[link="/images/medical-edge/start-image-flow.png"]
+
+
+//Module to be included
+//:_content-type: PROCEDURE
+//:imagesdir: ../../../images
+[id="making-some-changes-on-the-dashboard-getting-started"]
+=== Making some changes on the dashboard
+
+You can change some of the parameters and watch how the changes effect the dashboard.
+
+. You can increase or decrease the number of image generators.
++
+[source,terminal]
+----
+$ oc scale deploymentconfig/image-generator --replicas=2
+----
++
+Check the dashboard.
++
+[source,terminal]
+----
+$ oc scale deploymentconfig/image-generator --replicas=0
+----
++
+Watch the dashboard stop processing images.
+
+. You can also simulate the change of the AI model version - as it's only an environment variable in the Serverless Service configuration.
++
+[source,terminal]
+----
+$ oc patch service.serving.knative.dev/risk-assessment --type=json -p '[{"op":"replace","path":"/spec/template/metadata/annotations/revisionTimestamp","value":"'"$(date +%F_%T)"'"},{"op":"replace","path":"/spec/template/spec/containers/0/env/0/value","value":"v2"}]'
+----
++
+This changes the model version value, and the `revisionTimestamp` in the annotations, which triggers a redeployment of the service.
