@@ -13,6 +13,18 @@
 :toc:
 :imagesdir: /images
 
+== Overview
+
+The release of Ansible Automation Platform v2.5 has prompted a number of changes
+in how the Validated Patterns framework interacts with it as a product. Most of
+these changes were prompted by changes in the architecture of AAP itself, but as
+a side-effect of those changes we have been able to generalize several aspects of
+the Validated Patterns approach to Ansible and hopefully provide better options
+across the ecosystem.
+
+To this end, AGOF continues to provide an experience to install Ansible Automation
+Platform into AWS
+
 == Introduction
 
 Since very nearly the beginning of the Validated Patterns initiative, we have
@@ -20,7 +32,8 @@ been very interested in the inclusion of other frameworks in addition to Kuberne
 and OpenShift as targets for GitOps methodologies, and tools in addition to ArgoCD
 as means to apply those methodologies.
 
-To this end, one of the earliest Validated Patterns was https://validatedpatterns.io/patterns/ansible-edge-gitops/[Ansible Edge GitOps].
+To this end, one of the earliest Validated Patterns was 
+https://validatedpatterns.io/patterns/ansible-edge-gitops/[Ansible Edge GitOps].
 One of the driving motivations there was to show that GitOps as a methodology and
 practice is applicable to RHEL targets as well, and that Ansible Automation Platform
 can be the GitOps controller that applies a known, desired state configuration (in
@@ -47,6 +60,12 @@ delivery and configuration use case), we had an opportunity to re-examine the un
 architecture of the pattern and see if we could improve on it. The result is Federated Edge
 Observability, which focuses on a solution to manage remote edge nodes, including telemetry
 collection, federation, and visualization components.
+
+== New Features
+
+AGOF v2 now supports installation and configuration of Ansible Automation Platform 2.5.
+
+AGOF v2 now directly supports configuration of AAP inside OpenShift.
 
 == Removals
 
@@ -75,7 +94,66 @@ with version 2.4 and previous.
 Because previous versions of AGOF (v1) support AAP versions 2.4 and below, and because it is
 reasonable to expect that future versions of AAP will follow the 2.5 architecture, we made the
 decision that AGOF v2 would drop support for AAP 2.4 and below, and only support AAP 2.5 and
-following releases.
+subsequent releases.
+
+Additionally, several elements that were initially included in AGOF as shims for what would
+eventually become RHIS-builder have now been removed. These were undocumented code bits that
+allowed for using the AGOF codebase to configure Red Hat Satellite and Red Hat Identity
+Management as part of the AGOF bootstrap. These options were never fully documented, never
+formally tested, and upon further architectural review, did not belong in AGOF proper. Thus
+they have been removed.
+
+== Changes in AAP Architecture
+
+Before AAP 2.5, all of the major components of AAP were managed separately, by their own dedicated
+collections for configuration. Controller, Event-Driven Ansible, and Automation Hub had their
+own APIs, their own databases, and their own RBAC models.
+
+As of 2.5, there is a new Gateway layer that handles routing into the various AAP components as well
+as providing RBAC for all of the other platform components. This required refactoring several elements
+of the other configuration collections. Upstream, the configuration-as-code collections decided
+to re-package the configuration as code tooling to more closely resemble the new architecture; this
+especially includes the introduction of the infra.aap_configuration collection which can configure the 
+entire product, and sequences the configuration of the components correctly. Previously, users of the 
+tooling had to use three different collections to configure the entire product.
+
+Most technically significant for AGOF, the dependencies for the infra.aap_configuration collection are 
+only available from the Ansible Automation Hub, which requires a Red Hat offline token to access. This
+required changes in how Validated Patterns in general handled AAP configuration, because previously
+Validated Patterns used the upstream collections to do AAP configuration. The changes in collection
+packaging required Validated Patterns to be able to bootstrap an environment suitable for complete AAP
+configuration. (Ansible Edge GitOps only required the use of the Controller component of AAP, and only
+explicitly provided a mechanism to configure Controller. It was possible to configure the other components
+of AAP via this mechanism, but doing so would have been far from straightforward.)
+
+AGOF already provided a mechanism for integrating with Automation Hub content, so it made sense to extend
+that mechanism to work with OpenShift-based installations of AAP in addition to the single-node 
+Containerized Installation, which was its initial focus. This also had the benefit of making any use of
+Ansible as a GitOps agent in Validated Patterns more easily transferable outside of OpenShift.
+
+It also exposed some bad assumptions that were built into Ansible Edge GitOps, which becane apparent when
+making these updates.
+
+== Realizing We Had Made Some Bad Assumptions
+
+One of the initial challenges with the interface between Kubernetes and the VM world in Ansible Edge GitOps
+was how to get access to the various resources in the Kubernetes cluster. Since the Validated Patterns framework
+needs and has access to the initial administrative Kubeconfig for the OpenShift cluster, it was convenient
+to absorb that into the AAP configuration and just use that to discover anything needed. It was convenient,
+but it was also (on reflection) a violation of the "least-privilege" principle, which states that systems
+should only get the access they need to accomplish their tasks. The Kubeconfig access was used to discover
+service objects in another namespace, and couple potentially have altered them, or anything else in the cluster.
+
+This only became really obvious when the AAP configuration had to be done outside the context of the initial
+Validated Patterns bootstrap environment. In AGOF v2, and in the Helm chart for using AGOF in Validated Patterns,
+this has been addressed by including a specific service account and RBAC that allows for VM service discovery
+by default.
+
+== Theory
+
+== Materials and apparatus
+
+== Procedure
 
 == OpenShift Support
 
