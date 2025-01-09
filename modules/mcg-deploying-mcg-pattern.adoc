@@ -252,7 +252,7 @@ $ cd /path/to/your/repository
 $ oc login --token=sha256~AUv_4DGQoFMVzmdO3cg3v4vnUuaV3lYcy6N2SCwVOz4 --server=https://api.<your-cluster>.<domain>:6443
 ----
 
-Alternatively log in by running the following command: 
+. Alternatively log in by running the following command: 
 +
 [source,terminal]
 ----

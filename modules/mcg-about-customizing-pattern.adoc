@@ -106,7 +106,7 @@ $ git add .
 +
 [source,terminal]
 ----
-$ git commit -a -m "test another change"
+$ git commit -m "test another change"
 ----
 
 . Push the change to the remote repository by running the following command:
