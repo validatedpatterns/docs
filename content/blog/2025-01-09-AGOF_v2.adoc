@@ -65,7 +65,10 @@ collection, federation, and visualization components.
 
 AGOF v2 now supports installation and configuration of Ansible Automation Platform 2.5.
 
-AGOF v2 now directly supports configuration of AAP inside OpenShift.
+AGOF v2 now directly supports configuration of AAP inside OpenShift via a chart that is
+published in the Validated Patterns chart repository. Inside an OpenShift Validated Pattern,
+an Ansible Validated Pattern can make use of the HashiCorp Vault instance that the OpenShift
+Validated Pattern uses for secret storage to store secrets for AAP as well.
 
 == Removals
 
@@ -134,7 +137,7 @@ Ansible as a GitOps agent in Validated Patterns more easily transferable outside
 It also exposed some bad assumptions that were built into Ansible Edge GitOps, which becane apparent when
 making these updates.
 
-== Realizing We Had Made Some Bad Assumptions
+== Bad Assumptions (and How We Fixed Them)
 
 One of the initial challenges with the interface between Kubernetes and the VM world in Ansible Edge GitOps
 was how to get access to the various resources in the Kubernetes cluster. Since the Validated Patterns framework
@@ -149,13 +152,42 @@ Validated Patterns bootstrap environment. In AGOF v2, and in the Helm chart for 
 this has been addressed by including a specific service account and RBAC that allows for VM service discovery
 by default.
 
-== Theory
-
-== Materials and apparatus
-
-== Procedure
-
 == OpenShift Support
+
+OpenShift support for AGOF works by creating a "clean room" environment for AGOF within the cluster that hosts
+the Ansible Automation Platform operator. The scheme expects that the AAP installation will be running but 
+otherwise unconfigured. The chart will then apply an Ansible Validated Pattern (in the form an Ansible
+configuration-as-code set of repositories) to run on the in-cluster AAP controller. The configuration of AAP
+will run periodically, every 10 minutes by default, so that if any change is made to either AGOF or to the pattern
+those changes will be reflected and applied in the next run.
+
+For use in this scenario, new Makefile targets have been introduced. The key one used for the OpenShift scheme is
+`openshift_vp_install`, which can also be run outside OpenShift.
+
+In addition to downloading and installing the collections necessary to configure AAP, the pre-init also sets up
+a specific override scheme, which integrates and embeds the variables passed to the helm chart into the Ansible
+Validated Pattern.
+
+== agof_vault.yml and agof_overrides.yml
+
+The AGOF chart uses the in-cluster Vault instance for the secrets it needs, primarily a vault file (which may
+contain an arbitrary amount of secrets and, if the user wishes, non-secret data), and the chart will create an
+agof_overrides.yml file which contains the specific coordinates of both the AGOF repo and version, as well as
+all helm chart values that have been set by the user. This allows the user to include extra data in the AGOF
+chart that can be passed through to the AAP instance configuration.
+
+Nothing critical needs to be stored in the agof_vault.yml file - it is quite possible to specify "---" (that is,
+an empty YAML file) as its contents. However, if there are other secrets that the Ansible pattern needs that
+are not going to be injected into Vault for some reason, the vault file is the place to put them.
+
+== Secrets "layering"
+
+In the AGOF on OpenShift chart, agof_vault.yml is passed as an extravars file, and then agof_overrides.yml
+is passed as another extravars file. This makes the override characteristics of variables that may be used
+in both files deterministic - anything set in agof_overrides.yml will override any value set in the vault file.
+This was done to ensure that values that users may be accustomed to setting in the vault file - such as the
+infrastructure-as-code repository - would definitely be overridden by the overrides file.
+be overridden
 
 == AGOF v2: Repositories for a Pattern and their Purposes
 
@@ -163,3 +195,6 @@ by default.
 
 == In Action: Federated Edge Observability
 
+Please see the companion blog article that provides a detailed walkthrough of the Federated Edge Observability
+Validated Pattern that demonstrates these concepts, and please feel free to use these new pattern capabilities
+in your own patterns.
