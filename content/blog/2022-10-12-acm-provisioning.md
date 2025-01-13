@@ -150,7 +150,7 @@ should be delivered to the cluster.
 
 `.labels` tells ACM how to decide which clusters get this site configuration.  If
 you were building and [importing
-clusters](https://validatedpatterns.io/industrial-edge/factory/) yourself,
+clusters](https://validatedpatterns.io/patterns/industrial-edge/) yourself,
 these are the labels you would need to specify during the import process.  You
 can specify different and/or additional labels, but the default is to use
 `clusterGroup={name of the group}`

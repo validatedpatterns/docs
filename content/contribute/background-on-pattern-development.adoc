@@ -101,6 +101,6 @@ Some of the validated patterns use configuration files (for now), while others, 
 
 While many enterprise Cloud Native applications are open source, many of the products used require licenses or subscriptions. Policies help enforce license and subscription management and the channels needed to get access to those licenses or subscriptions.
 
-Similarly, in multicloud deployments and complex edge deployments, policies can help define and select the correct GitOps workflows that need to be managed for various sites or clusters. E.g. defining an OpenShift Cluster as a "Factory" in the https://validatedpatterns.io/industrial-edge/factory/[Industrial Edge] validated pattern provides a simple trigger to roll-out the entire Factory deployment. Policy is a powerful tool in automation.
+Similarly, in multicloud deployments and complex edge deployments, policies can help define and select the correct GitOps workflows that need to be managed for various sites or clusters. E.g. defining an OpenShift Cluster as a "Factory" in the https://validatedpatterns.io/patterns/industrial-edge/[Industrial Edge] validated pattern provides a simple trigger to roll-out the entire Factory deployment. Policy is a powerful tool in automation.
 
 Validated patterns use https://www.redhat.com/en/technologies/management/advanced-cluster-management[Red Hat Advanced Cluster Management for Kubernetes] to control clusters and applications from a single console, with built-in security policies.
