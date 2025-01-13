@@ -32,7 +32,7 @@ been very interested in the inclusion of other frameworks in addition to Kuberne
 and OpenShift as targets for GitOps methodologies, and tools in addition to ArgoCD
 as means to apply those methodologies.
 
-To this end, one of the earliest Validated Patterns was 
+To this end, one of the earliest Validated Patterns was
 https://validatedpatterns.io/patterns/ansible-edge-gitops/[Ansible Edge GitOps].
 One of the driving motivations there was to show that GitOps as a methodology and
 practice is applicable to RHEL targets as well, and that Ansible Automation Platform
@@ -116,11 +116,11 @@ As of 2.5, there is a new Gateway layer that handles routing into the various AA
 as providing RBAC for all of the other platform components. This required refactoring several elements
 of the other configuration collections. Upstream, the configuration-as-code collections decided
 to re-package the configuration as code tooling to more closely resemble the new architecture; this
-especially includes the introduction of the infra.aap_configuration collection which can configure the 
-entire product, and sequences the configuration of the components correctly. Previously, users of the 
+especially includes the introduction of the infra.aap_configuration collection which can configure the
+entire product, and sequences the configuration of the components correctly. Previously, users of the
 tooling had to use three different collections to configure the entire product.
 
-Most technically significant for AGOF, the dependencies for the infra.aap_configuration collection are 
+Most technically significant for AGOF, the dependencies for the infra.aap_configuration collection are
 only available from the Ansible Automation Hub, which requires a Red Hat offline token to access. This
 required changes in how Validated Patterns in general handled AAP configuration, because previously
 Validated Patterns used the upstream collections to do AAP configuration. The changes in collection
@@ -130,7 +130,7 @@ explicitly provided a mechanism to configure Controller. It was possible to conf
 of AAP via this mechanism, but doing so would have been far from straightforward.)
 
 AGOF already provided a mechanism for integrating with Automation Hub content, so it made sense to extend
-that mechanism to work with OpenShift-based installations of AAP in addition to the single-node 
+that mechanism to work with OpenShift-based installations of AAP in addition to the single-node
 Containerized Installation, which was its initial focus. This also had the benefit of making any use of
 Ansible as a GitOps agent in Validated Patterns more easily transferable outside of OpenShift.
 
@@ -155,7 +155,7 @@ by default.
 == OpenShift Support
 
 OpenShift support for AGOF works by creating a "clean room" environment for AGOF within the cluster that hosts
-the Ansible Automation Platform operator. The scheme expects that the AAP installation will be running but 
+the Ansible Automation Platform operator. The scheme expects that the AAP installation will be running but
 otherwise unconfigured. The chart will then apply an Ansible Validated Pattern (in the form an Ansible
 configuration-as-code set of repositories) to run on the in-cluster AAP controller. The configuration of AAP
 will run periodically, every 10 minutes by default, so that if any change is made to either AGOF or to the pattern
@@ -187,11 +187,92 @@ is passed as another extravars file. This makes the override characteristics of 
 in both files deterministic - anything set in agof_overrides.yml will override any value set in the vault file.
 This was done to ensure that values that users may be accustomed to setting in the vault file - such as the
 infrastructure-as-code repository - would definitely be overridden by the overrides file.
-be overridden
+
+A designed goal of this scheme is to provide a clear mechanism for the use of secrets that are not included in
+a public repository. This takes advantage of Ansible's lazy evaluation of templates, which makes it easy (and
+common) for ansible variables to be defined in terms of other variables (for example, if you have a
+`{{ password }}` in your Ansible code, you then have to provide a value for it at runtime - but this value does
+not have to be specified or known in the public repository. AGOF depends on this behavior of Ansible and injects
+both a user-specific vault file as well as variables imported from helm in a predictable and deterministic way,
+so that the user does not have to remember to specify those parameters to the command.
 
 == AGOF v2: Repositories for a Pattern and their Purposes
 
+AGOF is designed to encourage and comply with broadly practiced
+https://redhat-cop.github.io/automation-good-practices/[Ansible Good Practices]. In particular, one of the main
+criticisms of Ansible Edge GitOps was that it was too monolithic. A skilled practitioner could pull apart the
+pieces and repurpose the pattern, but this was not especially straightforward, and it was not especially scalable.
+
+An AGOF Pattern MUST define the following repositories:
+
+1. AGOF repository (default: https://github.com/validatedpatterns/agof.git). This repository contains AGOF itself,
+and is scaffolding for the rest of the process.
+
+1. An Infrastructure as Code repository. This is the main "pattern" content. It contains an AAP configuration,
+expressed in terms suitable for processing by the infra.aap_configuration collection. This repository will contain
+references to other res
+
+An AGOF Infrastructure as Code repository MAY define the following additional repositories, as needed:
+
+1. One or more collection repositories. These will contain Ansible content (that is, playbooks and roles) for
+accomlishing a particular result. Multiple collection repositories may be defined if needed. Even if using roles
+provided by collections available via Ansible Galaxy or Automation Hub, it is still necessary to provide a playbook
+to serve as the basis for a Job Template in AAP to do the configuration work.
+
+1. One or more inventory repositories. Ansible Good Practices state that inventories should be separated from
+the content. This allows for using separate inventories with the same collection codebase - a feature that users
+frequently requested from Ansible Edge GitOps because they wanted to change it from configuring virtual machines in
+AWS to use actual hardware nodes (for example). It would also be possible to have effectively an empty inventory and
+discover nodes automatically (as earlier iterations of Ansible Edge GitOps do).
+
+The practical consequence of this is that a model pattern using this scheme that runs under OpenShift will
+involve five or more repositories:
+
+1. The OpenShift pattern repository
+2. The AGOF repository which is used to load the AAP configuration
+3. The configuration-as-code repository that defines the objects to be created and maintained in Ansible
+Automation Platform for the pattern
+4. One or more collection repositories much must at minimum contain playbooks to use as Job Templates
+5. One or more inventory repositories to define the nodes on which the pattern will operate.
+
 == Charts for Ansible Validated Patterns
+
+Charts particularly for use in Ansible Patterns:
+
+* https://github.com/validatedpatterns/aap-instance-chart[ansible-automation-platform-instance]
+
+This installs an instance of AAP on the OpenShift cluster, and configures the components. By default it includes
+Controller and Event-Driven Ansible but can also be configured to include Automation Hub.
+
+* https://github.com/validatedpatterns/aap-config-chart[aap-config]
+
+This chart is the one that actually embeds AGOF into the pattern.
+
+* https://github.com/validatedpatterns/openshift-virtualization-chart[openshift-virtualization-instance]
+
+This chart installs and configures an instance of OpenShift Virtualization.
+
+* https://github.com/validatedpatterns/openshift-data-foundations-chart[openshift-data-foundations]
+
+This chart installs and configures an instance of OpenShift Data Foundations suitable for hosting virtual
+machines on.
+
+* https://github.com/validatedpatterns/edge-gitops-vms-chart[edge-gitops-vms]
+
+This chart is responsible for actually creating virtual machines in OpenShift Virtualization. Its defaults
+assume that it is being run on AWS, and that VM data disks will be backed by ODF.
+
+In additiona, Ansible Patterns can use these other charts that are used in several other validated patterns:
+
+* https://github.com/validatedpatterns/hashicorp-vault-chart[hashicorp-vault]
+
+Installs and configures the community edition of Hashicorp Vault. Vault is the default secret storage mechanism
+for Validated Patterns.
+
+* https://github.com/validatedpatterns/golang-external-secrets-chart[golang-external-secrets]
+
+Installs and configures Golang External Secrets. External Secrets is the normal mechanism Validated Patterns
+uses to retrieve and use secrets within the patterns.
 
 == In Action: Federated Edge Observability
 
