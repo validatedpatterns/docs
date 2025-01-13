@@ -1,6 +1,6 @@
 ---
 title: Managed cluster sites
-weight: 20
+weight: 30
 aliases: /multicloud-gitops/mcg-managed-cluster/
 ---
 
@@ -12,6 +12,10 @@ include::modules/comm-attributes.adoc[]
 //leaving this here on purpose to test H1 headings (with ID) in assemblies and it's impact of TOC
 [id="attach-managed-cluster"]
 = Attach a managed cluster (edge) to the management hub
+
+The use of this  Multicloud GitOps pattern depends on having at least one running Red Hat OpenShift cluster. 
+
+When you install the multi-cloud GitOps pattern, a hub cluster is setup. The hub cluster serves as the central point for managing and deploying applications across multiple clusters.
 
 include::modules/mcg-understanding-rhacm-requirements.adoc[leveloffset=+1]
 
@@ -26,4 +30,44 @@ include::modules/comm-designate-cluster-as-managed-cluster-site.adoc[leveloffset
 
 == Verification
 
-Go to your managed cluster (edge) OpenShift console and check for the `open-cluster-management-agent` pod being launched. It might take a while for the RHACM agent and `agent-addons` to launch. After that, the OpenShift GitOps Operator is installed. On successful installation, launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
+. Go to your managed cluster (edge) OpenShift console and check for the `open-cluster-management-agent` pod being launched. 
+
+[NOTE]
+====
+It might take a while for the RHACM agent and `agent-addons` to launch.
+====
+
+. Check the *Red Hat OpenShift GitOps Operator* is installed. 
+
+. Launch the *Group-One OpenShift ArgoCD* console from nines menu in the top right of the OpenShift console. Verify the applications report the status `Healthy` and `Synched`.
+
+Verify that the *hello-world* application deployed successfully as follows:
+
+. Navigate to the *Networking* -> *Routes* menu options on your managed cluster (edge) OpenShift.
+
+. From the *Project:* drop down select the *hello-world* project. 
+
+. Click the *Location URL*. This should reveal the following:
++
+[source,terminal]
+----
+Hello World!
+
+Hub Cluster domain is 'apps.aws-hub-cluster.openshift.org'
+Pod is running on Local Cluster Domain 'apps.aws-hub-cluster.openshift.org'
+----
+
+Verify that the *config-demo* application deployed successfully as follows:
+
+. Navigate to the *Networking* -> *Routes* menu options on your managed cluster (edge) OpenShift.
+
+. Select the *config-demo* *Project*. 
+
+. Click the *Location URL*. This should reveal the following:
++
+[source,terminal]
+----
+Hub Cluster domain is 'apps.aws-hub-cluster.openshift.org'
+Pod is running on Local Cluster Domain 'apps.aws-hub-cluster.openshift.org'
+The secret is `secret`
+----

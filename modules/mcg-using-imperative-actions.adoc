@@ -4,7 +4,14 @@
 [id="mcg-using-kubernetes-cronjob-imperative-actions"]
 = Using kubernetes cronjobs to apply imperative actions
 
-There is currently no way within Argo CD to apply an imperative action against a cluster. However, you can declaratively apply changes to a cluster using kubernetes cronjob resources. Customers can use their Ansible playbooks to take action against a cluster if necessary.
+There is currently no way within Argo CD to apply an imperative action against a cluster. However, you can declaratively apply changes to a cluster using kubernetes cronjob resources. 
+
+Within the Patterns framework we mainly use jobs to: 
+
+* Schedule imperative tasks in the imperative framework such as keeping the Vault unsealed
+* Run Ansible playbooks
+
+Customers can use their Ansible playbooks to take action against a cluster if necessary.
 
 [WARNING]
 ====
@@ -15,7 +22,7 @@ Adding your playbooks to the pattern requires the following:
 
 . Move your Ansible configurations to the appropriate directory under Ansible in your forked repository.
 . Define your job as a list, for example:
-
++
 [source,yaml]
 ----
   imperative:
