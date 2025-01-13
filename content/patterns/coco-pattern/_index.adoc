@@ -12,7 +12,7 @@ industries:
 aliases: /coco-pattern/
 pattern_logo: coco-logo.png
 links:
-  install: coco-getting-started
+  install: coco-pattern-getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/coco-pattern/issues
 ---
