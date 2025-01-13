@@ -57,15 +57,15 @@ The following figure provides a schematic diagram showing how secrets are handle
 .Schematic showing the setup and use of external secrets management
 image::multicloud-gitops/spi-multi-cloud-gitops-sd-security.png[Schematic showing the setup and use of external secrets management]
 
-* During setup, the token to securely access HashiCorp Vault is stored in Ansible Vault. It is encrypted to protect sensitive content.
+1. During setup, the token to securely access HashiCorp Vault is stored in Ansible Vault. It is encrypted to protect sensitive content.
 
-* Red Hat Advanced Cluster Management for Kubernetes acquires the token from Ansible Vault during install and distributes it among the clusters. As a result, you have centralized control over the managed clusters through RHACM.
+2. Red Hat Advanced Cluster Management for Kubernetes acquires the token from Ansible Vault during install and distributes it among the clusters. As a result, you have centralized control over the managed clusters through RHACM.
 
-* To allow the cluster access to the external vault, you must set up the external secret management with Helm in this study. OpenShift Gitops is used to deploy the external secret object to a managed cluster.
+3. To allow the cluster access to the external vault, you must set up the external secret management. OpenShift Gitops is used to deploy the external secret object to a managed cluster.
 
-* External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
+4. External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
 
-* Secrets are created in each namespace, where applications can use them.
+5. Secrets are created in each namespace, where applications can use them.
 
 [role="_additional-resources"]
 .Additional resources
