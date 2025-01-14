@@ -83,6 +83,8 @@ See this [post](https://validatedpatterns.io/blog/2024-07-12-in-cluster-git/) fo
    rook-ceph-operator.openshift-storage                  3h7m
    ```
 
+   **Note: The list above was taken on OpenShift 4.16. It might change slightly depending on the OpenShift version being used (e.g. odf has less operator components on OpenShift 4.15 and earlier)**
+
 1. Access the ArgoCD environment
 
    You can find the ArgoCD application links listed under the nine box **Red
