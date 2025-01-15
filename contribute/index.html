@@ -1032,15 +1032,15 @@ Ensure that you see some XML and not the access denied error message.
 While still looking at Routes, change the project to xraylab-1. Click the URL for the image-server. Ensure that you do not see an access denied error message. You must to see a Hello World message.
 Turn on the image file flow. There are three ways to go about this.
 You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster).
-$ oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1 Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the xraylab-1 project.
+$ oc scale deployment/image-generator --replicas=1 -n xraylab-1 Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the xraylab-1 project.
 Right-click on the image-generator pod icon and select Edit Pod count.
 Up the pod count from 0 to 1 and save.
 Alternatively, you can have the same outcome on the Administrator console.
-Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project xraylab-1. Click image-generator and increase the pod count to 1.
+Go to the OpenShift UI under Workloads, select Deployments for Project xraylab-1. Click image-generator and increase the pod count to 1.
 Making some changes on the dashboard You can change some of the parameters and watch how the changes effect the dashboard.
 You can increase or decrease the number of image generators.
-$ oc scale deploymentconfig/image-generator --replicas=2 Check the dashboard.
-$ oc scale deploymentconfig/image-generator --replicas=0 Watch the dashboard stop processing images.
+$ oc scale deployment/image-generator --replicas=2 Check the dashboard.
+$ oc scale deployment/image-generator --replicas=0 Watch the dashboard stop processing images.
 You can also simulate the change of the AI model version - as it’s only an environment variable in the Serverless Service configuration.
 $ oc patch service.serving.knative.dev/risk-assessment --type=json -p &#39;[{&#34;op&#34;:&#34;replace&#34;,&#34;path&#34;:&#34;/spec/template/metadata/annotations/revisionTimestamp&#34;,&#34;value&#34;:&#34;&#39;&#34;$(date +%F_%T)&#34;&#39;&#34;},{&#34;op&#34;:&#34;replace&#34;,&#34;path&#34;:&#34;/spec/template/spec/containers/0/env/0/value&#34;,&#34;value&#34;:&#34;v2&#34;}]&#39; This changes the model version value, and the revisionTimestamp in the annotations, which triggers a redeployment of the service.
 `,url:"https://validatedpatterns.io/patterns/medical-diagnosis/getting-started/",breadcrumb:"/patterns/medical-diagnosis/getting-started/"},"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Multicloud GitOps pattern Prerequisite An OpenShift cluster To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console. Select Services -&gt; Containers -&gt; Create cluster. The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster. Optional: A second OpenShift cluster for multicloud demonstration. The git binary and podman. For details see Installing Git and Installing Podman The use of this pattern depends on having at least one running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
@@ -1341,7 +1341,7 @@ Node type Number of nodes CPU Memory Storage Control Planes + Workers
 2x 5th Generation Intel Xeon Platinum 8568Y+ (48 cores at 2.3 GHz base with Intel AMX)
 512 GB (16x32GB DDR5 5600)
 4x 3.84TB U.2 NVMe PCIe Gen4
-`,url:"https://validatedpatterns.io/patterns/medical-diagnosis-amx/cluster-sizing/",breadcrumb:"/patterns/medical-diagnosis-amx/cluster-sizing/"},"https://validatedpatterns.io/patterns/medical-diagnosis/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:` About OpenShift cluster sizing for the Medical Diagnosis pattern To understand cluster sizing requirements for the Medical Diagnosis pattern, consider the following components that the Medical Diagnosis pattern deploys on the datacenter or the hub OpenShift cluster:
+`,url:"https://validatedpatterns.io/patterns/medical-diagnosis-amx/cluster-sizing/",breadcrumb:"/patterns/medical-diagnosis-amx/cluster-sizing/"},"https://validatedpatterns.io/patterns/medical-diagnosis/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:` About OpenShift cluster sizing for the Medical Diagnosis pattern xlarge To understand cluster sizing requirements for the Medical Diagnosis pattern, consider the following components that the Medical Diagnosis pattern deploys on the datacenter or the hub OpenShift cluster:
 Name Kind Namespace Description Medical Diagnosis Hub
 Application
 medical-diagnosis-hub
@@ -2897,9 +2897,9 @@ $ oc get packagemanifests | grep &lt;operator-name&gt; When an issue occurs with
 Other issues encounter could be with a specific application within the pattern misbehaving. Most of the pattern is deployed into the xraylab-1 namespace. Other components like ODF are deployed into openshift-storage and the OpenShift Serverless Operators are deployed into knative-serving, knative-eventing namespaces.
 Use the grafana dashboard to assist with debugging and identifying the issue
 Problem No information is being processed in the dashboard
-Solution Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is scaled to 0;
-$ oc scale -n xraylab-1 dc/image-generator --replicas=1 Alternatively, complete the following steps:
-Navigate to the Red Hat OpenShift Container Platform web console, and select Workloads → DeploymentConfigs
+Solution Most often this is due to the image-generator deployment needing to be scaled up. The image-generator by design is scaled to 0;
+$ oc scale -n xraylab-1 deploy/image-generator --replicas=1 Alternatively, complete the following steps:
+Navigate to the Red Hat OpenShift Container Platform web console, and select Workloads → Deployments
 Select image-generator and scale the pod to 1 or more.
 Problem When browsing to the xraylab grafana dashboard and there are no images in the right-pane, only a security warning.
 Solution The certificates for the openshift cluster are untrusted by your system. The easiest way to solve this is to open a browser and go to the s3-rgw route (oc get route -n openshift-storage), then acknowledge and accept the security warning.
