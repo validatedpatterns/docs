@@ -59,16 +59,16 @@ Use the grafana dashboard to assist with debugging and identifying the issue
 '''
 Problem:: No information is being processed in the dashboard
 
-Solution:: Most often this is due to the image-generator deploymentConfig needing to be scaled up. The image-generator by design is *scaled to 0*;
+Solution:: Most often this is due to the image-generator deployment needing to be scaled up. The image-generator by design is *scaled to 0*;
 +
 [source,terminal]
 ----
-$ oc scale -n xraylab-1 dc/image-generator --replicas=1
+$ oc scale -n xraylab-1 deploy/image-generator --replicas=1
 ----
 +
 Alternatively, complete the following steps:
 
-. Navigate to the {rh-ocp} web console, and select *Workloads → DeploymentConfigs*
+. Navigate to the {rh-ocp} web console, and select *Workloads → Deployments*
 . Select `image-generator` and scale the pod to 1 or more.
 //AI: Needs review
 
