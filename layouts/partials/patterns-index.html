@@ -10,7 +10,7 @@
         <div class="pf-c-panel pf-m-raised">
           <div class="pf-c-panel__main">
             <div class="pf-c-panel__main-body">
-              <div class="pf-l-grid">
+              <div class="pf-l-grid pf-m-gutter">
                 <div class="pf-l-grid__item pf-m-10-col">
                   <h1 class="pf-c-title pf-m-4xl">{{ .Title }}</h1>
                 </div>
@@ -25,6 +25,22 @@
                   </div>
                   {{ end }}
                 </div>
+                {{ if (isset .Params "authors") }}
+                <div class="pf-l-grid__item pf-m-3-col">
+                  Author{{if (gt .Params.authors 1)}}s{{ end }}:
+                </div>
+                <div class="pf-l-grid__item pf-m-9-col">
+                  {{ partial "authors.html" . }}
+                </div>
+                {{ end }}
+                {{ if (isset .Params "company") }}
+                <div class="pf-l-grid__item pf-m-3-col">
+                  Company:
+                </div>
+                <div class="pf-l-grid__item pf-m-9-col">
+                  {{ .Params.company }}
+                </div>
+                {{ end }}
                 <div class="pf-l-grid__item pf-m-3-col">
                   Validation status:
                 </div>
