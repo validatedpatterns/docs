@@ -196,7 +196,13 @@ not have to be specified or known in the public repository. AGOF depends on this
 both a user-specific vault file as well as variables imported from helm in a predictable and deterministic way,
 so that the user does not have to remember to specify those parameters to the command.
 
+== AGOF v2: Variable Requirements
+
+tbd
+
 == AGOF v2: Repositories for a Pattern and their Purposes
+
+image::agof/AGOFv2_Structure.png[AGOF v2 Repository Structure]
 
 AGOF is designed to encourage and comply with broadly practiced
 https://redhat-cop.github.io/automation-good-practices/[Ansible Good Practices]. In particular, one of the main
