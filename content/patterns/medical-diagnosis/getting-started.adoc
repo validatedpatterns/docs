@@ -376,7 +376,7 @@ A pop-up error with the message "Oh no! Something went wrong." might appear duri
 
 The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
 
-Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. The `something` project  appears stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console.
+Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. The `xraylab-database` project  appears stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console.
 
 * To resolve this you need to run the following to load the secrets into the vault:
 +
@@ -427,8 +427,8 @@ $ ./pattern.sh make install
 
 . Verify that the Operators have been installed.
  .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
- .. Check that the Operator is installed in the `openshift-operators` namespace and its status is `Succeeded`.
-. Verify that all applications are synchronized. Under the project `yada-yada-hub` click the URL for the `hub` gitops `server`. The Vault application is not synched.
+ .. Check that the *Red Hat OpenShift GitOps Operator* is installed in the `openshift-operators` namespace and its status is `Succeeded`.
+. Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. 
 +
 image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
 
@@ -440,36 +440,7 @@ For more information, see section on https://validatedpatterns.io/secrets/vault/
 
 To check the various applications that are being deployed, you can view the progress of the {rh-gitops-short} Operator.
 
-. Obtain the ArgoCD URLs and passwords.
-+
-The URLs and login credentials for ArgoCD change depending on the pattern name and the site names they control.  Follow the instructions below to find them, however you choose to deploy the pattern.
-+
-Display the fully qualified domain names, and matching login credentials, for
-all ArgoCD instances:
-+
-[source,terminal]
-----
-ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
-CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
-eval $CMD
-----
-+
-.Example output
-+
-[source,text]
-----
-NAME                       HOST/PORT                                                                                      PATH   SERVICES                   PORT    TERMINATION            WILDCARD
-hub-gitops-server   hub-gitops-server-medical-diagnosis-hub.apps.wh-medctr.blueprints.rhecoeng.com          hub-gitops-server   https   passthrough/Redirect   None
-# admin.password
-xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH
-NAME                      HOST/PORT                                                                         PATH   SERVICES                  PORT    TERMINATION            WILDCARD
-cluster                   cluster-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com                          cluster                   8080    reencrypt/Allow        None
-kam                       kam-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com                              kam                       8443    passthrough/None       None
-openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.wh-medctr.blueprints.rhecoeng.com          openshift-gitops-server   https   passthrough/Redirect   None
-# admin.password
-FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6
-----
-+
+. 
 [IMPORTANT]
 ====
 Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the applications for the pattern in this instance.
@@ -486,7 +457,7 @@ Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the appli
 
 . Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for project `openshift-storage``. Click the URL for the `s3-rgw`.
 +
-image::medical-edge/storage-route.png[link="/images/medical-edge/storage-route.png"]
+image::medical-edge/storage-route.png[link="/static/images/medical-edge/storage-route.png"]
 +
 Ensure that you see some XML and not the access denied error message.
 +
