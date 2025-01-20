@@ -464,6 +464,7 @@ For more information, see section on https://validatedpatterns.io/secrets/vault/
 
 To check the various applications that are being deployed, you can view the progress of the {rh-gitops-short} Operator.
 
+. 
 [IMPORTANT]
 ====
 Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the applications for the pattern in this instance.
@@ -480,7 +481,7 @@ Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the appli
 
 . Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for project `openshift-storage``. Click the URL for the `s3-rgw`.
 +
-image::medical-edge/storage-route.png[link="/images/medical-edge/storage-route.png"]
+image::medical-edge/storage-route.png[link="/static/images/medical-edge/storage-route.png"]
 +
 Ensure that you see some XML and not the access denied error message.
 +
