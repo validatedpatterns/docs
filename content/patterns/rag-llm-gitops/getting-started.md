@@ -6,7 +6,7 @@ aliases: /rag-llm-gitops/getting-started/
 
 ## Prerequisites
 
-- Podman
+- Podman is installed on your system.
 - You have the OpenShift Container Platform installation program and the pull secret for your cluster. You can get these from [Install OpenShift on AWS with installer-provisioned infrastructure](https://console.redhat.com/openshift/install/aws/installer-provisioned). 
 - Red Hat Openshift cluster running in AWS. 
 

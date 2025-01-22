@@ -2,7 +2,7 @@
 title: AI Generation with LLM and RAG
 date: 2024-07-25
 tier: tested
-summary: The goal of this demo is to demonstrate a Chatbot LLM application augmented with data from Red Hat product documentation running on Red Hat OpenShift. It deploys an LLM application that connects to multiple LLM providers such as OpenAI, Hugging Face, and NVIDIA NIM. The application generates a project proposal for a Red Hat product.
+summary: The goal of this demo is to showcase a Chatbot LLM application augmented with data from Red Hat product documentation running on Red Hat OpenShift. It deploys an LLM application that connects to multiple LLM providers such as OpenAI, Hugging Face, and NVIDIA NIM. The application generates a project proposal for a Red Hat product.
 rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat OpenShift GitOps
@@ -36,7 +36,7 @@ OpenShift Container Platform to generate project proposals for specific Red Hat 
 
 ## Demo Description & Architecture
 
-The goal of this demo is to demonstrate a Chatbot LLM application augmented with data from Red Hat product documentation running on [Red Hat OpenShift AI](https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai). It deploys an LLM application that connects to multiple LLM providers such as OpenAI, Hugging Face, and NVIDIA NIM.
+The goal of this demo is to showcase a Chatbot LLM application augmented with data from Red Hat product documentation running on [Red Hat OpenShift AI](https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai). It deploys an LLM application that connects to multiple LLM providers such as OpenAI, Hugging Face, and NVIDIA NIM.
 The application generates a project proposal for a Red Hat product.
 
 ### Key Features

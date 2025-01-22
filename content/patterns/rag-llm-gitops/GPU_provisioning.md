@@ -5,7 +5,7 @@ aliases: /rag-llm-gitops/gpuprovisioning/
 ---
 # Customizing GPU provisioning nodes
 
-By default the GPU nodes deployed are of instance type `g5.2xlarge`. If for some reason you want to change this maybe due to performance issues carry out the following steps: 
+By default, GPU nodes use the instance type `g5.2xlarge`. If you need to change the instance type—such as to address performance requirements, carry out these steps: 
 
 1. In your local branch of the `rag-llm-gitops` git repository change to the `ansible/playbooks/templates` directory. 
 
