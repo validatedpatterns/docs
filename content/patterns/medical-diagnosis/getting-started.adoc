@@ -474,13 +474,13 @@ Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the appli
 
 //Module to be included
 //:_content-type: PROCEDURE
-//:imagesdir: ../../../static/images
+//:imagesdir: ../../../images
 [id="viewing-the-grafana-based-dashboard-getting-started"]
-=== Viewing the Grafana based dashboard
+== Viewing the Grafana based dashboard
 
-. Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for project `openshift-storage``. Click the URL for the `s3-rgw`.
+. Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for all projects. Click the URL for the `s3-rgw`.
 +
-image::medical-edge/storage-route.png[link="/static/images/medical-edge/storage-route.png"]
+image::medical-edge/storage-route.png[s3-rgw route]
 +
 Ensure that you see some XML and not the access denied error message.
 +
