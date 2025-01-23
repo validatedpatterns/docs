@@ -9,12 +9,15 @@ aliases: /medical-diagnosis/cluster-sizing/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
+:aws_node: xlarge
+
+
 //Module to be included
 //:_content-type: CONCEPT
 //:imagesdir: ../../images
 [id="about-openshift-cluster-sizing-med"]
 == About OpenShift cluster sizing for the {med-pattern}
-
+{aws_node}
 To understand cluster sizing requirements for the {med-pattern}, consider the following components that the {med-pattern} deploys on the datacenter or the hub OpenShift cluster:
 
 |===

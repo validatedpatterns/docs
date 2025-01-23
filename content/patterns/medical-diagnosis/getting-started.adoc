@@ -340,7 +340,7 @@ You can go to the command-line (make sure you have KUBECONFIG set, or are logged
 +
 [source,terminal]
 ----
-$ oc scale deploymentconfig/image-generator --replicas=1 -n xraylab-1
+$ oc scale deployment/image-generator --replicas=1 -n xraylab-1
 ----
 +
 Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the `xraylab-1` project.
@@ -357,7 +357,7 @@ image::medical-edge/dev-topology-pod-count.png[link="/images/medical-edge/dev-to
 +
 Alternatively, you can have the same outcome on the Administrator console.
 +
-Go to the OpenShift UI under Workloads, select Deploymentconfigs for Project `xraylab-1`.
+Go to the OpenShift UI under Workloads, select Deployments for Project `xraylab-1`.
 Click `image-generator` and increase the pod count to 1.
 +
 image::medical-edge/start-image-flow.png[link="/images/medical-edge/start-image-flow.png"]
@@ -375,14 +375,14 @@ You can change some of the parameters and watch how the changes effect the dashb
 +
 [source,terminal]
 ----
-$ oc scale deploymentconfig/image-generator --replicas=2
+$ oc scale deployment/image-generator --replicas=2
 ----
 +
 Check the dashboard.
 +
 [source,terminal]
 ----
-$ oc scale deploymentconfig/image-generator --replicas=0
+$ oc scale deployment/image-generator --replicas=0
 ----
 +
 Watch the dashboard stop processing images.

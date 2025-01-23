@@ -42,7 +42,7 @@ Logging into azure once the pods have been provisioned will show that each of th
 
 === `oc exec` testing
 
-In a OpenShift cluster without confidential containers, Role Based Access Control (RBAC), may be used to prevent users from execing into a container to mutate it.
+In a OpenShift cluster without confidential containers, Role Based Access Control (RBAC), may be used to prevent users from using `oc exec` to access a container container to mutate it.
 However:
 
 1. Cluster admins can always circumvent this capability

@@ -24,7 +24,7 @@ include::modules/comm-attributes.adoc[]
 = About coco-pattern
 
 Confidential computing is a technology for securing data in use. It uses a https://en.wikipedia.org/wiki/Trusted_execution_environment[Trusted Execution Environment] provided within the hardware of the processor to prevent access from others who have access to the system.
-https://confidentialcontainers.org/[Confidential containers] is a project to standardize the consumption of confidential computing by making the security boundary for confidential computing to be a Kubernetes pod. [Kata containers](https://katacontainers.io/) is used to establish the boundary via a shim VM.
+https://confidentialcontainers.org/[Confidential containers] is a project to standardize the consumption of confidential computing by making the security boundary for confidential computing to be a Kubernetes pod. https://katacontainers.io/[Kata containers] is used to establish the boundary via a shim VM.
 
 A core goal of confidential computing is to use this technology to isolate the workload from both Kubernetes and hypervisor administrators.
 
