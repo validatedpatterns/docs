@@ -477,7 +477,7 @@ Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the appli
 [id="viewing-the-grafana-based-dashboard-getting-started"]
 == Viewing the Grafana based dashboard
 
-. Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for *All Projects*. Click the URL for the `s3-rgw`.
+. test. Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for *All Projects*. Click the URL for the `s3-rgw`.
 +
 image::../../images/medical-edge/storage-route.png[s3-rgw route]
 +
