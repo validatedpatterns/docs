@@ -471,44 +471,7 @@ Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the appli
 . Check that all applications are synchronized. There are thirteen different ArgoCD `applications` that are deployed as part of this pattern.
 
 
-//Module to be included
-//:_content-type: PROCEDURE
-//:imagesdir: ../../../images
-[id="viewing-the-grafana-based-dashboard-getting-started"]
-== Viewing the Grafana based dashboard
 
-. test. Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for *All Projects*. Click the URL for the `s3-rgw`.
-+
-image::../../images/medical-edge/storage-route.png[s3-rgw route]
-+
-Ensure that you see some XML and not the access denied error message.
-+
-image::../../images/medical-edge/storage-rgw-route.png[link="/images/medical-edge/storage-rgw-route.png"]
-
-. While still looking at Routes, change the project to `xraylab-1`. Click the URL for the `image-server`. Ensure that you do not see an access denied error message. You must to see a `Hello World` message.
-+
-image::../../images/medical-edge/grafana-routes.png[link="/images/medical-edge/grafana-routes.png"]
-
-. Turn on the image file flow. There are couple of ways to go about this.
-+
-You can go to the {ocp} web console and change the view from *Administrator* to *Developer* and select *Topology*. From there select the `xraylab-1` project.
-+
-image::../../images/medical-edge/dev-topology.png[link="/images/medical-edge/dev-topology.png"]
-+
-Right-click on the `image-generator` pod icon and select `Edit Pod count`.
-+
-image::../../images/medical-edge/dev-topology-menu.png[link="/images/medical-edge/dev-topology-menu.png"]
-+
-Up the pod count from `0` to `1` and save.
-+
-image::../../images/medical-edge/dev-topology-pod-count.png[link="/images/medical-edge/dev-topology-pod-count.png"]
-+
-Alternatively, you can have the same outcome on the Administrator console.
-+
-Go to the OpenShift UI under Workloads, select *Deployments* for the *Project* `xraylab-1`.
-Click `image-generator` and increase the pod count to 1.
-+
-image::../../images/medical-edge/start-image-flow.png[link="/images/medical-edge/start-image-flow.png"]
 
 
 //Module to be included
