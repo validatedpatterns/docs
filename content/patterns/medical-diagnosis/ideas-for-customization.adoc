@@ -30,3 +30,37 @@ These are just a few ideas to help you understand how you could use the {med-pat
 
 //We have relevant links on the patterns page
 //AI: Why does this point to AEG though? https://github.com/validatedpatterns/ansible-edge-gitops/issues[Report Bugs]
+
+
+//Module to be included
+//:_content-type: PROCEDURE
+//:imagesdir: ../../../images
+[id="making-some-changes-on-the-dashboard-getting-started"]
+=== Making some changes on the dashboard
+
+You can change some of the parameters and watch how the changes effect the dashboard.
+
+. You can increase or decrease the number of image generators.
++
+[source,terminal]
+----
+$ oc scale deployments/image-generator --replicas=2 -n xraylab-1
+----
++
+Check the dashboard.
++
+[source,terminal]
+----
+$ oc scale deployments/image-generator --replicas=0 -n xraylab-1
+----
++
+Watch the dashboard stop processing images.
+
+. You can also simulate the change of the AI model version - as it is only an environment variable in the Serverless Service configuration.
++
+[source,terminal]
+----
+$ oc patch ksvc risk-assessment -n xraylab-1 --type=merge -p '{"spec":{"template":{"metadata":{"annotations":{"redeployTimestamp":"'"$(date +%F_%T)"'"}}}}}'
+----
++
+This changes the model version value, and the `revisionTimestamp` in the annotations, which triggers a redeployment of the service.
