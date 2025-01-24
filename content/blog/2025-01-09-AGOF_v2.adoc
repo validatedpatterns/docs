@@ -23,7 +23,8 @@ the Validated Patterns approach to Ansible and hopefully provide better options
 across the ecosystem.
 
 To this end, AGOF continues to provide an experience to install Ansible Automation
-Platform into AWS
+Platform into AWS, as well as the capability of installing an AGOF pattern onto
+a freshly installed AAP instance.
 
 == Introduction
 
@@ -159,7 +160,7 @@ OpenShift based installation of AAP will determine values for these variables in
 need to be set explicitly. Outside of OpenShift, these values must be set in either agof_vault.yml or (if using
 one) in the inventory file.
 
-[cols="1,1"]
+[cols="1,1,1,1,1"]
 |===
 |Variable Name|Variable Type|OpenShift handling?|Default|Notes
 
@@ -187,18 +188,13 @@ one) in the inventory file.
 |main
 |Can be a branch name, tag, or SHA commit
 
-|ansible_host
-|string
-|Discovered by aap-config from installed operand
-|aap.<cluster domain name>
-|Hostname to use to reach AAP instance. Hostname for route in OpenShift.
-Can also be retrieved by running scripts/ansible_get_credentials.sh
-
 |admin_password
 |string
 |Discovered by aap-config from installed operand
 |Randomly generated string per-instance
-|Can also be retrieved by running scripts/ansible_get_credentials.sh
+|Can also be retrieved by running scripts/ansible_get_credentials.sh which
+will retrieve the AAP hostname and password by discovering the values from
+OpenShift.
 
 |db_password
 |string
@@ -210,27 +206,30 @@ Can also be retrieved by running scripts/ansible_get_credentials.sh
 |string
 |Derived from OpenShift pull secret
 |None
-|Used to download AAP installer
+|Used to download AAP installer. On OpenShift it does not need to be separately specified.
 
 |redhat_username
 |string
 |Derived from OpenShift pull secret
 |None
-|Used to download images from registry.redhat.io for non-OpenShift installs
+|Used to download images from registry.redhat.io for non-OpenShift installs. On
+OpenShift it does not need to be separately specified.
 
 |redhat_password
 |string
 |Derived from OpenShift pull secret
 |None
-|Used to download images from registry.redhat.io for non-OpenShift installs
+|Used to download images from registry.redhat.io for non-OpenShift installs. On
+OpenShift it does not need to be separately specified.
 |===
 
 == OpenShift Support
 
 OpenShift support for AGOF works by creating a "clean room" environment for AGOF within the cluster that hosts
 the Ansible Automation Platform operator. The scheme expects that the AAP installation will be running but
-otherwise unconfigured. Thus, it uses the "API Install" mechanism of AGOF (which will configured a previously installed
-instance of AAP), but adjusted for the OpenShift hosted version of AAP in the following ways:
+otherwise unconfigured, and not entitled. Thus, it uses the "API Install" mechanism of AGOF
+(which will configured a previously installed instance of AAP), but adjusted for the OpenShift hosted version
+of AAP in the following ways:
 
 * It forces a variable override order that ensures that the variables passed to the helm chart will take precedence
 * It includes all Helm chart values as Ansible extravars, at the highest level of priority
@@ -274,9 +273,10 @@ not have to be specified or known in the public repository. AGOF depends on this
 both a user-specific vault file as well as variables imported from helm in a predictable and deterministic way,
 so that the user does not have to remember to specify those parameters to the command.
 
-== How the OpenShift chart populates the essential variables
+== AGOF v2: Repositories for an AGOF Pattern in OpenShift and their Purposes
 
-== AGOF v2: Repositories for a Pattern and their Purposes
+Note that it is quite  possible to run AGOF outside of OpenShift as before. The example below shows the maximum
+example (of starting within OpenShift). AGOFv2 outside OpenShift works essentially as it has before.
 
 image::agof/AGOFv2_Structure.png[AGOF v2 Repository Structure]
 
