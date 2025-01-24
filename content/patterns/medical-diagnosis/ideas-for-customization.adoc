@@ -44,14 +44,14 @@ You can change some of the parameters and watch how the changes effect the dashb
 +
 [source,terminal]
 ----
-$ oc scale deploymentconfig/image-generator --replicas=2
+$ oc scale deployments/image-generator --replicas=2 -n xraylab-1
 ----
 +
 Check the dashboard.
 +
 [source,terminal]
 ----
-$ oc scale deploymentconfig/image-generator --replicas=0
+$ oc scale deployments/image-generator --replicas=0 -n xraylab-1
 ----
 +
 Watch the dashboard stop processing images.
@@ -60,7 +60,7 @@ Watch the dashboard stop processing images.
 +
 [source,terminal]
 ----
-$ oc patch service.serving.knative.dev/risk-assessment --type=json -p '[{"op":"replace","path":"/spec/template/metadata/annotations/revisionTimestamp","value":"'"$(date +%F_%T)"'"},{"op":"replace","path":"/spec/template/spec/containers/0/env/0/value","value":"v2"}]'
+$ oc patch ksvc risk-assessment -n xraylab-1 --type=merge -p '{"spec":{"template":{"metadata":{"annotations":{"redeployTimestamp":"'"$(date +%F_%T)"'"}}}}}'
 ----
 +
 This changes the model version value, and the `revisionTimestamp` in the annotations, which triggers a redeployment of the service.
