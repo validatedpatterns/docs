@@ -152,21 +152,98 @@ Validated Patterns bootstrap environment. In AGOF v2, and in the Helm chart for 
 this has been addressed by including a specific service account and RBAC that allows for VM service discovery
 by default.
 
+== AGOF v2: Mandatory Variables
+
+The following variables are essential to AGOF running correctly outside of OpenShift. In specific cases the
+OpenShift based installation of AAP will determine values for these variables in other ways, so they do not
+need to be set explicitly. Outside of OpenShift, these values must be set in either agof_vault.yml or (if using
+one) in the inventory file.
+
+[cols="1,1"]
+|===
+|Variable Name|Variable Type|OpenShift handling?|Default|Notes
+
+|automation_hub_token_vault
+|string (base64 encoded token)
+|Secret automation-hub-token, field token
+|None
+|Similar to but distinct from offline_token. Generated on console.redhat.com
+
+|manifest_content
+|string (base64 encoded zipfile)
+|Secret aap-manifest, field b64content
+|None
+|A Satellite manifest file that must contain a valid Ansible Automation Platform entitlement
+
+|agof_iac_repo
+|string
+|Helm value .Values.agof.iac_repo
+|https://github.com/validatedpatterns-demos/ansible-edge-gitops-hmi-config-as-code.git
+|This drives the rest of the AGOF configuration (along with agof_iac_repo_version)
+
+|agof_iac_repo_version
+|string
+|Helm value .Values.agof.iac_revision
+|main
+|Can be a branch name, tag, or SHA commit
+
+|ansible_host
+|string
+|Discovered by aap-config from installed operand
+|aap.<cluster domain name>
+|Hostname to use to reach AAP instance. Hostname for route in OpenShift.
+Can also be retrieved by running scripts/ansible_get_credentials.sh
+
+|admin_password
+|string
+|Discovered by aap-config from installed operand
+|Randomly generated string per-instance
+|Can also be retrieved by running scripts/ansible_get_credentials.sh
+
+|db_password
+|string
+|Generated at random by OpenShift operator
+|None
+|Not needed directly for OpenShift AGOF
+
+|offline_token
+|string
+|Derived from OpenShift pull secret
+|None
+|Used to download AAP installer
+
+|redhat_username
+|string
+|Derived from OpenShift pull secret
+|None
+|Used to download images from registry.redhat.io for non-OpenShift installs
+
+|redhat_password
+|string
+|Derived from OpenShift pull secret
+|None
+|Used to download images from registry.redhat.io for non-OpenShift installs
+
 == OpenShift Support
 
 OpenShift support for AGOF works by creating a "clean room" environment for AGOF within the cluster that hosts
 the Ansible Automation Platform operator. The scheme expects that the AAP installation will be running but
-otherwise unconfigured. The chart will then apply an Ansible Validated Pattern (in the form an Ansible
+otherwise unconfigured. Thus, it uses the "API Install" mechanism of AGOF (which will configured a previously installed
+instance of AAP), but adjusted for the OpenShift hosted version of AAP in the following ways:
+
+* It forces a variable override order that ensures that the variables passed to the helm chart will take precedence
+* It includes all Helm chart values as Ansible extravars, at the highest level of priority
+* It provides secrets projected through the chart to the AAP configuration workflow.
+
+The chart will then apply an Ansible Validated Pattern (in the form an Ansible
 configuration-as-code set of repositories) to run on the in-cluster AAP controller. The configuration of AAP
 will run periodically, every 10 minutes by default, so that if any change is made to either AGOF or to the pattern
 those changes will be reflected and applied in the next run.
 
 For use in this scenario, new Makefile targets have been introduced. The key one used for the OpenShift scheme is
-`openshift_vp_install`, which can also be run outside OpenShift.
-
-In addition to downloading and installing the collections necessary to configure AAP, the pre-init also sets up
-a specific override scheme, which integrates and embeds the variables passed to the helm chart into the Ansible
-Validated Pattern.
+`openshift_vp_install`, which can also be run outside OpenShift. If run this way, it will use the user's home
+directory to download the dependent collections and create the files necessary for AGOF to run which will contain
+secrets as defined by the user. These include agof_vault.yml and agof_overrides.yml which are placed in the root of the user's home directory (~).
 
 == agof_vault.yml and agof_overrides.yml
 
@@ -196,9 +273,7 @@ not have to be specified or known in the public repository. AGOF depends on this
 both a user-specific vault file as well as variables imported from helm in a predictable and deterministic way,
 so that the user does not have to remember to specify those parameters to the command.
 
-== AGOF v2: Variable Requirements
-
-tbd
+== How the OpenShift chart populates the essential variables
 
 == AGOF v2: Repositories for a Pattern and their Purposes
 
@@ -238,7 +313,7 @@ involve five or more repositories:
 2. The AGOF repository which is used to load the AAP configuration
 3. The configuration-as-code repository that defines the objects to be created and maintained in Ansible
 Automation Platform for the pattern
-4. One or more collection repositories much must at minimum contain playbooks to use as Job Templates
+4. One or more collection repositories which must at minimum contain playbooks to use as Job Templates
 5. One or more inventory repositories to define the nodes on which the pattern will operate.
 
 == Charts for Ansible Validated Patterns
