@@ -170,8 +170,8 @@ $ git remote -v
 +
 [source,terminal]
 ----
-origin	git@github.com:kquinn1204/medical-diagnosis.git (fetch)
-origin	git@github.com:kquinn1204/medical-diagnosis.git (push)
+origin	git@github.com:kquinn/medical-diagnosis.git (fetch)
+origin	git@github.com:kquinn/medical-diagnosis.git (push)
 upstream	git@github.com:validatedpatterns/medical-diagnosis.git (fetch)
 upstream	git@github.com:validatedpatterns/medical-diagnosis.git (push)
 ----
@@ -459,7 +459,7 @@ $ ./pattern.sh make install
  .. Check that the *Red Hat OpenShift GitOps Operator* is installed in the `openshift-operators` namespace and its status is `Succeeded`.
 . Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. 
 +
-image::../../images/medical-edge/medical-diags-overview.png[link="/images/medical-edge/medical-diags-overview.png.png"]
+image::../../images/medical-edge/medical-diags-overview.png[link="/images/medical-edge/medical-diags-overview.png"]
 
 As part of installing by using the script `pattern.sh` pattern, HashiCorp Vault is installed. Running `./pattern.sh make install` also calls the `load-secrets` makefile target. This `load-secrets` target looks for a YAML file describing the secrets to be loaded into vault and in case it cannot find one it will use the `values-secret.yaml.template` file in the git repository to try to generate random secrets.
 
