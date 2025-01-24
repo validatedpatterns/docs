@@ -56,7 +56,7 @@ $ oc scale deployments/image-generator --replicas=0 -n xraylab-1
 +
 Watch the dashboard stop processing images.
 
-. You can also simulate the change of the AI model version - as it's only an environment variable in the Serverless Service configuration.
+. You can also simulate the change of the AI model version - as it is only an environment variable in the Serverless Service configuration.
 +
 [source,terminal]
 ----
