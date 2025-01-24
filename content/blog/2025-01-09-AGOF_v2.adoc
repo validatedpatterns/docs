@@ -223,6 +223,7 @@ Can also be retrieved by running scripts/ansible_get_credentials.sh
 |Derived from OpenShift pull secret
 |None
 |Used to download images from registry.redhat.io for non-OpenShift installs
+|===
 
 == OpenShift Support
 
