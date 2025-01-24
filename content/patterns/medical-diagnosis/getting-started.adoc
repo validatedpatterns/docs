@@ -124,7 +124,7 @@ $ python s3-create.py -b kevtest-bucket -r us-east-1 -p
 $ python s3-sync-buckets.py -s validated-patterns-md-xray -t kevtest-bucket -r us-east-1
 ----
 
-Note the name of the bucket for further pattern configuration. Later you will update the `bucketSource` in the `values-global.yaml` file, where there is a section for `s3:`
+Note the name of the bucket for further pattern configuration. Later you will update the `bucketSource` in the `values-global.yaml` file, where there is a section for `s3:`.
 
 [id="preparing-for-deployment"]
 == Preparing for deployment
@@ -469,40 +469,3 @@ Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the appli
 ====
 
 . Check that all applications are synchronized. There are thirteen different ArgoCD `applications` that are deployed as part of this pattern.
-
-
-
-
-
-//Module to be included
-//:_content-type: PROCEDURE
-//:imagesdir: ../../../images
-[id="making-some-changes-on-the-dashboard-getting-started"]
-=== Making some changes on the dashboard
-
-You can change some of the parameters and watch how the changes effect the dashboard.
-
-. You can increase or decrease the number of image generators.
-+
-[source,terminal]
-----
-$ oc scale deploymentconfig/image-generator --replicas=2
-----
-+
-Check the dashboard.
-+
-[source,terminal]
-----
-$ oc scale deploymentconfig/image-generator --replicas=0
-----
-+
-Watch the dashboard stop processing images.
-
-. You can also simulate the change of the AI model version - as it's only an environment variable in the Serverless Service configuration.
-+
-[source,terminal]
-----
-$ oc patch service.serving.knative.dev/risk-assessment --type=json -p '[{"op":"replace","path":"/spec/template/metadata/annotations/revisionTimestamp","value":"'"$(date +%F_%T)"'"},{"op":"replace","path":"/spec/template/spec/containers/0/env/0/value","value":"v2"}]'
-----
-+
-This changes the model version value, and the `revisionTimestamp` in the annotations, which triggers a redeployment of the service.

@@ -1,8 +1,6 @@
 ---
 title: Verifying the demo
 weight: 20
-title: Verifying the demo Medical diagnosis pattern
-weight: 20
 aliases: /medical-diagnosis/demo/
 ---
 
@@ -29,11 +27,11 @@ We simulate the function of the remote medical facility with an application call
 [id="viewing-the-grafana-based-dashboard-getting-started"]
 == Enabling the Grafana based dashboard
 
-The Grafana dashboard is a visual representation of the AI/ML workflow. It provides the CPU and Memory metrics for the pod running the risk assessment application. The dashboard also provides visual representation of the AI/ML workflow from the images being generated at the remote medical facility. Carry out the following steps to view the dashboard:
+The Grafana dashboard offers a visual representation of the AI/ML workflow, including CPU and memory metrics for the pod running the risk assessment application. Additionally, it displays a graphical overview of the AI/ML workflow, illustrating the images being generated at the remote medical facility. 
 
-This showcase application is deployed using self-signed certificates that are untrusted by our browser. Unless you have provisioned valid certificates for your OpenShift cluster you must accept the invalid certificates for: 
+This showcase application is deployed with self-signed certificates, which are considered untrusted by most browsers. If valid certificates have not been provisioned for your OpenShift cluster, you will need to manually accept the untrusted certificates by following these steps:
 
-. Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the Routes for *All Projects*. Click the URL for the `s3-rgw`.
+. Accept the SSL certificates on the browser for the dashboard. In the {ocp} web console,  go to the *Netwoorking* > *Routes* for *All Projects*. Click the URL for the `s3-rgw`.
 +
 image::../../images/medical-edge/storage-route.png[s3-rgw route]
 +
@@ -41,7 +39,7 @@ Ensure that you see some XML and not the access denied error message.
 +
 image::../../images/medical-edge/storage-rgw-route.png[link="/images/medical-edge/storage-rgw-route.png"]
 
-. While still looking at Routes, change the project to `xraylab-1`. Click the URL for the `image-server`. Ensure that you do not see an access denied error message. You must to see a `Hello world` message.
+. While still looking at *Routes*, change the project to `xraylab-1`. Click the URL for the `image-server`. Ensure that you do not see an access denied error message. You must to see a `Hello world` message.
 
 This showcase application does not have access to a x-ray machine hanging around that we can use for this demo, so one is emulated by creating an s3 bucket and hosting the x-ray images within it. In the "real world" an x-ray would be taken at an edge medical facility and then uploaded to an OpenShift Data Foundations (ODF) S3 compatible bucket in the Core Hospital, triggering the AI/ML workflow.
 
