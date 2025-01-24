@@ -130,7 +130,7 @@ $ python s3-create.py -b kevtest-bucket -r us-east-1 -p
 $ python s3-sync-buckets.py -s validated-patterns-md-xray -t kevtest-bucket -r us-east-1
 ----
 
-Note the name of the bucket for further pattern configuration. Later you will update the `bucketSource` in the `values-global.yaml` file, where there is a section for `s3:`
+Note the name of the bucket for further pattern configuration. Later you will update the `bucketSource` in the `values-global.yaml` file, where there is a section for `s3:`.
 
 [id="preparing-for-deployment"]
 == Preparing for deployment
@@ -143,6 +143,37 @@ Note the name of the bucket for further pattern configuration. Later you will up
 [source,terminal]
 ----
 $ git clone git@github.com:<your-username>/medical-diagnosis.git
+----
+
+. Go to your repository: Ensure you are in the root directory of your Git repository by using:
++
+[source,terminal]
+----
+$ cd /path/to/your/repository
+----
+
+. Run the following command to set the upstream repository:
++
+[source,terminal]
+----
+$ git remote add -f upstream git@github.com:validatedpatterns/medical-diagnosis.git
+----
+
+. Verify the setup of your remote repositories by running the following command:
++
+[source,terminal]
+----
+$ git remote -v
+----
++
+.Example output
++
+[source,terminal]
+----
+origin	git@github.com:kquinn1204/medical-diagnosis.git (fetch)
+origin	git@github.com:kquinn1204/medical-diagnosis.git (push)
+upstream	git@github.com:validatedpatterns/medical-diagnosis.git (fetch)
+upstream	git@github.com:validatedpatterns/medical-diagnosis.git (push)
 ----
 
 . Create a local copy of the Helm values file that can safely include credentials.
@@ -428,7 +459,7 @@ $ ./pattern.sh make install
  .. Check that the *Red Hat OpenShift GitOps Operator* is installed in the `openshift-operators` namespace and its status is `Succeeded`.
 . Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. 
 +
-image::multicloud-gitops/multicloud-gitops-argocd.png[Multicloud GitOps Hub]
+image::../../images/medical-edge/medical-diags-overview.png[link="/images/medical-edge/medical-diags-overview.png.png"]
 
 As part of installing by using the script `pattern.sh` pattern, HashiCorp Vault is installed. Running `./pattern.sh make install` also calls the `load-secrets` makefile target. This `load-secrets` target looks for a YAML file describing the secrets to be loaded into vault and in case it cannot find one it will use the `values-secret.yaml.template` file in the git repository to try to generate random secrets.
 
@@ -444,40 +475,3 @@ Examine the `medical-diagnosis-hub` ArgoCD instance. You can track all the appli
 ====
 
 . Check that all applications are synchronized. There are thirteen different ArgoCD `applications` that are deployed as part of this pattern.
-
-
-
-
-
-//Module to be included
-//:_content-type: PROCEDURE
-//:imagesdir: ../../../images
-[id="making-some-changes-on-the-dashboard-getting-started"]
-=== Making some changes on the dashboard
-
-You can change some of the parameters and watch how the changes effect the dashboard.
-
-. You can increase or decrease the number of image generators.
-+
-[source,terminal]
-----
-$ oc scale deploymentconfig/image-generator --replicas=2
-----
-+
-Check the dashboard.
-+
-[source,terminal]
-----
-$ oc scale deploymentconfig/image-generator --replicas=0
-----
-+
-Watch the dashboard stop processing images.
-
-. You can also simulate the change of the AI model version - as it's only an environment variable in the Serverless Service configuration.
-+
-[source,terminal]
-----
-$ oc patch service.serving.knative.dev/risk-assessment --type=json -p '[{"op":"replace","path":"/spec/template/metadata/annotations/revisionTimestamp","value":"'"$(date +%F_%T)"'"},{"op":"replace","path":"/spec/template/spec/containers/0/env/0/value","value":"v2"}]'
-----
-+
-This changes the model version value, and the `revisionTimestamp` in the annotations, which triggers a redeployment of the service.
