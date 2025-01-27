@@ -292,7 +292,7 @@ and is scaffolding for the rest of the process.
 
 1. An Infrastructure as Code repository. This is the main "pattern" content. It contains an AAP configuration,
 expressed in terms suitable for processing by the infra.aap_configuration collection. This repository will contain
-references to other res
+references to other resources, which are described immediately following.
 
 An AGOF Infrastructure as Code repository MAY define the following additional repositories, as needed:
 
