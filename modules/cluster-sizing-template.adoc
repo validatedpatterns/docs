@@ -2,7 +2,7 @@
 :imagesdir: ../../images
 
 [id="{name}-openshift-hub-cluster-size"]
-= {display_name} pattern hub/datacenter cluster size 
+== {display_name} pattern hub/datacenter cluster size
 
 The {display_name} pattern has been tested with a defined set of specifically
 tested configurations that represent the most common combinations that Red Hat
@@ -19,39 +19,47 @@ The datacenter hub OpenShift cluster uses the following the deployment configura
 ifdef::requirements_hub_controlPlane_platform_aws_replicas[]
 | Amazon Web Services
 | Control Plane
-| {requirements_hub_controlPlatform_platform_aws_replicas}
-| {requirements_hub_controlPlatform_platform_aws_type}
+| {requirements_hub_controlPlane_platform_aws_replicas}
+| {requirements_hub_controlPlane_platform_aws_type}
+endif::requirements_hub_controlPlane_platform_aws_replicas[]
+ifdef::requirements_hub_compute_platform_aws_replicas[]
 | Amazon Web Services
 | Worker
 | {requirements_hub_compute_platform_aws_replicas}
 | {requirements_hub_compute_platform_aws_type}
-endif::requirements_hub_controlPlane_platform_aws_replicas[]
+endif::requirements_hub_compute_platform_aws_replicas[]
 
 ifdef::requirements_hub_controlPlane_platform_gcp_replicas[]
 | Google Cloud Platform
 | Control Plane
-| {requirements_hub_controlPlatform_platform_gcp_replicas}
-| {requirements_hub_controlPlatform_platform_gcp_type}
+| {requirements_hub_controlPlane_platform_gcp_replicas}
+| {requirements_hub_controlPlane_platform_gcp_type}
+endif::requirements_hub_controlPlane_platform_gcp_replicas[]
+ifdef::requirements_hub_compute_platform_gcp_replicas[]
 | Google Cloud Platform
 | Worker
 | {requirements_hub_compute_platform_gcp_replicas}
 | {requirements_hub_compute_platform_gcp_type}
-endif::requirements_hub_controlPlane_platform_gcp_replicas[]
+endif::requirements_hub_compute_platform_gcp_replicas[]
 
 ifdef::requirements_hub_controlPlane_platform_azure_replicas[]
 | Microsoft Azure
 | Control Plane
-| {requirements_hub_controlPlatform_platform_azure_replicas}
-| {requirements_hub_controlPlatform_platform_azure_type}
+| {requirements_hub_controlPlane_platform_azure_replicas}
+| {requirements_hub_controlPlane_platform_azure_type}
+endif::requirements_hub_controlPlane_platform_azure_replicas[]
+ifdef::requirements_hub_compute_platform_azure_replicas[]
 | Microsoft Azure
 | Worker
 | {requirements_hub_compute_platform_azure_replicas}
 | {requirements_hub_compute_platform_azure_type}
-endif::requirements_hub_controlPlane_platform_azure_replicas[]
+endif::requirements_hub_compute_platform_azure_replicas[]
 
 |===
 
 ifeval::["{extra_features_spoke_support}" == "true"]
+
+[id="{name}-openshift-spoke-cluster-size"]
 == {display_name} spoke/managed cluster size minimum requirements
 
 .Spoke cluster minimum requirements
@@ -62,35 +70,41 @@ ifeval::["{extra_features_spoke_support}" == "true"]
 ifdef::requirements_spoke_controlPlane_platform_aws_replicas[]
 | Amazon Web Services
 | Control Plane
-| {requirements_spoke_controlPlatform_platform_aws_replicas}
-| {requirements_spoke_controlPlatform_platform_aws_type}
+| {requirements_spoke_controlPlane_platform_aws_replicas}
+| {requirements_spoke_controlPlane_platform_aws_type}
+endif::requirements_spoke_controlPlane_platform_aws_replicas[]
+ifdef::requirements_spoke_compute_platform_aws_replicas[]
 | Amazon Web Services
 | Worker
 | {requirements_spoke_compute_platform_aws_replicas}
 | {requirements_spoke_compute_platform_aws_type}
-endif::requirements_spoke_controlPlane_platform_aws_replicas[]
+endif::requirements_spoke_compute_platform_aws_replicas[]
 
 ifdef::requirements_spoke_controlPlane_platform_gcp_replicas[]
 | Google Cloud Platform
 | Control Plane
-| {requirements_spoke_controlPlatform_platform_gcp_replicas}
-| {requirements_spoke_controlPlatform_platform_gcp_type}
+| {requirements_spoke_controlPlane_platform_gcp_replicas}
+| {requirements_spoke_controlPlane_platform_gcp_type}
+endif::requirements_spoke_controlPlane_platform_gcp_replicas[]
+ifdef::requirements_spoke_compute_platform_gcp_replicas[]
 | Google Cloud Platform
 | Worker
 | {requirements_spoke_compute_platform_gcp_replicas}
 | {requirements_spoke_compute_platform_gcp_type}
-endif::requirements_spoke_controlPlane_platform_gcp_replicas[]
+endif::requirements_spoke_compute_platform_gcp_replicas[]
 
 ifdef::requirements_spoke_controlPlane_platform_azure_replicas[]
 | Microsoft Azure
 | Control Plane
-| {requirements_spoke_controlPlatform_platform_azure_replicas}
-| {requirements_spoke_controlPlatform_platform_azure_type}
+| {requirements_spoke_controlPlane_platform_azure_replicas}
+| {requirements_spoke_controlPlane_platform_azure_type}
+endif::requirements_spoke_controlPlane_platform_azure_replicas[]
+ifdef::requirements_spoke_compute_platform_azure_replicas[]
 | Microsoft Azure
 | Worker
 | {requirements_spoke_compute_platform_azure_replicas}
 | {requirements_spoke_compute_platform_azure_type}
-endif::requirements_spoke_controlPlane_platform_azure_replicas[]
+endif::requirements_spoke_compute_platform_azure_replicas[]
 
 |===
 

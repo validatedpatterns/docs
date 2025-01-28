@@ -1,0 +1,14 @@
+---
+title: Cluster sizing
+weight: 50
+aliases: /industrial-edge/mcg-cluster-sizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/comm-attributes.adoc[]
+include::modules/industrial-edge/metadata-industrial-edge.adoc[]
+
+include::modules/cluster-sizing-template.adoc[]
