@@ -1,0 +1,97 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="{name}-openshift-hub-cluster-size"]
+= {display_name} pattern hub/datacenter cluster size 
+
+The {display_name} pattern has been tested with a defined set of specifically
+tested configurations that represent the most common combinations that Red Hat
+OpenShift Container Platform customers are using or deploying for the x86_64
+architecture.
+
+The datacenter hub OpenShift cluster uses the following the deployment configuration:
+
+.Hub cluster minimum requirements
+[cols="<,^,<,<"]
+|===
+| Cloud Provider | Node Type | Number of nodes | Instance Type
+
+ifdef::requirements_hub_controlPlane_platform_aws_replicas[]
+| Amazon Web Services
+| Control Plane
+| {requirements_hub_controlPlatform_platform_aws_replicas}
+| {requirements_hub_controlPlatform_platform_aws_type}
+| Amazon Web Services
+| Worker
+| {requirements_hub_compute_platform_aws_replicas}
+| {requirements_hub_compute_platform_aws_type}
+endif::requirements_hub_controlPlane_platform_aws_replicas[]
+
+ifdef::requirements_hub_controlPlane_platform_gcp_replicas[]
+| Google Cloud Platform
+| Control Plane
+| {requirements_hub_controlPlatform_platform_gcp_replicas}
+| {requirements_hub_controlPlatform_platform_gcp_type}
+| Google Cloud Platform
+| Worker
+| {requirements_hub_compute_platform_gcp_replicas}
+| {requirements_hub_compute_platform_gcp_type}
+endif::requirements_hub_controlPlane_platform_gcp_replicas[]
+
+ifdef::requirements_hub_controlPlane_platform_azure_replicas[]
+| Microsoft Azure
+| Control Plane
+| {requirements_hub_controlPlatform_platform_azure_replicas}
+| {requirements_hub_controlPlatform_platform_azure_type}
+| Microsoft Azure
+| Worker
+| {requirements_hub_compute_platform_azure_replicas}
+| {requirements_hub_compute_platform_azure_type}
+endif::requirements_hub_controlPlane_platform_azure_replicas[]
+
+|===
+
+ifeval::["{extra_features_spoke_support}" == "true"]
+== {display_name} spoke/managed cluster size minimum requirements
+
+.Spoke cluster minimum requirements
+[cols="<,^,<,<"]
+|===
+| Cloud Provider | Node Type | Number of nodes | Instance Type
+
+ifdef::requirements_spoke_controlPlane_platform_aws_replicas[]
+| Amazon Web Services
+| Control Plane
+| {requirements_spoke_controlPlatform_platform_aws_replicas}
+| {requirements_spoke_controlPlatform_platform_aws_type}
+| Amazon Web Services
+| Worker
+| {requirements_spoke_compute_platform_aws_replicas}
+| {requirements_spoke_compute_platform_aws_type}
+endif::requirements_spoke_controlPlane_platform_aws_replicas[]
+
+ifdef::requirements_spoke_controlPlane_platform_gcp_replicas[]
+| Google Cloud Platform
+| Control Plane
+| {requirements_spoke_controlPlatform_platform_gcp_replicas}
+| {requirements_spoke_controlPlatform_platform_gcp_type}
+| Google Cloud Platform
+| Worker
+| {requirements_spoke_compute_platform_gcp_replicas}
+| {requirements_spoke_compute_platform_gcp_type}
+endif::requirements_spoke_controlPlane_platform_gcp_replicas[]
+
+ifdef::requirements_spoke_controlPlane_platform_azure_replicas[]
+| Microsoft Azure
+| Control Plane
+| {requirements_spoke_controlPlatform_platform_azure_replicas}
+| {requirements_spoke_controlPlatform_platform_azure_type}
+| Microsoft Azure
+| Worker
+| {requirements_spoke_compute_platform_azure_replicas}
+| {requirements_spoke_compute_platform_azure_type}
+endif::requirements_spoke_controlPlane_platform_azure_replicas[]
+
+|===
+
+endif::[]
