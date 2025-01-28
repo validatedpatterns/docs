@@ -1,0 +1,38 @@
+:metadata_version: 1.0
+:name: industrial-edge
+:pattern_version: 2.0
+:display_name: Industrial Edge
+:repo_url: https://github.com/mbaldessari/industrial-edge
+:docs_repo_url: https://github.com/mbaldessari/docs
+:issues_url: https://github.com/validatedpatterns/industrial-edge/issues
+:docs_url: https://validatedpatterns.io/patterns/industrial-edge/
+:ci_url: https://validatedpatterns.io/ci/?pattern=industrialedge
+:tier: tested
+:owners: mbaldessari, darkdoc
+:requirements_hub_compute_platform_gcp_replicas: 5
+:requirements_hub_compute_platform_gcp_type: n1-standard-16
+:requirements_hub_compute_platform_azure_replicas: 5
+:requirements_hub_compute_platform_azure_type: Standard_D16s_v5
+:requirements_hub_compute_platform_aws_replicas: 4
+:requirements_hub_compute_platform_aws_type: m5.4xlarge
+:requirements_hub_controlPlane_platform_gcp_replicas: 3
+:requirements_hub_controlPlane_platform_gcp_type: n1-standard-16
+:requirements_hub_controlPlane_platform_azure_replicas: 3
+:requirements_hub_controlPlane_platform_azure_type: Standard_D16s_v3
+:requirements_hub_controlPlane_platform_aws_replicas: 3
+:requirements_hub_controlPlane_platform_aws_type: m5.4xlarge
+:requirements_spoke_compute_platform_gcp_replicas: 3
+:requirements_spoke_compute_platform_gcp_type: n1-standard-16
+:requirements_spoke_compute_platform_azure_replicas: 3
+:requirements_spoke_compute_platform_azure_type: Standard_D16s_v5
+:requirements_spoke_compute_platform_aws_replicas: 3
+:requirements_spoke_compute_platform_aws_type: m5.2xlarge
+:requirements_spoke_controlPlane_platform_gcp_replicas: 3
+:requirements_spoke_controlPlane_platform_gcp_type: n1-standard-16
+:requirements_spoke_controlPlane_platform_azure_replicas: 3
+:requirements_spoke_controlPlane_platform_azure_type: Standard_D16s_v5
+:requirements_spoke_controlPlane_platform_aws_replicas: 3
+:requirements_spoke_controlPlane_platform_aws_type: m5.2xlarge
+:extra_features_hypershift_support: false
+:extra_features_spoke_support: true
+:external_requirements: 
