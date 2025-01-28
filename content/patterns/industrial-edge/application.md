@@ -8,98 +8,86 @@ aliases: /industrial-edge/application/
 
 ## Background
 
-Up until now the Industrial Edge 2.0 validated patterns has focused primarily
-on successfully deploying the architectural pattern. Now it is time to see
-GitOps and DevOps in action as we go through a number of demonstrations to
-change both configuration information and the applications that we are
+Up until now the Industrial Edge 2.0 validated patterns has focused primarily on successfully deploying the architectural pattern. Now it is time to see
+GitOps and DevOps in action as we go through a number of demonstrations to change both configuration information and the applications that we are
 deploying.
 
-If you have already deployed the data center and optionally a factory (edge)
-cluster, then you have already seen several applications deployed in the
+If you have already deployed the data center and optionally a factory (edge) cluster, then you have already seen several applications deployed in the
 OpenShift GitOps console.
 
 ## Prerequisite preparation
 
 ### OpenShift Cluster
 
-Make sure you have the `kubeadmin` administrator login for the data center
-cluster. Use this or the `kubeconfig` (export the path) to provide
+Make sure you have the `kubeadmin` administrator login for the data center cluster. Use this or the `kubeconfig` (export the path) to provide
 administrator access to your data center and factory/edge clusters.
 
 ## Configuration changes with GitOps
 
-There will may be times where you need to change the configuration of some of
-the edge devices in one or more of your factories. In our example, we have
+There will may be times where you need to change the configuration of some of the edge devices in one or more of your factories. In our example, we have
 various sensors at the factory. Modification can be made to these sensors using
 `ConfigMaps`.
 
 [![highleveldemodiagram](/images/industrial-edge/highleveldemodiagram-v2.png)](/images/industrial-edge/highleveldemodiagram-v2.png)
 
-In this demonstration we will turn on a temperature sensor for sensor #2. We
-will first do this in the data center because this will demonstrate the power
-of GitOps without having to involve the edge/factory.  However if you do have
-an factory joined using Advanced Cluster Management, then the changes will make
-their way out to the factory. But it is not necessary for the demo as we have a
-complete test environment on the data center.
+## Accessing the demo application
 
-Make sure you are able to see the dashboard application in a tab on your
-browser. You can find the URL for the dashboard application by looking at the
-following in your OpenShift console.
+In this demonstration you will turn on a temperature sensor for sensor #2. Do this first in the data center because this will demonstrate the power
+of GitOps without having to involve the edge/factory. 
+
+However, if you do have an factory joined using Advanced Cluster Management, then the changes will make their way out to the factory. But it is not necessary for the demo as we have a complete test environment on the data center.
+
+Follow these steps in the OpenShift console to access the dashboard application in a tab on your browser:
+
+1. Select **Networking**->**Routes** on the left-hand side of the console. Using the Projects pull-down, select `manuela-tst-all`. The following screen appears: 
 
 [![network-routing-line-dashboard](/images/industrial-edge/network-routing-line-dashboard.png)](/images/industrial-edge/network-routing-line-dashboard.png)
 
-Select Networking->Routes on the left-hand side of the console. Using the
-Projects pull-down, select `manuela-tst-all`. Click on the URL under the
-Location column for the route Name `line-dashboard`. this will launch the
-line-dashboard monitoring application in a browser tab. The URL will look like:
+2. Click on the URL under the Location column for the route Name `line-dashboard`. This will launch the line-dashboard monitoring application in a browser tab. The URL will look like:
 
 `line-dashboard-manuela-tst-all.apps.*cluster-name*.*domain*`
 
-Once the the application is open in your browser, click on the “Realtime Data”
-Navigation on the left and wait a bit. Data should be visualized as received.
-Note that there is only vibration data shown! If you wait a bit more (usually
-every 2-3 minutes), you will see an anomaly and alert on it.
+3. Once the application is open in your browser, click on the “Realtime Data” Navigation on the left and wait a bit. Data should be visualized as received.
+> **Note:** There is only vibration data shown! If you wait a bit more (usually every 2-3 minutes), you will see an anomaly and alert on it.
 
 [![app-line-dashboard-before](/images/industrial-edge/app-line-dashboard-before.png)](/images/industrial-edge/app-line-dashboard-before.png)
 
-Now let's turn on the temperature sensor. Go to the gitea link on the nine box login using the
-`gitea_admin` user and the autogenerated password that can be found in the secret called
-`gitea-admin-secret` in the `vp-gitea` namespace:
+4. Now turn on the temperature sensor. Log in using the `gitea_admin` username and the autogenerated password. This password is stored in the `gitea-admin-secret` secret located in the `vp-gitea` namespace. To retrieve it:
+
+    4.1 Navigate to **Workloads** > **Secrets** in the left-hand menu.
+
+    4.2 Locate and open the `gitea-admin-secret` in the `vp-gitea` namespace.
+
+    4.3 Copy password found under **Data** into the sign in screen. 
 
 [![gitea-signin](/images/industrial-edge/gitea-signin.png)](/images/industrial-edge/gitea-signin.png)
 
-You can run the following command to obtain the gitea user's password automatically:
+Alternatively can run the following command to obtain the gitea user's password automatically:
 
 ```
 oc extract -n vp-gitea secret/gitea-admin-secret --to=- --keys=password 2>/dev/null
 ```
 
-In the `industrial-edge` repository, edit the file called
-`charts/datacenter/manuela-tst/templates/machine-sensor/machine-sensor-2-configmap.yaml`
+5. In the `industrial-edge` repository, edit the file called `charts/datacenter/manuela-tst/templates/machine-sensor/machine-sensor-2-configmap.yaml`
 and change `SENSOR_TEMPERATURE_ENABLED: "false"` to `SENSOR_TEMPERATURE_ENABLED: "true"`.
 
 [![gitea-edit](/images/industrial-edge/gitea-edit.png)](/images/industrial-edge/gitea-edit.png)
+
+6. Commit this change to your git repository so that the change will be picked up by OpenShift GitOps (ArgoCD).
 [![gitea-commit](/images/industrial-edge/gitea-commit.png)](/images/industrial-edge/gitea-commit.png)
 
-Then change and commit this to your git repository so that the change will be
-picked up by OpenShift GitOps (ArgoCD).
-
-You can track the progress of this commit/push in your OpenShift GitOps console
-in the `manuela-test-all` application. You will notice components regarding
-machine-sensor-2 getting sync-ed. You can speed this up by manually pressing
-the Refresh button.
+7. Track the progress of this commit/push in your OpenShift GitOps console in the `manuela-test-all` application. You will notice components regarding
+machine-sensor-2 getting sync-ed. You can speed this up by manually pressing the `Refresh` button.
 
 [![argocd-line-dashboard](/images/industrial-edge/argocd-line-dashboard.png)](/images/industrial-edge/argocd-line-dashboard.png)
 
-The dashboard app should pickup the change automatically, once data from the temperature sensor is received.
-Sometimes a page/tab refreshed is needed for the change to be picked up.
+8. The dashboard app should pickup the change automatically, once data from the temperature sensor is received. Sometimes a page/tab refreshed is needed for the change to be picked up.
 
 [![app-line-dashboard](/images/industrial-edge/argocd-machine-sensor2.png)](/images/industrial-edge/argocd-machine-sensor2.png)
 
 ## Application changes using DevOps
 
-The `line-dashboard` application has temperature sensors. In this demonstration
-we are going to make a simple change to that application, rebuild and redeploy
+The `line-dashboard` application has temperature sensors. In this demonstration we are going to make a simple change to that application, rebuild and redeploy
 it. In the `manuela-dev` repository there is a file
 `components/iot-frontend/src/app/app.component.html`. Let's change the
 `<ion-title>IoT Dashboard</ion-title>` to something else, say,
@@ -122,9 +110,7 @@ The pipeline will look a bit like the following:
 
 [![tekton-pipeline](/images/industrial-edge/pipeline-iot-frontend.png)](/images/industrial-edge/pipeline-iot-frontend.png)
 
-After the pipeline completed the `manuela-test` application in Argo will eventually refresh and push the
-changes to the cluster and the line dash board route in the `manuela-tst-all` namespace will have picked up
-the changes:
+After the pipeline completed the `manuela-test` application in Argo will eventually refresh and push the changes to the cluster and the line dash board route in the `manuela-tst-all` namespace will have picked up the changes:
 
 [![linedashboard-devops](/images/industrial-edge/line-dashboard-devops.png)](/images/industrial-edge/line-dashboard-devops.png)
 
@@ -132,8 +118,7 @@ The pipeline will also have created a PR in gitea, like the following one:
 
 [![gitea-pipeline-pr](/images/industrial-edge/gitea-pipeline-pr.png)](/images/industrial-edge/gitea-pipeline-pr.png)
 
-Now an operator can verify that the change is correct on the datacenter in the
-`manuela-tst-all` line dashboard and if deemed correct, he can merge the PR in
+Now an operator can verify that the change is correct on the datacenter in the `manuela-tst-all` line dashboard and if deemed correct, he can merge the PR in
 gitea which will roll out the change to the production factory!
 
 ## Application AI model changes with DevOps
