@@ -107,3 +107,14 @@ In the file browser on the left, open the `pipelines` folder. This folder contai
 
 [![elyra-pipeline](/images/industrial-edge/elyra-pipeline.png)](/images/industrial-edge/elyra-pipeline.png)
 
+To submit the pipeline, select `Run Pipeline` ("play" icon in the top left corner of the Elyra editor). Select "Ok", and view the confirmation message come up after just a few seconds. You can now navigate to the pipeline screen by selecting `Run Details` in the confirmation screen.
+
+[![elyra-pipeline-confirmation](/images/industrial-edge/elyra-pipeline-submit.png)](/images/industrial-edge/elyra-pipeline-submit.png)
+
+We're now back in the OpenShift AI dashboard and can monitor the progress of our model CI/CD pipeline in real-time. You can select individual tasks to look up details such as pipeline logs, which helps to troubleshoot the pipeline code.
+
+[![rhoai-pipeline](/images/industrial-edge/rhoai-pipeline.png)](/images/industrial-edge/rhoai-pipeline.png)
+
+Once the pipeline has finished running, step over to Gitea and look up the `industrial-edge` repository (select `rhdp-deploy` branch if you've provisioned the pattern through RHDP). Notice the new commit indicating a model update in the test environment.
+
+[![pipeline-commit](/images/industrial-edge/pipeline-commit.png)](/images/industrial-edge/pipeline-commit.png)
