@@ -30,8 +30,8 @@ def process_yaml(file_path)
     yaml_data = YAML.load_file(file_path)
     flat_data = flatten_hash(yaml_data)
 
-    puts "# This file has been generated automatically from the pattern-metadata.yaml file"
-    puts "# Do not edit manually!"
+    puts "// This file has been generated automatically from the pattern-metadata.yaml file"
+    puts "// Do not edit manually!"
     # Print each key-value pair with a leading column to define an
     # ascii doc variable
     flat_data.each do |key, value|
