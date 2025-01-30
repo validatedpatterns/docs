@@ -1,9 +1,11 @@
+# This file has been generated automatically from the pattern-metadata.yaml file
+# Do not edit manually!
 :metadata_version: 1.0
 :name: industrial-edge
 :pattern_version: 2.0
 :display_name: Industrial Edge
-:repo_url: https://github.com/mbaldessari/industrial-edge
-:docs_repo_url: https://github.com/mbaldessari/docs
+:repo_url: https://github.com/validatedpatterns/industrial-edge
+:docs_repo_url: https://github.com/validatedpatterns/docs
 :issues_url: https://github.com/validatedpatterns/industrial-edge/issues
 :docs_url: https://validatedpatterns.io/patterns/industrial-edge/
 :ci_url: https://validatedpatterns.io/ci/?pattern=industrialedge
