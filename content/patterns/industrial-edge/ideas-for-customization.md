@@ -20,68 +20,179 @@ very interesting - and here are some starter ideas with some instructions on
 exactly what and where changes would need to be made in the pattern to
 accommodate those changes.
 
-# HOWTO Forking the Industrial Edge repository to your github account
-
-Hopefully we are all familiar with GitHub.  If you are not GitHub is a code
-hosting platform for version control and collaboration. It lets you and others
-work together on projects from anywhere.  Our Industrial Edge GitOps repository
-is available in our [Validated Patterns
-GitHub](https://github.com/validatedpatterns "Validated Patterns Homepage")
-organization.
-
-To fork this repository, and deploy the Industrial Edge pattern, follow the
-steps found in our [Getting
-Started](https://validatedpatterns.io/industrial-edge/getting-started
-"Industrial Edge Getting Started Guide") section.  This will allow you to
-follow the next few HOWTO guides in this section.
-
-Our sensors have been configured to send data relating to the vibration of the
-devices.  To show the power of GitOps, and keeping state in a git repository,
-we can make a change to the config map of one of the sensors to detect and
-report data on temperature. This is done via a variable called
-*SENSOR_TEMPERATURE_ENABLED* that is initially set to false.  Setting this
-variable to true will trigger the GitOps engine to synchronize the application,
-restart the machine sensor and apply the change.
-
 There are two environments in the Industrial Edge demonstration:
 
 * The staging environment that lives in the *manuela-tst-all* namespace
 * The production environment which lives in the *stormshift* namespaces
 
+# Enabling the temperature sensor for machine sensor 2  
+
+Our sensors have been configured to send data relating to the vibration of the
+devices.  To show the power of GitOps, and keeping state in a git repository,
+you can make a change to the config map of one of the sensors to detect and
+report data on temperature. This is done using a variable called `*SENSOR_TEMPERATURE_ENABLED*` that is initially set to `false`.  Setting this
+variable to `true` will trigger the GitOps engine to synchronize the application,
+restart the machine sensor and apply the change.
+
 As an operator you would first make changes to the staging first.  Here are the steps to see how the GitOps engine does it's magic. These changes will be reflected in the staging environment Line Dashboard UI in the *manuela-tst-all* namespace.
 
-* The config maps in question live in the charts/datacenter/manuela-tst/templates/machine-sensor directory
-* There are two config maps that we can change:
+* The config maps in question live in the `charts/datacenter/manuela-tst/templates/machine-sensor` directory:
+
+* There are two config maps that you can change:
   * machine-sensor-1-configmap.yaml
   * machine-sensor-2-configmap.yaml
-* Change the following variable in *machine-sensor-1-configmap.yaml* in the gitea web interface
-  * **SENSOR_TEMPERATURE_ENABLED: "true"**
-* Make sure you commit the changes to **git**
-* Now you can go to the Line Dashboard application and see how the UI shows the temperature for that device.  You can find the route link by:
-  * Change the Project context to manuela-tst-all
-  * Navigate to Networking->Routes
-  * Press on the Location link to see navigate to the UI.
 
-# HOWTO Applying the pattern to a new use case
+In this customization you will turn on a temperature sensor for sensor #2. Do this first in the data center because this will demonstrate the power of GitOps without having to involve the edge/factory cluster. 
 
-There are a lot of IoT devices that we could add to this pattern. In today's
-world we have IoT devices that perform different functions and these devices
-are connected to a network where they have the ability of sending telemetry
-data to other devices or a central data center. In this particular use case we
-address an Industrial sector but what about applying this use case to other
-sectors such as Automotive or Delivery service companies?
+However, if you do have a factory joined using Advanced Cluster Management, then the changes will make their way out to the factory. But it is not necessary for the demo as we have a complete test environment on the data center.
 
-If we take the Deliver Service use case, and apply it to this pattern, we would
-have to take into account the following aspects:
+Follow these steps in the OpenShift console to access the dashboard application in a tab on your browser:
 
-* The main components in the pattern architecture can be used as is.
-  * The broker and kafka components are the vehicles for the streaming data coming from the devices.
-* The IoT sensor software would have to be developed.  The IoT devices will now be mobile so that presents a few challenges tracking the devices in part due to spotty connectivity to send the data stream.
-* The number of IoT devices to be tracked will increase depending on the fleet of delivery trucks out in the field.
-  * Scalability will be an important aspect for the pattern to be able to handle.
-* A new AI/ML model would have to be developed to "learn" through the analysis of the data stream from the IoT devices.
+1. Select **Networking**->**Routes** on the left-hand side of the console. Using the Projects pull-down, select `manuela-tst-all`. The following screen appears: 
 
-The idea is that this pattern can be used for other use cases keeping the main components in place. The components that would be new to the pattern are: IoT device code, AI/ML models, and specific kafka/broker topics to keep track of.
+    [![network-routing-line-dashboard](/images/industrial-edge/network-routing-line-dashboard.png)](/images/industrial-edge/network-routing-line-dashboard.png)
+
+2. Click the URL under the Location column for the route Name `line-dashboard`. This will launch the line-dashboard monitoring application in a browser tab. The URL will look like:
+
+    `line-dashboard-manuela-tst-all.apps.*cluster-name*.*domain*`
+
+3. Once the application is open in your browser, click the **Realtime Data** navigation on the left and wait a bit. Data should be visualized as received.
+
+    > **Note:** There is only vibration data shown! If you wait a bit more (usually every 2-3 minutes), you will see an anomaly and alert on it.
+
+    [![app-line-dashboard-before](/images/industrial-edge/app-line-dashboard-before.png)](/images/industrial-edge/app-line-dashboard-before.png)
+
+4. Now turn on the temperature sensor. Log in using the `gitea_admin` username and the autogenerated password. This password is stored in the `gitea-admin-secret` secret located in the `vp-gitea` namespace. To retrieve it:
+
+    4.1 Go to **Workloads** > **Secrets** in the left-hand menu.
+
+    4.2  Using the Projects pull-down, select the `vp-gitea` project and open the `gitea-admin-secret`.
+
+    4.3 Copy the password found under **Data** into the sign in screen located in the nine box **Red Hat applications** in the OpenShift Container Platform web console. 
+
+    [![gitea-signin](/images/industrial-edge/gitea-signin.png)](/images/industrial-edge/gitea-signin.png)
+
+    > **Note:** Alternatively, you can run the following command to obtain the Gitea user's password automatically:  
+    >  
+     ```sh
+      oc extract -n vp-gitea secret/gitea-admin-secret --to=- --keys=password 2>/dev/null
+     ```
+
+5. In the `industrial-edge` repository, edit the file called `charts/datacenter/manuela-tst/templates/machine-sensor/machine-sensor-2-configmap.yaml`
+and change `SENSOR_TEMPERATURE_ENABLED: "false"` to `SENSOR_TEMPERATURE_ENABLED: "true"` as shown in the screenshot.
+
+    [![gitea-edit](/images/industrial-edge/gitea-edit.png)](/images/industrial-edge/gitea-edit.png)
+
+6. Commit this change to your git repository so that the change will be picked up by OpenShift GitOps (ArgoCD).
+
+    [![gitea-commit](/images/industrial-edge/gitea-commit.png)](/images/industrial-edge/gitea-commit.png)
+
+7. Track the progress of this commit/push in your OpenShift GitOps console in the `manuela-test-all` application. You will notice components regarding
+machine-sensor-2 getting sync-ed. You can speed this up by manually pressing the `Refresh` button.
+
+    [![argocd-line-dashboard](/images/industrial-edge/argocd-line-dashboard.png)](/images/industrial-edge/argocd-line-dashboard.png)
+
+8. The dashboard app should pickup the change automatically, once data from the temperature sensor is received. Sometimes a page/tab refreshed is needed for the change to be picked up.
+
+    [![app-line-dashboard](/images/industrial-edge/argocd-machine-sensor2.png)](/images/industrial-edge/argocd-machine-sensor2.png)
+
+## Application changes using DevOps
+
+The `line-dashboard` application has temperature sensors. In this demonstration you are going to make a simple change to that application, rebuild and redeploy
+it. 
+
+1. Edit the file `components/iot-frontend/src/app/app.component.html` in the `manuela-dev` repository there is a file
+
+2. Change the
+`<ion-title>IoT Dashboard</ion-title>` to for example,
+`<ion-title>IoT Dashboard - DEVOPS was here!</ion-title>`. Do this in the
+gitea web interface directly clicking on the editing icon for the file:
+
+    [![gitea-iot-edit](/images/industrial-edge/gitea-iot-edit.png)](/images/industrial-edge/gitea-iot-edit.png)
+
+3. Commit this change to your git repository so that the change will be picked up by OpenShift GitOps (ArgoCD).
+
+    [![gitea-commit](/images/industrial-edge/gitea-commit.png)](/images/industrial-edge/gitea-commit-1.png)
+
+4. Start the pipeline called `build-and-test-iot-frontend` that will do the following:
+
+    1. Rebuild the image from the manuela-dev code
+    2. Push the change on the hub datacenter in the manuela-tst-all namespace
+    3. Create a PR in gitea
+
+    4.1 Start the pipeline by running the following command in `industrial-edge` repository:
+
+    ```sh
+    make build-and-test-iot-frontend
+    ```
+
+The pipeline will look a bit like the following:
+
+[![tekton-pipeline](/images/industrial-edge/pipeline-iot-frontend.png)](/images/industrial-edge/pipeline-iot-frontend.png)
+
+After the pipeline completed the `manuela-test` application in Argo will eventually refresh and push the changes to the cluster and the line dash board route in the `manuela-tst-all` namespace will have picked up the changes. You might need to clear your browser cache to see the change:
+
+[![linedashboard-devops](/images/industrial-edge/line-dashboard-devops.png)](/images/industrial-edge/line-dashboard-devops.png)
+
+The pipeline will also have created a PR in gitea, such as the following one:
+
+[![gitea-pipeline-pr](/images/industrial-edge/gitea-pipeline-pr.png)](/images/industrial-edge/gitea-pipeline-pr.png)
+
+Verify that the change is correct on the datacenter in the `manuela-tst-all` line dashboard and if deemed correct, you can merge the PR in gitea which will roll out the change to the production factory!
+
+## Application AI model changes with DevOps
+
+1. On the OpenShift console click the nine-box and select `Red Hat OpenShift AI`. The AI console will open, appearing as follows:
+
+    [![rhoai-console](/images/industrial-edge/rhoai-console-home.png)](/images/industrial-edge/rhoai-console-home.png)
+
+2. Click the `Data Science Projects` on the left sidebar and choose the `ml-development` project. The project will open, containing a couple of workbenches and a model.:
+
+    [![rhoai-ml-development](/images/industrial-edge/rhoai-ml-development.png)](/images/industrial-edge/rhoai-ml-development.png)
+
+3. Click the `JupyterLab` workbench to open the notebook where this pattern's data analysis is performed. The `manuela-dev` code will be preloaded in the notebook. 
+
+4. click the left file browser on `manuela-dev/ml-models/anomaly-detection/1-preprocessing.ipynb`:
+
+    [![notebook-console](/images/industrial-edge/notebook-console.png)](/images/industrial-edge/notebook-console.png)
+
+After opening the notebook successfully, walk through the demonstration by pressing play and iterating through the commands in the playbooks. Jupyter playbooks are interactive and you may make changes and also save those changes.
+
+Running through all the six notebooks will automatically regenerate the anomaly model, prepare the data for the training and push the changes to the internal
+gitea so the inference service can pick up the new model.
+
+# Adapting the Industrial Edge Pattern for a delivery service use case  
+
+This procedure outlines the steps needed to adapt the Industrial Edge pattern for a **delivery service use case**, while keeping the main architectural components in place.  
+
+## **1. Identify the Core Architecture Components to Reuse**  
+The following components from the Industrial Edge pattern can be reused as is:  
+- **Broker and Kafka components**: These will handle streaming data from IoT devices.  
+
+## **2. Develop IoT Sensor Software for Delivery Vehicles**  
+- Create or modify IoT sensor software to be deployed on **mobile delivery vehicles**.  
+- Address challenges related to **intermittent connectivity**, ensuring data can be buffered and sent when a network connection is available.  
+
+## **3. Scale the Solution for a Growing Fleet of Vehicles**  
+- Assess the number of IoT devices required based on fleet size.  
+- Ensure **Kafka and broker components** can scale dynamically to handle increased data traffic.  
+
+## **4. Implement AI/ML for Real-Time Data Analysis**  
+- Develop a new **AI/ML model** to process and analyze telemetry data from IoT devices.  
+- Train the model to recognize trends in delivery operations, such as **route efficiency, fuel consumption, and vehicle health**.  
+
+## **5. Define and Configure Kafka Topics for IoT Data**  
+- Create **Kafka topics** specific to delivery service tracking, such as:  
+  - `vehicle-location`  
+  - `delivery-status`  
+  - `fuel-consumption`  
+  - `temperature-monitoring`  
+- Ensure these topics align with **data processing and analytics needs**.  
+
+## **6. Deploy and Monitor the Adapted System**  
+- Deploy the updated IoT software on delivery vehicles.  
+- Monitor data ingestion and processing through **Kafka topics and AI/ML insights**.  
+- Scale infrastructure a
 
 # Next Steps
 
