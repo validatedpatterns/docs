@@ -1,0 +1,103 @@
+# This GH action has the goal to fetch the pattern-metadata.yaml file (if existing)
+# and output all of its flattened yaml structure into asciidoc variables for the pattern
+# 
+# It needs a secret called DOCS_TOKEN to be set in the pattern's repository
+# that calls this GH action. It has to be  a PAT token with the following
+# permissions on the `validatedpatterns/docs` repository
+# * Read access to actions and metadata
+# * Read and Write access to code and pull requests
+#
+# This job will checkout the docs repo and propose a PR to where it updates
+# the file ./modules/<pattern>/metadata-<pattern>.yaml where the pattern's
+# metadata will land transformed into asciidoc variables.
+#
+# Note: This action is to be imported from a pattern and not used in the docs repo
+# itself. We maintain it in the docs repo in order to make it easier to have a single
+# workflow across all patterns
+---
+name: Update docs from pattern's metadata
+
+on:
+  workflow_call:
+    inputs:
+      DOCS_BRANCH:
+        description: "Branch of the docs git repo to use"
+        required: false
+        type: string
+        default: "main"
+
+env:
+  DOCS_DIR: docs
+  PATTERN_DIR: pattern
+  METADATA: pattern-metadata.yaml
+  GIT_EMAIL: vp-team@redhat.com
+  GIT_USER: Github Actions
+
+jobs:
+  docs-push:
+    # We do not want to run this job on forked repositories
+    if: |
+      github.repository_owner == 'validatedpatterns' ||
+      github.repository_owner == 'validatedpatterns-sandbox' ||
+      github.repository_owner == 'validatedpatterns-demos'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout pattern repository
+        uses: actions/checkout@v4
+        with:
+          path: ${{ env.PATTERN_DIR }}
+
+      - name: Fail if this repository is different than the one in metadata
+        run: |-
+          set -e
+          repo=$(yq -r .repo_url "${{ env.METADATA }}")
+          full_url="https://github.com/${{ github.repository }}"
+          if [ "${full_url}" != "${repo}" ]; then
+            echo "Error ${{ github.repository }} != ${full_url}"
+            exit 1
+          fi
+          docs_repo=$(yq -r .docs_repo_url "${{ env.METADATA }}" | sed -e 's%https://github.com/%%')
+          pattern=$(yq -r .name "${{ env.METADATA }}")
+          {
+            echo "DOCS_PR_BRANCH=sizing-pr-${pattern}"
+            echo "DOCS_REPO=${docs_repo}"
+            echo "PATTERN=${pattern}"
+          } >> "${GITHUB_ENV}"
+        working-directory: ${{ env.PATTERN_DIR }}
+
+      - name: Checkout docs repository
+        uses: actions/checkout@v4
+        with:
+          path: ${{ env.DOCS_DIR }}
+          repository: ${{ env.DOCS_REPO }}
+          ref: ${{ inputs.DOCS_BRANCH }}
+          token: ${{ secrets.DOCS_TOKEN }}
+
+      - name: Template the cluster variables on to the patterns-variables .adoc file
+        run: |-
+          set -e
+          mkdir -p modules/${{ env.PATTERN }}
+          ./${{ env.DOCS_DIR }}/utils/flatten_yaml.rb \
+              ./${{ env.PATTERN_DIR }}/${{ env.METADATA }} | \
+              tee "${{ env.DOCS_DIR }}/modules/${{ env.PATTERN }}/metadata-${{ env.PATTERN }}.adoc"
+
+      - name: Push to docs git repo
+        run: |-
+          set -e
+          git config --global user.email "${{ env.GIT_EMAIL }}"
+          git config --global user.name "${{ env.GIT_USER }}"
+          git checkout -B "${{ env.DOCS_PR_BRANCH }}" "${{ inputs.DOCS_BRANCH }}"
+          git add modules/${{ env.PATTERN }}/metadata-${{ env.PATTERN }}.adoc
+          git commit -m "Update cluster variables for ${{ env.PATTERN }}" || (echo "Nothing to commit"; exit 0)
+          git push origin "${{ env.DOCS_PR_BRANCH }}" -f
+          gh pr create -B "${{ inputs.DOCS_BRANCH }}" -H "${{ env.DOCS_PR_BRANCH }}" \
+            --title 'Merge cluster variables change for ${{ env.PATTERN }}' --body 'Created by Github action' || \
+          gh pr edit -B "${{ inputs.DOCS_BRANCH }}" --title 'Cluster variables change for ${{ env.PATTERN }}' --body 'Created by Github action'
+        working-directory: ${{ env.DOCS_DIR }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.DOCS_TOKEN }}
