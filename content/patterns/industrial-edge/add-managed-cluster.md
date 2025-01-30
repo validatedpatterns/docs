@@ -1,6 +1,6 @@
 ---
 title: Adding a managed cluster
-weight: 10
+weight: 20
 aliases: /industrial-edge/getting-started/
 ---
 
@@ -30,11 +30,3 @@ Add a `managedClusterGroup` for each cluster or group of clusters that you want 
 like the following:
 
    ![ArgoCD Factory Apps](/images/industrial-edge/factory-apps.png)
-
-# Uninstalling
-
-We currently do not support uninstalling this pattern.
-
-# Help & Feedback
-
-[Help & Feedback](https://groups.google.com/g/validatedpatterns) - [Report Bugs](https://github.com/validatedpatterns/industrial-edge/issues)

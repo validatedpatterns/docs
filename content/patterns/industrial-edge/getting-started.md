@@ -8,49 +8,58 @@ aliases: /industrial-edge/getting-started/
 
 # Prerequisites
 
-1. An OpenShift cluster (Go to [the OpenShift
-   console](https://console.redhat.com/openshift/create)). Cluster must have a
-   dynamic StorageClass to provision PersistentVolumes. See also [sizing your
-   cluster](../../industrial-edge/cluster-sizing).
-1. (Optional) A second OpenShift cluster for edge/factory
+- An OpenShift cluster  
+  - To create an OpenShift cluster, go to the [Red Hat Hybrid Cloud console](https://console.redhat.com/).  
+  - Select **OpenShift → Red Hat OpenShift Container Platform → Create cluster**.  
+  - The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. Verify that a dynamic `StorageClass` exists before creating one by running the following command:  
 
-The use of this pattern depends on having at least one running Red Hat
-OpenShift cluster. It is desirable to have a cluster for deploying the data
-center assets and a separate cluster(s) for the factory assets.
+    ```sh
+    oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,DEFAULT:.metadata.annotations."storageclass\.kubernetes\.io/is-default-class"
+    ```
 
-If you do not have a running Red Hat OpenShift cluster you can start one on a
-public or private cloud by using [Red Hat's cloud
-service](https://console.redhat.com/openshift/create).
+    **Example output:**
 
-## Prerequisites
+    ```sh
+    NAME      PROVISIONER       DEFAULT
+    gp2-csi   ebs.csi.aws.com   <none>
+    gp3-csi   ebs.csi.aws.com   true
+    ```
+
+    For more information about creating a dynamic `StorageClass`, see the [Dynamic provisioning](https://docs.openshift.com/container-platform/latest/storage/dynamic-provisioning.html) documentation.
+
+- *Optional:* A second OpenShift cluster for the edge/factory.  
+
+- [Install the tooling dependencies](https://validatedpatterns.io/learn/quickstart/).  
+
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.  
 
 For installation tooling dependencies, see [Patterns quick start](/learn/quickstart)
 
-The Industrial Edge pattern installs an in-cluster gitea instance by default. This 
-means that there is no need to fork the pattern's git repository and that ArgoCD will point
-directly at the in-cluster git repository. Changes should be done there and not on github.
+The Industrial Edge pattern installs an in-cluster gitea instance by default. This  means that there is no need to fork the pattern's git repository and that ArgoCD will point directly at the in-cluster git repository. Changes should be done there and not on github.
 See this [post](https://validatedpatterns.io/blog/2024-07-12-in-cluster-git/) for more information.
 
-# How to deploy
+# Procedure
 
-1. Clone the [industrial-edge](https://github.com/validatedpatterns/industrial-edge) repository on GitHub.
-
-1. On your laptop or bastion host login to your cluster by using the `oc login` command or by exporting the `KUBECONFIG` file.
+1. Clone the [industrial-edge](https://github.com/validatedpatterns/industrial-edge) repository on GitHub by running the following command: 
 
    ```sh
-   oc login
+   $ git clone git@github.com:validatedpatterns/industrial-edge.git
+   ```
+2. Ensure you are in the root directory of the industrial-edge git repository by running the following command:
+
+   ```sh
+   $ cd /path/to/your/repository 
    ```
 
-   or
+3. On your laptop or bastion host login to your cluster by exporting the `KUBECONFIG` file.
 
    ```sh
    export KUBECONFIG=~/my-ocp-cluster/auth/kubeconfig
    ```
 
-1. Deploy the industrial edge pattern:
+4. Deploy the industrial edge pattern:
 
    ```sh
-   cd <path-to-cloned-github-repository>
    ./pattern.sh make install
    ```
  The `make install` target deploys the Validated Patterns Operator, all the resources that are defined in the `values-datacenter.yaml`
@@ -62,33 +71,33 @@ See this [post](https://validatedpatterns.io/blog/2024-07-12-in-cluster-git/) fo
    ```text
    $ oc get operators.operators.coreos.com -A
    NAME                                                  AGE
-   advanced-cluster-management.open-cluster-management   3h8m
-   amq-broker-rhel8.manuela-tst-all                      3h8m
-   amq-streams.manuela-data-lake                         3h8m
-   amq-streams.manuela-tst-all                           3h8m
-   camel-k.manuela-data-lake                             3h8m
-   camel-k.manuela-tst-all                               3h8m
-   mcg-operator.openshift-storage                        3h7m
-   multicluster-engine.multicluster-engine               3h4m
-   ocs-client-operator.openshift-storage                 3h7m
-   ocs-operator.openshift-storage                        3h7m
-   odf-csi-addons-operator.openshift-storage             3h7m
-   odf-operator.openshift-storage                        3h8m
-   odf-prometheus-operator.openshift-storage             3h7m
-   openshift-gitops-operator.openshift-operators         3h11m
-   openshift-pipelines-operator-rh.openshift-operators   3h8m
-   patterns-operator.openshift-operators                 3h12m
-   recipe.openshift-storage                              3h7m
-   rhods-operator.redhat-ods-operator                    3h8m
-   rook-ceph-operator.openshift-storage                  3h7m
+   advanced-cluster-management.open-cluster-management   10m
+   amq-broker-rhel8.manuela-tst-all                      10m
+   amq-streams.manuela-data-lake                         10m
+   amq-streams.manuela-tst-all                           10m
+   camel-k.manuela-data-lake                             10m
+   camel-k.manuela-tst-all                               10m
+   cephcsi-operator.openshift-storage                    10m
+   mcg-operator.openshift-storage                        10m
+   multicluster-engine.multicluster-engine               7m19s
+   ocs-client-operator.openshift-storage                 10m
+   ocs-operator.openshift-storage                        10m
+   odf-csi-addons-operator.openshift-storage             10m
+   odf-operator.openshift-storage                        10m
+   odf-prometheus-operator.openshift-storage             10m
+   openshift-gitops-operator.openshift-operators         17m
+   openshift-pipelines-operator-rh.openshift-operators   10m
+   patterns-operator.openshift-operators                 17m
+   recipe.openshift-storage                              10m
+   rhods-operator.redhat-ods-operator                    10m
+   rook-ceph-operator.openshift-storage                  10m
    ```
 
-   **Note: The list above was taken on OpenShift 4.16. It might change slightly depending on the OpenShift version being used (e.g. odf has less operator components on OpenShift 4.15 and earlier)**
+   **Note: The list above was taken on OpenShift 4.17. It might change slightly depending on the OpenShift version being used for example odf has less operator components on OpenShift 4.15 and earlier)**
 
 1. Access the ArgoCD environment
 
-   You can find the ArgoCD application links listed under the nine box **Red
-   Hat applications** in the OpenShift Container Platform web console.
+   You can find the ArgoCD application links listed under the nine box **Red Hat applications** in the OpenShift Container Platform web console.
 
    ![ArgoCD Links](/images/industrial-edge/nine-box.png)
 
@@ -99,35 +108,6 @@ See this [post](https://validatedpatterns.io/blog/2024-07-12-in-cluster-git/) fo
 1. Check that all applications are synchronised. It should look like the following:
 
    ![ArgoCD Apps](/images/industrial-edge/datacenter-argocd-apps.png)
-
-## Next Steps
-
-By default, Red Hat Advanced Cluster Management (RHACM) manages the `clusterGroup` applications that are deployed on all clusters.
-
-Add a `managedClusterGroup` for each cluster or group of clusters that you want to manage by following this procedure.
-
-## Procedure
-
-1. By default the `factory` applications defined in the `values-factory.yaml` file are deployed on all clusters imported into ACM and that have the label `clusterGroup=factory`. 
-
-2. In the left navigation panel of the web console associated with your deployed hub cluster, click **local-cluster**. Select **All Clusters**. The RHACM web console is displayed.
-
-3. In the **Managing clusters just got easier** window, click **Import an existing cluster**.
-
-    - Enter the cluster name (you can get this from the login token string, for example: `https://api.<cluster-name>.<domain>:6443`).
-    - You can leave the **Cluster set** blank.
-    - In the **Additional labels** dialog box, enter the `key=value` as `clusterGroup=factory`.
-    - Choose **KubeConfig** as the "Import mode".
-    - In the **KubeConfig** window, paste your KubeConfig content. Click **Next**.
-
-4. You can skip the **Automation** screen. Click **Next**.
-
-5. Review the summary details and click **Import**.
-
-6. Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](../application/). The argo applications on the factory cluster will look
-like the following:
-
-   ![ArgoCD Factory Apps](/images/industrial-edge/factory-apps.png)
 
 # Uninstalling
 
