@@ -90,23 +90,23 @@ machine-sensor-2 getting sync-ed. You can speed this up by manually pressing the
 
 This procedure outlines the steps needed to adapt the Industrial Edge pattern for a **delivery service use case**, while keeping the main architectural components in place.  
 
-## **1. Identify the Core Architecture Components to Reuse**  
+**1. Identify the Core Architecture Components to Reuse**  
 The following components from the Industrial Edge pattern can be reused as is:  
 - **Broker and Kafka components**: These will handle streaming data from IoT devices.  
 
-## **2. Develop IoT Sensor Software for Delivery Vehicles**  
+**2. Develop IoT Sensor Software for Delivery Vehicles** 
 - Create or modify IoT sensor software to be deployed on **mobile delivery vehicles**.  
 - Address challenges related to **intermittent connectivity**, ensuring data can be buffered and sent when a network connection is available.  
 
-## **3. Scale the Solution for a Growing Fleet of Vehicles**  
+**3. Scale the Solution for a Growing Fleet of Vehicles**  
 - Assess the number of IoT devices required based on fleet size.  
 - Ensure **Kafka and broker components** can scale dynamically to handle increased data traffic.  
 
-## **4. Implement AI/ML for Real-Time Data Analysis**  
+**4. Implement AI/ML for Real-Time Data Analysis**  
 - Develop a new **AI/ML model** to process and analyze telemetry data from IoT devices.  
 - Train the model to recognize trends in delivery operations, such as **route efficiency, fuel consumption, and vehicle health**.  
 
-## **5. Define and Configure Kafka Topics for IoT Data**  
+**5. Define and Configure Kafka Topics for IoT Data**  
 - Create **Kafka topics** specific to delivery service tracking, such as:  
   - `vehicle-location`  
   - `delivery-status`  
@@ -114,7 +114,7 @@ The following components from the Industrial Edge pattern can be reused as is:
   - `temperature-monitoring`  
 - Ensure these topics align with **data processing and analytics needs**.  
 
-## **6. Deploy and Monitor the Adapted System**  
+**6. Deploy and Monitor the Adapted System**  
 - Deploy the updated IoT software on delivery vehicles.  
 - Monitor data ingestion and processing through **Kafka topics and AI/ML insights**.  
 - Scale infrastructure a
