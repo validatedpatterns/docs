@@ -6,41 +6,31 @@ aliases: /industrial-edge/ideas-for-customization/
 
 # Ideas for Customization
 
-# Why change it?
+## Why change it?
 
-One of the major goals of the Red Hat patterns development process is to create
-modular, customizable demos. The Industrial Edge demonstration includes
-multiple, simulated, IoT devices publishing their temperature and vibration
-telemetry to our data center and ultimately persisting the data into an AWS S3
-storage service bucket which we call the Data Lake. All of this is done using
-our Red Hat certified products running on OpenShift.
+One of the major goals of the Red Hat patterns development process is to create modular, customizable demos. The Industrial Edge demonstration includes
+multiple, simulated, IoT devices publishing their temperature and vibration telemetry to our data center and ultimately persisting the data into an AWS S3 storage service bucket which we call the Data Lake. All of this is done using our Red Hat certified products running on OpenShift.
 
-This demo in particular can be customized in a number of ways that might be
-very interesting - and here are some starter ideas with some instructions on
-exactly what and where changes would need to be made in the pattern to
-accommodate those changes.
+This demo in particular can be customized in a number of ways that might be very interesting - and here are some starter ideas with some instructions on
+exactly what and where changes would need to be made in the pattern to accommodate those changes.
 
 There are two environments in the Industrial Edge demonstration:
 
 * The staging environment that lives in the *manuela-tst-all* namespace
 * The production environment which lives in the *stormshift* namespaces
 
-# Enabling the temperature sensor for machine sensor 2  
+## Enabling the temperature sensor for machine sensor 2  
 
-Our sensors have been configured to send data relating to the vibration of the
-devices.  To show the power of GitOps, and keeping state in a git repository,
-you can make a change to the config map of one of the sensors to detect and
-report data on temperature. This is done using a variable called `*SENSOR_TEMPERATURE_ENABLED*` that is initially set to `false`.  Setting this
-variable to `true` will trigger the GitOps engine to synchronize the application,
-restart the machine sensor and apply the change.
+Our sensors have been configured to send data relating to the vibration of the devices.  To show the power of GitOps, and keeping state in a git repository,
+you can make a change to the config map of one of the sensors to detect and report data on temperature. This is done using a variable called `*SENSOR_TEMPERATURE_ENABLED*` that is initially set to `false`.  Setting this variable to `true` will trigger the GitOps engine to synchronize the application, restart the machine sensor and apply the change.
 
 As an operator you would first make changes to the staging first.  Here are the steps to see how the GitOps engine does it's magic. These changes will be reflected in the staging environment Line Dashboard UI in the *manuela-tst-all* namespace.
 
 * The config maps in question live in the `charts/datacenter/manuela-tst/templates/machine-sensor` directory:
 
 * There are two config maps that you can change:
-  * machine-sensor-1-configmap.yaml
-  * machine-sensor-2-configmap.yaml
+  * `machine-sensor-1-configmap.yaml`
+  * `machine-sensor-2-configmap.yaml`
 
 In this customization you will turn on a temperature sensor for sensor #2. Do this first in the data center because this will demonstrate the power of GitOps without having to involve the edge/factory cluster. 
 
@@ -95,71 +85,6 @@ machine-sensor-2 getting sync-ed. You can speed this up by manually pressing the
 8. The dashboard app should pickup the change automatically, once data from the temperature sensor is received. Sometimes a page/tab refreshed is needed for the change to be picked up.
 
     [![app-line-dashboard](/images/industrial-edge/argocd-machine-sensor2.png)](/images/industrial-edge/argocd-machine-sensor2.png)
-
-## Application changes using DevOps
-
-The `line-dashboard` application has temperature sensors. In this demonstration you are going to make a simple change to that application, rebuild and redeploy
-it. 
-
-1. Edit the file `components/iot-frontend/src/app/app.component.html` in the `manuela-dev` repository there is a file
-
-2. Change the
-`<ion-title>IoT Dashboard</ion-title>` to for example,
-`<ion-title>IoT Dashboard - DEVOPS was here!</ion-title>`. Do this in the
-gitea web interface directly clicking on the editing icon for the file:
-
-    [![gitea-iot-edit](/images/industrial-edge/gitea-iot-edit.png)](/images/industrial-edge/gitea-iot-edit.png)
-
-3. Commit this change to your git repository so that the change will be picked up by OpenShift GitOps (ArgoCD).
-
-    [![gitea-commit](/images/industrial-edge/gitea-commit.png)](/images/industrial-edge/gitea-commit-1.png)
-
-4. Start the pipeline called `build-and-test-iot-frontend` that will do the following:
-
-    1. Rebuild the image from the manuela-dev code
-    2. Push the change on the hub datacenter in the manuela-tst-all namespace
-    3. Create a PR in gitea
-
-    4.1 Start the pipeline by running the following command in `industrial-edge` repository:
-
-    ```sh
-    make build-and-test-iot-frontend
-    ```
-
-The pipeline will look a bit like the following:
-
-[![tekton-pipeline](/images/industrial-edge/pipeline-iot-frontend.png)](/images/industrial-edge/pipeline-iot-frontend.png)
-
-After the pipeline completed the `manuela-test` application in Argo will eventually refresh and push the changes to the cluster and the line dash board route in the `manuela-tst-all` namespace will have picked up the changes. You might need to clear your browser cache to see the change:
-
-[![linedashboard-devops](/images/industrial-edge/line-dashboard-devops.png)](/images/industrial-edge/line-dashboard-devops.png)
-
-The pipeline will also have created a PR in gitea, such as the following one:
-
-[![gitea-pipeline-pr](/images/industrial-edge/gitea-pipeline-pr.png)](/images/industrial-edge/gitea-pipeline-pr.png)
-
-Verify that the change is correct on the datacenter in the `manuela-tst-all` line dashboard and if deemed correct, you can merge the PR in gitea which will roll out the change to the production factory!
-
-## Application AI model changes with DevOps
-
-1. On the OpenShift console click the nine-box and select `Red Hat OpenShift AI`. The AI console will open, appearing as follows:
-
-    [![rhoai-console](/images/industrial-edge/rhoai-console-home.png)](/images/industrial-edge/rhoai-console-home.png)
-
-2. Click the `Data Science Projects` on the left sidebar and choose the `ml-development` project. The project will open, containing a couple of workbenches and a model.:
-
-    [![rhoai-ml-development](/images/industrial-edge/rhoai-ml-development.png)](/images/industrial-edge/rhoai-ml-development.png)
-
-3. Click the `JupyterLab` workbench to open the notebook where this pattern's data analysis is performed. The `manuela-dev` code will be preloaded in the notebook. 
-
-4. click the left file browser on `manuela-dev/ml-models/anomaly-detection/1-preprocessing.ipynb`:
-
-    [![notebook-console](/images/industrial-edge/notebook-console.png)](/images/industrial-edge/notebook-console.png)
-
-After opening the notebook successfully, walk through the demonstration by pressing play and iterating through the commands in the playbooks. Jupyter playbooks are interactive and you may make changes and also save those changes.
-
-Running through all the six notebooks will automatically regenerate the anomaly model, prepare the data for the training and push the changes to the internal
-gitea so the inference service can pick up the new model.
 
 # Adapting the Industrial Edge Pattern for a delivery service use case  
 

@@ -6,7 +6,7 @@ aliases: /industrial-edge/getting-started/
 
 # Deploying the Industrial Edge Pattern
 
-# Prerequisites
+## Prerequisites
 
 - An OpenShift cluster  
   - To create an OpenShift cluster, go to the [Red Hat Hybrid Cloud console](https://console.redhat.com/).  
@@ -54,7 +54,7 @@ See this [post](https://validatedpatterns.io/blog/2024-07-12-in-cluster-git/) fo
 3. On your laptop or bastion host login to your cluster by exporting the `KUBECONFIG` file.
 
    ```sh
-   export KUBECONFIG=~/my-ocp-cluster/auth/kubeconfig
+   $ export KUBECONFIG=~/my-ocp-cluster/auth/kubeconfig
    ```
 
 4. Deploy the industrial edge pattern:
@@ -93,7 +93,7 @@ See this [post](https://validatedpatterns.io/blog/2024-07-12-in-cluster-git/) fo
    rook-ceph-operator.openshift-storage                  10m
    ```
 
-   **Note: The list above was taken on OpenShift 4.17. It might change slightly depending on the OpenShift version being used for example odf has less operator components on OpenShift 4.15 and earlier)**
+   > **Note:** The list above was taken on OpenShift 4.17. It might change slightly depending on the OpenShift version being used. For example, odf has fewer operator components on OpenShift 4.15 and earlier.
 
 1. Access the ArgoCD environment
 
@@ -115,12 +115,4 @@ We currently do not support uninstalling this pattern.
 
 # Help & Feedback
 
-[Help & Feedback](https://groups.google.com/g/validatedpatterns) - [Report Bugs](https://github.com/validatedpatterns/industrial-edge/issues)
-
-# Uninstalling
-
-We currently do not support uninstalling this pattern.
-
-# Help & Feedback
-
-[Help & Feedback](https://groups.google.com/g/validatedpatterns) - [Report Bugs](https://github.com/validatedpatterns/industrial-edge/issues)
+[Help & Feedback](https://groups.google.com/g/validatedpatterns) - [Report Bugs](https://github.com/validatedpatterns/industrial-edge/issues).

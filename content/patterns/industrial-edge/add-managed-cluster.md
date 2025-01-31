@@ -4,6 +4,8 @@ weight: 20
 aliases: /industrial-edge/getting-started/
 ---
 
+# Attach a managed cluster (factory) to the management hub
+
 By default, Red Hat Advanced Cluster Management (RHACM) manages the `clusterGroup` applications that are deployed on all clusters.
 
 Add a `managedClusterGroup` for each cluster or group of clusters that you want to manage by following this procedure.
@@ -26,7 +28,6 @@ Add a `managedClusterGroup` for each cluster or group of clusters that you want 
 
 5. Review the summary details and click **Import**.
 
-6. Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](../application/). The argo applications on the factory cluster will look
-like the following:
+6. Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that [here](../application/). The Argo applications on the factory cluster  appear as follows:
 
    ![ArgoCD Factory Apps](/images/industrial-edge/factory-apps.png)
