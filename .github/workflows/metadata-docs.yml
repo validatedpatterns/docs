@@ -81,7 +81,7 @@ jobs:
       - name: Template the cluster variables on to the patterns-variables .adoc file
         run: |-
           set -e
-          mkdir -p "${{ env.DOCS_DIR }}/modules/${{ env.PATTERN }}
+          mkdir -p "${{ env.DOCS_DIR }}/modules/${{ env.PATTERN }}"
           ./${{ env.DOCS_DIR }}/utils/flatten_yaml.rb \
               ./${{ env.PATTERN_DIR }}/${{ env.METADATA }} | \
               tee "${{ env.DOCS_DIR }}/modules/${{ env.PATTERN }}/metadata-${{ env.PATTERN }}.adoc"
