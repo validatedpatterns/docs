@@ -108,4 +108,10 @@ endif::requirements_spoke_compute_platform_azure_replicas[]
 
 |===
 
+ifdef::external_requirements_cluster_sizing_note[]
+[NOTE]
+====
+{external_requirements_cluster_sizing_note}
+====
+endif::external_requirements_cluster_sizing_note[]
 endif::[]
