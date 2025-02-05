@@ -3094,7 +3094,17 @@ Microsoft Azure
 Worker
 3
 Standard_D16s_v5
-`,url:"https://validatedpatterns.io/patterns/industrial-edge/cluster-sizing/",breadcrumb:"/patterns/industrial-edge/cluster-sizing/"},"https://validatedpatterns.io/patterns/devsecops/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:`OpenShift Cluster Sizing for the Multicluster DevSecOps Pattern Tested Platforms The Multicluster DevSecOps pattern has been tested in the following Certified Cloud Providers. Due to changes in Advanced Cluster Management 2.5, this pattern does not work, &ldquo;out-of-the-box&rdquo;, with earlier versions of OCP than 4.10. While it&rsquo;s possible that it could work with some changes, we do not recommend using a version less than 4.10.
+`,url:"https://validatedpatterns.io/patterns/industrial-edge/cluster-sizing/",breadcrumb:"/patterns/industrial-edge/cluster-sizing/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` AI Generation with LLM and RAG pattern hub/datacenter cluster size The AI Generation with LLM and RAG pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
+The datacenter hub OpenShift cluster uses the following the deployment configuration:
+Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type Amazon Web Services
+Control Plane
+1
+m5.2xlarge
+Amazon Web Services
+Worker
+3
+m5.2xlarge
+`,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/cluster-sizing/",breadcrumb:"/patterns/rag-llm-gitops/cluster-sizing/"},"https://validatedpatterns.io/patterns/devsecops/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:`OpenShift Cluster Sizing for the Multicluster DevSecOps Pattern Tested Platforms The Multicluster DevSecOps pattern has been tested in the following Certified Cloud Providers. Due to changes in Advanced Cluster Management 2.5, this pattern does not work, &ldquo;out-of-the-box&rdquo;, with earlier versions of OCP than 4.10. While it&rsquo;s possible that it could work with some changes, we do not recommend using a version less than 4.10.
 | Certified Cloud Providers | 4.10 | 4.11 | 4.x | :&mdash;- | :&mdash;- | :&mdash;- | Amazon Web Services | Tested | Untested | | Google Compute | Untested | Untested | | Microsoft Azure | Untested | Untested |
 Multicluster DevSecOps Pattern Components Here&rsquo;s an inventory of what gets deployed by default the Secure Supply Chain pattern on the Hub OpenShift cluster:
 Name Kind Namespace Description Red Hat Advanced Cluster Management Operator open-cluster-management Advance cluster management Red Hat OpenShift GitOps Operator openshift-operators ArgoCD GitOps Red Hat Advanced Cluster Security Operator stackrox Advanced cluster security, central and secured Red Hat Quay Operator quay-enterprise Secure container registry Red Hat Open Data Foundation Operator openshift-storage Highly available software-defined storage Hashicorp Vault Community version Operator vault Secrets Management The hub can be modified to deploy OpenShift Pipelines if needed. See Development cluster pattern components.
