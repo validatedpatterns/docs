@@ -1,7 +1,7 @@
 ---
 title: Cluster sizing
 weight: 50
-aliases: /industrial-edge/mcg-cluster-sizing/
+aliases: /industrial-edge/cluster-sizing/
 ---
 
 :toc:
