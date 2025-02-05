@@ -19,6 +19,10 @@ name: Update docs from pattern's metadata
 
 on:
   workflow_call:
+    secrets:
+      DOCS_TOKEN:
+        required: false
+        description: The token used to create a PR in the docs repository
     inputs:
       DOCS_BRANCH:
         description: "Branch of the docs git repo to use"
