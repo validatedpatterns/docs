@@ -28,5 +28,5 @@ include::modules/rhoai-architecture.adoc[leveloffset=+1]
 [id="next-steps_rhoai-index"]
 == Next steps
 
-* link:getting-started[Deploy the Pattern] using Helm.
+* link:getting-started[Deploy the Pattern].
 
