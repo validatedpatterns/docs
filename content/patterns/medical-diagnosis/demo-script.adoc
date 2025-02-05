@@ -95,15 +95,11 @@ Look at all of the resources that have been created for this demo application. W
 
 We are deploying this demo using self-signed certificates that are untrusted by our browser. Unless you have provisioned valid certificates for your OpenShift cluster you must accept the invalid certificates for:
 
-* image-server | xraylab-1 namespace
 * s3-rgw | openshift-storage namespace
 * grafana | xraylab-1 namespace
 
 [source,shell]
 ----
-IMAGESERVER_ROUTE=https://$(oc get route -n xraylab-1 image-server -o jsonpath='{.spec.host}')
-
-echo $IMAGESERVER_ROUTE
 
 S3RGW_ROUTE=https://$(oc get route -n openshift-storage s3-rgw -o jsonpath='{.spec.host}')
 
