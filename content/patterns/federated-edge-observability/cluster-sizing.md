@@ -9,7 +9,7 @@ aliases: /ansible-edge-gitops/cluster-sizing/
 
 The **Ansible Edge GitOps** pattern has been tested on AWS:
 
-| **Certified Cloud Providers** | 4.9 | 4.10 |
+| **Certified Cloud Providers** | 4.16 | 4.17 |
 | :---- | :---- | :----
 | Amazon Web Services | | Tested
 
@@ -71,7 +71,7 @@ Below is a snapshot of the OpenShift cluster utilization while running the **Ans
 
 ### AWS Instance Types
 
-The **Ansible Edge GitOps** pattern was tested with the highlighted AWS instances in **bold**.   The OpenShift installer will let you know if the instance type meets the minimum requirements for a cluster.
+The **Federated Edge Observability** pattern was tested with the highlighted AWS instances in **bold**.   The OpenShift installer will let you know if the instance type meets the minimum requirements for a cluster.
 
 The message that the openshift installer will give you will be similar to this message
 
