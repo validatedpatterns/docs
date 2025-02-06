@@ -6,19 +6,16 @@ aliases: /industrial-edge/application/
 
 # Demonstrating Industrial Edge example applications
 
-## Background
+## Prerequisites
 
-Up until now the Industrial Edge 2.0 validated patterns has focused primarily on successfully deploying the architectural pattern. Now it is time to see GitOps and DevOps in action as we go through several demonstrations to change both configuration information and the applications that we are
-deploying. 
+Ensure you have administrator access to the data center cluster using one of the following methods:
 
-If you have already deployed the data center and optionally a factory (edge) cluster, then you have already seen several applications deployed in the
-OpenShift GitOps console.
+* The `kubeadmin` login credentials
+* The `kubeconfig` file (ensure the path is exported)
 
-## Prerequisite preparation
+The steps followed so far should have successfully deployed the data center cluster, and optionally, a factory (edge) cluster.
 
-### OpenShift Cluster
-
-Make sure you have the `kubeadmin` administrator login for the data center cluster. Use this or the `kubeconfig` (export the path) to provide administrator access to your data center and factory/edge clusters.
+With the infrastructure in place, it’s now time to see GitOps and DevOps in action through demonstrations that will modify both configuration data and deployed applications.
 
 ## Configuration changes with GitOps
 

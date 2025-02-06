@@ -69,7 +69,7 @@ Figure 3 provides a different high-level view of the solution with a focus on th
 
 In the preceding diagram, data movement flows from left to right, while in other representations, the operational edge is typically shown at the bottom, with enterprise or cloud systems at the top. This directional flow is often referred to as northbound traffic.
 
-2.Push code, configurations, master data, and machine learning models from the core (where development, testing, and training occur) to the edge and shop floors. With potentially hundreds of plants and thousands of production lines, automation and consistency are essential for effective deployment.
+2. Push code, configurations, master data, and machine learning models from the core (where development, testing, and training occur) to the edge and shop floors. With potentially hundreds of plants and thousands of production lines, automation and consistency are essential for effective deployment.
 
 In the diagram, data flows from right to left, and when viewed in a top-down orientation, this flow is referred to as southbound traffic.
 
