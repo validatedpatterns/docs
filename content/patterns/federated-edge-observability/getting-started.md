@@ -8,7 +8,7 @@ aliases: /federated-edge-observability/getting-started/
 
 # General Prerequisites
 
-1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). See also [sizing your cluster](../../federated-edge-observability/cluster-sizing). Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern.
+1. An OpenShift cluster ( Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern.
 1. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks)
 1. The helm binary, see [here](https://helm.sh/docs/intro/install/)
 1. Ansible, which is used in the bootstrap and provisioning phases of the pattern install (and to configure Ansible Automation Platform).
