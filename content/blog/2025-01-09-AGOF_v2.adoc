@@ -290,7 +290,7 @@ An AGOF Pattern MUST define the following repositories:
 1. AGOF repository (default: https://github.com/validatedpatterns/agof.git). This repository contains AGOF itself,
 and is scaffolding for the rest of the process.
 
-1. An Infrastructure as Code repository. This is the main "pattern" content. It contains an AAP configuration,
+2. An Infrastructure as Code repository. This is the main "pattern" content. It contains an AAP configuration,
 expressed in terms suitable for processing by the infra.aap_configuration collection. This repository will contain
 references to other resources, which are described immediately following.
 
@@ -301,7 +301,7 @@ accomlishing a particular result. Multiple collection repositories may be define
 provided by collections available via Ansible Galaxy or Automation Hub, it is still necessary to provide a playbook
 to serve as the basis for a Job Template in AAP to do the configuration work.
 
-1. One or more inventory repositories. Ansible Good Practices state that inventories should be separated from
+2. One or more inventory repositories. Ansible Good Practices state that inventories should be separated from
 the content. This allows for using separate inventories with the same collection codebase - a feature that users
 frequently requested from Ansible Edge GitOps because they wanted to change it from configuring virtual machines in
 AWS to use actual hardware nodes (for example). It would also be possible to have effectively an empty inventory and
