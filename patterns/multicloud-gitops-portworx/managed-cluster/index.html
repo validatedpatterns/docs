@@ -1124,8 +1124,7 @@ Verify installation by checking the OpenShift AI Dashboard Access the OpenShift 
 RHODS=https://$(oc get route -n redhat-ods-applications -o jsonpath=&#39;{.spec.host}&#39;) echo \${RHODS} You can also get to the dashboard from the OpenShift Console by selecting the application shortcut icon and then selecting the link for Red Hat OpenShift Ai
 Log in to the Dashboard using your OpenShift credentials. You will find an environment that is ready for further configuration. This pattern provides the fundamental platform pieces to support MLOps workflows. The installation of OpenShift Pipelines enables the immediate use of pipelines if that is the desired approach for deployment.
 `,url:"https://validatedpatterns.io/patterns/openshift-ai/getting-started/",breadcrumb:"/patterns/openshift-ai/getting-started/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/getting-started/":{title:"Getting Started",tags:[],content:`Prerequisites Podman is installed on your system. You have the OpenShift Container Platform installation program and the pull secret for your cluster. You can get these from Install OpenShift on AWS with installer-provisioned infrastructure. Red Hat Openshift cluster running in AWS. Procedure Create the installation configuration file using the steps described in Creating the installation configuration file.
-Note:
-Supported regions are us-west-2 and us-east-1. For more information about installing on AWS see, Installation methods.
+Note: Supported regions are us-east-1 us-east-2 us-west-1 us-west-2 ca-central-1 sa-east-1 eu-west-1 eu-west-2 eu-west-3 eu-central-1 eu-north-1 ap-northeast-1 ap-northeast-2 ap-northeast-3 ap-southeast-1 ap-southeast-2 and ap-south-1. For more information about installing on AWS see, Installation methods.
 Customize the generated install-config.yaml creating one control plane node with instance type m5a.2xlarge and 3 worker nodes with instance type p3.2xlarge. A sample YAML file is shown here:
 additionalTrustBundlePolicy: Proxyonly apiVersion: v1 baseDomain: aws.validatedpatterns.io compute: - architecture: amd64 hyperthreading: Enabled name: worker platform: aws: type: p3.2xlarge replicas: 3 controlPlane: architecture: amd64 hyperthreading: Enabled name: master platform: aws: type: m5a.2xlarge replicas: 1 metadata: creationTimestamp: null name: kevstestcluster networking: clusterNetwork: - cidr: 10.128.0.0/14 hostPrefix: 23 machineNetwork: - cidr: 10.0.0.0/16 networkType: OVNKubernetes serviceNetwork: - 172.30.0.0/16 platform: aws: region: us-east-1 publish: External pullSecret: &#39;&lt;pull-secret&gt;&#39; sshKey: | ssh-ed25519 &lt;public-key&gt; someuser@redhat.com Fork the rag-llm-gitops git repository.
 Clone the forked repository by running the following command:
@@ -1139,12 +1138,10 @@ By default instance types for the GPU nodes are g5.2xlarge. Follow the Customize
 Run the following command to push my-test-branch (including any changes) to the origin remote repository:
 $ git push origin my-test-branch Ensure you have logged in to the cluster at both command line and the console by using the login credentials presented to you when you installed the cluster. For example:
 INFO Install complete! INFO Run &#39;export KUBECONFIG=&lt;your working directory&gt;/auth/kubeconfig&#39; to manage the cluster with &#39;oc&#39;, the OpenShift CLI. INFO The cluster is ready when &#39;oc login -u kubeadmin -p &lt;provided&gt;&#39; succeeds (wait a few minutes). INFO Access the OpenShift web-console here: https://console-openshift-console.apps.demo1.openshift4-beta-abcorp.com INFO Login to the console with user: kubeadmin, password: &lt;provided&gt; Add GPU nodes to your existing cluster deployment by running the following command:
-$ ./pattern.sh make create-gpu-machineset Note:
-You may need to create a file config in your home directory and populate it with the region name.
+$ ./pattern.sh make create-gpu-machineset Note: You may need to create a file config in your home directory and populate it with the region name.
 Run the following: vi ~/.aws/config Add the following: [default] region = us-east-1 Adding the GPU nodes should take about 5-10 minutes. You can verify the addition of these g5.2xlarge nodes in the OpenShift web console under Compute &gt; Nodes.
 Install the pattern with the demo application by running the following command:
-$ ./pattern.sh make install Note:
-This deploys everything you need to run the demo application including the Nividia GPU Operator and the Node Feature Discovery Operator used to determine your GPU nodes.
+$ ./pattern.sh make install Note: This deploys everything you need to run the demo application including the Nividia GPU Operator and the Node Feature Discovery Operator used to determine your GPU nodes.
 Verify the Installation In the OpenShift web console go to the Workloads &gt; Pods menu.
 Select the rag-llm project from the drop down.
 Following pods should be up and running.
