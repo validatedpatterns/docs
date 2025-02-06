@@ -136,20 +136,6 @@ Certificates for the open telemetry collector infrastructure. "Snakeoil" (that i
       path: ~/federated-edge-observability-otel-collector-edge-observability-stack.crt
 ```
 
-# Prerequisites for deployment via `make install`
-
-If you are going to install via `make install` from your workstation, you will need the following tools and packages:
-
-{% include prerequisite-tools.md %}
-
-To see what Ansible collections are installed:
-
-`ansible-galaxy collection list`
-
-To install a collection that is not currently installed:
-
-`ansible-galaxy collection install <collection>`
-
 # How to deploy
 
 1. Login to your cluster using oc login or exporting the KUBECONFIG
@@ -164,7 +150,7 @@ To install a collection that is not currently installed:
     export KUBECONFIG=~/my-ocp-env/hub/auth/kubeconfig
     ```
 
-1. Fork the [ansible-edge-gitops](https://github.com/validatedpatterns/ansible-edge-gitops) repo on GitHub.  It is necessary to fork to preserve customizations you make to the default configuration files.
+1. Fork the [federated-edge-observability](https://github.com/validatedpatterns-sandbox/federated-edge-observability) repo on GitHub.  It is necessary to fork to preserve customizations you make to the default configuration files.
 
 1. Clone the forked copy of this repository.
 
@@ -217,11 +203,21 @@ The installation process will take between 45-60 minutes to complete.
     OpenShift Console Web UI -> Installed Operators
     ```
 
+![federated-edge-observability-operators](/images/federated-edge-observability/FEO-operators.png "Federated Edge Observability Operators")
+
 * Check all applications are synchronised
 
 Under the project `federated-edge-observability-hub` click on the URL for the `hub`gitops`server`. All applications will sync, but this takes time as ODF has to completely install, and OpenShift Virtualization cannot provision VMs until the metal node has been fully provisioned and ready.
 
+![federated-edge-observability-applications](/images/federated-edge-observability/FEO-applications.png "Federated Edge Observability Applications")
+
 * Under Virtualization > Virtual Machines, the virtual machines will eventually show as "Running." Once they are in "Running" state the Provisioning workflow will run on them, install the OpenTelemetry collector, and start reporting metrics to the Edge Observability Stack in the hub cluster.
+
+![federated-edge-observability-vms](/images/federated-edge-observability/FEO-vms.png "Federated Edge Observability Virtual Machines")
+
+* The Grafana graphs should be receiving data and drawing graphs for each of the nodes:
+
+![federated-edge-observability-grafana](/images/federated-edge-observability/FEO-grafana.png "Federated Edge Observability Graphs")
 
 Please see [Ansible Automation Platform](/federated-edge-observability/ansible-automation-platform/) for more information on how this pattern uses the Ansible Automation Platform Operator for OpenShift.
 

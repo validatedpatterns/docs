@@ -11,7 +11,6 @@ rh_products:
 - Red Hat OpenShift Data Foundation
 industries:
 aliases: /federated-edge-observability
-pattern_logo: ansible-edge.png
 links:
   install: getting-started
   help: https://groups.google.com/g/validatedpatterns
