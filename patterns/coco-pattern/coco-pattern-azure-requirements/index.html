@@ -1052,7 +1052,6 @@ ARGO_CMD=\`oc get secrets -A -o jsonpath=&#39;{range .items[*]}{&#34;oc get -n &
 Check that all applications are synchronized. There are thirteen different ArgoCD applications that are deployed as part of this pattern.
 Viewing the Grafana based dashboard Accept the SSL certificates on the browser for the dashboard. In the OpenShift Container Platform web console, go to the Routes for project openshift-storage\`. Click the URL for the s3-rgw.
 Ensure that you see some XML and not the access denied error message.
-While still looking at Routes, change the project to xraylab-1. Click the URL for the image-server. Ensure that you do not see an access denied error message. You must to see a Hello World message.
 Turn on the image file flow. There are three ways to go about this.
 You can go to the command-line (make sure you have KUBECONFIG set, or are logged into the cluster).
 $ oc scale deployment/image-generator --replicas=1 -n xraylab-1 Or you can go to the OpenShift UI and change the view from Administrator to Developer and select Topology. From there select the xraylab-1 project.
@@ -3636,10 +3635,9 @@ Change projects to xraylab-1
 Click on Topology
 Look at all of the resources that have been created for this demo application. What we see in this interface is the collection of all components required for this AI/ML workflow to properly execute. There are even more resources and configurations that get deployed but because we don’t directly interact with them we won’t worry too much about them. The take away here is when you utilize the framework you are able to build in automation just like this which allows your developers to focus on their important developer things.
 Invalid Certificates We are deploying this demo using self-signed certificates that are untrusted by our browser. Unless you have provisioned valid certificates for your OpenShift cluster you must accept the invalid certificates for:
-image-server | xraylab-1 namespace
 s3-rgw | openshift-storage namespace
 grafana | xraylab-1 namespace
-IMAGESERVER_ROUTE=https://$(oc get route -n xraylab-1 image-server -o jsonpath=&#39;{.spec.host}&#39;) echo $IMAGESERVER_ROUTE S3RGW_ROUTE=https://$(oc get route -n openshift-storage s3-rgw -o jsonpath=&#39;{.spec.host}&#39;) echo $S3RGW_ROUTE GRAFANA_ROUTE=https://$(oc get route -n xraylab-1 grafana -o jsonpath=&#39;{.spec.host}&#39;) echo $GRAFANA_ROUTE You must accept the security risks / self signed certificates before scaling the image-generator application
+S3RGW_ROUTE=https://$(oc get route -n openshift-storage s3-rgw -o jsonpath=&#39;{.spec.host}&#39;) echo $S3RGW_ROUTE GRAFANA_ROUTE=https://$(oc get route -n xraylab-1 grafana -o jsonpath=&#39;{.spec.host}&#39;) echo $GRAFANA_ROUTE You must accept the security risks / self signed certificates before scaling the image-generator application
 Scale up the deployment As we mentioned earlier, we don’t have an x-ray machine hanging around that we can use for this demo, so we emulate one by creating an s3 bucket and hosting the x-ray images within it. In the &#34;real world&#34; an x-ray would be taken at an edge medical facility and then uploaded to an OpenShift Data Foundations (ODF) S3 compatible bucket in the Core Hospital, triggering the AI/ML workflow.
 To emulate the edge medical facility we use an application called image-generator which (when scaled up) will download the x-rays from s3 and put them in an ODF s3 bucket in the cluster, triggering the AI/ML workflow.
 Let’s scale the image-generator deploymentConfig up to start the pipeline
