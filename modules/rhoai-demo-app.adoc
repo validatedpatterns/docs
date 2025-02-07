@@ -2,7 +2,9 @@
 :imagesdir: ../../../images
 
 [id="creating-data-science-project"]
-= First AI Demo 
+= AI Demos
+
+== First AI demo
 
 In this demo, you will configure a Jupyter notebook server using a specified image within a Data Science project, customizing it to meet your specific requirements. 
 
@@ -38,7 +40,7 @@ After successful implementation, the status of the workbench turns to *Running*
 
 .. Authorize the access with the OpenShift cluster by clicking on the *Allow selected permissions*. After granting permissions with OpenShift, you will be directed to the Jupyter Notebook page. 
 
-## Accessing the current data science project within Jupyter Notebook
+== Accessing the current data science project within Jupyter Notebook
 
 The Jupyter Notebook provides functionality to fetch or clone existing GitHub repositories, similar to any other standard IDE. Therefore, in this section, you will clone an existing simple AI/ML code into the notebook using the following instructions. 
 
@@ -70,7 +72,7 @@ After you click *Run*, you will notice that the notebook automatically moves to 
 For instance, as shown in Figure 15, after executing a cell, you can immediately see the output just below it. This immediate feedback loop is invaluable for iterative testing and refining of code.
 
 [id="interactive-classification-project"]
-= Performing an interactive classification with Jupyter notebook
+== Performing an interactive classification with Jupyter notebook
 
 In this section, you will perform an interactive classification using a Jupyter notebook.
 
