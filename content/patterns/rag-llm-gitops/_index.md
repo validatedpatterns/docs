@@ -16,7 +16,7 @@ links:
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/rag-llm-gitops/issues
 # uncomment once this exists
-ci: ai
+ci: ragllm
 ---
 
 # Document generation demo with LLM and RAG
