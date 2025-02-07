@@ -19,7 +19,7 @@ links:
   arch: https://www.redhat.com/architect/portfolio/detail/26-industrial-edge
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/industrial-edge/issues
-ci: manuela
+ci: industrialedge
 ---
 
 # Industrial Edge Pattern

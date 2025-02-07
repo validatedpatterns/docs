@@ -14,7 +14,7 @@ links:
   install: getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/openshift-ai/issues
-ci: rhoai
+ci: openshiftai
 ---
 :toc:
 :imagesdir: /images
