@@ -1,0 +1,12 @@
+---
+title: AI Demo
+weight: 20
+aliases: /rhoai/ai-demo/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/rhoai-demo-app.adoc[leveloffset=1]
