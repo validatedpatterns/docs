@@ -4,6 +4,8 @@
 [id="deploying-rhoai-pattern"]
 = Deploying the Red Hat OpenShift AI Pattern
 
+TEST
+
 .Prerequisites
 
 * An OpenShift cluster
