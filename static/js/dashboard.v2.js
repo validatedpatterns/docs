@@ -100,7 +100,7 @@ function pattern_url (key) {
   if (key == 'devsecops') {
     return '/patterns/devsecops/'
   }
-  if (key == 'manuela') {
+  if (key == 'industrialedge') {
     return '/patterns/industrial-edge/'
   }
   if (key == 'mcgitops') {
@@ -109,6 +109,16 @@ function pattern_url (key) {
   if (key == 'medicaldiag') {
     return '/patterns/medical-diagnosis/'
   }
+  if (key == 'ragllm') {
+    return '/patterns/rag-llm-gitops/'
+  }
+  if (key == 'openshiftai') {
+    return '/patterns/openshift-ai/'
+  }
+  if (key == 'agof') {
+    return '/patterns/ansible-gitops-framework/'
+  }
+
   return '/patterns/' + key + '/'
 }
 
@@ -431,7 +441,7 @@ function processBadges (badges, options) {
     if ( options.get('sets').includes('all') || options.get('sets').includes('early'))  {
 	htmlText += createFilteredHorizontalTable(badges, 'operator', null, true, links)
     }
-      
+
   }
   document.getElementById(options.get('target')).innerHTML = htmlText
 }
@@ -448,7 +458,7 @@ function getBucketOptions (input) {
   }
   options.set('links', 'public')
   options.set('target', 'dataset')
-  
+
   buckets = []
   const bucket = input['bucket']
   if (bucket != null) {
@@ -508,7 +518,7 @@ function fetchBucketBadges(bucket, inputs) {
 function obtainBadges (inputs) {
   const options = getBucketOptions(inputs);
   const buckets = options.get('buckets')
-  
+
   // Create an array to store promises for each bucket's badges
   const badgePromises = [];
 
