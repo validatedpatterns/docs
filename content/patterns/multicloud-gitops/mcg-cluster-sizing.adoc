@@ -8,19 +8,6 @@ aliases: /multicloud-gitops/mcg-cluster-sizing/
 :imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
+include::modules/multicloud-gitops/metadata-multicloud-gitops.adoc[]
 
-include::modules/mcg-about-cluster-sizing.adoc[leveloffset=+1]
-
-//include::modules/mcg-support-matrix.adoc[leveloffset=+1]
-
-include::modules/mcg-hub-cluster-sizing.adoc[leveloffset=+2]
-
-// This is what we might probably need - need to discuss this with the team
-include::modules/mcg-managed-cluster-sizing.adoc[leveloffset=+2]
-
-
-//include::modules/mcg-aws-instance-types.adoc[leveloffset=+1]
-
-//include::modules/mcg-azure-instance-types.adoc[leveloffset=+1]
-
-//include::modules/mcg-gcp-instance-types.adoc[leveloffset=+1]
+include::modules/cluster-sizing-template.adoc[]
