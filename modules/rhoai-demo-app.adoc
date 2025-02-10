@@ -18,11 +18,11 @@ In this demo, you will configure a Jupyter notebook server using a specified ima
 
 . Click *Create project*
 
-.. Enter a name for the project in the *Name* field and click *Create*.
+.. Enter a name for the project for example `my-first-ai-project` in the *Name* field and click *Create*.
 
 . Click on *Create a workbench*. Now you are ready to move to the next step to define the workbench.
 
-.. Give the *workbench* a name.
+.. Enter a name for the workbench.
 
 .. Select the *Notebook image* from the *image selection* dropdown as *Standard Data Science*.
 
@@ -32,7 +32,7 @@ In this demo, you will configure a Jupyter notebook server using a specified ima
 
 .. Set the *persistent storage size* to 10 Gi.
 
-.. Click the *Create workbench* button at the bottom of the page.
+.. Click the *Create workbench* button at the bottom left of the page.
 +
 After successful implementation, the status of the workbench turns to *Running*
 
@@ -45,6 +45,8 @@ After successful implementation, the status of the workbench turns to *Running*
 The Jupyter Notebook provides functionality to fetch or clone existing GitHub repositories, similar to any other standard IDE. Therefore, in this section, you will clone an existing simple AI/ML code into the notebook using the following instructions. 
 
 . From the top, click on the *Git clone*  icon.
++
+image::rhoai/git-clone-button.png[Git clone button]
 
 . In the popup window enter the URL of the GitHub repository in the *Git Repository URL* field: 
 +
@@ -53,11 +55,11 @@ The Jupyter Notebook provides functionality to fetch or clone existing GitHub re
 https://github.com/redhat-developer-demos/openshift-ai.git
 ----
 
-. Click the Clone button. 
+. Click the *Clone* button. 
 
-. After fetching the github repository, the project will appear in the directory  section on the left side of the notebook.
+. After fetching the github repository, the project will appear in the directory section on the left side of the notebook.
 
-. Expand the */openshift-ai/first-app/* directory.
+. Expand the */openshift-ai/1_First-app/* directory.
 
 . Open the *openshift-ai-test.ipynb* file.
 +
@@ -65,11 +67,11 @@ You will be presented with the view of a Jupyter Notebook.
 
 ## Running code in a Jupyter notebook
 
-In the previous section, you imported and opened the notebook. To run the code within the notebook, you start by clicking the *Run*  icon located at the top of the interface. This action initiates the execution of the code in the currently selected cell.
+In the previous section, you imported and opened the notebook. To run the code within the notebook, you start by clicking the *Run* icon located at the top of the interface. This action initiates the execution of the code in the currently selected cell.
 
 After you click *Run*, you will notice that the notebook automatically moves to the next cell. This is part of the design of Jupyter Notebooks, where scripts or code snippets are divided into multiple cells. Each cell can be run independently, allowing you to test specific sections of code in isolation. This structure greatly aids in both developing complex code incrementally and debugging it more effectively, as you can pinpoint errors and test solutions cell by cell.
 
-For instance, as shown in Figure 15, after executing a cell, you can immediately see the output just below it. This immediate feedback loop is invaluable for iterative testing and refining of code.
+After executing a cell, you can immediately see the output just below it. This immediate feedback loop is invaluable for iterative testing and refining of code.
 
 [id="interactive-classification-project"]
 == Performing an interactive classification with Jupyter notebook
@@ -78,15 +80,19 @@ In this section, you will perform an interactive classification using a Jupyter 
 
 .Procedure
 
+. Click the *Red Hat OpenShift AI* from the nines menu on the OpenShift Console.
+
+. Click *Log in with OpenShift*
+
 . Click on the *Data Science Projects* tab.
 
 . Click *Create project*
 
-.. Enter a name for the project in the *Name* field and click *Create*.
+.. Enter a name for the project for example ¬my-classification-project` in the *Name* field and click *Create*.
 
 . Click on *Create a workbench*. Now you are ready to move to the next step to define the workbench.
 
-.. Give the *workbench* a name for example *interactive_classification*.
+.. Give the workbench a name for example *interactive-classification*.
 
 .. Select the *Notebook image* from the *image selection* dropdown as *TensorFlow*.
 

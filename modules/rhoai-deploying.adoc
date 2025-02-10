@@ -181,9 +181,34 @@ A pop-up error with the message "Oh no! Something went wrong." might appear duri
 
 The *{rh-gitops} Operator* displays in list of *Installed Operators*. The *{rh-gitops} Operator* installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as *{rh-rhacm-first}*, ensure that you switch to *Project:All Projects*.
 
-Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. The `config-demo` project  appears stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console.
+Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. 
 
-* To resolve this you need to run the following to load the secrets into the vault:
+. Navigate to the root directory of the cloned repository by running the following command:
++
+[source,terminal]
+----
+$ cd /path/to/your/repository
+----
+
+. Log in to your cluster by running the following this procedure:
+
+.. Obtain an API token by visiting https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request
+
+.. Log in with this retrieved token by running the following command:
++
+[source,terminal]
+----
+$ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
+----
+
+. Alternatively log in by running the following command: 
++
+[source,terminal]
+----
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+* Run the following to load the secrets into the vault:
 +
 [source,terminal]
 ----
