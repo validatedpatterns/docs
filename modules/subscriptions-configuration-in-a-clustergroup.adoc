@@ -89,9 +89,6 @@ subscriptions:
 [source,yaml]
 ----
 subscriptions:
-    acm:
-      name: advanced-cluster-management
-      namespace: open-clustsubscriptions:
     openshift-data-foundation:
       disabled: true
 
@@ -100,8 +97,7 @@ subscriptions:
       namespace: portworx
       channel: stable
       source: certified-operators
-er-management
-      channel: release-2.10
+
 ----
 
 In this example, the values file is intended to override the default settings in the main `values-hub.yaml`. Consequently, the `openshift-data-foundation` application is overridden and disabled, while the `portworx` application is added.
