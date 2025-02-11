@@ -12,11 +12,11 @@
 :tier: sandbox
 :owners: day0hero
 :requirements_hub_compute_platform_gcp_replicas: 3
-:requirements_hub_compute_platform_gcp_type: n1-standard-8
+:requirements_hub_compute_platform_gcp_type: n2-standard-16
 :requirements_hub_compute_platform_azure_replicas: 3
-:requirements_hub_compute_platform_azure_type: Standard_D8s_v3
+:requirements_hub_compute_platform_azure_type: Standard_D16as_v4
 :requirements_hub_compute_platform_aws_replicas: 3
-:requirements_hub_compute_platform_aws_type: m5.2xlarge
+:requirements_hub_compute_platform_aws_type: m5.4xlarge
 :requirements_hub_controlPlane_platform_gcp_replicas: 1
 :requirements_hub_controlPlane_platform_gcp_type: n1-standard-8
 :requirements_hub_controlPlane_platform_azure_replicas: 1
