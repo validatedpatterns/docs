@@ -208,7 +208,7 @@ $ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain
 $ export KUBECONFIG=~/<path_to_kubeconfig>
 ----
 
-* Run the following to load the secrets into the vault:
+. Run the following to load the secrets into the vault:
 +
 [source,terminal]
 ----

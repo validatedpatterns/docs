@@ -4,7 +4,7 @@
 [id="creating-data-science-project"]
 = AI Demos
 
-== First AI demo test
+== First AI demo
 
 In this demo, you will configure a Jupyter notebook server using a specified image within a Data Science project, customizing it to meet your specific requirements. 
 
@@ -141,7 +141,7 @@ https://github.com/redhat-developer-demos/openshift-ai.git
 
 . Open the Python Notebook in the JupyterLab Interface.
 +
-The JupyterLab interface is presented after uploading `kaggle.json` and cloning the `openshift-ai` repository shown the file browser on the left with  `openshift-ai` and ``.kaggle.json`.`
+The JupyterLab interface is presented after uploading `kaggle.json` and cloning the `openshift-ai` repository shown the file browser on the left with  `openshift-ai` and `.kaggle.json`.
 
 . Open `Interactive_Image_Classification_Notebook.ipynb` in the `openshift-ai` directory and run the notebook, the notebook contains all necessary instructions and is self-documented.
 
@@ -155,7 +155,7 @@ image::rhoai/predict-step4.png[Interactive Real-Time Data Streaming and Visualiz
 
 .. Running the cell in Step 5, produces an output of two images, one of a cat and one of a dog, with their respective predictions labeled as "Cat" and "Dog".
 
-.. Once the code in the cell is executed in Step 6, a predict button will appear as shown in screenshot below. The interactive session will display images with their predicted labels in real-time as the user clicks the "Predict" button. This dynamic interaction helps in understanding how well the model performs across a random set of images and provides insights into potential improvements for model training.
+.. Once the code in the cell is executed in Step 6, a predict button will appear as shown in screenshot below. The interactive session displays images with their predicted labels in real-time as the user clicks the *Predict* button. This dynamic interaction helps in understanding how well the model performs across a random set of images and provides insights into potential improvements for model training.
 +
 image::rhoai/predict.png[Interactive Real-Time Image Prediction with Widgets]
 
@@ -171,7 +171,7 @@ Changing the number of *epochs* can help you find the sweet spot where your mode
 +
 Modifying *steps_per_epoch* affects how many batches of samples are used in one epoch. This can influence the granularity of the model updates and can help in dealing with imbalanced datasets or overfitting.
 
-For example make these modifications in your Notebook or another Python environment as part of *Step 3: Build and Train the Model*:
+For example make these modifications in your notebook or another Python environment as part of *Step 3: Build and Train the Model*:
 
 [source,text]
 ----
