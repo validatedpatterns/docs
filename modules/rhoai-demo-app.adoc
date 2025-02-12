@@ -4,7 +4,7 @@
 [id="creating-data-science-project"]
 = AI Demos
 
-== First AI demo
+== First AI demo test
 
 In this demo, you will configure a Jupyter notebook server using a specified image within a Data Science project, customizing it to meet your specific requirements. 
 
