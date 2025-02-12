@@ -127,7 +127,7 @@ We see the same or similar files in the both patterns directories.
 
 == The `common` directory
 
-Common is a collection of scripts to start the initial deployment of a pattern using the command line interface. The Makefile contains targets for deploying the pattern. The `Makefile` is the primary entry point for deploying a pattern. To maintain modularity, version control, and independent management, cluster management, deployment utilities, and security and certificate charts are stored in separate repositories under the link:https://github.com/validatedpatterns[Validated Patterns GitHub organization]. Ansible automation or utilities are in the link:https://github.com/validatedpatterns/rhvp.cluster_utils[rhvp.cluster_utils].
+Common is a collection of scripts to start the initial deployment of a pattern using the command line interface. The Makefile contains targets for deploying the pattern. The `Makefile` is the primary entry point for deploying a pattern. To maintain modularity, version control, and independent management, cluster management, deployment utilities, and security and certificate helm charts are stored in separate repositories under the link:https://github.com/validatedpatterns[Validated Patterns GitHub organization]. Ansible automation or utilities are in the link:https://github.com/validatedpatterns/rhvp.cluster_utils[rhvp.cluster_utils].
 
 == The `charts` directory
 
