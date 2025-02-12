@@ -47,6 +47,15 @@ sample/
 deployments.
 <3> The `values.yaml` file contains default values for the chart.
 
+Helm charts for cluster management, deployment utilities, and security and certificate management are stored in separate repositories under the link:https://github.com/validatedpatterns[Validated Patterns GitHub organization]. The specific Helm chart repositories include:
+
+* link:https://github.com/validatedpatterns/clustergroup-chart[clustergroup-chart]
+* link:https://github.com/validatedpatterns/pattern-install-chart[pattern-install-chart]
+* link:https://github.com/validatedpatterns/hashicorp-vault-chart[hashicorp-vault-chart]
+* link:https://github.com/validatedpatterns/golang-external-secrets-chart[golang-external-secrets-chart]
+* link:https://github.com/validatedpatterns/acm-chart[acm-chart]
+* link:https://github.com/validatedpatterns/letsencrypt-chart[letsencrypt-chart]
+
 [id="about-helm-argocd"]
 == ArgoCD and Helm Integration
 
