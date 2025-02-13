@@ -1,106 +1,15 @@
 ---
 title: Cluster Sizing
 weight: 30
-aliases: /medical-diagnosis/cluster-sizing/
+aliases: /medical-diagnosis/medical-diagnosis-cluster-sizing/
 ---
+
 
 :toc:
 :imagesdir: /images
 :_content-type: ASSEMBLY
+
 include::modules/comm-attributes.adoc[]
+include::modules/medical-diagnosis/metadata-medical-diagnosis.adoc[]
 
-:aws_node: xlarge
-
-
-//Module to be included
-//:_content-type: CONCEPT
-//:imagesdir: ../../images
-[id="about-openshift-cluster-sizing-med"]
-== About OpenShift cluster sizing for the {med-pattern}
-{aws_node}
-To understand cluster sizing requirements for the {med-pattern}, consider the following components that the {med-pattern} deploys on the datacenter or the hub OpenShift cluster:
-
-|===
-| Name | Kind | Namespace | Description
-
-| Medical Diagnosis Hub
-| Application
-| medical-diagnosis-hub
-| Hub GitOps management
-
-| {rh-gitops}
-| Operator
-| openshift-operators
-| {rh-gitops-short}
-
-| {rh-ocp-data-first}
-| Operator
-| openshift-storage
-| Cloud Native storage solution
-
-| {rh-amq-streams}
-| Operator
-| openshift-operators
-| AMQ Streams provides Apache Kafka access
-
-| {rh-serverless-first}
-| Operator
-| - knative-serving (knative-eventing)
-| Provides access to Knative Serving and Eventing functions
-|===
-
-//AI: Removed the following since we have CI status linked on the patterns page
-//[id="tested-platforms-cluster-sizing"]
-//== Tested Platforms
-
-//: Removed the following in favor of the link to OCP docs
-//[id="general-openshift-minimum-requirements-cluster-sizing"]
-//== General OpenShift Minimum Requirements
-The minimum requirements for an {ocp} cluster depend on your installation platform. For instance, for AWS, see link:https://docs.openshift.com/container-platform/4.16/installing/installing_aws/preparing-to-install-on-aws.html#requirements-for-installing-ocp-on-aws[Installing {ocp} on AWS], and for bare-metal, see link:https://docs.openshift.com/container-platform/4.16/installing/installing_bare_metal/installing-bare-metal.html#installation-minimum-resource-requirements_installing-bare-metal[Installing {ocp} on bare metal].
-
-For information about requirements for additional platforms, see link:https://docs.openshift.com/container-platform/4.16/installing/installing-preparing.html[{ocp} documentation].
-
-//Module to be included
-//:_content-type: CONCEPT
-//:imagesdir: ../../images
-
-[id="med-openshift-cluster-size"]
-=== About {med-pattern} OpenShift cluster size
-
-The {med-pattern} has been tested with a defined set of configurations that represent the most common combinations that {ocp} customers are using for the x86_64 architecture.
-
-For {med-pattern}, the OpenShift cluster size must be a bit larger to support the compute and storage demands of OpenShift Data Foundations and other Operators.
-//AI:Removed a few lines from here since the content is updated to remove any ambiguity. We rather use direct links (OCP docs/ GCP/AWS/Azure)
-[NOTE]
-====
-You might want to add resources when more developers are working on building their applications.
-====
-
-The OpenShift cluster is a standard deployment of 3 control plane nodes and 3 or more worker nodes.
-
-[cols="^,^,^,^"]
-|===
-| Node type | Number of nodes | Cloud provider | Instance type
-
-| Control plane and worker
-| 3 and 3
-| Google Cloud
-| n1-standard-8
-
-| Control plane and worker
-| 3 and 3
-| Amazon Cloud Services
-| m5.2xlarge
-
-| Control plane and worker
-| 3 and 3
-| Microsoft Azure
-| Standard_D8s_v3
-|===
-
-[role="_additional-resources"]
-.Additional resource
-* link:https://aws.amazon.com/ec2/instance-types/[AWS instance types]
-* link:https://learn.microsoft.com/en-us/azure/virtual-machines/sizes[Azure instance types: Sizes for virtual machines in Azure]
-* link:https://cloud.google.com/compute/docs/machine-resource[Google Cloud Platform instance types: Machine families resource and comparison guide]
-//Removed section for instance types as we did for MCG
+include::modules/cluster-sizing-template.adoc[]
