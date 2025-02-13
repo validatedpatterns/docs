@@ -1,0 +1,28 @@
+// This file has been generated automatically from the pattern-metadata.yaml file
+// Do not edit manually!
+:metadata_version: 1.0
+:name: medical-diagnosis
+:pattern_version: 1.0
+:display_name: Medical Diagnosis
+:repo_url: https://github.com/validatedpatterns/medical-diagnosis
+:docs_repo_url: https://github.com/validatedpatterns/docs
+:issues_url: https://github.com/validatedpatterns/medical-diagnosis/issues
+:docs_url: https://validatedpatterns.io/patterns/medical-diagnosis/
+:ci_url: https://validatedpatterns.io/ci/?pattern=medicaldiag
+:tier: maintained
+:owners: day0hero
+:requirements_hub_compute_platform_gcp_replicas: 5
+:requirements_hub_compute_platform_gcp_type: n1-standard-16
+:requirements_hub_compute_platform_azure_replicas: 5
+:requirements_hub_compute_platform_azure_type: Standard_D16s_v3
+:requirements_hub_compute_platform_aws_replicas: 5
+:requirements_hub_compute_platform_aws_type: m5.4xlarge
+:requirements_hub_controlPlane_platform_gcp_replicas: 3
+:requirements_hub_controlPlane_platform_gcp_type: n1-standard-4
+:requirements_hub_controlPlane_platform_azure_replicas: 3
+:requirements_hub_controlPlane_platform_azure_type: Standard_D4s_v3
+:requirements_hub_controlPlane_platform_aws_replicas: 3
+:requirements_hub_controlPlane_platform_aws_type: m5.xlarge
+:extra_features_hypershift_support: false
+:extra_features_spoke_support: false
+:external_requirements: 
