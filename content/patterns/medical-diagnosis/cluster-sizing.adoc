@@ -1,6 +1,6 @@
 ---
 title: Cluster Sizing
-weight: 20
+weight: 30
 aliases: /medical-diagnosis/cluster-sizing/
 ---
 

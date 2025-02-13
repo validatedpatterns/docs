@@ -92,7 +92,7 @@ Ensure that the Prometheus data source exists and that the status is available. 
 '''
 Problem:: The dashboard is showing red in the corners of the dashboard panes.
 +
-image::medical-edge/medDiag-noDB.png[link="/images/medical-edge/medDiag-noDB.png"]
+image::../../images/medical-edge/medDiag-noDB.png[link="/images/medical-edge/medDiag-noDB.png"]
 
 Solution:: This is most likely due to the *xraylab* database not being available or misconfigured. Please check the database and ensure that it is functioning properly.
 
@@ -100,7 +100,7 @@ Solution:: This is most likely due to the *xraylab* database not being available
 +
 [source,terminal]
 ----
-$ oc exec -it xraylabdb-1-<uuid> bash
+$ oc exec -it xraylabdb-1-<uuid> bash -n xraylab-1
 $ mysql -u root
 
 USE xraylabdb;
@@ -133,7 +133,7 @@ MariaDB [xraylabdb]> show tables;
 3 rows in set (0.000 sec)
 ----
 +
-. Verify the password set in the `values-secret.yaml` is working
+. If you set a password in `~/values-secret-medical-diagnosis.yaml` verify the password is working by running the following commands:
 +
 [source,terminal]
 ----
