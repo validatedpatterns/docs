@@ -1,0 +1,20 @@
+// This file has been generated automatically from the pattern-metadata.yaml file
+// Do not edit manually!
+:metadata_version: 1.0
+:name: ansible-edge-gitops
+:pattern_version: 1.0
+:display_name: Ansible Edge GitOps
+:repo_url: https://github.com/validatedpatterns/ansible-edge-gitops
+:docs_repo_url: https://github.com/validatedpatterns/docs
+:issues_url: https://github.com/validatedpatterns/ansible-edge-gitops/issues
+:docs_url: https://validatedpatterns.io/patterns/ansible-edge-gitops/
+:ci_url: https://validatedpatterns.io/ci/?pattern=aegitops
+:tier: maintained
+:owners: mhjacks
+:requirements_hub_compute_platform_aws_replicas: 3
+:requirements_hub_compute_platform_aws_type: m5.4xlarge
+:requirements_hub_controlPlane_platform_aws_replicas: 1
+:requirements_hub_controlPlane_platform_aws_type: m5.4xlarge
+:extra_features_hypershift_support: false
+:extra_features_spoke_support: false
+:external_requirements: 
