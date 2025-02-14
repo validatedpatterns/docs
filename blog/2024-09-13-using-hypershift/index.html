@@ -1150,35 +1150,83 @@ To verify, in the *OpenShift Container Platform web console, navigate to Operato
 Next steps Deploying the managed cluster applications After the management hub is set up and works correctly, attach one or more managed clusters to the architecture (see diagrams below).
 For instructions on deploying the edge, refer to Managed Cluster Sites.
 Contribute to this pattern: Help &amp; Feedback Report Bugs
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/getting-started/",breadcrumb:"/patterns/multicloud-gitops-portworx/getting-started/"},"https://validatedpatterns.io/patterns/openshift-ai/getting-started/":{title:"Getting Started",tags:[],content:` Deploying the Red Hat OpenShift AI Pattern Prerequisites An OpenShift cluster
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-portworx/getting-started/",breadcrumb:"/patterns/multicloud-gitops-portworx/getting-started/"},"https://validatedpatterns.io/patterns/openshift-ai/getting-started/":{title:"Getting Started",tags:[],content:` Deploying the Red Hat OpenShift AI Pattern TEST
+Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select Services -&gt; Containers -&gt; Create cluster.
-The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
-Optional: A second OpenShift cluster for multicloud demonstration.
-Install the tooling dependencies.
-The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
-If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by using Red Hat Hybrid Cloud Console.
-Procedure Fork the openshift-ai repository on GitHub.
-Clone the forked copy of this repository.
-git clone git@github.com:your-username/openshift-ai.git If you want a peak under the covers to see what the pattern contains, you can do so with the following command:
-cat values-hub.yaml But don’t worry if it looks intimidating.
-Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator.
-Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
-Login to your cluster by running the following command:
-oc login Optional: Set the KUBECONFIG variable for the kubeconfig file path:
-export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
-./pattern.sh make install Verify Red Hat OpenShift AI Pattern installation Verify that the Operators have been installed.
+Select OpenShift -&gt; Red Hat OpenShift Container Platform -&gt; Create cluster.
+The cluster must have a dynamic StorageClass to provision PersistentVolumes. Verify that a dynamic StorageClass exists before creating one by running the following command:
+$ oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,DEFAULT:.metadata.annotations.&#34;storageclass\\.kubernetes\\.io/is-default-class&#34; Example output NAME PROVISIONER DEFAULT gp2-csi ebs.csi.aws.com &lt;none&gt; gp3-csi ebs.csi.aws.com true For more information about creating a dynamic StorageClass, see the Dynamic provisioning documentation.
+Procedure From the openshift-ai repository on GitHub click the Fork button.
+Clone the forked copy of this repository by running the following command.
+$ git clone git@github.com:&lt;your-username&gt;/openshift-ai.git Navigate to your repository: Ensure you are in the root directory of your Git repository by using:
+$ cd /path/to/your/repository Run the following command to set the upstream repository:
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/openshift-ai.git Verify the setup of your remote repositories by running the following command:
+$ git remote -v Example output origin	git@github.com:&lt;your-username&gt;/openshift-ai.git (fetch) origin	git@github.com:&lt;your-username&gt;/openshift-ai.git (push) upstream	git@github.com:validatedpatterns-sandbox/openshift-ai.git (fetch) upstream	git@github.com:validatedpatterns-sandbox/openshift-ai.git (push) Create a local copy of the secret values file that can safely include credentials. Run the following commands:
+$ cp values-secret.yaml.template ~/values-secret-openshift-ai.yaml Putting the values-secret.yaml in your home directory ensures that it does not get pushed to your git repository. It is based on the values-secrets.yaml.template file provided by the pattern in the top level directory. When you create your own patterns you will add your secrets to this file and save.
+Create a new feature branch, for example my-branch from the rhoai branch for your content:
+$ git checkout -b my-branch rhoai Create a local branch and push it to origin to gain the flexibility needed to customize the OpenShift AI pattern by running the following command:
+$ git push origin my-branch You can proceed to install the OpenShift AI pattern by using the web console or from command line by using the script ./pattern.sh script.
+To install the OpenShift AI pattern by using the web console you must first install the Validated Patterns Operator. The Validated Patterns Operator installs and manages Validated Patterns.
+Installing the Validated Patterns Operator using the web console Prerequisites Access to an OpenShift Container Platform cluster by using an account with cluster-admin permissions.
+Procedure Navigate in the Red Hat Hybrid Cloud Console to the Operators → OperatorHub page.
+Scroll or type a keyword into the Filter by keyword box to find the Operator you want. For example, type validated patterns to find the Validated Patterns Operator.
+Select the Operator to display additional information.
+Choosing a Community Operator warns that Red Hat does not certify Community Operators; you must acknowledge the warning before continuing.
+Read the information about the Operator and click Install.
+On the Install Operator page:
+Select an Update channel (if more than one is available).
+Select a Version (if more than one is available).
+Select an Installation mode:
+The only supported mode for this Operator is All namespaces on the cluster (default). This installs the Operator in the default openshift-operators namespace to watch and be made available to all namespaces in the cluster. This option is not always available.
+Select Automatic or Manual approval strategy.
+Click Install to make the Operator available to the default openshift-operators namespace on this OpenShift Container Platform cluster.
+Verification To confirm that the installation is successful:
+Navigate to the Operators → Installed Operators page.
+Check that the Operator is installed in the selected namespace and its status is Succeeded.
+Creating the OpenShift AI instance Prerequisites The Validated Patterns Operator is successfully installed in the relevant namespace.
+Procedure Navigate to the Operators → Installed Operators page.
+Click the installed Validated Patterns Operator.
+Under the Details tab, in the Provided APIs section, in the Pattern box, click Create instance that displays the Create Pattern page.
+On the Create Pattern page, select Form view and enter information in the following fields:
+Name - A name for the pattern deployment that is used in the projects that you created.
+Labels - Apply any other labels you might need for deploying this pattern.
+Cluster Group Name - Select a cluster group name to identify the type of cluster where this pattern is being deployed. For example, if you are deploying the Industrial Edge pattern, the cluster group name is datacenter. If you are deploying the Multicloud GitOps pattern, the cluster group name is hub.
+To know the cluster group name for the patterns that you want to deploy, check the relevant pattern-specific requirements.
+Expand the Git Config section to reveal the options and enter the required information.
+Leave In Cluster Git Server unchanged.
+Change the Target Repo URL to your forked repository URL. For example, change https://github.com/validatedpatterns/&lt;pattern_name&gt;; to https://github.com/&lt;your-git-username&gt;/&lt;pattern-name&gt;;.
+Optional: You might need to change the Target Revision field. The default value is HEAD. However, you can also provide a value for a branch, tag, or commit that you want to deploy. For example, v2.1, main, or a branch that you created, my-branch.
+Click Create.
+A pop-up error with the message &#34;Oh no! Something went wrong.&#34; might appear during the process. This error can be safely disregarded as it does not impact the installation of the OpenShift AI pattern. Use the Hub ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD instances, which will display states such as progressing, healthy, and so on, for each managed application. The Cluster ArgoCD provides detailed status on each application, as defined in the clustergroup values file.
+The Red Hat OpenShift GitOps Operator displays in list of Installed Operators. The Red Hat OpenShift GitOps Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as Red Hat Advanced Cluster Management (RHACM), ensure that you switch to Project:All Projects.
+Wait some time for everything to deploy. You can track the progress through the Hub ArgoCD UI from the nines menu.
+Navigate to the root directory of the cloned repository by running the following command:
+$ cd /path/to/your/repository Log in to your cluster by running the following this procedure:
+Obtain an API token by visiting https://oauth-openshift.apps.&lt;your-cluster&gt;.&lt;domain&gt;/oauth/token/request
+Log in with this retrieved token by running the following command:
+$ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your-cluster&gt;.&lt;domain&gt;:6443 Alternatively log in by running the following command:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Run the following to load the secrets into the vault:
+$ ./pattern.sh make load-secrets You must have created a local copy of the secret values file by running the following command:
+$ cp values-secret.yaml.template ~/values-secret-openshift-ai.yaml Alternatively you can deploy the OpenShift AI pattern by using the command line script pattern.sh.
+Deploying the cluster by using the pattern.sh script To deploy the cluster by using the pattern.sh script, complete the following steps:
+Navigate to the root directory of the cloned repository by running the following command:
+$ cd /path/to/your/repository Log in to your cluster by running the following this procedure:
+Obtain an API token by visiting https://oauth-openshift.apps.&lt;your-cluster&gt;.&lt;domain&gt;/oauth/token/request
+Log in with this retrieved token by running the following command:
+$ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your-cluster&gt;.&lt;domain&gt;:6443 Alternatively log in by running the following command:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster by running the following command:
+$ ./pattern.sh make install Verify that the Operators have been installed.
 To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
-Set your project to All Projects and verify the operators are isntalled and have a status of Succeeded.
-Verify that all applications are synchronized. Under the project openshift-ai-hub click the URL for the hub gitops server.
-As part of this pattern, HashiCorp Vault has been installed. Refer to the section on Vault.
-Verify installation by checking the OpenShift AI Dashboard Access the OpenShift AI dashboard
-RHODS=https://$(oc get route -n redhat-ods-applications -o jsonpath=&#39;{.spec.host}&#39;) echo \${RHODS} You can also get to the dashboard from the OpenShift Console by selecting the application shortcut icon and then selecting the link for Red Hat OpenShift Ai
-Log in to the Dashboard using your OpenShift credentials. You will find an environment that is ready for further configuration. This pattern provides the fundamental platform pieces to support MLOps workflows. The installation of OpenShift Pipelines enables the immediate use of pipelines if that is the desired approach for deployment.
+Check that Red Hat OpenShift GitOps Operator is installed in the openshift-operators namespace and its status is Succeeded.
+Verify that all applications are synchronized. Under Networking -&gt; Routes select the Location URL associated with the hub-gitops-server . All application are report status as Synched.
+As part of installing by using the script pattern.sh pattern, HashiCorp Vault is installed. Running ./pattern.sh make install also calls the load-secrets makefile target. This load-secrets target looks for a YAML file describing the secrets to be loaded into vault and in case it cannot find one it will use the values-secret.yaml.template file in the git repository to try to generate random secrets.
+For more information, see section on Vault.
+Verify installation by checking the OpenShift AI Dashboard Access the OpenShift AI dashboard from nines menu on the OpenShift Console and select the link for Red Hat OpenShift AI.
+Log in to the dashboard using your OpenShift credentials. You will find an environment that is ready for further configuration. This pattern provides the fundamental platform pieces to support MLOps workflows. The installation of OpenShift Pipelines enables the immediate use of pipelines if that is the desired approach for deployment.
 `,url:"https://validatedpatterns.io/patterns/openshift-ai/getting-started/",breadcrumb:"/patterns/openshift-ai/getting-started/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/getting-started/":{title:"Getting Started",tags:[],content:`Prerequisites Podman is installed on your system. You have the OpenShift Container Platform installation program and the pull secret for your cluster. You can get these from Install OpenShift on AWS with installer-provisioned infrastructure. Red Hat Openshift cluster running in AWS. Procedure Create the installation configuration file using the steps described in Creating the installation configuration file.
 Note: Supported regions are us-east-1 us-east-2 us-west-1 us-west-2 ca-central-1 sa-east-1 eu-west-1 eu-west-2 eu-west-3 eu-central-1 eu-north-1 ap-northeast-1 ap-northeast-2 ap-northeast-3 ap-southeast-1 ap-southeast-2 and ap-south-1. For more information about installing on AWS see, Installation methods.
-Customize the generated install-config.yaml creating one control plane node with instance type m5a.2xlarge and 3 worker nodes with instance type p3.2xlarge. A sample YAML file is shown here:
-additionalTrustBundlePolicy: Proxyonly apiVersion: v1 baseDomain: aws.validatedpatterns.io compute: - architecture: amd64 hyperthreading: Enabled name: worker platform: aws: type: p3.2xlarge replicas: 3 controlPlane: architecture: amd64 hyperthreading: Enabled name: master platform: aws: type: m5a.2xlarge replicas: 1 metadata: creationTimestamp: null name: kevstestcluster networking: clusterNetwork: - cidr: 10.128.0.0/14 hostPrefix: 23 machineNetwork: - cidr: 10.0.0.0/16 networkType: OVNKubernetes serviceNetwork: - 172.30.0.0/16 platform: aws: region: us-east-1 publish: External pullSecret: &#39;&lt;pull-secret&gt;&#39; sshKey: | ssh-ed25519 &lt;public-key&gt; someuser@redhat.com Fork the rag-llm-gitops git repository.
+Customize the generated install-config.yaml creating one control plane node with instance type m5.2xlarge and 3 worker nodes with instance type m5.2xlarge. A sample YAML file is shown here:
+additionalTrustBundlePolicy: Proxyonly apiVersion: v1 baseDomain: aws.validatedpatterns.io compute: - architecture: amd64 hyperthreading: Enabled name: worker platform: aws: type: m5.2xlarge replicas: 3 controlPlane: architecture: amd64 hyperthreading: Enabled name: master platform: aws: type: m5.2xlarge replicas: 1 metadata: creationTimestamp: null name: kevstestcluster networking: clusterNetwork: - cidr: 10.128.0.0/14 hostPrefix: 23 machineNetwork: - cidr: 10.0.0.0/16 networkType: OVNKubernetes serviceNetwork: - 172.30.0.0/16 platform: aws: region: us-east-1 publish: External pullSecret: &#39;&lt;pull-secret&gt;&#39; sshKey: | ssh-ed25519 &lt;public-key&gt; someuser@redhat.com Fork the rag-llm-gitops git repository.
 Clone the forked repository by running the following command:
 $ git clone git@github.com:your-username/rag-llm-gitops.git Go to your repository: Ensure you are in the root directory of your git repository by using the following command:
 $ cd rag-llm-gitops Create a local copy of the secret values file by running the following command:
@@ -1367,7 +1415,76 @@ In the Managing clusters just got easier window, click Import an existing cluste
 Enter the cluster name (you can get this from the login token string, for example: https://api.&lt;cluster-name&gt;.&lt;domain&gt;:6443). You can leave the Cluster set blank. In the Additional labels dialog box, enter the key=value as clusterGroup=factory. Choose KubeConfig as the &ldquo;Import mode&rdquo;. In the KubeConfig window, paste your KubeConfig content. Click Next. You can skip the Automation screen. Click Next.
 Review the summary details and click Import.
 Once the data center and the factory have been deployed you will want to check out and test the Industrial Edge 2.0 demo code. You can find that here. The Argo applications on the factory cluster appear as follows:
-`,url:"https://validatedpatterns.io/patterns/industrial-edge/add-managed-cluster/",breadcrumb:"/patterns/industrial-edge/add-managed-cluster/"},"https://validatedpatterns.io/contribute/background-on-pattern-development/":{title:"Background on pattern development",tags:[],content:` Introduction This section provides details on how to create a new pattern using the validated patterns framework. Creating a new pattern might start from scratch or it may start from an existing deployment that would benefit from a repeatable framework based on GitOps.
+`,url:"https://validatedpatterns.io/patterns/industrial-edge/add-managed-cluster/",breadcrumb:"/patterns/industrial-edge/add-managed-cluster/"},"https://validatedpatterns.io/patterns/openshift-ai/ai-demo-app/":{title:"AI Demo",tags:[],content:` AI Demos First AI demo In this demo, you will configure a Jupyter notebook server using a specified image within a Data Science project, customizing it to meet your specific requirements.
+Procedure Click the Red Hat OpenShift AI from the nines menu on the OpenShift Console.
+Click Log in with OpenShift
+Click on the Data Science Projects tab.
+Click Create project
+Enter a name for the project for example my-first-ai-project in the Name field and click Create.
+Click on Create a workbench. Now you are ready to move to the next step to define the workbench.
+Enter a name for the workbench.
+Select the Notebook image from the image selection dropdown as Standard Data Science.
+Select the Container size to Small under Deployment size.
+Scroll down and in the Cluster storage section, create a name for the new persistent storage that will be created.
+Set the persistent storage size to 10 Gi.
+Click the Create workbench button at the bottom left of the page.
+After successful implementation, the status of the workbench turns to Running
+Click the Open↗ button, located beside the status.
+Authorize the access with the OpenShift cluster by clicking on the Allow selected permissions. After granting permissions with OpenShift, you will be directed to the Jupyter Notebook page.
+Accessing the current data science project within Jupyter Notebook The Jupyter Notebook provides functionality to fetch or clone existing GitHub repositories, similar to any other standard IDE. Therefore, in this section, you will clone an existing simple AI/ML code into the notebook using the following instructions.
+From the top, click on the Git clone icon.
+In the popup window enter the URL of the GitHub repository in the Git Repository URL field:
+https://github.com/redhat-developer-demos/openshift-ai.git Click the Clone button.
+After fetching the github repository, the project appears in the directory section on the left side of the notebook.
+Expand the /openshift-ai/1_First-app/ directory.
+Open the openshift-ai-test.ipynb file.
+You will be presented with the view of a Jupyter Notebook.
+Running code in a Jupyter notebook In the previous section, you imported and opened the notebook. To run the code within the notebook, click the Run icon located at the top of the interface.
+After clicking Run, the notebook automatically moves to the next cell. This is part of the design of Jupyter Notebooks, where scripts or code snippets are divided into multiple cells. Each cell can be run independently, allowing you to test specific sections of code in isolation. This structure greatly aids in both developing complex code incrementally and debugging it more effectively, as you can pinpoint errors and test solutions cell by cell.
+After executing a cell, you can immediately see the output just below it. This immediate feedback loop is invaluable for iterative testing and refining of code.
+Performing an interactive classification with Jupyter notebook In this section, you will perform an interactive classification using a Jupyter notebook.
+Procedure Click the Red Hat OpenShift AI from the nines menu on the OpenShift Console.
+Click Log in with OpenShift
+Click on the Data Science Projects tab.
+Click Create project
+Enter a name for the project for example my-classification-project in the Name field and click Create.
+Click on Create a workbench. Now you are ready to move to the next step to define the workbench.
+Give the workbench a name for example interactive-classification.
+Select the Notebook image from the image selection dropdown as TensorFlow.
+Select the Container size to Medium under Deployment size.
+Scroll down and in the Cluster storage section, create a name for the new persistent storage that will be created.
+Set the persistent storage size to 20 Gi.
+Click the Create workbench button at the bottom of the page.
+After successful implementation, the status of the workbench turns to Running
+Click the Open↗ button, located beside the status.
+Authorize the access with the OpenShift cluster by clicking on the Allow selected permissions. After granting permissions with OpenShift, you will be directed to the Jupyter Notebook page.
+Obtaining and preparing the dataset Simplify data preparation in AI projects by automating the fetching of datasets using Kaggle’s API following these steps:
+Navigate to the Kaggle website and log in with your account credentials.
+Click on your profile icon at the top right corner of the page, then select Account from the dropdown menu.
+Scroll down to the section labeled API. Here, you’ll find a Create New Token button. Click this button.
+A file named kaggle.json will be downloaded to your local machine. This file contains your Kaggle API credentials.
+Upload the kaggle.json file to your JupyterLab IDE environment. You can drag and drop the file into the file browser of JupyterLab IDE. This step might visually look different depending on your Operating System and Desktop User interface.
+Clone the Interactive Image Classification Project from the GitHub repository using the following instructions:
+At the top of the JupyterLab interface, click on the Git Clone icon.
+In the popup window, enter the URL of the GitHub repository in the Git Repository URL field:
+https://github.com/redhat-developer-demos/openshift-ai.git Click the Clone button.
+After cloning, navigate to the openshift-ai/2_interactive_classification directory within the cloned repository.
+Open the Python Notebook in the JupyterLab Interface.
+The JupyterLab interface is presented after uploading kaggle.json and cloning the openshift-ai repository shown the file browser on the left with openshift-ai and .kaggle.json.
+Open Interactive_Image_Classification_Notebook.ipynb in the openshift-ai directory and run the notebook, the notebook contains all necessary instructions and is self-documented.
+Run the cells in the Python Notebook as follows:
+Start by executing each cell in order by pressing the play button or using the keyboard shortcut &#34;Shift + Enter&#34;
+Once you run the cell in Step 4, you should see an output as shown in the following screenshot.
+Running the cell in Step 5, produces an output of two images, one of a cat and one of a dog, with their respective predictions labeled as &#34;Cat&#34; and &#34;Dog&#34;.
+Once the code in the cell is executed in Step 6, a predict button appears as shown in screenshot below. The interactive session displays images with their predicted labels in real-time as the user clicks the Predict button. This dynamic interaction helps in understanding how well the model performs across a random set of images and provides insights into potential improvements for model training.
+Addressing misclassification in your AI Model Misclassification in machine learning models can significantly hinder your model’s accuracy and reliability. To combat this, it’s crucial to verify dataset balance, align preprocessing methods, and tweak model parameters. These steps are essential for ensuring that your model not only learns well, but also generalizes well, to new, unseen data.
+Adjust the Number of epochs to optimize training speed
+Changing the number of epochs can help you find the sweet spot where your model learns enough to perform well without overfitting. This is crucial for building a robust model that performs consistently.
+Try different values for steps per epoch.
+Modifying steps_per_epoch affects how many batches of samples are used in one epoch. This can influence the granularity of the model updates and can help in dealing with imbalanced datasets or overfitting.
+For example make these modifications in your notebook or another Python environment as part of Step 3: Build and Train the Model:
+# Adjust the number of epochs and steps per epoch model.fit(train_generator, steps_per_epoch=100, epochs=10) Additional resources Red Hat OpenShift AI learning
+`,url:"https://validatedpatterns.io/patterns/openshift-ai/ai-demo-app/",breadcrumb:"/patterns/openshift-ai/ai-demo-app/"},"https://validatedpatterns.io/contribute/background-on-pattern-development/":{title:"Background on pattern development",tags:[],content:` Introduction This section provides details on how to create a new pattern using the validated patterns framework. Creating a new pattern might start from scratch or it may start from an existing deployment that would benefit from a repeatable framework based on GitOps.
 This introduction explains some of framework design decisions and why they were chosen. There are some high level concepts that are required for the framework. While those concepts can be implemented using a variety of open source projects, this framework is prescriptive and mentions the project and also (down stream) product that was used. E.g. For development builds we use Tekton (project) and specifically use OpenShift Pipelines (product).
 The framework uses popular Cloud Native Computing Foundation (CNCF) projects as much as possible. The CNCF landscape contains many projects that solve the same or similar problem. The validated patterns effort has chosen specific projects but it is not unreasonable for users to switch out one project for another. (See more on Operators below).
 There is no desire to replicate efforts already in CNCF. If new a open source project comes out of this framework, the plan would be to contribute that to CNCF.
@@ -3134,7 +3251,33 @@ Microsoft Azure
 Worker
 3
 Standard_D16s_v5
-`,url:"https://validatedpatterns.io/patterns/industrial-edge/cluster-sizing/",breadcrumb:"/patterns/industrial-edge/cluster-sizing/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` AI Generation with LLM and RAG pattern hub/datacenter cluster size The AI Generation with LLM and RAG pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
+`,url:"https://validatedpatterns.io/patterns/industrial-edge/cluster-sizing/",breadcrumb:"/patterns/industrial-edge/cluster-sizing/"},"https://validatedpatterns.io/patterns/openshift-ai/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` OpenShift AI pattern hub/datacenter cluster size The OpenShift AI pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
+The datacenter hub OpenShift cluster uses the following the deployment configuration:
+Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type Amazon Web Services
+Control Plane
+1
+m5.2xlarge
+Amazon Web Services
+Worker
+3
+m5.4xlarge
+Google Cloud Platform
+Control Plane
+1
+n1-standard-8
+Google Cloud Platform
+Worker
+3
+n2-standard-16
+Microsoft Azure
+Control Plane
+1
+Standard_D8s_v3
+Microsoft Azure
+Worker
+3
+Standard_D16as_v4
+`,url:"https://validatedpatterns.io/patterns/openshift-ai/cluster-sizing/",breadcrumb:"/patterns/openshift-ai/cluster-sizing/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` AI Generation with LLM and RAG pattern hub/datacenter cluster size The AI Generation with LLM and RAG pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
 The datacenter hub OpenShift cluster uses the following the deployment configuration:
 Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type Amazon Web Services
 Control Plane
@@ -4390,7 +4533,7 @@ Red Hat Advanced Cluster Management for Kubernetes acquires the token from Ansib
 To allow the cluster access to the external vault, you must set up the external secret management with Helm in this study. OpenShift Gitops is used to deploy the external secret object to a managed cluster.
 External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
 Secrets are created in each namespace, where applications can use them.
-Next steps Deploy the Pattern using Helm.
+Next steps Deploy the Pattern.
 `,url:"https://validatedpatterns.io/patterns/openshift-ai/",breadcrumb:"/patterns/openshift-ai/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/":{title:"Intel AMX accelerated Multicloud GitOps with Openshift AI",tags:[],content:` About the Intel AMX accelerated Multicloud GitOps pattern with Openshift AI Use case Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
 Enable cross-cluster governance and application lifecycle management.
 Accelerate AI operations and improve computational performance by using Intel Advanced Matrix Extensions together with Openshift AI operator.
