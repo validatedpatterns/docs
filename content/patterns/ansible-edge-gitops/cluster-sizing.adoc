@@ -1,0 +1,19 @@
+---
+title: Cluster sizing
+weight: 50
+aliases: /ansible-edge-gitops/cluster-sizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/comm-attributes.adoc[]
+include::modules/ansible-edge-gitops/metadata-ansible-edge-gitops.adoc[]
+
+The OpenShift cluster is made of 3 Control Plane nodes and 3 Workers for the cluster; 3 workers are standard compute nodes and one is c5n.metal.  For the node sizes we used the **m5.4xlarge** on AWS and this instance type met the minimum requirements to deploy the **Ansible Edge GitOps** pattern successfully on the Hub cluster.
+
+This pattern is currently only usable on AWS because of the integration of OpenShift Virtualization; it would be straightforward to adapt this pattern also to run on bare metal/on-prem clusters. If and when other public cloud providers support metal node provisioning in OpenShift Virtualization, we will document that here.
+
+include::modules/cluster-sizing-template.adoc[]
+
