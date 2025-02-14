@@ -94,18 +94,9 @@ The following diagram shows the components that are deployed with the the data f
 
 image::medical-edge/physical-dataflow.png[link="/images/medical-edge/physical-dataflow.png"]
 
-== Recorded demo
-
-link:/videos/xray-deployment.svg[image:/videos/xray-deployment.svg[Demo\]]
-
 == Presentation
 
 View presentation for the Medical Diagnosis Validated Pattern link:https://speakerdeck.com/rhvalidatedpatterns/md-speakerdeck[here]
-
-[id="demo-script"]
-== Demo Script
-
-Use this demo script to successfully complete the Medical Diagnosis pattern demo link:demo-script/#demo-intro[here]
 
 [id="next-steps_med-diag-index"]
 == Next steps
