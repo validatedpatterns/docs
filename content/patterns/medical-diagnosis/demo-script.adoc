@@ -11,7 +11,7 @@ include::modules/comm-attributes.adoc[]
 
 [id="demo-intro"]
 
-== Introduction
+== Introduction TEST
 The medical diagnosis pattern integrates multiple Red Hat and Open Source technologies together to create an AI/ML workflow that is able to identify signs of pneumonia in x-ray images. Within this demo a dashboard is automatically created that provides the CPU and Memory metrics for the pod running the risk assessment application. The dashboard also provides visual representation of the AI/ML workflow from the images being generated at the remote medical facility to running through the image anonymizer, it also includes the image being scanned along with statistics from the workflow - indicating the probability in which a patient may or may not have pneumonia. 
 
 image::../../images/medical-edge/aiml_pipeline.png[link="/images/medical-edge/aiml_pipeline.png"]
