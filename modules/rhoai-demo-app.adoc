@@ -57,7 +57,7 @@ https://github.com/redhat-developer-demos/openshift-ai.git
 
 . Click the *Clone* button. 
 
-. After fetching the github repository, the project will appear in the directory section on the left side of the notebook.
+. After fetching the github repository, the project appears in the directory section on the left side of the notebook.
 
 . Expand the */openshift-ai/1_First-app/* directory.
 
@@ -67,9 +67,9 @@ You will be presented with the view of a Jupyter Notebook.
 
 ## Running code in a Jupyter notebook
 
-In the previous section, you imported and opened the notebook. To run the code within the notebook, you start by clicking the *Run* icon located at the top of the interface. This action initiates the execution of the code in the currently selected cell.
+In the previous section, you imported and opened the notebook. To run the code within the notebook, click the *Run* icon located at the top of the interface. 
 
-After you click *Run*, you will notice that the notebook automatically moves to the next cell. This is part of the design of Jupyter Notebooks, where scripts or code snippets are divided into multiple cells. Each cell can be run independently, allowing you to test specific sections of code in isolation. This structure greatly aids in both developing complex code incrementally and debugging it more effectively, as you can pinpoint errors and test solutions cell by cell.
+After clicking *Run*, the notebook automatically moves to the next cell. This is part of the design of Jupyter Notebooks, where scripts or code snippets are divided into multiple cells. Each cell can be run independently, allowing you to test specific sections of code in isolation. This structure greatly aids in both developing complex code incrementally and debugging it more effectively, as you can pinpoint errors and test solutions cell by cell.
 
 After executing a cell, you can immediately see the output just below it. This immediate feedback loop is invaluable for iterative testing and refining of code.
 
@@ -155,7 +155,7 @@ image::rhoai/predict-step4.png[Interactive Real-Time Data Streaming and Visualiz
 
 .. Running the cell in Step 5, produces an output of two images, one of a cat and one of a dog, with their respective predictions labeled as "Cat" and "Dog".
 
-.. Once the code in the cell is executed in Step 6, a predict button will appear as shown in screenshot below. The interactive session displays images with their predicted labels in real-time as the user clicks the *Predict* button. This dynamic interaction helps in understanding how well the model performs across a random set of images and provides insights into potential improvements for model training.
+.. Once the code in the cell is executed in Step 6, a predict button appears as shown in screenshot below. The interactive session displays images with their predicted labels in real-time as the user clicks the *Predict* button. This dynamic interaction helps in understanding how well the model performs across a random set of images and provides insights into potential improvements for model training.
 +
 image::rhoai/predict.png[Interactive Real-Time Image Prediction with Widgets]
 
@@ -178,3 +178,8 @@ For example make these modifications in your notebook or another Python environm
 # Adjust the number of epochs and steps per epoch
 model.fit(train_generator, steps_per_epoch=100, epochs=10)
 ----
+
+[role="_additional-resources"]
+.Additional resources
+
+* link:https://developers.redhat.com/learn/openshift-ai[Red Hat OpenShift AI learning]
