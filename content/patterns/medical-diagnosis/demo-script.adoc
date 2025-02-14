@@ -69,7 +69,7 @@ Access the Grafana dashboard to view the AI/ML workflow. Carry out the following
 
 . Within the grafana dashboard click the Dashboards icon. 
 
-* Select the `xraylab-1` folder and the XRay Lab menu item.
+. Select the `xraylab-1` folder and the XRay Lab menu item.
 
 image::../../images/medical-edge/dashboard.png[link="/images/medical-edge/dashboard.png"]
 
