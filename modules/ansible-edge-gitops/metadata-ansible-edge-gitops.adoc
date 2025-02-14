@@ -13,7 +13,7 @@
 :owners: mhjacks
 :requirements_hub_compute_platform_aws_replicas: 3
 :requirements_hub_compute_platform_aws_type: m5.4xlarge
-:requirements_hub_controlPlane_platform_aws_replicas: 1
+:requirements_hub_controlPlane_platform_aws_replicas: 3
 :requirements_hub_controlPlane_platform_aws_type: m5.4xlarge
 :extra_features_hypershift_support: false
 :extra_features_spoke_support: false
