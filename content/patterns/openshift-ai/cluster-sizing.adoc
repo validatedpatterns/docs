@@ -1,0 +1,14 @@
+---
+title: Cluster sizing
+weight: 50
+aliases: /openshift-ai/openshift-ai-cluster-sizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/comm-attributes.adoc[]
+include::modules/openshift-ai/metadata-openshift-ai.adoc[]
+
+include::modules/cluster-sizing-template.adoc[]

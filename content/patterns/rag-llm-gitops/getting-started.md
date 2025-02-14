@@ -12,13 +12,13 @@ aliases: /rag-llm-gitops/getting-started/
 
 ## Procedure
 
-1. Create the installation configuration file using the steps described in [Creating the installation configuration file](https://docs.openshift.com/container-platform/4.17/installing/installing_aws/ipi/installing-aws-customizations.html#installation-initializing_installing-aws-customizations).
+1. Create the installation configuration file using the steps described in [Creating the installation configuration file](https://docs.openshift.com/container-platform/latest/installing/installing_aws/ipi/installing-aws-customizations.html#installation-initializing_installing-aws-customizations).
 
    > **Note:**
    > Supported regions are `us-east-1` `us-east-2` `us-west-1` `us-west-2` `ca-central-1` `sa-east-1` `eu-west-1` `eu-west-2` `eu-west-3` `eu-central-1` `eu-north-1` `ap-northeast-1` `ap-northeast-2` `ap-northeast-3` `ap-southeast-1` `ap-southeast-2` and `ap-south-1`. For more information about installing on AWS see, [Installation methods](https://docs.openshift.com/container-platform/latest/installing/installing_aws/preparing-to-install-on-aws.html).
    >
 
-2. Customize the generated `install-config.yaml` creating one control plane node with instance type `m5a.2xlarge` and 3 worker nodes with instance type `p3.2xlarge`. A sample YAML file is shown here:
+2. Customize the generated `install-config.yaml` creating one control plane node with instance type `m5.2xlarge` and 3 worker nodes with instance type `m5.2xlarge`. A sample YAML file is shown here:
    ```yaml
    additionalTrustBundlePolicy: Proxyonly
    apiVersion: v1
@@ -29,7 +29,7 @@ aliases: /rag-llm-gitops/getting-started/
      name: worker
      platform:
       aws:
-        type: p3.2xlarge
+        type: m5.2xlarge
      replicas: 3
    controlPlane:
      architecture: amd64
@@ -37,7 +37,7 @@ aliases: /rag-llm-gitops/getting-started/
      name: master
      platform:
        aws:
-         type: m5a.2xlarge
+         type: m5.2xlarge
      replicas: 1
    metadata:
      creationTimestamp: null
