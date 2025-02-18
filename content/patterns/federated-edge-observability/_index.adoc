@@ -1,0 +1,50 @@
+== Federated Edge Observability
+
+=== Background
+
+Organizations are interested in accelerating their deployment speeds and
+improving delivery quality in their Edge environments, where many
+devices may not fully or even partially embrace the GitOps philosophy.
+Further, there are VMs and other devices that can and should be managed
+with Ansible. This pattern explores some of the possibilities of using
+an OpenShift-based Ansible Automated Platform deployment and managing
+Edge devices, based on work done with a partner in the Chemical space.
+
+This pattern uses OpenShift Virtualization (the productization of
+Kubevirt) to simulate the Edge environment for VMs.
+
+==== Solution elements
+
+* How to use a GitOps approach to manage virtual machines, either in
+public clouds (limited to AWS for technical reasons) or on-prem
+OpenShift installations
+* How to integrate AAP into OpenShift
+* How to manage Edge devices using AAP hosted in OpenShift
+
+==== Red Hat Technologies
+
+* Red Hat OpenShift Container Platform (Kubernetes)
+* Red Hat Ansible Automation Platform (formerly known as "`Ansible
+Tower`")
+* Red Hat OpenShift GitOps (ArgoCD)
+* OpenShift Virtualization (Kubevirt)
+* Red Hat Enterprise Linux 9
+
+==== Other Technologies this Pattern Uses
+
+* Hashicorp Vault
+* External Secrets Operator
+* OpenTelemetry
+* Grafana
+* Mimir
+
+=== Architecture
+
+Similar to other patterns, this pattern starts with a central management
+hub, which hosts the AAP and Vault components, and the observability
+collection and visualization components.
+
+=== What Next
+
+* link:getting-started[Getting Started: Deploying and Validating the
+Pattern]
