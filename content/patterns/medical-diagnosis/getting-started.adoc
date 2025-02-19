@@ -63,7 +63,7 @@ For the official documentation on creating the buckets on AWS and other cloud pr
 == Utilities
 //AI: Update the use of community and VP post naming tier update
 
-Follow this procedure to use the scripts provided in the link:https://github.com/validatedpatterns/utilities[utilities] repo to configure and S3 bucket in your AWS environment for the x-ray images.
+Follow this procedure to use the scripts provided in the link:https://github.com/validatedpatterns/utilities[utilities] repo to configure an S3 bucket in your AWS environment for the x-ray images.
 
 .Procedure
 
@@ -383,7 +383,7 @@ The {med-pattern} is successfully installed in the relevant namespace.
 
 ** *Name* - A name for the pattern deployment that is used in the projects that you created.
 ** *Labels* - Apply any other labels you might need for deploying this pattern.
-** *Cluster Group Name* - Select a cluster group name to identify the type of cluster where this pattern is being deployed. For example, if you are deploying the {ie-pattern}, the cluster group name is `datacenter`. If you are deploying the {mcg-pattern}, the cluster group name is `hub`.
+** *Cluster Group Name* - Select a cluster group name to identify the type of cluster where this pattern is being deployed. For the {med-pattern}, `hub` is correct unless you updated it in `values-global.yaml` above.
 +
 To know the cluster group name for the patterns that you want to deploy, check the relevant pattern-specific requirements.
 . Expand the *Git Config* section to reveal the options and enter the required information.
@@ -394,7 +394,7 @@ To know the cluster group name for the patterns that you want to deploy, check t
 +
 [NOTE]
 ====
-A pop-up error with the message "Oh no! Something went wrong." might appear during the process. This error can be safely disregarded as it does not impact the installation of the Multicloud GitOps pattern. Use the Hub ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD instances, which will display states such as progressing, healthy, and so on, for each managed application. The Cluster ArgoCD provides detailed status on each application, as defined in the clustergroup values file.
+A pop-up error with the message "Oh no! Something went wrong." might appear during the process. This error can be safely disregarded as it does not impact the installation of the {med-pattern}. Use the Hub ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD instances, which will display states such as progressing, healthy, and so on, for each managed application. The Cluster ArgoCD provides detailed status on each application, as defined in the clustergroup values file.
 ====
 
 The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
