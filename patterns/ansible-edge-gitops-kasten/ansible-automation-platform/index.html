@@ -1053,7 +1053,7 @@ For the official documentation on creating the buckets on AWS and other cloud pr
 AWS S3
 Azure Blob Storage
 GCP Cloud Storage
-Utilities Follow this procedure to use the scripts provided in the utilities repo to configure and S3 bucket in your AWS environment for the x-ray images.
+Utilities Follow this procedure to use the scripts provided in the utilities repo to configure an S3 bucket in your AWS environment for the x-ray images.
 Procedure Fork the utilities repository on GitHub. Forking the repository allows you to update the repository as part of the GitOps and DevOps processes.
 Clone the forked copy of this repository.
 $ git clone git@github.com:validatedpatterns/utilities.git Go to your repository: Ensure you are in the root directory of your Git repository by using:
@@ -1105,14 +1105,14 @@ Under the Details tab, in the Provided APIs section, in the Pattern box, click C
 On the Create Pattern page, select Form view and enter information in the following fields:
 Name - A name for the pattern deployment that is used in the projects that you created.
 Labels - Apply any other labels you might need for deploying this pattern.
-Cluster Group Name - Select a cluster group name to identify the type of cluster where this pattern is being deployed. For example, if you are deploying the Industrial Edge pattern, the cluster group name is datacenter. If you are deploying the Multicloud GitOps pattern, the cluster group name is hub.
+Cluster Group Name - Select a cluster group name to identify the type of cluster where this pattern is being deployed. For the Medical Diagnosis pattern, hub is correct unless you updated it in values-global.yaml above.
 To know the cluster group name for the patterns that you want to deploy, check the relevant pattern-specific requirements.
 Expand the Git Config section to reveal the options and enter the required information.
 Leave In Cluster Git Server unchanged.
 Change the Target Repo URL to your forked repository URL. For example, change https://github.com/validatedpatterns/&lt;pattern_name&gt; to https://github.com/&lt;your-git-username&gt;/&lt;pattern-name&gt;
 Optional: You might need to change the Target Revision field. The default value is HEAD. However, you can also provide a value for a branch, tag, or commit that you want to deploy. For example, v2.1, main, or a branch that you created, my-branch.
 Click Create.
-A pop-up error with the message &#34;Oh no! Something went wrong.&#34; might appear during the process. This error can be safely disregarded as it does not impact the installation of the Multicloud GitOps pattern. Use the Hub ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD instances, which will display states such as progressing, healthy, and so on, for each managed application. The Cluster ArgoCD provides detailed status on each application, as defined in the clustergroup values file.
+A pop-up error with the message &#34;Oh no! Something went wrong.&#34; might appear during the process. This error can be safely disregarded as it does not impact the installation of the Medical Diagnosis pattern. Use the Hub ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD instances, which will display states such as progressing, healthy, and so on, for each managed application. The Cluster ArgoCD provides detailed status on each application, as defined in the clustergroup values file.
 The Red Hat OpenShift GitOps Operator displays in list of Installed Operators. The Red Hat OpenShift GitOps Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as Red Hat Advanced Cluster Management (RHACM), ensure that you switch to Project:All Projects.
 Wait some time for everything to deploy. You can track the progress through the Hub ArgoCD UI from the nines menu. The xraylab-database project appears stuck in a Degraded state. This is the expected behavior when installing using the OpenShift Container Platform console.
 To resolve this you need to run the following to load the secrets into the vault:
@@ -2007,12 +2007,11 @@ Store is joined You&rsquo;re done That&rsquo;s it! Go to your store (edge) OpenS
 `,url:"https://validatedpatterns.io/patterns/retail/store/",breadcrumb:"/patterns/retail/store/"},"https://validatedpatterns.io/patterns/medical-diagnosis/demo-script/":{title:"Verifying the demo",tags:[],content:` Introduction The medical diagnosis pattern integrates multiple Red Hat and Open Source technologies together to create an AI/ML workflow that is able to identify signs of pneumonia in x-ray images. Within this demo a dashboard is automatically created that provides the CPU and Memory metrics for the pod running the risk assessment application. The dashboard also provides visual representation of the AI/ML workflow from the images being generated at the remote medical facility to running through the image anonymizer, it also includes the image being scanned along with statistics from the workflow - indicating the probability in which a patient may or may not have pneumonia.
 We simulate the function of the remote medical facility with an application called the image-generator.
 Enabling the Grafana based dashboard The Grafana dashboard offers a visual representation of the AI/ML workflow, including CPU and memory metrics for the pod running the risk assessment application. Additionally, it displays a graphical overview of the AI/ML workflow, illustrating the images being generated at the remote medical facility.
-This showcase application is deployed with self-signed certificates, which are considered untrusted by most browsers. If valid certificates have not been provisioned for your OpenShift cluster, you will need to manually accept the untrusted certificates by following these steps:
+This showcase application is deployed with self-signed certificates, which are considered untrusted by most browsers. If valid certificates have not been provisioned for your OpenShift cluster, you will need to manually accept the untrusted certificates using the process below.
 Accept the SSL certificates on the browser for the dashboard. In the OpenShift Container Platform web console, go to the Networking &gt; Routes for All Projects. Click the URL for the s3-rgw.
 Ensure that you see XML and not the access denied error message.
-While still looking at Routes, change the project to xraylab-1. Click the URL for the image-server and ensure that you do not see an access denied error message. You should see a Hello world message.
-This showcase application does not have access to a x-ray machine hanging around that we can use for this demo, so one is emulated by creating an s3 bucket and hosting the x-ray images within it. In the &#34;real world&#34; an x-ray would be taken at an edge medical facility and then uploaded to an OpenShift Data Foundations (ODF) S3 compatible bucket in the Core Hospital, triggering the AI/ML workflow.
-To emulate the edge medical facility we use an application called image-generator which when scaled up will download the x-rays from s3 and put them in an ODF s3 bucket in the cluster, triggering the AI/ML workflow.
+This showcase application does not have access to a x-ray machine hanging around that we can use for this demo, so one is emulated by creating an S3 bucket and hosting the x-ray images within it. In the &#34;real world&#34; an x-ray would be taken at an edge medical facility and then uploaded to an OpenShift Data Foundations (ODF) S3 compatible bucket in the Core Hospital, triggering the AI/ML workflow.
+To emulate the edge medical facility we use an application called image-generator which when scaled up will download the x-rays from S3 and put them in an ODF S3 bucket in the cluster, triggering the AI/ML workflow.
 Turn on the image file flow. There are couple of ways to go about this.
 Go to the OpenShift Container Platform web console and change the view from Administrator to Developer and select Topology. From there select the xraylab-1 project.
 Right-click on the image-generator pod icon and select Edit Pod count.
