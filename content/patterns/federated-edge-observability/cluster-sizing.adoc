@@ -1,0 +1,15 @@
+---
+title: Cluster Sizing
+weight: 30
+aliases: /federated-edge-observability/federated-edge-observability-cluster-sizing/
+---
+
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/comm-attributes.adoc[]
+include::modules/federated-edge-observability/metadata-federated-edge-observability.adoc[]
+
+include::modules/cluster-sizing-template.adoc[]
