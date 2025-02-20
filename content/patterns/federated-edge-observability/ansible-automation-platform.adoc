@@ -40,7 +40,7 @@ image::/images/federated-edge-observability/ocp-console-aap-admin-password-detai
 . Under *Networking* > *Routes*, click the URL for `aap` route to open the Ansible Automation Platform interface. 
 
 .. Log in using the `admin` user and the password you retrieved from the `aap-admin-password` secret. The following image shows the screen that appears after logging in
-
++
 .AAP screen
 image::/images/federated-edge-observability/app-login.png[[federated-edge-observability-operators,title="AAP screen"]
 
