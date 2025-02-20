@@ -34,13 +34,15 @@ image::/images/federated-edge-observability/ocp-console-secrets-aap-admin-passwo
 
 .. In the Data field click *Reveal values* to display the password. 
 +
-link:/images/ansible-edge-gitops/ocp-console-aap-admin-password-detail.png[image:/images/ansible-edge-gitops/ocp-console-aap-admin-password-detail.png[secrets-detail]
+.AAP secret detail
+image::/images/federated-edge-observability/ocp-console-aap-admin-password-detail.png[[federated-edge-observability-operators,title="AAP secret details"]
 
 . Under *Networking* > *Routes*, click the URL for `aap` route to open the Ansible Automation Platform interface. 
 
-.. Log in using the `admin` user and the password you retrieved from the `aap-admin-password` secret. The following image shows the login screen:
-+
-link:/images/ansible-edge-gitops/ocp-console-secrets-aap-admin-password.png[image:/images/federated-edge-observability/app-login.png[AAP login screen]
+.. Log in using the `admin` user and the password you retrieved from the `aap-admin-password` secret. The following image shows the screen that appears after logging in
+
+.AAP screen
+image::/images/federated-edge-observability/app-login.png[[federated-edge-observability-operators,title="AAP screen"]
 
 === Logging in using secret retrieved using https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_get_credentials.sh[ansible_get_credentials.sh]
 
