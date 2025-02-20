@@ -272,12 +272,12 @@ image::/images/federated-edge-observability/FEO-vms.png[federated-edge-observabi
 .federated-edge-observability-grafana
 image::/images/federated-edge-observability/FEO-grafana.png[federated-edge-observability-grafana,title="Federated Edge Observability Graphs"]
 
-.. Under *Dashboards* select *OpenTelemetry Collector HostMetrics (Node Exporter)* should be receiving data and drawing graphs for each of the nodes:
+. Under *Dashboards* select *OpenTelemetry Collector HostMetrics (Node Exporter)* should be receiving data and drawing graphs for each of the nodes:
 +
 .federated-edge-observability-grafana
 image::/images/federated-edge-observability/FEO-grafana-plotted.png[federated-edge-observability-grafana,title="Federated Edge Observability displayed Graphs"]
 
-Please see link:/federated-edge-observability/ansible-automation-platform/[AnsibleAutomation Platform] for more information on how this pattern uses the
+See link:/federated-edge-observability/ansible-automation-platform/[AnsibleAutomation Platform] for more information on how this pattern uses the
 Ansible Automation Platform Operator for OpenShift.
 
 == Infrastructure Elements of this Pattern
@@ -298,9 +298,3 @@ versions and profiles for future pattern development.
 
 Vault is used as the authoritative source for the Kiosk ssh pubkey via the External Secrets Operator. As part of this pattern HashiCorp Vault
 has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
-
-== Next Steps
-
-=== https://groups.google.com/g/validatedpatterns[Help & Feedback]
-
-=== https://github.com/validatedpatterns-sandbox/federated-edge-observability/issues[Report Bugs]
