@@ -221,14 +221,18 @@ To install the {fe-pattern} pattern by using the web console you must first inst
 
 To deploy the cluster by using the `pattern.sh` file, complete the following steps:
 
-. Log in to your cluster by running the following command:
+. Log in to your cluster by running the following this procedure:
+
+.. Obtain an API token by visiting link:https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request[https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request].
+
+.. Log in to the cluster by running the following command: 
 +
 [source,terminal]
 ----
-$ oc login
+$ $ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
 ----
 +
-Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
+Alternatively log in by running the following command:
 +
 [source,terminal]
 ----
