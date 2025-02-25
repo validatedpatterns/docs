@@ -1,0 +1,5 @@
+== Troubleshooting
+
+=== Our https://github.com/validatedpatterns/ansible-edge-gitops/issues[Issue Tracker]
+
+Please file an issue if you see a problem!
