@@ -281,8 +281,7 @@ image::/images/federated-edge-observability/FEO-grafana.png[federated-edge-obser
 .federated-edge-observability-grafana
 image::/images/federated-edge-observability/FEO-grafana-plotted.png[federated-edge-observability-grafana,title="Federated Edge Observability displayed Graphs"]
 
-See link:/federated-edge-observability/ansible-automation-platform/[AnsibleAutomation Platform] for more information on how this pattern uses the
-Ansible Automation Platform Operator for OpenShift.
+See link:/federated-edge-observability/ansible-automation-platform/[AnsibleAutomation Platform] for more information on how this pattern uses the Ansible Automation Platform Operator for OpenShift.
 
 == Infrastructure Elements of this Pattern
 
