@@ -246,7 +246,7 @@ $ export KUBECONFIG=~/<path_to_kubeconfig>
 $ ./pattern.sh make install
 ----
 
-.Versification
+.Verification
 
 . Verify that the Operators have been installed.
 
