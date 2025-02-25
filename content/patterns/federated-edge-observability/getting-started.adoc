@@ -65,11 +65,11 @@ upstream	git@github.com:validatedpatterns-sandbox/federated-edge-observability.g
 upstream	git@github.com:validatedpatterns-sandbox/federated-edge-observability.git (push)
 ----
 
-. Create a local copy of the Helm values file that can safely include credentials.
+. Make a local copy of secrets template outside of your repository to hold credentials for the pattern.
 +
 [WARNING]
 ====
-Do not commit this file. You do not want to push personal credentials to GitHub.
+Do not place this file in your repository, and do not commit or push it. This would risk pushing personal credentials to GitHub.
 ====
 +
 Run the following commands:
