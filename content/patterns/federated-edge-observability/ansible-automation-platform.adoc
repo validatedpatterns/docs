@@ -10,15 +10,14 @@ aliases: /federated-edge-observability/aap/
 include::modules/comm-attributes.adoc[]
 
 [id="ansible-automation-pattern"]
-== Ansible Automation Platform
-
-=== Logging in to the Ansible Automation Platform
+== Logging in to the Ansible Automation Platform
 
 The default login user for the AAP interface is `admin`, and the password is randomly generated during installation. This password is required to access the interface.However, logging into the interface is not necessary, as the pattern automatically configures the AAP instance. The pattern retrieves the password using the same method as the `ansible_get_credentials.sh` script (described below).
 
 If you need to inspect the AAP instance or modify its configuration, there are two ways to log in. Both methods give access to the same instance using the same password.
 
-=== Logging in using a secret retrieved from the OpenShift Console
+[id="logging-in-using-a-secret-retrieved-from-the-openshift-console"]
+== Logging in using a secret retrieved from the OpenShift Console
 
 Follow these steps to log in to the Ansible Automation Platform using the OpenShift console:
 
@@ -42,7 +41,10 @@ image::/images/federated-edge-observability/ocp-console-aap-admin-password-detai
 .AAP screen
 image::/images/federated-edge-observability/app-login.png[[federated-edge-observability-operators,title="AAP screen"]
 
-=== Logging in using secret retrieved using https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_get_credentials.sh[ansible_get_credentials.sh]
+
+[id="logging-in-using-secret-retrieved-using-script-ansible_get_credentials"]
+
+== Logging in using secret retrieved using https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_get_credentials.sh[ansible_get_credentials.sh]
 
 Follow this procedure to log in to the Ansible Automation Platform using the `ansible_get_credentials.sh` script:
 
