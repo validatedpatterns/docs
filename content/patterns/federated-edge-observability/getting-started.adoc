@@ -19,7 +19,7 @@ include::modules/comm-attributes.adoc[]
  ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
 * A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
 * The Helm binary, see link:https://helm.sh/docs/intro/install/[Installing Helm]
-For installation tooling dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
+For installation tool dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
 
 [id="preparing-for-deployment"]
 == Preparing for deployment
