@@ -25,6 +25,7 @@
 :hcp-pattern: HyperShift pattern
 :ie-pattern: Industrial Edge pattern
 :ie: Industrial Edge
+:fe-pattern: Federated Edge Observability pattern
 :mcg-pattern: Multicloud GitOps pattern
 :amx-mcg-pattern: Intel AMX accelerated Multicloud GitOps pattern
 :mcg-sgx-hello-world-pattern: Intel SGX protected application in Multicloud GitOps pattern
@@ -82,7 +83,7 @@
 //OpenShift
 :rh-ocp: Red{nbsp}Hat OpenShift Container Platform
 :ocp: OpenShift Container Platform
-:ocp-version: 4.12
+:ocp-version: 4.17
 :ocp-registry: OpenShift image registry
 //Single node and 3-node OpenShift
 :sno: single-node OpenShift
