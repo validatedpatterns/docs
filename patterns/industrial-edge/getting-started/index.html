@@ -944,23 +944,21 @@ $ git checkout -b my-branch Edit the values-global.yaml file to customize the de
 $ vi values-global.yaml Add the changes to the staging area by running the following command:
 $ git add values-global.yaml Commit the changes by running the following command:
 $ git commit -m &#34;No updates&#34; Push the changes to your forked repository:
-$ git push origin my-branch The preferred way to install this pattern is You can proceed to install the Federated Edge Observability pattern pattern by using the web console or from command line by using the script ./pattern.sh script.
-To install the Federated Edge Observability pattern pattern by using the web console you must first install the Validated Patterns Operator. The Validated Patterns Operator installs and manages Validated Patterns.
+$ git push origin my-branch The preferred way to install this pattern is to use the script ./pattern.sh script.
 Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
 Log in to your cluster by running the following this procedure:
 Obtain an API token by visiting https://oauth-openshift.apps.&lt;your-cluster&gt;.&lt;domain&gt;/oauth/token/request.
 Log in to the cluster by running the following command:
 $ $ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your-cluster&gt;.&lt;domain&gt;:6443 Alternatively log in by running the following command:
 $ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
-$ ./pattern.sh make install Verification Verify that the Operators have been installed.
-To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page. .federated-edge-observability-operators image::/images/federated-edge-observability/FEO-operators.png[federated-edge-observability-operators,title=&#34;Federated Edge Observability Operators&#34;]
-Wait some time for everything to deploy. You can track the progress through the Hub ArgoCD UI from the nines menu.
-Figure 1. Federated Edge Observability Applications As part of installing by using the script pattern.sh pattern, HashiCorp Vault is installed. Running ./pattern.sh make install also calls the load-secrets makefile target. This load-secrets target looks for a YAML file describing the secrets to be loaded into vault and in case it cannot find one it will use the values-secret.yaml.template file in the git repository to try to generate random secrets.
+$ ./pattern.sh make install Verification Verify that the Operators have been installed, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
+Figure 1. Federated Edge Observability Operators Wait some time for everything to deploy. You can track the progress through the Hub ArgoCD UI from the nines menu.
+Figure 2. Federated Edge Observability Applications As part of installing by using the script pattern.sh pattern, HashiCorp Vault is installed. Running ./pattern.sh make install also calls the load-secrets makefile target. This load-secrets target looks for a YAML file describing the secrets to be loaded into vault and in case it cannot find one it will use the values-secret.yaml.template file in the git repository to try to generate random secrets.
 For more information, see section on Vault.
 Under Virtualization &gt; VirtualMachines, the virtual machines show as Running. Once they are in Running state the Provisioning workflow will run on them, install the OpenTelemetry collector, and start reporting metrics to the Edge Observability Stack in the hub cluster.
-Figure 2. Federated Edge Observability Virtual Machines Log in to the Grafana dashboard in the nines menu under Grafana Observability. Log in username and password is admin.
-Figure 3. Federated Edge Observability Graphs Under Dashboards select OpenTelemetry Collector HostMetrics (Node Exporter) should be receiving data and drawing graphs for each of the nodes:
-Figure 4. Federated Edge Observability displayed Graphs See AnsibleAutomation Platform for more information on how this pattern uses the Ansible Automation Platform Operator for OpenShift.
+Figure 3. Federated Edge Observability Virtual Machines Log in to the Grafana dashboard in the nines menu under Grafana Observability. Log in username and password is admin.
+Figure 4. Federated Edge Observability Graphs Under Dashboards select OpenTelemetry Collector HostMetrics (Node Exporter) should be receiving data and drawing graphs for each of the nodes:
+Figure 5. Federated Edge Observability displayed Graphs See AnsibleAutomation Platform for more information on how this pattern uses the Ansible Automation Platform Operator for OpenShift.
 Infrastructure Elements of this Pattern Ansible Automation Platform A fully functional installation of the Ansible Automation Platform operator is installed on your OpenShift cluster to configure and maintain the VMs for this demo. AAP maintains a dynamic inventory of kiosk machines and can configure a VM from template to fully functional kiosk in about 10 minutes.
 OpenShift Virtualization OpenShift Virtualization is a Kubernetes-native way to run virtual machine workloads. It is used in this pattern to host VMs simulating an Edge environment; the chart that configures the VMs is designed to be flexible to allow easy customization to model different VM sizes, mixes, versions and profiles for future pattern development.
 HashiCorp Vault Vault is used as the authoritative source for the Kiosk ssh pubkey via the External Secrets Operator. As part of this pattern HashiCorp Vault has been installed. Refer to the section on Vault.
