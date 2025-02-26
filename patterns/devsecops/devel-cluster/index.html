@@ -2095,7 +2095,9 @@ $ cd &lt;repository-name&gt; Switch to the branch you created in &#34;Getting St
 $ git checkout my-branch Edit the existing ~/values-secret-multicloud-gitops.yaml
 $ vi ~/values-secret-multicloud-gitops.yaml Add the following block to define a new top-level secret called mysecret:
 secrets: - name: mysecret vaultPrefixes: - global fields: - name: foo onMissingValue: generate - name: bar onMissingValue: generate Load the secrets into the Vault by running the following command:
-$ ./pattern.sh make load-secrets Verify the secret in the Vault UI.
+$ ./pattern.sh make load-secrets If this command fails, for whatever reason, you most likely will not get a helpful error message since we avoid logging sensitive information by default. In this situation, it’s often helpful to run the following command before you try loading the secrets again in order to see a more detailed error message.
+$ .export EXTRA_PLAYBOOK_OPTS=&#39;-e hide_sensitive_output=&#34;false&#34; -vvv&#39; This is intended as a temporary debug measure and should not be part of a normal production workflow since it may very well log secrets to stdout.
+Verify the secret in the Vault UI.
 Access the Vault’s web UI.
 From the Dashboard menu navigate to the secret/ secrets engine where your secrets are stored.
 Expand the global folder.
