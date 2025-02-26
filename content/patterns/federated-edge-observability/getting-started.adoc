@@ -212,9 +212,7 @@ $ git commit -m "No updates"
 $ git push origin my-branch
 ----
 
-The preferred way to install this pattern is You can proceed to install the {fe-pattern} pattern by using the web console or from command line by using the script `./pattern.sh` script. 
-
-To install the {fe-pattern} pattern by using the web console you must first install the Validated Patterns Operator. The Validated Patterns Operator installs and manages Validated Patterns. 
+The preferred way to install this pattern is to use the script `./pattern.sh` script. 
 
 [id="deploying-cluster-using-patternsh-file"]
 == Deploying the cluster by using the pattern.sh file
@@ -248,10 +246,8 @@ $ ./pattern.sh make install
 
 .Verification
 
-. Verify that the Operators have been installed.
-
- .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
- +
+. Verify that the Operators have been installed, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
++
 .federated-edge-observability-operators
 image::/images/federated-edge-observability/FEO-operators.png[federated-edge-observability-operators,title="Federated Edge Observability Operators"]
 
@@ -287,17 +283,12 @@ See link:/federated-edge-observability/ansible-automation-platform/[AnsibleAutom
 
 === https://www.redhat.com/en/technologies/management/ansible[Ansible Automation Platform]
 
-A fully functional installation of the Ansible Automation Platform operator is installed on your OpenShift cluster to configure and
-maintain the VMs for this demo. AAP maintains a dynamic inventory of kiosk machines and can configure a VM from template to fully functional
-kiosk in about 10 minutes.
+A fully functional installation of the Ansible Automation Platform operator is installed on your OpenShift cluster to configure and maintain the VMs for this demo. AAP maintains a dynamic inventory of kiosk machines and can configure a VM from template to fully functional kiosk in about 10 minutes.
 
 === OpenShift https://docs.openshift.com/container-platform/latest/virt/about_virt/about-virt.html[Virtualization]
 
-OpenShift Virtualization is a Kubernetes-native way to run virtual machine workloads. It is used in this pattern to host VMs simulating an
-Edge environment; the chart that configures the VMs is designed to be flexible to allow easy customization to model different VM sizes, mixes,
-versions and profiles for future pattern development.
+OpenShift Virtualization is a Kubernetes-native way to run virtual machine workloads. It is used in this pattern to host VMs simulating an Edge environment; the chart that configures the VMs is designed to be flexible to allow easy customization to model different VM sizes, mixes, versions and profiles for future pattern development.
 
 === HashiCorp https://www.vaultproject.io/[Vault]
 
-Vault is used as the authoritative source for the Kiosk ssh pubkey via the External Secrets Operator. As part of this pattern HashiCorp Vault
-has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
+Vault is used as the authoritative source for the Kiosk ssh pubkey via the External Secrets Operator. As part of this pattern HashiCorp Vault has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
