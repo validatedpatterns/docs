@@ -1,10 +1,10 @@
+:toc: 
 ---
 title: Ansible Automation Platform
 weight: 20
 aliases: /federated-edge-observability/aap/
 ---
 
-:toc: right
 :imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
