@@ -1,0 +1,67 @@
+---
+menu:
+  learn:
+    parent: Validated patterns frameworks
+title: Adding Operators to the framework
+weight: 23
+aliases: /ocp-framework/adding-operator-to-framework/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: PROCEDURE
+include::modules/comm-attributes.adoc[]
+
+Subscriptions are defined in the values files and they are OpenShift Operator subscriptions from the Operator Hub. Subscriptions contribute to the creation of a software bill of materials (SBOM), detailing all intended installations within the ClusterGroup. For example in `values-hub.yaml`, the subscriptions defined in the subscriptions section specify Operators that are installed in the hub cluster when you deploy the validated pattern.
+
+This procedure describes how subscriptions to Operators are added to the validated pattern framework.
+
+.Procedure
+
+=== 1. Identify required application services
+* Decide the application services necessary to support the workload.  
+* These services are managed through Operators, which handle their lifecycle within OpenShift.
+
+=== 2. Define Operators in the values file
+* Use the validated pattern framework to specify required Operators in a values file (`values-<site>.yaml`).  
+* This file should reflect the specific pattern and site type where the Operators will be deployed.
+
+=== 3. Add subscription entries
+* Define the required Operators by adding subscription entries in the `values-<site>.yaml` file.  
+* Each entry should specify:
+  ** The Operator name  
+  ** The namespace where it should be deployed  
+  ** The subscription channel  
+  ** The ClusterServiceVersion (CSV)  
+
+.Example: Deploying Advanced Cluster Management, AMQ, and AMQ Streams
+
+For example, if you want to deploy Advanced Cluster Management, AMQ (messaging) and AMQ Streams (Kafka) in your factory cluster, you would follow the guidance here:
+
+The assumption is there is a `values-factory.yaml` file that is used to deploy the factory cluster. The file should include the following entries:
++
+[source,yaml]
+----
+namespaces:
+  - open-cluster-management
+  - my-application
+  - backend-storage
+
+subscriptions:
+  - name: advanced-cluster-management
+    namespace: open-cluster-management
+    channel: release-2.3
+    csv: advanced-cluster-management.v2.3.2
+
+  - name: amq-streams
+    namespace: my-application
+    channel: amq-streams-1.7.x
+    csv: amqstreams.v1.7.1
+
+  - name: amq-broker
+    namespace: my-application
+    channel: 7.8.x
+    csv: amq-broker-operator.v7.8.1-opr-3
+----
+
+The validated pattern framework provisions the required Operators and deploys them to the specified namespaces, ensuring they are available for workload deployment.  

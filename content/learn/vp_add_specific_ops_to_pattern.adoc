@@ -1,0 +1,68 @@
+---
+menu:
+  learn:
+    parent: Validated patterns frameworks
+title: Adding a specific operator to hub values file
+weight: 24
+aliases: /ocp-framework/adding-specific-operator-to-hub/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: PROCEDURE
+include::modules/comm-attributes.adoc[]
+
+== Procedure: Changing Subscription to Use a specific Operator Version
+
+This procedure outlines the steps to change an Operator subscription to use a specific version by updating the `csv` field and configuring the installation approval process.
+
+[NOTE]
+====
+This is required if an issue prevents the Operator from being successfully installed.
+====
+
+.Procedure
+
+. Change the `values-hub.yaml` file to include the following fields under `subscriptions`:
+  
+* `csv` - Specifies the exact Operator version to install.  
+* `installPlanApproval` - Set to `Manual` to prevent automatic installation.  
++
+Update `values-hub.yaml` as follows:
++
+[source,yaml]
+----
+clusterGroup:
+...
+  subscriptions:
+    acm:
+      name: advanced-cluster-management
+      namespace: open-cluster-management
+      channel: release-2.11
+      csv: advanced-cluster-management.v2.11.1
+      installPlanApproval: Manual
+----
++
+This change ensures that the specified version is not installed until manually approved.
+
+. With the `installPlanApproval` set to `Manual`, follow these steps to manually approve the installation:
+
+. Navigate to *Operators* -> *Installed Operators* in the OpenShift Web Console.
+. Locate the *InstallPlans* section.
+. Find the pending install plan for the Operator.
+. Click *Review manual InstallPlan*.
+. Click *Approve* to proceed with the installation.
+
+. Optional: Automate approval and deploy the specified Operator version without manual intervention:
+
+.. Edit the `values-global.yaml` file.
+.. Add the `autoApproveManualInstallPlans` variable and set it to `true` as shown below:
++
+[source,yaml]
+----
+global:
+  options:
+    autoApproveManualInstallPlans: true
+----
+
+This configuration generates a cronJob that runs every 5 minutes, automatically approving install plans that match the specified `csv` version.
