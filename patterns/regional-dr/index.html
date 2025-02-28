@@ -771,7 +771,7 @@ Navigate to the root directory of the cloned repository by running the following
 $ cd /path/to/your/repository Log in to your cluster by running the following this procedure:
 Obtain an API token by visiting https://oauth-openshift.apps.&lt;your-cluster&gt;.&lt;domain&gt;/oauth/token/request
 Log in with this retrieved token by running the following command:
-$ oc login --token=sha256~AUv_4DGQoFMVzmdO3cg3v4vnUuaV3lYcy6N2SCwVOz4 --server=https://api.&lt;your-cluster&gt;.&lt;domain&gt;:6443 Alternatively log in by running the following command:
+$ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your-cluster&gt;.&lt;domain&gt;:6443 Alternatively log in by running the following command:
 $ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster by running the following command:
 $ ./pattern.sh make install Verify that the Operators have been installed.
 To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
