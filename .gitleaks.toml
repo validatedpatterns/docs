@@ -1,10 +1,1 @@
-[allowlist]
-paths =
-  '''.*\.html$''',
-]
-
-regexes = [
-  # Ignore lines containing these
-  '''oc login''',
-  '''sha256~AUv_4DGQoFMVzmdO3cg3v4vnUuaV3lYcy6N2SCwVOz4''',
-]
+.github/linters/.gitleaks.toml
