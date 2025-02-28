@@ -1,6 +1,10 @@
-[whitelist]
-# As of v4, gitleaks only matches against filename, not path in the
-# files directive.  Leaving content for backwards compatibility.
-files = [
-  "secrets/*",
+[allowlist]
+paths =
+  '''.*\.html$''',
+]
+
+regexes = [
+  # Ignore lines containing these
+  '''oc login''',
+  '''sha256~AUv_4DGQoFMVzmdO3cg3v4vnUuaV3lYcy6N2SCwVOz4''',
 ]
