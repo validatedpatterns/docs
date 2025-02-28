@@ -1,0 +1,11 @@
+[allowlist]
+paths = [
+  '''.*\.html$''',
+  '''content\/patterns\/ansible-edge-gitops-kasten\/ideas-for-customization\.md''',
+]
+
+regexes = [
+  # Ignore lines containing these
+  '''oc login''',
+  '''sha256~AUv_4DGQoFMVzmdO3cg3v4vnUuaV3lYcy6N2SCwVOz4''',
+]

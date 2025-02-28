@@ -70,3 +70,13 @@ lintwordlist: ## Sorts and removes duplicates from spellcheck exception file .wo
 .PHONY: clean
 clean: ## Removes any unneeded spurious files
 	@rm -rvf ./.jekyll-cache ./_site ./tmp super-linter.log dictionary.dic public/*
+
+.PHONY: super-linter
+super-linter: ## Runs super linter locally
+	rm -rf .mypy_cache
+	podman run -e RUN_LOCAL=true -e USE_FIND_ALGORITHM=true	\
+					-e VALIDATE_GITLEAKS=true \
+					$(DISABLE_LINTERS) \
+					-v $(PWD):/tmp/lint:rw,z \
+					-w /tmp/lint \
+					ghcr.io/super-linter/super-linter:slim-v7
