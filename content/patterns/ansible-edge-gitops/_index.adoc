@@ -72,10 +72,6 @@ image::/images/ansible-edge-gitops/ansible-edge-gitops-arch.png[Ansible-Edge-Git
 .Ansible-Edge-GitOps-Physical-Architecture
 image::/images/ansible-edge-gitops/aeg-arch-schematic.png[Ansible-Edge-GitOps-Physical-Architecture]
 
-=== Recorded demo
-
-TBD
-
 === Other presentations featuring this pattern
 
 ==== Registration required
