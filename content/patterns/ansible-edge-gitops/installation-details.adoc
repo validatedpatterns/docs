@@ -2,62 +2,29 @@
 
 == Installation Steps
 
-These are the steps run by
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/Makefile[make
+These are the steps run by https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/Makefile[make
 install] and what each one does:
 
 === https://github.com/validatedpatterns/common/blob/main/Makefile[operator-deploy]
 
-The operator-deploy task installs the Validated Patterns Operator, which
-in turn creates a subscription for the OpenShift GitOps operator and
-installs both the cluster and hub instances of it. The clustergroup
-application will then read the values-global.yaml and values-hub.yaml
-files for other subscriptions and applications to install.
+The `operator-deploy` task installs the Validated Patterns Operator, which in turn creates a subscription for the OpenShift GitOps operator and installs both the cluster and hub instances of it. The clustergroup application will then read the values-global.yaml and values-hub.yaml files for other subscriptions and applications to install.
 
-The
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/Makefile[legacy-install]
-is still provided for users that cannot or do not want to use the
-Validated Patterns operator. Instead of installing the operator, it
-installs a helm chart that does the same thing - installs a subscription
-for OpenShift GitOps and installs a cluster-wide and hub instance of
-that operator. It then proceeds with installing the clustergroup
-application.
-
-Note that both the
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/Makefile[upgrade]
-and
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/Makefile[legacy-upgrade]
-targets are now equivalent and interchangeable with `+install+` and
-`+legacy-install+` (respectively - `+legacy-install/legacy-upgrade+` are
-not compatible with standard `+install/upgrade+`. This was not always
-the case, so both install/upgrade targets are still provided).
+The `install` and `upgrade` targets are interchangeable and handle both initial installation and updates. These targets ensure that the necessary components, including OpenShift GitOps and the `clustergroup` application, are deployed and updated as needed.
 
 ==== Imperative section
 
-Part of the operator-deploy process is creating and running the
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-hub.yaml[imperative]
-tools as defined in the hub values file. In this pattern, that includes
-running the playbook to deploy the metal worker.
+Part of the operator-deploy process is creating and running the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-hub.yaml[imperative]
+tools as defined in the hub values file. In this pattern, that includes running the playbook to deploy the metal worker.
 
-The real code for this playbook (outside of a shell wrapper) is
+The playbook code is
 https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/deploy_kubevirt_worker.yml[here].
 
-This script is another Ansible playbook that deploys a node to run the
-Virtual Machines for the demo. The playbook uses the OpenShift
-machineset API to provision the node in the first availability zone it
-finds. Currently, AWS is the only major public cloud provider that
-offers the deployment of a metal node through the normal provisioning
-process. We hope that Azure and GCP will support this functionality soon
-as well.
+This Ansible Playbook deploys a node to run the Virtual Machines for the demo. The playbook uses the OpenShift
+machineset API to provision the node in the first availability zone it finds. Currently, AWS is the only major public cloud provider that
+offers the deployment of a metal node through the normal provisioning process. We hope that Azure and GCP will support this functionality soon.
 
-Please be aware that the metal node is rather more expensive in compute
-costs than most other AWS machine types. The trade-off is that running
-the demo without hardware acceleration would take ~4x as long.
-
-It takes about 20-30 minutes for the metal node to become available to
-run VMs. If you would like to see the current status of the metal node,
-you can check it this way (assuming your kubeconfig is currently set up
-to point to your cluster):
+Be aware that the metal node is rather more expensive in compute costs than most other AWS machine types. The trade-off is that running the demo without hardware acceleration would take ~4x as long.
+It takes about 20-30 minutes for the metal node to become available to run VMs. If you want to see the current status of the metal node, you can check it this way (assuming your `kubeconfig` is currently set up to point to your cluster):
 
 [source,shell]
 ----
@@ -76,84 +43,64 @@ openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2c         1         1 
 openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2d         0         0                             47m
 ----
 
-When the `+metal-worker+` is showing "`READY`" and "`AVAILABLE`", the
-virtual machines will begin provisioning on it.
+When the `metal-worker` is showing `READY` and `AVAILABLE`, the virtual machines will begin provisioning on it.
 
-The metal node will be destroyed when the cluster is destroyed. The
-script is idempotent and will create at most one metal node per cluster.
+The metal node is destroyed when the cluster is destroyed. The script is idempotent and will create at most one metal node per cluster.
 
 === https://github.com/validatedpatterns/common/blob/main/Makefile[post-install]
 
-Note that all the steps of `+post-install+` are idempotent. If you want
-or need to reconfigure vault or AAP, the recommended way to do so is to
-call `+make post-install+`. This may change as we move elements of this
-pattern into the new imperative framework in `+common+`.
+All the steps of `post-install` are idempotent. If you want or need to reconfigure vault or AAP, the recommended way to do so is to
+call `make post-install`. This might change as we move elements of this pattern into the new imperative framework in `+common+`.
 
 Specific processes that are called by post-install include:
 
 ==== https://github.com/validatedpatterns/common/blob/main/scripts/vault-utils.sh[vault-init]
 
-Vault requires extra setup in the form of unseal keys and configuration
-of secrets. The vault-init task does this. Note that it is safe to run
+Vault requires extra setup in the form of unseal keys and configuration of secrets. The vault-init task does this. Note that it is safe to run
 vault-init as it will exit successfully if it can connect to a cluster
 with a running, unsealed vault.
 
 ==== https://github.com/validatedpatterns/common/blob/main/scripts/vault-utils.sh[load-secrets]
 
-This process (which calls push_secrets) calls an Ansible playbook that
-reads the values-secret.yaml file and stores the data it finds there in
-vault as keypairs. These values are then usable in the kubernetes
-cluster. This pattern uses the ssh pubkey for the kiosk VMs via the
+This process (which calls push_secrets) calls an Ansible playbook that reads the values-secret.yaml file and stores the data it finds there in
+vault as keypairs. These values are then usable in the kubernetes cluster. This pattern uses the ssh pubkey for the kiosk VMs via the
 external secrets operator.
 
-This script will update secrets in vault if re-run; it is safe to re-run
-if the secret values have not changed as well.
+This script will update secrets in vault if re-run; it is safe to re-run if the secret values have not changed as well.
 
 ==== https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[configure-controller]
 
-There are two parts to this script - the first part, with the code
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/ansible_get_credentials.yml[here],
-retrieves the admin credentials from OpenShift to enable login to the
+There are two parts to this script - the first part, with the code https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/ansible_get_credentials.yml[here], retrieves the admin credentials from OpenShift to enable login to the
 AAP Controller.
 
-The second part, which is the bulk of the ansible-load-controller
-process is
+The second part, which is the bulk of the ansible-load-controller process is
 https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/ansible_configure_controller.yml[here]
-and uses the
-https://github.com/redhat-cop/controller_configuration[controller
-configuration] framework to configure the Ansible Automation Platform
-instance that is installed by the helm chart.
+and uses the https://github.com/redhat-cop/controller_configuration[controller
+configuration] framework to configure the Ansible Automation Platform instance that is installed by the helm chart.
 
-This division is so that users can adapt this pattern more easily if
-they’re running AAP, but not on OpenShift.
+This division is so that users can adapt this pattern more easily if they are running AAP, but not on OpenShift.
 
 The script waits until AAP is ready, and then proceeds to:
 
-[arabic]
 . Install the manifest to entitle AAP
 . Configure the custom Credential Types the demo needs
 . Define an Organization for the Demo
 . Add a Project for the Demo
 . Add the Credentials for jobs to use
-. Configure Host inventory and inventory sources, and smart inventories
-to define target hosts
+. Configure Host inventory and inventory sources, and smart inventories to define target hosts
 . Configure an Execution environment for the Demo
 . Configure Job Templates for the Demo
 . Configure Schedules for the jobs that need to repeat
 
-_Note:_ This script has defaults that it overrides when run as part of
-`+make install+` that it derives from the environment (the repo that it
-is attached to and the branch that it is on). So if you need to re-run
-it, the most straightforward way to do this is to run `+make upgrade+`
+_Note:_ This script has defaults that it overrides when run as part of make install` that it derives from the environment (the repo that it
+is attached to and the branch that it is on). So if you need to re-run i, the most straightforward way to do this is to run `+make upgrade+`
 when using the make-based installation process.
 
 == OpenShift GitOps (ArgoCD)
 
-OpenShift GitOps is central to this pattern as it is responsible for
-installing all of the other components. The installation process is
+OpenShift GitOps is central to this pattern as it is responsible for insalling all of the other components. The installation process is
 driven through the installation of the
-https://github.com/validatedpatterns/common/tree/v1/clustergroup[clustergroup]
-chart. This in turn reads the repo’s
+https://github.com/validatedpatterns/common/tree/v1/clustergroup[clustergroup] cart. This in turn reads the repo’s
 https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-global.yaml[global
 values file], which instructs it to read the
 https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-hub.yaml[hub
