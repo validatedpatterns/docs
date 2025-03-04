@@ -13,27 +13,20 @@ include::modules/comm-attributes.adoc[]
 
 == Understanding the Edge GitOps VMs https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/edge-gitops-vms[Helm Chart]
 
-The heart of the Edge GitOps VMs helm chart is a
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml[template file] that is designed with a degree of flexibility in mind. Specifically, it allows you to specify:
+The Edge GitOps VMs Helm chart provides a flexible and scalable way to define and deploy Virtual Machines (VMs) using OpenShift Virtualization. At its core, the chart leverages a https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml[template file]  that allows for dynamic configuration of multiple VM groups. Key features include: 
 
-. One or more "`groups`" of VMs (such as "`kiosk`" in our example) with
-an arbitrary number of instances per group
-. Different sizing parameters (cores, threads, memory, disk size) for
-each group
-. Different SSH keypair credentials for each group
-. Different OS’s for each group
-. Different sets of TCP and/or UDP ports open for each group
+* Defining one or more VM groups (e.g., kiosk) with a configurable number of instances per group.
+* Customizing compute resources (CPU, memory, storage) for each group.
+* Specifying SSH key credentials for secure access per group.
+* Selecting different operating systems for each VM group.
+* Configuring TCP/UDP ports to be exposed per group.
 
-This allows you to set up, for example, 4 VMs of one type, 3 VMs of another, and 2 VMs of a third type. This will hopefully abstract the
-details of VM creation through OpenShift Virtualization and allow you to focus on what kinds and how many of the different sorts of VMs you might
-need to set up. (Note that AWS’s smallest metal node is 72 cores and 192 GB of RAM at initial release, so there is plenty of room for different
-combinations/configurations.)
+This modular approach abstracts the complexities of VM provisioning in OpenShift Virtualization, enabling users to focus on defining the types and quantities of VMs needed. The chart supports highly scalable deployments, making it suitable for environments with large compute resources, such as AWS metal nodes with 72 cores and 192 GB RAM.
 
 === How we got here - Default OpenShift Virtualization templates
 
-OpenShift virtualization expects to install virtual machines from image templates by default, and provides a number of OpenShift templates to
-facilitate this. The default templates are installed in the `openshift+` namespace; the OpenShift console also provides a wizard
-for creating VMs that use the same templates.
+OpenShift virtualization expects to install virtual machines from image templates by default, and provides several OpenShift templates to
+facilitate this. The default templates are installed in the `openshift` namespace; the OpenShift console also provides a wizard for creating VMs that use the same templates.
 
 As of OpenShift Virtualization 4.10.1, the following templates were available on installation:
 
@@ -244,33 +237,57 @@ windows2k19-server-large                        Template for Microsoft Windows S
 windows2k19-server-medium                       Template for Microsoft Windows Server 2019 VM. A PVC with the Windows disk im...   3 (1 generated)   1
 ----
 
-Additionally, you may copy and customize these templates if you wish.
-The
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/rhel8-kiosk-with-svc.yaml[template
+Additionally, you can copy and customize these templates if you wish.
+The https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/rhel8-kiosk-with-svc.yaml[template
 file] is an example of a customized template that was used to help develop this pattern.
 
 ==== Creating a VM from the Console via Template
 
-These templates can be run through the OpenShift Console from the Virtualization tab. Note the "`Create VM`" buttons on the right side of
-this picture:
+Follow these steps to create a VM from the console using a template:
 
+. Access the Virtualization Tab
+
+.. Navigate to the OpenShift Console.
+
+.. Click on the *Virtualization* tab.
+
+.. Locate the list of available *VM templates*.
+
+.. Identify the *Create VM button* next to the desired template.
++
 link:/images/ansible-edge-gitops/aeg-console-vm-template-1.png[image:/images/ansible-edge-gitops/aeg-console-vm-template-1.png[console-template-vm-1]]
 
-Clicking on the "`Create VM`" button will bring up a wizard that looks like this:
+. Launch the VM Creation Wizard 
 
+.. Click on the Create VM button. 
+
+.. The VM Creation Wizard will open, displaying configuration options.
++
 link:/images/ansible-edge-gitops/console-vm-template-wizard.png[image:/images/ansible-edge-gitops/console-vm-template-wizard.png[console-template-wizard]]
 
-Accepting the defaults from this wizard will give a success screen:
+. Configure and create the VM. 
 
+.. Accept the default settings or modify them as needed
+
+.. Click Create to proceed.
+
+.. After successful creation, a confirmation screen will appear
++
 link:/images/ansible-edge-gitops/console-vm-template-wizard-success.png[image:/images/ansible-edge-gitops/console-vm-template-wizard-success.png[console-template-wizard-success]]
 
-Until it is deleted, you can monitor the machine’s lifecycle from the VirtualMachines tab:
+. Monitor the VM Lifecycle
 
+.. Navigate to the *VirtualMachines* tab.
+
+.. Observe the VM’s status as it spins up.
+
+.. The VM will remain active until manually deleted
++
 link:/images/ansible-edge-gitops/console-vm-spinning-up.png[image:/images/ansible-edge-gitops/console-vm-spinning-up.png[console-monitor-vm]]
 
 This is a great way to gain familiarity with how the system works, but we might possibly want an interface we can use more programmatically.
 
-==== Creating a VM from the command line via `+oc process+`
+==== Creating a VM from the command line via `oc process`
 
 This is a useful way to understand what kinds of objects OpenShift Virtualization creates and manages:
 
@@ -293,8 +310,7 @@ The first part of the template file sets up some variables that we will use late
 scheme for VM name creation because that is an easy way to make each item in the set declarative - it ensures that if you ask for 5 VMs of a
 particular type, they will have predictable names, and if one is deleted, it will be replaced by a VM with the same name.
 
-We use explicit "`range`" variables for the Go templating. This is because the implicit range variable is easily "`trampled`", and we have
-at least two different dimensions to iterate on - vm "`role`" and "`index`" within that role.
+We use explicit `range` variables for the Go templating. This is because the implicit range variable is easily `trampled`, and we have at least two different dimensions to iterate on - vm `role` and `index` within that role.
 
 ==== The External Secret - SSH pubkey
 
@@ -303,10 +319,10 @@ unprivileged user’s home directory - and generally that unprivileged user is e
 RHEL images are configured to only allow SSH access via pubkey. In this pattern, the private key and public key for the SSH connections are
 loaded into both Vault (which we inherited from previous patterns) and Ansible Automation Platform.
 
-Since the keys are defined per VM "`group`", it is possible and expected that you could have different keypairs for different groups of VMs.
+Since the keys are defined per VM `group`, it is possible and expected that you could have different keypairs for different groups of VMs.
 Nothing would prevent you from using the same keypair for all machines if you have different groups, though.
 
-While the pubkey is not truly a "`secret`", the availability of the External Secrets Operator made for a nice opportunity to allow for
+While the pubkey is not truly a `secret`, the availability of the External Secrets Operator made for a nice opportunity to allow for
 variance in configuration without necessarily requiring local customization of the pattern. The OpenShift Virtualization model has no
 way of knowing that multiple servers may have the same SSH credentials, and in fact cannot depend on this. So it creates a pubkey object by
 default for each VM, and we imitate this behavior in the pattern.
@@ -321,8 +337,7 @@ exceptions:
 
 * app
 
-This is set to `$identifier` to match a general pattern with other
-applications.
+This is set to `$identifier` to match a general pattern with other applications.
 
 * edge-gitops-role
 
@@ -335,8 +350,8 @@ Other resources in the rest of the VirtualMachine definition are copied from the
 
 ===== Initial user access
 
-Note that the initial user (default: `+cloud-user+`) and initial password are customizable through values overrides. The `kiosk` type shows
-an example of how to either use a user/password specific to the type or a default for the chart by using the `coalesce` function.
+The initial user (default: `cloud-user`) and initial password are customizable through values overrides. The `kiosk` type shows
+an example of how to either use a `user/password` specific to the type or a default for the chart by using the `coalesce` function.
 
 ==== The Service definition
 
@@ -358,58 +373,47 @@ There are three mechanisms for access to these VMs:
 ==== Ansible - keypair authentication
 
 The ssh keypairs from your values-secret.yaml are loaded into both Vault and AAP for use later. The pattern currently defines one such keypair,
-`kiosk-ssh`, but could support more, such as `iot-ssh`, `gateway-ssh`, etc. more details on how to expand on this pattern are
-described below.
+`kiosk-ssh`, but could support more, such as `iot-ssh`, `gateway-ssh`, and so on more details on how to expand on this pattern are described below.
 
 AAP only needs the private key and the username as a machine credential. The public key is not truly a secret, but it seemed interesting and
 useful to use the external secret operator to associate the public key with VM instances this way and prevent having to diverge from the
 upstream pattern to include local ssh pubkey specifications.
 
-Note that the default SSH setting for RHEL does not allow password-based logins via SSH, and it’s at the very least inconvenient to copy the SSH
+The default SSH setting for RHEL does not allow password-based logins via SSH, and it is at the very least inconvenient to copy the SSH
 private key into a VM inside the cluster, so the typical way the keypair will be used is through Ansible.
 
-==== Virtual Machine Console Access via OpenShift Console
+==== Virtual Machine Console Access using OpenShift Console
 
-Navigate to Virtualization -> VirtualMachines and make sure Project: All Projects or edge-gitops-vms is selected:
+Access the virtual machine console using the OpenShift Console by following this procedure:
 
+. Navigate to *Virtualization* -> *VirtualMachines* and make sure *Project: All Projects* or *edge-gitops-vms* is selected:
++
 link:/images/ansible-edge-gitops/aeg-show-vms.png[image:/images/ansible-edge-gitops/aeg-show-vms.png[show-vms]]
 
-Click on the "`three dots`" menu on the right, which will open a dialog like the following:
-
+. Click the `three dots` menu on the right, which opens a dialog such as the following:
++
 link:/images/ansible-edge-gitops/aeg-open-vm-console.png[image:/images/ansible-edge-gitops/aeg-open-vm-console.png[show-vm-open-console]]
-
-_Note:_ In OpenShift Virtualization 4.11, the "`Open Console`" option appears when you click on the virtual machine name in openshift console.
++
+[NOTE]
+====
+In OpenShift Virtualization 4.11, the `Open Console` option appears when you click the virtual machine name in OpenShift console.
 The dialog looks like this:
++
+link:/images/ansible-edge-gitops/aeg-kubevirt411-con-ignition.png[image:/images/ansible-edge-gitops/aeg-kubevirt411-con-ignition.png[kubevirt411-vm-open-console]
+====
 
-link:/images/ansible-edge-gitops/aeg-kubevirt411-con-ignition.png[image:/images/ansible-edge-gitops/aeg-kubevirt411-con-ignition.png[kubevirt411-vm-open-console]]
-
-The virtual machine console view will either show a standard RHEL console login screen, or if the demo is working as designed, it will
-show the Ignition application running in kiosk mode. If the console shows a standard RHEL login, it can be accessed using the the initial
-user name (`cloud-user` by default) and password (which is what is specified in the Helm chart Values as either the password specific to
-that machine group, the default cloudInit, or a hardcoded default which can be seen in the template
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml[here].
-On a VM created through the wizard or via `oc process` from a template, the password will be set on the VirtualMachine object in the
-`+volumes+` section.
+The virtual machine console view will either show a standard RHEL console login screen, or if the demo is working as designed, it shows the Ignition application running in kiosk mode. If the console shows a standard RHEL login, it can be accessed using the the initial user name (`cloud-user` by default) and password (which is what is specified in the Helm chart Values as either the password specific to that machine group, the default `cloudInit`, or a hardcoded default which can be seen in the template https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml[here].
+On a VM created through the wizard or by using `oc process` from a template, the password is set on the VirtualMachine object in the `volumes` section.
 
 ==== Initial User login (cloud-user)
 
-In general, and before the VMs have been configured by the Ansible Jobs, you can log in to the VMs on the console using the user and password you
-specified in the Helm chart, or else you can look at the VirtualMachine object and see what the username and password setting are. The pattern,
-by design, replaces the typical console view with Firefox running in kiosk mode. But this mechanism can still be used if you change the
-console from "`VNC Console`" to "`Serial Console`".
+Before the VMs have been configured by the Ansible jobs, you can log in to the VMs on the console using the user and password you specified in the Helm chart, or you can examine the VirtualMachine object and see what the username and password setting are. The pattern, by design, replaces the typical console view with Firefox running in kiosk mode. But this mechanism can still be used if you change the console from `VNC Console` to `Serial Console`.
 
-== The "`extra`" VM Template
+== The `extra` VM Template
 
-Also included in the edge-gitops-vms chart is a separate template that will allow the creation of VMs with similar (though not identical
-characteristics) to the ones defined in the chart.
+Included in the `edge-gitops-vms` chart is a separate template that allows the creation of VMs with similar (though not identical characteristics) to the ones defined in the chart.
 
-The
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/rhel8-kiosk-with-svc.yaml[rhel8-kiosk-with-svc]
+The https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/rhel8-kiosk-with-svc.yaml[rhel8-kiosk-with-svc]
 template is preserved as an intermediate step to creating your own VM types, to see how the pipeline from default VM template -> customized
 template -> Helm-variable chart can work.
 
-== Next Steps
-
-=== https://groups.google.com/g/validatedpatterns[Help & Feedback]
-
-=== https://github.com/validatedpatterns/ansible-edge-gitops/issues[Report Bugs]

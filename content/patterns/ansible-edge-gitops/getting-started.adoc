@@ -250,7 +250,7 @@ For more information, see section on https://validatedpatterns.io/secrets/vault/
 .. Click *Start Gateway* to start the Ignition Gateway.
 
 .. Log in to the application with the userid `admin` and the password you specified as the GATEWAY_ADMIN_PASSWORD in `container_extra_params` in your `values-secret.yaml` file.
-
++
 .ansible-edge-gitops-vmconsole
 image::/images/ansible-edge-gitops/aeg-openshift-vm-console-v1.png[ansible-edge-gitops-vmconsole,title="Ansible Edge GitOps VM Console"]
 
