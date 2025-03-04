@@ -1,13 +1,20 @@
+---
+title: Ideas for Customization
+weight: 40
+aliases: /ansible-edge-gitops/ideas-for-customization/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
 == Ideas for Customization
 
 == Why change it?
 
-One of the major goals of the Red Hat patterns development process is to
-create modular, customizable demos. Maybe you are not interested in
-Ignition as an application, or you do not have kiosks…but you do have
-other use cases that involve running containers on edge devices. Maybe
-you want to experiment with different releases of RHEL, or you want to
-do something different with Ansible Automation Platform.
+One of the major goals of the Red Hat patterns development process is to create modular, customizable demos. Maybe you are not interested in
+Ignition as an application, or you do not have kiosks…but you do have other use cases that involve running containers on edge devices. Maybe you want to experiment with different releases of RHEL, or you want to do something different with Ansible Automation Platform.
 
 This demo in particular can be customized in a number of ways that might
 be very interesting - and here are some starter ideas with some

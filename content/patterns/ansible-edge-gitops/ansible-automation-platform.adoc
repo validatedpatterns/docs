@@ -1,6 +1,6 @@
 ---
 title: Ansible Automation Platform
-weight: 20
+weight: 30
 aliases: /federated-edge-observability/aap/
 ---
 

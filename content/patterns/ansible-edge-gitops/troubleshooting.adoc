@@ -1,3 +1,14 @@
+---
+title: Troubleshooting
+weight: 70
+aliases: /ansible-edge-gitops/troubleshooting/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
 == Troubleshooting
 
 === Our https://github.com/validatedpatterns/ansible-edge-gitops/issues[Issue Tracker]

@@ -1,4 +1,4 @@
-5-Day Gen AI Intensive Course with Google---
+---
 title: Getting Started
 weight: 10
 aliases: /ansible-edge-gitops/getting-started/

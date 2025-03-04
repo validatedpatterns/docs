@@ -1,3 +1,14 @@
+---
+title: Installation Details
+weight: 20
+aliases: /ansible-edge-gitops/installation-details/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
 == Installation Details
 
 == Installation Steps
@@ -93,7 +104,7 @@ The script waits until AAP is ready, and then proceeds to:
 . Configure Schedules for the jobs that need to repeat
 
 _Note:_ This script has defaults that it overrides when run as part of make install` that it derives from the environment (the repo that it
-is attached to and the branch that it is on). So if you need to re-run i, the most straightforward way to do this is to run `+make upgrade+`
+is attached to and the branch that it is on). So if you need to re-run i, the most straightforward way to do this is to run `make upgrade+`
 when using the make-based installation process.
 
 == OpenShift GitOps (ArgoCD)
@@ -109,15 +120,12 @@ and Applications listed further in the pattern.
 
 == ODF (OpenShift Data Foundations)
 
-ODF is the storage framework that is needed to provide resilient storage
-for OpenShift Virtualization. It is managed via the helm chart
+ODF is the storage framework that is needed to provide resilient storage for OpenShift Virtualization. It is managed via the helm chart
 https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/openshift-data-foundations[here].
-This is basically the same chart that our Medical Diagnosis pattern uses
-(see link:/patterns/medical-diagnosis/getting-started/[here] for details
+This is basically the same chart that our Medical Diagnosis pattern uses (see link:/patterns/medical-diagnosis/getting-started/[here] for details
 on the Medical Edge pattern’s use of storage).
 
-Please note that this chart will create a Noobaa S3 bucket named
-nb.epoch_timestamp.cluster-domain which will not be destroyed when the
+Please note that this chart will create a Noobaa S3 bucket named nb.epoch_timestamp.cluster-domain which will not be destroyed when the
 cluster is destroyed.
 
 == OpenShift Virtualization (KubeVirt)

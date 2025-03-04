@@ -12,11 +12,11 @@ One of the major goals of the Red Hat patterns development process is to create 
 
 This demo in particular can be customized in a number of ways that might be very interesting - and here are some starter ideas with some instructions on exactly what and where changes would need to be made in the pattern to accommodate those changes.
 
-# HOWTO define your own VM sets using the chart
+# Defining your own VM sets using the chart
 
-1. Either fork the repo or copy the edge-gitops-vms chart out of it.
+. Either fork the repo or copy the edge-gitops-vms chart out of it.
 
-1. Customize the [values.yaml](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/values.yaml) file
+. Customize the [values.yaml](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/values.yaml) file
 
 The `vms` data structure is designed to support multiple groups and types of VMs. The `kiosk` example defines all of the variables currently supported by the chart, including references to the Vault instance and port definitions.  If, for example, you wanted to replace kiosk with new iotsensor and iotgateway types, the whole file might look like this:
 
