@@ -306,11 +306,4 @@ by Inductive Automation.
 
 === HashiCorp https://www.vaultproject.io/[Vault]
 
-Vault is used as the authoritative source for the Kiosk ssh pubkey via the External Secrets Operator. As part of this pattern HashiCorp Vault
-has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].
-
-== Next Steps
-
-=== https://groups.google.com/g/validatedpatterns[Help & Feedback]
-
-=== https://github.com/validatedpatterns/ansible-edge-gitops/issues[Report Bugs]
+Vault is used as the authoritative source for the Kiosk ssh pubkey via the External Secrets Operator. As part of this pattern HashiCorp Vault has been installed. Refer to the section on https://validatedpatterns.io/secrets/vault/[Vault].

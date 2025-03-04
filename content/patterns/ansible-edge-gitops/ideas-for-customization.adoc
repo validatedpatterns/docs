@@ -9,32 +9,19 @@ aliases: /ansible-edge-gitops/ideas-for-customization/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-== Ideas for Customization
+== Why customize the pattern?
 
-== Why change it?
+One of the major goals of the Red Hat patterns development process is to create modular, customizable demos. Maybe you are not interested in Ignition as an application, or you do not have kiosks but you do have other use cases that involve running containers on edge devices. Maybe you want to experiment with different releases of RHEL, or you want to do something different with Ansible Automation Platform.
 
-One of the major goals of the Red Hat patterns development process is to create modular, customizable demos. Maybe you are not interested in
-Ignition as an application, or you do not have kiosks…but you do have other use cases that involve running containers on edge devices. Maybe you want to experiment with different releases of RHEL, or you want to do something different with Ansible Automation Platform.
+This demo in particular can be customized in a several ways that might be very interesting and here are some starter ideas with some instructions on exactly what and where changes would need to be made in the pattern to accommodate those changes.
 
-This demo in particular can be customized in a number of ways that might
-be very interesting - and here are some starter ideas with some
-instructions on exactly what and where changes would need to be made in
-the pattern to accommodate those changes.
+== Define your own VM sets using the chart
 
-== HOWTO define your own VM sets using the chart
+. Fork the repo or copy the `edge-gitops-vms`` chart out of it.
 
-[arabic]
-. Either fork the repo or copy the edge-gitops-vms chart out of it.
-. Customize the
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/values.yaml[values.yaml]
-file
+. Customize the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/values.yaml[values.yaml] file
 
-The `+vms+` data structure is designed to support multiple groups and
-types of VMs. The `+kiosk+` example defines all of the variables
-currently supported by the chart, including references to the Vault
-instance and port definitions. If, for example, you wanted to replace
-kiosk with new iotsensor and iotgateway types, the whole file might look
-like this:
+The `vms` data structure is designed to support multiple groups and types of VMs. The `kiosk` example defines all of the variables currently supported by the chart, including references to the Vault instance and port definitions. If, for example, you wanted to replace kiosk with new `iotsensor`` and `iotgateway` types, the file might look like this:
 
 [source,yaml]
 ----
@@ -96,20 +83,16 @@ vms:
         targetPort: 1883
 ----
 
-This would create 1 iotgateway VM and 4 iotsensor VMs. Adjustments would
-also need to be made in
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-secret.yaml.template[values-secret]
-and
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[ansible-load-controller]
-to add the iotgateway-ssh and iotsensor-ssh data structures.
+This would create 1 `iotgateway` VM and 4 `iotsensor` VMs. 
 
-== HOWTO define your own VM sets "`from scratch`"
+Adjustments would also need to be made in https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-secret.yaml.template[values-secret] and https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[ansible-load-controller] to add the `iotgateway-ssh` and `iotsensor-ssh` data structures.
 
-[arabic]
+== Defining your own VM sets "`from scratch`"
+
 . Pick a default template from the standard OpenShift Virtualization
 template library in the `+openshift+` namespace. For this pattern, we
 used `+rhel8-desktop-medium+`:
-
++
 [source,text]
 ----
 $ oc get template -n openshift rhel8-desktop-medium
@@ -117,13 +100,11 @@ NAME                   DESCRIPTION                                              
 rhel8-desktop-medium   Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
 ----
 
-[arabic]
-. It might help to create a VM through the command line template
-process, and see what objects OpenShift Virtualization creates to bring
+. Create a VM through the command line template process, and see what objects OpenShift Virtualization creates to bring
 that VM up:
-
++
 To see the actual JSON that the template converts into:
-
++
 [source,text]
 ----
 $ oc process -n openshift rhel8-desktop-medium
@@ -261,8 +242,8 @@ $ oc process -n openshift rhel8-desktop-medium
 }
 ----
 
-And to use the template to create a VM:
-
+. Use the template to create a VM:
++
 [source,shell]
 ----
 oc process -n openshift rhel8-desktop-medium | oc apply -f -
@@ -272,59 +253,39 @@ virtualmachine.kubevirt.io/rhel8-q63yuvxpjdvy18l7 created
 In just a few minutes, you will have a blank rhel8 VM running, which you
 can then login to (via console) and customize.
 
-[arabic]
 . Get the details of this template as a local YAML file:
-
++
 [source,shell]
 ----
 oc get template -n openshift rhel8-desktop-medium -o yaml > my-template.yaml
 ----
 
-Once you have this local template, you can view the elements you want to
-customize, possibly using
+Once you have this local template, you can view the elements you want to customize, possibly using
 https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml[this]
 as an example.
 
-== HOWTO Define your own Ansible Controller Configuration
+== Defining your own Ansible Controller Configuration
 
-The
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[ansible_load_controller.sh]
-is designed to be relatively easy to customize with a new controller
-configuration. Structurally, it is principally based on
+The https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[ansible_load_controller.sh]
+is designed to be relatively easy to customize with a new controller configuration. Structurally, it is principally based on
 https://github.com/redhat-cop/controller_configuration/blob/devel/playbooks/configure_controller.yml[configure_controller.yml]
-from the Red Hat Community of Practice
-https://github.com/redhat-cop/controller_configuration[controller_configuration]
-collection. The order and specific list of roles invoked is taken from
-there.
+from the Red Hat Community of Practice https://github.com/redhat-cop/controller_configuration[controller_configuration]
+collection. The order and specific list of roles invoked is taken from there.
 
-To customize it, the main thing would be to replace the different
-variables in the role tasks with the your own. The script includes the
-roles for variable types that this pattern does not manage in order to
-make that part straightforward. Feel free to add your own roles and
+To customize it, the main thing would be to replace the different variables in the role tasks with the your own. The script includes the
+roles for variable types that this pattern does not manage in order to make that part straightforward. Feel free to add your own roles and
 playbooks (and add them to the controller configuration script).
 
-The reason this pattern ships with a script as it does instead of
-invoking the referenced playbook directly is that several of the
-configuration elements depend on each other, and there was not a
-super-convenient place to put things like the controller credentials as
+The reason this pattern ships with a script as it does instead of invoking the referenced playbook directly is that several of the
+configuration elements depend on each other, and there was not a super-convenient place to put things like the controller credentials as
 the playbook suggests.
 
-== HOWTO substitute your own container application (instead of ignition)
+== Substitute your own container application (instead of ignition)
 
-[arabic]
-. Adjust the query in the
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/inventory_preplay.yml[inventory_preplay.yml]
-either by overriding the vars for the play, or forking the repo and
-replacing the vars with your own query terms. (That is, use your own
+
+. Adjust the query in the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/inventory_preplay.yml[inventory_preplay.yml]
+either by overriding the vars for the play, or forking the repo and replacing the vars with your own query terms. (That is, use your own
 label(s) and namespace to discover the services you want to connect to.
-. Adjust or override the vars in the
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/provision_kiosk.yml[provision_kiosk.yml]
-playbook to suitable values for your own container application. The
-roles it calls are fairly generic, so changing the vars is all you
-should need to do.
 
-== Next Steps
-
-=== https://groups.google.com/g/validatedpatterns[Help & Feedback]
-
-=== https://github.com/validatedpatterns/ansible-edge-gitops/issues[Report Bugs]
+. Adjust or override the vars in the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/provision_kiosk.yml[provision_kiosk.yml]
+playbook to suitable values for your own container application. The roles it calls are fairly generic, so changing the vars is all you should need to do.

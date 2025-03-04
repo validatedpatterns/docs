@@ -9,40 +9,32 @@ aliases: /ansible-edge-gitops/installation-details/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-== Installation Details
-
 == Installation Steps
 
-These are the steps run by https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/Makefile[make
-install] and what each one does:
+These are the steps run by https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/Makefile[make install] and what each one does:
 
 === https://github.com/validatedpatterns/common/blob/main/Makefile[operator-deploy]
 
-The `operator-deploy` task installs the Validated Patterns Operator, which in turn creates a subscription for the OpenShift GitOps operator and installs both the cluster and hub instances of it. The clustergroup application will then read the values-global.yaml and values-hub.yaml files for other subscriptions and applications to install.
+The `operator-deploy` task installs the Validated Patterns Operator, which in turn creates a subscription for the OpenShift GitOps operator and installs both the cluster and hub instances of it. The `clustergroup` application then reads the `values-global.yaml` and `values-hub.yaml` files for other subscriptions and applications to install.
 
 The `install` and `upgrade` targets are interchangeable and handle both initial installation and updates. These targets ensure that the necessary components, including OpenShift GitOps and the `clustergroup` application, are deployed and updated as needed.
 
 ==== Imperative section
 
-Part of the operator-deploy process is creating and running the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-hub.yaml[imperative]
-tools as defined in the hub values file. In this pattern, that includes running the playbook to deploy the metal worker.
+Part of the operator-deploy process is creating and running the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-hub.yaml[imperative] file as defined in the hub values file. This pattern includes running the playbook to deploy the metal worker.
 
-The playbook code is
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/deploy_kubevirt_worker.yml[here].
+The playbook code is https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/deploy_kubevirt_worker.yml[here].
 
-This Ansible Playbook deploys a node to run the Virtual Machines for the demo. The playbook uses the OpenShift
-machineset API to provision the node in the first availability zone it finds. Currently, AWS is the only major public cloud provider that
-offers the deployment of a metal node through the normal provisioning process. We hope that Azure and GCP will support this functionality soon.
+This Ansible Playbook deploys a node to run the Virtual Machines for the demo. The playbook uses the OpenShift machineset API to provision the node in the first availability zone it finds. Currently, AWS is the only major public cloud provider that offers the deployment of a metal node through the normal provisioning process. We hope that Azure and GCP will support this functionality soon.
 
-Be aware that the metal node is rather more expensive in compute costs than most other AWS machine types. The trade-off is that running the demo without hardware acceleration would take ~4x as long.
-It takes about 20-30 minutes for the metal node to become available to run VMs. If you want to see the current status of the metal node, you can check it this way (assuming your `kubeconfig` is currently set up to point to your cluster):
+Be aware that the metal node is rather more expensive in compute costs than most other AWS machine types. The trade-off is that running the demo without hardware acceleration would take ~4x as long. It takes about 20-30 minutes for the metal node to become available to run VMs. If you want to see the current status of the metal node, you can check it this way (assuming your `kubeconfig` is currently set up to point to your cluster):
 
 [source,shell]
 ----
 oc get -A machineset
 ----
 
-You will be looking for a machineset with `+metal-worker+` in its name:
+You are looking for a machineset with `metal-worker` in its name:
 
 [source,text]
 ----
@@ -60,141 +52,92 @@ The metal node is destroyed when the cluster is destroyed. The script is idempot
 
 === https://github.com/validatedpatterns/common/blob/main/Makefile[post-install]
 
-All the steps of `post-install` are idempotent. If you want or need to reconfigure vault or AAP, the recommended way to do so is to
-call `make post-install`. This might change as we move elements of this pattern into the new imperative framework in `+common+`.
+All the steps of `post-install` are idempotent. If you want or need to reconfigure vault or AAP, the recommended way to do so is to call `make post-install`. This might change as we move elements of this pattern into the new imperative framework in `common`.
 
-Specific processes that are called by post-install include:
+Specific processes that are called by `post-install` include:
 
 ==== https://github.com/validatedpatterns/common/blob/main/scripts/vault-utils.sh[vault-init]
 
-Vault requires extra setup in the form of unseal keys and configuration of secrets. The vault-init task does this. Note that it is safe to run
-vault-init as it will exit successfully if it can connect to a cluster
-with a running, unsealed vault.
+The `vault-init` task streamlines the initialization and unsealing of Vault, ensuring that the necessary keys and configurations are in place. Its design allows for safe execution even against an already active Vault cluster, providing both efficiency and security in managing secrets.
 
-==== https://github.com/validatedpatterns/common/blob/main/scripts/vault-utils.sh[load-secrets]
+==== https://github.com/validatedpatterns/common/blob/main/scripts/load-k8s-secrets.sh[load-secrets]
 
-This process (which calls push_secrets) calls an Ansible playbook that reads the values-secret.yaml file and stores the data it finds there in
-vault as keypairs. These values are then usable in the kubernetes cluster. This pattern uses the ssh pubkey for the kiosk VMs via the
-external secrets operator.
+This process employs an Ansible playbook to read the `values-secret.yaml` file and securely store its data as key-value pairs in HashiCorp Vault. The External Secrets Operator (ESO) then retrieves these secrets from Vault and injects them into the Kubernetes cluster as native Kubernetes Secrets, making them accessible to applications running within the cluster. 
 
-This script will update secrets in vault if re-run; it is safe to re-run if the secret values have not changed as well.
+In this specific implementation, the pattern utilizes the SSH public key for the kiosk virtual machines (VMs) using the ESO, ensuring that sensitive information, such as SSH keys, is securely managed and available to the VMs as needed.
+
+Re-running the script will update the secrets in Vault if there have been changes. If the secret values remain unchanged, re-execution is safe and will not adversely affect the existing configurations.
 
 ==== https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[configure-controller]
 
-There are two parts to this script - the first part, with the code https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/ansible_get_credentials.yml[here], retrieves the admin credentials from OpenShift to enable login to the
-AAP Controller.
+This script is divided into two main parts:
 
-The second part, which is the bulk of the ansible-load-controller process is
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/ansible_configure_controller.yml[here]
-and uses the https://github.com/redhat-cop/controller_configuration[controller
-configuration] framework to configure the Ansible Automation Platform instance that is installed by the helm chart.
+. *Retrieve Admin Credentials*: The first part of the script, located https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/ansible_get_credentials.yml[here], retrieves the admin credentials from OpenShift. These credentials are required to log in to the Ansible Automation Platform (AAP) Controller.
 
-This division is so that users can adapt this pattern more easily if they are running AAP, but not on OpenShift.
+. *Configure AAP Controller*: The second part, which constitutes the bulk of the ansible-load-controller process, is located
+https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/ansible_configure_controller.yml[here]. It uses the https://github.com/redhat-cop/controller_configuration[controller configuration] framework to configure the AAP instance installed by the Helm chart.
+
+The script is divided into two parts to make it more adaptable for users who may be running AAP on platforms other than OpenShift. This modular approach allows for easier customization and reuse.
 
 The script waits until AAP is ready, and then proceeds to:
 
 . Install the manifest to entitle AAP
-. Configure the custom Credential Types the demo needs
-. Define an Organization for the Demo
-. Add a Project for the Demo
-. Add the Credentials for jobs to use
-. Configure Host inventory and inventory sources, and smart inventories to define target hosts
-. Configure an Execution environment for the Demo
-. Configure Job Templates for the Demo
-. Configure Schedules for the jobs that need to repeat
-
-_Note:_ This script has defaults that it overrides when run as part of make install` that it derives from the environment (the repo that it
-is attached to and the branch that it is on). So if you need to re-run i, the most straightforward way to do this is to run `make upgrade+`
-when using the make-based installation process.
+. Configure the custom credential types the demo needs
+. Define an organization for the Demo
+. Add a project for the Demo
+. Add the credentials for jobs to use
+. Configure host inventory and inventory sources, and smart inventories to define target hosts
+. Configure the execution environment for the demo
+. Set up job templates required for the demo
+. Define schedules for jobs that need to run repeatedly
++
+[NOTE]
+====
+The script has defaults that are overridden when run as part of make install. These defaults are derived from the environment, including the repository and branch it is attached to. If you need to re-run the script, the most straightforward way is to use `make upgrade` when following the make-based installation process.
+====
 
 == OpenShift GitOps (ArgoCD)
 
-OpenShift GitOps is central to this pattern as it is responsible for insalling all of the other components. The installation process is
-driven through the installation of the
-https://github.com/validatedpatterns/common/tree/v1/clustergroup[clustergroup] cart. This in turn reads the repo’s
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-global.yaml[global
-values file], which instructs it to read the
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-hub.yaml[hub
-values file]. This is how the pattern knows to apply the Subscriptions
-and Applications listed further in the pattern.
+OpenShift GitOps is central to this pattern as it is responsible for insalling all of the other components. The installation process is driven through the installation of the
+https://github.com/validatedpatterns/common/tree/v1/clustergroup[clustergroup] cart. This in turn reads the repo’s https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-global.yaml[global values file], which instructs it to read the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-hub.yaml[hub values file]. This is how the pattern knows to apply the Subscriptions and Applications listed further in the pattern.
 
 == ODF (OpenShift Data Foundations)
 
-ODF is the storage framework that is needed to provide resilient storage for OpenShift Virtualization. It is managed via the helm chart
-https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/openshift-data-foundations[here].
-This is basically the same chart that our Medical Diagnosis pattern uses (see link:/patterns/medical-diagnosis/getting-started/[here] for details
-on the Medical Edge pattern’s use of storage).
+ODF is the storage framework that is needed to provide resilient storage for OpenShift Virtualization. It is managed via the helm chart https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/openshift-data-foundations[here].
 
-Please note that this chart will create a Noobaa S3 bucket named nb.epoch_timestamp.cluster-domain which will not be destroyed when the
-cluster is destroyed.
+This is basically the same chart that our Medical Diagnosis pattern uses (see link:/patterns/medical-diagnosis/getting-started/[here] for details on the Medical Edge pattern’s use of storage).
+
+[NOTE]
+====
+This chart will create a Noobaa S3 bucket named nb.epoch_timestamp.cluster-domain which will not be destroyed when the cluster is destroyed.
+====
 
 == OpenShift Virtualization (KubeVirt)
 
-OpenShift Virtualization is a framework for running virtual machines as
-native Kubernetes resources. While it can run without hardware
-acceleration, the performance of virtual machines will suffer terribly;
-some testing on a similar workload indicated a 4-6x delay running
-without hardware acceleration, so at present this pattern requires
-hardware acceleration. The pattern provides a script
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/deploy_kubevirt_worker.sh[deploy-kubevirt-worker.sh]
-which will provision a metal worker to run virtual machines for the
-pattern.
+OpenShift Virtualization is a framework for running virtual machines as native Kubernetes resources. While it can run without hardware acceleration, the performance of virtual machines will suffer terribly; some testing on a similar workload indicated a 4-6x delay running without hardware acceleration, so at present this pattern requires hardware acceleration. The pattern provides a script https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/deploy_kubevirt_worker.sh[deploy-kubevirt-worker.sh] which will provision a metal worker to run virtual machines for the pattern.
 
-OpenShift Virtualization currently supports only AWS and on-prem
-clusters; this is because of the way that baremetal resources are
-provisioned in GCP and Azure. We hope that OpenShift Virtualization can
-support GCP and Azure soon.
+OpenShift Virtualization currently supports only AWS and on-prem clusters; this is because of the way that baremetal resources are provisioned in GCP and Azure. We hope that OpenShift Virtualization can support GCP and Azure soon.
 
-The installation of the OpenShift Virtualization HyperConverged
-deployment is controlled by the chart
-https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/cnv[here].
+The installation of the OpenShift Virtualization HyperConverged deployment is controlled by the chart https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/cnv[here].
 
-OpenShift Virtualization was chosen in this pattern to avoid dealing
-with the differences in galleries and templates of images between the
-different public cloud providers. The important thing from this
-pattern’s standpoint is the availability of machine instances to manage
-(since we are simulating an Edge deployment scenario, which could either
-be bare metal instances or virtual machines); OpenShift Virtualization
-was the easiest and most portable way to spin up machine instances. It
-also provides mechanisms for defining the desired machine set
+OpenShift Virtualization was chosen in this pattern to avoid dealing with the differences in galleries and templates of images between the different public cloud providers. The important thing from this pattern’s standpoint is the availability of machine instances to manage (since we are simulating an Edge deployment scenario, which could either be bare metal instances or virtual machines); OpenShift Virtualization was the easiest and most portable way to spin up machine instances. It also provides mechanisms for defining the desired machine set
 declaratively.
 
-The creation of virtual machines is controlled by the chart
-https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/edge-gitops-vms[here].
+The creation of virtual machines is controlled by the chart https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/edge-gitops-vms[here].
 
-More details about the way we use OpenShift Virtualization are available
-link:/ansible-edge-gitops/openshift-virtualization[here].
+More details about the way we use OpenShift Virtualization are available link:/ansible-edge-gitops/openshift-virtualization[here].
 
 == Ansible Automation Platform (AAP, formerly known as Ansible Tower)
 
-The use of Ansible Automation Platform is really the centerpiece of this
-pattern. We have recognized for some time that the notion and design
-principles of GitOps should apply to things outside of Kubernetes, and
-we believe this pattern gives us a way to do that.
+The use of Ansible Automation Platform is really the centerpiece of this pattern. We have recognized for some time that the notion and design principles of GitOps should apply to things outside of Kubernetes, andwe believe this pattern gives us a way to do that.
 
-All of the Ansible interactions are defined in a Git Repository; the
-Ansible jobs that configure the VMs are designed to be idempotent (and
-are scheduled to run every 10 minutes on those VMs).
+All of the Ansible interactions are defined in a Git Repository; the Ansible jobs that configure the VMs are designed to be idempotent (and are scheduled to run every 10 minutes on those VMs).
 
-The installation of AAP itself is governed by the chart
-https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/ansible-automation-platform[here].
-The post-installation configuration of AAP is done via the
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[ansible-load-controller.sh]
-script.
+The installation of AAP itself is governed by the chart https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/ansible-automation-platform[here].
+The post-installation configuration of AAP is done via the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[ansible-load-controller.sh] script.
 
-It is very much the intention of this pattern to make it easy to replace
-the specific Edge management use case with another one. Some ideas on
-how to do that can be found
-link:/ansible-edge-gitops/ideas-for-customization/[here].
+It is very much the intention of this pattern to make it easy to replace the specific Edge management use case with another one. Some ideas on how to do that can be found link: ansible-edge-gitops/ideas-for-customization/[here].
 
-Specifics of the Ansible content for this pattern can be seen
-https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/ansible[here].
+Specifics of the Ansible content for this pattern can be seen https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/ansible[here].
 
-More details of the specifics of how AAP is configured are available
-link:/ansible-edge-gitops/ansible-automation-platform/[here].
-
-== Next Steps
-
-=== https://groups.google.com/g/validatedpatterns[Help & Feedback]
-
-=== https://github.com/validatedpatterns/ansible-edge-gitops/issues[Report Bugs]
+More details of the specifics of how AAP is configured are available link:/ansible-edge-gitops/ansible-automation-platform/[here].
