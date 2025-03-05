@@ -1,7 +1,7 @@
 ---
 title: Ansible Automation Platform
 weight: 30
-aliases: /federated-edge-observability/aap/
+aliases: /ansible-edge-gitops/ansible-automation-platform/
 ---
 
 :toc: 
@@ -25,21 +25,21 @@ Follow these steps to log in to the Ansible Automation Platform using the OpenSh
 . In the OpenShift console, go to *Workloads* > *Secrets* and select the `ansible-automation-platform` project if you want to limit the number of secrets you can see.
 +
 .AAP secret
-image::/images/ansible-edge-gitops/ocp-console-secrets-aap-admin-password-v1.png[federated-edge-observability-operators,title="AAP secret"]
+image::/images/ansible-edge-gitops/ocp-console-secrets-aap-admin-password-v1.png[ansible-edge-observability-operators,title="AAP secret"]
 
 .. Select the `controller-admin-password`. 
 
 .. In the Data field click *Reveal values* to display the password. 
 +
 .AAP secret detail
-image::/images/ansible-edge-gitops/ocp-console-aap-admin-password-detail-v1.png[federated-edge-observability-operators,title="AAP secret details"]
+image::/images/ansible-edge-gitops/ocp-console-aap-admin-password-detail-v1.png[ansible-edge-observability-operators,title="AAP secret details"]
 
 . Under *Networking* > *Routes*, click the URL for the `controller` route to open the Ansible Automation Platform interface. 
 
 .. Log in using the `admin` user and the password you retrieved from the `controller-admin-password` secret. The following image shows the screen that appears after logging in.
 +
 .AAP screen
-image::/images/federated-edge-observability/app-login.png[federated-edge-observability-operators,title="AAP screen"]
+image::/images/ansible-edge-gitops/app-login.png[ansible-edge-observability-operators,title="AAP screen"]
 
 [id="logging-in-using-secret-retrieved-using-script-ansible_get_credentials"]
 === Logging in using a secret retrieved with ansible_get_credentials.sh
@@ -229,11 +229,9 @@ This role is responsible does the following:
 
 This role is responsible for:
 
-* Downloading and running a podman image on the system (and configure it
-to auto-update)
+* Downloading and running a podman image on the system (and configure it to auto-update)
 * Setting the container up to run at boot time
-* Passing any other runtime arguments to the container. In this
-container’s case, that includes specifying an admin password override.
+* Passing any other runtime arguments to the container. In this container’s case, that includes specifying an admin password override.
 
 === Extra Playbooks in the Pattern
 

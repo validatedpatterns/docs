@@ -250,8 +250,7 @@ oc process -n openshift rhel8-desktop-medium | oc apply -f -
 virtualmachine.kubevirt.io/rhel8-q63yuvxpjdvy18l7 created
 ----
 
-In just a few minutes, you will have a blank rhel8 VM running, which you
-can then login to (via console) and customize.
+In just a few minutes, you will have a blank rhel8 VM running, which you can then login to by using the console and customize.
 
 . Get the details of this template as a local YAML file:
 +

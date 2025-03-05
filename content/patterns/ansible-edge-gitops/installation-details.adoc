@@ -136,7 +136,7 @@ All of the Ansible interactions are defined in a Git Repository; the Ansible job
 The installation of AAP itself is governed by the chart https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/ansible-automation-platform[here].
 The post-installation configuration of AAP is done via the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[ansible-load-controller.sh] script.
 
-It is very much the intention of this pattern to make it easy to replace the specific Edge management use case with another one. Some ideas on how to do that can be found link: ansible-edge-gitops/ideas-for-customization/[here].
+It is very much the intention of this pattern to make it easy to replace the specific Edge management use case with another one. Some ideas on how to do that can be found link:/ansible-edge-gitops/ideas-for-customization/[here].
 
 Specifics of the Ansible content for this pattern can be seen https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/ansible[here].
 

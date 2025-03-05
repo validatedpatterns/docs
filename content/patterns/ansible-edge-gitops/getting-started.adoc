@@ -10,7 +10,7 @@ aliases: /ansible-edge-gitops/getting-started/
 include::modules/comm-attributes.adoc[]
 
 [id="deploying-ansible-edge-gitops-pattern"]
-== Deploying the {fe-pattern}
+== Deploying the Ansible Edge GitOps pattern
 
 .Prerequisites
 
@@ -154,7 +154,7 @@ This is the username and password that you use to log in to link:https://catalog
       base64: true
 ----
 
-. Create and switch to a new branch named my-branch, by running the following command:
+. Create and switch to a new branch named `my-branch`, by running the following command:
 +
 [source,terminal]
 ----
@@ -204,7 +204,7 @@ To deploy the cluster by using the `pattern.sh` file, complete the following ste
 +
 [source,terminal]
 ----
-$ $ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
+$ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
 ----
 +
 Or log in by running the following command:
@@ -223,10 +223,8 @@ $ ./pattern.sh make install
 
 .Verification
 
-. Verify that the Operators have been installed.
-
- .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
- +
+. Verify that the Operators have been installed. Navigate to *Operators → Installed Operators* page in the OpenShift Container Platform web console, 
++
 .ansible-edge-gitops-operators
 image::/images/ansible-edge-gitops/ansible-edge-ops.png[ansible-edge-gitops-operators,title="Ansible Edge GitOps Operators"]
 
@@ -239,11 +237,11 @@ As part of installing by using the script `pattern.sh` pattern, HashiCorp Vault 
 
 For more information, see section on https://validatedpatterns.io/secrets/vault/[Vault].
 
-. Under *Virtualization* > *VirtualMachines*, the virtual machines show as `Running`. Once they are in `Running` state the provisioning workflow runs on them, and installs Firefox, Kiosk mode, and the Ignition application on them:
+. Under *Virtualization* > *VirtualMachines*, the virtual machines show as `Running`. Once they are in the `Running` state the provisioning workflow runs on them, and installs Firefox, Kiosk mode, and the Ignition application on them:
 
 . Select one of the VMs to see the details of the VM. The VMs are named `rhel8-kiosk-001` and `rhel8-kiosk-002`
 
-.. Open the Console tab. Choose any of these options; this tutorial assumes you chose `Ignition`:
+.. Open the Console tab. Choose any of these options; this section assumes you chose `Ignition`:
 
 .. Read and accept the license agreement and click *Finish setup*.
 
