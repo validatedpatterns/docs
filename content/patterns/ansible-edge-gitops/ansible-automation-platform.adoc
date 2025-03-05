@@ -243,9 +243,3 @@ This does the work of provisioning the kiosk, which configures kiosk mode, and a
 runs the link:/patterns/ansible-edge-gitops/ansible-automation-platform/#roles-included-in-the-pattern[kiosk_mode]
 and link:/patterns/ansible-edge-gitops/ansible-automation-platform/#roles-included-in-the-pattern[container_lifecycle]
 roles.
-
-== Next Steps
-
-=== https://groups.google.com/g/validatedpatterns[Help & Feedback]
-
-=== https://github.com/validatedpatterns/ansible-edge-gitops/issues[Report Bugs]
