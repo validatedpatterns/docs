@@ -241,7 +241,7 @@ For more information, see section on https://validatedpatterns.io/secrets/vault/
 
 . Select one of the VMs to see the details of the VM. The VMs are named `rhel8-kiosk-001` and `rhel8-kiosk-002`
 
-.. Open the Console tab. Choose any of these options; this section assumes you chose `Ignition`:
+.. Open the *Console* tab. Choose any of these options; this section assumes you chose `Ignition - Standard Edition`:
 
 .. Read and accept the license agreement and click *Finish setup*.
 
@@ -252,12 +252,12 @@ For more information, see section on https://validatedpatterns.io/secrets/vault/
 .ansible-edge-gitops-vmconsole
 image::/images/ansible-edge-gitops/aeg-openshift-vm-console-v1.png[ansible-edge-gitops-vmconsole,title="Ansible Edge GitOps VM Console"]
 
-See link:/ansible-edge-gitops/installation-details/[Installation Details] for more information about the installation steps.
+* See link:/ansible-edge-gitops/installation-details/[Installation Details] for more information about the installation steps.
 
-See link:/ansible-edge-gitops/ansible-automation-platform/[Ansible Automation Platform] for more information about how this pattern uses the
+* See link:/ansible-edge-gitops/ansible-automation-platform/[Ansible Automation Platform] for more information about how this pattern uses the
 Ansible Automation Platform Operator for OpenShift.
 
-See link:/ansible-edge-gitops/openshift-virtualization/[OpenShift Virtualization] for more information on how this pattern uses OpenShift
+* See link:/ansible-edge-gitops/openshift-virtualization/[OpenShift Virtualization] for more information about how this pattern uses OpenShift
 Virtualization.
 
 == Infrastructure Elements of this Pattern

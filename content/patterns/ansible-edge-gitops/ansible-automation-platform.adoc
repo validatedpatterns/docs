@@ -29,17 +29,14 @@ image::/images/ansible-edge-gitops/ocp-console-secrets-aap-admin-password-v1.png
 
 .. Select the `controller-admin-password`. 
 
-.. In the Data field click *Reveal values* to display the password. 
+.. In the *Data* field click *Reveal values* to display the password. 
 +
 .AAP secret detail
 image::/images/ansible-edge-gitops/ocp-console-aap-admin-password-detail-v1.png[ansible-edge-observability-operators,title="AAP secret details"]
 
 . Under *Networking* > *Routes*, click the URL for the `controller` route to open the Ansible Automation Platform interface. 
 
-.. Log in using the `admin` user and the password you retrieved from the `controller-admin-password` secret. The following image shows the screen that appears after logging in.
-+
-.AAP screen
-image::/images/ansible-edge-gitops/app-login.png[ansible-edge-observability-operators,title="AAP screen"]
+.. Log in using the `admin` user and the password you retrieved from the `controller-admin-password` secret. 
 
 [id="logging-in-using-secret-retrieved-using-script-ansible_get_credentials"]
 === Logging in using a secret retrieved with ansible_get_credentials.sh

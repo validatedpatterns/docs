@@ -48,7 +48,7 @@ openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2d         0         0 
 
 When the `metal-worker` is showing `READY` and `AVAILABLE`, the virtual machines will begin provisioning on it.
 
-The metal node is destroyed when the cluster is destroyed. The script is idempotent and will create at most one metal node per cluster.
+The metal node is destroyed when the cluster is destroyed. The script is idempotent and creates at most one metal node per cluster.
 
 === https://github.com/validatedpatterns/common/blob/main/Makefile[post-install]
 
