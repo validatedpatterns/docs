@@ -15,39 +15,43 @@ One of the major goals of the Red Hat patterns development process is to create 
 
 This demo in particular can be customized in a several ways that might be very interesting and here are some starter ideas with some instructions on exactly what and where changes would need to be made in the pattern to accommodate those changes.
 
-== Define your own VM sets using the chart
+== Defining your own VM sets using the chart
 
-. Fork the repo or copy the `edge-gitops-vms`` chart out of it.
+. Fork the link:https://github.com/validatedpatterns/ansible-edge-gitops[repo].
 
-. Customize the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/values.yaml[values.yaml] file
+. Clone the repo to your local machine.
 
-The `vms` data structure is designed to support multiple groups and types of VMs. The `kiosk` example defines all of the variables currently supported by the chart, including references to the Vault instance and port definitions. If, for example, you wanted to replace kiosk with new `iotsensor`` and `iotgateway` types, the file might look like this:
+. Change to the `ansible-edge-gitops` directory.
 
+. Create and switch to a new branch named `my-branch`, by running the following command:
++
+[source,shell]
+----
+$ git checkout -b my-branch
+----
+
+. Change to the `overides` directory.
++
+For example, to replace kiosk with new `iotsensor`` and `iotgateway` types, the file might look like this:
++
 [source,yaml]
 ----
 ---
-secretStore:
-  name: vault-backend
-  kind: ClusterSecretStore
-
-cloudInit:
-  defaultUser: 'cloud-user'
-  defaultPassword: '6toh-n1d5-9xpq'
-
 vms:
+  # Define the iotsensor VMs
   iotsensor:
     count: 4
     flavor: small
     workload: server
     os: rhel8
-    role: iotgateway
+    role: iotsensor
     storage: 20Gi
     memory: 2Gi
     cores: 1
     sockets: 1
     threads: 1
     cloudInitUser: cloud-user
-    cloudInitPassword: 6toh-n1d5-9xpq
+    cloudInitPassword: 'password123'
     template: rhel8-server-small
     sshsecret: secret/data/hub/iotsensor-ssh
     sshpubkeyfield: publickey
@@ -56,6 +60,8 @@ vms:
         port: 22
         protocol: TCP
         targetPort: 22
+
+  # Define the iotgateway VMs
   iotgateway:
     count: 1
     flavor: medium
@@ -68,7 +74,7 @@ vms:
     sockets: 1
     threads: 1
     cloudInitUser: cloud-user
-    cloudInitPassword: 6toh-n1d5-9xpq
+    cloudInitPassword: 'password123'
     template: rhel8-server-medium
     sshsecret: secret/data/hub/iotgateway-ssh
     sshpubkeyfield: publickey
@@ -85,29 +91,34 @@ vms:
 
 This would create 1 `iotgateway` VM and 4 `iotsensor` VMs. 
 
-Adjustments would also need to be made in https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-secret.yaml.template[values-secret] and https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[ansible-load-controller] to add the `iotgateway-ssh` and `iotsensor-ssh` data structures.
+You also need to to define the SSH secrets (`iotgateway-ssh` and `iotsensor-ssh`) data structures in `~/values-secret.yaml`.
 
 == Defining your own VM sets "`from scratch`"
 
-. Pick a default template from the standard OpenShift Virtualization
-template library in the `+openshift+` namespace. For this pattern, we
-used `+rhel8-desktop-medium+`:
+. Pick a default template from the standard OpenShift Virtualization template library in the `openshift` namespace. For this pattern, we used `rhel8-desktop-medium`:
 +
 [source,text]
 ----
 $ oc get template -n openshift rhel8-desktop-medium
+----
++
+.Example output
+[source,text]
+----
 NAME                   DESCRIPTION                                                                        PARAMETERS        OBJECTS
 rhel8-desktop-medium   Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
 ----
 
-. Create a VM through the command line template process, and see what objects OpenShift Virtualization creates to bring
-that VM up:
+. Create a VM through the command line template process by running the following command: 
 +
-To see the actual JSON that the template converts into:
+[source,shell]
+----
+oc process -n openshift rhel8-desktop-medium | oc apply -f -
+----
 +
+.Example output
 [source,text]
 ----
-$ oc process -n openshift rhel8-desktop-medium
 {
     "kind": "List",
     "apiVersion": "v1",
@@ -118,15 +129,15 @@ $ oc process -n openshift rhel8-desktop-medium
             "kind": "VirtualMachine",
             "metadata": {
                 "annotations": {
-                    "vm.kubevirt.io/validations": "[\n  {\n    \"name\": \"minimal-required-memory\",\n    \"path\": \"jsonpath::.spec.domain.resources.requests.memory\",\n    \"rule\": \"integer\",\n    \"message\": \"This VM requires more memory.\",\n    \"min\": 1610612736\n  }\n]\n"
+                    "vm.kubevirt.io/validations": "[\n  {\n    \"name\": \"minimal-required-memory\",\n    \"path\": \"jsonpath::.spec.domain.memory.guest\",\n    \"rule\": \"integer\",\n    \"message\": \"This VM requires more memory.\",\n    \"min\": 1610612736\n  }\n]\n"
                 },
                 "labels": {
-                    "app": "rhel8-yywa22lijw8hl017",
+                    "app": "rhel8-y43iixn7issko1lu",
                     "vm.kubevirt.io/template": "rhel8-desktop-medium",
                     "vm.kubevirt.io/template.revision": "1",
-                    "vm.kubevirt.io/template.version": "v0.19.5"
+                    "vm.kubevirt.io/template.version": "v0.31.1"
                 },
-                "name": "rhel8-yywa22lijw8hl017"
+                "name": "rhel8-y43iixn7issko1lu"
             },
             "spec": {
                 "dataVolumeTemplates": [
@@ -134,7 +145,7 @@ $ oc process -n openshift rhel8-desktop-medium
                         "apiVersion": "cdi.kubevirt.io/v1beta1",
                         "kind": "DataVolume",
                         "metadata": {
-                            "name": "rhel8-yywa22lijw8hl017"
+                            "name": "rhel8-y43iixn7issko1lu"
                         },
                         "spec": {
                             "sourceRef": {
@@ -161,11 +172,12 @@ $ oc process -n openshift rhel8-desktop-medium
                             "vm.kubevirt.io/workload": "desktop"
                         },
                         "labels": {
-                            "kubevirt.io/domain": "rhel8-yywa22lijw8hl017",
+                            "kubevirt.io/domain": "rhel8-y43iixn7issko1lu",
                             "kubevirt.io/size": "medium"
                         }
                     },
                     "spec": {
+                        "architecture": "amd64",
                         "domain": {
                             "cpu": {
                                 "cores": 1,
@@ -178,7 +190,7 @@ $ oc process -n openshift rhel8-desktop-medium
                                         "disk": {
                                             "bus": "virtio"
                                         },
-                                        "name": "rhel8-yywa22lijw8hl017"
+                                        "name": "rootdisk"
                                     },
                                     {
                                         "disk": {
@@ -197,22 +209,16 @@ $ oc process -n openshift rhel8-desktop-medium
                                 "interfaces": [
                                     {
                                         "masquerade": {},
+                                        "model": "virtio",
                                         "name": "default"
                                     }
                                 ],
-                                "networkInterfaceMultiqueue": true,
                                 "rng": {}
                             },
-                            "machine": {
-                                "type": "pc-q35-rhel8.4.0"
-                            },
-                            "resources": {
-                                "requests": {
-                                    "memory": "4Gi"
-                                }
+                            "memory": {
+                                "guest": "4Gi"
                             }
                         },
-                        "evictionStrategy": "LiveMigrate",
                         "networks": [
                             {
                                 "name": "default",
@@ -223,13 +229,13 @@ $ oc process -n openshift rhel8-desktop-medium
                         "volumes": [
                             {
                                 "dataVolume": {
-                                    "name": "rhel8-yywa22lijw8hl017"
+                                    "name": "rhel8-y43iixn7issko1lu"
                                 },
-                                "name": "rhel8-yywa22lijw8hl017"
+                                "name": "rootdisk"
                             },
                             {
                                 "cloudInitNoCloud": {
-                                    "userData": "#cloud-config\nuser: cloud-user\npassword: nnpa-12td-e0r7\nchpasswd: { expire: False }"
+                                    "userData": "#cloud-config\nuser: cloud-user\npassword: 1pna-7owu-mrna\nchpasswd: { expire: False }"
                                 },
                                 "name": "cloudinitdisk"
                             }
@@ -246,45 +252,22 @@ $ oc process -n openshift rhel8-desktop-medium
 +
 [source,shell]
 ----
-oc process -n openshift rhel8-desktop-medium | oc apply -f -
+$ oc process -n openshift rhel8-desktop-medium | oc apply -f -
+----
++
+.Example output
+[source,text]
+----
 virtualmachine.kubevirt.io/rhel8-q63yuvxpjdvy18l7 created
 ----
-
++
 In just a few minutes, you will have a blank rhel8 VM running, which you can then login to by using the console and customize.
 
 . Get the details of this template as a local YAML file:
 +
 [source,shell]
 ----
-oc get template -n openshift rhel8-desktop-medium -o yaml > my-template.yaml
+$ oc get template -n openshift rhel8-desktop-medium -o yaml > my-template.yaml
 ----
-
-Once you have this local template, you can view the elements you want to customize, possibly using
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/charts/hub/edge-gitops-vms/templates/virtual-machines.yaml[this]
-as an example.
-
-== Defining your own Ansible Controller Configuration
-
-The https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[ansible_load_controller.sh]
-is designed to be relatively easy to customize with a new controller configuration. Structurally, it is principally based on
-https://github.com/redhat-cop/controller_configuration/blob/devel/playbooks/configure_controller.yml[configure_controller.yml]
-from the Red Hat Community of Practice https://github.com/redhat-cop/controller_configuration[controller_configuration]
-collection. The order and specific list of roles invoked is taken from there.
-
-To customize it, the main thing would be to replace the different variables in the role tasks with the your own. The script includes the
-roles for variable types that this pattern does not manage in order to make that part straightforward. Feel free to add your own roles and
-playbooks (and add them to the controller configuration script).
-
-The reason this pattern ships with a script as it does instead of invoking the referenced playbook directly is that several of the
-configuration elements depend on each other, and there was not a super-convenient place to put things like the controller credentials as
-the playbook suggests.
-
-== Substitute your own container application (instead of ignition)
-
-
-. Adjust the query in the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/inventory_preplay.yml[inventory_preplay.yml]
-either by overriding the vars for the play, or forking the repo and replacing the vars with your own query terms. (That is, use your own
-label(s) and namespace to discover the services you want to connect to.
-
-. Adjust or override the vars in the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/provision_kiosk.yml[provision_kiosk.yml]
-playbook to suitable values for your own container application. The roles it calls are fairly generic, so changing the vars is all you should need to do.
++
+Once you have this local template, you can view the elements you want to customize.
