@@ -17,7 +17,7 @@ include::modules/comm-attributes.adoc[]
 OpenShift virtualization expects to install virtual machines from image templates by default, and provides several OpenShift templates to
 facilitate this. The default templates are installed in the `openshift` namespace; the OpenShift console also provides a wizard for creating VMs that use the same templates.
 
-As of OpenShift Virtualization 4.10.1, the following templates were available on installation:
+The following templates were available on installation:
 
 [source,text]
 ----
