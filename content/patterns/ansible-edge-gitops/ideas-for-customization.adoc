@@ -9,7 +9,7 @@ aliases: /ansible-edge-gitops/ideas-for-customization/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-== Why customize the pattern?
+== Why customize the pattern
 
 One of the major goals of the Red Hat patterns development process is to create modular, customizable demos. Maybe you are not interested in Ignition as an application, or you do not have kiosks but you do have other use cases that involve running containers on edge devices. Maybe you want to experiment with different releases of RHEL, or you want to do something different with Ansible Automation Platform.
 
@@ -19,7 +19,7 @@ This demo in particular can be customized in a several ways that might be very i
 
 . Fork the link:https://github.com/validatedpatterns/ansible-edge-gitops[repo].
 
-. Clone the repo to your local machine.
+. Clone the repository to your local machine.
 
 . Change to the `ansible-edge-gitops` directory.
 
@@ -91,7 +91,7 @@ vms:
 
 This would create 1 `iotgateway` VM and 4 `iotsensor` VMs. 
 
-You also need to to define the SSH secrets (`iotgateway-ssh` and `iotsensor-ssh`) data structures in `~/values-secret.yaml`.
+You also need to define the SSH secrets (`iotgateway-ssh` and `iotsensor-ssh`) data structures in `~/values-secret.yaml`.
 
 == Defining your own VM sets "`from scratch`"
 
@@ -261,7 +261,7 @@ $ oc process -n openshift rhel8-desktop-medium | oc apply -f -
 virtualmachine.kubevirt.io/rhel8-q63yuvxpjdvy18l7 created
 ----
 +
-In just a few minutes, you will have a blank rhel8 VM, which you can then start and log into by using the console and customize.
+In just a few minutes, you will have a blank rhel8 VM, which you can then start and log in to by using the console and customize.
 
 . Get the details of this template as a local YAML file:
 +
