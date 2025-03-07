@@ -154,6 +154,27 @@ This is the username and password that you use to log in to link:https://catalog
       base64: true
 ----
 
+.. Edit the `automation-hub-token` section to include the token generated at the *Load token* link at link:https://console.redhat.com/ansible/automation-hub/token[Automation Hub Token] to generate a token. For example:
++
+[source,yaml]
+----
+  - name: automation-hub-token
+    fields:
+    - name: token
+      path: '/path/to/automation-hub-token'
+----
+
+.. Optionally: Edit the `agof-vault-file` section to use the following (you do not need additional secrets for this pattern):
++
+[source,yaml]
+----
+  - name: agof-vault-file
+    fields:
+    - name: agof-vault-file
+      value: '---'
+      base64: true
+----
+
 . Create and switch to a new branch named `my-branch`, by running the following command:
 +
 [source,terminal]
