@@ -70,31 +70,13 @@ Re-running the script will update the secrets in Vault if there have been change
 
 ==== https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[configure-controller]
 
-This script is divided into two main parts:
+Key components of the configuration process:
 
-. *Retrieve Admin Credentials*: The first part of the script, located https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/ansible_get_credentials.yml[here], retrieves the admin credentials from OpenShift. These credentials are required to log in to the Ansible Automation Platform (AAP) Controller.
+* *Retrieving AAP Credentials*: The script runs the `ansible_get_credentials.yml` playbook to obtain necessary credentials for accessing and managing the AAP instance.
 
-. *Configure AAP Controller*: The second part, which constitutes the bulk of the ansible-load-controller process, is located
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/ansible_configure_controller.yml[here]. It uses the https://github.com/redhat-cop/controller_configuration[controller configuration] framework to configure the AAP instance installed by the Helm chart.
+* *Parsing Secrets*: It then executes the `parse_secrets_from_values_secret.yml` playbook to extract and process sensitive information stored in the `values_secret.yaml` file, which includes passwords, tokens, or other confidential data required for configuration.
 
-The script is divided into two parts to make it more adaptable for users who may be running AAP on platforms other than OpenShift. This modular approach allows for easier customization and reuse.
-
-The script waits until AAP is ready, and then proceeds to:
-
-. Install the manifest to entitle AAP
-. Configure the custom credential types the demo needs
-. Define an organization for the Demo
-. Add a project for the Demo
-. Add the credentials for jobs to use
-. Configure host inventory and inventory sources, and smart inventories to define target hosts
-. Configure the execution environment for the demo
-. Set up job templates required for the demo
-. Define schedules for jobs that need to run repeatedly
-+
-[NOTE]
-====
-The script has defaults that are overridden when run as part of make install. These defaults are derived from the environment, including the repository and branch it is attached to. If you need to re-run the script, the most straightforward way is to use `make upgrade` when following the make-based installation process.
-====
+* *Configuring the AAP Instance*: Finally, the script runs the `ansible_configure_controller.yml` playbook to set up and configure the AAP controller based on the retrieved credentials and parsed secrets.
 
 == OpenShift GitOps (ArgoCD)
 
