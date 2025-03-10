@@ -153,13 +153,6 @@ $ git push origin my-branch
 
 To deploy the cluster by using the `pattern.sh` script, complete the following steps:
 
-. Navigate to the root directory of the cloned repository by running the following command:
-+
-[source,terminal]
-----
-$ cd /path/to/your/repository
-----
-
 . Log in to your cluster by running the following this procedure:
 
 .. Obtain an API token by visiting https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request
@@ -189,9 +182,14 @@ $ ./pattern.sh make install
 == Verify TravelOps Pattern installation
 
 . Verify that the Operators have been installed.
+
  .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
- .. Set your project to `All Projects` and verify the operators are isntalled and have a status of `Succeeded`.
-. Verify that all applications are synchronized. Under the project `travelops-hub` click the URL for the `hub` gitops `server`. 
+
+ .. Set your project to `All Projects` and verify the operators are installed and have a status of `Succeeded`.
+
+. Verify that all applications are synchronized. Under *Networking \-> Routes* select the *Location URL* associated with the *hub-gitops-server* . All application are report status as `Synched`. 
+
+. Verify that all applications are synchronized. Under the project `travelops-hub` click the URL for the `hub-gitops-server`. 
 +
 image::travelops/ossm-sync-success.png[ArgoCD Applications,link="/images/travelops/ossm-sync-success.png"]
 
@@ -202,14 +200,25 @@ As part of this pattern, HashiCorp Vault has been installed. Refer to the sectio
 [id="verify-trvlops-dashboards"]
 == Verify installation by checking the TravelOps Dashboards
 
-. Access the Kiali and Travel Control dashboards
-
+. Access the Kiali control dashboards by running the following commands:
 +
 [source, terminal]
 ----
 KIALI=https://$(oc get route -n istio-system kiali -o jsonpath='{.spec.host}')
 echo ${KIALI}
+----
++
+.Example output
++
+[source,terminal]
+----
+https://kiali-istio-system.apps.<cluster_id>.<cluster_domain>
+----
 
+. Access the Travel Control dashboards by running the following commands:
++
+[source, terminal]
+----
 CONTROL=http://$(oc get route -n istio-system istio-ingressgateway -o jsonpath='{.spec.host}')
 echo ${CONTROL}
 ----
@@ -233,10 +242,12 @@ In the Kiali dashboard we can see how all of the various components interact wit
 
 In the left hand menu:
 
-* click Graph
-* in the `Namespace` dropdown, select `travel-agency`
-* exit the menu
+. Cilck *Graph*.
+
+. In the `Namespace` dropdown, select `travel-agency`. 
+
+. Exit the menu
 
 You should see all of the deployments and services that make up the travel-agency application.
-
++
 image:travelops/travel-agency-svc-kiali.png[Travel Agency,link="/images/travelops/travel-agency-svc-kiali.png"] 
