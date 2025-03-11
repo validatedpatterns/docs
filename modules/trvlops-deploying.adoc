@@ -187,9 +187,7 @@ $ ./pattern.sh make install
 
  .. Set your project to `All Projects` and verify the operators are installed and have a status of `Succeeded`.
 
-. Verify that all applications are synchronized. Under *Networking \-> Routes* select the *Location URL* associated with the *hub-gitops-server* . All application are report status as `Synched`. 
-
-. Verify that all applications are synchronized. Under the project `travelops-hub` click the URL for the `hub-gitops-server`. 
+. Verify that all applications are synchronized. Under *Networking* -> *Routes* with the project set to *travelops-hub* select the *Location URL* associated with the *hub-gitops-server* . All application are report status as `Synched`. 
 +
 image::travelops/ossm-sync-success.png[ArgoCD Applications,link="/images/travelops/ossm-sync-success.png"]
 
