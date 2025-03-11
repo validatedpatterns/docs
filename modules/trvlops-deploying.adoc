@@ -236,7 +236,7 @@ image:travelops/ossm-kiali-db-arrows.png[Kiali Dashboard,link="/images/travelops
 [id="review-travelops-agency-svc"]
 == Review Travel Agency Application Graph
 
-In the Kiali dashboard we can see how all of the various components interact with each other within the service mesh. Just to get a glimpse of what we are able to see let's take a look at the applications and services in the `travel-agency` namespace.
+In the Kiali dashboard you can see how all of the various components interact with each other within the service mesh. Just to get a glimpse of what we are able to see let's take a look at the applications and services in the `travel-agency` namespace.
 
 In the left hand menu:
 
