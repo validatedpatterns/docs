@@ -1316,42 +1316,53 @@ Clicking on the respective Kafdrop links will go to a Kafdrop instance that allo
 Next Steps Help &amp; Feedback{: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 } Report Bugs{: .btn .btn-red .fs-5 .mb-4 .mb-md-0 .mr-2 }
 `,url:"https://validatedpatterns.io/patterns/retail/getting-started/",breadcrumb:"/patterns/retail/getting-started/"},"https://validatedpatterns.io/patterns/travelops/getting-started/":{title:"Getting Started",tags:[],content:` Deploying the TravelOps pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select Services -&gt; Containers -&gt; Create cluster.
-The cluster must have a dynamic StorageClass to provision PersistentVolumes. See sizing your cluster.
+Select OpenShift -&gt; Red Hat OpenShift Container Platform -&gt; Create cluster.
+The cluster must have a dynamic StorageClass to provision PersistentVolumes. Verify that a dynamic StorageClass exists before creating one by running the following command:
+$ oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,DEFAULT:.metadata.annotations.&#34;storageclass\\.kubernetes\\.io/is-default-class&#34; Example output NAME PROVISIONER DEFAULT gp2-csi ebs.csi.aws.com &lt;none&gt; gp3-csi ebs.csi.aws.com true For more information about creating a dynamic StorageClass, see the Dynamic provisioning documentation.
 Optional: A second OpenShift cluster for multicloud demonstration.
 Install the tooling dependencies.
 The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
 If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by using Red Hat Hybrid Cloud Console.
 Procedure Fork the travelops repository on GitHub.
 Clone the forked copy of this repository.
-git clone git@github.com:your-username/travelops.git Create a local copy of the secret values file that can safely include credentials. Run the following commands:
-cp values-secret.yaml.template ~/values-secret-travelops.yaml version: &#34;2.0&#34; # Ideally you NEVER COMMIT THESE VALUES TO GIT (although if all passwords are # automatically generated inside the vault this should not really matter) secrets: - name: mysql-credentials vaultPrefixes: - global fields: - name: rootpasswd onMissingValue: generate vaultPolicy: validatedPatternDefaultPolicy # Uncomment the following if you want to enable HTPasswd oAuth # - name: htpasswd # vaultPrefixes: # - global # fields: # - name: htpasswd # path: &#39;/path/to/users.htpasswd&#39; Do not commit this file. You do not want to push personal credentials to GitHub. If you do not want to customize the secrets, these steps are not needed. The framework generates a random password for the config-demo application.
-Customize the deployment for your cluster. Run the following command:
-git switch -c my-branch vi values-hub.yaml git add values-hub.yaml git commit values-hub.yaml git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator.
-Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
-Login to your cluster by running the following command:
-oc login Optional: Set the KUBECONFIG variable for the kubeconfig file path:
-export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
-./pattern.sh make install Verify TravelOps Pattern installation Verify that the Operators have been installed.
+$ git clone git@github.com:your-username/travelops.git Go to your repository: Ensure you are in the root directory of your Git repository by using:
+$ cd /path/to/your/repository Run the following command to set the upstream repository:
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/travelops.git Verify the setup of your remote repositories by running the following command:
+$ git remote -v Example output origin	git@github.com:&lt;your-username&gt;/travelops.git (fetch) origin	git@github.com:&lt;your-username&gt;/travelops.git (push) upstream	https://github.com/validatedpatterns-sandbox/travelops.git (fetch) upstream	https://github.com/validatedpatterns-sandbox/travelops.git (push) Create a local copy of the secret values file that can safely include credentials. Run the following commands:
+$ cp values-secret.yaml.template ~/values-secret-travelops.yaml # A more formal description of this format can be found here: # https://github.com/validatedpatterns/rhvp.cluster_utils/tree/main/roles/vault_utils#values-secret-file-format version: &#34;2.0&#34; # Ideally you NEVER COMMIT THESE VALUES TO GIT (although if all passwords are # automatically generated inside the vault this should not really matter) secrets: - name: mysql-credentials vaultPrefixes: - global fields: - name: rootpasswd onMissingValue: generate vaultPolicy: validatedPatternDefaultPolicy Do not commit this file. Committing it may expose personal credentials to GitHub. If you do not want to customize the secrets, skip these steps. The framework generates a random password for the config-demo application.
+Customize the deployment for your cluster by following these steps:
+Create a new branch named my-branch and switch to it by running the following command:
+$ git switch -c my-branch Edit the values-hub.yaml file to customize the deployment for your cluster by running the following command:
+$ vi values-hub.yaml Stage the changes to the values-hub.yaml file by running the following commands:
+$ git add values-hub.yaml Commit the changes to the values-hub.yaml file by running the following commands:
+$ git commit -m &#34;update deployment for my-branch&#34; Push the changes to the values-hub.yaml file by running the following command:
+$ git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator.
+Deploying the pattern by using the pattern.sh script To deploy the pattern by using the pattern.sh script, complete the following steps:
+Log in to your cluster by running the following:
+Obtain an API token by visiting https://oauth-openshift.apps.&lt;your-cluster&gt;.&lt;domain&gt;/oauth/token/request
+Log in with this retrieved token by running the following command:
+$ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your-cluster&gt;.&lt;domain&gt;:6443 Alternatively log in by running the following command:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster by running the following command:
+$ ./pattern.sh make install Verify TravelOps Pattern installation Verify that the Operators have been installed.
 To verify, in the OpenShift Container Platform web console, navigate to Operators → Installed Operators page.
-Set your project to All Projects and verify the operators are isntalled and have a status of Succeeded.
-Verify that all applications are synchronized. Under the project travelops-hub click the URL for the hub gitops server.
+Set your project to All Projects and verify the operators are installed and have a status of Succeeded.
+Verify that all applications are synchronized. Under Networking → Routes with the project set to travelops-hub select the Location URL associated with the hub-gitops-server . All application are report status as Synched.
 As part of this pattern, HashiCorp Vault has been installed. Refer to the section on Vault.
-Verify installation by checking the TravelOps Dashboards Access the Kiali and Travel Control dashboards
-KIALI=https://$(oc get route -n istio-system kiali -o jsonpath=&#39;{.spec.host}&#39;) echo \${KIALI} CONTROL=http://$(oc get route -n istio-system istio-ingressgateway -o jsonpath=&#39;{.spec.host}&#39;) echo \${CONTROL} When we see the 🔒 icon next to our applications and in the top right hand corner of the dashboard it confirms that mTLS is enabled and active in the mesh.
+Verify installation by checking the TravelOps Dashboards Access the Kiali control dashboards by running the following commands:
+KIALI=https://$(oc get route -n istio-system kiali -o jsonpath=&#39;{.spec.host}&#39;) echo \${KIALI} Example output https://kiali-istio-system.apps.&lt;cluster_id&gt;.&lt;cluster_domain&gt; Access the Travel Control dashboards by running the following commands:
+CONTROL=http://$(oc get route -n istio-system istio-ingressgateway -o jsonpath=&#39;{.spec.host}&#39;) echo \${CONTROL} When we see the 🔒 icon next to our applications and in the top right hand corner of the dashboard it confirms that mTLS is enabled and active in the mesh.
 The &#34;🔒&#34; is present next to the logged in user in top right corner of the window.
 7 applications in the travel-agency tile with the &#34;🔒&#34; next to Istio config
 1 application in the travel-control tile with the &#34;🔒&#34; next to Istio config
 3 applications in the travel-portal tile with the &#34;🔒&#34; next to Istio config
 Review your Kiali dashboard
-Review Travel Agency Application Graph In the Kiali dashboard we can see how all of the various components interact with each other within the service mesh. Just to get a glimpse of what we are able to see let’s take a look at the applications and services in the travel-agency namespace.
+Review Travel Agency Application Graph In the Kiali dashboard you can see how all of the various components interact with each other within the service mesh. Just to get a glimpse of what we are able to see let’s take a look at the applications and services in the travel-agency namespace.
 In the left hand menu:
-click Graph
-in the Namespace dropdown, select travel-agency
-exit the menu
+Cilck Graph.
+In the Namespace dropdown, select travel-agency.
+Exit the menu
 You should see all of the deployments and services that make up the travel-agency application.
-Next Steps To run through the demo, refer to Monitor the Mesh
-Like what you see, but can’t quite put your finger on how you could use a Service Mesh? Check out Ways to customize the Mesh for some ideas!
++ Next Steps See Ways to customize the Mesh for some ideas on how to customize the pattern.
 `,url:"https://validatedpatterns.io/patterns/travelops/getting-started/",breadcrumb:"/patterns/travelops/getting-started/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-running-the-demo/":{title:"Running the Fraud Detection Demo",tags:[],content:` Running the MLOps Fraud Detection Demo The following steps describes how you can use this pattern in a demo.
 Get the MLFlow Route using command-line You can use the OC command to get the hostname through:
 oc get svc mlflow-server -n mlops -o go-template --template=&#39;{{.metadata.name}}.{{.metadata.namespace}}.svc.cluster.local{{println}}&#39; The port you will find with:
@@ -3967,8 +3978,7 @@ Make a small change to the test web pages Now we can try and tweak the hello-wor
 diff --git a/charts/all/hello-world/templates/hello-world-cm.yaml b/charts/all/hello-world/templates/hello-world-cm.yaml index e59561ca..bd416bc6 100644 --- a/charts/all/hello-world/templates/hello-world-cm.yaml +++ b/charts/all/hello-world/templates/hello-world-cm.yaml @@ -14,6 +14,7 @@ data: &lt;/head&gt; &lt;body&gt; &lt;h1&gt;Hello World!&lt;/h1&gt; + &lt;h1&gt;This is a patched version via git&lt;/h1&gt; &lt;br/&gt; &lt;h2&gt; Hub Cluster domain is &#39;{{ .Values.global.hubClusterDomain }}&#39; &lt;br&gt; Once we commit the above change via git commit -a -m &#34;test a change&#34; and run git push origin my-branch we will be able to observe argo applying the above change:
 Summary You did it! You have completed the deployment of the MultiCloud GitOps pattern and you made a small local change and applied it via GitOps! Hopefully you are getting ideas of how you can take advantage of our GitOps framework to deploy and manage your applications.
 For more information on Validated Patterns visit our website
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx/mcg-sgx-demo-script/",breadcrumb:"/patterns/multicloud-gitops-sgx/mcg-sgx-demo-script/"},"https://validatedpatterns.io/patterns/travelops/demo-script/":{title:"Demo Script",tags:[],content:` TravelOps Demo Script TravelOps demo script is under construction. Will be posted shortly.
-`,url:"https://validatedpatterns.io/patterns/travelops/demo-script/",breadcrumb:"/patterns/travelops/demo-script/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:` Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx/mcg-sgx-demo-script/",breadcrumb:"/patterns/multicloud-gitops-sgx/mcg-sgx-demo-script/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:` Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
 You can customize this demo in different ways.
 Split the config-demo across hub and regional clusters Currently hub and regional clusters are reusing the exact same helm chart found at charts/all/config-demo. The first customization step could be to split the demo app in two separate charts: one in charts/hub/config-demo and one in charts/region/config-demo. Once charts/all/config-demo has been copied to charts/hub/config-demo and charts/region/config-demo, you need to include them in the respective values-hub.yaml and values-region-one.yaml, respectively.
 After completing this configuration, you can start customizing the two apps and make them output a different web page entirely depending if the pod is running on the hub or on the cluster.
@@ -4775,7 +4785,7 @@ Add a managed cluster to deploy the managed cluster piece using ACM.
 Enable cross-cluster governance and application lifecycle management.
 Securely manage secrets across the deployment.
 Based on the requirements of a specific implementation, certain details might differ. However, all validated patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
-Background The TravelOps pattern deployed using OpenShift GitOps and is comprised of Red Hat Service Mesh (RHSM), Kiali for the Service Mesh console, Jaeger for distributed tracing, and elasticsearch for logging and analytics. The application deployed is from the Kiali traveldemo tutorial. This pattern isn’t as much about the demo as it is about the capabilities that are enabled with a few simple configurations. Service Mesh’s are being incorporated across multiple platforms to provide secure communications between services.
+Background The TravelOps pattern deployed using OpenShift GitOps and is comprised of Red Hat Service Mesh (RHSM), Kiali for the Service Mesh console, Jaeger for distributed tracing, and elasticsearch for logging and analytics. The application deployed is from the Kiali traveldemo. This pattern focuses on demonstrating capabilities enabled through simple configurations, rather than the demo itself. Service Mesh technology is adopted across multiple platforms to ensure secure communication between services.
 Organizations are aiming to develop, deploy, and operate applications on an open hybrid cloud in a stable, simple, and secure way. This hybrid strategy includes multi-cloud deployments where workloads might be running on multiple clusters and on multiple clouds, private or public. This strategy requires an infrastructure-as-code approach: GitOps. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code will be checked by the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
 About the solution This architecture covers a single cluster for all DevOps and GitOps functionality. However, one could extend this architecture to meet hybrid or multicloud demand using a GitOps approach
 Benefits of Hybrid Multicloud management with GitOps:
@@ -4807,7 +4817,7 @@ Red Hat Advanced Cluster Management for Kubernetes acquires the token from Ansib
 To allow the cluster access to the external vault, you must set up the external secret management with Helm in this study. OpenShift Gitops is used to deploy the external secret object to a managed cluster.
 External secret management fetches secrets from HashiCorp Vault by using the token that was generated in step 2 and constantly monitors for updates.
 Secrets are created in each namespace, where applications can use them.
-Next steps Deploy the Pattern using Helm.
+Next steps Deploy the Pattern.
 `,url:"https://validatedpatterns.io/patterns/travelops/",breadcrumb:"/patterns/travelops/"},"https://validatedpatterns.io/blog/2024-02-07-hcp-htpasswd-config/":{title:"Adding htpasswd oAuth provider to HCP clusters",tags:[],content:`Configure HTPasswd OAuth provider for hosted clusters Overview In this blog, we&rsquo;re going to configure our hosted cluster to use htpasswd as its authentication provider.
 There are several reasons that we would want to do this, but usually it comes down to understanding that the kubeadmin/root users aren&rsquo;t the right way to do things. HTPasswd is a simple but effective way to centrally manage users and provide access to cluster resources when bound to the proper RBAC. In a traditional OpenShift deployment the configuration of the htpasswd oauth is well documented, but with hosted control planes we have to dig a little bit for the answer. This blog walks through the configuration of the oauth provider, and also provides ways that you can verify the configuration works as intended.
 Assumptions The procedures in this blog have been tested against OpenShift 4.13 and 4.14 hostedclusters.
