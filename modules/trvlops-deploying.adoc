@@ -106,7 +106,7 @@ secrets:
 +
 [WARNING]
 ====
-Do not commit this file. You do not want to push personal credentials to GitHub. If you do not want to customize the secrets, these steps are not needed. The framework generates a random password for the config-demo application.
+Do not commit this file. Committing it may expose personal credentials to GitHub. If you do not want to customize the secrets, skip these steps. The framework generates a random password for the `config-demo` application.
 ====
 
 . Customize the deployment for your cluster by following these steps:
