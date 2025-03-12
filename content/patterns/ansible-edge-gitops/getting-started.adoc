@@ -213,11 +213,11 @@ $ git push origin my-branch
 The preferred way to install this pattern is by using the script `./pattern.sh` script. 
 
 [id="deploying-cluster-using-patternsh-file"]
-== Deploying the cluster by using the pattern.sh file
+== Deploying the pattern by using the pattern.sh file
 
-To deploy the cluster by using the `pattern.sh` file, complete the following steps:
+To deploy the pattern by using the `pattern.sh` file, complete the following steps:
 
-. Log in to your cluster by running the following this procedure:
+. Log in to your cluster by following this procedure:
 
 .. Obtain an API token by visiting link:https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request[https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request].
 
