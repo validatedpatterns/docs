@@ -8,8 +8,25 @@
 
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
- ** Select *Services \-> Containers \-> Create cluster*.
- ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../multicloud-gitops/mcg-cluster-sizing[sizing your cluster].
+ ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. Verify that a dynamic `StorageClass` exists before creating one by running the following command: 
++
+[source,terminal]
+----
+$ oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,DEFAULT:.metadata.annotations."storageclass\.kubernetes\.io/is-default-class"
+----
++
+.Example output
++
+[source,terminal]
+----
+NAME      PROVISIONER       DEFAULT
+gp2-csi   ebs.csi.aws.com   <none>
+gp3-csi   ebs.csi.aws.com   true
+----
++
+For more information about creating a dynamic `StorageClass`, see the https://docs.openshift.com/container-platform/latest/storage/dynamic-provisioning.html[Dynamic provisioning] documentation.
+
 * Optional: A second OpenShift cluster for multicloud demonstration.
 //Replaced git and podman prereqs with the tooling dependencies page
 * https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
@@ -22,22 +39,57 @@ public or private cloud by using https://console.redhat.com/openshift/create[Red
 .Procedure
 
 . Fork the https://github.com/validatedpatterns-sandbox/travelops[travelops] repository on GitHub.
+
 . Clone the forked copy of this repository.
 +
 [source,terminal]
 ----
-git clone git@github.com:your-username/travelops.git
+$ git clone git@github.com:your-username/travelops.git
 ----
+
+. Go to your repository: Ensure you are in the root directory of your Git repository by using:
++
+[source,terminal]
+----
+$ cd /path/to/your/repository 
+----
+
+. Run the following command to set the upstream repository:
++
+[source,terminal]
+----
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/travelops.git 
+----
+
+. Verify the setup of your remote repositories by running the following command:
++
+[source,terminal]
+----
+$ git remote -v
+----
++
+.Example output
++
+[source,terminal]
+----
+origin	git@github.com:<your-username>/travelops.git (fetch)
+origin	git@github.com:<your-username>/travelops.git (push)
+upstream	https://github.com/validatedpatterns-sandbox/travelops.git (fetch)
+upstream	https://github.com/validatedpatterns-sandbox/travelops.git (push)
+---- 
 
 . Create a local copy of the secret values file that can safely include credentials. Run the following commands:
 +
 [source,terminal]
 ----
-cp values-secret.yaml.template ~/values-secret-travelops.yaml
+$ cp values-secret.yaml.template ~/values-secret-travelops.yaml
 ----
 +
 [source,yaml]
 ----
+# A more formal description of this format can be found here:
+# https://github.com/validatedpatterns/rhvp.cluster_utils/tree/main/roles/vault_utils#values-secret-file-format
+
 version: "2.0"
 # Ideally you NEVER COMMIT THESE VALUES TO GIT (although if all passwords are
 # automatically generated inside the vault this should not really matter)
@@ -50,83 +102,92 @@ secrets:
     - name: rootpasswd
       onMissingValue: generate
       vaultPolicy: validatedPatternDefaultPolicy
-
-# Uncomment the following if you want to enable HTPasswd oAuth 
-#  - name: htpasswd
-#    vaultPrefixes:
-#    - global
-#    fields:
-#    - name: htpasswd
-#      path: '/path/to/users.htpasswd'
 ----
 +
 [WARNING]
 ====
-Do not commit this file. You do not want to push personal credentials to GitHub. If you do not want to customize the secrets, these steps are not needed. The framework generates a random password for the config-demo application.
+Do not commit this file. Committing it may expose personal credentials to GitHub. If you do not want to customize the secrets, skip these steps. The framework generates a random password for the `config-demo` application.
 ====
 
-. Customize the deployment for your cluster. Run the following command:
+. Customize the deployment for your cluster by following these steps:
+
+.. Create a new branch named my-branch and switch to it by running the following command:
 +
 [source,terminal]
 ----
-git switch -c my-branch
+$ git switch -c my-branch
 ----
+
+.. Edit the `values-hub.yaml` file to customize the deployment for your cluster by running the following command: 
 +
 [source,terminal]
 ----
-vi values-hub.yaml
+$ vi values-hub.yaml
 ----
+
+.. Stage the changes to the `values-hub.yaml` file by running the following commands:
 +
 [source,terminal]
 ----
-git add values-hub.yaml
+$ git add values-hub.yaml
 ----
+
+.. Commit the changes to the `values-hub.yaml` file by running the following commands:
 +
 [source,terminal]
 ----
-git commit values-hub.yaml
+$ git commit -m "update deployment for my-branch"
 ----
+
+.. Push the changes to the `values-hub.yaml` file by running the following command:
 +
 [source,terminal]
 ----
-git push origin my-branch
+$ git push origin my-branch
 ----
 
 . Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator].
 
 [id="deploying-cluster-using-patternsh-file"]
-== Deploying the cluster by using the pattern.sh file
+== Deploying the pattern by using the pattern.sh script
 
-To deploy the cluster by using the `pattern.sh` file, complete the following steps:
+To deploy the pattern by using the `pattern.sh` script, complete the following steps:
 
-. Login to your cluster by running the following command:
+. Log in to your cluster by running the following:
+
+.. Obtain an API token by visiting https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request
+
+.. Log in with this retrieved token by running the following command:
 +
 [source,terminal]
 ----
- oc login
-----
-+
-Optional: Set the `KUBECONFIG` variable for the `kubeconfig` file path:
-+
-[source,terminal]
-----
- export KUBECONFIG=~/<path_to_kubeconfig>
+$ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
 ----
 
-. Deploy the pattern to your cluster. Run the following command:
+. Alternatively log in by running the following command: 
 +
 [source,terminal]
 ----
- ./pattern.sh make install
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster by running the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
 ----
 
 [id="verify-trvlops-pattern-install"]
 == Verify TravelOps Pattern installation
 
 . Verify that the Operators have been installed.
+
  .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
- .. Set your project to `All Projects` and verify the operators are isntalled and have a status of `Succeeded`.
-. Verify that all applications are synchronized. Under the project `travelops-hub` click the URL for the `hub` gitops `server`. 
+
+ .. Set your project to `All Projects` and verify the operators are installed and have a status of `Succeeded`.
+
+. Verify that all applications are synchronized. Under *Networking* -> *Routes* with the project set to *travelops-hub* select the *Location URL* associated with the *hub-gitops-server* . All application are report status as `Synched`. 
 +
 image::travelops/ossm-sync-success.png[ArgoCD Applications,link="/images/travelops/ossm-sync-success.png"]
 
@@ -137,14 +198,25 @@ As part of this pattern, HashiCorp Vault has been installed. Refer to the sectio
 [id="verify-trvlops-dashboards"]
 == Verify installation by checking the TravelOps Dashboards
 
-. Access the Kiali and Travel Control dashboards
-
+. Access the Kiali control dashboards by running the following commands:
 +
 [source, terminal]
 ----
 KIALI=https://$(oc get route -n istio-system kiali -o jsonpath='{.spec.host}')
 echo ${KIALI}
+----
++
+.Example output
++
+[source,terminal]
+----
+https://kiali-istio-system.apps.<cluster_id>.<cluster_domain>
+----
 
+. Access the Travel Control dashboards by running the following commands:
++
+[source, terminal]
+----
 CONTROL=http://$(oc get route -n istio-system istio-ingressgateway -o jsonpath='{.spec.host}')
 echo ${CONTROL}
 ----
@@ -164,14 +236,16 @@ image:travelops/ossm-kiali-db-arrows.png[Kiali Dashboard,link="/images/travelops
 [id="review-travelops-agency-svc"]
 == Review Travel Agency Application Graph
 
-In the Kiali dashboard we can see how all of the various components interact with each other within the service mesh. Just to get a glimpse of what we are able to see let's take a look at the applications and services in the `travel-agency` namespace.
+In the Kiali dashboard you can see how all of the various components interact with each other within the service mesh. Just to get a glimpse of what we are able to see let's take a look at the applications and services in the `travel-agency` namespace.
 
 In the left hand menu:
 
-* click Graph
-* in the `Namespace` dropdown, select `travel-agency`
-* exit the menu
+. Cilck *Graph*.
+
+. In the `Namespace` dropdown, select `travel-agency`. 
+
+. Exit the menu
 
 You should see all of the deployments and services that make up the travel-agency application.
-
++
 image:travelops/travel-agency-svc-kiali.png[Travel Agency,link="/images/travelops/travel-agency-svc-kiali.png"] 

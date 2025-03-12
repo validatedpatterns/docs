@@ -17,7 +17,7 @@ Based on the requirements of a specific implementation, certain details might di
 
 Background::
 
-The {trvlops-pattern} deployed using OpenShift GitOps and is comprised of Red Hat Service Mesh (RHSM), Kiali for the Service Mesh console, Jaeger for distributed tracing, and elasticsearch for logging and analytics. The application deployed is from the Kiali traveldemo tutorial. This pattern isn't as much about the demo as it is about the capabilities that are enabled with a few simple configurations. Service Mesh's are being incorporated across multiple platforms to provide secure communications between services.
+The {trvlops-pattern} deployed using OpenShift GitOps and is comprised of Red Hat Service Mesh (RHSM), Kiali for the Service Mesh console, Jaeger for distributed tracing, and elasticsearch for logging and analytics. The application deployed is from the link:https://kiali.io/docs/tutorials/travels/[Kiali traveldemo]. This pattern focuses on demonstrating capabilities enabled through simple configurations, rather than the demo itself. Service Mesh technology is adopted across multiple platforms to ensure secure communication between services.
 
 //In this pattern we implement Mutual TLS (mTLS) which is completed per namespace. To enable a namespace in the mesh you must add the namespace to the list under `serviceMeshMemberNamespaces` in `values-travelops.yaml`. This will create a Service Mesh Member (SMM) resource, which tells the Service Mesh that resources in the namespace are authorized in the mesh.
 

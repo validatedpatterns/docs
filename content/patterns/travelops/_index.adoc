@@ -30,5 +30,5 @@ include::modules/trvlops-architecture.adoc[leveloffset=+1]
 [id="next-steps_trvlops-index"]
 == Next steps
 
-* link:getting-started[Deploy the Pattern] using Helm.
+* link:getting-started[Deploy the Pattern].
 
