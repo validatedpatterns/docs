@@ -88,7 +88,7 @@ $ cp values-secret.yaml.template ~/values-secret-travelops.yaml
 [source,yaml]
 ----
 # A more formal description of this format can be found here:
-# https://github.com/hybrid-cloud-patterns/common/tree/main/ansible/roles/vault_utils#values-secret-file-format
+# https://github.com/validatedpatterns/rhvp.cluster_utils/tree/main/roles/vault_utils#values-secret-file-format
 
 version: "2.0"
 # Ideally you NEVER COMMIT THESE VALUES TO GIT (although if all passwords are
@@ -111,7 +111,7 @@ Do not commit this file. You do not want to push personal credentials to GitHub.
 
 . Customize the deployment for your cluster by following these steps:
 
-.. Creates a new branch named my-branch and switch to it by running the following command:
+.. Create a new branch named my-branch and switch to it by running the following command:
 +
 [source,terminal]
 ----
@@ -125,7 +125,7 @@ $ git switch -c my-branch
 $ vi values-hub.yaml
 ----
 
-.. Commit the changes to the `values-hub.yaml` file by running the following commands:
+.. Stage the changes to the `values-hub.yaml` file by running the following commands:
 +
 [source,terminal]
 ----
@@ -136,7 +136,7 @@ $ git add values-hub.yaml
 +
 [source,terminal]
 ----
-$ git commit values-hub.yaml
+$ git commit -m "update deployment for my-branch"
 ----
 
 .. Push the changes to the `values-hub.yaml` file by running the following command:
@@ -149,11 +149,11 @@ $ git push origin my-branch
 . Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator].
 
 [id="deploying-cluster-using-patternsh-file"]
-== Deploying the cluster by using the pattern.sh script
+== Deploying the pattern by using the pattern.sh script
 
-To deploy the cluster by using the `pattern.sh` script, complete the following steps:
+To deploy the pattern by using the `pattern.sh` script, complete the following steps:
 
-. Log in to your cluster by running the following this procedure:
+. Log in to your cluster by running the following:
 
 .. Obtain an API token by visiting https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request
 
