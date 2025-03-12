@@ -94,7 +94,7 @@ localhost                  : ok=7    changed=0    unreachable=0    failed=0    s
 
 == Pattern AAP Configuration Details
 
-In this section, we describe the details of the AAP configuration we apply as part of installing the pattern. All of the configuration discussed in this section is applied by the
+This section describes the AAP configuration during the pattern installation. All of the configuration discussed in this section is applied by the
 https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[ansible_load_controller.sh]
 script.
 

@@ -11,9 +11,15 @@ include::modules/comm-attributes.adoc[]
 
 == Why customize the pattern
 
-One of the major goals of the Red Hat patterns development process is to create modular, customizable demos. Maybe you are not interested in Ignition as an application, or you do not have kiosks but you do have other use cases that involve running containers on edge devices. Maybe you want to experiment with different releases of RHEL, or you want to do something different with Ansible Automation Platform.
+A key goal of the Red Hat patterns development process is to create modular, customizable demos. You can adapt them to fit your specific use cases.
+For example: 
 
-This demo in particular can be customized in a several ways that might be very interesting and here are some starter ideas with some instructions on exactly what and where changes would need to be made in the pattern to accommodate those changes.
+* You may not be interested in Ignition as an application.
+* You might not have kiosks, but you have other edge computing use cases involving containers.
+* You may want to experiment with different RHEL releases.
+* You might want to explore alternative use cases for Ansible Automation Platform.
+
+This demo offers several customization options. Here are some starter ideas, along with instructions on what to change and where to make those changes in the pattern.
 
 == Defining your own VM sets using the chart
 

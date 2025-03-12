@@ -17,9 +17,9 @@ include::modules/comm-attributes.adoc[]
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
  ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
-* A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
-* The Helm binary, see link:https://helm.sh/docs/intro/install/[Installing Helm]
-For installation tool dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
+* A GitHub account with a personal access token that has repository read and write permissions.
+* The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm]
+* Additional installation tool dependencies. For details, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
 
 It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
 
@@ -71,7 +71,7 @@ upstream	git@github.com:validatedpatterns/ansible-edge-gitops.git (push)
 +
 [WARNING]
 ====
-Do not place this file in your repository, and do not commit or push it. This would risk pushing personal credentials to GitHub.
+Do not add, commit, or push this file to your repository. Doing so may expose personal credentials to GitHub.
 ====
 +
 Run the following commands:
