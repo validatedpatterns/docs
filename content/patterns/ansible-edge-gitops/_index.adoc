@@ -1,0 +1,79 @@
+---
+title: Ansible Edge GitOps
+date: 2022-06-08
+tier: maintained
+summary: This pattern uses OpenShift Virtualization to simulate an edge environment for VMs.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat Ansible Automation Platform
+- Red Hat OpenShift Virtualization
+- Red Hat Enterprise Linux
+- Red Hat OpenShift Data Foundation
+industries:
+- Chemical
+aliases: /ansible-edge-gitops/
+pattern_logo: ansible-edge.png
+links:
+  install: getting-started
+  help: https://groups.google.com/g/validatedpatterns
+  bugs: https://github.com/validatedpatterns/ansible-edge-gitops/issues
+ci: aegitops
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Ansible Edge GitOps
+
+=== Background
+
+Organizations want to accelerate their deployment and improve delivery quality in their Edge environments, where many devices have limited or no support for GitOps practices.
+Many virtual machines (VMs) and devices can be effectively managed with Ansible. This pattern demonstrates how to use an OpenShift-based Ansible Automation Platform deployment and manage Edge devices, based on collaboration with a partner in the chemical space.
+
+This pattern uses OpenShift Virtualization (the productization of Kubevirt) to simulate the Edge environment for VMs.
+
+==== Solution elements
+
+* How to use a GitOps approach to manage virtual machines, either in public clouds (limited to AWS for technical reasons) or on-prem
+OpenShift installations
+* How to integrate AAP into OpenShift
+* How to manage Edge devices using AAP hosted in OpenShift
+
+==== Red Hat Technologies
+
+* Red Hat OpenShift Container Platform (Kubernetes)
+* Red Hat Ansible Automation Platform (formerly known as "`Ansible
+Tower`")
+* Red Hat OpenShift GitOps (ArgoCD)
+* OpenShift Virtualization (Kubevirt)
+* Red Hat Enterprise Linux 8
+
+==== Other technologies this pattern Uses
+
+* Hashicorp Vault
+* External Secrets Operator
+* Inductive Automation Ignition
+
+=== Architecture
+
+Similar to other patterns, this pattern starts with a central management hub, which hosts the AAP and Vault components.
+
+==== Logical architecture
+
+.Ansible-Edge-Gitops-Architecture
+image::/images/ansible-edge-gitops/ansible-edge-gitops-arch.png[Ansible-Edge-Gitops-Architecture]
+
+==== Physical architecture
+
+.Ansible-Edge-GitOps-Physical-Architecture
+image::/images/ansible-edge-gitops/aeg-arch-schematic.png[Ansible-Edge-GitOps-Physical-Architecture]
+
+=== Other presentations featuring this pattern
+
+==== Registration required
+
+https://tracks.redhat.com/c/validated-patterns_i?x=5wCWYS&lx=lT1ZfK[image:/images/ansible-edge-gitops/automates-june-2022-deck-thumb.png[Ansible-Automates-June-2022-Deck]]
+
+https://tracks.redhat.com/c/preview-42?x=5wCWYS&lx=lT1ZfK[image:/images/ansible-edge-gitops/automates-june-2022-video-thumb.png[Ansible-Automates-June-2022-Video]]

@@ -1,0 +1,279 @@
+---
+title: Ideas for Customization
+weight: 40
+aliases: /ansible-edge-gitops/ideas-for-customization/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Why customize the pattern
+
+A key goal of the Red Hat patterns development process is to create modular, customizable demos. You can adapt them to fit your specific use cases.
+For example: 
+
+* You may not be interested in Ignition as an application.
+* You might not have kiosks, but you have other edge computing use cases involving containers.
+* You may want to experiment with different RHEL releases.
+* You might want to explore alternative use cases for Ansible Automation Platform.
+
+This demo offers several customization options. Here are some starter ideas, along with instructions on what to change and where to make those changes in the pattern.
+
+== Defining your own VM sets using the chart
+
+. Fork the link:https://github.com/validatedpatterns/ansible-edge-gitops[repo].
+
+. Clone the repository to your local machine.
+
+. Change to the `ansible-edge-gitops` directory.
+
+. Create and switch to a new branch named `my-branch`, by running the following command:
++
+[source,shell]
+----
+$ git checkout -b my-branch
+----
+
+. Change to the `overides` directory.
++
+For example, to replace kiosk with new `iotsensor`` and `iotgateway` types, the file might look like this:
++
+[source,yaml]
+----
+---
+vms:
+  # Define the iotsensor VMs
+  iotsensor:
+    count: 4
+    flavor: small
+    workload: server
+    os: rhel8
+    role: iotsensor
+    storage: 20Gi
+    memory: 2Gi
+    cores: 1
+    sockets: 1
+    threads: 1
+    cloudInitUser: cloud-user
+    cloudInitPassword: 'password123'
+    template: rhel8-server-small
+    sshsecret: secret/data/hub/iotsensor-ssh
+    sshpubkeyfield: publickey
+    ports:
+      - name: ssh
+        port: 22
+        protocol: TCP
+        targetPort: 22
+
+  # Define the iotgateway VMs
+  iotgateway:
+    count: 1
+    flavor: medium
+    workload: server
+    os: rhel8
+    role: iotgateway
+    storage: 30Gi
+    memory: 4Gi
+    cores: 1
+    sockets: 1
+    threads: 1
+    cloudInitUser: cloud-user
+    cloudInitPassword: 'password123'
+    template: rhel8-server-medium
+    sshsecret: secret/data/hub/iotgateway-ssh
+    sshpubkeyfield: publickey
+    ports:
+      - name: ssh
+        port: 22
+        protocol: TCP
+        targetPort: 22
+      - name: mqtt
+        port: 1883
+        protocol: TCP
+        targetPort: 1883
+----
+
+This would create 1 `iotgateway` VM and 4 `iotsensor` VMs. 
+
+You also need to define the SSH secrets (`iotgateway-ssh` and `iotsensor-ssh`) data structures in `~/values-secret.yaml`.
+
+== Defining your own VM sets "`from scratch`"
+
+. Pick a default template from the standard OpenShift Virtualization template library in the `openshift` namespace. For this pattern, we used `rhel8-desktop-medium`:
++
+[source,text]
+----
+$ oc get template -n openshift rhel8-desktop-medium
+----
++
+.Example output
+[source,text]
+----
+NAME                   DESCRIPTION                                                                        PARAMETERS        OBJECTS
+rhel8-desktop-medium   Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+----
+
+. Create a VM through the command line template process by running the following command: 
++
+[source,shell]
+----
+oc process -n openshift rhel8-desktop-medium | oc apply -f -
+----
++
+.Example output
+[source,text]
+----
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "apiVersion": "kubevirt.io/v1",
+            "kind": "VirtualMachine",
+            "metadata": {
+                "annotations": {
+                    "vm.kubevirt.io/validations": "[\n  {\n    \"name\": \"minimal-required-memory\",\n    \"path\": \"jsonpath::.spec.domain.memory.guest\",\n    \"rule\": \"integer\",\n    \"message\": \"This VM requires more memory.\",\n    \"min\": 1610612736\n  }\n]\n"
+                },
+                "labels": {
+                    "app": "rhel8-y43iixn7issko1lu",
+                    "vm.kubevirt.io/template": "rhel8-desktop-medium",
+                    "vm.kubevirt.io/template.revision": "1",
+                    "vm.kubevirt.io/template.version": "v0.31.1"
+                },
+                "name": "rhel8-y43iixn7issko1lu"
+            },
+            "spec": {
+                "dataVolumeTemplates": [
+                    {
+                        "apiVersion": "cdi.kubevirt.io/v1beta1",
+                        "kind": "DataVolume",
+                        "metadata": {
+                            "name": "rhel8-y43iixn7issko1lu"
+                        },
+                        "spec": {
+                            "sourceRef": {
+                                "kind": "DataSource",
+                                "name": "rhel8",
+                                "namespace": "openshift-virtualization-os-images"
+                            },
+                            "storage": {
+                                "resources": {
+                                    "requests": {
+                                        "storage": "30Gi"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "running": false,
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "vm.kubevirt.io/flavor": "medium",
+                            "vm.kubevirt.io/os": "rhel8",
+                            "vm.kubevirt.io/workload": "desktop"
+                        },
+                        "labels": {
+                            "kubevirt.io/domain": "rhel8-y43iixn7issko1lu",
+                            "kubevirt.io/size": "medium"
+                        }
+                    },
+                    "spec": {
+                        "architecture": "amd64",
+                        "domain": {
+                            "cpu": {
+                                "cores": 1,
+                                "sockets": 1,
+                                "threads": 1
+                            },
+                            "devices": {
+                                "disks": [
+                                    {
+                                        "disk": {
+                                            "bus": "virtio"
+                                        },
+                                        "name": "rootdisk"
+                                    },
+                                    {
+                                        "disk": {
+                                            "bus": "virtio"
+                                        },
+                                        "name": "cloudinitdisk"
+                                    }
+                                ],
+                                "inputs": [
+                                    {
+                                        "bus": "virtio",
+                                        "name": "tablet",
+                                        "type": "tablet"
+                                    }
+                                ],
+                                "interfaces": [
+                                    {
+                                        "masquerade": {},
+                                        "model": "virtio",
+                                        "name": "default"
+                                    }
+                                ],
+                                "rng": {}
+                            },
+                            "memory": {
+                                "guest": "4Gi"
+                            }
+                        },
+                        "networks": [
+                            {
+                                "name": "default",
+                                "pod": {}
+                            }
+                        ],
+                        "terminationGracePeriodSeconds": 180,
+                        "volumes": [
+                            {
+                                "dataVolume": {
+                                    "name": "rhel8-y43iixn7issko1lu"
+                                },
+                                "name": "rootdisk"
+                            },
+                            {
+                                "cloudInitNoCloud": {
+                                    "userData": "#cloud-config\nuser: cloud-user\npassword: 1pna-7owu-mrna\nchpasswd: { expire: False }"
+                                },
+                                "name": "cloudinitdisk"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
+----
+
+. Use the template to create a VM:
++
+[source,shell]
+----
+$ oc process -n openshift rhel8-desktop-medium | oc apply -f -
+----
++
+.Example output
+[source,text]
+----
+virtualmachine.kubevirt.io/rhel8-q63yuvxpjdvy18l7 created
+----
++
+In just a few minutes, you will have a blank rhel8 VM, which you can then start and log in to by using the console and customize.
+
+. Get the details of this template as a local YAML file:
++
+[source,shell]
+----
+$ oc get template -n openshift rhel8-desktop-medium -o yaml > my-template.yaml
+----
++
+Once you have this local template, you can view the elements you want to customize.

@@ -1,0 +1,221 @@
+---
+title: OpenShift Virtualization
+weight: 60
+aliases: /ansible-edge-gitops/openshift-virtualization/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== OpenShift Virtualization
+
+
+=== Default OpenShift Virtualization templates
+
+OpenShift virtualization expects to install virtual machines from image templates by default, and provides several OpenShift templates to
+facilitate this. The default templates are installed in the `openshift` namespace; the OpenShift console also provides a wizard for creating VMs that use the same templates.
+
+The following templates were available on installation:
+
+[source,text]
+----
+$ oc get template -n openshift
+----
+
+.Example output
+[source,text]
+----
+NAME                                          DESCRIPTION                                                                        PARAMETERS        OBJECTS
+cache-service                                 Red Hat Data Grid is an in-memory, distributed key/value store.                    8 (1 blank)       4
+cakephp-mysql-example                         An example CakePHP application with a MySQL database. For more information ab...   21 (4 blank)      8
+cakephp-mysql-persistent                      An example CakePHP application with a MySQL database. For more information ab...   22 (4 blank)      9
+centos-stream8-desktop-large                  Template for CentOS Stream 8 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream8-desktop-medium                 Template for CentOS Stream 8 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream8-desktop-small                  Template for CentOS Stream 8 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream8-desktop-tiny                   Template for CentOS Stream 8 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream8-server-large                   Template for CentOS Stream 8 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream8-server-medium                  Template for CentOS Stream 8 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream8-server-small                   Template for CentOS Stream 8 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream8-server-tiny                    Template for CentOS Stream 8 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream9-desktop-large                  Template for CentOS Stream 9 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream9-desktop-medium                 Template for CentOS Stream 9 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream9-desktop-small                  Template for CentOS Stream 9 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream9-desktop-tiny                   Template for CentOS Stream 9 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream9-server-large                   Template for CentOS Stream 9 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream9-server-medium                  Template for CentOS Stream 9 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream9-server-small                   Template for CentOS Stream 9 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos-stream9-server-tiny                    Template for CentOS Stream 9 VM or newer. A PVC with the CentOS Stream disk i...   4 (2 generated)   1
+centos7-desktop-large                         Template for CentOS 7 VM or newer. A PVC with the CentOS disk image must be a...   4 (2 generated)   1
+centos7-desktop-medium                        Template for CentOS 7 VM or newer. A PVC with the CentOS disk image must be a...   4 (2 generated)   1
+centos7-desktop-small                         Template for CentOS 7 VM or newer. A PVC with the CentOS disk image must be a...   4 (2 generated)   1
+centos7-desktop-tiny                          Template for CentOS 7 VM or newer. A PVC with the CentOS disk image must be a...   4 (2 generated)   1
+centos7-server-large                          Template for CentOS 7 VM or newer. A PVC with the CentOS disk image must be a...   4 (2 generated)   1
+centos7-server-medium                         Template for CentOS 7 VM or newer. A PVC with the CentOS disk image must be a...   4 (2 generated)   1
+centos7-server-small                          Template for CentOS 7 VM or newer. A PVC with the CentOS disk image must be a...   4 (2 generated)   1
+centos7-server-tiny                           Template for CentOS 7 VM or newer. A PVC with the CentOS disk image must be a...   4 (2 generated)   1
+dancer-mysql-example                          An example Dancer application with a MySQL database. For more information abo...   18 (5 blank)      8
+dancer-mysql-persistent                       An example Dancer application with a MySQL database. For more information abo...   19 (5 blank)      9
+datagrid-service                              Red Hat Data Grid is an in-memory, distributed key/value store.                    7 (1 blank)       4
+django-psql-example                           An example Django application with a PostgreSQL database. For more informatio...   19 (5 blank)      8
+django-psql-persistent                        An example Django application with a PostgreSQL database. For more informatio...   20 (5 blank)      9
+eap-xp3-basic-s2i                             Example of an application based on JBoss EAP XP. For more information about u...   20 (5 blank)      8
+eap-xp4-basic-s2i                             Example of an application based on JBoss EAP XP. For more information about u...   20 (5 blank)      8
+eap74-basic-s2i                               An example JBoss Enterprise Application Platform application. For more inform...   20 (5 blank)      8
+eap74-https-s2i                               An example JBoss Enterprise Application Platform application configured with...    30 (11 blank)     10
+eap74-sso-s2i                                 An example JBoss Enterprise Application Platform application Single Sign-On a...   50 (21 blank)     10
+fedora-desktop-large                          Template for Fedora Linux 39 VM or newer. A PVC with the Fedora disk image mu...   4 (2 generated)   1
+fedora-desktop-medium                         Template for Fedora Linux 39 VM or newer. A PVC with the Fedora disk image mu...   4 (2 generated)   1
+fedora-desktop-small                          Template for Fedora Linux 39 VM or newer. A PVC with the Fedora disk image mu...   4 (2 generated)   1
+fedora-highperformance-large                  Template for Fedora Linux 39 VM or newer. A PVC with the Fedora disk image mu...   4 (2 generated)   1
+fedora-highperformance-medium                 Template for Fedora Linux 39 VM or newer. A PVC with the Fedora disk image mu...   4 (2 generated)   1
+fedora-highperformance-small                  Template for Fedora Linux 39 VM or newer. A PVC with the Fedora disk image mu...   4 (2 generated)   1
+fedora-server-large                           Template for Fedora Linux 39 VM or newer. A PVC with the Fedora disk image mu...   4 (2 generated)   1
+fedora-server-medium                          Template for Fedora Linux 39 VM or newer. A PVC with the Fedora disk image mu...   4 (2 generated)   1
+fedora-server-small                           Template for Fedora Linux 39 VM or newer. A PVC with the Fedora disk image mu...   4 (2 generated)   1
+httpd-example                                 An example Apache HTTP Server (httpd) application that serves static content....   10 (3 blank)      5
+jenkins-ephemeral                             Jenkins service, without persistent storage....                                    12 (all set)      7
+jenkins-ephemeral-monitored                   Jenkins service, without persistent storage. ...                                   13 (all set)      8
+jenkins-persistent                            Jenkins service, with persistent storage....                                       14 (all set)      8
+jenkins-persistent-monitored                  Jenkins service, with persistent storage. ...                                      15 (all set)      9
+jws57-openjdk11-tomcat9-ubi8-basic-s2i        An example JBoss Web Server application. For more information about using thi...   10 (3 blank)      5
+jws57-openjdk11-tomcat9-ubi8-https-s2i        An example JBoss Web Server application. For more information about using thi...   15 (5 blank)      7
+jws57-openjdk8-tomcat9-ubi8-basic-s2i         An example JBoss Web Server application. For more information about using thi...   10 (3 blank)      5
+jws57-openjdk8-tomcat9-ubi8-https-s2i         An example JBoss Web Server application. For more information about using thi...   15 (5 blank)      7
+mariadb-ephemeral                             MariaDB database service, without persistent storage. For more information ab...   8 (3 generated)   3
+mariadb-persistent                            MariaDB database service, with persistent storage. For more information about...   9 (3 generated)   4
+mysql-ephemeral                               MySQL database service, without persistent storage. For more information abou...   8 (3 generated)   3
+mysql-persistent                              MySQL database service, with persistent storage. For more information about u...   9 (3 generated)   4
+nginx-example                                 An example Nginx HTTP server and a reverse proxy (nginx) application that ser...   10 (3 blank)      5
+nodejs-postgresql-example                     An example Node.js application with a PostgreSQL database. For more informati...   18 (4 blank)      8
+nodejs-postgresql-persistent                  An example Node.js application with a PostgreSQL database. For more informati...   19 (4 blank)      9
+openjdk-web-basic-s2i                         An example Java application using OpenJDK. For more information about using t...   9 (1 blank)       5
+postgresql-ephemeral                          PostgreSQL database service, without persistent storage. For more information...   7 (2 generated)   3
+postgresql-persistent                         PostgreSQL database service, with persistent storage. For more information ab...   8 (2 generated)   4
+rails-pgsql-persistent                        An example Rails application with a PostgreSQL database. For more information...   23 (4 blank)      9
+rails-postgresql-example                      An example Rails application with a PostgreSQL database. For more information...   21 (4 blank)      8
+react-web-app-example                         Build a basic React Web Application                                                9 (1 blank)       5
+redis-ephemeral                               Redis in-memory data structure store, without persistent storage. For more in...   5 (1 generated)   3
+redis-persistent                              Redis in-memory data structure store, with persistent storage. For more infor...   6 (1 generated)   4
+rhel7-desktop-large                           Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel7-desktop-medium                          Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel7-desktop-small                           Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel7-desktop-tiny                            Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel7-highperformance-large                   Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel7-highperformance-medium                  Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel7-highperformance-small                   Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel7-highperformance-tiny                    Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel7-server-large                            Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel7-server-medium                           Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel7-server-small                            Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel7-server-tiny                             Template for Red Hat Enterprise Linux 7 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-desktop-large                           Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-desktop-medium                          Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-desktop-small                           Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-desktop-tiny                            Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-highperformance-large                   Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-highperformance-medium                  Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-highperformance-small                   Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-highperformance-tiny                    Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-server-large                            Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-server-medium                           Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-server-small                            Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel8-server-tiny                             Template for Red Hat Enterprise Linux 8 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-desktop-large                           Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-desktop-medium                          Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-desktop-small                           Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-desktop-tiny                            Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-highperformance-large                   Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-highperformance-medium                  Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-highperformance-small                   Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-highperformance-tiny                    Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-server-large                            Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-server-medium                           Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-server-small                            Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+rhel9-server-tiny                             Template for Red Hat Enterprise Linux 9 VM or newer. A PVC with the RHEL disk...   4 (2 generated)   1
+s2i-fuse712-spring-boot-2-camel               Spring Boot 2 and Camel QuickStart. This example demonstrates how you can use...   18 (3 blank)      3
+s2i-fuse712-spring-boot-2-camel-rest-3scale   Spring Boot 2, Camel REST DSL and 3Scale QuickStart. This example demonstrate...   19 (3 blank)      5
+s2i-fuse712-spring-boot-2-camel-xml           Spring Boot 2 and Camel Xml QuickStart. This example demonstrates how you can...   18 (3 blank)      3
+sso75-https                                   An example application based on RH-SSO 7.5 on OpenJDK image. For more informa...   27 (16 blank)     6
+sso75-ocp4-x509-https                         An example application based on RH-SSO 7.5 on OpenJDK image. For more informa...   13 (7 blank)      5
+sso75-ocp4-x509-postgresql-persistent         An example application based on RH-SSO 7.5 on OpenJDK image. For more informa...   21 (9 blank)      8
+sso75-postgresql                              An example application based on RH-SSO 7.5 on OpenJDK image. For more informa...   34 (18 blank)     8
+sso75-postgresql-persistent                   An example application based on RH-SSO 7.5 on OpenJDK image. For more informa...   35 (18 blank)     9
+sso76-ocp4-https                              An example application based on RH-SSO 7.6 on OpenJDK image. For more informa...   27 (16 blank)     6
+sso76-ocp4-postgresql                         An example application based on RH-SSO 7.6 on OpenJDK image. For more informa...   34 (18 blank)     8
+sso76-ocp4-postgresql-persistent              An example application based on RH-SSO 7.6 on OpenJDK image. For more informa...   35 (18 blank)     9
+sso76-ocp4-x509-https                         An example application based on RH-SSO 7.6 on OpenJDK image. For more informa...   13 (7 blank)      5
+sso76-ocp4-x509-postgresql-persistent         An example application based on RH-SSO 7.6 on OpenJDK image. For more informa...   21 (9 blank)      8
+windows10-desktop-large                       Template for Microsoft Windows 10 VM. A PVC with the Windows disk image must...    3 (1 generated)   1
+windows10-desktop-medium                      Template for Microsoft Windows 10 VM. A PVC with the Windows disk image must...    3 (1 generated)   1
+windows10-highperformance-large               Template for Microsoft Windows 10 VM. A PVC with the Windows disk image must...    3 (1 generated)   1
+windows10-highperformance-medium              Template for Microsoft Windows 10 VM. A PVC with the Windows disk image must...    3 (1 generated)   1
+windows11-desktop-large                       Template for Microsoft Windows 11 VM. A PVC with the Windows disk image must...    3 (1 generated)   1
+windows11-desktop-medium                      Template for Microsoft Windows 11 VM. A PVC with the Windows disk image must...    3 (1 generated)   1
+windows11-highperformance-large               Template for Microsoft Windows 11 VM. A PVC with the Windows disk image must...    3 (1 generated)   1
+windows11-highperformance-medium              Template for Microsoft Windows 11 VM. A PVC with the Windows disk image must...    3 (1 generated)   1
+windows2k16-highperformance-large             Template for Microsoft Windows Server 2016 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k16-highperformance-medium            Template for Microsoft Windows Server 2016 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k16-server-large                      Template for Microsoft Windows Server 2016 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k16-server-medium                     Template for Microsoft Windows Server 2016 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k19-highperformance-large             Template for Microsoft Windows Server 2019 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k19-highperformance-medium            Template for Microsoft Windows Server 2019 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k19-server-large                      Template for Microsoft Windows Server 2019 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k19-server-medium                     Template for Microsoft Windows Server 2019 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k22-highperformance-large             Template for Microsoft Windows Server 2022 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k22-highperformance-medium            Template for Microsoft Windows Server 2022 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k22-server-large                      Template for Microsoft Windows Server 2022 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k22-server-medium                     Template for Microsoft Windows Server 2022 VM. A PVC with the Windows disk im...   3 (1 generated)   1
+windows2k25-highperformance-large             Template for Microsoft Windows 2025 VM. A PVC with the Windows disk image mus...   3 (1 generated)   1
+windows2k25-highperformance-medium            Template for Microsoft Windows 2025 VM. A PVC with the Windows disk image mus...   3 (1 generated)   1
+windows2k25-server-large                      Template for Microsoft Windows 2025 VM. A PVC with the Windows disk image mus...   3 (1 generated)   1
+windows2k25-server-medium                     Template for Microsoft Windows 2025 VM. A PVC with the Windows disk image mus...   3 (1 generated)   1
+----
+
+==== Creating a VM from the Console via Template
+
+Follow these guidance link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/virtualization/creating-a-virtual-machine#virt-creating-vms-from-templates[here] to create a VM from the console using a template. 
+
+==== Creating a VM from the command line via `oc process`
+
+This is a useful way to understand what kinds of objects OpenShift Virtualization creates and manages:
+
+[source,text]
+----
+$ oc process -n openshift rhel8-desktop-medium | oc apply -f -virtualmachine.kubevirt.io/rhel8-q63yuvxpjdvy18l7 created
+----
+
+==== Another option - capturing template output and converting it into a Helm Chart
+
+See details link:/patterns/ansible-edge-gitops/ideas-for-customization/#howto-define-your-own-vm-sets-from-scratch[here].
+
+=== Accessing the VMs
+
+There are three mechanisms for access to these VMs:
+
+==== Ansible - keypair authentication
+
+The ssh keypairs from your `values-secret.yaml` are loaded into both Vault and AAP for use later. The pattern currently defines one such keypair,
+`vm-ssh`, but could support more, such as `iot-ssh`, `gateway-ssh`, and so on more details on how to expand on this pattern are described below.
+
+AAP only needs the private key and the username as a machine credential. The public key is not truly a secret, but it seemed interesting and
+useful to use the External Secret Operator to associate the public key with VM instances this way and prevent having to diverge from the
+upstream pattern to include local ssh pubkey specifications.
+
+The default SSH setting for RHEL does not allow password-based logins via SSH, and it is at the very least inconvenient to copy the SSH
+private key into a VM inside the cluster, so the typical way the keypair will be used is through Ansible.
+
+==== Virtual Machine Console Access using OpenShift Console
+
+Access the virtual machine console by using the OpenShift Console by following this procedure:
+
+. Navigate to *Virtualization* -> *VirtualMachines* and make sure *Project: All Projects* or *edge-gitops-vms* is selected:
++
+link:/images/ansible-edge-gitops/aeg-show-vms.png[image:/images/ansible-edge-gitops/aeg-show-vms.png[show-vms]]
+
+. Click the virtual machine name to open the details view. 
+
+. Click the `Console` tab to open the console view.
++
+The virtual machine console view will either show a standard RHEL console login screen, or if the demo is working as designed, it shows the Ignition application running in kiosk mode. 

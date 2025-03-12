@@ -1,0 +1,108 @@
+---
+title: Installation Details
+weight: 20
+aliases: /ansible-edge-gitops/installation-details/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Installation Steps
+
+These are the steps run by https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/Makefile[make install] and what each one does:
+
+=== https://github.com/validatedpatterns/common/blob/main/Makefile[operator-deploy]
+
+The `operator-deploy` task installs the Validated Patterns Operator, which in turn creates a subscription for the OpenShift GitOps operator and installs both the cluster and hub instances of it. The `clustergroup` application then reads the `values-global.yaml` and `values-hub.yaml` files for other subscriptions and applications to install.
+
+The `install` and `upgrade` targets are interchangeable and handle both initial installation and updates. These targets ensure that the necessary components, including OpenShift GitOps and the `clustergroup` application, are deployed and updated as needed.
+
+==== Imperative section
+
+Part of the operator-deploy process is creating and running the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-hub.yaml[imperative] file as defined in the hub values file. This pattern includes running the playbook to deploy the metal worker.
+
+The playbook code is https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/deploy_kubevirt_worker.yml[here].
+
+This Ansible Playbook deploys a node to run the Virtual Machines for the demo. The playbook uses the OpenShift machineset API to provision the node in the first availability zone it finds. Currently, AWS is the only major public cloud provider that offers the deployment of a metal node through the normal provisioning process. We hope that Azure and GCP will support this functionality soon.
+
+[NOTE]
+====
+Metal nodes are more expensive than standard AWS instances. However, running the demo without hardware acceleration can take about ~4x as long. It usually takes 20-30 minutes for the metal node to become available to run VMs.
+====
+
+Assuming your `kubeconfig` is currently set up to point to your cluster, list all MachineSets across all namespaces in an OpenShift cluster, using the following command:
+[source,shell]
+----
+$ oc get -A machineset
+----
+
+You are looking for a machineset with `metal-worker` in its name:
+
+[source,text]
+----
+NAMESPACE               NAME                                        DESIRED   CURRENT   READY   AVAILABLE   AGE
+openshift-machine-api   mhjacks-aeg-qx25w-metal-worker-us-west-2a   1         1         1       1           19m
+openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2a         1         1         1       1           47m
+openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2b         1         1         1       1           47m
+openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2c         1         1         1       1           47m
+openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2d         0         0                             47m
+----
+
+When the `metal-worker` is showing `READY` and `AVAILABLE`, the virtual machines will begin provisioning on it.
+
+The metal node is destroyed when the cluster is destroyed. The script is idempotent and creates at most one metal node per cluster.
+
+=== https://github.com/validatedpatterns/common/blob/main/Makefile[post-install]
+
+All the steps of `post-install` are idempotent. If you want or need to reconfigure vault or AAP, the recommended way to do so is to call `make post-install`. This might change as we move elements of this pattern into the new imperative framework in `common`.
+
+Specific processes that are called by `post-install` include:
+
+==== https://github.com/validatedpatterns/common/blob/main/scripts/vault-utils.sh[vault-init]
+
+The `vault-init` task streamlines the initialization and unsealing of Vault, ensuring that the necessary keys and configurations are in place. Its design allows for safe execution even against an already active Vault cluster, providing both efficiency and security in managing secrets.
+
+==== https://github.com/validatedpatterns/common/blob/main/scripts/load-k8s-secrets.sh[load-secrets]
+
+This process employs an Ansible playbook to read the `values-secret.yaml` file and securely store its data as key-value pairs in HashiCorp Vault. The External Secrets Operator (ESO) then retrieves these secrets from Vault and injects them into the Kubernetes cluster as native Kubernetes Secrets, making them accessible to applications running within the cluster. 
+
+In this specific implementation, the pattern utilizes the SSH public key for the kiosk virtual machines (VMs) using the ESO, ensuring that sensitive information, such as SSH keys, is securely managed and available to the VMs as needed.
+
+Re-running the script will update the secrets in Vault if there have been changes. If the secret values remain unchanged, re-execution is safe and will not adversely affect the existing configurations.
+
+==== https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[configure-controller]
+
+Key components of the configuration process:
+
+* *Retrieving AAP Credentials*: The script runs the `ansible_get_credentials.yml` playbook to obtain necessary credentials for accessing and managing the AAP instance.
+
+* *Parsing Secrets*: It then executes the `parse_secrets_from_values_secret.yml` playbook to extract and process sensitive information stored in the `values_secret.yaml` file, which includes passwords, tokens, or other confidential data required for configuration.
+
+* *Configuring the AAP Instance*: Finally, the script runs the `ansible_configure_controller.yml` playbook to set up and configure the AAP controller based on the retrieved credentials and parsed secrets.
+
+== OpenShift GitOps (ArgoCD)
+
+OpenShift GitOps is central to this pattern as it is responsible for insalling all of the other components. The installation process is driven through the installation of the
+https://github.com/validatedpatterns/common/tree/v1/clustergroup[clustergroup] cart. This in turn reads the repo’s https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-global.yaml[global values file], which instructs it to read the https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/values-hub.yaml[hub values file]. This is how the pattern knows to apply the Subscriptions and Applications listed further in the pattern.
+
+== OpenShift Virtualization (KubeVirt)
+
+OpenShift Virtualization is a framework for running virtual machines as native Kubernetes resources. While it can run without hardware acceleration, the performance of virtual machines will suffer terribly; some testing on a similar workload indicated a 4-6x delay running without hardware acceleration, so at present this pattern requires hardware acceleration. The pattern provides a script https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/deploy_kubevirt_worker.sh[deploy-kubevirt-worker.sh] which will provision a metal worker to run virtual machines for the pattern.
+
+OpenShift Virtualization currently supports only AWS and on-prem clusters; this is because of the way that baremetal resources are provisioned in GCP and Azure. We hope that OpenShift Virtualization can support GCP and Azure soon.
+
+More details about the way we use OpenShift Virtualization are available link:/ansible-edge-gitops/openshift-virtualization[here].
+
+== Ansible Automation Platform (AAP, formerly known as Ansible Tower)
+
+The use of Ansible Automation Platform is really the centerpiece of this pattern. We have recognized for some time that the concept and design principles of GitOps should apply to things outside of Kubernetes, and we believe this pattern gives us a way to do that.
+
+All of the Ansible interactions are defined in a Git Repository; the Ansible jobs that configure the VMs are designed to be idempotent (and are scheduled to run every 10 minutes on those VMs).
+
+It is very much the intention of this pattern to make it easy to replace the specific Edge management use case with another one. Some ideas on how to do that can be found link:/ansible-edge-gitops/ideas-for-customization/[here].
+
+Specifics of the Ansible content for this pattern can be seen https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/ansible[here].
+
+More details of the specifics of how AAP is configured are available link:/ansible-edge-gitops/ansible-automation-platform/[here].
