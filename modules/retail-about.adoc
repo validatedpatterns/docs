@@ -10,15 +10,12 @@ It is derived from the https://quarkuscoffeeshop.github.io[Quarkus Coffeeshop De
 
 This demo pulls together several different strands of the demo and allows for multiple stores to be installed on remote clusters via ACM if the user desires.
 
-The demo allows users to go to the store’s web page, order drinks and food items, and see those items `made` and served by the microservices in real time.
-
-The pattern includes build pipelines and a demo space, so that changes to the applications can be tested prior to `production` deployments.
+The demo allows users to go to the store’s web page, order drinks and food items, and see those items `made` and served by the microservices in real time. The pattern includes build pipelines and a demo space, so that changes to the applications can be tested prior to `production` deployments.
 
 [id="solution-elements"]
 == Solution elements
 
-* How to use a GitOps approach to keep in control of configuration and
-operations
+* How to use a GitOps approach to keep in control of configuration and operations
 * How to centrally manage multiple clusters, including workloads
 * How to build and deploy workloads across clusters using modern CI/CD
 * How to architect a modern application using microservices and Kafka in Java

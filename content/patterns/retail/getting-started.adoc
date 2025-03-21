@@ -1,7 +1,7 @@
 ---
 title: Getting Started
 weight: 10
-aliases: /travelops/getting-started/
+aliases: /retail/getting-started/
 ---
 
 :toc:
