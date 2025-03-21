@@ -173,7 +173,7 @@ $ ./pattern.sh make install
 
  .. Set your project to `All Projects` and verify the operators are installed and have a status of `Succeeded`.
  +
- link:/images/retail/retail-v1-operators.png[image:/images/retail/retail-v1-operators.png[retail-v1-operators]
+ image::/images/retail/retail-v1-operators.png[retail-v1-operators]
 
 . Track the progress through the Hub ArgoCD UI from the nines menu:
 +
