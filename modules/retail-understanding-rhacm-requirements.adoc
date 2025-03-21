@@ -1,0 +1,72 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="understanding-acm-requirements-managed-cluster"]
+= Understanding Red Hat Advanced Cluster Management requirements
+
+By default, Red Hat Advanced Cluster Management (RHACM) manages the `clusterGroup` applications that are deployed on all clusters. 
+
+Add a `managedClusterGroup` for each cluster or group of clusters that you want to manage by following this procedure. 
+
+.Procedure
+
+. Switch to your locally created feature branch by running the following command:
++
+[source,terminal]
+----
+$ git checkout my-branch main
+----
+
+. In the `value-hub.yaml` file, a `managedClusterGroup` `raleigh` already exists as shown in this yaml extract: 
++
+[source,yaml]
+----
+managedClusterGroups:
+    raleigh:
+      name: store-raleigh
+      helmOverrides:
+      # Values must be strings!
+      - name: clusterGroup.isHubCluster
+        value: "false"
+      clusterSelector:
+        matchLabels:
+          clusterGroup: store-raleigh
+        matchExpressions:
+        - key: vendor
+          operator: In
+          values:
+            - OpenShift
+----
++
+The YAML file segment defines the `raleigh` managed cluster group, which deploys `clusterGroup` applications on clusters labeled with `clusterGroup=store-raleigh`. The clusterSelector ensures that only clusters with the `clusterGroup=store-raleigh` label and the `vendor=OpenShift` label are included in this group. Specific subscriptions, Operators, applications, and projects for this clusterGroup are managed through the values-store-raleigh.yaml file.. 
+
+. To add a new `managedClusterGroup`, add a new entry to the `managedClusterGroups` block in the `values-hub.yaml` file as follows:
++
+[source,yaml]
+----
+charlotte:
+    name: store-charlotte
+    helmOverrides:
+      - name: clusterGroup.isHubCluster
+        value: "false"
+    clusterSelector:
+      matchLabels:
+        clusterGroup: store-charlotte
+      matchExpressions:
+        - key: vendor
+          operator: In
+          values:
+            - OpenShift
+----
++
+[NOTE]
+====
+The `charlotte` cluster group is managed separately, using its own `values-store-charlotte.yaml` file.
+====
+
+. Make a copy of the `values-store-raleigh.yaml` file and name it `values-store-charlotte.yaml`. Update the file with the appropriate values for the `charlotte` cluster group.
+
+[IMPORTANT]
+====
+Ensure that you commit the changes and push them to GitHub so that GitOps can fetch your changes and apply them.
+====
