@@ -1,0 +1,169 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="deploying-retail-pattern"]
+= Deploying the retail pattern
+
+.Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *Services \-> Containers \-> Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. See link:../../multicloud-gitops/mcg-cluster-sizing[sizing your cluster].
+* Optional: A second OpenShift cluster for multicloud demonstration.
+//Replaced git and podman prereqs with the tooling dependencies page
+* https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies].
+
+The use of this pattern depends on having at least one running Red Hat OpenShift cluster. However, consider creating a cluster for deploying the GitOps management hub assets and a separate cluster for the managed cluster.
+
+If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by using https://console.redhat.com/openshift/create[Red Hat Hybrid Cloud Console].
+
+.Procedure
+
+. Fork the https://github.com/validatedpatterns/retail[retail] repository on GitHub.
+
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+git clone git@github.com:your-username/retail.git
+----
+
+. Create a local copy of the secret values file that can safely include credentials. Run the following commands:
++
+[source,terminal]
+----
+cp values-secret.yaml.template ~/values-secret.yaml
+----
+
+. Edit `values-secret.yaml` populating with your quay `username` and `password`. 
++
+[source,yaml]
+---
+# NEVER COMMIT THESE VALUES TO GIT
+version: "2.0"
+secrets:
+    # These are credentials to allow you to push to your image registry (quay.io) for application images
+  - name: imageregistry
+    fields:
+    # eg. Quay -> Robot Accounts -> Robot Login
+    - name: username
+      value: "my-quay-username"
+    - name: password
+      value: "my-quay-password"
+----
++
+[WARNING]
+====
+Do not commit this file. You do not want to push personal credentials to GitHub.
+====
+
+. Customize the deployment for your cluster by following these steps:
+
+.. Create a new branch named my-branch and switch to it by running the following command:
++
+[source,terminal]
+----
+$ git switch -c my-branch
+----
+
+.. Edit the `values-hub.yaml` file to customize the deployment for your cluster by running the following command: 
++
+[source,terminal]
+----
+$ vi values-global.yaml
+----
++
+The values that you need to change are under the `imageregistry` key, to use your own account and hostname. If you like, you can change the `git` settings of `account`, `email` and `hostname` to reflect your own account settings.
+
+If you plan to customize the build of the applications themselves, there are `revision` and `imageTag` settings for each of them. The defaults should suffice if you just want to see the apps running.
+
+.. Stage the changes to the `values-hub.yaml` file by running the following commands:
++
+[source,terminal]
+----
+$ git add values-global.yaml
+----
+
+.. Commit the changes to the `values-hub.yaml` file by running the following commands:
++
+[source,terminal]
+----
+$ git commit -m "update deployment for my-branch"
+----
+
+.. Push the changes to the `values-global.yaml` file by running the following command:
++
+[source,terminal]
+----
+$ git push origin my-branch
+----
+
+. Deploy the pattern by running `./pattern.sh make install` or by using the link:/infrastructure/using-validated-pattern-operator/[Validated Patterns Operator].
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the pattern by using the pattern.sh script
+
+To deploy the pattern by using the `pattern.sh` script, complete the following steps:
+
+. Log in to your cluster by running the following:
+
+.. Obtain an API token by visiting https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request
+
+.. Log in with this retrieved token by running the following command:
++
+[source,terminal]
+----
+$ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
+----
+
+. Alternatively log in by running the following command: 
++
+[source,terminal]
+----
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster by running the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
+
+[id="verify-trvlops-pattern-install"]
+== Verify the retail pattern installation
+
+. Verify that the Operators have been installed.
+
+ .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
+
+ .. Set your project to `All Projects` and verify the operators are installed and have a status of `Succeeded`.
+ +
+ link:/images/retail/retail-v1-operators.png[image:/images/retail/retail-v1-operators.png[retail-v1-operators]]
+
+. Track the progress through the Hub ArgoCD UI from the nines menu.:
++
+link:/images/retail/retail-v1-console-menu.png[image:/images/retail/retail-v1-console-menu.png[retail-v1-console-menu]]
+
+Ensure that the Hub ArgoCD instance shows all of its apps in Healthy and Synced status once all of the images have been built:
++
+link:/images/retail/retail-v1-argo-apps-p1.png[image:/images/retail/retail-v1-argo-apps-p1.png[retail-v1-argo-apps-p1]]
+
+. Check on the pipelines, if you chose to run them. They should all complete successfully:
++
+link:/images/retail/retail-v1-pipelines.png[image:/images/retail/retail-v1-pipelines.png[retail-v1-pipelines]]
+
+. Go to the *Quarkus Coffeeshop Landing Page* where you are presented with the applications in the pattern:
++
+link:/images/retail/retail-v1-landing-page.png[image:/images/retail/retail-v1-landing-page.png[retail-v1-landing-page]]
+
+. Click the *Store Web Page* to open the Quarkus Coffeeshop Demo:
++
+link:/images/retail/retail-v1-store-page.png[image:/images/retail/retail-v1-store-page.png[retail-v1-store-page]]
+
+. Click the *TEST Store Web Page* to open a separate copy of the same demo.
+
+. Clicking the respective *Kafdrop* links to go to a Kafdrop instance that allows inspection of each of the respective environments.
++
+link:/images/retail/retail-v1-kafdrop.png[image:/images/retail/retail-v1-kafdrop.png[retail-v1-kafdrop]]
