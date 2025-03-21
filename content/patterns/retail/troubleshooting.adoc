@@ -1,3 +1,0 @@
-== Troubleshooting
-
-=== Our https://github.com/validatedpatterns/industrial-edge/issues[Issue Tracker]

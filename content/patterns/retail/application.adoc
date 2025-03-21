@@ -1,6 +1,6 @@
 ---
-title: Demonstrating Retail example applications
-weight: 10
+title: Demonstrating retail example applications
+weight: 40
 aliases: /retail/application-demos/
 ---
 
@@ -9,3 +9,4 @@ aliases: /retail/application-demos/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
+include::modules/retail-example-applications.adoc[]

@@ -43,7 +43,6 @@ the regular instance and the TEST instance, has its own instance of each
 of these supporting services it uses.
 ====
 
-
 . Order by clicking the `Place an Order` button on the front page. The
 menu should look like this:
 +
