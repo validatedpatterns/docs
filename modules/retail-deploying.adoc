@@ -189,7 +189,7 @@ image:/images/retail/retail-v1-pipelines.png[retail-v1-pipelines]
 
 . Go to the *Quarkus Coffeeshop Landing Page* where you are presented with the applications in the pattern:
 +
-image:/images/retail/retail-v1-landing-page.png[retail-v1-landing-page]
+image:/images/retail/retail-v1-landing-page-1.png[retail-v1-landing-page]
 
 . Click the *Store Web Page* to open the Quarkus Coffeeshop Demo:
 +
