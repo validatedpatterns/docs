@@ -1,0 +1,14 @@
+---
+title: Getting Started
+weight: 10
+aliases: /travelops/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/retail-deploying.adoc[leveloffset=1]
+
+

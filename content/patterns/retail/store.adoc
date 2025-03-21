@@ -1,0 +1,76 @@
+---
+title: Managed cluster sites
+weight: 30
+aliases: /retail/retail-managed-cluster/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Having a store (edge) cluster join the datacenter (hub)
+
+=== Allow ACM to deploy the store application to a subset of clusters
+
+A store ("`ATLANTA`") is installed on the hub cluster by default. This feature is interesting if you want to see how ACM can manage a remote
+cluster to install the same application on a different cluster.
+
+The way we apply this is through the managedClusterGroups block in `values-hub.yaml`:
++
+[source,yaml]
+----
+  managedClusterGroups:
+    raleigh:
+      name: store-raleigh
+      helmOverrides:
+      # Values must be strings!
+      - name: clusterGroup.isHubCluster
+        value: "false"
+      clusterSelector:
+        matchLabels:
+          clusterGroup: store-raleigh
+        matchExpressions:
+        - key: vendor
+          operator: In
+          values:
+            - OpenShift
+----
+
+Any cluster joined with the label `clusterGroup=store-raleigh` will be assigned the policies that deploy the store app to them.
+
+[id="attach-managed-cluster"]
+= Attach a managed cluster (edge) to the management hub
+
+The use of this Multicloud GitOps pattern depends on having at least one running Red Hat OpenShift cluster. 
+
+When you install the multi-cloud GitOps pattern, a hub cluster is setup. The hub cluster serves as the central point for managing and deploying applications across multiple clusters.
+
+include::modules/mcg-understanding-rhacm-requirements.adoc[leveloffset=+1]
+
+include::modules/mcg-deploying-managed-cluster-using-rhacm.adoc[leveloffset=+1]
+
+include::modules/comm-deploying-managed-cluster-using-cm-cli-tool.adoc[leveloffset=+1]
+
+include::modules/comm-deploying-managed-cluster-using-clusteradm-tool.adoc[leveloffset=+1]
+
+include::modules/comm-designate-cluster-as-managed-cluster-site.adoc[leveloffset=+2]
+
+
+== Verification
+
+. Go to your managed cluster (edge) OpenShift console and check for the `open-cluster-management-agent` pod being launched. 
+
+[NOTE]
+====
+It might take a while for the RHACM agent and `agent-addons` to launch.
+====
+
+=== Store is joined
+
+==== You’re done
+
+That’s it! Go to your store (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will
+take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it’s finished coming up
+launch the OpenShift GitOps (ArgoCD) console from the top right of the
+OpenShift console.
