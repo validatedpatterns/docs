@@ -44,7 +44,7 @@ image:/images/retail/retail-v1-order-p1.png[image:/images/retail/retail-v1-order
 image:/images/retail/retail-v1-place-order.png[image:/images/retail/retail-v1-place-order.png[retail-v1-place-order]
 
 As the orders are serviced by the barista and kitchen services, you can see their status in the `Orders` section of the page:
-+
+
 image:/images/retail/retail-v1-orders-status.png[retail-v1-orders-status]
 
 
