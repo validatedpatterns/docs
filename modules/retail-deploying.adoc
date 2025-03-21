@@ -177,7 +177,7 @@ $ ./pattern.sh make install
 
 . Track the progress through the Hub ArgoCD UI from the nines menu:
 +
-link:/images/retail/retail-v1-console-menu.png[image:/images/retail/retail-v1-console-menu.png[retail-v1-console-menu]
+image:/images/retail/retail-v1-console-menu.png[retail-v1-console-menu]
 
 . Ensure that the Hub ArgoCD instance shows all of its apps in Healthy and Synced status once all of the images have been built:
 +
