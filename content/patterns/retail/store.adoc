@@ -1,5 +1,5 @@
 ---
-title: Managed cluster sites
+title: Managed store sites
 weight: 30
 aliases: /retail/retail-managed-cluster/
 ---
@@ -17,7 +17,7 @@ A store ("`ATLANTA`") is installed on the hub cluster by default. This feature i
 cluster to install the same application on a different cluster.
 
 The way we apply this is through the `managedClusterGroups` block in `values-hub.yaml`:
-+
+
 [source,yaml]
 ----
   managedClusterGroups:

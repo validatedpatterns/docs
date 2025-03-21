@@ -1,5 +1,5 @@
 ---
-title: Demonstrating retail example applications
+title: Demonstrating a retail example applications
 weight: 40
 aliases: /retail/application-demos/
 ---

@@ -13,8 +13,7 @@ include::modules/comm-attributes.adoc[]
 === The Quarkus Coffeeshop Store https://github.com/validatedpatterns/retail/tree/main/charts/store/quarkuscoffeeshop-charts[Chart]
 
 This chart is responsible for deploying the applications, services and routes for the Quarkus Coffeeshop demo. It models a set of microservices
-that would make sense for a coffeeshop retail operation. The detail of what the microservices do is
-https://quarkuscoffeeshop.github.io/coffeeshop/[here].
+that would make sense for a coffeeshop retail operation. The detail of what the microservices do is https://quarkuscoffeeshop.github.io/coffeeshop/[here].
 
 * https://github.com/quarkuscoffeeshop/quarkuscoffeeshop-web[quarkuscoffeeshop-web] - Serves as the `front end` for ordering food and drinks.
 
@@ -34,7 +33,7 @@ https://quarkuscoffeeshop.github.io/coffeeshop/[here].
 
 All the components look like this in ArgoCD when deployed:
 
-link:/images/retail/retail-v1-argo-coffeeshop-store.png[image:/images/retail/retail-v1-argo-coffeeshop-store.png[retail-v1-argo-coffeeshop-store]
+image:/images/retail/retail-v1-argo-coffeeshop-store.png[retail-v1-argo-coffeeshop-store]
 
 The chart is designed such that the same chart can be deployed in the hub cluster as the `production` store, the `demo` or `TEST` store, and on a remote cluster.
 
@@ -42,11 +41,11 @@ The chart is designed such that the same chart can be deployed in the hub cluste
 
 This installs a database instance suitable for use in the Retail pattern. It uses the Crunchy PostgreSQL https://github.com/CrunchyData/postgres-operator[Operator] to provide PostgreSQL services, which includes high availability and backup services by default, and other features available.
 
-Like the store chart, the Database chart can be deployed in the same different scenarios.
+Similar to the store chart, the Database chart can be deployed in the same variety of scenarios.
 
 In ArgoCD, it looks like this:
 
-link:/images/retail/retail-v1-argo-coffeeshopdb.png[image:/images/retail/retail-v1-argo-coffeeshopdb.png[retail-v1-argo-coffeeshopdb]
+image:/images/retail/retail-v1-argo-coffeeshopdb.png[retail-v1-argo-coffeeshopdb]
 
 === The Quarkus Coffeeshop Kafka https://github.com/validatedpatterns/retail/tree/main/charts/all/quarkuscoffeeshop-kafka[Chart]
 
@@ -55,16 +54,14 @@ https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html/using_amq_str
 
 === The Quarkus Coffeeshop Pipelines https://github.com/validatedpatterns/retail/tree/main/charts/hub/quarkuscoffeeshop-pipelines[Chart]
 
-The pipelines chart defines build pipelines using the Red Hat OpenShift
-Pipelines https://catalog.redhat.com/software/operators/detail/5ec54a4628834587a6b85ca5[Operator] (tektoncd). Pipelines are provided for all of the application images that ship with the pattern; the pipelines all build the app from source, deploy them to the "`demo`" namespace, and push them to the configured
-image registry.
+The pipelines chart defines build pipelines using the Red Hat OpenShift Pipelines https://catalog.redhat.com/software/operators/detail/5ec54a4628834587a6b85ca5[Operator] (tektoncd). Pipelines are provided for all of the application images that ship with the pattern; the pipelines all build the app from source, deploy them to the `demo` namespace, and push them to the configured image registry.
 
 Like the store and database charts, the kafka chart supports all three modes of deployment.
 
-link:/images/retail/retail-v1-argo-pipelines.png[image:/images/retail/retail-v1-argo-pipelines.png[retail-v1-argo-pipelines]
+image:/images/retail/retail-v1-argo-pipelines.png[retail-v1-argo-pipelines]
 
 === The Quarkus Coffeeshop Landing Page https://github.com/validatedpatterns/retail/tree/main/charts/all/landing-page[Chart]
 
 The Landing Page chart builds the page that presents the links for the demos in the pattern.
 
-link:/images/retail/retail-v1-argo-landing-page.png[image:/images/retail/retail-v1-argo-landing-page.png[retail-v1-landing-page]
+image:/images/retail/retail-v1-argo-landing-page.png[retail-v1-landing-page]
