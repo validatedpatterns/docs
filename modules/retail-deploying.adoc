@@ -172,8 +172,8 @@ $ ./pattern.sh make install
  .. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
 
  .. Set your project to `All Projects` and verify the operators are installed and have a status of `Succeeded`.
- +
- image:/images/retail/retail-v1-operators.png[retail-v1-operators]
++
+image:/images/retail/retail-v1-operators.png[retail-v1-operators]
 
 . Track the progress through the Hub ArgoCD UI from the nines menu:
 +
@@ -181,22 +181,22 @@ image:/images/retail/retail-v1-console-menu.png[retail-v1-console-menu]
 
 . Ensure that the Hub ArgoCD instance shows all of its apps in Healthy and Synced status once all of the images have been built:
 +
-link:/images/retail/retail-v1-argo-apps-p1.png[image:/images/retail/retail-v1-argo-apps-p1.png[retail-v1-argo-apps-p1]
+image:/images/retail/retail-v1-argo-apps-p1.png[retail-v1-argo-apps-p1]
 
 . Check on the pipelines, if you chose to run them. They should all complete successfully:
 +
-link:/images/retail/retail-v1-pipelines.png[image:/images/retail/retail-v1-pipelines.png[retail-v1-pipelines]
+image:/images/retail/retail-v1-pipelines.png[retail-v1-pipelines]
 
 . Go to the *Quarkus Coffeeshop Landing Page* where you are presented with the applications in the pattern:
 +
-link:/images/retail/retail-v1-landing-page.png[image:/images/retail/retail-v1-landing-page.png[retail-v1-landing-page]
+image:/images/retail/retail-v1-landing-page.png[retail-v1-landing-page]
 
 . Click the *Store Web Page* to open the Quarkus Coffeeshop Demo:
 +
-link:/images/retail/retail-v1-store-page.png[image:/images/retail/retail-v1-store-page.png[retail-v1-store-page]
+image:/images/retail/retail-v1-store-page.png[retail-v1-store-page]
 
 . Click the *TEST Store Web Page* to open a separate copy of the same demo.
 
 . Clicking the respective *Kafdrop* links to go to a Kafdrop instance that allows inspection of each of the respective environments.
 +
-link:/images/retail/retail-v1-kafdrop.png[image:/images/retail/retail-v1-kafdrop.png[retail-v1-kafdrop]
+image:/images/retail/retail-v1-kafdrop.png[retail-v1-kafdrop]
