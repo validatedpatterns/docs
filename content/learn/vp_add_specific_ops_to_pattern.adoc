@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Validated patterns frameworks
 title: Adding a specific operator to hub values file
-weight: 24
+weight: 27
 aliases: /ocp-framework/adding-specific-operator-to-hub/
 ---
 
