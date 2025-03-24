@@ -16,11 +16,11 @@ The easiest way to get to the coffeeshop store page is from the OpenShift Consol
 
 image:/images/retail/retail-v1-console-menu.png[retail-v1-console-menu]
 
-1. Click the *Quarkus Coffeeshop Landing Page* link will bring you to this page:
+. Click the *Quarkus Coffeeshop Landing Page* link will bring you to this page:
 +
 image:/images/retail/retail-v1-landing-page.png[retail-v1-landing-page]
 
-2. Select either the `Store Web Page` or `TEST Store Web Page` links brings you to a screen that looks like this:
+. Select either the `Store Web Page` or `TEST Store Web Page` links brings you to a screen that looks like this:
 +
 image:/images/retail/retail-v1-store-page.png[retail-v1-store-page]
 +

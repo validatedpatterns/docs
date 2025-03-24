@@ -20,20 +20,20 @@
 +
 [source,terminal]
 ----
-oc login
+$ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
 ----
 or
 +
 [source,terminal]
 ----
-export KUBECONFIG=~/<path_to_kubeconfig>
+$ export KUBECONFIG=~/<path_to_kubeconfig>
 ----
 
 . Run the following command:
 +
 [source,terminal]
 ----
-cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-path_to_kubeconfig>
+$ cm attach cluster --cluster <cluster-name> --cluster-kubeconfig <path-to-path_to_kubeconfig>
 ----
 
 [role="_next-steps"]
