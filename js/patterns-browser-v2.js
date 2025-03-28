@@ -109,6 +109,23 @@ async function getData() {
   }
 }
 
+function getParams() {
+  // Get the params from the current URL
+  const url = window.location.search;
+  const urlParams = new URLSearchParams(url);
+  var enabledParams = {'categories': {}, 'filters': {}};
+  enabledParams.categories.tier = urlParams.getAll("tier");
+  // Tier is always "and" since each pattern can only have one tier
+  enabledParams.filters.tier = "and";
+  enabledParams.categories.industries = urlParams.getAll("industries");
+  enabledParams.filters.industries = urlParams.get("industries_filter");
+  enabledParams.categories.rh_products = urlParams.getAll("rh_products");
+  enabledParams.filters.rh_products = urlParams.get("rh_products_filter");
+  enabledParams.categories.other_products = urlParams.getAll("other_products");
+  enabledParams.filters.other_products = urlParams.get("other_products_filter");
+  return enabledParams;
+}
+
 function cleanString(string) {
   // Provide a string that can be used as a HTML id i.e. no spaces.
   return string.replace(/ /g, "-")
@@ -190,25 +207,32 @@ function renderSpinner() {
   '</div>';
 }
 
-function renderFilterItem(type, name, linkTitle) {
+function renderFilterItem(type, name, linkTitle, enabledItem) {
   // HTML for each checkbox item in the filters
+  if (enabledItem) {
+    checkedProp = "checked";
+  } else {
+    checkedProp = ""
+  }
   var filterItemHtml = '<label class="pf-c-check pf-c-select__menu-item" for="' + type + ':' + cleanString(name) + '">' +
-  '<input class="pf-c-check__input" type="checkbox" id="' + type + ':' + cleanString(name) + '"' + 'onclick="filterSelection()" name="' + linkTitle + '"/>' +
+  '<input class="pf-c-check__input filter_checkbox" type="checkbox" id="' + type + ':' + cleanString(name) + '"' + 'onclick="filterSelection()" name="' + linkTitle + '" ' + checkedProp + ' />' +
   '<span class="pf-c-check__label wrappable">' + linkTitle + '</span>'+
   '</label>';
   return filterItemHtml;
 }
 
-function renderFilterButtons(filterButtonTypes, name) {
+function renderFilterButtons(filterButtonTypes, name, enabledFilters) {
   // HTML for the AND / OR operator buttons
   if (filterButtonTypes.length > 1) {
     var filterButtonsHtml = '<div class="pf-c-toggle-group pf-m-compact">';
     var firstSelected = "";
     for (item = 0; item < filterButtonTypes.length; item++) {
-      firstSelected = "";
-      if (item == 0) { firstSelected = " pf-m-selected"; }
+      selected = "";
+      if (enabledFilters == filterButtonTypes[item].toLowerCase()) {
+        selected = " pf-m-selected";
+      };
       filterButtonsHtml += '<div class="pf-c-toggle-group__item">' +
-        '<button class="pf-c-toggle-group__button' + firstSelected + '" type="button" id="' + name + "_button:" + filterButtonTypes[item].toLowerCase() + '" onclick="changeFilterType(this.id)">' +
+        '<button class="pf-c-toggle-group__button' + selected + '" type="button" id="' + name + "_button:" + filterButtonTypes[item].toLowerCase() + '" onclick="changeFilterType(this.id)">' +
           '<span class="pf-c-toggle-group__text">' + filterButtonTypes[item] + '</span>' +
         '</button>' +
       '</div>'
@@ -219,13 +243,21 @@ function renderFilterButtons(filterButtonTypes, name) {
   return "";
 }
 
-function renderFilter(elementId, filterType, filterData) {
+function renderFilter(elementId, filterType, filterData, enabledParams, enabledFilters) {
   // HTML to render all filters
   const element = document.getElementById(elementId);
   for (item = 0; item < filterData.filter_list.length; item++) {
-    element.innerHTML += renderFilterItem(filterType, filterData.filter_list[item].Name, filterData.filter_list[item].LinkTitle);
+    if (enabledParams.includes(filterData.filter_list[item].Name)) {
+      enabledItem = true;
+    } else {
+      enabledItem = false;
+    }
+    element.innerHTML += renderFilterItem(filterType, filterData.filter_list[item].Name, filterData.filter_list[item].LinkTitle, enabledItem);
   };
-  element.innerHTML += renderFilterButtons(filterData.filter_types, filterType);
+  if (!enabledFilters) {
+    enabledFilters = "and";
+  }
+  element.innerHTML += renderFilterButtons(filterData.filter_types, filterType, enabledFilters);
 }
 
 function renderLabel(tier, tier_categories) {
@@ -303,6 +335,7 @@ function filterSelection(filter) {
   const patternsData = getData()
   patternsData.then(output => {
     renderFilteredCards(output.patterns, output.filter_categories)
+    updateURL(output.filter_categories)
   });
 }
 
@@ -322,16 +355,52 @@ function changeFilterType(id) {
     const selectButton = document.getElementById(id);
     selectButton.classList.add("pf-m-selected");
     renderFilteredCards(output.patterns, output.filter_categories)
+    updateURL(output.filter_categories)
   });
 }
 
+function updateURL(filter_categories){
+  // Update the URL with the current params based on the checkboxes
+  var updatedUrl = new URL(window.location.pathname, window.location.origin);
+  const patternsFilter = new Filter(filter_categories);
+  var enabledParams = {};
+  for (var key in patternsFilter.filter_values) {
+    var values = patternsFilter.filter_values[key];
+    for (const value of values) {
+      var category = patternsFilter.filter_categories[key];
+      var found = category.filter_list.find((element) => element.LinkTitle == value);
+      updatedUrl.searchParams.append(key, found.Name);
+    }
+  }
+  for (var type_key in patternsFilter.filter_types) {
+    var type_value = patternsFilter.filter_types[type_key];
+    if (type_value == "or") {
+      updatedUrl.searchParams.append(type_key + "_filter", "or");
+    }
+  }
+  history.pushState({}, null, updatedUrl.href);
+}
+
+function clearFilters(){
+  // Clear all the filters
+  const patternsData = getData()
+  var filter_checkboxes = document.getElementsByClassName("filter_checkbox");
+  for (item = 0; item < filter_checkboxes.length; item++) {
+    filter_checkboxes[item].checked = false;
+  }
+  patternsData.then(output => {
+    renderFilteredCards(output.patterns, output.filter_categories);
+    updateURL(output.filter_categories);
+  });
+}
 
 // Initialize the filters and pattern cards when the page loads
-const patternsData = getData()
+const patternsData = getData();
+const enabledParams = getParams();
 patternsData.then(output => {
-  renderFilter("TiersItems", "tier", output.filter_categories.tier);
-  renderFilter("IndustriesItems", "industries", output.filter_categories.industries);
-  renderFilter("RhProductsItems", "rh_products", output.filter_categories.rh_products);
-  renderFilter("OtherProductsItems", "other_products", output.filter_categories.other_products);
+  renderFilter("TiersItems", "tier", output.filter_categories.tier, enabledParams.categories.tier, enabledParams.filters.tier);
+  renderFilter("IndustriesItems", "industries", output.filter_categories.industries, enabledParams.categories.industries, enabledParams.filters.industries);
+  renderFilter("RhProductsItems", "rh_products", output.filter_categories.rh_products, enabledParams.categories.rh_products, enabledParams.filters.rh_products);
+  renderFilter("OtherProductsItems", "other_products", output.filter_categories.other_products, enabledParams.categories.other_products, enabledParams.filters.other_products);
   renderFilteredCards(output.patterns, output.filter_categories)
 });
