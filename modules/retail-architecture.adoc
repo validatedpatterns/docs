@@ -1,0 +1,29 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="overview-architecture"]
+= Architecture
+
+The following diagram shows the relationship between the microservices,
+messaging, and database components:
+
+link:/images/retail/retail-architecture.png[image:/images/retail/retail-architecture.png[Retail Pattern Architecture]]
+
+* The hub. This cluster hosts the CI/CD pipelines, a test instance of the applications and messaging/database services for testing purposes, and a single functional store.
+* Optional remote clusters. Each remote site can support a complete store environment. The default one modelled is a "`RALEIGH`" store location.
+
+[id="demo-scenario"]
+== Demo Scenario
+
+The Retail Validated Pattern/Demo Scenario showcases the Quarkus Coffeeshop retail experience. Rather than modeling the complexities of a full retail environment—such as item files, tax tables, and inventory management—it focuses on a subset of services to illustrate data flow, microservice interaction through APIs, messaging, and data persistence.
+
+* Web Service - the point of sale within the store. Shows the menu, and allows the user to order food and drinks, and shows when orders are ready.
+* Counter service - the "`heart`" of the store operation - receives orders and dispatches them to the barista and kitchen services, as appropriate. Users may order as many food and drink items in one order as they wish.
+* Barista - the service responsible for providing items from the
+"`drinks`" side of the menu.
+* Kitchen - the service responsible for providing items from the
+"`food`" side of the menu.
+
+Further documentation on the individual services is available at the upstream https://quarkuscoffeeshop.github.io/[Quarkus Coffeeshop] documentation site.
+
+link:/images/retail/retail-highlevel.png[image:/images/retail/retail-highlevel.png[Demo Scenario]]
