@@ -9,7 +9,7 @@ rh_products:
 - Red Hat OpenShift Virtualization
 - Red Hat Enterprise Linux
 - Red Hat OpenShift Data Foundation
-other_products:
+partners:
 - Veeam Kasten
 industries:
 - Chemical

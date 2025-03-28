@@ -28,7 +28,7 @@ markup:
 taxonomies:
   industry: 'industries'
   rh_product: 'rh_products'
-  other_product: 'other_products'
+  partners: 'partners'
   blog_tag: 'blog_tags'
 
 mediaTypes:

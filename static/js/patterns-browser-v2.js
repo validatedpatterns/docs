@@ -121,8 +121,8 @@ function getParams() {
   enabledParams.filters.industries = urlParams.get("industries_filter");
   enabledParams.categories.rh_products = urlParams.getAll("rh_products");
   enabledParams.filters.rh_products = urlParams.get("rh_products_filter");
-  enabledParams.categories.other_products = urlParams.getAll("other_products");
-  enabledParams.filters.other_products = urlParams.get("other_products_filter");
+  enabledParams.categories.partners = urlParams.getAll("partners");
+  enabledParams.filters.partners = urlParams.get("partners_filter");
   return enabledParams;
 }
 
@@ -401,6 +401,6 @@ patternsData.then(output => {
   renderFilter("TiersItems", "tier", output.filter_categories.tier, enabledParams.categories.tier, enabledParams.filters.tier);
   renderFilter("IndustriesItems", "industries", output.filter_categories.industries, enabledParams.categories.industries, enabledParams.filters.industries);
   renderFilter("RhProductsItems", "rh_products", output.filter_categories.rh_products, enabledParams.categories.rh_products, enabledParams.filters.rh_products);
-  renderFilter("OtherProductsItems", "other_products", output.filter_categories.other_products, enabledParams.categories.other_products, enabledParams.filters.other_products);
+  renderFilter("PartnersItems", "partners", output.filter_categories.partners, enabledParams.categories.partners, enabledParams.filters.partners);
   renderFilteredCards(output.patterns, output.filter_categories)
 });
