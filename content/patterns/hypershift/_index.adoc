@@ -6,7 +6,7 @@ summary: This pattern is for deploying the Hosted Control Plane (HyperShift) ser
 rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat MultiCluster Engine
-other_products:
+partners:
 - AWS Controller for Kubernetes
 industries:
 - Infrastructure

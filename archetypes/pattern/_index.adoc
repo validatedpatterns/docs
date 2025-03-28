@@ -10,6 +10,10 @@ industries:
 - Industry 1
 - Industry 2
 - etc
+partners:
+- partner 1
+- partner 2
+- etc
 links:
   install:
   arch:

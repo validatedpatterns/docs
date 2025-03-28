@@ -6,7 +6,7 @@ summary: This pattern helps you develop and deploy applications on an open hybri
 rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
-other_products:
+partners:
 - Portworx Enterprise
 industries:
 - General

@@ -17,14 +17,14 @@
   {{- $rh_products_filter_types := slice "AND" "OR" }}
   {{- $rh_products_dict := dict "filter_list" $rh_products_list "filter_types" $rh_products_filter_types }}
 
-  {{/* Other Products */}}
-  {{- $other_products := .Site.Taxonomies.other_products }}
-  {{- $other_products_list := slice }}
-  {{- range $index, $other_product :=  $other_products.Alphabetical }}
-    {{- $other_products_list = $other_products_list | append (dict "Name" $other_product.Name "LinkTitle" $other_product.Page.LinkTitle) }}
+  {{/* Partners */}}
+  {{- $partners := .Site.Taxonomies.partners }}
+  {{- $partners_list := slice }}
+  {{- range $index, $partners :=  $partners.Alphabetical }}
+    {{- $partners_list = $partners_list | append (dict "Name" $partners.Name "LinkTitle" $partners.Page.LinkTitle) }}
   {{- end }}
-  {{- $other_products_filter_types := slice "AND" "OR" }}
-  {{- $other_products_dict := dict "filter_list" $other_products_list "filter_types" $other_products_filter_types }}
+  {{- $partners_filter_types := slice "AND" "OR" }}
+  {{- $partners_dict := dict "filter_list" $partners_list "filter_types" $partners_filter_types }}
 
   {{/* Industries */}}
   {{- $industries := .Site.Taxonomies.industries }}
@@ -43,6 +43,6 @@
   {{- $tiers_filter_types := slice "OR" }}
   {{- $tiers_dict := dict "filter_list" $tiers_list "filter_types" $tiers_filter_types }}
 
-  {{- $filter_categories := dict "rh_products" $rh_products_dict "other_products" $other_products_dict "industries" $industries_dict "tier" $tiers_dict -}}
+  {{- $filter_categories := dict "rh_products" $rh_products_dict "partners" $partners_dict "industries" $industries_dict "tier" $tiers_dict -}}
   {{- dict "patterns" $pattern_list "filter_categories" $filter_categories | jsonify }}
 {{- end }}
