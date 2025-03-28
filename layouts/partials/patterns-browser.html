@@ -2,7 +2,7 @@
   <div class="pf-c-page__sidebar-body">
     <div class="pf-l-flex filter-title-div">
       <span class="pf-c-title pf-m-md filter-title pf-l-flex__item pf-m-grow">Filter by</span>
-    <!--  <span class="pf-l-flex__item reset-title">Reset filters</span> -->
+      <span class="pf-l-flex__item reset-title"><a id="clear_filters" href="#" onclick="clearFilters();return false;">Clear filters</a></span>
     </div>
         {{ partial "menu-patterns-browser.html" . }}
   </div>
