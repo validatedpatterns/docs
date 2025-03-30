@@ -1,0 +1,23 @@
+---
+title: Getting started
+weight: 10
+aliases: /encrypted-clusters-aas/ecaas-getting-started/
+---
+
+:toc:
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+
+== Deploying
+
+
+
+
+
+
+
+
+
+
