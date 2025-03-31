@@ -1,0 +1,393 @@
+---
+title: Getting Started
+weight: 10
+aliases: /hypershift/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="deploying-hypershift-pattern"]
+== Deploying the hosted control plane (HyperShift) pattern
+
+.Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
+* A GitHub account with a personal access token that has repository read and write permissions.
+* The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm]
+* Additional installation tool dependencies. For details, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
+
+It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
+
+[id="preparing-for-deployment"]
+== Preparing for deployment
+.Procedure
+
+. Fork the link:https://github.com/validatedpatterns-sandbox/hypershift[hypershift] repository on GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
+
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+$ git clone git@github.com:validatedpatterns-sandbox/hypershift.git
+----
+
+. Go to your repository: Ensure you are in the root directory of your Git repository by using:
++
+[source,terminal]
+----
+$ cd /path/to/your/repository
+----
+
+. Run the following command to set the upstream repository:
++
+[source,terminal]
+----
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/hypershift.git
+----
+
+. Verify the setup of your remote repositories by running the following command:
++
+[source,terminal]
+----
+$ git remote -v
+----
++
+.Example output
++
+[source,terminal]
+----
+origin	git@github.com:kquinn1204/ansible-edge-gitops.git (fetch)
+origin	git@github.com:kquinn1204/ansible-edge-gitops.git (push)
+upstream	git@github.com:validatedpatterns/ansible-edge-gitops.git (fetch)
+upstream	git@github.com:validatedpatterns/ansible-edge-gitops.git (push)
+----
+
+. Make a local copy of secrets template outside of your repository to hold credentials for the pattern.
++
+[WARNING]
+====
+Do not add, commit, or push this file to your repository. Doing so may expose personal credentials to GitHub.
+====
++
+Run the following commands:
++
+[source,terminal]
+----
+$ cp values-secret.yaml.template ~/values-secret.yaml
+----
+
+. Populate this file with your secrets, the defaults for AWS credentials is `~/.aws/credentials`. The GitHub `oauth` credentials can remain commented out:
++
+[source,terminal]
+----
+$ vi ~/values-secret.yaml
+----
+
+. Create and switch to a new branch named `my-branch`, by running the following command:
++
+[source,terminal]
+----
+$ git checkout -b my-branch
+----
+
+. Edit the `values-hypershift.yaml` file to create a S3 bucket.
++
+[source,terminal]
+----
+$ vi values-hypershift.yaml
+----
++
+.Example
+[source,terminal]
+----
+global:
+  s3:
+    # Should the pattern create the s3 bucket(true), or bring your own (false). 
+    createBucket: true
+
+    # What region should the bucket be created in.
+    region: us-east-1
+
+    # Enter the name of your bucket (bucket names are globally unique)
+    bucketName: <aws-iam-username-hcp>
+
+    # Any additional tags to add to a bucket created by the pattern
+    additionalTags: 
+      bucketOwner: <aws-iam-username>
+      lifecycle: keep
+----
+
+. Add the changes to the staging area by running the following command:
++
+[source,terminal]
+----
+$ git add -u
+----
+
+. Commit the changes by running the following command:
++
+[source,terminal]
+----
+$ git commit -m "updates to hypershift pattern"
+----
+
+. Push the changes to your forked repository:
++
+[source,terminal]
+----
+$ git push origin my-branch
+----
+
+The preferred way to install this pattern is by using the script `./pattern.sh` script. 
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the pattern by using the pattern.sh file
+
+To deploy the pattern by using the `pattern.sh` file, complete the following steps:
+
+. Log in to your cluster by following this procedure:
+
+.. Obtain an API token by visiting link:https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request[https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request].
+
+.. Log in to the cluster by running the following command: 
++
+[source,terminal]
+----
+$ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
+----
++
+Or log in by running the following command:
++
+[source,terminal]
+----
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster. Run the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
+
+.Verification
+
+. Verify that the Operators have been installed. Navigate to *Operators → Installed Operators* page in the OpenShift Container Platform web console, 
++
+.hypershift-operators
+image::/images/hypershift/hypershift-ops.png[hypershift-operators,title="Hosted control plane Operators"]
+
+. Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. 
++
+.hypershif-operators-applications
+image::/images/hypershift/hypershift-ops-applications.png[hypershift-ops-applications,title="AHosted control plane applications"]
+
+As part of installing by using the script `pattern.sh` pattern, HashiCorp Vault is installed. Running `./pattern.sh make install` also calls the `load-secrets` makefile target. This `load-secrets` target looks for a YAML file describing the secrets to be loaded into vault and in case it cannot find one it will use the `values-secret.yaml.template` file in the git repository to try to generate random secrets.
+
+For more information, see section on https://validatedpatterns.io/secrets/vault/[Vault].
+
+At this point, a management cluster is deployed and the pattern is ready to be used to create control planes as pods on a management cluster. For more information, see link:https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/hosted_control_planes/index[Hosted control planes].
+
+=== Automating the deployment of a hosted control plane nodes
+
+.Prerequisites
+* A management cluster.
+* The `hypershift` CLI installed. For instructions, see link:https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/hosted_control_planes/preparing-to-deploy-hosted-control-planes#hcp-cli-terminal_hcp-cli[Installing the hosted control planes command-line interface from the tereminal].
+* The `oc` CLI installed. For instructions, see link:https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/getting-started-cli.html[Getting started with the OpenShift CLI].
+* Ansible is installed on your system, with `kuberenetes.core collections`
+* Pull secret obtained from link:https://console.redhat.chttps://console.redhat.com/openshift/install/aws/installer-provisioned[Install OpenShift on AWS with installer-provisioned infrastructure] and converted to json format. 
+* AWS credentials with permissions to create IAM roles and policies.
+
+.Procedure
+
+. Fork the link:https://github.com/validatedpatterns/hypershift-automation[hypershift-automation] repository on GitHub. 
+
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+$ git clone ggit@github.com:validatedpatterns/hypershift-automation.git
+----
+
+. Go to your repository: Ensure you are in the root directory of your Git repository by using:
++
+[source,terminal]
+----
+$ cd /path/to/your/repository
+----
+
+. Edit the `vars.yml` file:
++
+[source,terminal]
+----
+vi vars.yml
+----
++
+.Example
+[source,terminal]
+----
+#Actions -e create=true "creates a cluster" -e destroy=true  "destroys a cluster"
+create: true
+destroy: false
+
+#Create IAM
+create_iam: false
+
+#Cluster Info - We use these to create/destroy clusters
+name: democluster
+domain: aws.validatedpatterns.io
+region: us-east-1
+
+#Cluster Characteristics - Describe how you want the cluster deployed
+replicas: 1
+instance_type: m5.xlarge
+#Setting to default uses the hosting-clusters version for the release-image. To deploy with a specific
+#version, define it below: x.y.z (4.15.29)
+image: 4.17.0
+----
+
+. Run the following command to create the hosted control plane:
++
+[source,terminal]
+----
+$ make build
+----
++
+This will take some time to create the hosted control plane and nodepool configuration.
+
+. In the OpenShift container platform web console select *All Clusters* to display the *Cluster list*. A screen similar to the following is displayed:
++
+.hypershift-cluster-list
+image::/images/hypershift/hypershift-cluster-list.png[hypershift-cluster-list,title="Hosted control plane cluster list"]
+
+. Select for example the *democluster* to display the *Cluster details* page. A screen similar to the following is displayed:
++
+.hypershift-cluster-details
+image::/images/hypershift/hypershift-cluster-details.png[hypershift-cluster-details,title="Hosted control plane cluster details"]
+
+. Click *Download kubeconfig* to download the `kubeconfig` file for the hosted control plane.
+
+.Verification
+
+. Export the management cluster kubeconfig:
++
+[source,terminal]
+----
+$ export MGMT_KUBECONFIG=</path/to/management-cluster-kubeconfig>
+----
+
+. Run this command to find the `node-pool-name` for your cluster:
++
+[source,terminal]
+----
+$ oc --kubeconfig="$MGMT_KUBECONFIG" get np -A
+----
++
+.Example output
+[source,terminal]
+----
+NAMESPACE   NAME                     CLUSTER       DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE
+clusters    democluster-us-east-1a   democluster   1               1               False         False        4.17.0    False             False                 
+----
+
+. Run this command to export the downloaded `kubeconfig` file for your hosted control plane:
++
+[source,terminal]
+----
+$ export HCP_KUBECONFIG=</path/to/hypershift-cluster-kubeconfig>
+----
+
+. Use the `kubeconfig` file to view the cluster Operators of the hosted cluster. Enter the following command:
++
+[source,terminal]
+----
+$ oc --kubeconfig="$HCP_KUBECONFIG" get co
+----
++
+.Example output
+[source,terminal]
+----
+NAME                                       VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
+console                                    4.17.0    True        False         False      57m     
+csi-snapshot-controller                    4.17.0    True        False         False      66m     
+dns                                        4.17.0    True        False         False      57m     
+image-registry                             4.17.0    True        False         False      57m     
+ingress                                    4.17.0    True        False         False      57m     
+insights                                   4.17.0    True        False         False      58m     
+kube-apiserver                             4.17.0    True        False         False      66m     
+kube-controller-manager                    4.17.0    True        False         False      66m     
+kube-scheduler                             4.17.0    True        False         False      66m     
+kube-storage-version-migrator              4.17.0    True        False         False      58m     
+monitoring                                 4.17.0    True        False         False      55m     
+network                                    4.17.0    True        False         False      65m     
+node-tuning                                4.17.0    True        False         False      60m     
+openshift-apiserver                        4.17.0    True        False         False      66m     
+openshift-controller-manager               4.17.0    True        False         False      66m     
+openshift-samples                          4.17.0    True        False         False      57m     
+operator-lifecycle-manager                 4.17.0    True        False         False      66m     
+operator-lifecycle-manager-catalog         4.17.0    True        False         False      65m     
+operator-lifecycle-manager-packageserver   4.17.0    True        False         False      66m     
+service-ca                                 4.17.0    True        False         False      58m     
+storage                                    4.17.0    True        False         False      60m    
+----
+
+. View the running pods on your hosted cluster by entering the following command:
++
+[source,terminal]
+----
+$ oc --kubeconfig="$HCP_KUBECONFIG" get pods -A
+----
++
+.Example output
+[source,terminal]
+----
+NAMESPACE                                          NAME                                                      READY   STATUS    RESTARTS      AGE
+kube-system                                        konnectivity-agent-56gh5                                  1/1     Running   0             66m
+kube-system                                        kube-apiserver-proxy-ip-10-0-129-28.ec2.internal          1/1     Running   0             66m
+open-cluster-management-agent-addon                cluster-proxy-proxy-agent-7c7666c8f8-9d2xb                3/3     Running   0             64m
+open-cluster-management-agent-addon                klusterlet-addon-workmgr-56c67649b6-8flx7                 1/1     Running   0             64m
+open-cluster-management-agent-addon                managed-serviceaccount-addon-agent-56d8f7c4bd-krtwt       1/1     Running   0             64m
+openshift-cluster-csi-drivers                      aws-ebs-csi-driver-node-tvgt9                             3/3     Running   0             66m
+openshift-cluster-node-tuning-operator             tuned-kmlsm                                               1/1     Running   0             66m
+openshift-cluster-samples-operator                 cluster-samples-operator-6895b9d4c7-nsm54                 2/2     Running   0             64m
+openshift-console-operator                         console-operator-67d5f87dcc-hdv5j                         1/1     Running   2 (64m ago)   64m
+openshift-console                                  console-fcb9d74fc-5jkfx                                   1/1     Running   0             61m
+openshift-console                                  downloads-57848c99-8t8xn                                  1/1     Running   0             64m
+openshift-dns                                      dns-default-n62b6                                         2/2     Running   0             65m
+openshift-dns                                      node-resolver-25vsw                                       1/1     Running   0             66m
+openshift-image-registry                           image-registry-5778996bc4-v4dw6                           1/1     Running   1 (63m ago)   64m
+openshift-image-registry                           node-ca-qf4fv                                             1/1     Running   0             66m
+openshift-ingress-canary                           ingress-canary-rlz5k                                      1/1     Running   0             65m
+openshift-ingress                                  router-default-7fc88ff765-88zt6                           1/1     Running   0             64m
+openshift-insights                                 insights-operator-567c5dd9fc-vhkr5                        1/1     Running   1 (63m ago)   64m
+openshift-kube-storage-version-migrator-operator   kube-storage-version-migrator-operator-5d64f77d9f-tbrmm   1/1     Running   1 (63m ago)   64m
+openshift-kube-storage-version-migrator            migrator-76b9bc6b54-mjwwn                                 1/1     Running   0             64m
+openshift-machine-config-operator                  kube-rbac-proxy-crio-ip-10-0-129-28.ec2.internal          1/1     Running   0             66m
+openshift-monitoring                               alertmanager-main-0                                       6/6     Running   0             62m
+openshift-monitoring                               cluster-monitoring-operator-6589b986c8-bjb2t              1/1     Running   0             64m
+openshift-monitoring                               kube-state-metrics-575c55f885-xcwvp                       3/3     Running   0             63m
+openshift-monitoring                               metrics-server-766fb8749c-qmbkp                           1/1     Running   0             63m
+openshift-monitoring                               monitoring-plugin-5567ddf44-vgrwx                         1/1     Running   0             63m
+openshift-monitoring                               node-exporter-gh76w                                       2/2     Running   0             63m
+openshift-monitoring                               openshift-state-metrics-7466fd7977-hqmwv                  3/3     Running   0             63m
+openshift-monitoring                               prometheus-k8s-0                                          6/6     Running   0             62m
+openshift-monitoring                               prometheus-operator-5cf88995b6-sqqfq                      2/2     Running   0             64m
+openshift-monitoring                               prometheus-operator-admission-webhook-7d744487ff-8xb7b    1/1     Running   0             64m
+openshift-monitoring                               telemeter-client-857df5b745-9v579                         3/3     Running   0             62m
+openshift-monitoring                               thanos-querier-585746b745-thnfc                           6/6     Running   0             63m
+openshift-multus                                   multus-additional-cni-plugins-njkgb                       1/1     Running   0             66m
+openshift-multus                                   multus-k6ggs                                              1/1     Running   0             66m
+openshift-multus                                   network-metrics-daemon-45wq7                              2/2     Running   0             66m
+openshift-network-console                          networking-console-plugin-78b59bd487-ms4c7                1/1     Running   0             64m
+openshift-network-diagnostics                      network-check-source-7fbf9dfccb-ddvld                     1/1     Running   0             64m
+openshift-network-diagnostics                      network-check-target-vvktk                                1/1     Running   0             66m
+openshift-network-operator                         iptables-alerter-5s96x                                    1/1     Running   0             65m
+openshift-ovn-kubernetes                           ovnkube-node-9rsw4                                        8/8     Running   0             66m
+openshift-service-ca-operator                      service-ca-operator-7b9f58bd4b-b62m6                      1/1     Running   1 (63m ago)   64m
+openshift-service-ca                               service-ca-554d4b766c-82h22                               1/1     Running   0             64m
+----
