@@ -74,7 +74,7 @@ So far, we have looked at automating the deployment of changes to the applicatio
 
 ### Logging into the OpenShift AI workbench
 
-On the OpenShift console click on the nine-box and choose `Red Hat OpenShift AI`. You'll be taken
+1. On the OpenShift console click on the nine-box and choose `Red Hat OpenShift AI`. You'll be taken
 to the AI console which will look like the following:
 
     [![rhoai-console](/images/industrial-edge/rhoai-console-home.png)](/images/industrial-edge/rhoai-console-home.png)
