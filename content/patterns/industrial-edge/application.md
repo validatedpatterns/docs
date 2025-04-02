@@ -118,3 +118,5 @@ We're now back in the OpenShift AI dashboard and can monitor the progress of our
 Once the pipeline has finished running, step over to Gitea and look up the `industrial-edge` repository (select `rhdp-deploy` branch if you've provisioned the pattern through RHDP). Notice the new commit indicating a model update in the test environment.
 
 [![pipeline-commit](/images/industrial-edge/pipeline-commit.png)](/images/industrial-edge/pipeline-commit.png)
+
+(to be continued...)
