@@ -3,7 +3,7 @@ menu:
   learn:
     parent: Validated patterns frameworks
 title: Adding Operators to the framework
-weight: 23
+weight: 26
 aliases: /ocp-framework/adding-operator-to-framework/
 ---
 
@@ -39,7 +39,7 @@ This procedure describes how subscriptions to Operators are added to the validat
 For example, if you want to deploy Advanced Cluster Management, AMQ (messaging) and AMQ Streams (Kafka) in your factory cluster, you would follow the guidance here:
 
 The assumption is there is a `values-factory.yaml` file that is used to deploy the factory cluster. The file should include the following entries:
-+
+
 [source,yaml]
 ----
 namespaces:
