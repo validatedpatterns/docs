@@ -3,15 +3,16 @@ title: Intel AMX accelerated Medical Diagnosis
 date: 2023-10-10
 validated: false
 summary: This pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis previously developed by Red Hat. The pattern is modified to utilize Intel AMX feature.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat OpenShift Serverless
 - Red Hat OpenShift Data Foundation
-- Red Hat OpenShift Node Feature Discovery
-- 4th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
+partners:
+- Intel
 industries:
 - medical
 aliases: /medical-diagnosis-amx/
+variant_of: medical-diagnosis
 pattern_logo: medical-diagnosis.png
 links:
   install: getting-started

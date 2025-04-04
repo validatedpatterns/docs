@@ -3,16 +3,15 @@ title: Intel QAT accelerated Multicloud GitOps
 date: 2023-10-05
 validated: false
 summary: This is extension of Multicloud GitOps pattern with additional application to show the value of using Intel QAT.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
-- Red Hat Node Feature Discovery
-- 4th Gen Intel Xeon Scalable processors with Intel QuickAssist Technology (Intel QAT)
-- Sail Operator (Istio Service Mesh)
-- Intel Device Plugin Operator
+partners:
+- Intel
 industries:
 - General
 aliases: /multicloud-gitops-qat/
+variant_of: multicloud-gitops
 # uncomment once this exists
 # pattern_logo: multicloud-gitops.png
 pattern_logo: intel-qat.png
