@@ -3,15 +3,15 @@ title: Intel SGX protected Vault for Multicloud GitOps
 date: 2024-02-09
 validated: false
 summary: This is an extension of the Multicloud GitOps pattern with an additional application to show the value of using Intel SGX.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
-- Red Hat Node Feature Discovery
-- Intel Device Plugins
-- 5th Gen Intel Xeon Scalable processors with Intel Security Guard Extensions (Intel SGX)
+partners:
+- Intel
 industries:
 - General
 aliases: /multicloud-gitops-sgx/
+variant_of: multicloud-gitops
 # uncomment once this exists
 # pattern_logo: multicloud-gitops.png
 pattern_logo: sgx-intel-ai.png

@@ -42,7 +42,7 @@ class Filter {
 }
 
 class FilteredPatterns {
-  // Class for filtered the patterns based on a Filter object. Also sorts the
+  // Class for filtering the patterns based on a Filter object. Also sorts the
   // patterns based on sort_value.
 
   constructor(patterns_filter, patterns, sort_value) {
@@ -74,6 +74,20 @@ class FilteredPatterns {
       };
       if (patternPassed == true) { filteredPatterns.push(this.patterns[item]); };
     };
+
+    // This is a special filter for the variant parent. If variant_of is set,
+    // then filter by patterns that are variants of the parent.
+    var variant_of = getVariantParent();
+    if (variant_of != null) {
+      var variantFilter = [];
+      for (item = 0; item < filteredPatterns.length; item++) {
+        if (variant_of == filteredPatterns[item].Params.variant_of) {
+          variantFilter.push(filteredPatterns[item]);
+        }
+      }
+      filteredPatterns = variantFilter
+    }
+
     this.sort_filtered_patterns(filteredPatterns)
     return filteredPatterns
   }
@@ -124,6 +138,61 @@ function getParams() {
   enabledParams.categories.partners = urlParams.getAll("partners");
   enabledParams.filters.partners = urlParams.get("partners_filter");
   return enabledParams;
+}
+
+function getVariantParent() {
+  // Gets the ID of the currently chosen variant parent. If the parent variant
+  // hasn't been set, return null.
+  const url = window.location.search;
+  const urlParams = new URLSearchParams(url);
+  if (urlParams.has("variant_of")) {
+    return urlParams.get("variant_of");
+  } else {
+    return null;
+  }
+}
+
+function containsVariants(current_pattern, patterns) {
+  // Check an array of patterns (patterns) to see if a pattern (current_pattern)
+  // is a parent. Returns the number of variants for the parent.
+  var pattern_id = current_pattern.Link.split("/").filter(n => n)[1];
+  var variant_count = 0;
+  patterns.forEach(function (item, index) {
+    if (pattern_id == item.Params.variant_of) {
+      variant_count += 1;
+    }
+  });
+  return variant_count;
+}
+
+function outputVariantCount(variant_count, pattern_id) {
+  // Displays the number of variants on the parent pattern's card in the
+  // bottom corner.
+  var url = new URL(window.location.href);
+  url.searchParams.set('variant_of', pattern_id)
+  var result = "";
+  if (variant_count == 1) {
+    result = (`<div style='float:right'><a href='${url.toString()}'>1 variant available</a></div>`);
+  } else if (variant_count > 1) {
+    result = (`<div style='float:right'><a href='${url.toString()}'>${variant_count} variants available</a></div>`);
+  }
+  return result;
+}
+
+function renderVariantStatus(patterns) {
+  // Render a notice on top of the patterns browser to indicate which variant
+  // parent has been selected. Also provide a link back to the standard patterns
+  // browser withou tthe variant set.
+  var url = new URL(window.location.href);
+  url.searchParams.delete('variant_of')
+  const parent_variant = getVariantParent();
+  if (parent_variant) {
+    const parent_pattern = patterns.find((pattern) => pattern.Link.split("/").filter(n => n)[1] == parent_variant);
+    const status = document.getElementById("variant-status");
+    status.innerHTML = (`
+      <p>Showing variant patterns for ${parent_pattern.Name}.</p>
+      <p><a href="${url}">Click here to browse all patterns</a></p>`);
+  }
 }
 
 function cleanString(string) {
@@ -198,13 +267,13 @@ function checkCategoryObject(patternTerms, filterTerms, filter_type) {
 
 function renderSpinner() {
   // HTML for the loading spinner
-  return '<div class="pf-l-bullseye">' +
-    '<div class="pf-l-bullseye__item">' +
-      '<svg class="pf-c-spinner" role="progressbar" viewBox="0 0 100 100" aria-label="Loading..." >' +
-      '<circle class="pf-c-spinner__path" cx="50" cy="50" r="45" fill="none" />' +
-      '</svg>' +
-    '</div>' +
-  '</div>';
+  return (`div class="pf-l-bullseye">
+    <div class="pf-l-bullseye__item">
+      <svg class="pf-c-spinner" role="progressbar" viewBox="0 0 100 100" aria-label="Loading..." >
+      <circle class="pf-c-spinner__path" cx="50" cy="50" r="45" fill="none" />
+      </svg>
+    </div>
+  </div>`);
 }
 
 function renderFilterItem(type, name, linkTitle, enabledItem) {
@@ -214,10 +283,11 @@ function renderFilterItem(type, name, linkTitle, enabledItem) {
   } else {
     checkedProp = ""
   }
-  var filterItemHtml = '<label class="pf-c-check pf-c-select__menu-item" for="' + type + ':' + cleanString(name) + '">' +
-  '<input class="pf-c-check__input filter_checkbox" type="checkbox" id="' + type + ':' + cleanString(name) + '"' + 'onclick="filterSelection()" name="' + linkTitle + '" ' + checkedProp + ' />' +
-  '<span class="pf-c-check__label wrappable">' + linkTitle + '</span>'+
-  '</label>';
+  var filterItemHtml = (`<label class="pf-c-check pf-c-select__menu-item" for="${type}:${cleanString(name)}">
+  <input class="pf-c-check__input filter_checkbox" type="checkbox" id="${type}:${cleanString(name)}"
+    onclick="filterSelection()" name="${linkTitle}" ${checkedProp} />
+    <span class="pf-c-check__label wrappable">${linkTitle}</span>
+  </label>`);
   return filterItemHtml;
 }
 
@@ -229,13 +299,13 @@ function renderFilterButtons(filterButtonTypes, name, enabledFilters) {
     for (item = 0; item < filterButtonTypes.length; item++) {
       selected = "";
       if (enabledFilters == filterButtonTypes[item].toLowerCase()) {
-        selected = " pf-m-selected";
+        selected = "pf-m-selected";
       };
-      filterButtonsHtml += '<div class="pf-c-toggle-group__item">' +
-        '<button class="pf-c-toggle-group__button' + selected + '" type="button" id="' + name + "_button:" + filterButtonTypes[item].toLowerCase() + '" onclick="changeFilterType(this.id)">' +
-          '<span class="pf-c-toggle-group__text">' + filterButtonTypes[item] + '</span>' +
-        '</button>' +
-      '</div>'
+      filterButtonsHtml += (`<div class="pf-c-toggle-group__item">
+        <button class="pf-c-toggle-group__button ${selected}" type="button" id="${name}_button:${filterButtonTypes[item].toLowerCase()}" onclick="changeFilterType(this.id)">
+          <span class="pf-c-toggle-group__text">${filterButtonTypes[item]}</span>
+        </button>
+      </div>`)
     }
     filterButtonsHtml += '</div>'
     return filterButtonsHtml;
@@ -264,35 +334,34 @@ function renderLabel(tier, tier_categories) {
   // HTML to render the pattern tier label
   if (tier != undefined) {
     var color= tier_categories.filter_list.find(item => item.Name === tier);
-    var renderedLabelHtml = '<span class="pf-c-label pf-m-' + color +'">' +
-      '<span class="pf-c-label__content">' +
-        '<img src="/images/pattern-tier-' + tier + '.png" alt="' + capitalizeFirstLetter(tier) + '" width="16" height="16" class="custom-pattern-icon"/>' +
-        capitalizeFirstLetter(tier) +
-      '</span>' +
-    '</span>';
+    var renderedLabelHtml = (`<span class="pf-c-label pf-m-${color}">
+      <span class="pf-c-label__content">
+        <img src="/images/pattern-tier-${tier}.png" alt="${capitalizeFirstLetter(tier)}" width="16" height="16" class="custom-pattern-icon"/>
+        ${capitalizeFirstLetter(tier)}
+      </span>
+    </span>`);
     return renderedLabelHtml;
   } else {
     return "";
   };
 }
 
-function renderCard(pattern, tier_categories) {
+function renderCard(pattern, tier_categories, variant_count) {
   // HTML for each pattern card
-  var renderCardHtml = '<div class="pf-l-gallery__item" style="display: grid;">' +
-  '<div class="pf-c-card" style="text-align: left; --pf-c-card__title--FontSize: 1rem; --pf-c-card__body--FontSize: 0.95rem;">' +
-    '<div class="pf-c-card__title">' +
-      '<a href="' + pattern.Link +'">' +
-        pattern.Name +
-      '</a>' +
-    '</div>' +
-    '<div class="pf-c-card__body">' +
-      pattern.Params.summary +
-    '</div>' +
-    '<div class="pf-c-card__footer">' +
-      renderLabel(pattern.Params.tier, tier_categories) +
-    '</div>' +
-  '</div>' +
-  '</div>';
+  var pattern_id = pattern.Link.split("/").filter(n => n)[1];
+  var renderCardHtml = (`<div class="pf-l-gallery__item" style="display: grid;">
+    <div class="pf-c-card" style="text-align: left; --pf-c-card__title--FontSize: 1rem; --pf-c-card__body--FontSize: 0.95rem;">
+      <div class="pf-c-card__title">
+        <a href="${pattern.Link}">${pattern.Name}</a>
+      </div>
+      <div class="pf-c-card__body">
+        ${pattern.Params.summary}
+      </div>
+      <div class="pf-c-card__footer">
+        ${renderLabel(pattern.Params.tier, tier_categories)} ${outputVariantCount(variant_count, pattern_id)}
+      </div>
+    </div>
+  </div>`);
   return renderCardHtml;
 }
 
@@ -319,30 +388,50 @@ function renderFilteredCards(patterns, filter_categories) {
 
   // Render the filtered cards
   for (item = 0; item < filteredPatterns.length; item++) {
+    var variant_count = containsVariants(filteredPatterns[item], patterns);
     const element = document.getElementById("patternCards");
-    element.innerHTML += renderCard(filteredPatterns[item], filter_categories.tier);
+    element.innerHTML += renderCard(filteredPatterns[item], filter_categories.tier, variant_count);
   };
+
+  // Render the variant status
+  renderVariantStatus(patterns);
 
   // Display the number of patterns
   var totalPatternsCount = patterns.length
   var filteredPatternsCount = filteredPatterns.length
   const counter = document.getElementById("pattern-counter");
   counter.innerHTML = filteredPatternsCount + " of " + totalPatternsCount + " patterns displayed";
+
+  // Update the counters for checked filters
+  updateFilterCounters();
+}
+
+function updateFilterCounters() {
+  const elementIds = ["TiersItems", "IndustriesItems", "RhProductsItems", "PartnersItems"]
+  for (const elementId of elementIds) {
+    const element = document.getElementById(elementId);
+    const elementCounter = document.getElementById(elementId + "Counter");
+    var count = element.querySelectorAll('input[type="checkbox"]:checked').length;
+    if (count > 0) {
+      elementCounter.innerHTML = (`<span class="pf-c-badge pf-m-unread">${count}</span>`);
+    } else {
+      elementCounter.innerHTML = "";
+    }
+  }
 }
 
 function filterSelection(filter) {
   // Filter the patterns
   const patternsData = getData()
   patternsData.then(output => {
-    renderFilteredCards(output.patterns, output.filter_categories)
     updateURL(output.filter_categories)
+    renderFilteredCards(output.patterns, output.filter_categories)
   });
 }
 
 function changeFilterType(id) {
   // Change Function to change the filter type when the user clicks an
   // AND / OR operator button
-
   var filterType = id.split(":");
   var filter_category = filterType[0].replace('_button','');
   const patternsData = getData();
@@ -354,13 +443,17 @@ function changeFilterType(id) {
     }
     const selectButton = document.getElementById(id);
     selectButton.classList.add("pf-m-selected");
-    renderFilteredCards(output.patterns, output.filter_categories)
     updateURL(output.filter_categories)
+    renderFilteredCards(output.patterns, output.filter_categories)
   });
 }
 
 function updateURL(filter_categories){
   // Update the URL with the current params based on the checkboxes
+  // Snce parent_variant is a special type of filter, it's not stored as a part
+  // of the checbox filters. So if it is set, we need to store it so we can
+  // reuse it once we regenerate the URL.
+  const parent_variant = getVariantParent();
   var updatedUrl = new URL(window.location.pathname, window.location.origin);
   const patternsFilter = new Filter(filter_categories);
   var enabledParams = {};
@@ -372,12 +465,18 @@ function updateURL(filter_categories){
       updatedUrl.searchParams.append(key, found.Name);
     }
   }
+  // Determine if we'r eusing an "add" or "or" filter.
   for (var type_key in patternsFilter.filter_types) {
     var type_value = patternsFilter.filter_types[type_key];
     if (type_value == "or") {
       updatedUrl.searchParams.append(type_key + "_filter", "or");
     }
   }
+  // Add the parent_variant we stored earlier (if it was set).
+  if (parent_variant) {
+    updatedUrl.searchParams.append('variant_of', parent_variant);
+  }
+  // Update the URL.
   history.pushState({}, null, updatedUrl.href);
 }
 
@@ -389,8 +488,8 @@ function clearFilters(){
     filter_checkboxes[item].checked = false;
   }
   patternsData.then(output => {
-    renderFilteredCards(output.patterns, output.filter_categories);
     updateURL(output.filter_categories);
+    renderFilteredCards(output.patterns, output.filter_categories);
   });
 }
 

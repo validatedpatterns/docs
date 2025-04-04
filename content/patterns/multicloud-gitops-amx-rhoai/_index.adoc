@@ -3,15 +3,16 @@ title: Intel AMX accelerated Multicloud GitOps with Openshift AI
 date: 2024-02-27
 validated: false
 summary: This is extension of Multicloud GitOps pattern with Red Hat Openshift AI component to show the value of using Intel AMX.
-products:
+rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
 - Red Hat Openshift AI
-- OpenVINO Toolkit Operator
-- 5th Gen Intel Xeon Scalable processors with Intel Advanced Matrix Extensions (Intel AMX)
+partners:
+- Intel
 industries:
 - General
 aliases: /multicloud-gitops-amx-rhoai/
+variant_of: multicloud-gitops
 # uncomment once this exists
 # pattern_logo: multicloud-gitops.png
 pattern_logo: amx-intel-ai.png
@@ -105,7 +106,7 @@ This solution also uses a variety of _observability tools_ including the Prometh
 // RHODS pattern description
 The basic {mcg-pattern} has been extended to highlight the *{intel-5th-gen-xeon-processors}* capabilities, offering developers a streamlined pathway to accelerate their workloads through the integration of cutting-edge *{intel-amx}*, providing efficiency and performance optimization in AI workloads.
 
-The basic pattern has been extended with two components: Openshift AI and OpenVINO Toolkit Operator. 
+The basic pattern has been extended with two components: Openshift AI and OpenVINO Toolkit Operator.
 
 * Openshift AI, serves as a robust AI/ML platform for the creation of AI-driven applications and provides a collaborative environment for data scientists and developers that helps to move easily from experiment to production. It offers Jupyter application with selection of notebook servers, equipped with pre-configured environments and necessary support and optimizations (such as CUDA, PyTorch, Tensorflow, HabanaAI, etc.).
 

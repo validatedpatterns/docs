@@ -11,6 +11,7 @@ partners:
 industries:
 - General
 aliases: /multicloud-gitops-Portworx/
+variant_of: multicloud-gitops
 pattern_logo: multicloud-gitops-Portworx.png
 links:
   install: getting-started
