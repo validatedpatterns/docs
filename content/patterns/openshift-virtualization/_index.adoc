@@ -1,0 +1,22 @@
+---
+title: OpenShift Virtualization
+date: 2025-04-16
+tier: maintained
+summary: This pattern uses OpenShift Virtualization to simulate an edge environment for VMs.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat Ansible Automation Platform
+- Red Hat OpenShift Virtualization
+- Red Hat Enterprise Linux
+- Red Hat OpenShift Data Foundation
+industries:
+- Chemical
+aliases: /openshift-virtualization/
+pattern_logo: ansible-edge.png
+links:
+  install: getting-started
+  arch: https://www.redhat.com/architect/portfolio/detail/6-enabling-medical-imaging-diagnostics-with-edge
+  help: https://groups.google.com/g/validatedpatterns
+  bugs: https://github.com/validatedpatterns/ansible-edge-gitops/issues
+ci: aegitops
+---
