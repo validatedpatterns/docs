@@ -34,24 +34,23 @@ It takes about 20-30 minutes for the metal node to become available to run VMs. 
 oc get -A machineset
 ```
 
-You will be looking for a machineset with `metal-worker` in its name:
+You will be looking for the machinesets with `metal-worker` in their names:
 
 ```text
 NAMESPACE               NAME                                        DESIRED   CURRENT   READY   AVAILABLE   AGE
-openshift-machine-api   mhjacks-aeg-qx25w-metal-worker-us-west-2a   1         1         1       1           19m
-openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2a         1         1         1       1           47m
-openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2b         1         1         1       1           47m
-openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2c         1         1         1       1           47m
-openshift-machine-api   mhjacks-aeg-qx25w-worker-us-west-2d         0         0                             47m
+openshift-machine-api   mhjacks-vsk-z52vt-metal-worker-us-west-1b   1         1         1       1           5h37m
+openshift-machine-api   mhjacks-vsk-z52vt-metal-worker-us-west-1c   1         1         1       1           5h37m
+openshift-machine-api   mhjacks-vsk-z52vt-worker-us-west-1b         2         2         2       2           6h31m
+openshift-machine-api   mhjacks-vsk-z52vt-worker-us-west-1c         1         1         1       1           6h31m
 ```
 
-When the `metal-worker` is showing "READY" and "AVAILABLE", the virtual machines will begin provisioning on it.
+When the `metal-worker`'s are showing "READY" and "AVAILABLE", the virtual machines will begin provisioning on it.
 
-The metal node will be destroyed when the cluster is destroyed. The script is idempotent and will create at most one metal node per cluster.
+The metal nodes will be destroyed when the cluster is destroyed. The script is idempotent and will create at most one metal node per availability zone in the cluster.
 
 ## [post-install](https://github.com/validatedpatterns/common/blob/main/Makefile)
 
-Note that all the steps of `post-install` are idempotent. If you want or need to reconfigure vault or AAP, the recommended way to do so is to call `make post-install`. This may change as we move elements of this pattern into the new imperative framework in `common`.
+Note that all the steps of `post-install` are idempotent.
 
 Specific processes that are called by post-install include:
 
@@ -64,28 +63,6 @@ Vault requires extra setup in the form of unseal keys and configuration of secre
 This process (which calls push_secrets) calls an Ansible playbook that reads the values-secret.yaml file and stores the data it finds there in vault as keypairs. These values are then usable in the kubernetes cluster. This pattern uses the ssh pubkey for the kiosk VMs via the external secrets operator.
 
 This script will update secrets in vault if re-run; it is safe to re-run if the secret values have not changed as well.
-
-### [configure-controller](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh)
-
-There are two parts to this script - the first part, with the code [here](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/ansible_get_credentials.yml), retrieves the admin credentials from OpenShift to enable login to the AAP Controller.
-
-The second part, which is the bulk of the ansible-load-controller process is [here](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/ansible/ansible_configure_controller.yml) and uses the [controller configuration](https://github.com/redhat-cop/controller_configuration) framework to configure the Ansible Automation Platform instance that is installed by the helm chart.
-
-This division is so that users can adapt this pattern more easily if they're running AAP, but not on OpenShift.
-
-The script waits until AAP is ready, and then proceeds to:
-
-1. Install the manifest to entitle AAP
-1. Configure the custom Credential Types the demo needs
-1. Define an Organization for the Demo
-1. Add a Project for the Demo
-1. Add the Credentials for jobs to use
-1. Configure Host inventory and inventory sources, and smart inventories to define target hosts
-1. Configure an Execution environment for the Demo
-1. Configure Job Templates for the Demo
-1. Configure Schedules for the jobs that need to repeat
-
-*Note:* This script has defaults that it overrides when run as part of `make install` that it derives from the environment (the repo that it is attached to and the branch that it is on). So if you need to re-run it, the most straightforward way to do this is to run `make upgrade` when using the make-based installation process.
 
 # OpenShift GitOps (ArgoCD)
 
@@ -110,22 +87,6 @@ OpenShift Virtualization was chosen in this pattern to avoid dealing with the di
 The creation of virtual machines is controlled by the chart [here](https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/edge-gitops-vms).
 
 More details about the way we use OpenShift Virtualization are available [here](/ansible-edge-gitops/openshift-virtualization).
-
-# Ansible Automation Platform (AAP, formerly known as Ansible Tower)
-
-The use of Ansible Automation Platform is really the centerpiece of this pattern. We have recognized for some time that the notion and design principles of GitOps should apply to things outside of Kubernetes, and we believe this pattern
-gives us a way to do that.
-
-All of the Ansible interactions are defined in a Git Repository; the Ansible jobs that configure the VMs are designed
-to be idempotent (and are scheduled to run every 10 minutes on those VMs).
-
-The installation of AAP itself is governed by the chart [here](https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/charts/hub/ansible-automation-platform).  The post-installation configuration of AAP is done via the [ansible-load-controller.sh](https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh) script.
-
-It is very much the intention of this pattern to make it easy to replace the specific Edge management use case with another one. Some ideas on how to do that can be found [here](/ansible-edge-gitops/ideas-for-customization/).
-
-Specifics of the Ansible content for this pattern can be seen [here](https://github.com/validatedpatterns/ansible-edge-gitops/tree/main/ansible).
-
-More details of the specifics of how AAP is configured are available [here](/ansible-edge-gitops/ansible-automation-platform/).
 
 # Next Steps
 
