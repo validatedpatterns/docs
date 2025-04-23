@@ -1,0 +1,12 @@
+---
+title: Demonstrating a retail example applications
+weight: 40
+aliases: /retail/application-demos/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/retail-example-applications.adoc[]

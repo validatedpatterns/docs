@@ -1,0 +1,14 @@
+---
+title: Cluster Sizing
+weight: 60
+aliases: /retail/travelops-sizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/comm-attributes.adoc[]
+include::modules/travelops/metadata-travelops.adoc[]
+
+include::modules/cluster-sizing-template.adoc[]
