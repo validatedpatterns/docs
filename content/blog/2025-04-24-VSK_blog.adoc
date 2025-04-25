@@ -1,0 +1,75 @@
+---
+ date: 2025-04-24
+ title: Introducing Virtualization Starter Kit
+ summary: An introduction to the new Virtualization Starter Kit Pattern
+ author: Martin Jackson
+ blog_tags:
+ - patterns
+ - how-to
+ - virtualization
+ - OpenShift Virtualization
+---
+:toc:
+:imagesdir: /images
+
+== Overview
+
+The key driving forces behind the Validated Patterns initiative have always been testability, modularity, and repeatability. When the initiative started,
+we had a broad view of GitOps that included platforms in addition to OpenShift and GitOps mechanisms other than the OpenShift GitOps operator (although those
+two in particular form the basis and benchmark of what GitOps can do and can be elsewhere). The first pattern we developed that included non-OpenShift
+components as essential parts of the pattern was https://validatedpatterns.io/patterns/ansible-edge-gitops/[Ansible Edge GitOps] in 2022. We included OpenShift
+Virtualization in that pattern because it looked like the most effective way to be able to make instantiation of RHEL nodes testable in different
+scenarios without depending on hyperscaler-specific APIs or conventions to do it. But AEG was primarily intended to be an "edge" pattern, and as several people
+have pointed out since its release "AWS ain't edge." Further, the OpenShift virtualization support in AEG shows a path to having a dedicated virtualization
+environment (it could support Live Migration, for example, but it only provisions a single metal node in its AWS variant), but the focus with AEG (and its
+derivative, https://validatedpatterns.io/patterns/federated-edge-observability/[Federated Edge Observability]) is on how to deliver a GitOps-compliant Ansible
+configuration, including configuring AAP itself.
+
+Since the introduction of AEG, OpenShift Virtualization has become an increasingly important part of the Red Hat portfolio, and we have gotten several requests
+to have a pattern that specifically focuses on Virtualization, as opposed to Edge and Ansible. The intent of the https://validatedpatterns.io/patterns/virtualization-starter-kit[Virtualization Starter Kit]
+pattern is to do just that - focus on virtualization and create an environment to explore and demonstrate the capabilities of OpenShift Container Platform Virtualization,
+including the ability to LiveMigrate VMs, and a fencing configuration. The pattern also includes the Migration Toolkit for Virtualization operator.
+
+== Introduction
+
+The goal of the Virtualization Starter Kit pattern is to provide a reasonable starting point for exploring and using OpenShift Container Platform Virtualization features. The pattern
+includes:
+
+* OpenShift Virtualization
+* OpenShift Data Foundation (to provide RWX volumes, cloning, and snapshot capabilities)
+* Fencing via the OpenShift Node Health Check Operator and Self Node Remediation Operator (to provide VM High Availability in the event of hypervisor failure)
+* Two RHEL9 VMs that users can perform various "day 2" operations on, such as LiveMigration, snapshots, backup/restore.
+* The Migration Toolkit for Virtualization Operator
+
+Additionally, users can use the VM templates built into OCP Virtualization or other mechanisms to create additional VMs in their clusters outside of the pattern. We do not provide a default
+configuration for MTV, but users are free to configure that Operator as they wish.
+
+== Technical Notes
+
+The Virtualization Starter Kit uses many components that have been developed initially for the Ansible Edge GitOps and Federated Edge Observability patterns. These include
+the support for OCP-Virtualization itself, resilient storage via ODF, and a chart for defining and deploying VMs, as well as new elements; particularly an enhancement to the
+kubevirt worker deployment mechanism that will now deploy a metal worker machineset (with one machine) in every Availability Zone the pattern is deployed in. (AEG and
+Federated Edge Observability deployed one metal machine in the first discovered availability zone). So if your cluster deploys in two availability zones, the pattern will
+provision one metal node in each of those AZs. If your cluster is in three AZs, there will be three metal nodes, and so on. We did this because the purpose of this pattern
+is to allow experimentation with an existing virtualization setup, with a reasonable HA configuration. Previously, while many of the components were HA-ready, the purpose
+of those patterns was not to provide an HA virtualization environnment.
+
+There are two major addition in this pattern as opposed to previous patterns. The first is the inclusion the Node Health Check and Self Node Remediation operators. These are
+essential in providing VM-level high availability. The strategy of Self Node Remediation was chosen because it is the simplest to configure and administer. The second addition
+is the inclusion of the Migration Toolkit for Virtualization operator. It is included without a configuration, because we did not think we could ship a default  configuration
+that would be broadly applicable due the wide variety of existing virtualization environments MTV supports and that are deployed in the field.
+
+The pattern provides two small RHEL9 VMs without any configuration beyond using the credentials provided in the pattern. This is so that there are VMs available by default to
+perform actions like LiveMigration with. Pattern users are free and encouraged to create their own VMs using any available mechanism (including the wizards provided by
+OCP-Virtualization). Because the VMs provided in the pattern are GitOps managed, the pattern is liable to revert changes made to VM parameters like number of CPUs and memory
+sizing to those VMs. VMs created outside the pattern will be not be controlled by the pattern framework in any way.
+
+== The Future
+
+If this proves to be a successful pattern, it will get additional development time, which will enhance its pattern tiering status (it will become a tested pattern), and
+it will get a defined configuration for running on baremetal as well as its primary configuration.
+
+== What Next?
+
+Please feel free to https://validatedpatterns.io/patterns/virtualization-starter-kit/getting-started/[get started] with the pattern by installing it. Please report any issues
+you encounter in our https://github.com/validatedpatterns-sandbox/virtualization-starter-kit/issues[issue tracker].
