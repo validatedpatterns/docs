@@ -1,0 +1,66 @@
+---
+title: Encrypted clusters as a service
+date: 2024-10-03
+tier: sandbox
+summary: This pattern allows you to leverage a Thales CipherTrust appliance combined with hosted control planes to have encrypted clusters as a service.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat Advanced Cluster Management
+- Red Hat OpenShift Virtualization
+- Red Hat Ansible Automation Platform
+industries:
+- General
+aliases: /encrypted-clusters-aas
+pattern_logo: coco-logo.png
+links:
+  install: coco-getting-started
+  help: https://groups.google.com/g/validatedpatterns
+  bugs: https://github.com/validatedpatterns-sandbox/encrypted-clusters-aas/issues
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+= About Encrypted clusters as a service
+
+When building a multi-tenant solution one of the most important considerations is how is isolation demonstrated between different users.
+One approach is to use virtual machines as the boundary. However, when you do not use virtual machines it's common to enforce segregation with encryption.
+Bring your own key is one such approach, where the key for a users data is stored in a separate service where the user can control key deletion.
+
+Encrypted clusters as a service is a pattern which demonstrates how to take this approach when deploying clusters with 'Hosted Control Planes'.
+Hosted control planes allows the consolidation of multiple OpenShift control planes into a smaller foot print. It does this by hosting the control planes on an underlying (aka undercloud) OpenShift Cluster.
+
+This creates a risk as an admin of the undercloud cluster has access to etcd across each of the hosted tenant clusters.
+
+This pattern leverages Thales' https://cpl.thalesgroup.com/encryption/transparent-encryption[CipherTrust transparent encryption] to provide storage that is encrypted on a per-cluster basis.
+This allows the CipherTrust to be an external key managemey
+
+
+
+== Requirements
+- The pattern has been configured to use OpenShift virtualization as the deployment method for the hosted clusters today. 
+- The pattern assumes that you have an underlying RWX storage provider for the cluster.
+- CipherTrust manager is assumed to be deployed outside of the OCP cluster.
+  - Instructions are provided for AWS.
+
+
+== Security considerations
+
+
+
+== Future work
+1. Allowing a 'bring your own CipherTrust Manager' - which is roughly equivalent to KYOK
+2. Integrating  link:../coco-pattern/[Confidential Containers] to protect data in memory 
+
+
+
+
+== Architecture
+
+Magic to be completed.
+
+
+
+
+== References
