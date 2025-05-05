@@ -33,6 +33,7 @@
 :amx-rhoai-mcg-pattern: Intel AMX accelerated Multicloud GitOps pattern with Openshift AI
 :qat-mcg-pattern: Intel QAT accelerated Multicloud GitOps pattern
 :gcqna-pattern: OPEA QnA chat accelerated with Intel Gaudi pattern
+:amdqna-pattern: OPEA QnA chat accelerated with AMD Instinct pattern
 :mcg: multicloud GitOps
 :med-pattern: Medical Diagnosis pattern
 :amx-med-pattern: Intel AMX accelerated Medical Diagnosis pattern
@@ -186,3 +187,5 @@
 :oai: OpenShift Data Science
 // Icons
 :grid: grid.png
+// AMD
+:amd-instinct: AMD Instinct
