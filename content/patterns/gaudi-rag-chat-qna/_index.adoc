@@ -9,13 +9,15 @@ rh_products:
 - Red Hat OpenShift AI
 - Red Hat OpenShift Serverless
 - Red Hat OpenShift Service Mesh
+partners:
+- Intel
 industries:
 - General
 aliases: /gaudi-rag-chat-qna/
 #pattern_logo: gaudi-rag-chat-qna.png
 links:
   install: gaudi-rag-chat-qna-getting-started
-  help: https://groups.google.com/g/hybrid-cloud-patterns
+  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/
 ---
 :toc:
