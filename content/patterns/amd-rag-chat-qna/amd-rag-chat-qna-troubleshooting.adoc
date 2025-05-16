@@ -1,0 +1,35 @@
+---
+title: Troubleshooting
+weight: 40
+aliases: /amd-rag-chat-qna/amd-rag-chat-qna-troubleshooting/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: REFERENCE
+include::modules/comm-attributes.adoc[]
+
+[id="troubleshooting-the-pattern-deployment"]
+=== Troubleshooting common pattern deployment issues
+
+'''
+Problem:: Validated Pattern installation process is stuck on deploying Vault
+
+Solution:: Most common reason of this is that prerequisites are not satisfied. Please refer to section `Getting started -> Prerequisites` and make sure all is done before proceeding to pattern deployment.
+
+
+'''
+
+Problem:: Downloading AI model `Llama-3.1-8B-Instruct` using supplied Jupyter notebook is failing or deployment fails after model is downloaded
+
+Solution:: Most often this is due to some network errors while downloading the model. If not sure if whole model was downloaded, please clear the storage bucket and repeat the download process.
+
+
+'''
+
+Problem:: Builds of OPEA chat resources are failing, i.e. cannot pull images
+
+Solution:: If all Build resources are failing due to Image Pull errors, ensure there is no proxy issue. Refer to section `Getting started -> Procedure`. Also make sure that Image Registry is properly set up.
+
+
+'''

@@ -1,0 +1,111 @@
+---
+title: OPEA Chat QnA accelerated with AMD Instinct
+date: 2025-05-01
+tier: sandbox
+validated: false
+summary: This pattern aids with deployment of OPEA's Chat QnA RAG application, accelerated with AMD Instinct hardware.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift Data Foundation
+- Red Hat OpenShift AI
+- Red Hat OpenShift Serverless
+- Red Hat OpenShift Service Mesh
+partners:
+- AMD
+industries:
+- General
+aliases: /amd-rag-chat-qna/
+#pattern_logo: amd-rag-chat-qna.png
+links:
+  install: amd-rag-chat-qna-getting-started
+  help: https://groups.google.com/g/validatedpatterns
+  bugs: https://github.com/validatedpatterns-sandbox/
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+
+[id="about-amd-rag-chat-qna-pattern"]
+= About {amdqna-pattern}
+
+Background::
+This Validated Pattern implements an enterprise-ready question-and-answer chatbot utilizing retrieval-augmented generation (RAG) and capability reasoning using large language model (LLM). The application is based on the publicly-available https://github.com/opea-project/GenAIExamples/tree/main/ChatQnA[OPEA Chat QnA] example application created by the https://opea.dev/[Open Platform for Enterprise AI (OPEA)] community.
+
+OPEA provides a framework that enables the creation and evaluation of open, multi-provider, robust, and composable generative AI (GenAI) solutions. It harnesses the best innovations across the ecosystem while keeping enterprise-level needs front and center. It simplifies the implementation of enterprise-grade composite GenAI solutions, starting with a focus on Retrieval Augmented Generative AI (RAG). The platform is designed to facilitate efficient integration of secure, performant, and cost-effective GenAI workflows into business systems and manage its deployments, leading to quicker GenAI adoption and business value.
+
+This pattern aims to leverage the strengths of OPEA's framework in combination with other OpenShift-centric toolings in order to deploy a modern, LLM-backed reasoning application stack capable of leveraging https://www.amd.com/en/products/accelerators/instinct.html[AMD's Instinct] hardware acceleration in an enterprise-ready and distributed manner. The pattern utilizes https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[Red Hat OpenShift GitOps] to bring a continuous delivery approach to the application's development and usage based on declarative Git-driven workflows, backed by a centralized, single-source-of-truth git repository.
+
+Key features::
+- AMD Instinct GPU acceleration for high-performance AI inferencing
+- GitOps-based deployment and management through Red Hat Validated Patterns
+- OPEA-based AI/ML pipeline with specialized services for document processing
+- Enterprise-grade security with HashiCorp Vault integration
+- Vector database support for efficient similarity search and retrieval
+
+[id="about-solution"]
+== About the solution
+
+The following solution integrates the https://github.com/opea-project/GenAIExamples/tree/main/ChatQnA[OPEA ChatQnA example app] with the http://localhost:1313/patterns/multicloud-gitops/[Multicloud GitOps] Validated Pattern to encapsulate every defined component as an  easily trackable resource via OpenShift GitOps dashboard:
+
+Components::
+* AI/ML Services
+** Text Embeddings Inference (TEI)
+** Document Retriever
+** Retriever Service
+** LLM-TGI (Text Generation Inference) from OPEA
+** vLLM accelerated by AMD Instinct GPUs
+** Redis Vector Database
+* Infrastructure
+** Red Hat OpenShift AI (RHOAI)
+** AMD GPU Operator
+** OpenShift Data Foundation (ODF)
+** Kernel Module Management (KMM)
+** Node Feature Discovery (NFD)
+* Security
+** HashiCorp Vault
+** External Secrets Operator
+
+.Overview of the solution
+image::/images/qna-chat-amd/amd-rag-chat-qna-overview.png[alt=OPEA Chat QnA accelerated with AMD Instinct Validated Pattern architecture,65%,65%]
+
+.Overview of application flow
+image::/images/qna-chat-amd/amd-rag-chat-qna-flow.png[OPEA Chat QnA accelerated with AMD Instinct application flow]
+
+[id="about-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Platform]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift GitOps]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+
+https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform]::
+Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation[Red Hat OpenShift Data Foundation]::
+It is software-defined storage for containers. Red Hat OpenShift Data Foundation helps teams develop and deploy applications quickly and efficiently across clouds.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai[Red Hat OpenShift AI]::
+Red Hat® OpenShift® AI is a flexible, scalable artificial intelligence (AI) and machine learning (ML) platform that enables enterprises to create and deliver AI-enabled applications at scale across hybrid cloud environments.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/serverless[Red Hat OpenShift Serverless]::
+Red Hat® OpenShift® Serverless simplifies the development of hybrid cloud applications by eliminating the complexities associated with Kubernetes and the infrastructure applications are developed and deployed on. Developers will be able to focus on coding applications instead of managing intricate infrastructure details.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/what-is-openshift-service-mesh[Red Hat OpenShift Service Mesh]::
+Red Hat® OpenShift® Service Mesh provides a uniform way to connect, manage, and observe microservices-based applications. It provides behavioral insight into—and control of—the networked microservices in your service mesh.
+
+https://catalog.redhat.com/software/container-stacks/detail/61954b7020da7eae27db0e2a[Hashicorp Vault]::
+Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+
+https://github.com/opea-project[OPEA]::
+OPEA is an ecosystem orchestration framework to integrate performant GenAI technologies and workflows leading to quicker GenAI adoption and business value.
+
+[id="next-steps_mcg-index"]
+== Next steps
+
+* link:amd-rag-chat-qna-getting-started[Deploy the pattern].

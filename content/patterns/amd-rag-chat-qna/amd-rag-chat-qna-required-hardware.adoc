@@ -1,0 +1,41 @@
+---
+title: Required hardware
+weight: 30
+aliases: /amd-rag-chat-qna/amd-rag-chat-qna-required-hardware/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Required hardware
+
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-openshift"]
+== Red Hat OpenShift Container Platform
+
+OpenShift Container Platform is a cloud-based Kubernetes container platform. The foundation of OpenShift Container Platform is based on Kubernetes and therefore shares the same technology. It is
+designed to allow applications and the data centers that support them to expand from just a few machines and applications to thousands of machines that serve millions of clients. OpenShift Container Platform enables you to do the following:
+
+* Provide developers and IT organizations with cloud application platforms that can be used for deploying applications on secure and scalable resources.
+* Require minimal configuration and management overhead.
+* Bring the Kubernetes platform to customer data centers and cloud.
+* Meet security, privacy, compliance, and governance requirements.
+
+With its foundation in Kubernetes, OpenShift Container Platform incorporates the same technology that serves as the engine for massive telecommunications, streaming video, gaming, banking, and other applications.
+Its implementation in open Red Hat technologies lets you extend your containerized applications beyond a single cloud to on-premise and multi-cloud environments. For more information including hardware requirements,
+visit https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/getting_started/openshift-overview[Red Hat's product documentation].
+
+[id="about-amd-instinct"]
+== AMD Instinct™
+
+Generative AI is transforming the way enterprise customers operate. In fact, AI is quickly becoming a part of nearly every business process that it supports, from customer service to data analytics,
+and that deepening integration is only going to grow. However, AI is a relatively new workload, added to existing infrastructure and putting strain on current hardware configurations.
+
+If customers want to enjoy seamless AI experiences and productivity gains immediately and over the long-term, they need help evolving their IT infrastructure. That’s where AMD technologies come in,
+offering enterprises the performance and efficiency to operate existing workflows alongside the new possibilities that AI brings to the table.
+
+For more information, visit the link:https://www.amd.com/en/products/accelerators/instinct.html#overview[AMD Instinct] website.
