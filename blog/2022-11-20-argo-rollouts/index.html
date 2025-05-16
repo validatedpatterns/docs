@@ -334,7 +334,132 @@ Formatting commands and code blocks To enable syntax highlighting, use [source,t
 [source,yaml]
 [source,go]
 [source,javascript]
-`,url:"https://validatedpatterns.io/contribute/contribute-to-docs/",breadcrumb:"/contribute/contribute-to-docs/"},"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-getting-started/":{title:"Getting started",tags:[],content:` Deploying Install an OpenShift Cluster on Azure
+`,url:"https://validatedpatterns.io/contribute/contribute-to-docs/",breadcrumb:"/contribute/contribute-to-docs/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-getting-started/":{title:"Getting started",tags:[],content:`Deploying the OPEA QnA chat accelerated with AMD Instinct pattern Prerequisites An OpenShift Container Platform (4.16-4.18) cluster. If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by visiting Red Hat Hybrid Cloud Console.
+select Services -&gt; Containers -&gt; Create cluster.
+Required hardware.
+OpenShift Container Platform Cluster must have a configured Image Registry.
+A GitHub account and Personal Access Token with permissions to read/write to forks.
+A HuggingFace account and User Access Token, which allows to download AI models.
+Contact information shared in order to access Meta’s Llama-3.1-8B-Instruct model with your HuggingFace account.
+Access to an S3 or Minio bucket for model storage purposes.
+This guide does not go into details regarding setup, please refer to Minio or S3 documentation for further information on bucket setup and configuration.
+Install pattern tooling dependencies.
+Model setup If you prefer to use tools provided with this project for preparation of the prerequisite model, install OpenShift AI to leverage a workbench for notebook access.
+If you are familiar with the steps necessary for downloading the Llama-3.1-8B-Instruct model and copying to a Minio/S3 bucket, you can do so and proceed to Deploy model via Red Hat OpenShift AI afterward. OpenShift AI will be installed later during pattern execution.
+If you prefer to run the provided notebooks in another environment, you can do so and skip to Clone code repository below for further instructions. OpenShift AI will be installed later during pattern execution.
+Install Red Hat OpenShift AI To install Red Hat OpenShift AI, refer to link: Installing and deploying OpenShift AI. To deploy the model, complete the following steps:
+Open up Red Hat OpenShift AI by selecting it from the OpenShift Application Launcher. This opens up Red Hat OpenShift AI in a new tab.
+In the Red Hat OpenShift AI window, select Data Science projects in the sidebar and click the Create project button.
+Name the new project chatqna-llm.
+Create a connection To create a connection, complete the following steps. The connection will be used by init-container to fetch the model uploaded in next step when deploying the model for inferencing:
+Click the Create connection button in the Connections tab in your newly created project
+Select S3 compatible object storage - v1 in the Connection type dropdown
+Use the following values for this data connection:
+Connection name: model-store
+Connection description: Connection that points to the model store (you can provide any relevant description here)
+Access key: MinIO username if using MinIO, else use AWS credentials
+Secret key: MinIO password if using MinIO, else use AWS credentials
+Endpoint: minio-api route location, from OCP cluster, if using MinIO, else use AWS S3 endpoint that is in the format of https://s3.&lt;REGION&gt;.amazonaws.com
+Region: us-east-1 if using MinIO, otherwise use the correct AWS region
+Bucket: models
+This bucket will be created by the Jupyter notebook, if it does not exist, when uploading the model
+If using AWS S3 and the bucket does not exist, make sure correct permissions are assigned to the IAM user to be able to create the bucket
+Create workbench To upload the model that is needed for this pattern, you need to create a workbench first. In the chatqna-llm data science project, create a new workbench by clicking the Create workbench button in the Workbenches tab.
+Use the following values to create the workbench:
+Name: chatqna
+Image selection: ROCm-PyTorch
+Version selection: 2025.1
+Container size: Medium
+Accelerator: AMD
+Cluster storage: Make sure the storage is at least 50GB
+Connection: Click the Attach existing connections button and attach the connection named model-store created in the previous step. This will pass on the connection values to the workbench when it is started, which will be used to upload the model.
+Create the workbench by clicking on the Create workbench button. This workbench will be started and will move to Running status soon.
+Upload model using Red Hat OpenShift AI To serve the model, download the model using the workbench created in the previous step as well as upload it to either MinIO or AWS S3, using the connection named model-store created in one of the previous steps. Follow the steps given in this section to serve the model.
+Open workbench Open workbench named chatqna by following these steps:
+Once chatqna workbench is in Running status, open the workbench by clicking on its name, in Workbenches tab
+The workbench will open up in a new tab
+When the workbench is opened for the first time, you will be shown an Authorize Access page
+Click Allow selected permissions button in this page
+Clone code repository Now that the workbench is created and running, follow these steps to set up the project:
+In the open workbench, click the Terminal icon in the Launcher tab.
+Clone the following repository in the Terminal by running the following command:
+git clone https://github.com/validatedpatterns-sandbox/qna-chat-amd.git Run Jupyter notebook The notebook mentioned in this section is used to download the meta-llama/Llama-3.1-8B-Instruct model and upload it to either MinIO or AWS S3.
+After the repository is cloned, select the folder where you cloned the repository (in the sidebar) and open scripts/model-setup/upload-model.ipynb jupyter notebook
+Run this notebook by running each cell one by one
+When prompted for a HuggingFace token, provide the prerequisite User Access Token and click Login
+When the notebook successfully runs, llama model should have been uploaded to either MinIO or AWS S3 under Llama-3.1-8B-Instruct directory in models bucket
+By default, this notebook will upload the model to MinIO. To choose AWS S3, modify the last cell in the notebook by changing the value of XFER_LOCATION to AWS as shown below:
+XFER_LOCATION = &#39;MINIO&#39; &lt;= current value XFER_LOCATION = &#39;AWS&#39; &lt;= modified to upload to AWS S3 Deploy model via Red Hat OpenShift AI Once the initial notebook has run successfully and the model is uploaded, you can deploy the model by following these steps:
+In the chatqna-llm data science project, select Models tab and click the Deploy model button and fill in the following fields as shown below:
+Model name: llama-31b
+Serving runtime: vLLM AMD GPU ServingRuntime for KServe
+Model framework: vLLM
+Deployment mode: Advanced
+Model server size: Small
+Accelerator: AMD
+Model route: Enable Make deployed models available through an external route checkbox
+Source Model location: Select Existing connection option
+Name: model-store (this is the name we used when we created the connection in Create Connection step)
+Path: Llama-3.1-8B-Instruct
+Location where the model was copied to in the previous step
+Click the Deploy to deploy this model.
+Once the model is successfully deployed, copy the inference endpoint to use it in the ChatQnA application (it will take a few minutes to deploy the model).
+Make sure the model name is set to llama-31b as this is the value used in the deployment of llm microservice that invokes the inference endpoint.
+Deploy ChatQnA application This section provides details on installing the ChatQnA application as well as verifying the deployment and configuration by querying the application.
+Install ChatQnA app Once all the prerequisites are met, install the ChatQnA application
+Clone the repository by running the following commands:
+git clone https://github.com/validatedpatterns-sandbox/qna-chat-amd.git cd qna-chat-amd Configure secrets for Hugging Face and inference endpoint
+cp values-secret.yaml.template ~/values-secret-qna-chat-amd.yaml Modify the value field in ~/values-secret-qna-chat-amd.yaml file
+secrets: - name: huggingface fields: - name: token value: null &lt;- CHANGE THIS TO YOUR HUGGING_FACE TOKEN vaultPolicy: validatePatternDefaultPolicy - name: rhoai_model fields: - name: inference_endpoint value: null &lt;- CHANGE THIS TO YOUR MODEL&#39;S INFERENCE ENDPOINT Deploy the application
+./pattern.sh make install The above command will install the application by deploying the ChatQnA megaservice along with the following required microservices:
+Dataprep
+LLM text generation
+Retriever
+Hugging Face Text Embedding Inference
+Embedding service
+Reranker service
+ChatQnA backend
+ChatQnA UI
+Processes for the build and installation of all the required services can take some time to complete. To monitor progress via the ArgoCD application dashboard, follow these steps:
+Open ArgoCD dashboard, in a browser, using the URI returned
+echo https://$(oc get route hub-gitops-server -n qna-chat-amd-hub -o jsonpath=&#34;{.spec.host}&#34;) Get the password
+echo $(oc get secret hub-gitops-cluster -n qna-chat-amd-hub -o jsonpath=&#34;{.data[&#39;admin\\.password&#39;]}&#34; | base64 -d) Login to the ArgoCD dashboard
+Username: admin
+Password: password from the previous step
+Verify ChatQnA app Once the application is installed, we can add the knowledge base using a PDF and then query against that data by following these steps:
+Run the following command to get the ChatQnA UI URI:
+echo https://$(oc get route chatqna-ui-secure -n amd-llm -o jsonpath=&#34;{.spec.host}&#34;) Open ChatQnA UI, in a browser, by using the URI returned from above command
+Query ChatQnA without RAG Type the following query at the prompt:
+What is the revenue of Nike in 2023? Since we have not yet provided any external knowledge base regarding the above query to the application, it does not the correct answer to this query and returns a generic response:
+Query ChatQnA with RAG - add external knowledge base In the ChatQnA UI, follow the steps given below to add an external knowledge base (Nike PDF) to perform the above query using RAG:
+Click the upload icon in the top right corner
+Click the Choose File button and select nke-10k-2023.pdf from scripts directory. When you select the pdf and close the dialog box, the upload will start automatically.
+Allow a few minutes for the file to be ingested and processed, and uploaded to the Redis vector database
+Refresh the page after a few minutes to verify the file has been uploaded
+Type the following query at the prompt:
+What is the revenue of Nike inc in 2023? The response for this query makes use of the Nike knowledge base, added in previous step, and is shown in the figure below:
+Query ChatQnA - remove external knowledge base Follow the steps given in this section to remove the external knowledge base that was added to the app:
+Click the upload icon in the top right corner
+Move your cursor on top of the file in the Data Source section and click the trashcan icon that pops up in the top right corner of the file icon.
+Select Yes, I’m sure when prompted with &#34;Confirm file deletion?&#34; dialog
+Query ChatQnA - general questions When the knowledge base is not added to the app, you can also use the application to ask general questions, such as:
+Tell me more about Red Hat
+What services does red hat provide?
+What is Deep Learning?
+What is a Neural Network?
+Conclusion In this article, we deployed Open Platform for Enterprise AI’s ChatQnA megaservice in Red Hat OpenShift Container Platform using Red Hat OpenShift AI and AMD hardware acceleration.
+The ChatQnA application makes use of OPEA’s microservices to return RAG responses using external knowledge base (Nike pdf) as well as invoke Llama LLM when there is no external knowledge base present.
+Installing and setting up the application was made easy with the use of a Validated Pattern that in turn uses ArgoCD for the CI/CD pipeline to deploy various components of the application as well as to keep them in sync with the git repository in case of any config changes.
+Follow the links in the references section to learn more about the various technologies used in this article.
+References Config repository
+Red Hat OpenShift AI
+Red Hat OpenShift Container Platform
+Validated Patterns
+Open Platform for Enterprise AI (OPEA)
+Various microservices
+ChatQnA application
+Hugging Face Llama-3.1-8B-Instruct model
+`,url:"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-getting-started/",breadcrumb:"/patterns/amd-rag-chat-qna/amd-rag-chat-qna-getting-started/"},"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-getting-started/":{title:"Getting started",tags:[],content:` Deploying Install an OpenShift Cluster on Azure
 Update the required Azure configuration and secrets
 ./pattern.sh make install
 Wait: The cluster needs to reboot all nodes at least once, and reprovision the ingress to use the let’s encrypt certificates.
@@ -3343,7 +3468,16 @@ $ oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER cluster
 Verification Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched.
 It might take a while for the RHACM agent and agent-addons to launch.
 Store is joined You’re done That is it! Go to your store (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it is finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
-`,url:"https://validatedpatterns.io/patterns/retail/store/",breadcrumb:"/patterns/retail/store/"},"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-required-hardware/":{title:"Required Hardware",tags:[],content:` Required Hardware Intel® Gaudi® With the surging demand for the advantages deep learning and generative Al can bring, there’s never been a greater need for improved computing performance, efficiency, usability, and choice.
+`,url:"https://validatedpatterns.io/patterns/retail/store/",breadcrumb:"/patterns/retail/store/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-required-hardware/":{title:"Required hardware",tags:[],content:` Required hardware Red Hat OpenShift Container Platform OpenShift Container Platform is a cloud-based Kubernetes container platform. The foundation of OpenShift Container Platform is based on Kubernetes and therefore shares the same technology. It is designed to allow applications and the data centers that support them to expand from just a few machines and applications to thousands of machines that serve millions of clients. OpenShift Container Platform enables you to do the following:
+Provide developers and IT organizations with cloud application platforms that can be used for deploying applications on secure and scalable resources.
+Require minimal configuration and management overhead.
+Bring the Kubernetes platform to customer data centers and cloud.
+Meet security, privacy, compliance, and governance requirements.
+With its foundation in Kubernetes, OpenShift Container Platform incorporates the same technology that serves as the engine for massive telecommunications, streaming video, gaming, banking, and other applications. Its implementation in open Red Hat technologies lets you extend your containerized applications beyond a single cloud to on-premise and multi-cloud environments. For more information including hardware requirements, visit Red Hat’s product documentation.
+AMD Instinct™ Generative AI is transforming the way enterprise customers operate. In fact, AI is quickly becoming a part of nearly every business process that it supports, from customer service to data analytics, and that deepening integration is only going to grow. However, AI is a relatively new workload, added to existing infrastructure and putting strain on current hardware configurations.
+If customers want to enjoy seamless AI experiences and productivity gains immediately and over the long-term, they need help evolving their IT infrastructure. That’s where AMD technologies come in, offering enterprises the performance and efficiency to operate existing workflows alongside the new possibilities that AI brings to the table.
+For more information, visit the AMD Instinct website.
+`,url:"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-required-hardware/",breadcrumb:"/patterns/amd-rag-chat-qna/amd-rag-chat-qna-required-hardware/"},"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-required-hardware/":{title:"Required Hardware",tags:[],content:` Required Hardware Intel® Gaudi® With the surging demand for the advantages deep learning and generative Al can bring, there’s never been a greater need for improved computing performance, efficiency, usability, and choice.
 Intel® Gaudi® Al accelerators and software are designed to bring a new level of computing advantages and choice to data center training and inference-whether in the cloud or on-premises.
 More information can be found on official Gaudi website.
 Recommended platforms We have deployed and tested this Validated Pattern on two platforms:
@@ -3551,7 +3685,13 @@ TBD - screen shots
 Pipeline 4: Build, Scan, Sign and Push to Prod Pipeline 4 demonstrates a more complete pipeline that builds, scans and also signs the image before pushing.
 Pipeline 4 is the preferred DevSecOps approach and can be modified to include more security based tasks. E.g. when using a base image for a build, the signature of that image can be checked before the build step even starts.
 TBD - screen shots
-`,url:"https://validatedpatterns.io/patterns/devsecops/secure-supply-chain-demo/",breadcrumb:"/patterns/devsecops/secure-supply-chain-demo/"},"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting common Pattern Deployment issues Problem Validated Pattern installation process is stuck on deploying Vault
+`,url:"https://validatedpatterns.io/patterns/devsecops/secure-supply-chain-demo/",breadcrumb:"/patterns/devsecops/secure-supply-chain-demo/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting common pattern deployment issues Problem Validated Pattern installation process is stuck on deploying Vault
+Solution Most common reason of this is that prerequisites are not satisfied. Please refer to section Getting started → Prerequisites and make sure all is done before proceeding to pattern deployment.
+Problem Downloading AI model Llama-3.1-8B-Instruct using supplied Jupyter notebook is failing or deployment fails after model is downloaded
+Solution Most often this is due to some network errors while downloading the model. If not sure if whole model was downloaded, please clear the storage bucket and repeat the download process.
+Problem Builds of OPEA chat resources are failing, i.e. cannot pull images
+Solution If all Build resources are failing due to Image Pull errors, ensure there is no proxy issue. Refer to section Getting started → Procedure. Also make sure that Image Registry is properly set up.
+`,url:"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-troubleshooting/",breadcrumb:"/patterns/amd-rag-chat-qna/amd-rag-chat-qna-troubleshooting/"},"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting common Pattern Deployment issues Problem Validated Pattern installation process is stuck on deploying Vault
 Solution Most common reason of this is that prerequisites are not satisfied i.e. Image Registry is not set up or CephFs is not set as a default StorageClass. Please refer to section Getting started → Prerequisites and make sure all is done before proceeding to pattern deployment.
 Problem Downloading AI model Llama-2-70b-chat-hf using download-model Jupyter notebook is failing or TGI deployment fails after model is downloaded
 Solution Most often this is due to some network errors while downloading the model. If not sure if whole model was downloaded, please clear bucket model-bucket in RGW storage using aws-cli or any other method, and repeat process of downloading the model.
@@ -4625,7 +4765,46 @@ Who is behind this? Today, a team of Red Hat engineers including Andrew Beekhof 
 Excited or intrigued by what you see here? We’d love to hear your thoughts and ideas! Try the patterns contained here and see below for links to our repositories and issue trackers.
 How can I get involved? Try out what we’ve done and submit issues to our issue trackers.
 We will review pull requests to our pattern repositories.
-`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
+`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/":{title:"OPEA Chat QnA accelerated with AMD Instinct",tags:[],content:`About OPEA QnA chat accelerated with AMD Instinct pattern Background This Validated Pattern implements an enterprise-ready question-and-answer chatbot utilizing retrieval-augmented generation (RAG) and capability reasoning using large language model (LLM). The application is based on the publicly-available OPEA Chat QnA example application created by the Open Platform for Enterprise AI (OPEA) community.
+OPEA provides a framework that enables the creation and evaluation of open, multi-provider, robust, and composable generative AI (GenAI) solutions. It harnesses the best innovations across the ecosystem while keeping enterprise-level needs front and center. It simplifies the implementation of enterprise-grade composite GenAI solutions, starting with a focus on Retrieval Augmented Generative AI (RAG). The platform is designed to facilitate efficient integration of secure, performant, and cost-effective GenAI workflows into business systems and manage its deployments, leading to quicker GenAI adoption and business value.
+This pattern aims to leverage the strengths of OPEA’s framework in combination with other OpenShift-centric toolings in order to deploy a modern, LLM-backed reasoning application stack capable of leveraging AMD’s Instinct hardware acceleration in an enterprise-ready and distributed manner. The pattern utilizes Red Hat OpenShift GitOps to bring a continuous delivery approach to the application’s development and usage based on declarative Git-driven workflows, backed by a centralized, single-source-of-truth git repository.
+Key features AMD Instinct GPU acceleration for high-performance AI inferencing
+GitOps-based deployment and management through Red Hat Validated Patterns
+OPEA-based AI/ML pipeline with specialized services for document processing
+Enterprise-grade security with HashiCorp Vault integration
+Vector database support for efficient similarity search and retrieval
+About the solution The following solution integrates the OPEA ChatQnA example app with the Multicloud GitOps Validated Pattern to encapsulate every defined component as an easily trackable resource via OpenShift GitOps dashboard:
+Components AI/ML Services
+Text Embeddings Inference (TEI)
+Document Retriever
+Retriever Service
+LLM-TGI (Text Generation Inference) from OPEA
+vLLM accelerated by AMD Instinct GPUs
+Redis Vector Database
+Infrastructure
+Red Hat OpenShift AI (RHOAI)
+AMD GPU Operator
+OpenShift Data Foundation (ODF)
+Kernel Module Management (KMM)
+Node Feature Discovery (NFD)
+Security
+HashiCorp Vault
+External Secrets Operator
+Figure 1. Overview of the solution Figure 2. Overview of application flow About the technology The following technologies are used in this solution:
+Red Hat OpenShift Platform An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. It delivers a complete application platform for both traditional and cloud-native applications, allowing them to run anywhere. OpenShift has a pre-configured, pre-installed, and self-updating monitoring stack that provides monitoring for core platform components. It also enables the use of external secret management systems, for example, HashiCorp Vault in this case, to securely add secrets into the OpenShift platform.
+Red Hat OpenShift GitOps A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git. It can automatically push the desired application state into a cluster, quickly find out if the application state is in sync with the desired state, and manage applications in multi-cluster environments.
+Red Hat Ansible Automation Platform Provides an enterprise framework for building and operating IT automation at scale across hybrid clouds including edge deployments. It enables users across an organization to create, share, and manage automation, from development and operations to security and network teams.
+Red Hat OpenShift Data Foundation It is software-defined storage for containers. Red Hat OpenShift Data Foundation helps teams develop and deploy applications quickly and efficiently across clouds.
+Red Hat OpenShift AI Red Hat® OpenShift® AI is a flexible, scalable artificial intelligence (AI) and machine learning (ML) platform that enables enterprises to create and deliver AI-enabled applications at scale across hybrid cloud environments.
+Red Hat OpenShift Serverless Red Hat® OpenShift® Serverless simplifies the development of hybrid cloud applications by eliminating the complexities associated with Kubernetes and the infrastructure applications are developed and deployed on. Developers will be able to focus on coding applications instead of managing intricate infrastructure details.
+Red Hat OpenShift Service Mesh Red Hat® OpenShift® Service Mesh provides a uniform way to connect, manage, and observe microservices-based applications. It provides behavioral insight into—and control of—the networked microservices in your service mesh.
+Hashicorp Vault Provides a secure centralized store for dynamic infrastructure and applications across clusters, including over low-trust networks between clouds and data centers.
+OPEA OPEA is an ecosystem orchestration framework to integrate performant GenAI technologies and workflows leading to quicker GenAI adoption and business value.
+Next steps Deploy the pattern.
+`,url:"https://validatedpatterns.io/patterns/amd-rag-chat-qna/",breadcrumb:"/patterns/amd-rag-chat-qna/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric use cases while maintaining a level of Continuous Integration (CI) over your application.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
 `,url:"https://validatedpatterns.io/blog/",breadcrumb:"/blog/"},"https://validatedpatterns.io/blog/2025-04-24-vsk_blog/":{title:"Introducing Virtualization Starter Kit",tags:[],content:` Overview The key driving forces behind the Validated Patterns initiative have always been testability, modularity, and repeatability. When the initiative started, we had a broad view of GitOps that included platforms in addition to OpenShift and GitOps mechanisms other than the OpenShift GitOps operator (although those two in particular form the basis and benchmark of what GitOps can do and can be elsewhere). The first pattern we developed that included non-OpenShift components as essential parts of the pattern was Ansible Edge GitOps in 2022. We included OpenShift Virtualization in that pattern because it looked like the most effective way to be able to make instantiation of RHEL nodes testable in different scenarios without depending on hyperscaler-specific APIs or conventions to do it. But AEG was primarily intended to be an &#34;edge&#34; pattern, and as several people have pointed out since its release &#34;AWS ain’t edge.&#34; Further, the OpenShift virtualization support in AEG shows a path to having a dedicated virtualization environment (it could support Live Migration, for example, but it only provisions a single metal node in its AWS variant), but the focus with AEG (and its derivative, Federated Edge Observability) is on how to deliver a GitOps-compliant Ansible configuration, including configuring AAP itself.
 Since the introduction of AEG, OpenShift Virtualization has become an increasingly important part of the Red Hat portfolio, and we have gotten several requests to have a pattern that specifically focuses on Virtualization, as opposed to Edge and Ansible. The intent of the Virtualization Starter Kit pattern is to do just that - focus on virtualization and create an environment to explore and demonstrate the capabilities of OpenShift Container Platform Virtualization, including the ability to LiveMigrate VMs, and a fencing configuration. The pattern also includes the Migration Toolkit for Virtualization operator.
 Introduction The goal of the Virtualization Starter Kit pattern is to provide a reasonable starting point for exploring and using OpenShift Container Platform Virtualization features. The pattern includes:
@@ -4640,10 +4819,7 @@ There are two major addition in this pattern as opposed to previous patterns. Th
 The pattern provides two small RHEL9 VMs without any configuration beyond using the credentials provided in the pattern. This is so that there are VMs available by default to perform actions like LiveMigration with. Pattern users are free and encouraged to create their own VMs using any available mechanism (including the wizards provided by OCP-Virtualization). Because the VMs provided in the pattern are GitOps managed, the pattern is liable to revert changes made to VM parameters like number of CPUs and memory sizing to those VMs. VMs created outside the pattern will be not be controlled by the pattern framework in any way.
 The Future If this proves to be a successful pattern, it will get additional development time, which will enhance its pattern tiering status (it will become a tested pattern), and it will get a defined configuration for running on baremetal as well as its primary configuration.
 What Next? Please feel free to get started with the pattern by installing it. Please report any issues you encounter in our issue tracker.
-`,url:"https://validatedpatterns.io/blog/2025-04-24-vsk_blog/",breadcrumb:"/blog/2025-04-24-vsk_blog/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
-Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric use cases while maintaining a level of Continuous Integration (CI) over your application.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/virtualization-starter-kit/":{title:"Virtualization Starter Kit",tags:[],content:`Virtualization Starter Kit Background Organizations are interested in accelerating their deployment speeds and improving delivery quality in their Edge environments, where many devices may not fully or even partially embrace the GitOps philosophy.
+`,url:"https://validatedpatterns.io/blog/2025-04-24-vsk_blog/",breadcrumb:"/blog/2025-04-24-vsk_blog/"},"https://validatedpatterns.io/patterns/virtualization-starter-kit/":{title:"Virtualization Starter Kit",tags:[],content:`Virtualization Starter Kit Background Organizations are interested in accelerating their deployment speeds and improving delivery quality in their Edge environments, where many devices may not fully or even partially embrace the GitOps philosophy.
 This pattern uses OpenShift Virtualization (the productization of Kubevirt) to host the VMs.
 Solution elements How to use a GitOps approach to manage virtual machines, either in public clouds (limited to AWS for technical reasons) or on-prem OpenShift installations A standardized environment with two running VMs to start exploring Virtualization on OpenShift with High Availability features Red Hat Technologies Red Hat OpenShift Container Platform (Kubernetes) Red Hat OpenShift GitOps (ArgoCD) OpenShift Virtualization (Kubevirt) Red Hat Enterprise Linux 9 Red Hat OpenShift Node Health Check Operator Red Hat OpenShift Self Node Remediation Operator Red Hat Migration Toolkit for Virtualization Other Technologies this Pattern Uses Hashicorp Vault External Secrets Operator Architecture Similar to other patterns, this pattern starts with a central management hub, which hosts OCP-Virt and ODF and hosts the VMs.
 What Next Getting Started: Deploying and Validating the Pattern `,url:"https://validatedpatterns.io/patterns/virtualization-starter-kit/",breadcrumb:"/patterns/virtualization-starter-kit/"},"https://validatedpatterns.io/patterns/federated-edge-observability/":{title:"Federated Edge Observability",tags:[],content:` Federated Edge Observability Background Organizations are interested in accelerating their deployment speeds and improving delivery quality in their Edge environments, where many devices may not fully or even partially embrace the GitOps philosophy. Further, there are VMs and other devices that can and should be managed with Ansible. This pattern explores some of the possibilities of using an OpenShift-based Ansible Automated Platform deployment and managing Edge devices, based on work done with a partner in the Chemical space.
