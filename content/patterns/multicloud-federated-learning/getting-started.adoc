@@ -13,41 +13,40 @@ include::modules/comm-attributes.adoc[]
 
 === Prerequisites
 
-* Go: Version 1.19 or higher
-* Ensure [kubectl](https://kubernetes.io/docs/reference/kubectl/) and [kustomize](https://kubectl.docs.kubernetes.io/installation/kustomize/) are installed.
-* Ensure [kind](https://kind.sigs.k8s.io/)(greater than v0.9.0+, or the latest version is preferred) is installed.
-* Make: Ensure `make` is installed for build automation
-* Optional: Podman or Docker for container image building
+==== Ensure the following tools are installed:
 
-=== Set Up the Environment
+- link:https://kubernetes.io/docs/reference/kubectl/[`kubectl`]
+- link:https://kubectl.docs.kubernetes.io/installation/kustomize/[`kustomize`]
+- link:https://kind.sigs.k8s.io/[`kind`] (recommended version > v0.9.0)
+- link:https://www.gnu.org/software/make/[`make`] (for build automation)
 
-. Install the `clusteradm` CLI tool:
-+
-[source,bash]
-----
-$ curl -L https://raw.githubusercontent.com/open-cluster-management-io/clusteradm/main/install.sh | bash
-----
+==== Optional (for container image building):
 
-. Create hub and managed clusters using `kind`:
-+
-[source,bash]
-----
-$ curl -L https://raw.githubusercontent.com/open-cluster-management-io/OCM/main/solutions/setup-dev-environment/local-up.sh | bash
-----
-+
-Verify the environment
-+
+- link:https://podman.io/[Podman] or link:https://www.docker.com/[Docker]
+- link:https://go.dev/doc/install[Go] (version 1.19 or higher)
+
+===== Advanced Cluster Management Environment
+
+Prepare at least three clusters: one hub cluster and two managed clusters.
+
+Verify the managed clusters are registered on the hub by running:
+
 [source,bash]
 ----
 $ kubectl get mcl
-NAME       HUB ACCEPTED   MANAGED CLUSTER URLS                  JOINED   AVAILABLE   AGE
-cluster1   true           https://cluster1-control-plane:6443   True     True        3d22h
-cluster2   true           https://cluster2-control-plane:6443   True     True        3d22h
 ----
 
-. Deploy Federated Learning Controller
+Example output:
+[source,bash]
+----
+NAME       HUB ACCEPTED   MANAGED CLUSTER URLS                  JOINED   AVAILABLE   AGE
+cluster1   true           https://api.***.com:6443              True     True        5m
+cluster2   true           https://api.***.com:6443              True     True        5m
+----
 
-.. Clone and navigate to the repository:
+=== Deploy Federated Learning Controller
+
+. Clone and navigate to the repository:
 +
 [source,bash]
 ----
@@ -55,30 +54,34 @@ $ git@github.com:open-cluster-management-io/addon-contrib.git
 $ cd federated-learning-controller
 ----
 
-.. Build and push the controller image (or use pre-built `quay.io/myan/federated-learning-controller:latest`):
+. Build and push the controller image (or use pre-built `quay.io/myan/federated-learning-controller:latest`):
 +
 [source,bash]
 ----
 $ make docker-build docker-push IMG=<IMG> 
 ----
 
-.. Deploy the controller:
+. Deploy the controller to the hub cluster:
 +
 [source,bash]
 ----
-# switch the context to hub cluster
 $ kubectl config use-context kind-hub
-
 $ make deploy IMG=<controller-image> NAMESPACE=<controller-namespace(default is open-cluster-management)>
 ----
 
-.. Verify deployment:
+. Verify the deployment:
 +
 The federated learning controller is running in the open-cluster-management namespace by default.
 +
 [source,bash]
 ----
 $ kubectl get pods -n open-cluster-management
+----
++
+Example output
++
+[source,bash]
+----
 NAME                                            READY   STATUS      RESTARTS   AGE
 cluster-manager-d9db64db5-c7kfj                 1/1     Running     0          3d22h
 cluster-manager-d9db64db5-t7grh                 1/1     Running     0          3d22h
@@ -86,34 +89,29 @@ cluster-manager-d9db64db5-wndd8                 1/1     Running     0          3
 federated-learning-controller-d7df846c9-nb4wc   1/1     Running     0          3d22h
 ----
 
-=== Deploy the Application
+=== Deploy the Federated Learning Instance
 
-. build the Federated Learning Application Image
+. Build the Application Image
 +
-*Note*: You can directly use the pre-built image `quay.io/myan/federated-learning-app:latest`.
-
-.. Navigate to the Flower framework example:
+*Note*: You can skip this step by using the pre-built image `quay.io/myan/flower-app-torch:latest`.
 +
 [source,bash]
 ----
-$ cd federated-learning-controller/examples/flower
-----
+$ cd examples/flower
 
-.. *(Optional)* Modify the model code located in `flower/app-torch`, then build and push the image:
-+
-[source,bash]
-----
 $ export REGISTRY=<your-registry>
-$ export IMAGE_TAG=<your-image-tag>
+$ export IMAGE_TAG=<your-tag>
 $ make build-app-image
 $ make push-app-image
 ----
-+
-The image will be named `<REGISTRY>/flower-app-torch:<IMAGE_TAG>`.
++ 
+Image format: `<REGISTRY>/flower-app-torch:<IMAGE_TAG>`
 
-. Deploy the Application to the Hub Cluster
+. Deploy a Federated Learning Instance
 +
-The current server and client use the same image. You can also use the pre-built image `quay.io/myan/flower-app-torch:latest`. After creating the resource, the server will deploy to the hub cluster, and the clients will deploy to managed clusters.
+In this example, both the server and clients use the same image—either the one built above or the pre-built `quay.io/myan/flower-app-torch:latest`. Once the resource is created, the server is deployed to the hub cluster, and the clients are prepared for deployment to the managed clusters.
++
+Create a `FederatedLearning` resource in the controller namespace on the hub cluster:
 +
 [source,yaml]
 ----
@@ -149,11 +147,13 @@ spec:
                   operator: Exists
 ----
 
-. Schedule the Application on Managed Clusters
+. Schedule the Federated Learning Clients into Managed Clusters
 +
 The above configuration schedules only clusters with a `ClusterClaim` having the key `federated-learning-sample.client-data`. You can combine this with other scheduling policies (refer to the Placement API for details).
++
+Add the `ClusterClaim` to these clusters own the data for the client:
 
-.. Managed Cluster 1 claims data:
+.. **Cluster1: **
 +
 [source,bash]
 ----
@@ -169,7 +169,7 @@ spec:
 EOF
 ----
 
-.. Managed Cluster 2 claims data:
+.. **Cluster2: **
 +
 [source,bash]
 ----
@@ -184,31 +184,33 @@ spec:
 EOF
 ----
 
-. Check the Application Status
+. Check the Federated Learning Instance Status
 
-.. After creating the instance, the server initially shows a status of `Waiting`:
+.. After creating the instance, the server initially shows a status of `Waiting`
 +
-*Hub cluster server example:*
+*Example - server in hub cluster:*
 +
 [source,bash]
 ----
 $ kubectl get pods
 NAME                                            READY   STATUS      RESTARTS   AGE
-federated-learning-sample-server-7jnfs          0/1     Completed   0          5d3h
+federated-learning-sample-server-7jnfs          0/1     Completed   0          9m
 ----
 
-.. Once the required clients are ready, status changes to `Running`:
+.. Once the required clients are ready, status changes to `Running`
 +
-*Managed cluster client example:*
+*Example - client in managed cluster:*
 +
 [source,bash]
 ----
 $ kubectl get pods -n open-cluster-management
 NAME                                     READY   STATUS      RESTARTS   AGE
-federated-learning-sample-client-75sc8   0/1     Completed   0          5d3h
+federated-learning-sample-client-75sc8   0/1     Completed   0          8m
 ----
 
-.. After the training and aggregation rounds complete, the status becomes `Completed`:
+.. After the training and aggregation rounds complete, the status becomes `Completed`
++
+*Example - Federated Learning instance:*
 +
 [source,bash]
 ----
@@ -224,4 +226,8 @@ status:
 
 .. Download and Verify the Trained Model
 +
-After training is complete and the status is Completed, the MNIST model is saved in the `model-pvc` PersistentVolumeClaim. You can download and evaluate the trained model by following this link:https://github.com/open-cluster-management-io/addon-contrib/blob/main/federated-learning-controller/examples/notebooks/1.hub-evaluation.ipynb[verification notebook].
+The trained MNIST model is saved in the `model-pvc` volume.
++
+- link:https://github.com/open-cluster-management-io/addon-contrib/blob/main/federated-learning-controller/examples/notebooks/deploy[Deploy a Jupyter notebook server]
+- link:https://github.com/open-cluster-management-io/addon-contrib/blob/main/federated-learning-controller/examples/notebooks/1.hub-evaluation.ipynb[Validate the model]
+
