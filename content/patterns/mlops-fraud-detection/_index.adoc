@@ -12,6 +12,7 @@ industries:
 aliases: /mlops-fraud-detection/
 pattern_logo: mlops-fraud-detection.png
 links:
+  github: https://github.com/validatedpatterns/mlops-fraud-detection
   install: mfd-getting-started
   arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
   help: https://groups.google.com/g/validatedpatterns

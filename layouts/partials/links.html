@@ -1,4 +1,12 @@
 <ul class="pf-c-list pf-m-inline links-menu pf-m-align-self-center">
+{{ if (isset .Params.links "github") }}
+<li class="pf-c-list__item">
+  <span class="pf-c-list__item-icon">
+    <i class="fa-solid fa-code-fork"></i>
+  </span>
+  <a href="{{ .Params.links.github }}" class="">Source Code</a>
+</li>
+{{ end }}
 {{ if (isset .Params.links "install") }}
 <li class="pf-c-list__item">
   <span class="pf-c-icon pf-m-inline">

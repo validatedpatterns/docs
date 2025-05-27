@@ -11,6 +11,7 @@ industries:
 - General
 aliases: /rhoai/
 links:
+  github: https://github.com/validatedpatterns-sandbox/openshift-ai
   install: getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/openshift-ai/issues

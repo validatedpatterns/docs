@@ -16,9 +16,10 @@ industries:
 aliases: /gaudi-rag-chat-qna/
 #pattern_logo: gaudi-rag-chat-qna.png
 links:
+  github: https://github.com/validatedpatterns-sandbox/qna-chat-gaudi
   install: gaudi-rag-chat-qna-getting-started
   help: https://groups.google.com/g/validatedpatterns
-  bugs: https://github.com/validatedpatterns-sandbox/
+  bugs: https://github.com/validatedpatterns-sandbox/qna-chat-gaudi/issues
 ---
 :toc:
 :imagesdir: /images

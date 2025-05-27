@@ -1,6 +1,7 @@
 ---
 title: Federated Edge Observability
 date: 2025-02-01
+validated: false
 tier: sandbox
 summary: This pattern uses OpenShift Virtualization to simulate an edge environment for VMs which then report metrics via OpenTelemetry.
 rh_products:
@@ -12,6 +13,7 @@ rh_products:
 industries:
 aliases: /federated-edge-observability
 links:
+  github: https://github.com/validatedpatterns-sandbox/federated-edge-observability
   install: getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/federated-edge-observability/issues

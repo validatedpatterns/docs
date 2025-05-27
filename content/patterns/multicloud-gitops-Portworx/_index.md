@@ -14,6 +14,7 @@ aliases: /multicloud-gitops-Portworx/
 variant_of: multicloud-gitops
 pattern_logo: multicloud-gitops-Portworx.png
 links:
+  github: https://github.com/portworx/rh-multicloud-gitops-pxe
   install: getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/portworx/rh-multicloud-gitops-pxe/issues

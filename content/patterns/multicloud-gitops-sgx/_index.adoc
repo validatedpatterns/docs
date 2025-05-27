@@ -2,6 +2,7 @@
 title: Intel SGX protected Vault for Multicloud GitOps
 date: 2024-02-09
 validated: false
+tier: sandbox
 summary: This is an extension of the Multicloud GitOps pattern with an additional application to show the value of using Intel SGX.
 rh_products:
 - Red Hat OpenShift Container Platform
@@ -16,6 +17,7 @@ variant_of: multicloud-gitops
 # pattern_logo: multicloud-gitops.png
 pattern_logo: sgx-intel-ai.png
 links:
+  github: https://github.com/validatedpatterns-sandbox/sgx-multicloud-gitops-vault
   install: mcg-sgx-getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/sgx-multicloud-gitops-vault/issues

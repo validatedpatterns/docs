@@ -15,6 +15,7 @@ aliases: /devsecops/
 # uncomment once this exists
 # pattern_logo: devsecops.png
 links:
+  github: https://github.com/validatedpatterns/multicluster-devsecops
   install: getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/multicluster-devsecops/issues

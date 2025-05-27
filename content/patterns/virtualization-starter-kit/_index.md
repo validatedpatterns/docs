@@ -13,6 +13,7 @@ industries:
 aliases: /virtualization-starter-kit/
 pattern_logo: ansible-edge.png
 links:
+  github: https://github.com/validatedpatterns-sandbox/virtualization-starter-kit
   install: getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/virtualization-starter-kit

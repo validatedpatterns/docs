@@ -15,6 +15,7 @@ industries:
 aliases: /industrial-edge/
 pattern_logo: industrial-edge.png
 links:
+  github: https://github.com/validatedpatterns/industrial-edge
   install: getting-started
   arch: https://www.redhat.com/architect/portfolio/detail/26-industrial-edge
   help: https://groups.google.com/g/validatedpatterns
