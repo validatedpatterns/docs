@@ -11,6 +11,7 @@ industries:
 aliases: /multicloud-gitops/
 pattern_logo: multicloud-gitops.png
 links:
+  github: https://github.com/validatedpatterns/multicloud-gitops
   install: mcg-getting-started
   arch: https://www.redhat.com/architect/portfolio/detail/8-hybrid-multicloud-management-with-gitops
   help: https://groups.google.com/g/validatedpatterns

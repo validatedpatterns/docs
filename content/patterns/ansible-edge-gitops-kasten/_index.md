@@ -16,6 +16,7 @@ industries:
 aliases: /ansible-edge-gitops-kasten/
 pattern_logo: veeam-kasten.png
 links:
+  github: https://github.com/validatedpatterns/ansible-edge-gitops
   install: getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/ansible-edge-gitops/issues

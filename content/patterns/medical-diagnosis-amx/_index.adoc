@@ -2,6 +2,7 @@
 title: Intel AMX accelerated Medical Diagnosis
 date: 2023-10-10
 validated: false
+tier: sandbox
 summary: This pattern is based on a demo implementation of an automated data pipeline for chest X-ray analysis previously developed by Red Hat. The pattern is modified to utilize Intel AMX feature.
 rh_products:
 - Red Hat OpenShift Container Platform
@@ -15,6 +16,7 @@ aliases: /medical-diagnosis-amx/
 variant_of: medical-diagnosis
 pattern_logo: medical-diagnosis.png
 links:
+  github: https://github.com/validatedpatterns-sandbox/amx-accelerated-medical-diagnosis
   install: getting-started
   arch: https://www.redhat.com/architect/portfolio/detail/6-enabling-medical-imaging-diagnostics-with-edge
   help: https://groups.google.com/g/validatedpatterns

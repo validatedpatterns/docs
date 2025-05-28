@@ -6,6 +6,11 @@ Summary: A multicloud pattern using cockroachdb and submariner, deployed via RHA
 rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
+links:
+  github: https://github.com/validatedpatterns/cockroachdb-pattern/
+  install: https://github.com/validatedpatterns/cockroachdb-pattern?tab=readme-ov-file#how-to-deploy
+  help: https://groups.google.com/g/validatedpatterns
+  bugs: https://github.com/validatedpatterns/cockroachdb-pattern/issues
 ---
 
 # Cockroach

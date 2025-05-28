@@ -1,8 +1,8 @@
 ---
 title: OPEA Chat QnA accelerated with AMD Instinct
 date: 2025-05-01
-tier: sandbox
 validated: false
+tier: sandbox
 summary: This pattern aids with deployment of OPEA's Chat QnA RAG application, accelerated with AMD Instinct hardware.
 rh_products:
 - Red Hat OpenShift Container Platform
@@ -17,9 +17,10 @@ industries:
 aliases: /amd-rag-chat-qna/
 #pattern_logo: amd-rag-chat-qna.png
 links:
+  github: https://github.com/validatedpatterns-sandbox/qna-chat-amd/
   install: amd-rag-chat-qna-getting-started
   help: https://groups.google.com/g/validatedpatterns
-  bugs: https://github.com/validatedpatterns-sandbox/
+  bugs: https://github.com/validatedpatterns-sandbox/qna-chat-amd/issues
 ---
 :toc:
 :imagesdir: /images

@@ -12,6 +12,7 @@ aliases: /ai/
 # uncomment once this exists
 # pattern_logo: retail.png
 links:
+  github: https://github.com/validatedpatterns/rag-llm-gitops
   install: getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/rag-llm-gitops/issues

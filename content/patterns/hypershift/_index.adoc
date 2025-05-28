@@ -13,7 +13,8 @@ industries:
 aliases: /hypershift/
 pattern_logo: medical-diagnosis.png
 links:
-
+  github: https://github.com/validatedpatterns-sandbox/hypershift
+  install: getting-started
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/hypershift/issues
 ci: hypershift

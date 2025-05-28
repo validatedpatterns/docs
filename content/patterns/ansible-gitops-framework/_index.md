@@ -10,7 +10,8 @@ industries:
 aliases: /agof/
 pattern_logo: ansible-edge.png
 links:
-  install: https://github.com/validatedpatterns/agof/
+  github: https://github.com/validatedpatterns/agof/
+  install: https://github.com/validatedpatterns/agof/?tab=readme-ov-file#11-installation
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/agof/issues
 ---

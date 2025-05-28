@@ -8,14 +8,15 @@ rh_products:
 industries:
 pattern_logo: regional-dr.png
 links:
-  install: https://github.com/validatedpatterns/regional-resiliency-pattern
+  github: https://github.com/validatedpatterns/regional-resiliency-pattern
+  install: /regional-dr/#installation
   help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/regional-resiliency-pattern/issues
 ---
 
-# OpenShift Regional DR
+# OpenShift Regional Disaster Recovery
 
-## Context
+## About OpenShift Regional Disaster Recovery
 
 As more and more institution and mission critical organizations are moving 
 in the cloud, the possible impact of having a provider failure, might this be
