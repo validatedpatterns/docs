@@ -9,8 +9,8 @@ rh_products:
 links:
   github: https://github.com/validatedpatterns/connected-vehicle-architecture
   install: https://github.com/validatedpatterns/connected-vehicle-architecture?tab=readme-ov-file#bobby-car
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/connected-vehicle-architecture/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ---
 
 # Connected Vehicle Architecture

@@ -9,8 +9,8 @@ rh_products:
 links:
   github: https://github.com/validatedpatterns/cockroachdb-pattern/
   install: https://github.com/validatedpatterns/cockroachdb-pattern?tab=readme-ov-file#how-to-deploy
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/cockroachdb-pattern/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ---
 
 # Cockroach

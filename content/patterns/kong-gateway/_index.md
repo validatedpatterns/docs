@@ -8,8 +8,8 @@ rh_products:
 links:
   github: https://github.com/validatedpatterns/kong-gateway
   install: https://github.com/validatedpatterns/kong-gateway?tab=readme-ov-file#start-here
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/kong-gateway/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ---
 
 # About the Kong pattern

@@ -15,8 +15,8 @@ links:
   github: https://github.com/validatedpatterns/mlops-fraud-detection
   install: mfd-getting-started
   arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/mlops-fraud-detection/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ci: mfd
 contributor:
   name: Arslan Khan

@@ -14,8 +14,8 @@ links:
   github: https://github.com/validatedpatterns/multicloud-gitops
   install: mcg-getting-started
   arch: https://www.redhat.com/architect/portfolio/detail/8-hybrid-multicloud-management-with-gitops
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/multicloud-gitops/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ci: mcgitops
 ---
 :toc:

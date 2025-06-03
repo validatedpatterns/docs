@@ -19,8 +19,8 @@ pattern_logo: intel-qat.png
 links:
   github: https://github.com/validatedpatterns-sandbox/qat-accelerated-istio
   install: mcg-qat-getting-started
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/qat-accelerated-istio/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ---
 
 include::modules/comm-attributes.adoc[]
