@@ -25,20 +25,20 @@
   <a href="{{ .Params.links.arch }}" class="">Solution Architecture</a>
 </li>
 {{ end }}
-{{ if (isset .Params.links "help") }}
-<li class="pf-c-list__item">
-  <span class="pf-c-list__item-icon">
-    <i class="fa-solid fa-circle-question"></i>
-  </span>
-  <a href="{{ .Params.links.help }}" class="">Help & Feedback</a>
-</li>
-{{ end }}
 {{ if (isset .Params.links "bugs") }}
 <li class="pf-c-list__item">
   <span class="pf-c-list__item-icon">
     <i class="fa-solid fa-bug"></i>
   </span>
   <a href="{{ .Params.links.bugs }}" class="">Report Bugs</a>
+</li>
+{{ end }}
+{{ if (isset .Params.links "feedback") }}
+<li class="pf-c-list__item">
+  <span class="pf-c-list__item-icon">
+    <i class="fa-solid fa-comments"></i>
+  </span>
+  <a href="{{ .Params.links.feedback }}" class="">Share Feedback</a>
 </li>
 {{ end }}
 </ul>

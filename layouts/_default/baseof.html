@@ -10,4 +10,12 @@
         </div>
         <script src="{{ "js/codeblock.js"  | relURL }}"></script>
     </body>
+    <!-- Uncomment when you have sorted out the feedback partials option
+        <body>
+        {{ if .Params.links.feedback }}
+        {{ partial "feedback-form.html" . }}
+        {{ else }}
+        <p>{{ .Params.links.feedback }}</p>
+        {{ end }}
+    </body>-->
 </html>

@@ -10,8 +10,8 @@ pattern_logo: regional-dr.png
 links:
   github: https://github.com/validatedpatterns/regional-resiliency-pattern
   install: /regional-dr/#installation
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/regional-resiliency-pattern/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ---
 
 # OpenShift Regional Disaster Recovery

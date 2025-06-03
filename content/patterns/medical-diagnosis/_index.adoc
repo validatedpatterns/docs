@@ -15,8 +15,8 @@ links:
   github: https://github.com/validatedpatterns/medical-diagnosis
   install: getting-started
   arch: https://www.redhat.com/architect/portfolio/detail/6-enabling-medical-imaging-diagnostics-with-edge
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/medical-diagnosis/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ci: medicaldiag
 ---
 include::modules/comm-attributes.adoc[]

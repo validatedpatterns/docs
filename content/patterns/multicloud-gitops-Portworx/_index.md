@@ -16,8 +16,8 @@ pattern_logo: multicloud-gitops-Portworx.png
 links:
   github: https://github.com/portworx/rh-multicloud-gitops-pxe
   install: getting-started
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/portworx/rh-multicloud-gitops-pxe/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 # ci: mcgitopspxe
 ---
 

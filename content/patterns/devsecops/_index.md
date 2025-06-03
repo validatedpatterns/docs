@@ -17,8 +17,8 @@ aliases: /devsecops/
 links:
   github: https://github.com/validatedpatterns/multicluster-devsecops
   install: getting-started
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/multicluster-devsecops/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ci: devsecops
 ---
 

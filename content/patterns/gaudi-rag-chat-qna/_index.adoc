@@ -18,8 +18,8 @@ aliases: /gaudi-rag-chat-qna/
 links:
   github: https://github.com/validatedpatterns-sandbox/qna-chat-gaudi
   install: gaudi-rag-chat-qna-getting-started
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/qna-chat-gaudi/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ---
 :toc:
 :imagesdir: /images

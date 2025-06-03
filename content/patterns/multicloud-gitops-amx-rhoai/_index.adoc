@@ -20,8 +20,8 @@ pattern_logo: amx-intel-ai.png
 links:
   github: https://github.com/validatedpatterns-sandbox/amx-accelerated-rhoai-multicloud-gitops
   install: mcg-amx-rhoai-getting-started
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns-sandbox/amx-accelerated-rhoai-multicloud-gitops/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ---
 
 include::modules/comm-attributes.adoc[]

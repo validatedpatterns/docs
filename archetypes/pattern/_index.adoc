@@ -17,8 +17,9 @@ partners:
 links:
   install:
   arch:
-  help: https://groups.google.com/g/validatedpatterns
   bugs:
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+  
 # Set tier to one of sandbox, tested, or maintained. If empty, the default
 # is sandbox
 # tier: sandbox
