@@ -1,0 +1,148 @@
+---
+ date: 2025-06-03
+ title: Deploying the RAG-LLM GitOps Pattern on Azure
+ summary: How to deploy the RAG-LLM GitOps Validated Pattern on an ARO cluster
+ author: Drew Minnear
+ blog_tags:
+ - patterns
+ - how-to
+ - Azure
+ - Azure SQL Server
+ - ARO
+ - rag-llm-gitops
+---
+:toc:
+:imagesdir: /images
+
+[IMPORTANT]
+====
+Currently, the Azure SQL (MSSQL) support and related Azure deployment improvements are available only in the branch https://github.com/dminnear-rh/rag-llm-gitops/tree/use-mssql-db[`use-mssql-db`] of my fork.
+
+You must fork or base your deployment off this branch until the changes in https://github.com/validatedpatterns/rag-llm-gitops/pull/66[PR #66] are merged into the main pattern repository.
+====
+
+== Prerequisites
+
+Before you start, ensure the following:
+
+* You are logged into an existing ARO cluster.
+* Your Azure subscription has sufficient quota for GPU instances (default: `Standard_NC8as_T4_v3`, requiring at least 8 CPUs).
+* You've created a token on https://huggingface.co[HuggingFace] and accepted the terms of the model you'll deploy. By default, the pattern uses the https://huggingface.co/solidrust/Mistral-7B-Instruct-v0.3-AWQ[Mistral-7B-Instruct-v0.3-AWQ] model.
+
+TIP: Model and database defaults are defined in `overrides/values-Azure.yaml`. You can override them by editing this file.
+
+== Database Options
+
+The pattern defaults to using Azure SQL Server. Alternatively, you may deploy a local Redis, PostgreSQL, or Elasticsearch instance within your cluster.
+
+To select your database type, edit `overrides/values-Azure.yaml`:
+
+[source,yaml]
+----
+global:
+  db:
+    type: "AZURESQL"  # Options: AZURESQL, REDIS, EDB, ELASTIC
+----
+
+WARNING: Choosing Redis, PostgreSQL (EDB), or Elasticsearch (ELASTIC) will deploy local database instances. Ensure your cluster has sufficient resources available.
+
+== Deploying Azure SQL Server (Optional)
+
+Follow these steps if you plan to use Azure SQL Server:
+
+. Navigate to the Azure portal and create a new SQL Database server.
+. Select `Use SQL authentication`.
+. Record your `Server name`, `Server admin login`, and `Password` (these will be needed later).
+. On the *Networking* tab, set `Allow Azure services and resources to access this server` to `Yes`.
+. Click *Review + create*, and then *Create*.
+
+Wait until the server status shows as active before proceeding.
+
+== Creating Required Secrets
+
+Before installation, create a secrets YAML file at `~/values-secret-rag-llm-gitops.yaml`. Populate it as follows:
+
+[source,yaml]
+----
+version: "2.0"
+
+secrets:
+  - name: hfmodel
+    fields:
+      - name: hftoken
+        value: hf_your_huggingface_token
+  - name: azuresql
+    fields:
+      - name: user
+        value: adminuser
+      - name: password
+        value: your_password
+      - name: server
+        value: yourservername.database.windows.net
+----
+
+Replace these placeholders with your actual credentials:
+
+* `hftoken`: Your HuggingFace token (you must accept the model's terms).
+* `user`: Azure SQL server admin username.
+* `password`: Azure SQL admin password.
+* `server`: Fully qualified Azure SQL server name.
+
+TIP: If you're not using Azure SQL Server, omit the entire `azuresql` section.
+
+== Creating GPU Nodes (MachineSet)
+
+Your cluster requires GPU nodes with a specific taint to host the vLLM inference service:
+
+[source,yaml]
+----
+- key: odh-notebook
+  value: "true"
+  effect: NoSchedule
+----
+
+=== Creating GPU Nodes Automatically
+
+If no GPU nodes exist, run this command to provision one default GPU node:
+
+[source,shell]
+----
+./pattern.sh make create-gpu-machineset-azure
+----
+
+This creates a single `Standard_NC8as_T4_v3` GPU node.
+
+=== Customizing GPU Node Creation
+
+To control GPU node specifics, provide additional parameters:
+
+[source,shell]
+----
+./pattern.sh make create-gpu-machineset-azure GPU_REPLICAS=3 OVERRIDE_ZONE=2 GPU_VM_SIZE=Standard_NC16as_T4_v3
+----
+
+Parameters available:
+
+* `GPU_REPLICAS`: Number of GPU nodes to provision.
+* `OVERRIDE_ZONE`: Availability zone (optional).
+* `GPU_VM_SIZE`: Azure VM SKU for GPU nodes.
+
+The script automatically applies the required taint. The Nvidia Operator installed by the pattern will handle CUDA driver installation on GPU nodes.
+
+== Installing the Pattern
+
+Ensure you've completed the following steps:
+
+. Logged into your ARO cluster.
+. Created your database (Azure SQL Server) if applicable.
+. Prepared the secrets YAML file (`~/values-secret-rag-llm-gitops.yaml`).
+. Provisioned GPU nodes with the required taint.
+
+Finally, install the pattern by running:
+
+[source,shell]
+----
+./pattern.sh make install
+----
+
+Your RAG-LLM GitOps Validated Pattern will now deploy to your Azure Red Hat OpenShift cluster.
