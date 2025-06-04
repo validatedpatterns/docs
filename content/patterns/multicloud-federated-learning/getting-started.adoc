@@ -50,7 +50,7 @@ cluster2   true           https://api.***.com:6443              True     True   
 +
 [source,bash]
 ----
-$ git@github.com:open-cluster-management-io/addon-contrib.git
+$ git clone git@github.com:open-cluster-management-io/addon-contrib.git
 $ cd federated-learning-controller
 ----
 
