@@ -184,7 +184,7 @@ spec:
 EOF
 ----
 
-. Check the Federated Learning Instance Status
+. Check the status of the federated learning instance
 
 .. After creating the instance, the server initially shows a status of `Waiting`
 +
