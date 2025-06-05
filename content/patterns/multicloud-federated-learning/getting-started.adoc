@@ -151,7 +151,7 @@ spec:
 +
 The above configuration schedules only clusters with a `ClusterClaim` having the key `federated-learning-sample.client-data`. You can combine this with other scheduling policies (refer to the Placement API for details).
 +
-Add the `ClusterClaim` to these clusters own the data for the client:
+Add the `ClusterClaim` object to these clusters own the data for the client:
 
 .. **Cluster1: **
 +
