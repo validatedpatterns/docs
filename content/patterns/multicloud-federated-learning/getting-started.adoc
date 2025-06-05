@@ -201,7 +201,7 @@ federated-learning-sample-server-7jnfs          0/1     Completed   0          9
 +
 *Example - client in managed cluster:*
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get pods -n open-cluster-management
 NAME                                     READY   STATUS      RESTARTS   AGE
