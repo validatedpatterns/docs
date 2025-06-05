@@ -28,7 +28,7 @@ As machine learning (ML) evolves, protecting data privacy becomes increasingly i
 
 Federated Learning (FL) addresses this by allowing multiple clusters or organizations to collaboratively train models without sharing sensitive data. Computation happens where the data lives, ensuring privacy, regulatory compliance, and efficiency.
 
-By integrating FL with Advanced Cluster Management (ACM), this pattern provides an automated and scalable solution for deploying FL workloads across hybrid and multicluster environments.
+By integrating federated learning  with {rh-rhacm-first}, this pattern provides an automated and scalable solution for deploying FL workloads across hybrid and multicluster environments.
 
 ==== Technologies 
 * Open Cluster Management (OCM)
