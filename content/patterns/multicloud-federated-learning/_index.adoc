@@ -24,7 +24,7 @@ include::modules/comm-attributes.adoc[]
 
 === Background
 
-As machine learning (ML) evolves, protecting data privacy becomes increasingly important. Since ML depends on large volumes of data, it's essential to secure that data without disrupting the learning process.
+As machine learning (ML) evolves, protecting data privacy becomes increasingly important. Since ML depends on large volumes of data, it is essential to secure that data without disrupting the learning process.
 
 Federated Learning (FL) addresses this by allowing multiple clusters or organizations to collaboratively train models without sharing sensitive data. Computation happens where the data lives, ensuring privacy, regulatory compliance, and efficiency.
 
