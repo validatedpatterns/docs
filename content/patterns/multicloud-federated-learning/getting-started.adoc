@@ -212,7 +212,7 @@ federated-learning-sample-client-75sc8   0/1     Completed   0          8m
 +
 *Example - Federated Learning instance:*
 +
-[source,bash]
+[source,terminal]
 ----
 status:
   listeners:
