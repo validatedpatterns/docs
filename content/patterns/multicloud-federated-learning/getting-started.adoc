@@ -210,7 +210,7 @@ federated-learning-sample-client-75sc8   0/1     Completed   0          8m
 
 .. After the training and aggregation rounds complete, the status becomes `Completed`
 +
-*Example - Federated Learning instance:*
+*Example - federated learning instance:*
 +
 [source,terminal]
 ----
