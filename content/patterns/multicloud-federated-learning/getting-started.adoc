@@ -31,13 +31,13 @@ Prepare at least three clusters: one hub cluster and two managed clusters.
 
 Verify the managed clusters are registered on the hub by running:
 
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get mcl
 ----
 
 Example output:
-[source,bash]
+[source,terminal]
 ----
 NAME       HUB ACCEPTED   MANAGED CLUSTER URLS                  JOINED   AVAILABLE   AGE
 cluster1   true           https://api.***.com:6443              True     True        5m
@@ -48,7 +48,7 @@ cluster2   true           https://api.***.com:6443              True     True   
 
 . Clone and navigate to the repository:
 +
-[source,bash]
+[source,terminal]
 ----
 $ git clone git@github.com:open-cluster-management-io/addon-contrib.git
 $ cd federated-learning-controller
@@ -56,14 +56,14 @@ $ cd federated-learning-controller
 
 . Build and push the controller image (or use pre-built `quay.io/myan/federated-learning-controller:latest`):
 +
-[source,bash]
+[source,terminal]
 ----
 $ make docker-build docker-push IMG=<IMG> 
 ----
 
 . Deploy the controller to the hub cluster:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl config use-context kind-hub
 $ make deploy IMG=<controller-image> NAMESPACE=<controller-namespace(default is open-cluster-management)>
@@ -73,14 +73,14 @@ $ make deploy IMG=<controller-image> NAMESPACE=<controller-namespace(default is 
 +
 The federated learning controller is running in the open-cluster-management namespace by default.
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get pods -n open-cluster-management
 ----
 +
 Example output
 +
-[source,bash]
+[source,terminal]
 ----
 NAME                                            READY   STATUS      RESTARTS   AGE
 cluster-manager-d9db64db5-c7kfj                 1/1     Running     0          3d22h
@@ -95,7 +95,7 @@ federated-learning-controller-d7df846c9-nb4wc   1/1     Running     0          3
 +
 *Note*: You can skip this step by using the pre-built image `quay.io/myan/flower-app-torch:latest`.
 +
-[source,bash]
+[source,terminal]
 ----
 $ cd examples/flower
 
@@ -155,7 +155,7 @@ Add the `ClusterClaim` object to these clusters own the data for the client:
 
 .. **Cluster1: **
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl config use-context kind-cluster1
 
@@ -171,7 +171,7 @@ EOF
 
 .. **Cluster2: **
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl config use-context kind-cluster2
 $ cat <<EOF | kubectl apply -f -
@@ -190,7 +190,7 @@ EOF
 +
 *Example - server in hub cluster:*
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get pods
 NAME                                            READY   STATUS      RESTARTS   AGE
