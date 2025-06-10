@@ -1,0 +1,98 @@
+---
+ date: 2025-06-10
+ title: How to Configure the RAG-LLM GitOps Pattern for Your Use Case
+ summary: Learn how to configure the RAG-LLM GitOps pattern by selecting a vector DB backend, customizing document sources, and choosing embedding and LLM models to match your workload.
+ author: Drew Minnear
+ blog_tags:
+ - patterns
+ - how-to
+ - rag-llm-gitops
+---
+:toc:
+:imagesdir: /images
+
+== Overview
+
+The RAG-LLM GitOps pattern provides several configuration options that allow you to tailor your deployment to specific workloads and environments. While nearly every setting exposed in the `values` files is adjustable, in practice, most users will focus on a few core areas:
+
+- Choosing and configuring the RAG database (vector store) backend
+- Setting up document sources for populating the RAG DB
+- Selecting models for embedding and LLM inference
+
+This post walks through how to configure each of these components using the pattern’s provided Helm chart values.
+
+== Configuring the RAG DB Backend
+
+=== Supported Database Providers
+
+The pattern supports several backend options for the RAG vector database. You can specify which one to use by setting the `global.db.type` field in `values-global.yaml`. Current options include:
+
+- `REDIS`
+- `EDB`
+- `ELASTIC`
+- `MSSQL`
+- `AZURESQL`
+
+[NOTE]
+====
+If you're using `AZURESQL`, you must provision the Azure SQL Server instance externally—this is not handled by the pattern itself. For more on this setup, refer to our guide on https://validatedpatterns.io/blog/2025-06-03-rag-llm-azure/[RAG-LLM GitOps on Azure].
+====
+
+For other options, the pattern will deploy the necessary database resources during installation.
+
+=== Adding Sources to the RAG DB
+
+You can specify documents to populate your vector DB using the `populateDbJob.repoSources` and `populateDbJob.webSources` fields in `charts/all/rag-llm/values.yaml`.
+
+==== Repository Sources
+
+For Git repository sources, provide a list of `repo` entries with associated glob patterns to select which files to include:
+
+[source,yaml]
+----
+repoSources:
+  - repo: https://github.com/RHEcosystemAppEng/llm-on-openshift.git
+    globs:
+      - examples/notebooks/langchain/rhods-doc/*.pdf
+      - **/*.txt
+----
+
+[IMPORTANT]
+====
+While you *can* include all files with a glob like +**/*+, it's typically better to restrict to file types suited for semantic search (e.g., `.pdf`, `.md`, `.txt`, `.adoc`). Including binaries, source code, or image files adds noise and degrades retrieval quality.
+====
+
+==== Web Sources
+
+For web pages, use the `webSources` list to define target URLs:
+
+[source,yaml]
+----
+webSources:
+  - https://ai-on-openshift.io/getting-started/openshift/
+  - https://ai-on-openshift.io/getting-started/opendatahub/
+----
+
+The contents of these URLs will be fetched and embedded as text documents. PDF URLs are automatically processed using the same logic as Git-sourced PDFs.
+
+== Configuring the Embedding and LLM Models
+
+The models used for embeddings and LLM inference are defined in `values-global.yaml` under:
+
+- `global.model.vllm` – specifies the LLM used by the vLLM inference service
+- `global.model.embedding` – specifies the embedding model used for indexing and retrieval
+
+These should be HuggingFace-compatible model names. Be sure to accept any model license terms on HuggingFace prior to use.
+
+[NOTE]
+====
+Deployments targeting environments like Azure may need to adjust the model choice and serving parameters. For example, the default IBM Granite model requires 24 GiB of VRAM—more than most Azure GPUs provide. See `overrides/values-Azure.yaml` for a working example using an AWQ-quantized model that fits in 16 GiB.
+====
+
+You may also need to tweak runtime arguments via `vllmServingRuntime.args` when using quantized or fine-tuned models.
+
+== Summary
+
+The RAG-LLM GitOps pattern is designed to be flexible, but most use cases require tuning only a handful of key values. Whether adjusting the backend DB, tweaking your data sources, or selecting compatible models, the pattern offers the configuration hooks you need to adapt it to your workload.
+
+For more configuration examples and deployment tips, stay tuned to the https://validatedpatterns.io/blog/[Validated Patterns blog].

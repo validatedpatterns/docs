@@ -14,13 +14,6 @@
 :toc:
 :imagesdir: /images
 
-[IMPORTANT]
-====
-Currently, the Azure SQL (MSSQL) support and related Azure deployment improvements are available only in the branch https://github.com/dminnear-rh/rag-llm-gitops/tree/use-mssql-db[`use-mssql-db`] of my fork.
-
-You must fork or base your deployment off this branch until the changes in https://github.com/validatedpatterns/rag-llm-gitops/pull/66[PR #66] are merged into the main pattern repository.
-====
-
 == Prerequisites
 
 Before you start, ensure the following:
