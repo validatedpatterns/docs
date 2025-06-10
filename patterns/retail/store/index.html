@@ -4608,9 +4608,35 @@ Excited or intrigued by what you see here? We’d love to hear your thoughts and
 How can I get involved? Try out what we’ve done and submit issues to our issue trackers.
 We will review pull requests to our pattern repositories.
 `,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
-`,url:"https://validatedpatterns.io/blog/",breadcrumb:"/blog/"},"https://validatedpatterns.io/blog/2025-06-03-rag-llm-azure/":{title:"Deploying the RAG-LLM GitOps Pattern on Azure",tags:[],content:` Currently, the Azure SQL (MSSQL) support and related Azure deployment improvements are available only in the branch use-mssql-db of my fork.
-You must fork or base your deployment off this branch until the changes in PR #66 are merged into the main pattern repository.
-Prerequisites Before you start, ensure the following:
+`,url:"https://validatedpatterns.io/blog/",breadcrumb:"/blog/"},"https://validatedpatterns.io/blog/2025-06-10-rag-llm-gitops-configuration/":{title:"How to Configure the RAG-LLM GitOps Pattern for Your Use Case",tags:[],content:` Overview The RAG-LLM GitOps pattern provides several configuration options that allow you to tailor your deployment to specific workloads and environments. While nearly every setting exposed in the values files is adjustable, in practice, most users will focus on a few core areas:
+Choosing and configuring the RAG database (vector store) backend
+Setting up document sources for populating the RAG DB
+Selecting models for embedding and LLM inference
+This post walks through how to configure each of these components using the pattern’s provided Helm chart values.
+Configuring the RAG DB Backend Supported Database Providers The pattern supports several backend options for the RAG vector database. You can specify which one to use by setting the global.db.type field in values-global.yaml. Current options include:
+REDIS
+EDB
+ELASTIC
+MSSQL
+AZURESQL
+If you’re using AZURESQL, you must provision the Azure SQL Server instance externally—this is not handled by the pattern itself. For more on this setup, refer to our guide on RAG-LLM GitOps on Azure.
+For other options, the pattern will deploy the necessary database resources during installation.
+Adding Sources to the RAG DB You can specify documents to populate your vector DB using the populateDbJob.repoSources and populateDbJob.webSources fields in charts/all/rag-llm/values.yaml.
+Repository Sources For Git repository sources, provide a list of repo entries with associated glob patterns to select which files to include:
+repoSources: - repo: https://github.com/RHEcosystemAppEng/llm-on-openshift.git globs: - examples/notebooks/langchain/rhods-doc/*.pdf - **/*.txt While you can include all files with a glob like **/*, it’s typically better to restrict to file types suited for semantic search (e.g., .pdf, .md, .txt, .adoc). Including binaries, source code, or image files adds noise and degrades retrieval quality.
+Web Sources For web pages, use the webSources list to define target URLs:
+webSources: - https://ai-on-openshift.io/getting-started/openshift/ - https://ai-on-openshift.io/getting-started/opendatahub/ The contents of these URLs will be fetched and embedded as text documents. PDF URLs are automatically processed using the same logic as Git-sourced PDFs.
+Configuring the Embedding and LLM Models The models used for embeddings and LLM inference are defined in values-global.yaml under:
+global.model.vllm – specifies the LLM used by the vLLM inference service
+global.model.embedding – specifies the embedding model used for indexing and retrieval
+These should be HuggingFace-compatible model names. Be sure to accept any model license terms on HuggingFace prior to use.
+Deployments targeting environments like Azure may need to adjust the model choice and serving parameters. For example, the default IBM Granite model requires 24 GiB of VRAM—more than most Azure GPUs provide. See overrides/values-Azure.yaml for a working example using an AWQ-quantized model that fits in 16 GiB.
+You may also need to tweak runtime arguments via vllmServingRuntime.args when using quantized or fine-tuned models.
+Summary The RAG-LLM GitOps pattern is designed to be flexible, but most use cases require tuning only a handful of key values. Whether adjusting the backend DB, tweaking your data sources, or selecting compatible models, the pattern offers the configuration hooks you need to adapt it to your workload.
+For more configuration examples and deployment tips, stay tuned to the Validated Patterns blog.
+`,url:"https://validatedpatterns.io/blog/2025-06-10-rag-llm-gitops-configuration/",breadcrumb:"/blog/2025-06-10-rag-llm-gitops-configuration/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric use cases while maintaining a level of Continuous Integration (CI) over your application.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/2025-06-03-rag-llm-azure/":{title:"Deploying the RAG-LLM GitOps Pattern on Azure",tags:[],content:` Prerequisites Before you start, ensure the following:
 You are logged into an existing ARO cluster.
 Your Azure subscription has sufficient quota for GPU instances (default: Standard_NC8as_T4_v3, requiring at least 8 CPUs).
 You’ve created a token on HuggingFace and accepted the terms of the model you’ll deploy. By default, the pattern uses the Mistral-7B-Instruct-v0.3-AWQ model.
@@ -4645,9 +4671,7 @@ Prepared the secrets YAML file (~/values-secret-rag-llm-gitops.yaml).
 Provisioned GPU nodes with the required taint.
 Finally, install the pattern by running:
 ./pattern.sh make install Your RAG-LLM GitOps Validated Pattern will now deploy to your Azure Red Hat OpenShift cluster.
-`,url:"https://validatedpatterns.io/blog/2025-06-03-rag-llm-azure/",breadcrumb:"/blog/2025-06-03-rag-llm-azure/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
-Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric use cases while maintaining a level of Continuous Integration (CI) over your application.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/":{title:"OPEA Chat QnA accelerated with AMD Instinct",tags:[],content:`About OPEA QnA chat accelerated with AMD Instinct pattern Background This Validated Pattern implements an enterprise-ready question-and-answer chatbot utilizing retrieval-augmented generation (RAG) and capability reasoning using large language model (LLM). The application is based on the publicly-available OPEA Chat QnA example application created by the Open Platform for Enterprise AI (OPEA) community.
+`,url:"https://validatedpatterns.io/blog/2025-06-03-rag-llm-azure/",breadcrumb:"/blog/2025-06-03-rag-llm-azure/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/":{title:"OPEA Chat QnA accelerated with AMD Instinct",tags:[],content:`About OPEA QnA chat accelerated with AMD Instinct pattern Background This Validated Pattern implements an enterprise-ready question-and-answer chatbot utilizing retrieval-augmented generation (RAG) and capability reasoning using large language model (LLM). The application is based on the publicly-available OPEA Chat QnA example application created by the Open Platform for Enterprise AI (OPEA) community.
 OPEA provides a framework that enables the creation and evaluation of open, multi-provider, robust, and composable generative AI (GenAI) solutions. It harnesses the best innovations across the ecosystem while keeping enterprise-level needs front and center. It simplifies the implementation of enterprise-grade composite GenAI solutions, starting with a focus on Retrieval Augmented Generative AI (RAG). The platform is designed to facilitate efficient integration of secure, performant, and cost-effective GenAI workflows into business systems and manage its deployments, leading to quicker GenAI adoption and business value.
 This pattern aims to leverage the strengths of OPEA’s framework in combination with other OpenShift-centric toolings in order to deploy a modern, LLM-backed reasoning application stack capable of leveraging AMD’s Instinct hardware acceleration in an enterprise-ready and distributed manner. The pattern utilizes Red Hat OpenShift GitOps to bring a continuous delivery approach to the application’s development and usage based on declarative Git-driven workflows, backed by a centralized, single-source-of-truth git repository.
 Key features AMD Instinct GPU acceleration for high-performance AI inferencing
