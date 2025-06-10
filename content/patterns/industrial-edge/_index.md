@@ -18,8 +18,8 @@ links:
   github: https://github.com/validatedpatterns/industrial-edge
   install: getting-started
   arch: https://www.redhat.com/architect/portfolio/detail/26-industrial-edge
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/industrial-edge/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ci: industrialedge
 ---
 

@@ -12,8 +12,8 @@ pattern_logo: ansible-edge.png
 links:
   github: https://github.com/validatedpatterns/agof/
   install: https://github.com/validatedpatterns/agof/?tab=readme-ov-file#11-installation
-  help: https://groups.google.com/g/validatedpatterns
   bugs: https://github.com/validatedpatterns/agof/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ---
 
 # Ansible GitOps Framework

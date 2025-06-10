@@ -15,7 +15,7 @@ pattern_logo: ansible-edge.png
 links:
   github: https://github.com/validatedpatterns-sandbox/virtualization-starter-kit
   install: getting-started
-  help: https://groups.google.com/g/validatedpatterns
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
   bugs: https://github.com/validatedpatterns-sandbox/virtualization-starter-kit
 ci: vsk
 ---
