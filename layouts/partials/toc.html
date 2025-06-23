@@ -1,9 +1,19 @@
 <aside class="pf-c-jump-links pf-m-vertical sticky pf-m-expandable pf-m-non-expandable-on-2xl" aria-label="Table of contents">
   <div class="pf-l-stack pf-m-gutter">
     <div class="pf-l-stack__item pf-u-text-align-right">
-      <a href="https://github.com/validatedpatterns/docs/commits/main/content/{{ .File.Path  }}"><span class="pf-c-icon pf-m-md" title="View page history"><span class="pf-c-icon__content"><i class="fa-solid fa-clock-rotate-left"></i></span></span></a>
-      <a href="https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12325623&summary={{ .Title }}: %3C+Provide+a+brief+description+of+the+issue+%3E&issuetype=1&priority=10200&components=12365975&priority=10200&components=12365975&description=Link+to+page:+{{ .Permalink }}+%0A+%0A+%3C+Provide+a+detailed+description+of+the+issue+with+link+to+the+docs++%3E"><span class="pf-c-icon pf-m-md" title="File a documentation bug"><span class="pf-c-icon__content"><i class="fa-regular fa-bug"></i></span></span></a>
-    </div>
+    {{ with .File }}
+        {{ $githubRepo := "validatedpatterns/docs" }}
+        {{ $githubBranch := "main" }}
+        {{ $githubFilePath := .Path }}
+        <a href="https://github.com/{{ $githubRepo }}/edit/{{ $githubBranch }}/content/{{ $githubFilePath }}" target="_blank" rel="noopener noreferrer">
+            <span class="pf-c-icon pf-m-md" title="Edit this page">
+                <span class="pf-c-icon__content"><i class="fa-solid fa-pencil"></i></span>
+            </span>
+        </a>
+    {{ end }}
+    <a href="https://github.com/validatedpatterns/docs/commits/main/content/{{ .File.Path }}" target="_blank" rel="noopener noreferrer"><span class="pf-c-icon pf-m-md" title="View page history"><span class="pf-c-icon__content"><i class="fa-solid fa-clock-rotate-left"></i></span></span></a>
+    <a id="report-doc-bug-btn" href="https://jira.example.com/"><span class="pf-c-icon pf-m-md" title="File a documentation bug"><span class="pf-c-icon__content"><i class="fa-regular fa-bug"></i></span></span></a>
+</div>
     <div class="pf-l-stack__item">
       <div class="pf-c-jump-links__header">
         <div class="pf-c-jump-links__label">
