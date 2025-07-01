@@ -21,9 +21,12 @@ contributor:
   git: https://github.com/mhjacks
 ---
 
+[NOTE]
+====
 This pattern is under development. 
+====
 
-Please reference the link:https://github.com/validatedpatterns-sandbox/gpfs-tester[Git Repository] for more information.
+For more information, refer to the link:https://github.com/validatedpatterns-sandbox/gpfs-tester[GPFS git repository]
 
 //:toc:
 //:imagesdir: /images
