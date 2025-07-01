@@ -2,7 +2,7 @@
 title: GPFS Tester
 date: 2025-07-01
 tier: sandbox
-summary: This pattern demonstrates the integration of Global Parallel File System (GPFS/IBM Fusion) with Red Hat OpenShift
+summary: This pattern demonstrates the integration of Global Parallel File System (GPFS/IBM Fusion) with Red Hat OpenShift and includes performance testing as part of the demo as a benefit to product teams and customers.
 rh_products:
 - Red Hat OpenShift Container Platform
 industries:
