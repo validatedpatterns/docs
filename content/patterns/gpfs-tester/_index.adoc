@@ -1,0 +1,39 @@
+---
+title: GPFS Tester
+date: 2025-07-01
+tier: sandbox
+summary: This pattern demonstrates the integration of Global Parallel File System (GPFS/IBM Fusion) with Red Hat OpenShift and includes performance testing as part of the demo as a benefit to product teams and customers.
+rh_products:
+- Red Hat OpenShift Container Platform
+industries:
+- storage services
+aliases: /gpfs-tester/
+pattern_logo: mlops-fraud-detection.png
+links:
+  github: https://github.com/validatedpatterns-sandbox/gpfs-tester
+  install: https://github.com/validatedpatterns-sandbox/gpfs-tester
+  bugs: https://github.com/validatedpatterns-sandbox/gpfs-tester/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+//ci: gpfs
+contributor:
+  name: Martin Jackson
+  contact: mailto:mhjacks@redhat.com
+  git: https://github.com/mhjacks
+---
+
+This pattern is under development. 
+
+Please reference the link:https://github.com/validatedpatterns-sandbox/gpfs-tester[Git Repository] for more information.
+
+//:toc:
+//:imagesdir: /images
+//:_content-type: ASSEMBLY
+//
+//include::modules/mfd-about-mlops-fraud-detection.adoc[leveloffset=+1]
+//
+//include::modules/mfd-architecture.adoc[leveloffset=+1]
+//
+//[id="next-steps_mfd-index"]
+//== Next steps
+//
+//* link:mfd-getting-started[Deploy the management hub] using Helm.
