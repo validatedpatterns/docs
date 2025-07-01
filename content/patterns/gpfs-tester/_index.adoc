@@ -1,0 +1,37 @@
+---
+title: GPFS Tester
+date: 2025-07-01
+tier: sandbox
+summary: This pattern demonstrates how Red Hat OpenShift Data Science and MLFlow can be used together to build an end-to-end MLOps platform. It demonstrates this using a credit card fraud detection use case.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift Data Science
+- Red Hat OpenShift Data Foundation
+industries:
+- financial services
+aliases: /mlops-fraud-detection/
+pattern_logo: mlops-fraud-detection.png
+links:
+  github: https://github.com/validatedpatterns-sandbox/gpfs-tester
+  install: gpfs-getting-started
+  arch: https://www.redhat.com/architect/portfolio/architecturedetail?ppid=6
+  bugs: https://github.com/validatedpatterns-sandbox/gpfs-tester/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+ci: gpfs
+contributor:
+  name: Martin Jackson
+  contact: mailto:mhjacks@redhat.com
+  git: https://github.com/mhjacks
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/mfd-about-mlops-fraud-detection.adoc[leveloffset=+1]
+
+include::modules/mfd-architecture.adoc[leveloffset=+1]
+
+[id="next-steps_mfd-index"]
+== Next steps
+
+* link:mfd-getting-started[Deploy the management hub] using Helm.
