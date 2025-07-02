@@ -1,0 +1,13 @@
+name: Check internal links
+on: push
+jobs:
+  check_html_links_job:
+    name: A job to test only internal links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: check-html-links-action step
+        id: check-links
+        uses: modernweb-dev/check-html-links-action@v1
+        with:
+         doc-folder: public/

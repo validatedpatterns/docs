@@ -16,5 +16,5 @@ jobs:
             This is an automated message:
 
             You can preview this docs PR at http://${{ github.event.number }}.docs-pr.validatedpatterns.io
-            Note that they get generated every five minutes, so please wait a bit.
+            Note that the preview gets generated every five minutes, so please wait a bit.
           repo-token: ${{ secrets.DOCS_PR_TOKEN }}

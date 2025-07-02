@@ -10,7 +10,10 @@ params:
 security:
   exec:
     allow: ["^dart-sass-embedded$", "^go$", "^npx$", "^postcss$", "^asciidoctor$"]
-    osEnv: (?i)^(GEM_PATH)$
+    osEnv: (?i)^(GEM_PATH|PATH|PATHEXT|APPDATA|TMP|TEMP|TERM|RUBYLIB)$
+  funcs:
+    getenv:
+    - ^HUGO_
 
 markup:
   asciidocExt:
@@ -45,3 +48,15 @@ menus:
     - name: Workshop
       url: https://play.validatedpatterns.io
       weight: 25
+module:
+  mounts:
+  - source: archetypes
+    target: archetypes
+  - source: content
+    target: content
+  - source: static
+    target: static
+  - source: layouts
+    target: layouts
+  - source: modules
+    target: content
