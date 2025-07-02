@@ -1,0 +1,54 @@
+// static/js/bug-reporter.js (or wherever you prefer to store static assets)
+
+document.addEventListener('mouseup', function() {
+    const selectedText = window.getSelection().toString().trim();
+
+    if (selectedText.length > 0) {
+        // You might want to add a small button or popup here instead of direct confirmation
+        // For simplicity, we'll keep the confirmation for now.
+
+        const currentPageUrl = window.location.href;
+        const githubFilePath = getGitHubFilePath(); // This will now be more accurate for Hugo
+
+        const issueTitle = `Bug Report: Issue on "${selectedText.substring(0, 50).replace(/\n/g, ' ')}..."`;
+        let issueBody = `
+**Description of the issue:**
+\`\`\`
+${selectedText}
+\`\`\`
+
+---
+**Context:**
+- **Page URL:** ${currentPageUrl}
+- **GitHub Source File:** ${githubFilePath}
+        `;
+
+        const encodedTitle = encodeURIComponent(issueTitle);
+        const encodedBody = encodeURIComponent(issueBody);
+
+        const githubRepo = 'validatedpatterns/docs'; // Your GitHub repository
+        const githubIssueUrl = `https://github.com/${githubRepo}/issues/new?title=${encodedTitle}&body=${encodedBody}`;
+
+        const confirmation = confirm("Do you want to report this as a bug on GitHub for the selected text?");
+        if (confirmation) {
+            window.open(githubIssueUrl, '_blank');
+        }
+    }
+});
+
+
+// Hugo-specific function to get the GitHub file path
+function getGitHubFilePath() {
+    // This assumes you've added a data-github-file attribute to your body or a container.
+    const bodyElement = document.querySelector('body');
+    if (bodyElement && bodyElement.dataset.githubFile) {
+        // Construct the full GitHub blob URL
+        // Assuming your source files are in the 'content' directory of your repo
+        // And you're using the 'main' branch
+        const repoBaseUrl = 'https://github.com/validatedpatterns/docs/blob/main/';
+        return repoBaseUrl + bodyElement.dataset.githubFile;
+    }
+
+    // Fallback if the data attribute isn't found (shouldn't happen with Hugo setup)
+    return "Could not determine source file automatically. Please specify if known.";
+}
