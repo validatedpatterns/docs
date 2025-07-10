@@ -1,0 +1,124 @@
+---
+title: Getting Started
+weight: 10
+aliases: /getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="installing-rag-llm-azure-pattern"]
+== Installing the RAG-LLM GitOps Pattern on Microsoft Azure
+
+.Prerequisites
+
+* You are logged into an existing a Red Hat OpenShift cluster on Microsoft Azure with administrative privileges.
+* Your Azure subscription has the required GPU quota to provision the necessary compute resources for the vLLM inference service. The default is Standard_NC8as_T4_v3, which requires at least 8 CPUs.
+* A Hugging Face token.
+* Database server
+ ** Microsoft SQL Server - It is the default vector database for deploying the RAG-LLM pattern on Azure.
+ ** (Optional) Local databases- You can also deploy Redis, PostgreSQL (EDB), or Elasticsearch (ELASTIC) directly within your cluster. If choosing a local database, ensure that it is provisioned and accessible before deployment.
+
+[IMPORTANT]
+====
+* To select your database type, edit `overrides/values-Azure.yaml` file.
++
+[source,yaml]
+----
+global:
+  db:
+    type: "MSSQL"  # Options: MSSQL, AZURESQL, REDIS, EDB, ELASTIC
+----
+
+
+* When choosing local database instances such as Redis, PostgreSQL, or Elasticsearch, ensure that your cluster has sufficient resources available.
+====
+
+[id="overview-of-the-installation-workflow_{context}"]
+== Overview of the installation workflow
+To install the RAG-LLM GitOps Pattern on Microsoft Azure, you must complete the following setup and configurations:
+
+* xref:creating-huggingface-token[Create a Hugging face token]
+* xref:creating-secret-credentials[Create required secrets]
+* xref:provisioning-gpu-nodes[Create GPU nodes]
+* xref:deploy-rag-llm-azure-pattern[Install the RAG-LLM GitOps Pattern on Microsoft Azure]
+
+[id="creating-huggingface-token_{context}"]
+=== Creating a Hugging Face token
+.Procedure
+
+. To obtain a Hugging Face token, navigate to the link:https://huggingface.co/settings/tokens[Hugging Face] site.
+. Log in to your account.
+. Go to your *Settings* -> *Access Tokens*.
+. Create a new token with appropriate permissions. Ensure you accept the terms of the specific model you plan to use, as required by Hugging Face. For example, Mistral-7B-Instruct-v0.3-AWQ
+
+[id="creating-secret-credentials_{context}"]
+=== Creating secret credentials
+
+To securely store your sensitive credentials, create a YAML file named `~/values-secret-rag-llm-gitops.yaml`. This file is used during the pattern deployment; however, you must not commit it to your Git repository.
+
+[source,yaml]
+----
+# ~/values-secret-rag-llm-gitops.yaml
+# Replace placeholders with your actual credentials
+version: "2.0"
+
+secrets:
+  - name: hfmodel
+    fields:
+      - name: hftoken <1>
+        value: <hf_your_huggingface_token>
+  - name: mssql
+    fields:
+      - name: sa-pass <2>
+        value: <value: <password_for_sa_user>
+----
+<1> Specify your Hugging Face token.
+<2> Specify the system administrator password for the MS SQL Server instance.
+
+[id="provisioning-gpu-nodes_{context}"]
+=== Provisioning GPU nodes
+
+The vLLM inference service requires dedicated GPU nodes with a specific taint. You can provision these nodes by using one of the following methods:
+
+Automatic Provisioning:: The pattern includes capabilities to automatically provision GPU-enabled `MachineSet` resources.
++
+Run the following command to create a single Standard_NC8as_T4_v3 GPU node:
++
+[source,terminal]
+----
+./pattern.sh make create-gpu-machineset-azure
+----
+
+Customizable Method:: For environments requiring more granular control, you can manually create a `MachineSet` with the necessary GPU instance types and apply the required taint.
++
+To control GPU node specifics, provide additional parameters:
++
+[source,terminal]
+----
+./pattern.sh make create-gpu-machineset-azure GPU_REPLICAS=3 OVERRIDE_ZONE=2 GPU_VM_SIZE=Standard_NC16as_T4_v3
+----
++
+where:
++
+  - `GPU_REPLICAS` is the umber of GPU nodes to provision.
++
+  - (Optional): `OVERRIDE_ZONE` is the availability zone .
++
+  - `GPU_VM_SIZE` is the Azure VM SKU for GPU nodes.
++
+The script automatically applies the required taint. The NVIDIA GPU Operator that is installed by the pattern manages the CUDA driver installation on GPU nodes.
+
+[id="deploy-rag-llm-azure-pattern_{context}"]
+=== Deploying the RAG-LLM GitOps Pattern
+
+To deploy the RAG-LLM GitOps Pattern to your ARO cluster, run the following command:
+
+[source,terminal]
+----
+pattern.sh make install
+----
+
+This command initiates the GitOps-driven deployment process, which installs and configures all RAG-LLM components on your ARO cluster based on the provided values and secrets.

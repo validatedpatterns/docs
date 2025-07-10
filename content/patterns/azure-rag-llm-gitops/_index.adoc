@@ -1,0 +1,44 @@
+---
+title: RAG-LLM pattern on Microsoft Azure
+date: 
+validated: false
+tier: tested
+summary: The RAG-LLM pattern on Microsoft Azure offers a robust and scalable solution for deploying LLM-based applications with integrated retrieval capabilities on Microsoft Azure.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift AI
+partners:
+- Microsoft
+industries:
+- General
+aliases: /azure-rag-llm-gitops/
+#pattern_logo:
+links:
+  github: https://github.com/validatedpatterns/rag-llm-gitops
+  install: getting-started
+  bugs: https://github.com/validatedpatterns/rag-llm-gitops/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="about-azure-rag-llm-gitops-pattern"]
+== About the RAG-LLM pattern on Microsoft Azure on Microsoft Azure
+
+The RAG-LLM GitOps Pattern offers a robust and scalable solution for deploying LLM-based applications with integrated retrieval capabilities on Microsoft Azure. By embracing GitOps principles, this pattern ensures automated, consistent, and auditable deployments. It streamlines the setup of complex LLM architectures, allowing users to focus on application development rather than intricate infrastructure provisioning.
+
+[id="solution-elements-and-technologies"]
+== Solution elements and technologies
+
+The RAG-LLM pattern on Microsoft Azure leverages the following key technologies and components:
+
+* **{rh-ocp} on Microsoft Azure**: The foundation for container orchestration and application deployment.
+* **Microsoft SQL Server **: The default relational database backend for storing vector embeddings.
+* **Hugging Face Models**: Used for both embedding generation and large language model inference.
+* **{rh-gitops}**: The primary driver for automated deployment and continuous synchronization of the pattern's components.
+* **{rhoai}**: An optimized inference engine for large language models, deployed on GPU-enabled nodes.
+* **Node Feature Discovery (NFD) Operator**: A Kubernetes add-on for detecting hardware features and system configuration.
+* **NVIDIA GPU Operator**: The GPU Operator uses the Operator framework within Kubernetes to automate the management of all NVIDIA software components needed to provision GPU.
