@@ -1,0 +1,34 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="configuration-options_{context}"]
+= Configuration options
+
+To tailor the deployment to your specific use case, data sources, and model requirements, the RAG-LLM GitOps pattern offers extensive configuration options through its Helm chart values.
+
+[id="document-sources-for-rag-db-population_{context}"]
+== Document sources for RAG DB population
+
+To populate your vector database with relevant documents, you can specify various sources within the pattern's configuration. This is typically managed under the `populateDbJob` section of the Helm values.
+
+* Git Repository Sources (`populateDbJob.repoSources`): Specify documents from Git repositories. You can use glob patterns to include or exclude specific file types from these repositories.
++
+[TIP]
+====
+To optimize retrieval quality and performance, restrict Git repository sources to file types that are suitable for semantic search (e.g., `.txt`, `.md`, `.pdf`, `.json`). Avoid including binary files or irrelevant content that could degrade search accuracy.
+====
+
+* Web Page Sources (`populateDbJob.webSources`): Include content directly from specified web pages.
+
+[id="embedding-and-llm-inference-models_{context}"]
+== Embedding and LLM inference models
+
+The models used for generating embeddings and performing LLM inference are defined in the `values-global.yaml` file:
+
+* LLM Inference Model:Configured under `global.model.vllm`. This specifies the Hugging Face model identifier for the large language model.
+* Embedding Model: Configured under `global.model.embedding`. This specifies the Hugging Face model identifier for the text embedding model.
+
+Both models should be compatible with the Hugging Face ecosystem. When deploying in cloud environments such as Azure, carefully consider the VRAM requirements of your chosen models to ensure that your provisioned GPU nodes have sufficient memory for optimal performance and to avoid resource contention.
+
+.Additional resource
+* link:https://validatedpatterns.io/blog/2025-06-10-rag-llm-gitops-configuration/[How to Configure the RAG-LLM GitOps Pattern for Your Use Case]

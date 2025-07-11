@@ -14,8 +14,6 @@ include::modules/comm-attributes.adoc[]
 
 .Prerequisites
 
-.Prerequisites
-
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
  ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
