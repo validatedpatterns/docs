@@ -6,6 +6,9 @@ summary: The goal of this demo is to showcase a Chatbot LLM application augmente
 rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat OpenShift GitOps
+partners:
+- EDB
+- Elastic
 industries:
 - General
 aliases: /ai/
