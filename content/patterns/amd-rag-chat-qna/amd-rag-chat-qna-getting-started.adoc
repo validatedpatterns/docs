@@ -9,7 +9,7 @@ aliases: /amd-rag-chat-qna/amd-rag-chat-qna-getting-started/
 include::modules/comm-attributes.adoc[]
 
 [id="deploying-amdqna-pattern"]
-= Deploying the {amdqna-pattern}
+== Deploying the {amdqna-pattern}
 
 === Prerequisites
 
@@ -31,7 +31,7 @@ If you prefer to use tools provided with this project for preparation of the pre
 
 [NOTE]
 ====
-If you are familiar with the steps necessary for downloading the `Llama-3.1-8B-Instruct` model and copying to a Minio/S3 bucket, you can do so and proceed to <<deploy_model, Deploy model via Red Hat OpenShift AI [[deploy_model]]>> afterward. OpenShift AI will be installed later during pattern execution.
+If you are familiar with the steps necessary for downloading the `Llama-3.1-8B-Instruct` model and copying to a Minio/S3 bucket, you can do so and proceed to <<deploy_model, Deploy model via Red Hat OpenShift AI>> afterward. OpenShift AI will be installed later during pattern execution.
 
 If you prefer to run the provided notebooks in another environment, you can do so and skip to <<clone_pattern_code,Clone code repository>> below for further instructions. OpenShift AI will be installed later during pattern execution.
 ====
