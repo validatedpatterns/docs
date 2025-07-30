@@ -4801,13 +4801,43 @@ Who is behind this? Today, a team of Red Hat engineers including Andrew Beekhof 
 Excited or intrigued by what you see here? We’d love to hear your thoughts and ideas! Try the patterns contained here and see below for links to our repositories and issue trackers.
 How can I get involved? Try out what we’ve done and submit issues to our issue trackers.
 We will review pull requests to our pattern repositories.
-`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/gpfs-tester/":{title:"GPFS Tester",tags:[],content:` This pattern is under development.
+`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
+`,url:"https://validatedpatterns.io/blog/",breadcrumb:"/blog/"},"https://validatedpatterns.io/blog/2025-07-24-introducing-patternizer/":{title:"From Helm Charts to Validated Patterns in a Single Command",tags:[],content:` Validated Patterns provide a powerful, GitOps-based framework for deploying complex cloud-native applications. We have great resources on our Learn and Workshop pages, but the initial learning curve can seem steep.
+For developers who just want to package their applications as a pattern, the most common route has been to clone the multicloud-gitops repository and adapt it. While effective, this process can be a hurdle for a prospective author who simply wants to know: &#34;How can I turn my Helm charts into a pattern as quickly and painlessly as possible?&#34;
+To bridge this gap, we are thrilled to introduce Patternizer—a new command-line tool designed specifically to address this pain point.
+The Solution: Patternizer Patternizer is a CLI tool that bootstraps a Git repository containing Helm charts into a ready-to-use Validated Pattern. It automatically generates the necessary scaffolding, configuration files, and utility scripts, so you can get your pattern up and running in minutes.
+With Patternizer, you can go from a directory of Helm charts to a fully functional Validated Pattern with a single command.
+Getting Started: A Quick Workflow Let’s walk through an example. All you need is a Git repository containing one or more Helm charts and a container runtime like Podman or Docker.
+Prepare your repository:
+Clone your repository and create a new branch for the pattern initialization.
+git clone https://github.com/your-org/your-awesome-app.git cd your-awesome-app git checkout -b feature/initialize-pattern Initialize the pattern:
+Navigate to your repository’s root and run the Patternizer container, mounting your current directory.
+podman run -v &#34;$PWD:/repo:z&#34; quay.io/hybridcloudpatterns/patternizer init This single command scans your repository for Helm charts and generates all the necessary files to turn it into a Validated Pattern.
+Review and commit:
+Commit the newly generated files to your branch.
+git add . git commit -m &#39;feat: Initialize Validated Pattern with Patternizer&#39; git push -u origin feature/initialize-pattern Install your new pattern!
+Patternizer also generates a handy utility script. You can now install your pattern just like any other Validated Pattern.
+./pattern.sh make install Under the Hood: What You Get Running patternizer init creates a set of files that form the foundation of your pattern:
+pattern.sh: A utility script for common operations like install and upgrade.
+Makefile &amp; Makefile-pattern: The core Makefiles with all the pattern-related build logic.
+values-global.yaml: A place for global pattern configuration.
+values-prod.yaml: A cluster group-specific values file (for the default prod group).
+The tool is designed to be idempotent. You can continue adding Helm charts to your repository and just rerun the init command. It will intelligently update the necessary values files while preserving any manual changes you’ve made.
+Need Secrets? We’ve Got You Covered When your pattern is ready to handle sensitive information, you can easily add scaffolding for secrets management.
+Run the init command with the --with-secrets flag:
+podman run -v &#34;$PWD:/repo:z&#34; quay.io/hybridcloudpatterns/patternizer init --with-secrets This command updates your configuration to integrate with External Secrets Operator (ESO) and Vault. It generates a values-secret.yaml.template for defining your secrets and automatically adds the required operator subscriptions to your pattern.
+Current Scope and Future Direction Patternizer is in its infancy, and its initial focus is on solving the Helm-to-Pattern problem. As such, there are a few things to keep in mind:
+Helm-Based Patterns Only: The tool is currently designed exclusively for creating patterns from Helm charts. If you need an Ansible-based GitOps pattern, this tool will not be helpful.
+Operators Need Manual Addition: Patternizer creates the Argo CD Applications, Namespaces, and Projects for your Helm charts. If your pattern requires Operators from OperatorHub, you will need to manually add them to the subscriptions section in your cluster group values file (e.g., values-prod.yaml). Patternizer conveniently creates this section as an empty map for you.
+Single Cluster Group Focus: The tool generates a single cluster group named prod by default. If your use case requires managing multiple, distinct cluster groups, we recommend the traditional approach of cloning the multicloud-gitops pattern for now.
+We Want Your Feedback! Patternizer is a simple tool today, but it is extendable to cover more use cases if the need arises. We built it to make your life easier, and your feedback is crucial.
+Please give it a try and don’t hesitate to ask for features or report bugs on Patternizer’s GitHub issues page. Happy pattern-making!
+`,url:"https://validatedpatterns.io/blog/2025-07-24-introducing-patternizer/",breadcrumb:"/blog/2025-07-24-introducing-patternizer/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric use cases while maintaining a level of Continuous Integration (CI) over your application.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/gpfs-tester/":{title:"GPFS Tester",tags:[],content:` This pattern is under development.
 For more information, refer to the GPFS git repository
 `,url:"https://validatedpatterns.io/patterns/gpfs-tester/",breadcrumb:"/patterns/gpfs-tester/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
-Reference architectures with added value Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric use cases while maintaining a level of Continuous Integration (CI) over your application.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
-`,url:"https://validatedpatterns.io/blog/",breadcrumb:"/blog/"},"https://validatedpatterns.io/blog/2025-06-10-rag-llm-gitops-configuration/":{title:"How to Configure the RAG-LLM GitOps Pattern for Your Use Case",tags:[],content:` Overview The RAG-LLM GitOps pattern provides several configuration options that allow you to tailor your deployment to specific workloads and environments. While nearly every setting exposed in the values files is adjustable, in practice, most users will focus on a few core areas:
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/blog/2025-06-10-rag-llm-gitops-configuration/":{title:"How to Configure the RAG-LLM GitOps Pattern for Your Use Case",tags:[],content:` Overview The RAG-LLM GitOps pattern provides several configuration options that allow you to tailor your deployment to specific workloads and environments. While nearly every setting exposed in the values files is adjustable, in practice, most users will focus on a few core areas:
 Choosing and configuring the RAG database (vector store) backend
 Setting up document sources for populating the RAG DB
 Selecting models for embedding and LLM inference
