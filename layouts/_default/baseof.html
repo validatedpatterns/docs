@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     {{- partial "head.html" . -}}
-    <body{{ with .File }} data-github-file="{{ .Path }}"{{ end }}>
+    <body>
         <div class="pf-c-page">
         {{- partial "header.html" . -}}
         {{- block "main" . }}
@@ -9,7 +9,6 @@
         {{- end }}
         </div>
         <script src="{{ "js/codeblock.js"  | relURL }}"></script>
-        <script src="{{ "js/select-report-issue-popup.js"  | relURL }}"></script>
     </body>
     <!-- Uncomment when you have sorted out the feedback partials option
         <body>
