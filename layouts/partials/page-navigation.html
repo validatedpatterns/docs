@@ -1,0 +1,157 @@
+{{/* Page Navigation Partial */}}
+{{ $currentPage := . }}
+{{ $nextPage := false }}
+{{ $prevPage := false }}
+
+{{ if eq .Section "learn" }}
+  {{/* For learn section, use the menu system to get the correct order */}}
+  {{ $allMenuItems := slice }}
+  {{ range .Site.Menus.learn }}
+    {{ if .HasChildren }}
+      {{/* Add parent */}}
+      {{ $allMenuItems = $allMenuItems | append . }}
+      {{/* Add children */}}
+      {{ range .Children }}
+        {{ $allMenuItems = $allMenuItems | append . }}
+      {{ end }}
+    {{ else }}
+      {{/* Add standalone item */}}
+      {{ $allMenuItems = $allMenuItems | append . }}
+    {{ end }}
+  {{ end }}
+
+  {{/* Find current page index in menu items */}}
+  {{ $currentIndex := 0 }}
+  {{ range $index, $item := $allMenuItems }}
+    {{ if eq $item.URL $currentPage.RelPermalink }}
+      {{ $currentIndex = $index }}
+    {{ end }}
+  {{ end }}
+
+  {{/* Get previous and next pages */}}
+  {{ if gt $currentIndex 0 }}
+    {{ $prevItem := index $allMenuItems (sub $currentIndex 1) }}
+    {{ $prevPage = .Site.GetPage $prevItem.URL }}
+  {{ end }}
+  {{ if lt $currentIndex (sub (len $allMenuItems) 1) }}
+    {{ $nextItem := index $allMenuItems (add $currentIndex 1) }}
+    {{ $nextPage = .Site.GetPage $nextItem.URL }}
+  {{ end }}
+
+{{ else }}
+  {{/* For other sections like patterns, use the page structure */}}
+  {{ $currentSection := .Section }}
+  {{ $pages := slice }}
+
+  {{/* For patterns section, we need to get pages from the current pattern's subsection */}}
+  {{ if eq .Section "patterns" }}
+    {{/* Check if this is a pattern index page (e.g., /patterns/industrial-edge/_index.md) */}}
+    {{ if eq .Kind "section" }}
+      {{/* This is a pattern index page, get all its regular pages and include the index page itself */}}
+      {{ $pages = .RegularPages }}
+      {{/* Add the current index page to the list for proper navigation order */}}
+      {{ $pages = $pages | append . }}
+    {{ else }}
+      {{/* This is a regular page within a pattern, get pages from the parent section */}}
+      {{ $parentPage := .Parent }}
+      {{ if $parentPage }}
+        {{/* Get all regular pages in this pattern's directory and include the parent index page */}}
+        {{ $pages = $parentPage.RegularPages }}
+        {{ $pages = $pages | append $parentPage }}
+      {{ end }}
+    {{ end }}
+  {{ else }}
+    {{/* For other sections, use the traditional approach */}}
+    {{ $section := .Site.GetPage "section" .Section }}
+    {{ $pages = where $section.RegularPages "Section" .Section }}
+  {{ end }}
+
+  {{/* Sort pages by weight, then by title */}}
+  {{ $sortedPages := sort $pages ".Params.weight" "asc" }}
+  {{ if not $sortedPages }}
+    {{ $sortedPages = sort $pages ".Title" "asc" }}
+  {{ end }}
+
+  {{ $currentIndex := 0 }}
+  {{/* Find current page index in the sorted section */}}
+  {{ range $index, $page := $sortedPages }}
+    {{ if eq $page.RelPermalink $.RelPermalink }}
+      {{ $currentIndex = $index }}
+    {{ end }}
+  {{ end }}
+
+  {{/* Get previous and next pages */}}
+  {{ if gt $currentIndex 0 }}
+    {{ $prevPage = index $sortedPages (sub $currentIndex 1) }}
+  {{ end }}
+  {{ if lt $currentIndex (sub (len $sortedPages) 1) }}
+    {{ $nextPage = index $sortedPages (add $currentIndex 1) }}
+  {{ end }}
+{{ end }}
+
+{{/* Render navigation only if there are previous or next pages */}}
+{{ if or $prevPage $nextPage }}
+<div class="pf-u-mt-lg pf-u-pt-lg">
+  <nav class="pf-u-display-flex pf-u-justify-content-space-between pf-u-align-items-stretch pf-u-gap-md" aria-label="Page navigation">
+    {{ if $prevPage }}
+    <div class="pf-u-flex-1" style="max-width: 48%;">
+      {{/* Extract content without headings and without the page title */}}
+      {{ $prevContent := $prevPage.Content | plainify }}
+      {{ $prevSummary := $prevContent | replaceRE (printf "(?i)%s" ($prevPage.Title | htmlEscape)) "" | replaceRE "(?m)^[#=]+.*$" "" | replaceRE "(?m)^\\s*$" "" | replaceRE "^\\s+" "" | truncate 100 }}
+      {{ $prevTitle := $prevPage.Title }}
+      {{ if not $prevTitle }}
+        {{ $prevTitle = "Previous page" }}
+      {{ end }}
+      <a href="{{ $prevPage.RelPermalink }}"
+         class="pf-u-text-decoration-none pf-u-color-100"
+         aria-label="Go to previous page: {{ $prevTitle }}">
+        <div class="pf-c-card pf-m-hoverable pf-u-p-md page-nav-card">
+          <div class="pf-u-display-flex pf-u-align-items-start pf-u-w-100">
+            <i class="fas fa-chevron-left pf-u-mr-sm pf-u-mt-xs page-nav-chevron" aria-hidden="true"></i>
+            <div class="pf-u-flex-1">
+              <div class="pf-u-font-size-sm pf-u-color-400 pf-u-mb-xs">Previous</div>
+              <div class="pf-u-font-weight-bold pf-u-color-100 pf-u-mb-xs pf-u-display-block page-nav-title">{{ $prevTitle }}</div>
+              {{ if and $prevSummary (gt (len $prevSummary) 10) }}
+              <div class="pf-u-font-size-sm pf-u-color-200 pf-u-display-none pf-u-display-block-on-md">{{ $prevSummary }}</div>
+              {{ end }}
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    {{ else }}
+    <div style="max-width: 48%;"></div>
+    {{ end }}
+
+    {{ if $nextPage }}
+    <div class="pf-u-flex-1" style="max-width: 48%;">
+      {{/* Extract content without headings and without the page title */}}
+      {{ $nextContent := $nextPage.Content | plainify }}
+      {{ $nextSummary := $nextContent | replaceRE (printf "(?i)%s" ($nextPage.Title | htmlEscape)) "" | replaceRE "(?m)^[#=]+.*$" "" | replaceRE "(?m)^\\s*$" "" | replaceRE "^\\s+" "" | truncate 100 }}
+      {{ $nextTitle := $nextPage.Title }}
+      {{ if not $nextTitle }}
+        {{ $nextTitle = "Next page" }}
+      {{ end }}
+      <a href="{{ $nextPage.RelPermalink }}"
+         class="pf-u-text-decoration-none pf-u-color-100"
+         aria-label="Go to next page: {{ $nextTitle }}">
+        <div class="pf-c-card pf-m-hoverable pf-u-p-md pf-u-text-align-right page-nav-card">
+          <div class="pf-u-display-flex pf-u-align-items-start pf-u-justify-content-flex-end pf-u-w-100">
+            <div class="pf-u-flex-1">
+              <div class="pf-u-font-size-sm pf-u-color-400 pf-u-mb-xs">Next</div>
+              <div class="pf-u-font-weight-bold pf-u-color-100 pf-u-mb-xs pf-u-display-block page-nav-title">{{ $nextTitle }}</div>
+              {{ if and $nextSummary (gt (len $nextSummary) 10) }}
+              <div class="pf-u-font-size-sm pf-u-color-200 pf-u-display-none pf-u-display-block-on-md">{{ $nextSummary }}</div>
+              {{ end }}
+            </div>
+            <i class="fas fa-chevron-right pf-u-ml-sm pf-u-mt-xs page-nav-chevron" aria-hidden="true"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+    {{ else }}
+    <div style="max-width: 48%;"></div>
+    {{ end }}
+  </nav>
+</div>
+{{ end }}

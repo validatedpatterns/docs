@@ -1,16 +1,8 @@
 <aside class="pf-c-jump-links pf-m-vertical sticky pf-m-expandable pf-m-non-expandable-on-2xl" aria-label="Table of contents">
-  <div class="pf-l-stack pf-m-gutter">
-    <div class="pf-l-stack__item pf-u-text-align-right">
-      <a href="https://github.com/validatedpatterns/docs/commits/main/content/{{ .File.Path  }}"><span class="pf-c-icon pf-m-md" title="View page history"><span class="pf-c-icon__content"><i class="fa-solid fa-clock-rotate-left"></i></span></span></a>
-      <a href="https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12325623&summary={{ .Title }}: %3C+Provide+a+brief+description+of+the+issue+%3E&issuetype=1&priority=10200&components=12365975&priority=10200&components=12365975&description=Link+to+page:+{{ .Permalink }}+%0A+%0A+%3C+Provide+a+detailed+description+of+the+issue+with+link+to+the+docs++%3E"><span class="pf-c-icon pf-m-md" title="File a documentation bug"><span class="pf-c-icon__content"><i class="fa-regular fa-bug"></i></span></span></a>
-    </div>
-    <div class="pf-l-stack__item">
       <div class="pf-c-jump-links__header">
         <div class="pf-c-jump-links__label">
           <h1>Table of Contents</h1>
         </div>
       </div>
       {{- .TableOfContents | replaceRE "<ul>" "<ul class=\"pf-c-jump-links__list\">" | replaceRE "<li>" "<li class=\"pf-c-jump-links__item\">" | replaceRE "<a" "<a class=\"pf-c-jump-links__link\"" | safeHTML }}
-    </div>
-  </div>
 </aside>
