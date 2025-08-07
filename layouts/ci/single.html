@@ -10,6 +10,10 @@
   </div>
   <main class="pf-c-page__main">
     <section class="pf-c-page__main-section">
+      <!-- Sidebar toggle for mobile -->
+      <div class="sidebar-toggle-container">
+        {{ partial "sidebar-toggle.html" . }}
+      </div>
       <div class="pf-u-display-flex">
       <div class="pf-c-content">
         <h1>{{- .Title -}}</h1>

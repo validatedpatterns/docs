@@ -12,4 +12,10 @@
       {{ partial "site-navigation.html" .}}
       {{ partial "search-form.html" . }}
     </div>
+    <!-- Main navigation toggle - separate from header-tools so it's always visible on mobile -->
+    <div class="pf-c-page__header-tools-group">
+      <button class="pf-c-button pf-m-plain main-nav-toggle" type="button" aria-label="Main navigation" id="main-nav-toggle">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </button>
+    </div>
   </header>

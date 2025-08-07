@@ -1,0 +1,6 @@
+<!-- Sidebar toggle button - only shown on mobile when sidebar exists -->
+{{ if (or (eq .Section "patterns") (eq .Section "learn") (eq .Section "contribute") (eq .Section "ci") (and (eq .Section "blog") (eq .Kind "section"))) }}
+<button class="pf-c-button pf-m-plain sidebar-toggle" type="button" aria-label="Section navigation" id="sidebar-toggle">
+  <i class="fas fa-chevron-right" aria-hidden="true"></i>
+</button>
+{{ end }}
