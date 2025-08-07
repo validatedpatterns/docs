@@ -1,54 +1,549 @@
 {{ define "main" }}
 <main class="pf-c-page__main">
-  <section class="pf-c-page__main-section pf-m-light pf-m-dark-100 pf-u-background-color-primary-color-200" style="background-image: url('/images/background.svg'); background-position: center;  background-size: cover;">
+  <!-- Hero Section -->
+  <section id="hero-section" class="pf-c-page__main-section pf-m-light pf-m-dark-100 pf-u-background-color-primary-color-200" style="background-image: url('/images/background.svg'); background-position: center; background-size: cover; transition: background-position 0.1s ease-out;">
     <div class="pf-l-grid">
       <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-8-col-on-md pf-m-offset-2-col-on-md pf-m-6-col-on-lg pf-m-offset-3-col-on-lg pf-u-py-2xl pf-u-text-align-center">
         <div class="pf-c-content">
-          {{ .Content }}
-          <a href="/learn" class="pf-c-button pf-m-primary" style="--pf-c-button--m-primary--BackgroundColor: var(--pf-global--palette--blue-300); --pf-c-button--m-primary--Color: var(--pf-global--palette--white);	--pf-c-button--BorderRadius: 20px; --pf-c-button--after--BorderRadius: 20px; ">Learn more</a>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="pf-c-page__main-section pf-m-dark-100 pf-u-background-color-dark-300">
-    <div class="pf-l-grid">
-      <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-8-col-on-md pf-m-offset-2-col-on-md pf-m-8-col-on-lg pf-m-offset-2-col-on-lg pf-u-py-2xl pf-u-text-align-center">
-        <div class="pf-c-content" >
-          <h1 class="">Watch how validated patterns enhance your cloud-native applications</h1>
-        <iframe style="height: 450px;" width="800" height="450" src="https://www.youtube.com/embed/dGsoUNjHYOw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-    </div>
-  </section>
-  <section class="pf-c-page__main-section">
-    <div class="pf-l-grid">
-      <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-8-col-on-md pf-m-offset-2-col-on-md pf-m-8-col-on-lg pf-m-offset-2-col-on-lg pf-u-py-2xl">
-        <div class="pf-c-content" >
-          <h1 class="pf-c-title pf-m-4xl">Latest Patterns</h1>
-          <div class="pf-l-gallery pf-m-gutter" style="--pf-l-gallery--GridTemplateColumns--min: 300px;">
-            {{ $section := where $.Site.Pages "Section" "patterns" }}
-            {{ $section := where $section "RelPermalink" "ne" "/patterns/" }}
-            {{ $section := where $section "IsPage" false }}
-            {{ range (first 3 $section) }}
-              <div class="pf-l-gallery__item" style="display: grid;">
-                {{ .Render "summary-with-image" }}
-              </div>
-            {{ end }}
+          <div class="hero-content">
+            {{ .Content }}
+          </div>
+          <div class="pf-u-mt-xl pf-u-text-align-center">
+            <a href="/patterns/" class="pf-c-button pf-m-primary pf-m-display-lg pf-u-m-md" style="min-width: 225px;">Explore Patterns now</a>
+            <a href="/learn/" class="pf-c-button pf-m-secondary pf-m-display-lg pf-u-m-md" style="min-width: 225px;">Learn the concepts</a>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <section class="pf-c-page__main-section pf-u-background-color-primary-color-100">
-    <div class="pf-c-page__main-body">
-      <div class="pf-l-grid pf-m-light">
-        <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-8-col-on-md pf-m-offset-2-col-on-md pf-m-8-col-on-lg pf-m-offset-2-col-on-lg pf-u-py-2xl">
-          <div class="pf-c-content">
-            <h1 class="pf-c-title pf-m-4xl">Latest Blog Post</h1>
-            {{ $section := where $.Site.Pages "Section" "blog"}}
-            {{ $section := where $section "RelPermalink" "ne" "/blog/" }}
-            {{ range (first 1 $section) }}
-            {{ .Render "summary" }}
-            {{ end }}
+  <!-- Social Proof Section -->
+  <section id="social-proof" class="pf-c-page__main-section">
+    <div class="pf-l-grid">
+      <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-10-col-on-md pf-m-offset-1-col-on-md pf-m-10-col-on-lg pf-m-offset-1-col-on-lg pf-u-py-2xl">
+        <div class="pf-c-content pf-u-text-align-center pf-u-mb-xl">
+          <h1 class="pf-c-title pf-m-3xl pf-u-mb-md">Powered by community, validated by industry</h1>
+          <p class="pf-u-font-size-lg pf-u-color-dark-200 pf-u-mb-lg">Validated Patterns are developed in collaboration with leading technology partners to ensure robust, real-world solutions.</p>
+        </div>
+        <div class="carousel-container pf-u-mt-xl">
+          <div class="carousel-wrapper" id="carousel-wrapper">
+            <div class="carousel-track" id="carousel-track">
+              <!-- Partner Cards -->
+              <div class="pf-c-card partner-card" data-link="/patterns/medical-diagnosis-amx/" data-link-text="→ AMX Accelerated Medical Diagnosis">
+                <div class="pf-c-card__title">Intel<sup>&copy;</sup></div>
+                <div class="pf-c-card__body">Accelerating AI and confidential computing workloads.</div>
+                <div class="pf-c-card__footer">
+                  <a href="/patterns/medical-diagnosis-amx/" target="_blank">→ AMX Accelerated Medical Diagnosis</a>
+                </div>
+              </div>
+              <div class="pf-c-card partner-card" data-link="/patterns/azure-rag-llm-gitops/" data-link-text="→ RAG-LLM on Microsoft Azure">
+                <div class="pf-c-card__title">Microsoft<sup>&copy;</sup></div>
+                <div class="pf-c-card__body">Bringing powerful AI generation capabilities to Azure.</div>
+                <div class="pf-c-card__footer">
+                  <a href="/patterns/azure-rag-llm-gitops/" target="_blank">→ RAG-LLM on Microsoft Azure</a>
+                </div>
+              </div>
+              <div class="pf-c-card partner-card" data-link="/patterns/amd-rag-chat-qna/" data-link-text="→ OPEA Chat QnA with AMD Instinct">
+                <div class="pf-c-card__title">AMD<sup>&copy;</sup></div>
+                <div class="pf-c-card__body">Powering next-generation AI with advanced hardware.</div>
+                <div class="pf-c-card__footer">
+                  <a href="/patterns/amd-rag-chat-qna/" target="_blank">→ OPEA Chat QnA with AMD Instinct</a>
+                </div>
+              </div>
+              <div class="pf-c-card partner-card" data-link="/patterns/multicloud-gitops-portworx/" data-link-text="→ Multicloud GitOps with Portworx">
+                <div class="pf-c-card__title">Portworx<sup>&copy;</sup></div>
+                <div class="pf-c-card__body">Providing enterprise-grade persistent storage.</div>
+                <div class="pf-c-card__footer">
+                  <a href="/patterns/multicloud-gitops-portworx/" target="_blank">→ Multicloud GitOps with Portworx</a>
+                </div>
+              </div>
+              <div class="pf-c-card partner-card" data-link="/blog/2024-01-16-deploying-mcg-with-cisco-flashstack-portworx/" data-link-text="→ Deploying with Cisco FlashStack">
+                <div class="pf-c-card__title">Cisco<sup>&copy;</sup></div>
+                <div class="pf-c-card__body">Enabling secure connectivity and network solutions.</div>
+                <div class="pf-c-card__footer">
+                  <a href="/blog/2024-01-16-deploying-mcg-with-cisco-flashstack-portworx/" target="_blank">→ Deploying with Cisco FlashStack</a>
+                </div>
+              </div>
+              <div class="pf-c-card partner-card" data-link="/patterns/ansible-edge-gitops-kasten/" data-link-text="→ Data Protection with Veeam Kasten">
+                <div class="pf-c-card__title">Veeam Kasten<sup>&copy;</sup></div>
+                <div class="pf-c-card__body">Providing data protection for virtualized edge environments.</div>
+                <div class="pf-c-card__footer">
+                  <a href="/patterns/ansible-edge-gitops-kasten/" target="_blank">→ Data Protection with Veeam Kasten</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Use Cases Section -->
+  <section class="pf-c-page__main-section pf-u-background-color-dark-400">
+    <div class="pf-l-grid">
+      <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-10-col-on-md pf-m-offset-1-col-on-md pf-m-10-col-on-lg pf-m-offset-1-col-on-lg pf-u-py-2xl">
+        <div class="pf-c-content pf-u-text-align-center pf-u-mb-xl">
+          <h1 class="pf-c-title pf-m-3xl pf-u-mb-md pf-u-color-light-100">Patterns for every innovation</h1>
+          <p class="pf-u-font-size-lg pf-u-color-light-200 pf-u-mb-lg">
+            Whether you're pioneering AI, modernizing data services, or building for the industrial edge, there's a pattern to accelerate your journey.
+          </p>
+        </div>
+        <div class="pf-l-grid pf-m-gutter">
+          <!-- AI/ML Platform Card -->
+          <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md pf-m-4-col-on-lg">
+            <div class="usecase-card pf-c-card pf-u-background-color-light-100 pf-u-p-lg pf-u-h-100">
+              <div class="pf-c-card__body">
+                <h3 class="pf-c-title pf-m-lg pf-u-mb-sm pf-u-color-danger-200">
+                  <i class="fas fa-brain pf-u-mr-sm"></i>
+                  AI/ML platform
+                </h3>
+                <p class="pf-u-color-dark-200 pf-u-mb-md">Deploy a complete, end-to-end MLOps platform with integrated data services and model serving capabilities.</p>
+                <div class="pf-u-border-top pf-u-pt-md">
+                  <div class="pf-l-stack pf-m-gutter">
+                    <div class="pf-l-stack__item">
+                      <a href="/patterns/rag-llm-gitops/" target="_blank" class="pf-u-color-dark-100 pf-u-font-weight-bold" style="text-decoration: none;">
+                        → AI generation with RAG
+                      </a>
+                    </div>
+                    <div class="pf-l-stack__item">
+                      <a href="/patterns/mlops-fraud-detection/" target="_blank" class="pf-u-color-dark-100 pf-u-font-weight-bold" style="text-decoration: none;">
+                        → MLOps fraud detection
+                      </a>
+                    </div>
+                    <div class="pf-l-stack__item">
+                      <a href="/patterns/medical-diagnosis/" target="_blank" class="pf-u-color-dark-100 pf-u-font-weight-bold" style="text-decoration: none;">
+                        → Medical diagnosis
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Hybrid Data Services Card -->
+          <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md pf-m-4-col-on-lg">
+            <div class="usecase-card pf-c-card pf-u-background-color-light-100 pf-u-p-lg pf-u-h-100">
+              <div class="pf-c-card__body">
+                <h3 class="pf-c-title pf-m-lg pf-u-mb-sm pf-u-color-primary-color-200">
+                  <i class="fas fa-database pf-u-mr-sm"></i>
+                  Hybrid data services
+                </h3>
+                <p class="pf-u-color-dark-200 pf-u-mb-md">Set up a resilient, multi-cluster database architecture that spans public and private clouds for maximum availability.</p>
+                <div class="pf-u-border-top pf-u-pt-md">
+                  <div class="pf-l-stack pf-m-gutter">
+                    <div class="pf-l-stack__item">
+                      <a href="/patterns/cockroachdb/" target="_blank" class="pf-u-color-dark-100 pf-u-font-weight-bold" style="text-decoration: none;">
+                        → CockroachDB pattern
+                      </a>
+                    </div>
+                    <div class="pf-l-stack__item">
+                      <a href="/patterns/multicloud-gitops/" target="_blank" class="pf-u-color-dark-100 pf-u-font-weight-bold" style="text-decoration: none;">
+                        → Multicloud GitOps
+                      </a>
+                    </div>
+                    <div class="pf-l-stack__item">
+                      <a href="/patterns/regional-dr/" target="_blank" class="pf-u-color-dark-100 pf-u-font-weight-bold" style="text-decoration: none;">
+                        → Regional disaster recovery
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Industrial Edge Stack Card -->
+          <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md pf-m-4-col-on-lg">
+            <div class="usecase-card pf-c-card pf-u-background-color-light-100 pf-u-p-lg pf-u-h-100">
+              <div class="pf-c-card__body">
+                <h3 class="pf-c-title pf-m-lg pf-u-mb-sm pf-u-color-success-color-200">
+                  <i class="fas fa-industry pf-u-mr-sm"></i>
+                  Industrial edge stack
+                </h3>
+                <p class="pf-u-color-dark-200 pf-u-mb-md">Deploy a full stack for managing industrial workloads at the edge, complete with messaging, data ingestion, and management.</p>
+                <div class="pf-u-border-top pf-u-pt-md">
+                  <div class="pf-l-stack pf-m-gutter">
+                    <div class="pf-l-stack__item">
+                      <a href="/patterns/industrial-edge/" target="_blank" class="pf-u-color-dark-100 pf-u-font-weight-bold" style="text-decoration: none;">
+                        → Industrial edge
+                      </a>
+                    </div>
+                    <div class="pf-l-stack__item">
+                      <a href="/patterns/ansible-edge-gitops/" target="_blank" class="pf-u-color-dark-100 pf-u-font-weight-bold" style="text-decoration: none;">
+                        → Ansible edge GitOps
+                      </a>
+                    </div>
+                    <div class="pf-l-stack__item">
+                      <a href="/patterns/retail/" target="_blank" class="pf-u-color-dark-100 pf-u-font-weight-bold" style="text-decoration: none;">
+                        → Retail store pattern
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Video Section 
+  {{ if .Params.youtube_id }}
+  <section class="pf-c-page__main-section pf-m-dark-100 pf-u-background-color-dark-300">
+    <div class="pf-l-grid">
+      <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-8-col-on-md pf-m-offset-2-col-on-md pf-m-8-col-on-lg pf-m-offset-2-col-on-lg pf-u-py-2xl pf-u-text-align-center">
+        <div class="pf-c-content" >
+          <p class="pf-c-title pf-m-3xl pf-u-mb-md pf-u-color-dark-100">{{ .Params.video_title | default "Watch our video" }}</p>
+          <p class="pf-u-color-dark-200 pf-u-mb-lg">{{ .Params.video_description | default "Learn how Validated Patterns can transform your application deployment process." }}</p>
+          <div style="text-align: center;">
+            {{ .Page.RenderString (printf "{{< youtube %s >}}" .Params.youtube_id) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {{ end }}
+  -->
+  <!-- Features & Benefits Section -->
+  <section class="pf-c-page__main-section pf-u-background-color-dark-300">
+    <div class="pf-l-grid">
+      <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-10-col-on-md pf-m-offset-1-col-on-md pf-m-10-col-on-lg pf-m-offset-1-col-on-lg pf-u-py-2xl">
+        <div class="pf-c-content pf-u-text-align-center pf-u-mb-xl">
+          <h1 class="pf-c-title pf-m-3xl pf-u-mb-md pf-u-color-light-100">The blueprint for modern platform engineering</h1>
+          <p class="pf-u-color-light-200 pf-u-font-size-lg pf-u-mb-lg">
+            Validated Patterns provide the "golden paths" that empower your teams to build faster and more reliably. Hover over each feature to learn more.
+          </p>
+        </div>
+        <div class="pf-l-grid pf-m-gutter">
+          <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md pf-m-4-col-on-lg">
+            <div class="feature-card pf-c-card pf-u-p-lg pf-u-h-100">
+              <div class="pf-c-card__body">
+                <h3 class="pf-c-title pf-m-lg pf-u-mb-sm pf-u-color-dark-100">
+                  <i class="fas fa-rocket pf-u-mr-sm pf-u-color-primary-color-100"></i>
+                  Accelerate deployment
+                </h3>
+                <p class="pf-u-color-dark-200 pf-u-mb-sm">Drastically reduce setup time for complex Openshift deployments.</p>
+                <div class="feature-details pf-u-font-size-sm pf-u-color-dark-300">
+                  Our patterns embody Infrastructure as Code (IaC) best practices, enabling your DevOps teams to deliver value faster.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md pf-m-4-col-on-lg">
+            <div class="feature-card pf-c-card pf-u-p-lg pf-u-h-100">
+              <div class="pf-c-card__body">
+                <h3 class="pf-c-title pf-m-lg pf-u-mb-sm pf-u-color-dark-100">
+                  <i class="fas fa-robot pf-u-mr-sm pf-u-color-blue-300"></i>
+                  Automate with GitOps
+                </h3>
+                <p class="pf-u-color-dark-200 pf-u-mb-sm">Embrace a fully declarative approach for transparent, auditable deployments.</p>
+                <div class="feature-details pf-u-font-size-sm pf-u-color-dark-300">
+                  All configurations are stored in Git, making your hybrid cloud deployments transparent, auditable, and easy to manage.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md pf-m-4-col-on-lg">
+            <div class="feature-card pf-c-card pf-u-p-lg pf-u-h-100">
+              <div class="pf-c-card__body">
+                <h3 class="pf-c-title pf-m-lg pf-u-mb-sm pf-u-color-dark-100">
+                  <i class="fas fa-shield-alt pf-u-mr-sm pf-u-color-green-400"></i>
+                  Built for enterprise & edge
+                </h3>
+                <p class="pf-u-color-dark-200 pf-u-mb-sm">Go beyond basic setups with patterns engineered for security and scalability.</p>
+                <div class="feature-details pf-u-font-size-sm pf-u-color-dark-300">
+                  Our patterns are engineered for the security, scalability, and reliability that enterprise applications demand, from the core data center to the far edge.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Latest Patterns by Tier Section -->
+  <section class="pf-c-page__main-section">
+    <div class="pf-l-grid">
+      <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-10-col-on-md pf-m-offset-1-col-on-md pf-m-10-col-on-lg pf-m-offset-1-col-on-lg pf-u-py-2xl">
+        <div class="pf-c-content pf-u-text-align-center pf-u-mb-xl">
+          <h1 class="pf-c-title pf-m-3xl pf-u-mb-md">Latest patterns by tier</h1>
+          <p class="pf-u-font-size-lg pf-u-mb-lg">
+            Explore our latest patterns organized by tier, featuring solutions from the sandbox to maintained categories.
+          </p>
+        </div>
+        
+        <!-- Get patterns by tier -->
+        {{ $allPatterns := where $.Site.Pages "Section" "patterns" }}
+        {{ $allPatterns := where $allPatterns "RelPermalink" "ne" "/patterns/" }}
+        {{ $allPatterns := where $allPatterns "IsPage" false }}
+        {{ $maintainedPatterns := where $allPatterns "Params.tier" "maintained" }}
+        {{ $testedPatterns := where $allPatterns "Params.tier" "tested" }}
+        {{ $sandboxPatterns := where $allPatterns "Params.tier" "sandbox" }}
+        
+        <div class="pattern-tiers-outer-container">
+          <div class="pf-c-accordion pattern-tiers-accordion" id="pattern-tiers-accordion">
+          
+          <!-- Sandbox Tier (Default expanded) -->
+          <div class="pf-c-accordion__item">
+            <button class="pf-c-accordion__toggle" type="button" aria-expanded="true" aria-controls="sandbox-content" id="sandbox-toggle">
+              <span class="pf-c-accordion__toggle-text">
+                <img src="/images/pattern-tier-sandbox.png" alt="Sandbox" class="tier-icon pf-u-mr-md" style="width: 32px; height: 32px;">
+                <span class="pf-c-title pf-m-2xl">Sandbox</span>
+              </span>
+              <span class="pf-c-accordion__toggle-icon">
+                <i class="fas fa-angle-right" aria-hidden="true"></i>
+              </span>
+            </button>
+            <div class="pf-c-accordion__expanded-content" id="sandbox-content" aria-labelledby="sandbox-toggle" style="display: block;">
+              <div class="pf-c-accordion__expanded-content-body">
+                <div class="pattern-carousel-container">
+                  <div class="pattern-carousel-wrapper">
+                    <button class="carousel-nav carousel-nav-prev" id="sandboxPrev" aria-label="Previous sandbox patterns">
+                      <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="pattern-carousel" id="sandboxCarousel">
+                      {{ range (first 3 $sandboxPatterns) }}
+                        <div class="pattern-card">
+                          <div class="pattern-card-content">
+                            <div class="pattern-card-header">
+                              <h3 class="pattern-card-title">
+                                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                              </h3>
+                            </div>
+                            <div class="pattern-card-body">
+                              <p class="pattern-summary">{{ .Summary | truncate 120 }}</p>
+                            </div>
+                            <div class="pattern-card-footer">
+                              <a href="{{ .RelPermalink }}" class="pattern-read-more">View pattern</a>
+                            </div>
+                          </div>
+                        </div>
+                      {{ end }}
+                      <!-- Explore More Card -->
+                      <div class="pattern-card pattern-card-explore-more">
+                        <div class="pattern-card-content">
+                          <div class="explore-more-content">
+                            <div class="explore-more-icon">
+                              <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <h3 class="explore-more-title">Explore More</h3>
+                            <p class="explore-more-description">Discover all sandbox patterns</p>
+                            <a href="/patterns/?tier=sandbox" class="pf-c-button pf-m-primary explore-more-button">View All</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button class="carousel-nav carousel-nav-next" id="sandboxNext" aria-label="Next sandbox patterns">
+                      <i class="fas fa-chevron-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tested Tier -->
+          <div class="pf-c-accordion__item">
+            <button class="pf-c-accordion__toggle" type="button" aria-expanded="false" aria-controls="tested-content" id="tested-toggle">
+              <span class="pf-c-accordion__toggle-text">
+                <img src="/images/pattern-tier-tested.png" alt="Tested" class="tier-icon pf-u-mr-md" style="width: 32px; height: 32px;">
+                <span class="pf-c-title pf-m-2xl">Tested</span>
+              </span>
+              <span class="pf-c-accordion__toggle-icon">
+                <i class="fas fa-angle-right" aria-hidden="true"></i>
+              </span>
+            </button>
+            <div class="pf-c-accordion__expanded-content pf-m-hidden" id="tested-content" aria-labelledby="tested-toggle" style="display: none;">
+              <div class="pf-c-accordion__expanded-content-body">
+                <div class="pattern-carousel-container">
+                  <div class="pattern-carousel-wrapper">
+                    <button class="carousel-nav carousel-nav-prev" id="testedPrev" aria-label="Previous tested patterns">
+                      <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="pattern-carousel" id="testedCarousel">
+                      {{ range (first 3 $testedPatterns) }}
+                        <div class="pattern-card">
+                          <div class="pattern-card-content">
+                            <div class="pattern-card-header">
+                              <h3 class="pattern-card-title">
+                                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                              </h3>
+                            </div>
+                            <div class="pattern-card-body">
+                              <p class="pattern-summary">{{ .Summary | truncate 120 }}</p>
+                            </div>
+                            <div class="pattern-card-footer">
+                              <a href="{{ .RelPermalink }}" class="pattern-read-more">View pattern</a>
+                            </div>
+                          </div>
+                        </div>
+                      {{ end }}
+                      <!-- Explore More Card -->
+                      <div class="pattern-card pattern-card-explore-more">
+                        <div class="pattern-card-content">
+                          <div class="explore-more-content">
+                            <div class="explore-more-icon">
+                              <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <h3 class="explore-more-title">Explore More</h3>
+                            <p class="explore-more-description">Discover all tested patterns</p>
+                            <a href="/patterns/?tier=tested" class="pf-c-button pf-m-primary explore-more-button">View All</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button class="carousel-nav carousel-nav-next" id="testedNext" aria-label="Next tested patterns">
+                      <i class="fas fa-chevron-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Maintained Tier -->
+          <div class="pf-c-accordion__item">
+            <button class="pf-c-accordion__toggle" type="button" aria-expanded="false" aria-controls="maintained-content" id="maintained-toggle">
+              <span class="pf-c-accordion__toggle-text">
+                <img src="/images/pattern-tier-maintained.png" alt="Maintained" class="tier-icon pf-u-mr-md" style="width: 32px; height: 32px;">
+                <span class="pf-c-title pf-m-2xl">Maintained</span>
+              </span>
+              <span class="pf-c-accordion__toggle-icon">
+                <i class="fas fa-angle-right" aria-hidden="true"></i>
+              </span>
+            </button>
+            <div class="pf-c-accordion__expanded-content pf-m-hidden" id="maintained-content" aria-labelledby="maintained-toggle" style="display: none;">
+              <div class="pf-c-accordion__expanded-content-body">
+                <div class="pattern-carousel-container">
+                  <div class="pattern-carousel-wrapper">
+                    <button class="carousel-nav carousel-nav-prev" id="maintainedPrev" aria-label="Previous maintained patterns">
+                      <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="pattern-carousel" id="maintainedCarousel">
+                      {{ range (first 3 $maintainedPatterns) }}
+                        <div class="pattern-card">
+                          <div class="pattern-card-content">
+                            <div class="pattern-card-header">
+                              <h3 class="pattern-card-title">
+                                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                              </h3>
+                            </div>
+                            <div class="pattern-card-body">
+                              <p class="pattern-summary">{{ .Summary | truncate 120 }}</p>
+                            </div>
+                            <div class="pattern-card-footer">
+                              <a href="{{ .RelPermalink }}" class="pattern-read-more">View pattern</a>
+                            </div>
+                          </div>
+                        </div>
+                      {{ end }}
+                      <!-- Explore More Card -->
+                      <div class="pattern-card pattern-card-explore-more">
+                        <div class="pattern-card-content">
+                          <div class="explore-more-content">
+                            <div class="explore-more-icon">
+                              <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <h3 class="explore-more-title">Explore More</h3>
+                            <p class="explore-more-description">Discover all maintained patterns</p>
+                            <a href="/patterns/?tier=maintained" class="pf-c-button pf-m-primary explore-more-button">View All</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button class="carousel-nav carousel-nav-next" id="maintainedNext" aria-label="Next maintained patterns">
+                      <i class="fas fa-chevron-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Latest Blog Post Section -->
+  <section class="pf-c-page__main-section pf-u-background-color-light-200">
+    <div class="pf-l-grid">
+      <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-10-col-on-md pf-m-offset-1-col-on-md pf-m-10-col-on-lg pf-m-offset-1-col-on-lg pf-u-py-2xl">
+        <div class="pf-c-content pf-u-text-align-center pf-u-mb-xl">
+          <h1 class="pf-c-title pf-m-3xl pf-u-mb-md">Latest blog posts</h1>
+          <p class="pf-u-font-size-lg pf-u-mb-lg pf-u-color-dark-200">
+            Stay updated with the latest insights, tutorials, and announcements from the Validated Patterns community.
+          </p>
+        </div>
+        <div class="blog-carousel-container">
+          <div class="blog-carousel-wrapper">
+            <button class="carousel-nav carousel-nav-prev" id="blogPrev" aria-label="Previous blog posts">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="blog-carousel" id="blogCarousel">
+              {{ $section := where $.Site.Pages "Section" "blog"}}
+              {{ $section := where $section "RelPermalink" "ne" "/blog/" }}
+              {{ range (first 6 $section) }}
+                <div class="blog-card">
+                  <div class="blog-card-content">
+                    <div class="blog-card-header">
+                      <h3 class="blog-card-title">
+                        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                      </h3>
+                      <div class="blog-card-meta">
+                        {{ if .Params.author }}
+                        <span class="blog-author">by {{ .Params.author }}</span>
+                        {{ end }}
+                        <span class="blog-date">{{ .Date | time.Format "Jan 2, 2006" }}</span>
+                      </div>
+                    </div>
+                    <div class="blog-card-body">
+                      <p class="blog-summary">{{ .Summary | truncate 120 }}</p>
+                      {{ if .Params.blog_tags }}
+                      <div class="blog-tags">
+                        {{ range (first 3 .Params.blog_tags) }}
+                          <span class="blog-tag">{{ . }}</span>
+                        {{ end }}
+                      </div>
+                      {{ end }}
+                    </div>
+                    <div class="blog-card-footer">
+                      <a href="{{ .RelPermalink }}" class="blog-read-more">Read more</a>
+                    </div>
+                  </div>
+                </div>
+              {{ end }}
+              <!-- View All Blog Posts Card -->
+              <div class="blog-card blog-card-view-all">
+                <div class="blog-card-content">
+                  <div class="view-all-content">
+                    <div class="view-all-icon">
+                      <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <h3 class="view-all-title">View All Blog Posts</h3>
+                    <p class="view-all-description">Explore our complete collection of articles, tutorials, and insights.</p>
+                    <a href="/blog/" class="pf-c-button pf-m-primary view-all-button">Browse All Posts</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-nav carousel-nav-next" id="blogNext" aria-label="Next blog posts">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Final Call to Action Section -->
+  <section class="pf-c-page__main-section pf-u-background-color-primary-color-200">
+    <div class="pf-l-grid">
+      <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-8-col-on-md pf-m-offset-2-col-on-md pf-m-8-col-on-lg pf-m-offset-2-col-on-lg pf-u-py-2xl pf-u-text-align-center">
+        <div class="pf-c-content">
+          <h1 class="pf-c-title pf-m-3xl pf-u-mb-md pf-u-color-light-100">Deploy with confidence on a validated foundation.</h1>
+          <p class="pf-u-color-light-200 pf-u-font-size-lg pf-u-mb-lg">
+            Explore our patterns, fork them on GitHub, and start your next project on a validated foundation. The power of enterprise-grade automated deployment is just one click away.
+          </p>
+          <div class="pf-u-mt-xl pf-u-text-align-center">
+            <a href="/patterns/" class="pf-c-button pf-m-primary pf-m-display-lg pf-u-m-md" style="--pf-c-button--m-primary--BackgroundColor: var(--pf-global--palette--white); --pf-c-button--m-primary--Color: var(--pf-global--palette--blue-400); min-width: 225px;">Explore patterns now</a>
+            <a href="/learn/" class="pf-c-button pf-m-secondary pf-m-display-lg pf-u-m-md" style="--pf-c-button--m-secondary--Color: var(--pf-global--palette--white); min-width: 225px;">Learn the concepts</a>
           </div>
         </div>
       </div>
@@ -56,4 +551,11 @@
   </section>
   {{ partial "footer.html" . }}
 </main>
+
+<script src="/js/parallax.js"></script>
+<script src="/js/feature-cards.js"></script>
+<script src="/js/blog-carousel.js"></script>
+<script src="/js/pattern-carousel.js"></script>
+<script src="/js/pattern-tier-accordion.js"></script>
+<script src="/js/social-proof-carousel.js"></script>
 {{ end }}

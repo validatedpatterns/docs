@@ -65,9 +65,9 @@
         </div>
     </div>
 </section>
-<footer id="footer" class="footer-dark pf-m-no-fill pf-l-flex footer-center">
-        <div class="pf-l-flex__item">
-            <a href="//www.redhat.com" target="top" aria-label="Visit Red Hat.com"><img src="/images/RHlogo.svg" alt="Red Hat logo" width="145px" height="613px"></a><span class="site-copyright">Copyright &copy; {{ now.Year }} Red Hat, Inc.</span>
+<footer id="footer" class="footer-dark pf-m-no-fill pf-l-flex pf-m-justify-content-center pf-m-align-items-center footer-center">
+        <div class="pf-l-flex__item pf-u-text-align-center">
+            <a href="//www.redhat.com" target="top" aria-label="Visit Red Hat.com"><img src="/images/RHlogo.svg" alt="Red Hat logo" width="145px" height="613px"></a><span class="site-copyright">Copyright &copy; {{ now.Year }} Red Hat, Inc. All third-party trademarks are the property of their respective owners.</span>
         </div>
         <script src="{{ "js/bootstrap.bundle.js" | relURL }}"></script>
         {{ partial "search-index.html" . }}

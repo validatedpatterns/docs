@@ -5,6 +5,10 @@
 </div>
 <main class="pf-c-page__main" tabindex="0" data-bs-spy="scroll" data-bs-target="#TableOfContents" data-bs-offset="50">
   <section class="pf-c-page__main-section">
+    <!-- Sidebar toggle for mobile -->
+    <div class="sidebar-toggle-container">
+      {{ partial "sidebar-toggle.html" . }}
+    </div>
     <div class="pf-u-display-flex">
       <div class="pf-c-content">
         <div class="pf-c-panel pf-m-raised">
@@ -77,6 +81,33 @@
 
 
         {{ .Content }}
+
+        <!-- Page Navigation -->
+        {{ partial "page-navigation.html" . }}
+
+        <!-- Edit this page and last updated section -->
+        <div class="pf-u-mt-lg pf-u-pt-lg">
+          <div class="pf-u-display-flex pf-u-justify-content-space-between pf-u-align-items-center pf-u-flex-wrap">
+            <!-- Edit this page button -->
+            {{ if .File }}
+            <a href="https://github.com/{{ .Site.Params.github_repo | default "validatedpatterns/docs" }}/blob/{{ .Site.Params.github_branch | default "main" }}/content/{{ .File.Path }}"
+               class="pf-c-button pf-m-link"
+               target="_blank"
+               rel="noopener">
+              <i class="fab fa-github" aria-hidden="true"></i>
+              Edit this page
+            </a>
+            <!-- Documentation issue button -->
+            <a href="https://github.com/{{ .Site.Params.github_repo | default "validatedpatterns/docs" }}/issues/new?template=docs-feedback.yml&pageUrl={{ .Permalink | urlquery }}&contentSourceUrl=https://github.com/{{ .Site.Params.github_repo | default "validatedpatterns/docs" }}/blob/{{ .Site.Params.github_branch | default "main" }}/content/{{ .File.Path | urlquery }}"
+               class="pf-c-button pf-m-link"
+               target="_blank"
+               rel="noopener">
+              <i class="fas fa-bug" aria-hidden="true"></i>
+              Open a documentation issue
+            </a>
+            {{ end }}
+          </div>
+        </div>
       </div>
       {{ partial "toc.html" . }}
     </div>

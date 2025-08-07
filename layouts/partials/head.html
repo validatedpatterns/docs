@@ -1,11 +1,13 @@
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   {{ $sass := resources.Get "sass/patternfly.scss" }}
   {{ $style := $sass | resources.ToCSS }}
   <link rel="stylesheet" href="{{ $style.Permalink }}">
   {{ $sass := resources.Get "sass/patternfly-addons.scss" }}
   {{ $style := $sass | resources.ToCSS }}
-  <link rel="stylesheet" href="/css/custom.css">
   <link rel="stylesheet" href="{{ $style.Permalink }}">
+  <link rel="stylesheet" href="/css/custom.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.3.0/css/solid.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.3.0/css/fontawesome.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.3.0/css/brands.css">
