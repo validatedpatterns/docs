@@ -1,5 +1,5 @@
 ---
- date: 2025-07-24
+ date: 2025-08-11
  title: Supporting the Latest Standards with Validated Patterns
  summary: This post introduces how the Validated Patterns framework supports OLMv1, the new operator packaging standard 
  author: Martin Jackson
