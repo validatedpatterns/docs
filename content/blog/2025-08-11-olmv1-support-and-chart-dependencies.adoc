@@ -121,7 +121,7 @@ vp-rbac:
           - view-secrets-cms
         roles:
           - testrole
-  createRoles:
+  roles:
     testrole:
       namespace: aap-config
       rules:
@@ -132,7 +132,7 @@ vp-rbac:
           verbs:
             - "list"
             - "watch"
-  createClusterRoles:
+  clusterRoles:
     view-secrets-cms:
       rules:
         - apiGroups:
@@ -145,3 +145,29 @@ vp-rbac:
             - "list"
             - "watch"
 ----
+
+This structure allows the creation of structures as fine-grained as you may need, and also makes it straightforward
+to create a serviceAccount with admin just to experiment or as a proof-of-concept if you do not know exactly what
+permissions are actually needed.
+
+== Using vp-rbac
+
+You can add vp-rbac to your charts by declaring it as a dependency to your chart, like this (in Chart.yaml):
+
+[source,yaml]
+----
+dependencies:
+  - name: vp-rbac
+    version: "0.1.*"
+    repository: "https://charts.validatedpatterns.io"
+----
+
+We enhanced our chart-building pipeline to be able to resolve and include chart dependencies for the charts
+that we publish in link:https://charts.validatedpatterns.io[our chart repository].
+
+We may replace some of the RBACs that we create in the patterns framework with the vp-rbac chart, but we
+do not plan to do this for all of our charts as this might break backwards compatibility in some cases.
+
+== We Want Your Feedback!
+
+We are excited to offer support for OLMv1 fairly early in its adoption cycle; please feel free to give it a try!
