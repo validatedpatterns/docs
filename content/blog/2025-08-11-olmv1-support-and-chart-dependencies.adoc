@@ -99,7 +99,7 @@ cluster-admin clusterRole. Rolebindings are always part of the serviceAccount st
 
 The chart also supports creating roles and clusterRoles, if you need to define custom ones. Roles and clusterRoles
 support multiple rules. Each rule may specify apiGroups, resources, and verbs. If a rule omits one of these keys,
-they each have defaults: apiGroups defaults to [ "'*'" ] (which includes the empty or core apiGroup); resources
+they each have defaults: apiGroups defaults to [ "'\*'" ] (which includes the empty or core apiGroup); resources
 similarly defaults to [ "'*'" ]; verbs defaults to [ 'get', 'list', 'watch' ] (that is, "read-only" permissions).
 
 Here is a more complete example of what can be done with the vp-rbac structure:
