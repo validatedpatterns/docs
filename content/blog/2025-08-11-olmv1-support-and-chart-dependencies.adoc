@@ -171,3 +171,4 @@ do not plan to do this for all of our charts as this might break backwards compa
 == We Want Your Feedback!
 
 We are excited to offer support for OLMv1 fairly early in its adoption cycle; please feel free to give it a try!
+If you encounter any issues with the OLMv1 feature in clustergroup, please report them link:https://github.com/validatedpatterns/clustergroup-chart/issues[here]. Any issues witht the vp-rbac chart can be reported link:https://github.com/validatedpatterns/vp-rbac-chart/issues[here].
