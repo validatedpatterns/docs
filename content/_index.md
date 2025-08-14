@@ -1,9 +1,12 @@
 ---
 title: "Validated Patterns"
+youtube_id: "dGsoUNjHYOw"
+video_title: "Watch how Validated Patterns enhance your cloud-native applications"
+video_description: "Our GitOps-driven framework simplifies complex deployments, ensuring your applications are production-ready from day one. Watch the video to see how it works."
 ---
 
 ![Logo](/images/logo.png)
 
-# Reference architectures with added value
+# Deploy complex solutions with unprecedented speed and confidence.
 
-Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. With a pattern, you can automatically deploy a full application stack through a GitOps-based framework. With this framework, you can create business-centric use cases while maintaining a level of Continuous Integration (CI) over your application. 
+Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
