@@ -50,6 +50,19 @@ h3 {
   margin-bottom: 1rem;
 }
 
+/* Page Navigation Styles */
+.page-nav-card {
+  border: 1px solid #d2d2d2;
+  border-radius: 3px;
+  height: auto;
+  min-height: 80px;
+  cursor: pointer;
+}
+
+.page-nav-chevron {
+  color: #6a6e73;
+}
+
 /*CODE BLOCKS */
 
 code {
