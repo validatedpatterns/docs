@@ -1,0 +1,50 @@
+name: Vale Linting
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened] # Trigger on PR open, new commits, or reopening
+
+jobs:
+  vale:
+    name: Lint documentation with Vale
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: errata-ai/vale-action@v2.1.1
+
+      # Optional: Install Asciidoctor if you're linting AsciiDoc files
+      - name: Install Asciidoctor
+        run: sudo apt-get install -y asciidoctor
+
+      - name: Run Vale with Reviewdog
+        uses: errata-ai/vale-action@reviewdog # Use the 'reviewdog' branch for PR checks and comments
+        with:
+          # Pin the Vale CLI version for consistent results.
+          # Check https://github.com/errata-ai/vale-action for the latest recommended version.
+          version: '3.11.2'
+          
+          # Specifies where Vale will look for files to lint.
+          # You can specify directories, specific files, or use 'all' for the whole repo.
+          files: '["content", "modules"]'
+          # 'github-pr-check' creates a check that appears on the PR.
+          # 'github-pr-review' creates review comments directly on the lines.
+          # For detailed comments, 'github-pr-check' combined with 'reviewdog' is often best.
+          reporter: 'github-pr-check'
+          
+          # 'nofilter' reports errors for all files in the specified 'files' list,
+          # not just the changes introduced in the PR. This is often desired for initial setup.
+          # Other options: 'added' (default, only new/modified lines), 'diff_context', 'file'.
+          filter_mode: 'added'
+          
+          # If true, the action will fail if Vale reports any errors.
+          # This will block PR merges if branch protection rules are set.
+          fail_on_error: true
+          
+          # Optional: Pass additional flags to the Vale CLI.
+          # For example, to specify a custom config file:
+          # vale_flags: '--config .vale/my-custom-config.ini'
+          
+          # The GitHub token is usually automatically provided by GitHub Actions.
+          # You typically don't need to explicitly set it unless you have very specific needs.
+          # token: ${{ secrets.GITHUB_TOKEN }}
