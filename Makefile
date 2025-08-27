@@ -1,4 +1,4 @@
-HOMEPAGE_CONTAINER ?= quay.io/hybridcloudpatterns/homepage-container:latest
+HOMEPAGE_CONTAINER ?= quay.io/validatedpatterns/homepage-container:main
 UNAME=$(shell uname -s)
 
 # Can't use host networks on MacOS as it's a VM anyway.
