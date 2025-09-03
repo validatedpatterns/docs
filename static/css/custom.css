@@ -19,9 +19,9 @@
   margin-right: 0.5rem;
 }
 
-/*TITLES*/
+/* TITLES */
 
-/*for now until theres just 1 h1 per page. Then change to 4xl*/
+/* For now until there's just 1 h1 per page. Then change to 4xl */
 h1 {
   --pf-c-content--h1--FontSize: var(--pf-global--FontSize--3xl);
 }
@@ -35,7 +35,7 @@ h3 {
 }
 
 /* We need this one because patternfly sets this to 0, which
-/* creates a bunched-up effect that we don't want for the docs */
+ * creates a bunched-up effect that we don't want for the docs */
 
 .pf-c-content h1:first-child,
 .pf-c-content h2:first-child,
@@ -48,6 +48,102 @@ h3 {
 
 .page-abstract {
   margin-bottom: 1rem;
+}
+
+/* Page Navigation Styles */
+.page-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: var(--pf-global--spacer--md);
+  flex-wrap: nowrap;
+}
+
+.page-nav-item {
+  flex: 1;
+  max-width: 48%;
+  min-width: 0; /* Allows flex items to shrink below content size */
+}
+
+.page-nav-spacer {
+  flex: 1;
+  max-width: 48%;
+}
+
+.page-nav-card {
+  border: 1px solid #d2d2d2;
+  border-radius: 3px;
+  height: auto;
+  min-height: 80px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.page-nav-chevron {
+  color: #6a6e73;
+}
+
+.page-nav-description {
+  display: block;
+}
+
+/* Responsive Navigation - Medium screens and up */
+@media (min-width: 768px) {
+  .page-nav-description {
+    display: block;
+  }
+}
+
+/* Responsive Navigation - Small screens */
+@media (max-width: 767px) {
+  .page-navigation {
+    flex-direction: column;
+    gap: var(--pf-global--spacer--sm);
+  }
+  
+  .page-nav-item {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .page-nav-spacer {
+    display: none;
+  }
+  
+  .page-nav-description {
+    display: none; /* Hide descriptions on mobile */
+  }
+  
+  .page-nav-card {
+    min-height: 60px; /* Smaller height on mobile */
+  }
+}
+
+/* Responsive Navigation - Very small screens (vertical mobile) */
+@media (max-width: 480px) {
+  .page-navigation {
+    gap: var(--pf-global--spacer--xs);
+  }
+  
+  .page-nav-card {
+    min-height: 50px;
+    padding: var(--pf-global--spacer--sm);
+  }
+  
+  .page-nav-title {
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+  
+  /* Ensure text doesn't overflow on very small screens */
+  .page-nav-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
 }
 
 /*CODE BLOCKS */
@@ -75,7 +171,7 @@ td > code {
   font-size: 0.9rem;
 }
 
-/*Adds type of content to listingblock*/
+/* Adds type of content to listingblock */
 
 .listingblock {
   margin-bottom: 1rem;
@@ -98,7 +194,7 @@ td > code {
   opacity: 0.5;
 }
 
-/*Changes to make the site white*/
+/* Changes to make the site white */
 
 .pf-c-page__main-section {
   background-color:  var(--pf-global--BackgroundColor--light-100)
@@ -123,8 +219,8 @@ td > code {
     background-color: var(--pf-c-nav__link--m-current--BackgroundColor);
 }
 
-/*Makes nav items like accordion items*/
-/*Need this to unify the look of the pages*/
+/* Makes nav items like accordion items */
+/* Need this to unify the look of the pages */
 
 .pf-c-nav__link {
   padding-left: 16px;
@@ -136,13 +232,13 @@ td > code {
   padding-right: 0;
 }
 
-/*Make big titles less bold*/
+/* Make big titles less bold */
 
 .pf-c-title.pf-m-4xl{
   font-weight: var(--pf-global--FontWeight--light);
 }
 
-/*For the Patterns page */
+/* For the Patterns page */
 
 .pf-c-panel__header {
   font-weight: bold ;
@@ -172,26 +268,13 @@ td > code {
 }
 
 .pattern-count-style {
-  font-size:0.8rem;
+  font-size: 0.8rem;
 }
 
+/* RIGHT NAV titles - consolidated above */
+/* Duplicate content removed - see lines 151-158 */
 
-
-/*RIGTH NAV titles */
-
-.filter-title {
-  margin-left: 1rem;
-}
-
-.filter-title-div {
-  margin-top: 2rem;
-}
-
-.pf-c-select__menu {
-  box-shadow: 0 -0.25rem 0.25rem -0.375rem rgba(3, 3, 3, 0.72);
-}
-
-/*DESCRIPTION LIST*/
+/* DESCRIPTION LIST */
 
 /* Render description lists correctly */
 
@@ -207,7 +290,7 @@ td > code {
   padding-top: 20px;
 }
 
-/*BLOCK TITLES*/
+/* BLOCK TITLES */
 
 /* Make block titles a little more distinctive */
 
@@ -216,8 +299,8 @@ td > code {
   font-style: italic;
 }
 
-/*ACCORDIONS*/
-/*CSS from Bootstrap 5x, modified, and other custom classes*/
+/* ACCORDIONS */
+/* CSS from Bootstrap 5x, modified, and other custom classes */
 
 /* This puts the accent on the open accordion*/
 .collapsed-effect:after {
@@ -233,7 +316,8 @@ td > code {
 .collapsing {
   height: 0;
   overflow: hidden;
-  @include transition($transition-collapse);
+  /* Note: This was a SCSS include, converted to standard CSS */
+  transition: height 0.35s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -272,18 +356,15 @@ button[aria-expanded=false] .fa-angle-down {
   padding: var(--pf-global--spacer--sm) var(--pf-global--spacer--md) var(--pf-global--spacer--sm) var(--pf-global--spacer--sm);
 }
 
-.pf-c-select__menu {
-  box-shadow: 0 -0.25rem 0.25rem -0.375rem rgba(3, 3, 3, 0.72);
-}
+/* Duplicate pf-c-select__menu removed - see line 190 */
 
-
-/* Makes scrolling smooth when clicking links on the right*/
+/* Makes scrolling smooth when clicking links on the right */
 
 main.pf-c-page__main {
     scroll-behavior: smooth;
 }
 
-/*FOOTER*/
+/* FOOTER */
 
 .footer-center {
   justify-content: center;
@@ -305,7 +386,7 @@ main.pf-c-page__main {
 
 .footer-menu-title {
    font-weight: bold;
-   font-size:0.9rem;
+   font-size: 0.9rem;
 }
 
 .site-copyright {
@@ -332,19 +413,30 @@ main.pf-c-page__main {
 }
 
 /* This makes the main section to expand even if there's not enough content,
-/* so that the footer remains at the bottom of the page */
+ * so that the footer remains at the bottom of the page */
 
 .pf-c-page__main-section {
   flex-grow: 1;
   min-width: 0;
 }
 
-/*This gives the content on the articles a white space a the bottom
-/*And also fixes how big this container is */
+/* This gives the content on the articles a white space at the bottom
+ * And also fixes how big this container is */
 .min-height {
   max-width: 832px;
-  min-width: 832px;
+  min-width: 300px; /* Reduced from 832px for mobile */
+  width: 100%;
   padding-bottom: 5rem;
+}
+
+/* Mobile responsive adjustments for min-height */
+@media (max-width: 768px) {
+  .min-height {
+    max-width: 100%;
+    min-width: 280px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 /* STICKY NAV ON THE LEFT */
@@ -363,22 +455,32 @@ main.pf-c-page__main {
   margin: 0;
   position: sticky;
   top: 0;
-  min-width: 400px;
+  min-width: 250px; /* Reduced from 400px */
   align-self: flex-start;
   z-index: 501;
+}
+
+/* Mobile adjustments for sticky navigation */
+@media (max-width: 992px) {
+  .sticky {
+    position: relative;
+    min-width: 100%;
+    max-height: none;
+    padding: var(--pf-global--spacer--md);
+  }
 }
 
 .active {
   background-color: red;
 }
 
-/*SCROLLSPY*/
+/* SCROLLSPY */
 
 body .pf-c-content {
   position: relative;
 }
 
-/*This fixes scrollspy problem when scrolling up manually*/
+/* This fixes scrollspy problem when scrolling up manually */
 .pf-c-page__main-section {
   padding-top: 0;
   padding-left: 20px;
@@ -392,7 +494,7 @@ nav.ul.li.a {
 aside ul ul {
   margin-left: 20px !important;
 }
-/* Makes the font size smaller inside the TOC*/
+/* Makes the font size smaller inside the TOC */
 nav ul ul ul a {
   font-size: 0.8rem !important;
 }
@@ -402,24 +504,9 @@ nav ul ul ul a {
   font-size: 0.9rem;
   color: var(--pf-global--icon--Color--light);
 }
+
 .pf-c-jump-links__link:hover {
-  /*color: #06c;*/
   color: var(--pf-global--link--Color--light);
-}
-/* Makes the font size smaller inside the TOC*/
-nav ul ul ul a  {
-    font-size: 0.8rem !important;
-
-}
-
-.pf-c-jump-links__link {
-    padding-top: 0;
-    font-size: 0.9rem;
-    color: var(--pf-global--icon--Color--light);
-}
-.pf-c-jump-links__link:hover {
-    /*color: #06c;*/
-    color: var(--pf-global--link--Color--light);
 }
 
 a code {
@@ -428,7 +515,6 @@ a code {
     font-size: 0.8rem;
     line-height: 20px;
 }
-
 
 #myBtn {
     display: none;
@@ -891,8 +977,8 @@ b.conum * {
   color: #666666;
 } /* Literal.Number.Integer.Long */
 
-/*  This is for the normal paragraphs
-// that don't get properly styled with other classes */
+/* This is for the normal paragraphs
+ * that don't get properly styled with other classes */
 div.paragraph {
   margin-bottom: 10px;
   margin-top: 10px;
@@ -1025,7 +1111,9 @@ h6 .anchor::before {
   padding: 0 5px;
 }
 
+/* CI icon styles - placeholder for future use */
 .ci-icon {
+  display: inline-block; /* placeholder property */
 }
 
 .pf-c-content ul.links-menu {
@@ -1042,4 +1130,1524 @@ h6 .anchor::before {
 
 .pf-c-content li.pf-c-nav__item + li.pf-c-nav__item {
   margin-top: 0;
+}
+
+/* Landing Page Styles */
+.hero-content h1 {
+  font-size: var(--pf-global--FontSize--4xl) !important;
+  line-height: var(--pf-global--LineHeight--sm) !important;
+}
+
+.hero-content p {
+  font-size: var(--pf-global--FontSize--xl) !important;
+  line-height: var(--pf-global--LineHeight--md) !important;
+}
+
+/* MOBILE RESPONSIVENESS */
+
+/* Main Navigation Toggle (chevron) */
+.main-nav-toggle {
+  display: none;
+}
+
+/* Sidebar Toggle (hamburger) */
+.sidebar-toggle {
+  display: none;
+  background: rgba(6, 78, 153, 0.9); /* Primary color with transparency */
+  color: white;
+  border: none;
+  border-radius: 0 8px 8px 0; /* Rounded only on the right side */
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: var(--pf-global--BoxShadow--md);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px); /* Subtle blur effect */
+}
+
+.sidebar-toggle:hover {
+  background: rgba(6, 78, 153, 1); /* Solid on hover */
+  box-shadow: var(--pf-global--BoxShadow--lg);
+  transform: translateX(2px); /* Slide out slightly on hover */
+}
+
+.sidebar-toggle:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.sidebar-toggle i {
+  margin: 0; /* Remove margin since no text */
+}
+
+.sidebar-toggle-container {
+  position: fixed;
+  top: 70px; /* Just below the header */
+  left: 0;
+  z-index: 1001;
+  /* Ensure it stays in place when scrolling */
+}
+
+/* Desktop styles - large screens where sidebar is always visible */
+@media (min-width: 1200px) {
+  .pf-c-page__header-tools {
+    display: flex !important;
+    position: static !important;
+    width: auto !important;
+    background: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    flex-direction: row !important;
+  }
+
+  .pf-c-page__header-tools-group {
+    display: none !important;
+  }
+
+  .main-nav-toggle {
+    display: none !important;
+  }
+
+  .sidebar-toggle {
+    display: none !important;
+  }
+}
+
+/* This section is now redundant since we unified mobile breakpoint to 1199px */
+
+@media (max-width: 1199px) {
+  /* Header layout on mobile and tablets */
+  .pf-c-page__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Only show chevron when header tools are hidden */
+  .pf-c-page__header-tools-group {
+    display: flex;
+    align-items: center;
+    order: 3; /* Put chevron on the right */
+  }
+
+  .main-nav-toggle {
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  .main-nav-toggle.active {
+    transform: rotate(180deg);
+  }
+
+  /* Hide chevron when menu is active, show menu content */
+  .pf-c-page__header-tools.active ~ .pf-c-page__header-tools-group {
+    display: none;
+  }
+
+  .sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Hide sidebar toggle when sidebar is active */
+  .pf-c-page__sidebar.active ~ .pf-c-page__main .sidebar-toggle-container {
+    display: none;
+  }
+
+  /* Only show sidebar toggle when sidebar is hidden on mobile */
+  .sidebar-toggle-container {
+    display: none;
+  }
+
+  /* Show sidebar toggle only on mobile when sidebar exists but is not active */
+  .pf-c-page__sidebar:not(.active) ~ .pf-c-page__main .sidebar-toggle-container {
+    display: block;
+  }
+
+  /* Hide the header tools on mobile - they should only show when toggled */
+  .pf-c-page__header-tools {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: var(--pf-global--BackgroundColor--light-100);
+    border: 1px solid var(--pf-global--BorderColor--200);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    z-index: 999;
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .pf-c-page__header-tools.active {
+    display: flex;
+  }
+
+  .mobile-nav {
+    width: 100%;
+  }
+
+  .mobile-nav .pf-c-nav__list {
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobile-nav .pf-c-nav__item {
+    margin: 0;
+    width: 100%;
+  }
+
+  .mobile-nav .pf-c-nav__link {
+    display: block;
+    padding: 1rem;
+    border-bottom: 1px solid var(--pf-global--BorderColor--100);
+    text-decoration: none;
+    width: 100%;
+    color: var(--pf-global--Color--dark-100) !important;
+    font-weight: 500;
+  }
+
+  .mobile-nav .pf-c-nav__link:hover {
+    background-color: var(--pf-global--BackgroundColor--light-200);
+    color: var(--pf-global--primary-color--100) !important;
+  }
+
+  .mobile-nav .pf-c-nav__item.pf-m-current .pf-c-nav__link {
+    color: var(--pf-global--primary-color--100) !important;
+    background-color: var(--pf-global--BackgroundColor--light-200);
+    font-weight: 600;
+  }
+
+  /* Search form styling in mobile */
+  .pf-c-page__header-tools form {
+    padding: 1rem;
+    border-top: 1px solid var(--pf-global--BorderColor--100);
+    background-color: var(--pf-global--BackgroundColor--light-50);
+  }
+
+  .pf-c-page__header-tools .pf-c-search-input__text-input {
+    background-color: white;
+    border: 1px solid var(--pf-global--BorderColor--200);
+    color: var(--pf-global--Color--dark-100);
+  }
+}
+
+/* Sidebar Responsiveness */
+@media (max-width: 1199px) {
+  .pf-c-page__sidebar {
+    position: fixed !important;
+    top: 60px !important;
+    width: 300px !important;
+    height: calc(100vh - 60px) !important;
+    z-index: 1001 !important;
+    overflow-y: auto !important;
+    background: var(--pf-global--BackgroundColor--light-100) !important;
+    box-shadow: 2px 0 4px rgba(0,0,0,0.1) !important;
+    /* Use PatternFly's transform system instead of left positioning */
+    grid-area: unset !important;
+    transform: translateX(-100%) translateZ(0) !important;
+    transition: transform 0.3s ease !important;
+  }
+
+  .pf-c-page__sidebar.active {
+    transform: translateX(0) translateZ(0) !important;
+  }
+
+  .pf-c-page__main {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  /* Overlay for sidebar */
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+}
+
+/* Keep normal flex layout on desktop - no changes needed here */
+
+/* Modern Mobile and Tablet Adjustments */
+
+/* Small tablets and large phones in landscape (1024px and below) */
+@media (max-width: 1024px) {
+  .pf-c-page__main-section {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+
+  /* Override PatternFly flex utility to use block layout */
+  .pf-u-display-flex {
+    display: block !important;
+  }
+
+  /* Hide TOC on tablets and mobile */
+  .pf-c-jump-links,
+  aside.pf-c-jump-links {
+    display: none !important;
+  }
+
+  /* Main content takes full width */
+  .pf-c-content {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Standard tablets (768px and below) */
+@media (max-width: 768px) {
+  .pf-c-page__main-section {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}
+
+/* Large phones and small tablets (480px and below) */
+@media (max-width: 480px) {
+  .pf-c-page__main-section {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
+
+  /* Hero section adjustments */
+  .hero-content h1 {
+    font-size: var(--pf-global--FontSize--4xl) !important;
+  }
+
+  .hero-content p {
+    font-size: var(--pf-global--FontSize--lg) !important;
+  }
+
+  /* Use case cards stack on mobile */
+  .usecase-card {
+    margin-bottom: 1rem;
+  }
+
+  /* Feature cards full width on mobile */
+  .feature-card {
+    margin-bottom: 1rem;
+  }
+
+  /* Pattern browser adjustments */
+  .pf-l-grid__item.pf-m-9-col {
+    grid-column: 1 / -1;
+  }
+
+/* Feature Cards Animation */
+.feature-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: var(--pf-global--palette--white);
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  background-color: var(--pf-global--palette--blue-50);
+}
+
+.feature-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out;
+}
+
+/* Pattern Cards (Use Cases) Hover Effects - Specific to use case section */
+.usecase-card{
+  transition: all 0.3s ease;
+}
+
+.usecase-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  position: relative;
+}
+
+/* Modern Phone Optimizations */
+
+/* Standard phones (414px and below - iPhone Pro Max, etc.) */
+@media (max-width: 414px) {
+  .pf-c-page__main-section {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .pf-c-page__header-brand-toggle {
+    margin-right: 0.5rem;
+  }
+
+  .pf-c-page__header-brand-link img {
+    max-height: 40px;
+  }
+}
+
+/* Compact phones (375px and below - iPhone SE, etc.) */
+@media (max-width: 375px) {
+  .pf-c-page__main-section {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+}
+
+/* Very small phones (320px and below) */
+@media (max-width: 320px) {
+  .pf-c-page__main-section {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+
+  .pf-c-page__header-brand-link img {
+    max-height: 35px;
+  }
+}
+
+  /* Tables responsive */
+  .tableblock {
+    overflow-x: auto;
+    font-size: 0.9rem;
+  }
+
+  /* Code blocks */
+  pre {
+    font-size: 0.8rem;
+    padding: var(--pf-global--spacer--sm);
+  }
+
+  /* Search form adjustments */
+  .pf-c-search-input {
+    min-width: 200px;
+  }
+
+  /* Footer adjustments */
+  .prefooter-menu-grid {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .footer-dark {
+    font-size: 0.7rem;
+  }
+
+/* Landscape mobile optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+  .pf-c-page__sidebar {
+    height: calc(100vh - 50px);
+    top: 50px;
+  }
+
+  .mobile-nav {
+    top: 50px;
+  }
+}
+
+/* Print styles for mobile */
+@media print {
+  .mobile-nav-toggle,
+  .pf-c-page__sidebar,
+  .mobile-nav {
+    display: none !important;
+  }
+
+  .pf-c-page__main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* Blog Carousel Styles */
+.blog-carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  padding: 0 0.25rem;
+}
+
+.blog-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 0.5rem;
+}
+
+.blog-carousel {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 1rem 0;
+  flex: 1;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+
+.blog-carousel:active {
+  cursor: grabbing;
+}
+
+.blog-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.blog-card {
+  flex: 0 0 320px;
+  height: 420px; /* Fixed height for consistency */
+  background: var(--pf-global--BackgroundColor--light-100);
+  border-radius: 8px;
+  box-shadow: var(--pf-global--BoxShadow--md);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  scroll-snap-align: start;
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.blog-card-content {
+  padding: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card-header {
+  margin-bottom: 1rem;
+}
+
+.blog-card-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  height: 5.25rem; /* Fixed height for exactly 3 lines (1.4 * 1.25rem * 3 = 5.25rem) */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.blog-card-title a {
+  color: var(--pf-global--Color--dark-100);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.blog-card-title a:hover {
+  color: var(--pf-global--primary-color--100);
+}
+
+.blog-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--pf-global--Color--dark-200);
+}
+
+.blog-author {
+  font-weight: 500;
+}
+
+.blog-date {
+  color: var(--pf-global--Color--dark-300);
+}
+
+.blog-card-body {
+  flex-grow: 1;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-summary {
+  color: var(--pf-global--Color--dark-200);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  height: 4.56rem; /* Fixed height for exactly 3 lines (1.6 * 0.95rem * 3 = 4.56rem) */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.blog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto; /* Push tags to bottom */
+  margin-bottom: 1rem;
+}
+
+.blog-tag {
+  background: var(--pf-global--primary-color--100);
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 500;
+  text-transform: lowercase;
+}
+
+.blog-card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.blog-read-more {
+  color: var(--pf-global--primary-color--100);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.blog-read-more:hover {
+  color: var(--pf-global--primary-color--200);
+  text-decoration: underline;
+}
+
+/* View All Card Styles */
+.blog-card-view-all {
+  background: linear-gradient(135deg, var(--pf-global--primary-color--100) 0%, var(--pf-global--primary-color--200) 100%);
+  color: white;
+  border: none;
+}
+
+.blog-card-view-all:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.view-all-content {
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.view-all-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.view-all-title {
+  color: white;
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.view-all-description {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.view-all-button {
+  --pf-c-button--m-primary--BackgroundColor: rgba(255, 255, 255, 0.2);
+  --pf-c-button--m-primary--Color: white;
+  --pf-c-button--m-primary--hover--BackgroundColor: rgba(255, 255, 255, 0.3);
+  --pf-c-button--BorderRadius: 20px;
+  --pf-c-button--after--BorderRadius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  font-weight: 600;
+}
+
+/* Carousel Navigation */
+.carousel-nav {
+  background: var(--pf-global--BackgroundColor--light-100);
+  border: 2px solid var(--pf-global--BorderColor--200);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+  box-shadow: var(--pf-global--BoxShadow--sm);
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Smaller carousel navigation for pattern tiers */
+.pattern-carousel-wrapper .carousel-nav {
+  width: 36px;
+  height: 36px;
+  border-width: 1px;
+}
+
+.pattern-carousel-wrapper .carousel-nav i {
+  font-size: 0.8rem;
+}
+
+.carousel-nav:hover {
+  background: var(--pf-global--primary-color--100);
+  color: white;
+  border-color: var(--pf-global--primary-color--100);
+  box-shadow: var(--pf-global--BoxShadow--lg);
+  transform: scale(1.05);
+}
+
+.carousel-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.carousel-nav:disabled:hover {
+  background: var(--pf-global--BackgroundColor--light-100);
+  color: initial;
+  border-color: var(--pf-global--BorderColor--200);
+  box-shadow: var(--pf-global--BoxShadow--sm);
+  transform: none;
+}
+
+.carousel-nav i {
+  font-size: 1rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .blog-carousel-wrapper {
+    gap: 0.5rem;
+  }
+
+  .carousel-nav {
+    display: none;
+  }
+
+  .blog-carousel {
+    padding: 0.5rem 0;
+    gap: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .blog-card {
+    flex: 0 0 calc(85vw - 2rem);
+    height: 380px; /* Fixed height for mobile consistency */
+    max-width: 350px;
+  }
+
+  .blog-card-content {
+    padding: 1.25rem;
+  }
+
+  .blog-card-title {
+    font-size: 1.1rem;
+    height: 4.62rem; /* Adjusted for mobile font size (1.4 * 1.1rem * 3 = 4.62rem) */
+  }
+}
+
+@media (max-width: 576px) {
+  .blog-carousel {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    gap: 0.75rem;
+  }
+
+  .blog-card {
+    flex: 0 0 calc(90vw - 1rem);
+    height: 360px; /* Fixed height for small mobile consistency */
+    max-width: 300px;
+  }
+
+  .blog-card-content {
+    padding: 1rem;
+  }
+
+  .blog-card-title {
+    font-size: 1rem;
+    height: 4.2rem; /* Adjusted for small mobile font size (1.4 * 1rem * 3 = 4.2rem) */
+  }
+
+  .blog-summary {
+    font-size: 0.9rem;
+    height: 4.32rem; /* Adjusted for small mobile font size (1.6 * 0.9rem * 3 = 4.32rem) */
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-carousel {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .blog-card {
+    flex: 0 0 calc(95vw - 0.5rem);
+    height: 340px; /* Fixed height for extra small mobile consistency */
+    max-width: 280px;
+  }
+
+  .blog-card-content {
+    padding: 0.875rem;
+  }
+
+  .blog-card-title {
+    font-size: 0.95rem;
+    line-height: 1.3;
+    height: 3.705rem; /* Adjusted for extra small mobile (1.3 * 0.95rem * 3 = 3.705rem) */
+  }
+
+  .blog-summary {
+    font-size: 0.85rem;
+    height: 4.08rem; /* Adjusted for extra small mobile (1.6 * 0.85rem * 3 = 4.08rem) */
+  }
+
+  .blog-tags {
+    gap: 0.25rem;
+  }
+
+  .blog-tag {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+  }
+}
+
+/* Tier icons for accordion */
+.pattern-tiers-accordion .tier-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Legacy Pattern Tiers Styles - Keeping for backward compatibility */
+.tier-title {
+  margin: 0;
+}
+
+/* Pattern Cards - Sized to show 2.5 cards at a time */
+.pattern-card {
+  flex: 0 0 320px;
+  height: 260px;
+  background: var(--pf-global--BackgroundColor--light-100);
+  border-radius: 8px;
+  box-shadow: var(--pf-global--BoxShadow--md);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  scroll-snap-align: start;
+  border: 2px solid var(--pf-global--BorderColor--100);
+}
+
+/* Ensure pattern carousel containers inherit blog carousel styles */
+.pattern-carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  padding: 0 0.25rem;
+}
+
+.pattern-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 0.5rem;
+}
+
+.pattern-carousel {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 1rem 0;
+  flex: 1;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+
+.pattern-carousel:active {
+  cursor: grabbing;
+}
+
+.pattern-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.pattern-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--pf-global--BoxShadow--md);
+  border-color: var(--pf-global--primary-color--100);
+}
+
+.pattern-card-content {
+  padding: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pattern-card-header {
+  margin-bottom: 1rem;
+}
+
+.pattern-card-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  height: 5.25rem; /* Fixed height for exactly 3 lines (1.4 * 1.25rem * 3 = 5.25rem) */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pattern-card-title a {
+  color: var(--pf-global--Color--dark-100);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.pattern-card-title a:hover {
+  color: var(--pf-global--primary-color--100);
+}
+
+.pattern-card-body {
+  flex-grow: 1;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.pattern-summary {
+  color: var(--pf-global--Color--dark-200);
+  line-height: 1.6;
+  font-size: 0.9rem;
+  margin: 0;
+  height: 4.32rem; /* Fixed height for exactly 3 lines (1.6 * 0.9rem * 3 = 4.32rem) */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pattern-card-footer {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: auto; /* Push footer to bottom like blog cards */
+}
+
+.pattern-read-more {
+  color: var(--pf-global--primary-color--100);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.pattern-read-more:hover {
+  color: var(--pf-global--primary-color--200);
+  text-decoration: underline;
+}
+
+/* Pattern Explore More Cards */
+.pattern-card-explore-more {
+  background: linear-gradient(135deg, var(--pf-global--primary-color--100) 0%, var(--pf-global--primary-color--200) 100%);
+  color: white;
+  border: 2px solid var(--pf-global--primary-color--100);
+}
+
+.pattern-card-explore-more:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: var(--pf-global--primary-color--200);
+}
+
+.explore-more-content {
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.explore-more-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.explore-more-title {
+  color: white;
+  margin: 0 0 0.75rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.explore-more-description {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.explore-more-button {
+  --pf-c-button--m-primary--BackgroundColor: rgba(255, 255, 255, 0.2);
+  --pf-c-button--m-primary--Color: white;
+  --pf-c-button--m-primary--hover--BackgroundColor: rgba(255, 255, 255, 0.3);
+  --pf-c-button--BorderRadius: 20px;
+  --pf-c-button--after--BorderRadius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+/* Pattern Tier Outer Container */
+.pattern-tiers-outer-container {
+  background: var(--pf-global--BackgroundColor--light-100);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 0;
+  overflow: hidden;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  transition: box-shadow 0.3s ease;
+}
+
+.pattern-tiers-outer-container:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Pattern Tier Accordion Styles */
+.pattern-tiers-accordion {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  width: 100%;
+  background: transparent;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item {
+  border-bottom: 1px solid var(--pf-global--BorderColor--100);
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:last-child {
+  border-bottom: none;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:first-child .pf-c-accordion__toggle {
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:last-child .pf-c-accordion__toggle {
+  border-bottom-left-radius: 22px;
+  border-bottom-right-radius: 22px;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__expanded-content {
+  display: block;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__expanded-content.pf-m-hidden {
+  display: none !important;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__toggle {
+  padding: var(--pf-global--spacer--lg);
+  border: none;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  min-height: 60px;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__toggle:hover {
+  background-color: var(--pf-global--BackgroundColor--light-200);
+}
+
+.pattern-tiers-accordion .pf-c-accordion__toggle-text {
+  display: flex;
+  align-items: center;
+  gap: var(--pf-global--spacer--md);
+  flex: 1;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__toggle-icon {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__toggle-icon i {
+  transition: transform 0.2s ease;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__toggle[aria-expanded="true"] .pf-c-accordion__toggle-icon i {
+  transform: rotate(90deg);
+}
+
+.pattern-tiers-accordion .pf-c-accordion__toggle[aria-expanded="false"] .pf-c-accordion__toggle-icon i {
+  transform: rotate(0deg);
+}
+
+.pattern-tiers-accordion .pf-c-accordion__expanded-content-body {
+  padding: var(--pf-global--spacer--lg);
+  padding-top: 0;
+  margin: 0;
+  border-bottom-left-radius: 22px;
+  border-bottom-right-radius: 22px;
+}
+
+/* Tier-specific colors for accordion */
+
+/* Sandbox Tier - Orange */
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(1) .pf-c-accordion__toggle {
+  background-color: rgba(240, 171, 0, 0.05); /* Very light orange background */
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(1) .pf-c-accordion__toggle:hover {
+  background-color: rgba(240, 171, 0, 0.1);
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(1) .pf-c-title {
+  color: var(--pf-global--warning-color--200);
+  margin: 0;
+  font-weight: 600;
+  font-size: var(--pf-global--FontSize--2xl);
+  line-height: 1.2;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(1) .pf-c-accordion__expanded-content-body {
+  background-color: rgba(240, 171, 0, 0.02);
+}
+
+/* Tested Tier - Blue */
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(2) .pf-c-accordion__toggle {
+  background-color: rgba(57, 123, 199, 0.05); /* Very light blue background */
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(2) .pf-c-accordion__toggle:hover {
+  background-color: rgba(57, 123, 199, 0.1);
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(2) .pf-c-title {
+  color: var(--pf-global--info-color--200);
+  margin: 0;
+  font-weight: 600;
+  font-size: var(--pf-global--FontSize--2xl);
+  line-height: 1.2;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(2) .pf-c-accordion__expanded-content-body {
+  background-color: rgba(57, 123, 199, 0.02);
+}
+
+/* Maintained Tier - Green */
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(3) .pf-c-accordion__toggle {
+  background-color: rgba(146, 212, 0, 0.05); /* Very light green background */
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(3) .pf-c-accordion__toggle:hover {
+  background-color: rgba(146, 212, 0, 0.1);
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(3) .pf-c-title {
+  color: var(--pf-global--success-color--200);
+  margin: 0;
+  font-weight: 600;
+  font-size: var(--pf-global--FontSize--2xl);
+  line-height: 1.2;
+}
+
+.pattern-tiers-accordion .pf-c-accordion__item:nth-child(3) .pf-c-accordion__expanded-content-body {
+  background-color: rgba(146, 212, 0, 0.02);
+}
+
+/* Large Screen Adjustments */
+@media (min-width: 1201px) {
+  .pattern-tiers-outer-container {
+    max-width: 1400px;
+  }
+  
+  .pattern-card {
+    flex: 0 0 350px;
+  }
+}
+
+/* Responsive Pattern Accordion */
+@media (max-width: 768px) {
+  .pattern-tiers-outer-container {
+    border-radius: 20px;
+  }
+
+  .pattern-tiers-accordion .pf-c-accordion__item:first-child .pf-c-accordion__toggle {
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+  }
+
+  .pattern-tiers-accordion .pf-c-accordion__item:last-child .pf-c-accordion__toggle {
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+  }
+
+  .pattern-tiers-accordion .pf-c-accordion__expanded-content-body {
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+  }
+
+  .pattern-tiers-accordion .pf-c-accordion__toggle {
+    padding: var(--pf-global--spacer--md);
+    min-height: 56px;
+  }
+
+  .pattern-tiers-accordion .pf-c-accordion__expanded-content-body {
+    padding: var(--pf-global--spacer--md);
+    padding-top: 0;
+  }
+
+  .pattern-tiers-accordion .tier-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .pattern-tiers-accordion .pf-c-title {
+    font-size: var(--pf-global--FontSize--xl) !important;
+  }
+
+  .pattern-card {
+    flex: 0 0 300px;
+    height: 260px;
+  }
+
+  .pattern-card-title {
+    font-size: 1.1rem;
+    height: 4.62rem; /* Adjusted for tablet font size (1.4 * 1.1rem * 3 = 4.62rem) */
+  }
+
+  .pattern-summary {
+    font-size: 0.85rem;
+    height: 4.08rem; /* Adjusted for tablet font size (1.6 * 0.85rem * 3 = 4.08rem) */
+  }
+
+  .pattern-carousel {
+    gap: 0.75rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+/* Small Mobile Responsive */
+@media (max-width: 576px) {
+  .pattern-tiers-outer-container {
+    border-radius: 16px;
+  }
+
+  .pattern-tiers-accordion .pf-c-accordion__item:first-child .pf-c-accordion__toggle {
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+  }
+
+  .pattern-tiers-accordion .pf-c-accordion__item:last-child .pf-c-accordion__toggle {
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+  }
+
+  .pattern-tiers-accordion .pf-c-accordion__expanded-content-body {
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+  }
+
+  .pattern-tiers-accordion .pf-c-accordion__toggle {
+    padding: var(--pf-global--spacer--sm);
+    min-height: 50px;
+  }
+
+  .pattern-tiers-accordion .tier-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .pattern-tiers-accordion .pf-c-title {
+    font-size: var(--pf-global--FontSize--lg) !important;
+  }
+
+  .pattern-card {
+    flex: 0 0 calc(80vw - 2rem);
+    height: 240px;
+    max-width: 320px;
+  }
+
+  .pattern-card-content {
+    padding: 1.25rem;
+  }
+
+  .pattern-card-title {
+    font-size: 1rem;
+    height: 4.2rem; /* Adjusted for small mobile font size (1.4 * 1rem * 3 = 4.2rem) */
+  }
+
+  .pattern-summary {
+    font-size: 0.8rem;
+    height: 3.84rem; /* Adjusted for small mobile font size (1.6 * 0.8rem * 3 = 3.84rem) */
+  }
+
+  .pattern-carousel {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    gap: 0.75rem;
+  }
+
+  .pattern-card {
+    flex: 0 0 calc(90vw - 1rem);
+    height: 220px;
+    max-width: 300px;
+  }
+
+  .pattern-card-content {
+    padding: 1rem;
+  }
+
+  .pattern-card-title {
+    font-size: 1rem;
+  }
+
+  .pattern-summary {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pattern-tier-section {
+    padding: 1rem;
+  }
+
+  .pattern-carousel {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .pattern-card {
+    flex: 0 0 calc(95vw - 0.5rem);
+    height: 200px;
+    max-width: 280px;
+  }
+
+  .pattern-card-content {
+    padding: 0.875rem;
+  }
+
+  .pattern-card-title {
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+
+  .pattern-summary {
+    font-size: 0.85rem;
+  }
+
+  .explore-more-title {
+    font-size: 1.1rem;
+  }
+
+  .explore-more-description {
+    font-size: 0.85rem;
+  }
+}
+
+/* Social Proof Carousel Styles */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  /* Fades out the cards at the edges */
+  -webkit-mask-image: linear-gradient(to right, transparent, black 25%, black 75%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 25%, black 75%, transparent);
+}
+
+.carousel-track {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  /* JS will handle positioning via transform */
+}
+
+#social-proof .pf-c-card {
+  flex-shrink: 0;
+  width: 320px;
+  height: 260px;
+  margin: 0 20px;
+  transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  opacity: 0.5;
+  transform: scale(0.85);
+  background-color: var(--pf-global--BackgroundColor--light-100);
+}
+
+#social-proof .pf-c-card.is-center {
+  opacity: 1;
+  transform: scale(1);
+  box-shadow: var(--pf-global--BoxShadow--lg);
+  height: 240px;
+}
+
+#social-proof .carousel-wrapper:hover .pf-c-card:not(:hover) {
+  opacity: 0.5;
+  transform: scale(0.85);
+}
+
+#social-proof .carousel-wrapper:hover .pf-c-card.is-center:not(:hover) {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#social-proof .carousel-wrapper:hover .pf-c-card:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+#social-proof .pf-c-card__title {
+  font-size: var(--pf-global--FontSize--lg);
+  font-weight: var(--pf-global--FontWeight--bold);
+  color: var(--pf-global--Color--dark-100);
+  margin-bottom: var(--pf-global--spacer--sm);
+}
+
+#social-proof .pf-c-card__body {
+  color: var(--pf-global--Color--dark-200);
+  margin-bottom: var(--pf-global--spacer--md);
+}
+
+#social-proof .pf-c-card__footer a {
+  color: var(--pf-global--primary-color--100);
+  font-weight: var(--pf-global--FontWeight--bold);
+  text-decoration: none;
+}
+
+#social-proof .pf-c-card__footer a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile-specific styles for touch interaction */
+@media (max-width: 768px) {
+  .carousel-wrapper {
+    height: 320px;
+    /* Adjust mask for mobile */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  }
+
+  #social-proof .pf-c-card {
+    width: 280px;
+    height: 240px;
+    margin: 0 15px;
+    /* Better touch targets */
+    touch-action: pan-y pinch-zoom;
+  }
+
+  #social-proof .pf-c-card.is-center {
+    height: 260px;
+    transform: scale(1);
+  }
+
+  /* Disable hover effects on mobile */
+  #social-proof .carousel-wrapper:hover .pf-c-card:not(:hover),
+  #social-proof .carousel-wrapper:hover .pf-c-card.is-center:not(:hover),
+  #social-proof .carousel-wrapper:hover .pf-c-card:hover {
+    opacity: inherit;
+    transform: inherit;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-wrapper {
+    height: 290px;
+    /* Even more focused mask for small screens */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  #social-proof .pf-c-card {
+    width: 240px;
+    height: 220px;
+    margin: 0 10px;
+  }
+
+  #social-proof .pf-c-card.is-center {
+    height: 240px;
+  }
+
+  #social-proof .pf-c-card__title {
+    font-size: var(--pf-global--FontSize--md);
+  }
+
+  #social-proof .pf-c-card__body {
+    font-size: var(--pf-global--FontSize--sm);
+  }
+}
+
+/* Improve touch interaction */
+.carousel-wrapper {
+  cursor: grab;
+  user-select: none;
+}
+
+.carousel-wrapper:active {
+  cursor: grabbing;
+}
+
+/* Prevent text selection during drag */
+.carousel-wrapper * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
