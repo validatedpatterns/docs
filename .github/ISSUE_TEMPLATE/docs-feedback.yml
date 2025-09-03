@@ -1,6 +1,6 @@
 name: Create a documentation issue.
 description: |
-  ⛔ This template is connected to the Create a documentation issue button on the bottom of every `learn` and `patterns` page on the live site. It automatically fills in several fields for you. Don't use for other purposes. ⛔
+  ⛔ Use this template only from the "Create a documentation issue" button on the site. It auto-fills fields for you. Do not use for other purposes. ⛔
 body:
   - type: markdown
     attributes:
