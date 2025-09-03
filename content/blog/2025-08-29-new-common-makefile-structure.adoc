@@ -1,0 +1,303 @@
+---
+ date: 2025-08-29
+ title: From slim common to no common
+ summary: We're replacing the redundant common git subtree in our repositories with a single, centralized Makefile-common.
+ author: Drew Minnear
+ blog_tags:
+ - patterns
+ - announce
+---
+:toc:
+:imagesdir: /images
+
+== Retiring the `common` Directory with a Smarter Makefile
+
+We're simplifying our Validated Patterns workflow in a big way: the `common` directory is going away.
+
+Why does this matter? Fewer moving parts, leaner repositories, and updates that flow automatically to every pattern. Instead of juggling wrapper scripts and redundant logic across repos, everything now runs through a *centralized, smarter Makefile*.
+
+This post explains why we made the change, how it benefits you, and what you need to do to start using this streamlined approach.
+
+=== The Old Way: A `common` Directory in Every Pattern
+
+Originally, every pattern repository included a `common` directory. As the name suggests, it housed shared resources that didn't vary between patterns, primarily *Helm charts* and *Ansible playbooks*. While this worked, it meant that any update to a common script or chart had to be manually propagated across every single pattern repository.
+
+=== The Evolution: Creating Central Hubs of Logic
+
+To improve this, we began breaking the `common` directory apart in a few key stages:
+
+. *Centralizing Helm charts:* We leveraged Argo CD's link:https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/[multi-source config] feature to publish and consume our Helm charts from a central repository, now available at link:https://charts.validatedpatterns.io/[].
+. *Creating an Ansible Collection:* We moved the common Ansible playbooks into their own dedicated Git repository and published them as a collection: link:https://github.com/validatedpatterns/rhvp.cluster_utils[`rhvp.cluster_utils`].
+. *Introducing the `utility-container`:* We created the link:https://quay.io/repository/validatedpatterns/utility-container[`utility-container`]. This container image bundles all our essential tools—the `rhvp.cluster_utils` Ansible collection, other collections like `kubernetes.core`, and common binaries (`oc`, `helm`, etc.).
+
+This evolution gave us the ubiquitous `pattern.sh` script. By running `./pattern.sh make install`, you use the `utility-container` to deploy a pattern to an OpenShift cluster. This powerful script ensures you have the correct versions of all tools without needing to install them on your local machine.
+
+At this point, the `common` directory was much slimmer, containing only the Makefile and some shell scripts that were mostly just thin wrappers for Ansible playbook calls.
+
+=== Today's Change: Removing the `common` Directory Entirely
+
+After slimming things down, we realized we could take one final step. We moved the logic from the few remaining wrapper scripts directly into our Ansible playbooks. This made the `common/scripts` directory redundant, and at that point, there was no reason to have the `common` directory at all.
+
+Now, instead of a git subtree, patterns can use a single, powerful Makefile.
+
+This new approach has several key advantages:
+
+* *Lighter Repos:* Pattern repositories no longer need the `common` directory, making them much smaller.
+* *Centralized Updates:* When we fix a bug or add a feature to the common logic, we update it in one place. The changes are automatically available to all patterns using the new Makefile—no more updating dozens of repos!
+* *Simpler Makefiles:* Most patterns now only need a single line in their Makefile: `include Makefile-common`.
+
+=== The Adjustment: Discoverability
+
+One change to be aware of is *discoverability*. Without a local `common` directory full of scripts, it may not be immediately obvious which `make` targets exist or which environment variables you can tweak.
+
+We've solved this in two ways:
+
+. *Built-in docs:* Every `Makefile-common` includes a link back to this post, so the reference is always at your fingertips.
+. *`make help` target:* Run `./pattern.sh make help` to see the list of available targets directly in your terminal.
+
+== Getting Started with the New Structure
+
+Adopting the new approach is straightforward whether you're bootstrapping a brand-new pattern repository or upgrading an existing one.
+
+=== New repositories
+
+. From the root of your repo, run:
++
+[source,bash]
+----
+podman run -v "$PWD:/repo:z" quay.io/validatedpatterns/patternizer init
+----
++
+Add secrets scaffolding at any time with:
++
+[source,bash]
+----
+podman run -v "$PWD:/repo:z" quay.io/validatedpatterns/patternizer init --with-secrets
+----
+. Review the changes (`values-*.yaml`, `pattern.sh`, `Makefile`, `Makefile-common`), then commit.
+. Try it out:
++
+[source,bash]
+----
+./pattern.sh make show
+----
++
+[source,bash]
+----
+./pattern.sh make install
+----
+
+=== Existing repositories
+
+Move from the legacy `common` structure to the new Makefile-driven setup with a single command:
+
+[source,bash]
+----
+podman run -v "$PWD:/repo:z" quay.io/validatedpatterns/patternizer upgrade
+----
+
+What this does:
+* Removes `common` (if present)
+* Removes `./pattern.sh` (symlink or file), then copies the latest script
+* Copies `Makefile-common` to the repo root
+* Updates your `Makefile`:
+** If it already contains `include Makefile-common`, it is left unchanged
+** If it exists but lacks the include, the include is prepended to the first line
+** If it doesn't exist, a default `Makefile` is created
+
+If you prefer to fully replace your `Makefile` with the default version, run:
+
+[source,bash]
+----
+podman run -v "$PWD:/repo:z" quay.io/validatedpatterns/patternizer upgrade --replace-makefile
+----
+
+After upgrading, commit the changes and use the targets described below (for example, `./pattern.sh make show` or `./pattern.sh make install`).
+
+== Using `Makefile-common`
+
+Patterns shipped without the `common` dir now have a `Makefile-common` that provides consistent developer and user targets.
+
+=== How commands are executed
+
+All targets are thin wrappers around ansible playbooks defined in link:https://github.com/validatedpatterns/rhvp.cluster_utils[rhvp.cluster_utils]. By default, `ANSIBLE_STDOUT_CALLBACK` is set to `null` which means all of the noise from ansible is suppressed. If you need it, set that variable in your environment `export ANSIBLE_STDOUT_CALLBACK=default` or just directly use it as part of calling the make targets (`ANSIBLE_STDOUT_CALLBACK=default ./pattern.sh make <target>`).
+
+When you are getting started with secrets it can be difficult to debug what may be wrong in your secret values files. To aid debugging, you could try running:
+
+[source,bash]
+----
+ANSIBLE_STDOUT_CALLBACK=default EXTRA_PLAYBOOK_OPTS='-e hide_sensitive_output="false" -vvv' ./pattern.sh make load-secrets
+----
+
+IMPORTANT: *DO NOT* do this in CI environments as it will expose your secrets...Also, for auto-generated secrets they will be different each time you run that command.
+
+=== Overriding variables
+
+All pattern settings can be overridden in *two ways*:
+
+. *Ansible variable*
++
+Via the env var `EXTRA_PLAYBOOK_OPTS`, e.g.:
++
+[source,bash]
+----
+EXTRA_PLAYBOOK_OPTS="-e target_branch=myfeature -e target_origin=upstream" ./pattern.sh make show
+----
+. *Environment variable*
++
+[source,bash]
+----
+TARGET_BRANCH=myfeature TARGET_ORIGIN=upstream ./pattern.sh make show
+----
+
+*Precedence:*
+`-e var=value` (CLI/inventory) → environment variables → defaults.
+
+== Targets
+
+[[make-show]]
+=== `make show`
+
+Renders the Helm template of the link:https://github.com/validatedpatterns/pattern-install-chart[pattern-install chart] to show the manifests that would be applied by <<make-install,`make install`>>.
+
+WARNING: It does *not* render the namespaces, subscriptions, and projects managed by the Patterns Operator via the clustergroup-chart. It only shows:
+
+* the Patterns Operator subscription and associated configmap
+* the `Pattern` CR which enables installation of the pattern
+
+==== Overrides
+
+[cols="2,2,4,2"]
+|===
+| Ansible var | Environment var | Purpose | Default
+
+| `pattern_dir`
+| `PATTERN_DIR`
+| Directory containing the pattern repo to be shown/installed
+| current working directory
+
+| `pattern_name`
+| `PATTERN_NAME`
+| Name for the Helm release / Pattern CR
+| basename of `pattern_dir`
+
+| `pattern_install_chart`
+| `PATTERN_INSTALL_CHART`
+| OCI URL for the install chart
+| `oci://quay.io/validatedpatterns/pattern-install`
+
+| `target_branch`
+| `TARGET_BRANCH`
+| Git branch used for the repo
+| `git rev-parse --abbrev-ref HEAD`
+
+| `target_origin`
+| `TARGET_ORIGIN`
+| Git remote for the branch
+| `git config branch.<branch>.remote`
+
+| `target_clustergroup`
+| `TARGET_CLUSTERGROUP`
+| Which clustergroup to install (if different from `main.clusterGroupName` in values-global.yaml)
+| value of `main.clusterGroupName` in values-global.yaml
+
+| `token_secret`
+| `TOKEN_SECRET`
+| Secret name for private repos (link:https://validatedpatterns.io/blog/2023-12-20-private-repos/[docs])
+| empty
+
+| `token_namespace`
+| `TOKEN_NAMESPACE`
+| Namespace of the secret
+| empty
+
+| `extra_helm_opts`
+| `EXTRA_HELM_OPTS`
+| Extra args to pass to `helm template`
+| empty
+
+| `uuid_file`
+| `UUID_FILE`
+| Path to a file containing a UUID used for analytics. Ensures team-internal deploys can be filtered from external ones. Users generally do not need to override this.
+| `~/.config/validated-patterns/pattern-uuid` if exists, otherwise unset
+|===
+
+[[make-operator-deploy]]
+=== `make operator-deploy`
+
+Performs validations and applies the manifests rendered by <<make-show,`make show`>> to your cluster.
+
+The <<make-install,`make install`>> target is usually preferred for new installs, since it also handles secret loading.
+The primary use case for `operator-deploy` is updating an existing pattern to point to a different git repo, revision, or origin—without refreshing secrets.
+
+==== Overrides
+
+Same as <<make-show,`make show`>> plus:
+
+[cols="2,2,4,1"]
+|===
+| Ansible var | Environment var | Purpose | Default
+
+| `disable_validate_origin`
+| `DISABLE_VALIDATE_ORIGIN`
+| Whether git origin reachability should be validated
+| false
+|===
+
+[[make-install]]
+=== `make install`
+
+Identical to <<make-operator-deploy,`make operator-deploy`>> up through applying the pattern manifests.
+Afterward, if `global.secretLoader.disabled` is *not set* or is `false` in `values-global.yaml`, this target also runs <<make-load-secrets,`make load-secrets`>>.
+
+* If your pattern doesn't use secrets, this is functionally identical to `operator-deploy`.
+* If your pattern does use secrets, `install` ensures they are loaded into Vault in the cluster.
+
+==== Overrides
+
+Same as <<make-operator-deploy,`make operator-deploy`>>.
+
+=== `make validate-prereq`
+
+Validates prerequisites needed for installation:
+
+* Confirms the `pattern_name` matches the value in `values-global.yaml`
+* On host: checks for `python-kubernetes` and the `kubernetes.core` Ansible collection
+* In container: ensures `.main.multiSourceConfig.enabled` is set to `true` in `values-global.yaml`
+
+Typically run as part of `make install`/`make operator-deploy` but can be invoked manually.
+
+=== `make validate-origin`
+
+Ensures the pattern's git origin and branch are reachable.
+Invoked automatically during install unless explicitly disabled, but can also be run standalone.
+
+=== `make validate-cluster`
+
+Ensures you are logged into an OpenShift cluster and that a storage class is available.
+This prevents failed installs due to missing cluster prerequisites.
+Invoked automatically during install but may be run manually for a quick sanity check.
+
+[[make-load-secrets]]
+=== `make load-secrets`
+
+Loads secrets into Vault in the cluster if `global.secretLoader.disabled` is not set or is `false`.
+Run automatically as part of <<make-install,`make install`>>, but can also be run independently if you need to reload secrets.
+
+== Wrapping Up
+
+By retiring the `common` directory, we've eliminated duplication and made every pattern repo smaller, simpler, and easier to maintain.
+
+With a single, centralized Makefile:
+* Updates flow automatically across all patterns
+* Repositories stay lean and uncluttered
+* Developers get a consistent, predictable experience
+
+Ready to try it? Run:
+
+[source,bash]
+----
+podman run -v "$PWD:/repo:z" quay.io/validatedpatterns/patternizer upgrade
+----
+
+and commit the changes. Your repo will instantly be on the new path.
