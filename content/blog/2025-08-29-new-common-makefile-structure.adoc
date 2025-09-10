@@ -46,6 +46,8 @@ This new approach has several key advantages:
 * *Centralized Updates:* When we fix a bug or add a feature to the common logic, we update it in one place. The changes are automatically available to all patterns using the new Makefile—no more updating dozens of repos!
 * *Simpler Makefiles:* Most patterns now only need a single line in their Makefile: `include Makefile-common`.
 
+TIP: You can always set the environment variable `PATTERN_UTILITY_CONTAINER` inside or outside of pattern.sh to a specific semver tag to manually control the updates. (For example, you can set it to `quay.io/validatedpatterns/utility-container:v1.0.0`.)
+
 === The Adjustment: Discoverability
 
 One change to be aware of is *discoverability*. Without a local `common` directory full of scripts, it may not be immediately obvious which `make` targets exist or which environment variables you can tweak.
