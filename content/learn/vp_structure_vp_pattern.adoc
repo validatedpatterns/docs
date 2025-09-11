@@ -14,12 +14,12 @@ include::modules/comm-attributes.adoc[]
 
 == Creating a validated pattern
 
-The high level steps to create a validated pattern are as follows: 
+The high level steps to create a validated pattern are as follows:
 
-1. Identify the business case you want to address.  
-2. Use the Multicloud GitOps as a starting point by using the template to create a new Git repository in your local GitHub account.  
-3. Identify the technology components that you need.   
-4. Ensure that the configuration of those components, and the integration points are handled in the pattern.  
+1. Identify the business case you want to address.
+2. Use the Multicloud GitOps as a starting point by using the template to create a new Git repository in your local GitHub account.
+3. Identify the technology components that you need.
+4. Ensure that the configuration of those components, and the integration points are handled in the pattern.
 
 == Best Practices for creating Validated Patterns
 
@@ -29,7 +29,7 @@ Following these best practices, to create robust, scalable, and maintainable val
     - When creating a validated pattern, begin with OpenShift Multicloud GitOps as your foundation. This is the most fundamental pattern and should serve as your base.
 
 2. **Centralize all manifests in a Git Repository**
-   - Ensure that all pattern manifests, configuration files, and desired state definitions are stored in a Git repository. This provides a single source of truth and facilitates the use of GitOps for deployment. 
+   - Ensure that all pattern manifests, configuration files, and desired state definitions are stored in a Git repository. This provides a single source of truth and facilitates the use of GitOps for deployment.
 
 3. **Include all necessary deployment resources**
    - The Git repository should include everything required to deploy the pattern, including manifests, configuration, and any additional resources. Avoid relying on manual commands post-deployment; instead, incorporate these into the manifests.
@@ -50,7 +50,7 @@ Following these best practices, to create robust, scalable, and maintainable val
    - The pattern should be capable of deploying all necessary resources to support the applications it includes. This means that once the pattern is applied, no additional manual steps should be required.
 
 9. **Plan for cluster sizing and storage needs**
-   - Before deploying a pattern, review its cluster sizing and storage requirements. For instance, patterns using Red Hat OpenShift Data Foundation (ODF) may require substantial storage resources. Consult pattern documentation for accurate sizing.
+   - Before deploying a pattern, review its cluster sizing and storage requirements. For instance, patterns using Red Hat OpenShift Data Foundation (ODF) may require substantial storage resources. Consult pattern documentation for accurate sizing. (Modified line)
 
 10. **Customize and fork patterns appropriately**
    - When extending a pattern or deploying it at a customer site, create a personal or organizational fork. This allows for experimentation and customization while facilitating potential contributions back to the upstream pattern repository.
@@ -63,3 +63,6 @@ Following these best practices, to create robust, scalable, and maintainable val
 
 13. **Secure secrets across deployments**
     - Utilize tools such as Hashicorp Vault to manage secrets securely across multi-cloud deployments, ensuring sensitive data is protected.
+
+14. **Document thoroughly**
+    - Provide comprehensive documentation for your pattern. Pattern comes with deployment instructions, configuration options, and troubleshooting tips. This aids users in understanding and effectively utilizing the pattern. Log into the server.

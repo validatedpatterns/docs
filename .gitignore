@@ -16,4 +16,4 @@ Gemfile.lock
 .idea
 .vale
 modules/.vale.ini
-.vale.ini
+.vale

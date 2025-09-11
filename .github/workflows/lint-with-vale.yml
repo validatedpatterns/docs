@@ -1,0 +1,132 @@
+---
+name: Lint with Vale on pull requests
+on:
+  pull_request:
+    paths:
+      - "**.adoc"
+      - "**.md"
+      - content/learn/**
+      - content/patterns/**
+      - content/contribute/**
+      - modules/**
+jobs:
+  vale-lint:
+    name: Linting with Vale
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 3
+      - name: Install dependencies
+        run: >
+          sudo DEBIAN_FRONTEND=noninteractive apt-get update
+
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-upgrade asciidoctor jq
+      - name: Install Vale
+        run: >
+          wget -O vale.tar.gz
+          https://github.com/errata-ai/vale/releases/download/v3.12.0/vale_3.12.0_Linux_64-bit.tar.gz
+
+          tar -xzf vale.tar.gz
+
+          sudo mv vale /usr/local/bin/
+
+          vale --version
+      - name: Run Vale linting script
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: >
+          set +e
+
+          ./.github/workflows/scripts/lintwithvale.sh \
+            "${{ github.event.pull_request.base.sha }}" \
+            "${{ github.event.pull_request.head.sha }}" || {
+            echo "⚠️ Vale linting script encountered an error, but workflow will continue."
+          }
+
+          exit 0
+      - name: Prepare and post/update PR comment
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.VALE_GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BOT_USERNAME: ocpdocs-previewbot
+        run: |
+          set -e
+          echo "Reading summary JSON..."
+          if [ ! -f vale_summary.json ]; then
+            echo "No vale_summary.json produced; skipping comment."
+            exit 0
+          fi
+          cat vale_summary.json
+          HAS_ERRORS=$(jq -r '.has_errors' vale_summary.json)
+          ERROR_COUNT=$(jq -r '.error_count' vale_summary.json)
+
+          # Find existing comment id (authored by bot and heading match)
+          EXISTING_ID=$(curl -s -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments?per_page=100" | \
+            jq -r --arg bot "$BOT_USERNAME" '[.[] | select(.user.login==$bot) | select(.body | startswith("### 📝 Vale Linting Results"))][0].id')
+          echo "Existing comment id: ${EXISTING_ID:-none}"
+
+          if [ "$HAS_ERRORS" = "true" ]; then
+            if [ -n "$EXISTING_ID" ] && [ "$EXISTING_ID" != "null" ]; then
+              COMMENT_FILE=vale_comment_errors_updated.md
+            else
+              COMMENT_FILE=vale_comment_errors_new.md
+            fi
+            if [ ! -f "$COMMENT_FILE" ]; then
+              echo "Expected $COMMENT_FILE not found; skipping."; exit 0
+            fi
+            BODY=$(jq -Rs . < "$COMMENT_FILE")
+            if [ -n "$EXISTING_ID" ] && [ "$EXISTING_ID" != "null" ]; then
+              echo "Updating existing Vale comment with $ERROR_COUNT errors"
+              curl -s -X PATCH \
+                -H "Authorization: token $GITHUB_TOKEN" \
+                -H "Accept: application/vnd.github.v3+json" \
+                -H "Content-Type: application/json" \
+                -d "{\"body\": $BODY}" \
+                "https://api.github.com/repos/$REPO/issues/comments/$EXISTING_ID" > /dev/null || true
+            else
+              echo "Creating new Vale comment with $ERROR_COUNT errors"
+              curl -s -X POST \
+                -H "Authorization: token $GITHUB_TOKEN" \
+                -H "Accept: application/vnd.github.v3+json" \
+                -H "Content-Type: application/json" \
+                -d "{\"body\": $BODY}" \
+                "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments" > /dev/null || true
+            fi
+          else
+            # No errors: only update an existing comment if present
+            if [ -n "$EXISTING_ID" ] && [ "$EXISTING_ID" != "null" ]; then
+              if [ -f vale_comment_clean_updated.md ]; then
+                BODY=$(jq -Rs . < vale_comment_clean_updated.md)
+                echo "Updating existing Vale comment to clean state"
+                curl -s -X PATCH \
+                  -H "Authorization: token $GITHUB_TOKEN" \
+                  -H "Accept: application/vnd.github.v3+json" \
+                  -H "Content-Type: application/json" \
+                  -d "{\"body\": $BODY}" \
+                  "https://api.github.com/repos/$REPO/issues/comments/$EXISTING_ID" > /dev/null || true
+              else
+                echo "Clean updated comment file missing; skipping update."
+              fi
+            else
+              echo "No existing comment and no errors => skipping comment creation (per requirements)."
+            fi
+          fi
+      - name: Workflow summary
+        if: always()
+        run: >
+          echo "✅ Vale linting workflow completed"
+
+          echo "📋 This workflow is configured to always pass, regardless of linting results"
+
+          echo "🔍 Check the previous step logs for Vale linting details"
+
+          echo "💬 For PR comment see earlier steps."
