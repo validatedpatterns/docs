@@ -393,7 +393,42 @@ echo &#34;http://$(oc -n openshift-storage get route s3-rgw -ojsonpath=&#39;{.sp
 There should appear form Deploy model. Fill all the inputs like in following images and then click Deploy button:
 If everything is setup correctly go to tab Models again to check status of TGI. It should be looking like this:
 RAG Chat demo After whole setup is complete demo application is ready to use. Chat QnA UI address can be obtained by running following command:
-echo &#34;http://$(oc -n gaudi-llm get route chatqna-gaudi-ui-server -ojsonpath=&#39;{.spec.host}&#39;)&#34; `,url:"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-getting-started/",breadcrumb:"/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-getting-started/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-getting-started/":{title:"Getting started",tags:[],content:` Deploying the MLOps Fraud Detection pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
+echo &#34;http://$(oc -n gaudi-llm get route chatqna-gaudi-ui-server -ojsonpath=&#39;{.spec.host}&#39;)&#34; `,url:"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-getting-started/",breadcrumb:"/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-getting-started/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-getting-started/":{title:"Getting started",tags:[],content:`Deploying the Layered Zero Trust pattern Follow these instructions to configure and deploy the Layered Zero Trust pattern.
+Prerequisites An OpenShift Container Platform cluster with publicly signed certificates for Ingress
+A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
+Access to Podman (or Docker) for execution of the container images used by pattern.sh script for provisioning.
+Useful additions:
+The Helm binary, for instructions, see Installing Helm
+Additional installation tool dependencies. For details, see Patterns quick start.
+Repository setup Follow these instructions for setting up the project repository:
+Fork the layered-zero-trust repository from GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
+Clone your forked repository.
+$ git clone git@github.com:&lt;your_username&gt;/layered-zero-trust.git Go to your repository: Ensure you are in the root directory of your Git repository by using the following command:
+$ cd &lt;/path_to_your_repository&gt; Set up upstream remote repository:
+$ git remote add -f upstream git@github.com/validatedpatterns/layered-zero-trust.git Verify the setup of your remote repositories by running the following command:
+$ git remote -v Example output:
+origin git@github.com:&lt;your_username&gt;/layered-zero-trust.git (fetch) origin git@github.com:&lt;your_username&gt;/layered-zero-trust.git (push) upstream https://github.com/validatedpatterns/layered-zero-trust.git (fetch) upstream https://github.com/validatedpatterns/layered-zero-trust.git (push) Create a local copy of the secret values file that can safely include credentials. Run the following command:
+$ cp values-secret.yaml.template ~/values-secret-layered-zero-trust.yaml To prevent pushing secrets to your Git repository, the command places the values-secret.yaml file in your home directory. You derive this file from the values-secrets.yaml.template file located in the pattern’s top-level directory. When you create new patterns, add your secrets to the values-secret.yaml file in your home directory.
+Create a new feature branch, for example my-branch from the main branch for your content:
+$ git checkout -b my-branch main (Optional) To customize the execution of the pattern, optionally change the Helm values files and then commit the changes.
+$ git add &lt;files_you_changed&gt; $ git commit -m &#34;Pattern customization&#34; The following configuration files define the behavior and settings of the various components in the Layered Zero Trust pattern. You can customize these files to fit your specific deployment needs.
+values-global.yaml: Global pattern configuration
+values-hub.yaml: Hub cluster specific configuration
+values-secret.yaml: Secret values (created from template)
+values-&lt;environment&gt;.yaml: Environment-specific overrides (AWS, Azure, GCP)
+Push the changes from your local branch to your forked repository.
+$ git push origin my-branch Deploying the pattern by using the pattern.sh file Deploy the Layered Zero Trust pattern by using the pattern.sh script.
+Login to your OpenShift Container Platform cluster:
+By using the oc CLI:
+Get an API token by visiting https://oauth-openshift.apps../oauth/token/request.
+Log in with the retrieved token:
+$ oc login --token=&lt;retrieved_token&gt; --server=https://api.&lt;your_cluster&gt;.&lt;domain&gt;:6443 By using KUBECONFIG:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Run the pattern deployment script:
+$ ./pattern.sh make install Verify the deployment You can use the OpenShift Container Platform console and ArgoCD applications to verify the deployment.
+In the OpenShift Container Platform web console, navigate to the Operators → Installed Operators page.
+Check that Red Hat OpenShift GitOps Operator is installed in the openshift-operators namespace and its status is Succeeded.
+Use the Application Launcher within the OpenShift Container Platform console to confirm that all applications have synchronized successfully to both Hub and Cluster Argo CD instances.
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-getting-started/",breadcrumb:"/patterns/layered-zero-trust/lzt-getting-started/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-getting-started/":{title:"Getting started",tags:[],content:` Deploying the MLOps Fraud Detection pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
 A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 For installation tooling dependencies, see Patterns quick start.
 The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern there is no dedicated Hub / Edge cluster for the MLOps Fraud Detection pattern. This single node pattern can be extend as a managed cluster(s) to a central hub.
@@ -4671,7 +4706,48 @@ Please give it a try and don’t hesitate to ask for features or report bugs on 
 `,url:"https://validatedpatterns.io/blog/2025-07-24-introducing-patternizer/",breadcrumb:"/blog/2025-07-24-introducing-patternizer/"},"https://validatedpatterns.io/patterns/gpfs-tester/":{title:"GPFS Tester",tags:[],content:` This pattern is under development.
 For more information, refer to the GPFS git repository
 `,url:"https://validatedpatterns.io/patterns/gpfs-tester/",breadcrumb:"/patterns/gpfs-tester/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/blog/2025-06-10-rag-llm-gitops-configuration/":{title:"How to Configure the RAG-LLM GitOps Pattern for Your Use Case",tags:[],content:` Overview The RAG-LLM GitOps pattern provides several configuration options that allow you to tailor your deployment to specific workloads and environments. While nearly every setting exposed in the values files is adjustable, in practice, most users will focus on a few core areas:
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/layered-zero-trust/":{title:"Layered Zero Trust",tags:[],content:`About the Layered Zero Trust pattern Zero trust is an approach to designing security architectures based on the premise that every interaction begins in an untrusted state. The Layered Zero Trust pattern describes how to implement a zero trust architecture in a Red Hat OpenShift Container Platform environment. The pattern identifies specific transactions between an actor and a resource within the environment. For these transactions, you can identify the context and implement policy enforcement.
+Because of the breadth and diversity of possible interactions between components in OpenShift Container Platform, this pattern is presented as a set of abstract, stackable layers. These layers provide the prerequisite capabilities that are needed to implement appropriate enforcement points. For each instance, this pattern describes the associated actors, transactions, and the zero trust policy that you can implement within the platform. To provide context for users, this pattern uses relevant business use cases and traces them to the associated implementation components.
+Use case The pattern addresses the shortcomings of traditional cybersecurity methods, such as defensive hardening and reactive detection. It is particularly effective for the following types of systems and environments:
+Distributed systems, such as cloud and edge environments.
+Autonomous and artificial intelligence (AI) or machine learning (ML) based systems, including robotic process automation.
+Large, composite systems that integrate third-party or legacy components.
+This pattern provides specific implementations for each of these business use cases within its abstract, layered structure.
+Background Traditional security approaches are often incomplete, as they are susceptible to unknown exploits (zero-days) and rely on human-intensive processes that can be inconsistent and prone to error. Attackers continuously develop new methods to evade signature-based detection and exploit systems by targeting those already deemed trustworthy.
+In contrast, the Zero Trust architecture operates from the assumption that a breach will occur. It focuses on preventing further compromise by establishing well-defined security boundaries and enforcing a deny-all default access control stance. The pattern emphasizes significant automation and grants access dynamically, based on policies, with a least-privilege, as-needed approach. Instead of relying on signatures, it explicitly enumerates allowed actors and monitors their behavior, which is a more effective way to contain malicious activity. Zero Trust architectures incorporate contextual information and user behavior analytics to inform access decisions, proactively preventing lateral movement in case of a compromise.
+About the solution The Layered Zero Trust pattern implements a layered zero trust architecture that shows workload identity management, secure communication, and secret management capabilities.
+The solution integrates many Red Hat components to offer:
+Workload identity using Secure Production Identity Framework for Everyone (SPIFFE) and SPIFFE Runtime Environment (SPIRE) standards.
+Secure secret management through HashiCorp Vault.
+Identity and access management by using the Red Hat build of Keycloak (RHBK).
+Certificate management for secure communications.
+External secret management integration.
+Architecture The Layered Zero Trust pattern architecture consists of many components that work together to offer a secure environment for applications and workloads.
+The pattern consists of the following key components:
+Zero Trust Workload Identity Manager: Implements workload identity using SPIFFE/SPIRE.
+HashiCorp Vault: Provides secure secret storage and management.
+Red Hat build of Keycloak (RHBK): Manages identity and access for users and services.
+OpenShift Cert Manager: Manages the lifecycle of certificates for secure communication.
+External Secrets Operator: Synchronizes secrets from external systems into the cluster.
+QTodo application: Serves as a Quarkus-based application to show zero trust principles.
+PostgreSQL database: Provides the backend database for the demonstration application.
+Sidecar pattern The sidecar pattern is a deployment model where a separate container or process, called a sidecar, runs alongside a main application to handle auxiliary tasks. In an OpenShift Container Platform environment, this is simplified through the use of pods, which ensure the sidecar and main application share the same lifecycle. This approach is highly beneficial for Zero Trust architectures because it allows for the centralized enforcement of security policies, such as authentication, authorization, traffic encryption (mTLS), rate limiting, auditing, and logging, without requiring developers to build this logic into every microservice. It separates concerns, simplifies development, and allows security policies to be updated independently of the main application.
+While sidecars are often criticized for adding complexity and resource usage, the text argues these are often misconceptions:
+Complexity: Sidecars simplify the main application by offloading tasks, and modern platforms, such as OpenShift Container Platform, are designed to manage them efficiently.
+Resource Usage: The resource cost of a sidecar is often minimal compared to the additional CPU and memory required to integrate security logic into every application.
+Debugging: Sidecars can simplify debugging by isolating logs and metrics from the main application, making it easier to pinpoint the source of a policy failure.
+The Layered Zero Trust pattern makes extensive use of the sidecar approach to achieve its goals by offloading critical security functions from the main application. This provides significant benefits by centralizing policy enforcement, simplifying development, and separating security concerns. The specific sidecar patterns used in this approach handle tasks, such as, authentication and authorization, traffic encryption, rate limiting, and auditing and logging.
+About the technology The following technologies are used in this solution:
+Zero Trust Workload Identity Manager: Implements workload identity using SPIFFE/SPIRE.
+HashiCorp Vault: Provides secure secret storage and management.
+Red Hat build of Keycloak (RHBK): Manages identity and access for users and services.
+Red Hat OpenShift GitOps: A GitOps continuous delivery (CD) solution based on ArgoCD
+OpenShift Cert Manager: Manages the lifecycle of certificates for secure communication.
+External Secrets Operator: Synchronizes secrets from external systems into the cluster.
+Compliance Operator: Provides ability to scan and remediate cluster hardening based on profiles
+QTodo application: Serves as a sample Quarkus-based application to show zero trust principles.
+PostgreSQL database: Provides the backend database for the demonstration application.
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/",breadcrumb:"/patterns/layered-zero-trust/"},"https://validatedpatterns.io/blog/2025-06-10-rag-llm-gitops-configuration/":{title:"How to Configure the RAG-LLM GitOps Pattern for Your Use Case",tags:[],content:` Overview The RAG-LLM GitOps pattern provides several configuration options that allow you to tailor your deployment to specific workloads and environments. While nearly every setting exposed in the values files is adjustable, in practice, most users will focus on a few core areas:
 Choosing and configuring the RAG database (vector store) backend
 Setting up document sources for populating the RAG DB
 Selecting models for embedding and LLM inference
