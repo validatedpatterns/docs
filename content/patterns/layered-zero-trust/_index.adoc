@@ -1,0 +1,116 @@
+---
+title: Layered Zero Trust
+date: 2025-06-11
+tier: sandbox
+summary: Layered Zero Trust demonstrates how to operationalize Zero Trust security principles when using products in the Red Hat Portfolio.
+rh_products:
+- Red Hat OpenShift Container Platform
+industries:
+aliases: /layered-zero-trust/
+links:
+  github: https://github.com/validatedpatterns/layered-zero-trust/
+  install: https://github.com/validatedpatterns/layered-zero-trust/?tab=readme-ov-file#getting-started
+  bugs: https://github.com/validatedpatterns/layered-zero-trust/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+ci: layeredzerotrust
+---
+
+
+:toc:
+:imagesdir: /images
+:_mod-docs-content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="about-lzt-pattern"]
+= About the Layered Zero Trust pattern
+
+link:https://www.redhat.com/en/topics/security/what-is-zero-trust[Zero trust] is an approach to designing security architectures based on the premise that every interaction begins in an untrusted state.
+The Layered Zero Trust pattern describes how to implement a zero trust architecture in a {rh-ocp} environment.
+The pattern identifies specific transactions between an actor and a resource within the environment.
+For these transactions, you can identify the context and implement policy enforcement.
+
+Because of the breadth and diversity of possible interactions between components in {ocp}, this pattern is presented as a set of abstract, stackable layers.
+These layers provide the prerequisite capabilities that are needed to implement appropriate enforcement points.
+For each instance, this pattern describes the associated actors, transactions, and the zero trust policy that you can implement within the platform. To provide context for users, this pattern uses relevant business use cases and traces them to the associated implementation components.
+
+Use case::
+The pattern addresses the shortcomings of traditional cybersecurity methods, such as defensive hardening and reactive detection.
+It is particularly effective for the following types of systems and environments:
+
+* Distributed systems, such as cloud and edge environments.
+* Autonomous and artificial intelligence (AI) or machine learning (ML) based systems, including robotic process automation.
+* Large, composite systems that integrate third-party or legacy components.
+
+This pattern provides specific implementations for each of these business use cases within its abstract, layered structure.
+
+Background::
+
+Traditional security approaches are often incomplete, as they are susceptible to unknown exploits (zero-days) and rely on human-intensive processes that can be inconsistent and prone to error.
+Attackers continuously develop new methods to evade signature-based detection and exploit systems by targeting those already deemed trustworthy.
+
+In contrast, the Zero Trust architecture operates from the assumption that a breach will occur.
+It focuses on preventing further compromise by establishing well-defined security boundaries and enforcing a deny-all default access control stance.
+The pattern emphasizes significant automation and grants access dynamically, based on policies, with a least-privilege, as-needed approach.
+Instead of relying on signatures, it explicitly enumerates allowed actors and monitors their behavior, which is a more effective way to contain malicious activity.
+Zero Trust architectures incorporate contextual information and user behavior analytics to inform access decisions, proactively preventing lateral movement in case of a compromise.
+
+[id="about-solution"]
+== About the solution
+
+The Layered Zero Trust pattern implements a layered zero trust architecture that shows workload identity management, secure communication, and secret management capabilities.
+
+The solution integrates many Red{nbsp}Hat components to offer:
+
+* Workload identity using Secure Production Identity Framework for Everyone (SPIFFE) and SPIFFE Runtime Environment (SPIRE) standards.
+* Secure secret management through HashiCorp Vault.
+* Identity and access management by using the Red{nbsp}Hat build of Keycloak (RHBK).
+* Certificate management for secure communications.
+* External secret management integration.
+
+[id="architecture"]
+=== Architecture
+
+The Layered Zero Trust pattern architecture consists of many components that work together to offer a secure environment for applications and workloads.
+
+The pattern consists of the following key components:
+
+. Zero Trust Workload Identity Manager: Implements workload identity using SPIFFE/SPIRE.
+. HashiCorp Vault: Provides secure secret storage and management.
+. Red{nbsp}Hat build of Keycloak (RHBK): Manages identity and access for users and services.
+. OpenShift Cert Manager: Manages the lifecycle of certificates for secure communication.
+. External Secrets Operator: Synchronizes secrets from external systems into the cluster.
+. QTodo application: Serves as a Quarkus-based application to show zero trust principles.
+. PostgreSQL database: Provides the backend database for the demonstration application.
+
+[id="sidecar-pattern"]
+==== Sidecar pattern
+
+The sidecar pattern is a deployment model where a separate container or process, called a sidecar, runs alongside a main application to handle auxiliary tasks.
+In an {ocp} environment, this is simplified through the use of pods, which ensure the sidecar and main application share the same lifecycle.
+This approach is highly beneficial for Zero Trust architectures because it allows for the centralized enforcement of security policies, such as authentication, authorization, traffic encryption (mTLS), rate limiting, auditing, and logging, without requiring developers to build this logic into every microservice.
+It separates concerns, simplifies development, and allows security policies to be updated independently of the main application.
+
+While sidecars are often criticized for adding complexity and resource usage, the text argues these are often misconceptions:
+
+* *Complexity*: Sidecars simplify the main application by offloading tasks, and modern platforms, such as {ocp}, are designed to manage them efficiently.
+* *Resource Usage*: The resource cost of a sidecar is often minimal compared to the additional CPU and memory required to integrate security logic into every application.
+* *Debugging*: Sidecars can simplify debugging by isolating logs and metrics from the main application, making it easier to pinpoint the source of a policy failure.
+
+The Layered Zero Trust pattern makes extensive use of the sidecar approach to achieve its goals by offloading critical security functions from the main application.
+This provides significant benefits by centralizing policy enforcement, simplifying development, and separating security concerns.
+The specific sidecar patterns used in this approach handle tasks, such as,  authentication and authorization, traffic encryption, rate limiting, and auditing and logging.
+
+[id="about-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+* *Zero Trust Workload Identity Manager*: Implements workload identity using SPIFFE/SPIRE.
+* *HashiCorp Vault*: Provides secure secret storage and management.
+* *Red{nbsp}Hat build of Keycloak (RHBK)*: Manages identity and access for users and services.
+* *{rh-gitops}*: A GitOps continuous delivery (CD) solution based on ArgoCD
+* *OpenShift Cert Manager*: Manages the lifecycle of certificates for secure communication.
+* *External Secrets Operator*: Synchronizes secrets from external systems into the cluster.
+* *Compliance Operator*: Provides ability to scan and remediate cluster hardening based on profiles
+* *QTodo application*: Serves as a sample Quarkus-based application to show zero trust principles.
+* *PostgreSQL database*: Provides the backend database for the demonstration application.
