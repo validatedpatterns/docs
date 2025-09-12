@@ -1,0 +1,171 @@
+---
+title: Getting started
+weight: 10
+aliases: /layered-zero-trust/lzt-getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="lzt-deploying-lzt-pattern"]
+= Deploying the Layered Zero Trust pattern
+
+Follow the instructions in this section to configure and deploy the Layered Zero Trust pattern.
+
+.Prerequisites
+
+* An OpenShift cluster with publicly signed certificates for Ingress
+* A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
+* Access to podman (or docker) for execution of the container images used by `pattern.sh` script for provisioning.
+* Useful additions:
+
+** The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm]
+** Additional installation tool dependencies. For details, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
+
+[id="lzt-repository-setup"]
+== Repository setup
+
+Follow these instructions for setting up the project repository:
+
+. Fork the layered-zero-trust repository from GitHub. You must fork the
+repository because your fork is updated as part of the GitOps and DevOps
+processes.
+. Clone your forked repository.
++
+[source,terminal]
+----
+$ git clone git@github.com:<your-username>/layered-zero-trust.git
+----
+
+. Go to your repository: Ensure you are in the root directory of your
+Git repository by using the following command:
++
+[source,terminal]
+----
+$ cd </path/to/your/repository>
+----
+
+. Set up upstream remote repository:
++
+[source,terminal]
+----
+$ git remote add -f upstream git@github.com/validatedpatterns/layered-zero-trust.git
+----
+
+. Verify the setup of your remote repositories by running the following
+command:
++
+[source,terminal]
+----
+$ git remote -v
+----
++
+Example output:
++
+[source,terminal]
+----
+origin  git@github.com:<your-username>/layered-zero-trust.git (fetch)
+origin  git@github.com:<your-username>/layered-zero-trust.git (push)
+upstream    https://github.com/validatedpatterns/layered-zero-trust.git (fetch)
+upstream    https://github.com/validatedpatterns/layered-zero-trust.git (push)
+----
+
+. Create a local copy of the secret values file that can safely include
+credentials. Run the following command:
++
+[source,terminal]
+----
+$ cp values-secret.yaml.template ~/values-secret-layered-zero-trust.yaml
+----
++
+[NOTE]
+====
+To prevent your secrets from being pushed to your Git repository,
+the command places the `values-secret.yaml` file in your home directory.
+This file is derived from the `values-secrets.yaml.template` file, which
+is located in the pattern’s top-level directory. When creating new
+patterns, you should add your secrets to the `values-secret.yaml` file
+in your home directory.
+====
+
+. Create a new feature branch, for example `my-branch` from the `main`
+branch for your content:
++
+[source,terminal]
+----
+$ git checkout -b my-branch main
+----
+
+. (Optional) To customize the execution of the pattern, optionally change
+the Helm values files and then commit the changes.
++
+[source,terminal]
+----
+$ git add <files-you-changed>
+$ git commit -m "Pattern customization"
+----
++
+[NOTE]
+====
+The following configuration files define the behavior and settings
+of the various components in the Layered Zero Trust pattern. You can
+customize these files to fit your specific deployment needs.
+
+* `values-global.yaml`: Global pattern configuration
+* `values-hub.yaml`: Hub cluster specific configuration
+* `values-secret.yaml`: Secret values (created from template)
+* `values-<environment>.yaml`: Environment-specific overrides (AWS, Azure, GCP)
+====
+
+. Push the changes from your local branch to your forked repository.
++
+[source,terminal]
+----
+$ git push origin my-branch
+----
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the pattern by using the pattern.sh file
+
+Deploy the Layered Zero Trust pattern using the `pattern.sh` script.
+
+. Login to your OpenShift cluster:
+
+.. By using the `oc` CLI:
+* Get an API token by visiting `pass:[https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request]`.
+* Log in with the retrieved token:
++
+[source,terminal]
+----
+$ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
+----
+
+.. By using KUBECONFIG:
++
+[source,terminal]
+----
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Run the pattern deployment script:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
+
+[id="lzt-verify-deployment"]
+=== Verify the deployment
+
+You can use the OpenShift console and ArgoCD applications to verify the
+deployment.
+
+. In the OpenShift web console, navigate to Operators → Installed
+Operators page.
+. Check that Red Hat OpenShift GitOps Operator is installed in the
+openshift-operators namespace and its status is Succeeded.
+. Use the Application Launcher within the OpenShift console to confirm
+that all applications have synchronized successfully to both Hub and
+Cluster Argo CD instances.
