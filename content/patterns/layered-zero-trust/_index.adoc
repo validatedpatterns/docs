@@ -1,6 +1,6 @@
 ---
 title: Layered Zero Trust
-date: 2025-06-11
+date: 2025-09-12
 tier: sandbox
 summary: Layered Zero Trust demonstrates how to operationalize Zero Trust security principles when using products in the Red Hat Portfolio.
 rh_products:
@@ -24,14 +24,15 @@ include::modules/comm-attributes.adoc[]
 [id="about-lzt-pattern"]
 = About the Layered Zero Trust pattern
 
-link:https://www.redhat.com/en/topics/security/what-is-zero-trust[Zero trust] is an approach to designing security architectures based on the premise that every interaction begins in an untrusted state.
-The Layered Zero Trust pattern describes how to implement a zero trust architecture in a {rh-ocp} environment.
-The pattern identifies specific transactions between an actor and a resource within the environment.
-For these transactions, you can identify the context and implement policy enforcement.
+link:https://www.redhat.com/en/topics/security/what-is-zero-trust[Zero trust] is an approach to security architecture based on the idea that every interaction starts in an untrusted state.
+The Layered Zero Trust pattern shows how to implement zero trust in a {rh-ocp} environment.
+The pattern identifies specific transactions between an actor and a resource.
+For these transactions, you can determine the context and enforce policies.
 
-Because of the breadth and diversity of possible interactions between components in {ocp}, this pattern is presented as a set of abstract, stackable layers.
+Because of the breadth and diversity of possible interactions between components in {rh-ocp}, this pattern is presented as a set of abstract, stackable layers.
 These layers provide the prerequisite capabilities that are needed to implement appropriate enforcement points.
-For each instance, this pattern describes the associated actors, transactions, and the zero trust policy that you can implement within the platform. To provide context for users, this pattern uses relevant business use cases and traces them to the associated implementation components.
+For each instance, this pattern describes the associated actors, transactions, and the zero-trust policy that you can implement within the platform.
+To provide context for users, this pattern uses relevant business use cases and traces them to the associated implementation components.
 
 Use case::
 The pattern addresses the shortcomings of traditional cybersecurity methods, such as defensive hardening and reactive detection.
@@ -85,20 +86,20 @@ The pattern consists of the following key components:
 [id="sidecar-pattern"]
 ==== Sidecar pattern
 
-The sidecar pattern is a deployment model where a separate container or process, called a sidecar, runs alongside a main application to handle auxiliary tasks.
-In an {ocp} environment, this is simplified through the use of pods, which ensure the sidecar and main application share the same lifecycle.
-This approach is highly beneficial for Zero Trust architectures because it allows for the centralized enforcement of security policies, such as authentication, authorization, traffic encryption (mTLS), rate limiting, auditing, and logging, without requiring developers to build this logic into every microservice.
+The sidecar pattern is a deployment model where a separate container or process, known as a sidecar, runs alongside the main application to handle auxiliary tasks.
+In an {ocp} environment, pods simplify this by ensuring the sidecar and main application share the same lifecycle.
+This approach benefits Zero Trust architectures by enabling centralized enforcement of security policies such as authentication, authorization, traffic encryption (mTLS), rate limiting, auditing, and logging, without requiring developers to add this logic to every microservice.
 It separates concerns, simplifies development, and allows security policies to be updated independently of the main application.
 
-While sidecars are often criticized for adding complexity and resource usage, the text argues these are often misconceptions:
+While sidecars are often criticized for adding complexity and resource usage, these are often misconceptions:
 
 * *Complexity*: Sidecars simplify the main application by offloading tasks, and modern platforms, such as {ocp}, are designed to manage them efficiently.
 * *Resource Usage*: The resource cost of a sidecar is often minimal compared to the additional CPU and memory required to integrate security logic into every application.
 * *Debugging*: Sidecars can simplify debugging by isolating logs and metrics from the main application, making it easier to pinpoint the source of a policy failure.
 
-The Layered Zero Trust pattern makes extensive use of the sidecar approach to achieve its goals by offloading critical security functions from the main application.
-This provides significant benefits by centralizing policy enforcement, simplifying development, and separating security concerns.
-The specific sidecar patterns used in this approach handle tasks, such as,  authentication and authorization, traffic encryption, rate limiting, and auditing and logging.
+The Layered Zero Trust pattern uses the sidecar approach to offload critical security functions from the main application.
+This centralizes policy enforcement, simplifies development, and separates security concerns.
+The sidecar patterns in this approach handle tasks such as authentication and authorization, traffic encryption, rate limiting, and auditing and logging.
 
 [id="about-technology"]
 == About the technology
