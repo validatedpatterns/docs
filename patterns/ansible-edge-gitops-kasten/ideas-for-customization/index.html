@@ -3409,71 +3409,7 @@ Hello World! Hub Cluster domain is &#39;apps.aws-hub-cluster.openshift.org&#39; 
 Navigate to the Networking → Routes menu options on your managed cluster (edge) OpenShift.
 Select the config-demo Project.
 Click the Location URL. This should reveal the following:
-Hub Cluster domain is &#39;apps.aws-hub-cluster.openshift.org&#39; Pod is running on Local Cluster Domain &#39;apps.aws-hub-cluster.openshift.org&#39; The secret is \`secret\` `,url:"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-managed-cluster/",breadcrumb:"/patterns/multicloud-gitops/mcg-managed-cluster/"},"https://validatedpatterns.io/patterns/multicloud-gitops/retail-managed-cluster/":{title:"Managed cluster sites",tags:[],content:`Attach a managed cluster (edge) to the management hub The use of this Multicloud GitOps pattern depends on having at least one running Red Hat OpenShift cluster.
-When you install the multi-cloud GitOps pattern, a hub cluster is setup. The hub cluster serves as the central point for managing and deploying applications across multiple clusters.
-Understanding Red Hat Advanced Cluster Management requirements By default, Red Hat Advanced Cluster Management (RHACM) manages the clusterGroup applications that are deployed on all clusters.
-Add a managedClusterGroup for each cluster or group of clusters that you want to manage by following this procedure.
-Procedure Switch to your locally created feature branch by running the following command:
-$ git checkout my-branch main In the value-hub.yaml file, add a managedClusterGroup for each cluster or group of clusters that you want to manage as one. An example group-one is provided.
-managedClusterGroups: exampleRegion: name: group-one acmlabels: - name: clusterGroup value: group-one helmOverrides: - name: clusterGroup.isHubCluster value: false The above YAML file segment deploys the clusterGroup applications on managed clusters with the label clusterGroup=group-one. Specific subscriptions and Operators, applications and projects for that clusterGroup are then managed in a value-group-one.yaml file. The following is defined for the clusterGroup=group-one.
-For example:
-clusterGroup: name: group-one isHubCluster: false namespaces: - config-demo - hello-world - golang-external-secrets # The only subscription on spokes is gitops which gets managed by ACM # subscriptions: projects: - eso - config-demo - hello-world applications: golang-external-secrets: name: golang-external-secrets namespace: golang-external-secrets project: eso chart: golang-external-secrets chartVersion: 0.1.* config-demo: name: config-demo namespace: config-demo project: config-demo path: charts/all/config-demo hello-world: name: hello-world namespace: hello-world project: hello-world path: charts/all/hello-world Ensure that you commit the changes and push them to GitHub so that GitOps can fetch your changes and apply them.
-Deploying a managed cluster by using Red Hat Advanced Cluster Management Prerequistes An OpenShift cluster
-To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select OpenShift -&gt; Red Hat OpenShift Container Platform -&gt; Create cluster.
-Red Hat Advanced Cluster Management (RHACM) web console to join the managed cluster to the management hub
-After RHACM is installed, a message regarding a Web console update is available might be displayed. Follow the instructions and click the Refresh web console link.
-Procedure In the left navigation panel of the web console associated with your deployed hub cluster, click local-cluster. Select All Clusters. The RHACM web console is displayed.
-In the Managing clusters just got easier window, click Import an existing cluster.
-Enter the cluster name (you can get this from the login token string for example https://api.&lt;cluster-name&gt;.&lt;domain&gt;:6443)
-You can leave the Cluster set blank.
-In the Additional labels dialog box enter the key=value as clusterGroup=group-one.
-Choose KubeConfig as the &#34;Import mode&#34;.
-In the KubeConfig window paste your KubeConfig content. Click Next.
-You can skip the Automation screen. Click Next.
-Review the summary details and click Import.
-Optional: Deploying a managed cluster by using cm-cli tool Prerequistes An OpenShift cluster
-To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select Services -&gt; Containers -&gt; Create cluster.
-The cm-cli tool
-Procedure Obtain the KUBECONFIG file from the managed cluster.
-Open a shell prompt and login into the management hub cluster by using either of the following methods:
-$ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your-cluster&gt;.&lt;domain&gt;:6443 or
-$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Run the following command:
-$ cm attach cluster --cluster &lt;cluster-name&gt; --cluster-kubeconfig &lt;path-to-path_to_kubeconfig&gt; Next steps Designate the new cluster as a managed cluster site
-Optional: Deploying a managed cluster by using the clusteradm tool Prerequistes An OpenShift cluster
-To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
-Select Services → Containers → Create cluster.
-The clusteradm tool
-Procedure To deploy an edge cluster, you must to get the token from the management hub cluster. Run the following command on the existing management hub or datacenter cluster:
-clusteradm get token The command generates a token and shows you the command to use on the managed cluster.
-Login to the managed cluster with either of the following methods:
-oc login or
-export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; To request that the managed join the hub cluster, run the following command:
-clusteradm join --hub-token &lt;token_from_clusteradm_get_token_command&gt; &lt;managed_cluster_name&gt; Accept the join request on the hub cluster:
-clusteradm accept --clusters &lt;managed_cluster_name&gt; Next steps Designate the new cluster as a managed cluster site
-Designate the new cluster as a managed cluster site If you use the command line tools such as clusteradm or cm-cli, you must explicitly indicate that the imported cluster is part of a specific clusterGroup. Some examples of clusterGroup are factory, devel, or prod.
-To tag the cluster as clusterGroup=&lt;managed-cluster-group&gt;, complete the following steps.
-Procedure To list all managed clusters, run the following command:
-$ oc get managedcluster.cluster.open-cluster-management.io This will display a list of managed clusters registered in ACM, including their names and statuses.
-Once you identify the target cluster for example YOURCLUSTER, label it with the desired key-value pair to associate it with a group or category. To apply the label, run the following command:
-$ oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster Verification Confirm that the label was applied by running the following command:
-$ oc get managedcluster.cluster.open-cluster-management.io/YOURCLUSTER --show-labels This will display the labels associated with the cluster, verifying that the new label has been successfully added..
-Optional: If you’re grouping clusters under a clusterGroup for example factory, devel, or prod, add the clusterGroup label also by running the following command:
-$ oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER clusterGroup=&lt;group-name&gt; Replace &lt;group-name&gt; with the appropriate value, such as factory.
-Verification Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched.
-It might take a while for the RHACM agent and agent-addons to launch.
-Check the Red Hat OpenShift GitOps Operator is installed.
-Launch the Group-One OpenShift ArgoCD console from nines menu in the top right of the OpenShift console. Verify the applications report the status Healthy and Synched.
-Verify that the hello-world application deployed successfully as follows:
-Navigate to the Networking → Routes menu options on your managed cluster (edge) OpenShift.
-From the Project: drop down select the hello-world project.
-Click the Location URL. This should reveal the following:
-Hello World! Hub Cluster domain is &#39;apps.aws-hub-cluster.openshift.org&#39; Pod is running on Local Cluster Domain &#39;apps.aws-hub-cluster.openshift.org&#39; Verify that the config-demo application deployed successfully as follows:
-Navigate to the Networking → Routes menu options on your managed cluster (edge) OpenShift.
-Select the config-demo Project.
-Click the Location URL. This should reveal the following:
-Hub Cluster domain is &#39;apps.aws-hub-cluster.openshift.org&#39; Pod is running on Local Cluster Domain &#39;apps.aws-hub-cluster.openshift.org&#39; The secret is \`secret\` `,url:"https://validatedpatterns.io/patterns/multicloud-gitops/retail-managed-cluster/",breadcrumb:"/patterns/multicloud-gitops/retail-managed-cluster/"},"https://validatedpatterns.io/patterns/retail/store/":{title:"Managed store sites",tags:[],content:` Having a store (edge) cluster join the datacenter (hub) Allow ACM to deploy the store application to a subset of clusters A store (“ATLANTA”) is installed on the hub cluster by default. This feature is interesting if you want to see how ACM can manage a remote cluster to install the same application on a different cluster.
+Hub Cluster domain is &#39;apps.aws-hub-cluster.openshift.org&#39; Pod is running on Local Cluster Domain &#39;apps.aws-hub-cluster.openshift.org&#39; The secret is \`secret\` `,url:"https://validatedpatterns.io/patterns/multicloud-gitops/mcg-managed-cluster/",breadcrumb:"/patterns/multicloud-gitops/mcg-managed-cluster/"},"https://validatedpatterns.io/patterns/retail/store/":{title:"Managed store sites",tags:[],content:` Having a store (edge) cluster join the datacenter (hub) Allow ACM to deploy the store application to a subset of clusters A store (“ATLANTA”) is installed on the hub cluster by default. This feature is interesting if you want to see how ACM can manage a remote cluster to install the same application on a different cluster.
 The way we apply this is through the managedClusterGroups block in values-hub.yaml:
 managedClusterGroups: raleigh: name: store-raleigh helmOverrides: # Values must be strings! - name: clusterGroup.isHubCluster value: &#34;false&#34; clusterSelector: matchLabels: clusterGroup: store-raleigh matchExpressions: - key: vendor operator: In values: - OpenShift Any cluster joined with the label clusterGroup=store-raleigh is assigned the policies that deploy the store app to them.
 Attaching a managed cluster (edge) to the management hub The use of this pattern depends on having at least one running Red Hat OpenShift cluster.
