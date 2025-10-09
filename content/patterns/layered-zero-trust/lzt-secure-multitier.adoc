@@ -1,0 +1,101 @@
+---
+title: Secure multi-tier applications
+weight: 20
+aliases: /layered-zero-trust/lzt-secure-multitier
+---
+
+:toc:
+:imagesdir: /images
+:_mod-docs-content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="lzt-secure-multitier"]
+= Use case: Secure multi-tier applications
+
+This use case demonstrates securing a common application design pattern: a frontend application using a database for persistent storage.
+
+The Layered Zero Trust Pattern includes the `qtodo` application, which demonstrates a secure just-in-time (JIT) credential mechanism.
+
+Instead of relying on static credentials stored within the application, the `qtodo` application uses a JIT method to dynamically fetch database credentials from a central credential store.
+
+[id="lazt-application-architecture"]
+== Application components and architecture
+
+The `qtodo` application consists of the following key components and their security roles:
+
+* The `qtodo` application: A link:https://quarkus.io[Quarkus-based] frontend application protected by OpenID Connect (OIDC) authentication. Users are managed in an external identity store which uses Red{nbsp}Hat Build of Keycloak (RHBK).
+
+* PostgreSQL: The relational database used by the `qtodo` application. Its credentials are dynamically generated and stored within HashiCorp Vault.
+
+* External Identity store: Contains the provisioned users and configured OIDC clients that enable access to the `qtodo` frontend.
+
+* HashiCorp Vault: Stores sensitive values for components, including PostgreSQL and RHBK. Implements JSON Web Token (JWT)-based authentication to enable access by using Zero Trust Workload Identity Manager (ZTWIM)-based identities.
+
+* Zero Trust Workload Identity Manager: It assigns an identity to the `qtodo` application, allowing it to communicate with HashiCorp Vault and obtain the necessary PostgreSQL credentials.
+
+* link:https://github.com/spiffe/spiffe-helper[spiffe-helper]: A supplemental sidecar component for the `qtodo` application used to dynamically fetch JWT-based identities from the SPIFFE Workload API.
+
+[id="lzt-exploring-qtodo"]
+== Exploring the qtodo application
+
+The `qtodo` application is a key component of the Layered Zero Trust Pattern, demonstrating the secure JIT fetching of credentials. To explore how the application implements Zero Trust principles, use the {ocp} web console of the Hub cluster to investigate the resources in the `qtodo` project.
+
+.Procedure
+
+. In the {ocp} web console, navigate to the *Projects* page and select the `qtodo` project. This namespace contains the `qtodo` Quarkus application and the `qtodo-db` PostgreSQL database.
+. Select *Workloads* -> *Pods* from the left-hand navigation bar. Explore both the `qtodo` and `qtodo-db` pods.
++
+[NOTE]
+====
+The `qtodo` pod uses a series of init containers and sidecar containers to supply the application with the credentials required for operation.
+====
+
+[id="lzt-locate-app"]
+=== Locating the application address
+
+You can access the `qtodo` application through the {ocp} route.
+
+.Procedure
+
+. In the {ocp} web console, navigate to the *Projects* page and select the `qtodo` project.
+. Select *Networking* -> *Routes* from the left-hand navigation bar. Note the URL for the `qtodo` application in the *Location* column.
+. Open a new browser tab and navigate to the `qtodo` application URL.
+. The RHBK login page appears.
+
+[id="lzt-locate-app-credentials"]
+=== Locating the application credentials
+
+The default External Identity Provider, RHBK, is provisioned with two users: `qtodo-admin` and `qtodo-user`. You can find the initial credentials in a Secret within the `keycloak-system` namespace called `keycloak-users`.
+
+.Procedure
+
+. In the {ocp} web console, navigate to the *Projects* page and select the `keycloak-system` project.
+. Select *Workloads* -> *Secrets* from the left-hand navigation bar.
+. Select the `keycloak-users` secret.
+. Click the *Reveal values* link to see the credentials.
+
+[id="lzt-access-qtodo"]
+=== Accessing the application
+
+.Procedure
+
+. Navigate to the RHBK login page, as described in the xref:lzt-locate-app[Locate the application's address] section.
+
+. Enter the username and password for one of the users, using the values found in the xref:lzt-locate-app-credentials[Locate the application credentials] section.
+
+. After you log in, follow the on-screen instructions to change the temporary password.
+
+. Set a new password and confirm the change.
++
+After the password change is complete, the `qtodo` application appears.
+
+[id="lzt-verify-integration"]
+=== Verifying integration
+
+The `qtodo` application uses PostgreSQL for persistent storage. You can verify that the application is correctly integrated with the database by creating a new to-do item.
+
+.Procedure
+. In the `qtodo` application, add new items to the list of to-dos and remove existing items.
+. Refresh the page to verify that the items persist.
+
+By successfully modifying the list, you confirm that the integration between the Quarkus application and the PostgreSQL database—using credentials sourced dynamically from HashiCorp Vault—was successful.
