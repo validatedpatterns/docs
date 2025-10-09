@@ -75,13 +75,21 @@ The Layered Zero Trust pattern architecture consists of many components that wor
 
 The pattern consists of the following key components:
 
-. Zero Trust Workload Identity Manager: Implements workload identity using SPIFFE/SPIRE.
-. HashiCorp Vault: Provides secure secret storage and management.
-. Red{nbsp}Hat build of Keycloak (RHBK): Manages identity and access for users and services.
-. OpenShift Cert Manager: Manages the lifecycle of certificates for secure communication.
-. External Secrets Operator: Synchronizes secrets from external systems into the cluster.
-. QTodo application: Serves as a Quarkus-based application to show zero trust principles.
-. PostgreSQL database: Provides the backend database for the demonstration application.
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/security_and_compliance/compliance-operator[Compliance Operator]
+** Provides {ocp} cluster hardening.
+
+* link:https://access.redhat.com/products/red-hat-build-of-keycloak/[Red{nbsp}Hat build of Keycloak (RHBK)]
+** Provides identities for pattern components.
+** Provides an OIDC client that authenticates users to a web application.
+
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/security_and_compliance/zero-trust-workload-identity-manager[Red{nbsp}Hat Zero Trust Workload Identity Manager]
+** Provides identities to workloads running in {ocp}.
+
+* link:https://www.hashicorp.com/en/products/vault[HashiCorp Vault]
+** Stores sensitive assets securely.
+
+* link:https://external-secrets.io[External Secrets Operator (ESO)]
+** Synchronizes secrets stored in HashiCorp Vault with {ocp}.
 
 [id="sidecar-pattern"]
 ==== Sidecar pattern
@@ -108,7 +116,7 @@ The following technologies are used in this solution:
 
 * *Zero Trust Workload Identity Manager*: Implements workload identity using SPIFFE/SPIRE.
 * *HashiCorp Vault*: Provides secure secret storage and management.
-* *Red{nbsp}Hat build of Keycloak (RHBK)*: Manages identity and access for users and services.
+* *Red{nbsp}Hat build of Keycloak*: Manages identity and access for users and services.
 * *{rh-gitops}*: A GitOps continuous delivery (CD) solution based on ArgoCD
 * *OpenShift Cert Manager*: Manages the lifecycle of certificates for secure communication.
 * *External Secrets Operator*: Synchronizes secrets from external systems into the cluster.

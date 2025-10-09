@@ -16,13 +16,29 @@ Follow these instructions to configure and deploy the Layered Zero Trust pattern
 
 .Prerequisites
 
-* An {ocp} cluster with publicly signed certificates for Ingress
-* A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
-* Access to Podman (or Docker) for execution of the container images used by `pattern.sh` script for provisioning.
-* Useful additions:
+* An {ocp} 4.19 or newer cluster with:
 
-** The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm]
-** Additional installation tool dependencies. For details, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
+.. publicly signed certificates for Ingress.
+.. default `StorageClass` which provides dynamic `PersistentVolume` storage.
+
+* To customize the default configuration, you must have a GitHub account and a token with repositories permissions, to read from and write to your forks.
+
+* Access to Podman (or Docker) for execution of the container images used by `pattern.sh` script for provisioning.
+
+* Fulfill the general link:https://validatedpatterns.io/learn/quickstart/#_prerequisites[prerequisites for Validated Patterns].
+
+* Depending on the characteristics of your cluster, you might need additional hardware resources for the Advanced Cluster Management (ACM) component.
+For a single-node cluster, you can start with 4 vCPUs, 16 GB of memory, and 120 GB of storage.
++
+For more details about ACM sizing, see link:https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/install/index#sizing-your-cluster[Sizing your cluster].
+
+* (Optional) The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm].
+
+[NOTE]
+====
+The Layered Zero Trust pattern's default deployment assumes that none of its components have been installed previously. Verify that your {ocp} environment does not already contain any of xref:/patterns/layered-zero-trust/index.html#architecture [the listed components] before proceeding.
+====
+
 
 [id="lzt-repository-setup"]
 == Repository setup
@@ -153,9 +169,11 @@ $ ./pattern.sh make install
 [id="lzt-verify-deployment"]
 === Verify the deployment
 
-You can use the {ocp} console and ArgoCD applications to verify the deployment.
+The Layered Zero-Trust pattern provisions every component and manages them through {ocp} GitOps. After you deploy the pattern, verify that all components are running correctly.
 
-. In the {ocp} web console, navigate to the *Operators* → *Installed Operators* page.
-. Check that {rh-gitops} Operator is installed in the
-`openshift-operators` namespace and its status is Succeeded.
-. Use the Application Launcher within the {ocp} console to confirm that all applications have synchronized successfully to both Hub and Cluster Argo CD instances.
+The Layered Zero-Trust pattern installs the following two {ocp} GitOps instances on your Hub cluster. You can view these instances in the {ocp} web console by using the **Application Selector** (the icon with nine small squares) in the top navigation bar.
+
+. **Cluster Argo CD**: Deploys an *App-of-Apps* application named `layered-zero-trust-hub`. This application installs the pattern's components.
+. **Hub Argo CD**: Manages Cluster Argo CD instance and the individual components that belong to the pattern on the hub {ocp} instance.
+
+If every Argo CD application reports a **Healthy** status, the pattern has been deployed successfully.
