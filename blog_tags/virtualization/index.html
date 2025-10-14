@@ -379,12 +379,16 @@ There should appear form Deploy model. Fill all the inputs like in following ima
 If everything is setup correctly go to tab Models again to check status of TGI. It should be looking like this:
 RAG Chat demo After whole setup is complete demo application is ready to use. Chat QnA UI address can be obtained by running following command:
 echo &#34;http://$(oc -n gaudi-llm get route chatqna-gaudi-ui-server -ojsonpath=&#39;{.spec.host}&#39;)&#34; `,url:"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-getting-started/",breadcrumb:"/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-getting-started/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-getting-started/":{title:"Getting started",tags:[],content:`Deploying the Layered Zero Trust pattern Follow these instructions to configure and deploy the Layered Zero Trust pattern.
-Prerequisites An OpenShift Container Platform cluster with publicly signed certificates for Ingress
-A GitHub account and a token for it with repositories permissions, to read from and write to your forks.
+Prerequisites An OpenShift Container Platform 4.19 or newer cluster with:
+publicly signed certificates for Ingress.
+default StorageClass which provides dynamic PersistentVolume storage.
+To customize the default configuration, you must have a GitHub account and a token with repositories permissions, to read from and write to your forks.
 Access to Podman (or Docker) for execution of the container images used by pattern.sh script for provisioning.
-Useful additions:
-The Helm binary, for instructions, see Installing Helm
-Additional installation tool dependencies. For details, see Patterns quick start.
+Fulfill the general prerequisites for Validated Patterns.
+Depending on the characteristics of your cluster, you might need additional hardware resources for the Advanced Cluster Management (ACM) component. For a single-node cluster, you can start with 4 vCPUs, 16 GB of memory, and 120 GB of storage.
+For more details about ACM sizing, see Sizing your cluster.
+(Optional) The Helm binary, for instructions, see Installing Helm.
+The Layered Zero Trust pattern’s default deployment assumes that none of its components have been installed previously. Verify that your OpenShift Container Platform environment does not already contain any of the listed components before proceeding.
 Repository setup Follow these instructions for setting up the project repository:
 Fork the layered-zero-trust repository from GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
 Clone your forked repository.
@@ -409,10 +413,11 @@ Get an API token by visiting https://oauth-openshift.apps../oauth/token/request.
 Log in with the retrieved token:
 $ oc login --token=&lt;retrieved_token&gt; --server=https://api.&lt;your_cluster&gt;.&lt;domain&gt;:6443 By using KUBECONFIG:
 $ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Run the pattern deployment script:
-$ ./pattern.sh make install Verify the deployment You can use the OpenShift Container Platform console and ArgoCD applications to verify the deployment.
-In the OpenShift Container Platform web console, navigate to the Operators → Installed Operators page.
-Check that Red Hat OpenShift GitOps Operator is installed in the openshift-operators namespace and its status is Succeeded.
-Use the Application Launcher within the OpenShift Container Platform console to confirm that all applications have synchronized successfully to both Hub and Cluster Argo CD instances.
+$ ./pattern.sh make install Verify the deployment The Layered Zero-Trust pattern provisions every component and manages them through OpenShift Container Platform GitOps. After you deploy the pattern, verify that all components are running correctly.
+The Layered Zero-Trust pattern installs the following two OpenShift Container Platform GitOps instances on your Hub cluster. You can view these instances in the OpenShift Container Platform web console by using the Application Selector (the icon with nine small squares) in the top navigation bar.
+Cluster Argo CD: Deploys an App-of-Apps application named layered-zero-trust-hub. This application installs the pattern’s components.
+Hub Argo CD: Manages Cluster Argo CD instance and the individual components that belong to the pattern on the hub OpenShift Container Platform instance.
+If every Argo CD application reports a Healthy status, the pattern has been deployed successfully.
 `,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-getting-started/",breadcrumb:"/patterns/layered-zero-trust/lzt-getting-started/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-getting-started/":{title:"Getting started",tags:[],content:` Deploying the MLOps Fraud Detection pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
 A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 For installation tooling dependencies, see Patterns quick start.
@@ -2308,7 +2313,40 @@ For disconnected environments: One or more openshift clusters deployed in a disc
 An OCI-compliant registry that is accessible from the disconnected network
 A Git Repository that is accessible from the disconnected network
 For more information on disconnected installation, see Validated Patterns in a disconnected Network.
-`,url:"https://validatedpatterns.io/learn/quickstart/",breadcrumb:"/learn/quickstart/"},"https://validatedpatterns.io/patterns/devsecops/devel-cluster/":{title:"Secured Development Cluster",tags:[],content:`Having a development cluster (devel) join the hub Introduction Development clusters are responsible for building applications and delivering the applications to a secured registry. The development cluster defines a secure pipeline that includes code and image scans and image signing before delivering them to the registry. OpenShift Pipelines is used for the continuous integration (CI). The Quay registry is deployed on the hub and therefore integration is required for the development pipeline to push images to the registry.
+`,url:"https://validatedpatterns.io/learn/quickstart/",breadcrumb:"/learn/quickstart/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-secure-multitier/":{title:"Secure multi-tier applications",tags:[],content:`Use case: Secure multi-tier applications This use case demonstrates securing a common application design pattern: a frontend application using a database for persistent storage.
+The Layered Zero Trust Pattern includes the qtodo application, which demonstrates a secure just-in-time (JIT) credential mechanism.
+Instead of relying on static credentials stored within the application, the qtodo application uses a JIT method to dynamically fetch database credentials from a central credential store.
+Application components and architecture The qtodo application consists of the following key components and their security roles:
+The qtodo application: A Quarkus-based frontend application protected by OpenID Connect (OIDC) authentication. Users are managed in an external identity store which uses Red Hat Build of Keycloak (RHBK).
+PostgreSQL: The relational database used by the qtodo application. Its credentials are dynamically generated and stored within HashiCorp Vault.
+External Identity store: Contains the provisioned users and configured OIDC clients that enable access to the qtodo frontend.
+HashiCorp Vault: Stores sensitive values for components, including PostgreSQL and RHBK. Implements JSON Web Token (JWT)-based authentication to enable access by using Zero Trust Workload Identity Manager (ZTWIM)-based identities.
+Zero Trust Workload Identity Manager: It assigns an identity to the qtodo application, allowing it to communicate with HashiCorp Vault and obtain the necessary PostgreSQL credentials.
+spiffe-helper: A supplemental sidecar component for the qtodo application used to dynamically fetch JWT-based identities from the SPIFFE Workload API.
+Exploring the qtodo application The qtodo application is a key component of the Layered Zero Trust Pattern, demonstrating the secure JIT fetching of credentials. To explore how the application implements Zero Trust principles, use the OpenShift Container Platform web console of the Hub cluster to investigate the resources in the qtodo project.
+Procedure In the OpenShift Container Platform web console, navigate to the Projects page and select the qtodo project. This namespace contains the qtodo Quarkus application and the qtodo-db PostgreSQL database.
+Select Workloads → Pods from the left-hand navigation bar. Explore both the qtodo and qtodo-db pods.
+The qtodo pod uses a series of init containers and sidecar containers to supply the application with the credentials required for operation.
+Locating the application address You can access the qtodo application through the OpenShift Container Platform route.
+Procedure In the OpenShift Container Platform web console, navigate to the Projects page and select the qtodo project.
+Select Networking → Routes from the left-hand navigation bar. Note the URL for the qtodo application in the Location column.
+Open a new browser tab and navigate to the qtodo application URL.
+The RHBK login page appears.
+Locating the application credentials The default External Identity Provider, RHBK, is provisioned with two users: qtodo-admin and qtodo-user. You can find the initial credentials in a Secret within the keycloak-system namespace called keycloak-users.
+Procedure In the OpenShift Container Platform web console, navigate to the Projects page and select the keycloak-system project.
+Select Workloads → Secrets from the left-hand navigation bar.
+Select the keycloak-users secret.
+Click the Reveal values link to see the credentials.
+Accessing the application Procedure Navigate to the RHBK login page, as described in the Locate the application’s address section.
+Enter the username and password for one of the users, using the values found in the Locate the application credentials section.
+After you log in, follow the on-screen instructions to change the temporary password.
+Set a new password and confirm the change.
+After the password change is complete, the qtodo application appears.
+Verifying integration The qtodo application uses PostgreSQL for persistent storage. You can verify that the application is correctly integrated with the database by creating a new to-do item.
+Procedure In the qtodo application, add new items to the list of to-dos and remove existing items.
+Refresh the page to verify that the items persist.
+By successfully modifying the list, you confirm that the integration between the Quarkus application and the PostgreSQL database—using credentials sourced dynamically from HashiCorp Vault—was successful.
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-secure-multitier/",breadcrumb:"/patterns/layered-zero-trust/lzt-secure-multitier/"},"https://validatedpatterns.io/patterns/devsecops/devel-cluster/":{title:"Secured Development Cluster",tags:[],content:`Having a development cluster (devel) join the hub Introduction Development clusters are responsible for building applications and delivering the applications to a secured registry. The development cluster defines a secure pipeline that includes code and image scans and image signing before delivering them to the registry. OpenShift Pipelines is used for the continuous integration (CI). The Quay registry is deployed on the hub and therefore integration is required for the development pipeline to push images to the registry.
 Development clusters also need to be secured and so one part of the deployment is Advanced Cluster Security with a secured configuration. This allows ACS to monitor and report on security issues on the cluster. ACS secured sites report to an ACS Central application that is deployed on the hub.
 Allow ACM to deploy the devel applications to a subset of clusters By default the devel applications are deployed on any development clusters that ACM knows about.
 managedClusterGroups: - name: devel helmOverrides: - name: clusterGroup.isHubCluster value: &#34;false&#34; clusterSelector: matchLabels: clusterGroup: devel matchExpressions: - key: vendor operator: In values: - OpenShift Remember to commit the changes and push to GitHub so that GitOps can see your changes and apply them.
@@ -4588,13 +4626,17 @@ Certificate management for secure communications.
 External secret management integration.
 Architecture The Layered Zero Trust pattern architecture consists of many components that work together to offer a secure environment for applications and workloads.
 The pattern consists of the following key components:
-Zero Trust Workload Identity Manager: Implements workload identity using SPIFFE/SPIRE.
-HashiCorp Vault: Provides secure secret storage and management.
-Red Hat build of Keycloak (RHBK): Manages identity and access for users and services.
-OpenShift Cert Manager: Manages the lifecycle of certificates for secure communication.
-External Secrets Operator: Synchronizes secrets from external systems into the cluster.
-QTodo application: Serves as a Quarkus-based application to show zero trust principles.
-PostgreSQL database: Provides the backend database for the demonstration application.
+Compliance Operator
+Provides OpenShift Container Platform cluster hardening.
+Red Hat build of Keycloak (RHBK)
+Provides identities for pattern components.
+Provides an OIDC client that authenticates users to a web application.
+Red Hat Zero Trust Workload Identity Manager
+Provides identities to workloads running in OpenShift Container Platform.
+HashiCorp Vault
+Stores sensitive assets securely.
+External Secrets Operator (ESO)
+Synchronizes secrets stored in HashiCorp Vault with OpenShift Container Platform.
 Sidecar pattern The sidecar pattern is a deployment model where a separate container or process, known as a sidecar, runs alongside the main application to handle auxiliary tasks. In an OpenShift Container Platform environment, pods simplify this by ensuring the sidecar and main application share the same lifecycle. This approach benefits Zero Trust architectures by enabling centralized enforcement of security policies such as authentication, authorization, traffic encryption (mTLS), rate limiting, auditing, and logging, without requiring developers to add this logic to every microservice. It separates concerns, simplifies development, and allows security policies to be updated independently of the main application.
 While sidecars are often criticized for adding complexity and resource usage, these are often misconceptions:
 Complexity: Sidecars simplify the main application by offloading tasks, and modern platforms, such as OpenShift Container Platform, are designed to manage them efficiently.
@@ -4604,7 +4646,7 @@ The Layered Zero Trust pattern uses the sidecar approach to offload critical sec
 About the technology The following technologies are used in this solution:
 Zero Trust Workload Identity Manager: Implements workload identity using SPIFFE/SPIRE.
 HashiCorp Vault: Provides secure secret storage and management.
-Red Hat build of Keycloak (RHBK): Manages identity and access for users and services.
+Red Hat build of Keycloak: Manages identity and access for users and services.
 Red Hat OpenShift GitOps: A GitOps continuous delivery (CD) solution based on ArgoCD
 OpenShift Cert Manager: Manages the lifecycle of certificates for secure communication.
 External Secrets Operator: Synchronizes secrets from external systems into the cluster.
