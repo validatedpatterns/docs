@@ -1,0 +1,138 @@
+---
+title: Getting Started
+weight: 10
+aliases: /telco-hub/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_mod-docs-content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="deploying-the-telco-hub-pattern"]
+= Deploying the Telco hub pattern
+
+
+[id="telco-hub-prerequisites"]
+== Prerequisites
+
+* An {ocp} 4.19 or later cluster with:
+
+** cluster administrator privileges.
+** compact 3-node cluster or standard cluster with at least 3 worker nodes.
+** more than 500 GB of available storage.
+** accessible container registry with all required images. It can be a disconnected registry or accessible by internet.
+** accessible web server with base ISO images or accessible via internet access.
+
+* A Git repository to host your configuration files.
+* Access to a terminal with `oc` and `git` command-line tools installed.
+
+[id="preparing-for-deployment"]
+== Preparing for deployment
+
+.Procedure
+
+. Clone the `telco-hub-pattern` repository from GitHub and navigate to the directory:
++
+[source,terminal]
+----
+$ git clone https://github.com/validatedpatterns/telco-hub-pattern.git
+$ cd telco-hub-pattern
+----
+
+. Configure components by editing the file `kustomize/overlays/telco-hub/kustomization.yaml` to enable optional components and customizations as needed:
++
+[source,yaml]
+----
+# =============================================================================
+# Telco Hub pattern - Kustomization Configuration
+# =============================================================================
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  # Required: Local Registry
+  # The Telco Hub Reference Design Specifications targets disconnected environments, hence this component is enabled by default.
+  - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/required/registry
+
+  # Required: Advanced Cluster Management (ACM)
+  # The ACM telco-hub component requires a storage backend to support its observability functionality.
+  # You NEED to configure a storage backend for the hub cluster along with ACM.
+  - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/required/acm
+
+  # Required: GitOps Operator
+  # The telco-hub component creates the GitOps/ArgoCD instance used to manage spoke clusters. This instance
+  # includes resource tuning for scalability and an ACM plugin for simplified creation of policies. The validated
+  # pattern clustergroup chart does not make these tunings available, so a dedicated instance is created through
+  # the `gitops` content. This dedicated instance has all the necessary tuning already included so the
+  # `reference-crs/required/gitops` component does not need to be included. These `gitops` must be included
+  # prior to the other components.
+  # - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/required/gitops
+  - gitops/
+
+  # Required: Topology Aware Lifecycle Manager (TALM)
+  - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/required/talm
+
+  # Workflow: GitOps ZTP Installation
+  # Enable this telco-hub component if you deploy clusters via GitOps ZTP!
+  # - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/required/gitops/ztp-installation
+
+  # Optional: Local Storage Operator (LSO)
+  # Enable this telco-hub component if you use LSO as your storage backend!
+  - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/optional/lso
+
+  # Optional: Open Data Foundation (ODF)
+  # Enable this telco-hub component if you use ODF as your storage backend!
+  - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/optional/odf-internal
+
+  # Optional: Logging Operator
+  # Enable this telco-hub component if you use the logging operator!
+  # - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/optional/logging
+
+
+# Environment-specific patches (example for disconnected environments)
+patches:
+  - target:
+      group: operators.coreos.com
+      version: v1alpha1
+      kind: CatalogSource
+      name: redhat-operators-disconnected
+    patch: |-
+      - op: replace
+        path: /spec/image
+        value: <registry.example.com:8443>/openshift-marketplace/redhat-operators-disconnected:v4.20
+----
+
+. Commit and push kustomize overlay:
++
+[source,terminal]
+----
+$ git commit ./kustomize/overlays/telco-hub/kustomization.yaml
+$ git push
+----
+
+[id="deploying-the-pattern"]
+== Deploying the pattern by using the pattern.sh script
+
+. Deploy the pattern (loads secrets if configured):
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
+
+. Update the pattern (does not load secrets):
++
+[source,terminal]
+----
+$ ./pattern.sh make operator-upgrade
+----
+
+.Verification
+. Verify the deployment by running the health check:
++
+[source,terminal]
+----
+$ ./pattern.sh make argo-healthcheck
+----

@@ -1,0 +1,220 @@
+---
+title: Managing the Telco Hub pattern
+weight: 30
+aliases: /telco-hub/managing/
+---
+
+:toc:
+:imagesdir: /images
+:_mod-docs-content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="managing-the-telco-hub-pattern"]
+= Managing the Telco Hub pattern
+
+After the initial deployment, you can use the `pattern.sh` script and standard {ocp} tools to manage, check, and troubleshoot the Telco Hub pattern.
+
+[id="pattern-management-cli"]
+== Pattern management commands
+
+The pattern includes a `pattern.sh` script that provides commands for managing the pattern lifecycle.
+
+[source,terminal]
+----
+$ ./pattern.sh make help
+
+For a complete guide to these targets and the available overrides, please visit https://validatedpatterns.io/blog/2025-08-29-new-common-makefile-structure/
+
+Usage:
+  make <target>
+
+Testing & Development Tasks
+  argo-healthcheck                     Checks if all argo applications are synced
+  validate-telco-reference             Validates telco-hub pattern against telco-reference CRs using cluster-compare
+  super-linter                         Runs the super-linter locally
+  validate-kustomize                   Validates kustomization build and YAML format
+  help                                 Print this help message
+
+Pattern Install Tasks
+  show                                 Shows the template that would be applied by the `make install` target
+  operator-deploy operator-upgrade     Installs/updates the pattern on a cluster (DOES NOT load secrets)
+  install                              Installs the pattern onto a cluster (Loads secrets as well if configured)
+  load-secrets                         Loads secrets onto the cluster (unless explicitly disabled in values-global.yaml)
+
+Validation Tasks
+  validate-prereq                      verify pre-requisites
+  validate-origin                      verify the git origin is available
+  validate-cluster                     Do some cluster validations before installing
+----
+
+[id="day-2-operations"]
+== Day 2 operations
+
+You can change the pattern's configuration after the initial deployment.
+
+[id="managing-components"]
+=== Managing components
+
+To enable or disable components after deployment:
+
+. Edit the `kustomize/overlays/telco-hub/kustomization.yaml` file.
+. Uncomment the resource URL for a component to enable it, or comment it to disable it.
++
+[source,yaml]
+----
+resources:
+  # Example: Uncomment to enable Logging Operator
+  # - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/optional/logging
+----
++
+. Apply the changes by running the `operator-upgrade` command:
++
+[source,terminal]
+----
+$ ./pattern.sh make operator-upgrade
+----
+
+[id="customizing-patches"]
+=== Customizing environment patches
+
+To change environment-specific configurations, such as Operator sources for disconnected environments:
+
+. Edit the `patches:` section in the `kustomize/overlays/telco-hub/kustomization.yaml` file.
+. Add or change a patch to target the necessary resource.
++
+[source,yaml]
+----
+  # ClusterLogForwarder with hub-specific labelsconfiguration
+  - target:
+      group: observability.openshift.io
+      version: v1
+      kind: ClusterLogForwarder
+      name: instance
+      namespace: openshift-logging
+    patch: |-
+      - op: replace
+        path: "/spec/outputs/0/kafka/url"
+        value: "tcp://jumphost.inbound.lab:9092/logs"
+      - op: add
+        path: /spec/filters/0/openshiftLabels
+        value:
+          cluster-role: hub
+          environment: production
+          telco-component: hub
+----
++
+. Apply the configuration changes:
++
+[source,terminal]
+----
+$ ./pattern.sh make operator-upgrade
+----
+
+[id="monitoring-the-deployment"]
+== Monitoring the deployment
+
+You can check the health and synchronization status of the pattern components through the {ocp} CLI or the ArgoCD UI.
+
+[id="monitoring-cli"]
+=== Monitoring from the CLI
+
+. Describe the main `telco-hub` application to view detailed status and synchronization information:
++
+[source,terminal]
+----
+$ oc describe applications.argoproj.io telco-config -n telco-hub-pattern-hub
+----
++
+. Describe the `clusters` and `policies` application to view status of deployed managed clusters:
++
+[source,terminal]
+----
+$ o$ oc describe applications.argoproj.io clusters policies -n telco-hub-pattern
+----
++
+. View all the ArgoCD applications managed by the pattern:
++
+[source,terminal]
+----
+$ ./pattern.sh make argo-healthcheck
+----
+
+[id="accessing-argocd-ui"]
+=== Accessing the ArgoCD UI
+
+. Retrieve the route for the `telco-hub` application:
++
+[source,terminal]
+----
+$ echo "ArgoCD UI: https://$(oc get route hub-gitops-server -n telco-hub-pattern-hub -o jsonpath='{.spec.host}')"
+----
+
+. Retrieve the default administrator password:
++
+[source,terminal]
+----
+$ oc extract secret/hub-gitops-cluster -n telco-hub-pattern-hub --to=-
+----
+
+. Retrieve the route for the `clusters` and `policies` applications:
++
+[source,terminal]
+----
+$ echo "ArgoCD UI: https://$(oc get route telco-hub-gitops-server -n telco-hub-pattern -o jsonpath='{.spec.host}')"
+----
++
+. Retrieve the default administrator password:
++
+[source,terminal]
+----
+$ oc extract secret/telco-hub-gitops-cluster -n telco-hub-pattern --to=-
+----
++
+[NOTE]
+====
+You can also access the ArgoCD UI from the application launcher (nine-box icon) in the {ocp} console.
+====
+
+[id="troubleshooting"]
+== Troubleshooting
+
+This section covers common issues and their resolutions.
+
+Component synchronization failures::
+* **Problem:** An ArgoCD application in the `telco-hub-pattern-hub` namespace displays a `SyncError` or `Degraded` status.
+* **Diagnosis:** Check the application's detailed status to identify the failing resource.
++
+[source,terminal]
+----
+$ oc describe applications.argoproj.io <app_name> -n telco-hub-pattern-hub
+----
++
+* **Solution:** Verify that the component configuration in `kustomization.yaml` is correct and that all kustomize patches are valid. Ensure that any prerequisite components are enabled and healthy.
+
+Git repository access::
+* **Problem**: ArgoCD cannot access the `github.com/openshift-kni/telco-reference` repository.
+* **Diagnosis**: Check the ArgoCD application logs for Git-related errors, such as "repository unavailable" or certificate validation failures.
+* **Solution**:
+
+** For standard, connected environments, verify that the hub cluster has network connectivity to `github.com`.
+** For disconnected (air-gapped) environments, you must verify the following two common issues:
+
+... **Wrong repository URL**: Ensure that the `kustomize/overlays/telco-hub/kustomization.yaml` file is updated to point to the correct location, branch, and path of the mirrored repository.
+... **Certificate related errors**: If ArgoCD cannot verify the repository's TLS certificates, you might need to add those certificates to the `argocd-tls-certs-cm` patch in `kustomize/overlays/telco-hub/kustomization.yaml`.
+
+Component dependencies::
+* **Problem**: A component fails to install because a required operator or custom resource definition (CRD) is missing.
+* **Diagnosis**: The component's operator logs or the ArgoCD sync status indicates "resource not found" or "missing dependency".
+* **Solution**: Ensure that all required components, such as {rh-rhacm-first} or {cgu-operator-first}, are enabled (uncommented) in `kustomization.yaml` before enabling optional components that depend on them.
+
+[id="additional-resources"]
+== Additional resources
+
+* link:https://github.com/openshift-kni/telco-reference/tree/main/telco-hub/configuration/reference-crs/required/acm[{rh-rhacm} Configuration]
+* link:https://github.com/openshift-kni/telco-reference/tree/main/telco-hub/configuration/reference-crs/required/gitops[GitOps Setup]
+* link:https://github.com/openshift-kni/telco-reference/tree/main/telco-hub/configuration/reference-crs/required/talm[{cgu-operator} Management]
+* link:https://github.com/openshift-kni/telco-reference/tree/main/telco-hub/configuration/reference-crs/optional[Optional Components]
+* link:https://github.com/openshift-kni/telco-reference/tree/main/telco-hub/configuration/example-overlays-config[Example Overlays]
+* link:https://docs.redhat.com/en/documentation/red_hat_openshift_gitops/latest/html/understanding_openshift_gitops/about-redhat-openshift-gitops[{rh-gitops-short}]
+* link:https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/[Advanced Cluster Management]
+* link:https://docs.openshift.com/container-platform/latest/scalability_and_performance/ztp_far_edge/ztp-deploying-far-edge-clusters-at-scale.html[Zero Touch Provisioning]
