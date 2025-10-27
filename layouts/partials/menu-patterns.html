@@ -13,26 +13,26 @@
         </li>
         {{ if .Page.IsNode }}
           <li class="pf-c-nav__item pf-m-expanded">
-            <a href="{{ .Permalink }}" class="pf-c-nav__link pf-m-current">
+            <a href="{{ .RelPermalink }}" class="pf-c-nav__link pf-m-current">
               {{- .Title -}}
             </a>
           </li>
           {{ range .Pages }}
             <li class="pf-c-nav__item pf-m-expanded">
-              <a href="{{ .Permalink }}" class="pf-c-nav__link">
+              <a href="{{ .RelPermalink }}" class="pf-c-nav__link">
                 {{- .Title -}}
               </a>
             </li>
           {{ end }}
         {{ else }}
           <li class="pf-c-nav__item pf-m-expanded">
-            <a href="{{ .Parent.Permalink }}" class="pf-c-nav__link">
+            <a href="{{ .Parent.RelPermalink }}" class="pf-c-nav__link">
               {{- .Parent.Title -}}
             </a>
           </li>
           {{ range .Parent.Pages }}
             <li class="pf-c-nav__item pf-m-expanded">
-              <a href="{{ .Permalink }}" class="pf-c-nav__link {{ if (eq .RelPermalink $currentlink) }}pf-m-current{{ end }}">
+              <a href="{{ .RelPermalink }}" class="pf-c-nav__link {{ if (eq .RelPermalink $currentlink) }}pf-m-current{{ end }}">
                 {{- .Title -}}
               </a>
             </li>
