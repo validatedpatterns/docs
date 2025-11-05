@@ -1,0 +1,168 @@
+---
+title: Configuration
+weight: 20
+aliases: /telco-hub/configuration/
+---
+
+:toc:
+:imagesdir: /images
+:_mod-docs-content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="telco-hub-pattern-configuration"]
+= Telco hub pattern configuration
+
+The Telco Hub pattern uses the following file hierarchy to control what runs in your hub.
+
+* `values-global.yaml`: global, cross-environment pattern settings.
+* `values-hub.yaml`: hub-specific ArgoCD and cluster definitions.
+* `kustomize/overlays/telco-hub/kustomization.yaml`: enable optional components and apply environment-specific patches.
+* `kustomize/air-gapped/imageset-config.yaml`: image set config to mirror required images and catalogs (disconnected).
+* `kustomize/air-gapped/prerequisites/kustomization.yaml`: prerequisites for air-gapped deployments, apply proxy, CA, and catalog sources (disconnected).
+
+[id="global-pattern-configuration"]
+== Global pattern configuration
+
+The `values-global.yaml` file defines configuration values that apply across all clusters and environments in the pattern, establishing the overall pattern behavior.
+
+Key parameters within the global section include:
+
+* `pattern`: Defines the name of the validated pattern, set to `telco-hub-pattern`.
+* `secretLoader`: Use it to disable the secret loading process. For example, `disabled: true`.
+* `options`: Affects all clusters by defining default behaviors:
+
+** `syncPolicy`: Sets the default ArgoCD synchronization policy. Options include `Automatic` or `Manual`.
+** `installPlanApproval`: Sets the default operator install plan approval. Options include `Automatic` or `Manual`.
+** `useCSV`: Specifies whether to use specific `ClusterServiceVersions` for operators. The default value is `false`.
+* `main`: Defines settings for the main cluster (hub) that manages the pattern, including the `clusterGroupName: hub`.
+* Disconnected Configuration: This file also specifies sources for operators in disconnected environments, such as `patternsOperator: source: community-operators-disconnected` and `gitops: operatorSource: redhat-operators-disconnected`.
+
+[id="hub-cluster-configuration"]
+== Hub cluster configuration
+The `values-hub.yaml` file has configuration specific to the hub cluster within the Telco Hub pattern. It is crucial as it defines the hub cluster, which acts as the central management point for GitOps, cluster management, and policy enforcement across the infrastructure.
+
+Cluster group identification::
+The `clusterGroup` section identifies the cluster's role and name:
+[source,terminal]
+----
+clusterGroup:
+  name: hub           # Name of this cluster group
+  isHubCluster: true  # Designates this as the hub/management cluster
+----
+
+Management of the `subscriptions` and `projects` resources within this file is delegated to the `telco-hub` kustomization application to prevent systematic conflicts between the Pattern Operator and the Telco Hub Reference Design Specification.
+
+ArgoCD application configuration::
+
+The `applications` section defines the core ArgoCD application for the Telco Hub pattern:
+
+* `telco-hub` application: Uses Kustomize for manifest processing `kustomize: true` and points to the overlay path `kustomize/overlays/telco-hub`.
+* Synchronization Policy: The `syncPolicy` is configured to be automated `automated: prune: true` to remove resources not present in git.
+* Retry Mechanism: The application uses a configured retry mechanism to handle temporary failures during synchronization:
+    ◦ `limit: 6`: maximum number of sync retries, adjusted for about 20 minutes total.
+    ◦ `backoff`: configured with an initial duration of `15s`, a factor of `2`, and a `maxDuration` of `15m`.
+
+[id="component-selection-and-environment-customization"]
+== Component selection and environment customization
+
+Components are enabled by uncommenting the corresponding remote base resource declarations within the `resources:` array of the `kustomization.yaml` file.
+The pattern uses remote base resources from the telco-reference git repository.
+
+Required components::
+These components are essential for hub cluster functionality:
+
+* Local Registry: The Telco Hub Reference Design Specifications targets disconnected environments, therefore this component is enabled by default.
+* {rh-rhacm-first}: The {rh-rhacm} telco-hub component requires a storage backend to support its observability functionality. You need to configure a storage backend for the hub cluster along with {rh-rhacm}.
+* GitOps Operator: This component's configuration is currently provided by default through the Validated Patterns Operator, and its resource URL from telco-reference is not yet supported by the pattern itself.
+* {cgu-operator-first}: This component is required and enabled by default.
+
+Zero Touch Provisioning (ZTP) Workflow Components::
+This component provides ArgoCD applications for synchronizing cluster deployment (ClusterInstance) CRs and configuration (Policy and/or PolicyGenerator) CRs. Enable this resource if you intend to use the GitOps ZTP workflow for automated cluster deployment:
+
+* ZTP Installation: Uncomment the dedicated resource URL for `ztp-installation`.
+
+Optional components::
+These components should be enabled based on specific workload and storage requirements:
+
+* LocalStorage Operator (LSO): Enable if you plan to use LSO as your storage backend.
+* Red Hat OpenShift Data Foundation (ODF): Enable if you plan to use ODF as your storage backend.
+* Cluster Logging Operator (Logging): Enable if you require the cluster logging operator for log aggregation.
+
+Environment Customization (Kustomize Patches)::
+The `patches:` section allows you to apply modifications to the base configurations sourced from the telco-reference without directly editing those upstream files. This is vital for maintaining upstream compatibility.
+Patches are defined using a target specification `group`, `version`, `kind`, or `name` and the specific patch content.
+
+[id="example-patch"]
+=== Examples
+
+The following examples illustrate how to customize Operator configurations for specific environments, such as disconnected setups or storage class adjustments.
+
+[source,yaml]
+----
+patches:
+ # Example: Update Red Hat operators catalog to use specific version
+  - target:
+      group: operators.coreos.com
+      version: v1alpha1
+      kind: CatalogSource
+      name: redhat-operators-disconnected
+    patch: |-
+      - op: replace
+        path: /spec/image
+        value: <registry.example.com:8443>/openshift-marketplace/redhat-operators-disconnected:v4.20
+
+  # Example: Add registry CA to the hub cluster
+  - target:
+      version: v1
+      kind: ConfigMap
+      name: registry-ca
+    patch: |-
+      - op: replace
+        path: /data
+        value:
+          registry.example.com..8443 |
+          -----BEGIN CERTIFICATE-----
+          MIIGcjCCBFqgAwIBAgIFICIE...
+          -----END CERTIFICATE-----
+
+  # Example: AgentServiceConfig storage and OS images configuration
+  - target:
+      group: agent-install.openshift.io
+      version: v1beta1
+      kind: AgentServiceConfig
+      name: agent
+    patch: |-
+      - op: replace
+        path: "/spec/osImages"
+        value:
+          - cpuArchitecture: x86_64
+            openshiftVersion: "4.18"
+            rootFSUrl: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.18/latest/rhcos-live-rootfs.x86_64.img
+            url: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.18/latest/rhcos-live.x86_64.iso
+            version: 418.94.202502100215-0
+          - cpuArchitecture: x86_64
+            openshiftVersion: "4.19"
+            rootFSUrl: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.19/latest/rhcos-live-rootfs.x86_64.img
+            url: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.19/latest/rhcos-live-iso.x86_64.iso
+            version: 9.6.20250530-0
+          - cpuArchitecture: x86_64
+            openshiftVersion: "4.20"
+            rootFSUrl: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.20/latest/rhcos-live-rootfs.x86_64.img
+            url: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.20/latest/rhcos-live-iso.x86_64.iso
+            version: 9.6.20250530-0
+
+  # Example: LocalVolume disk paths configuration
+  - target:
+      group: local.storage.openshift.io
+      version: v1
+      kind: LocalVolume
+      name: local-disks
+      namespace: openshift-local-storage
+    patch: |-
+      - op: replace
+        path: /spec/storageClassDevices/0/devicePaths
+        value:
+          - /dev/nvme1n1
+----
+
+For more examples and detailed configurations, see link:https://github.com/openshift-kni/telco-reference/tree/main/telco-hub/configuration/example-overlays-config[telco-reference example overlays].

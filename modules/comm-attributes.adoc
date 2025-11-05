@@ -189,3 +189,7 @@
 :grid: grid.png
 // AMD
 :amd-instinct: AMD Instinct
+//TALM
+:cgu-operator-first: Topology Aware Lifecycle Manager (TALM)
+:cgu-operator-full: Topology Aware Lifecycle Manager
+:cgu-operator: TALM

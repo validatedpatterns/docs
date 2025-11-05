@@ -1,0 +1,131 @@
+---
+title: Telco Hub
+date: 2025-10-01
+tier: sandbox
+summary: The Telco Hub pattern is a GitOps-first validated pattern for deploying and operating a Telco-focused management hub.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat Advanced Cluster Management for Kubernetes (RHACM)
+- Red Hat OpenShift GitOps (ArgoCD)
+- Topology Aware Lifecycle Manager (TALM)
+- Red Hat OpenShift Data Foundation (ODF) (Optional)
+industries:
+- Telecommunications
+aliases: /telco-hub/
+# uncomment once this exists
+# pattern_logo: telco-hub.png
+links:
+  github: https://github.com/validatedpatterns/telco-hub-pattern
+  install: getting-started
+  bugs: https://github.com/validatedpatterns/telco-hub-pattern/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+ci: telco-hub
+---
+
+:toc:
+:imagesdir: /images
+:_mod-docs-content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="about-telco-hub-pattern"]
+= About the Telco Hub pattern
+
+The Telco Hub pattern is a GitOps-first validated pattern for deploying and operating a Telco-focused management hub on {rh-ocp}. It uses a GitOps approach to centralize multi-cluster operations, lifecycle management, and policy enforcement to simplify the deployment and Day 2 operations of Telco workloads and edge clusters.
+
+When the pattern installation is complete, the hub cluster provides:
+
+* A dedicated GitOps (ArgoCD) instance created to manage spoke clusters. This instance includes resource tuning for scalability and an ACM plugin for simplified creation of policies.
+* Support for Zero Touch Provisioning (ZTP) workflows, which provide automated cluster installation and configuration.
+* The Topology Aware Lifecycle Manager (TALM) for integrated cluster management and upgrade capabilities.
+* Centralized management of distributed telco infrastructure.
+
+[id="telco-hub-pattern-background"]
+== Background
+
+Telco networks and cloud-native network functions (CNFs) require fast, repeatable lifecycle operations, strict dependency management, and consistent configuration across many clusters and edge sites.
+This pattern packages a production-ready, GitOps-based hub that uses validated upstream telco-reference CRs and applies environment-specific Kustomize overlays so Operators deploy and manage Telco platforms consistently.
+
+
+[id="telco-hub-pattern-use-cases"]
+== Use Cases
+
+* **Telco Edge Hub Management**: Deploy and manage multiple edge clusters from a central hub
+* **Zero Touch Provisioning**: Automated cluster installation and configuration via ZTP workflow
+* **Multi-Cluster Operations**: Centralized management of distributed telco infrastructure
+* **GitOps Workflows**: Infrastructure-as-code with automated deployment and synchronization
+
+[id="telco-hub-pattern-technologies"]
+== Red Hat technologies
+
+* {rh-ocp}
+* {rh-rhacm-first}
+* {gitops-title} (ArgoCD)
+* Topology Aware Lifecycle Manager (TALM)
+* Optional: Local Storage Operator (LSO)
+* Optional: Red Hat OpenShift Data Foundation (ODF)
+* Optional: Red Hat Cluster Logging Operator (CLO)
+
+[id="telco-hub-pattern-other-technologies"]
+== Other technologies
+
+* Support for disconnected (air-gapped) environments through local registries, cluster proxy configuration, and image mirroring (`ImageSetConfiguration`).
+* A dedicated GitOps (ArgoCD) instance that includes resource tuning for scalability and an ACM plugin for simplified creation of policies for managed clusters.
+
+[id="telco-hub-pattern-architecture"]
+== Architecture
+
+The Telco Hub pattern architecture consists of the following key components:
+
+[source,terminal]
+----
+telco-hub-pattern/
+├── kustomize/overlays/telco-hub/        # 🔧 Kustomize Overlay Configuration
+│   └── kustomization.yaml               # Component selection and patches
+├── kustomize/air-gapped/                # 🛡️ Disconnected (air-gapped) assets
+│   ├── imageset-config.yaml             # Image mirroring (oc-mirror)
+│   ├── prerequisites/                   # Cluster proxy, catalogs, CAs
+│   │   └── kustomization.yaml
+│   └── README.md                        # Disconnected deployment guide
+├── values-hub.yaml                      # Hub Cluster Definition
+├── values-global.yaml                   # Global Pattern Settings
+└── docs/                                # Documentation
+
+# Consumed Remote Resources (via kustomize):
+# https://github.com/openshift-kni/telco-reference/tree/main/telco-hub/configuration/reference-crs/
+├── required/                            # 🔧 Essential Components
+│   ├── acm/                             # Advanced Cluster Management
+│   ├── gitops/                          # GitOps Operators & Configuration
+│   ├── talm/                            # Topology Aware Lifecycle Manager
+│   └── registry/                        # Local Registry (disconnected)
+└── optional/                            # 🔌 Optional Components
+    ├── lso/                             # Local Storage Operator
+    ├── odf-internal/                    # OpenShift Data Foundation
+    └── logging/                         # Cluster Logging Stack
+----
+
+Design principles::
+
+[cols="1,2,2"]
+|===
+
+|Principle
+|Description
+|Benefit
+
+|Reference-based
+|Direct consumption of official telco-reference configurations
+|Always use validated, upstream telco designs
+
+|GitOps-Native
+|ArgoCD manages all deployments via validated patterns framework
+|Automated, auditable infrastructure changes
+
+|Kustomize-First
+|Environment-specific overlays without modifying upstream configs
+|Customize while maintaining upstream compatibility
+
+|Component Selection
+|Declarative component enablement via kustomize resources
+|Granular control over telco-hub functionality
+
+|===
