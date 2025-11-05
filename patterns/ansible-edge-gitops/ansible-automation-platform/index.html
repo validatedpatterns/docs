@@ -3420,8 +3420,8 @@ Add or change a patch to target the necessary resource.
 # ClusterLogForwarder with hub-specific labelsconfiguration - target: group: observability.openshift.io version: v1 kind: ClusterLogForwarder name: instance namespace: openshift-logging patch: |- - op: replace path: &#34;/spec/outputs/0/kafka/url&#34; value: &#34;tcp://jumphost.inbound.lab:9092/logs&#34; - op: add path: /spec/filters/0/openshiftLabels value: cluster-role: hub environment: production telco-component: hub Apply the configuration changes:
 $ ./pattern.sh make operator-upgrade Monitoring the deployment You can check the health and synchronization status of the pattern components through the OpenShift Container Platform CLI or the ArgoCD UI.
 Monitoring from the CLI Describe the main telco-hub application to view detailed status and synchronization information:
-$ oc describe applications.argoproj.io telco-config -n telco-hub-pattern-hub Describe the clusters and policies application to view status of deployed managed clusters:
-$ o$ oc describe applications.argoproj.io clusters policies -n telco-hub-pattern View all the ArgoCD applications managed by the pattern:
+$ oc describe applications.argoproj.io hub-config -n telco-hub-pattern-hub Describe the clusters and policies application to view status of deployed managed clusters:
+$ oc describe applications.argoproj.io clusters policies -n telco-hub-pattern View all the ArgoCD applications managed by the pattern:
 $ ./pattern.sh make argo-healthcheck Accessing the ArgoCD UI Retrieve the route for the telco-hub application:
 $ echo &#34;ArgoCD UI: https://$(oc get route hub-gitops-server -n telco-hub-pattern-hub -o jsonpath=&#39;{.spec.host}&#39;)&#34; Retrieve the default administrator password:
 $ oc extract secret/hub-gitops-cluster -n telco-hub-pattern-hub --to=- Retrieve the route for the clusters and policies applications:
