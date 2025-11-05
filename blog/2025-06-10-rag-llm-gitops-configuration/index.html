@@ -1584,7 +1584,21 @@ Go to the Quarkus Coffeeshop Landing Page where you are presented with the appli
 Click the Store Web Page to open the Quarkus Coffeeshop Demo:
 Click the TEST Store Web Page to open a separate copy of the same demo.
 Clicking the respective Kafdrop links to go to a Kafdrop instance that allows inspection of each of the respective environments.
-`,url:"https://validatedpatterns.io/patterns/retail/getting-started/",breadcrumb:"/patterns/retail/getting-started/"},"https://validatedpatterns.io/patterns/travelops/getting-started/":{title:"Getting Started",tags:[],content:` Deploying the TravelOps pattern Prerequisites An OpenShift cluster
+`,url:"https://validatedpatterns.io/patterns/retail/getting-started/",breadcrumb:"/patterns/retail/getting-started/"},"https://validatedpatterns.io/patterns/telco-hub/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the Telco hub pattern Prerequisites An OpenShift Container Platform 4.19 or later cluster with:
+cluster administrator privileges.
+compact 3-node cluster or standard cluster with at least 3 worker nodes.
+more than 500 GB of available storage.
+accessible container registry with all required images. It can be a disconnected registry or accessible by internet.
+accessible web server with base ISO images or accessible via internet access.
+A Git repository to host your configuration files.
+Access to a terminal with oc and git command-line tools installed.
+Preparing for deployment Procedure Clone the telco-hub-pattern repository from GitHub and navigate to the directory:
+$ git clone https://github.com/validatedpatterns/telco-hub-pattern.git $ cd telco-hub-pattern Configure components by editing the file kustomize/overlays/telco-hub/kustomization.yaml to enable optional components and customizations as needed:
+# ============================================================================= # Telco Hub pattern - Kustomization Configuration # ============================================================================= apiVersion: kustomize.config.k8s.io/v1beta1 kind: Kustomization resources: # Required: Local Registry # The Telco Hub Reference Design Specifications targets disconnected environments, hence this component is enabled by default. - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/required/registry # Required: Advanced Cluster Management (ACM) # The ACM telco-hub component requires a storage backend to support its observability functionality. # You NEED to configure a storage backend for the hub cluster along with ACM. - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/required/acm # Required: GitOps Operator # The telco-hub component creates the GitOps/ArgoCD instance used to manage spoke clusters. This instance # includes resource tuning for scalability and an ACM plugin for simplified creation of policies. The validated # pattern clustergroup chart does not make these tunings available, so a dedicated instance is created through # the \`gitops\` content. This dedicated instance has all the necessary tuning already included so the # \`reference-crs/required/gitops\` component does not need to be included. These \`gitops\` must be included # prior to the other components. # - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/required/gitops - gitops/ # Required: Topology Aware Lifecycle Manager (TALM) - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/required/talm # Workflow: GitOps ZTP Installation # Enable this telco-hub component if you deploy clusters via GitOps ZTP! # - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/required/gitops/ztp-installation # Optional: Local Storage Operator (LSO) # Enable this telco-hub component if you use LSO as your storage backend! - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/optional/lso # Optional: Open Data Foundation (ODF) # Enable this telco-hub component if you use ODF as your storage backend! - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/optional/odf-internal # Optional: Logging Operator # Enable this telco-hub component if you use the logging operator! # - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/optional/logging # Environment-specific patches (example for disconnected environments) patches: - target: group: operators.coreos.com version: v1alpha1 kind: CatalogSource name: redhat-operators-disconnected patch: |- - op: replace path: /spec/image value: &lt;registry.example.com:8443&gt;/openshift-marketplace/redhat-operators-disconnected:v4.20 Commit and push kustomize overlay:
+$ git commit ./kustomize/overlays/telco-hub/kustomization.yaml $ git push Deploying the pattern by using the pattern.sh script Deploy the pattern (loads secrets if configured):
+$ ./pattern.sh make install Update the pattern (does not load secrets):
+$ ./pattern.sh make operator-upgrade Verification Verify the deployment by running the health check:
+$ ./pattern.sh make argo-healthcheck `,url:"https://validatedpatterns.io/patterns/telco-hub/getting-started/",breadcrumb:"/patterns/telco-hub/getting-started/"},"https://validatedpatterns.io/patterns/travelops/getting-started/":{title:"Getting Started",tags:[],content:` Deploying the TravelOps pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
 Select OpenShift -&gt; Red Hat OpenShift Container Platform -&gt; Create cluster.
 The cluster must have a dynamic StorageClass to provision PersistentVolumes. Verify that a dynamic StorageClass exists before creating one by running the following command:
@@ -1911,7 +1925,45 @@ Node type Number of nodes CPU Memory Storage Control Planes + Workers
 2x 5th Generation Intel Xeon Platinum 8568Y+ (48 cores at 2.3 GHz base with Intel AMX)
 512 GB (16x32GB DDR5 5600)
 4x 3.84TB U.2 NVMe PCIe Gen4
-`,url:"https://validatedpatterns.io/patterns/medical-diagnosis-amx/cluster-sizing/",breadcrumb:"/patterns/medical-diagnosis-amx/cluster-sizing/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/gpu_provisioning/":{title:"Customize GPU provisioning nodes",tags:[],content:`Customizing GPU provisioning nodes By default, GPU nodes use the instance type g5.2xlarge. If you need to change the instance type—such as to address performance requirements, carry out these steps:
+`,url:"https://validatedpatterns.io/patterns/medical-diagnosis-amx/cluster-sizing/",breadcrumb:"/patterns/medical-diagnosis-amx/cluster-sizing/"},"https://validatedpatterns.io/patterns/telco-hub/configuration/":{title:"Configuration",tags:[],content:`Telco hub pattern configuration The Telco Hub pattern uses the following file hierarchy to control what runs in your hub.
+values-global.yaml: global, cross-environment pattern settings.
+values-hub.yaml: hub-specific ArgoCD and cluster definitions.
+kustomize/overlays/telco-hub/kustomization.yaml: enable optional components and apply environment-specific patches.
+kustomize/air-gapped/imageset-config.yaml: image set config to mirror required images and catalogs (disconnected).
+kustomize/air-gapped/prerequisites/kustomization.yaml: prerequisites for air-gapped deployments, apply proxy, CA, and catalog sources (disconnected).
+Global pattern configuration The values-global.yaml file defines configuration values that apply across all clusters and environments in the pattern, establishing the overall pattern behavior.
+Key parameters within the global section include:
+pattern: Defines the name of the validated pattern, set to telco-hub-pattern.
+secretLoader: Use it to disable the secret loading process. For example, disabled: true.
+options: Affects all clusters by defining default behaviors:
+syncPolicy: Sets the default ArgoCD synchronization policy. Options include Automatic or Manual.
+installPlanApproval: Sets the default operator install plan approval. Options include Automatic or Manual.
+useCSV: Specifies whether to use specific ClusterServiceVersions for operators. The default value is false.
+main: Defines settings for the main cluster (hub) that manages the pattern, including the clusterGroupName: hub.
+Disconnected Configuration: This file also specifies sources for operators in disconnected environments, such as patternsOperator: source: community-operators-disconnected and gitops: operatorSource: redhat-operators-disconnected.
+Hub cluster configuration The values-hub.yaml file has configuration specific to the hub cluster within the Telco Hub pattern. It is crucial as it defines the hub cluster, which acts as the central management point for GitOps, cluster management, and policy enforcement across the infrastructure.
+Cluster group identification The clusterGroup section identifies the cluster’s role and name:
+clusterGroup: name: hub # Name of this cluster group isHubCluster: true # Designates this as the hub/management cluster Management of the subscriptions and projects resources within this file is delegated to the telco-hub kustomization application to prevent systematic conflicts between the Pattern Operator and the Telco Hub Reference Design Specification.
+ArgoCD application configuration The applications section defines the core ArgoCD application for the Telco Hub pattern:
+telco-hub application: Uses Kustomize for manifest processing kustomize: true and points to the overlay path kustomize/overlays/telco-hub.
+Synchronization Policy: The syncPolicy is configured to be automated automated: prune: true to remove resources not present in git.
+Retry Mechanism: The application uses a configured retry mechanism to handle temporary failures during synchronization: ◦ limit: 6: maximum number of sync retries, adjusted for about 20 minutes total. ◦ backoff: configured with an initial duration of 15s, a factor of 2, and a maxDuration of 15m.
+Component selection and environment customization Components are enabled by uncommenting the corresponding remote base resource declarations within the resources: array of the kustomization.yaml file. The pattern uses remote base resources from the telco-reference git repository.
+Required components These components are essential for hub cluster functionality:
+Local Registry: The Telco Hub Reference Design Specifications targets disconnected environments, therefore this component is enabled by default.
+Red Hat Advanced Cluster Management (RHACM): The RHACM telco-hub component requires a storage backend to support its observability functionality. You need to configure a storage backend for the hub cluster along with RHACM.
+GitOps Operator: This component’s configuration is currently provided by default through the Validated Patterns Operator, and its resource URL from telco-reference is not yet supported by the pattern itself.
+Topology Aware Lifecycle Manager (TALM): This component is required and enabled by default.
+Zero Touch Provisioning (ZTP) Workflow Components This component provides ArgoCD applications for synchronizing cluster deployment (ClusterInstance) CRs and configuration (Policy and/or PolicyGenerator) CRs. Enable this resource if you intend to use the GitOps ZTP workflow for automated cluster deployment:
+ZTP Installation: Uncomment the dedicated resource URL for ztp-installation.
+Optional components These components should be enabled based on specific workload and storage requirements:
+LocalStorage Operator (LSO): Enable if you plan to use LSO as your storage backend.
+Red Hat OpenShift Data Foundation (ODF): Enable if you plan to use ODF as your storage backend.
+Cluster Logging Operator (Logging): Enable if you require the cluster logging operator for log aggregation.
+Environment Customization (Kustomize Patches) The patches: section allows you to apply modifications to the base configurations sourced from the telco-reference without directly editing those upstream files. This is vital for maintaining upstream compatibility. Patches are defined using a target specification group, version, kind, or name and the specific patch content.
+Examples The following examples illustrate how to customize Operator configurations for specific environments, such as disconnected setups or storage class adjustments.
+patches: # Example: Update Red Hat operators catalog to use specific version - target: group: operators.coreos.com version: v1alpha1 kind: CatalogSource name: redhat-operators-disconnected patch: |- - op: replace path: /spec/image value: &lt;registry.example.com:8443&gt;/openshift-marketplace/redhat-operators-disconnected:v4.20 # Example: Add registry CA to the hub cluster - target: version: v1 kind: ConfigMap name: registry-ca patch: |- - op: replace path: /data value: registry.example.com..8443 | -----BEGIN CERTIFICATE----- MIIGcjCCBFqgAwIBAgIFICIE... -----END CERTIFICATE----- # Example: AgentServiceConfig storage and OS images configuration - target: group: agent-install.openshift.io version: v1beta1 kind: AgentServiceConfig name: agent patch: |- - op: replace path: &#34;/spec/osImages&#34; value: - cpuArchitecture: x86_64 openshiftVersion: &#34;4.18&#34; rootFSUrl: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.18/latest/rhcos-live-rootfs.x86_64.img url: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.18/latest/rhcos-live.x86_64.iso version: 418.94.202502100215-0 - cpuArchitecture: x86_64 openshiftVersion: &#34;4.19&#34; rootFSUrl: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.19/latest/rhcos-live-rootfs.x86_64.img url: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.19/latest/rhcos-live-iso.x86_64.iso version: 9.6.20250530-0 - cpuArchitecture: x86_64 openshiftVersion: &#34;4.20&#34; rootFSUrl: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.20/latest/rhcos-live-rootfs.x86_64.img url: https://mirror.example.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.20/latest/rhcos-live-iso.x86_64.iso version: 9.6.20250530-0 # Example: LocalVolume disk paths configuration - target: group: local.storage.openshift.io version: v1 kind: LocalVolume name: local-disks namespace: openshift-local-storage patch: |- - op: replace path: /spec/storageClassDevices/0/devicePaths value: - /dev/nvme1n1 For more examples and detailed configurations, see telco-reference example overlays.
+`,url:"https://validatedpatterns.io/patterns/telco-hub/configuration/",breadcrumb:"/patterns/telco-hub/configuration/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/gpu_provisioning/":{title:"Customize GPU provisioning nodes",tags:[],content:`Customizing GPU provisioning nodes By default, GPU nodes use the instance type g5.2xlarge. If you need to change the instance type—such as to address performance requirements, carry out these steps:
 In your local branch of the rag-llm-gitops git repository change to the ansible/playbooks/templates directory.
 Edit the file gpu-machine-sets.j2 changing the instanceType to for example g5.4xlarge. Save and exit.
 Push the changes to the origin remote repository by running the following command:
@@ -3323,7 +3375,49 @@ $ oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER cluster
 Verification Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched.
 It might take a while for the RHACM agent and agent-addons to launch.
 Store is joined You’re done That is it! Go to your store (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it is finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
-`,url:"https://validatedpatterns.io/patterns/retail/store/",breadcrumb:"/patterns/retail/store/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-required-hardware/":{title:"Required hardware",tags:[],content:` Required hardware Red Hat OpenShift Container Platform OpenShift Container Platform is a cloud-based Kubernetes container platform. The foundation of OpenShift Container Platform is based on Kubernetes and therefore shares the same technology. It is designed to allow applications and the data centers that support them to expand from just a few machines and applications to thousands of machines that serve millions of clients. OpenShift Container Platform enables you to do the following:
+`,url:"https://validatedpatterns.io/patterns/retail/store/",breadcrumb:"/patterns/retail/store/"},"https://validatedpatterns.io/patterns/telco-hub/managing-the-pattern/":{title:"Managing the Telco Hub pattern",tags:[],content:`Managing the Telco Hub pattern After the initial deployment, you can use the pattern.sh script and standard OpenShift Container Platform tools to manage, check, and troubleshoot the Telco Hub pattern.
+Pattern management commands The pattern includes a pattern.sh script that provides commands for managing the pattern lifecycle.
+$ ./pattern.sh make help For a complete guide to these targets and the available overrides, please visit https://validatedpatterns.io/blog/2025-08-29-new-common-makefile-structure/ Usage: make &lt;target&gt; Testing &amp; Development Tasks argo-healthcheck Checks if all argo applications are synced validate-telco-reference Validates telco-hub pattern against telco-reference CRs using cluster-compare super-linter Runs the super-linter locally validate-kustomize Validates kustomization build and YAML format help Print this help message Pattern Install Tasks show Shows the template that would be applied by the \`make install\` target operator-deploy operator-upgrade Installs/updates the pattern on a cluster (DOES NOT load secrets) install Installs the pattern onto a cluster (Loads secrets as well if configured) load-secrets Loads secrets onto the cluster (unless explicitly disabled in values-global.yaml) Validation Tasks validate-prereq verify pre-requisites validate-origin verify the git origin is available validate-cluster Do some cluster validations before installing Day 2 operations You can change the pattern’s configuration after the initial deployment.
+Managing components To enable or disable components after deployment:
+Edit the kustomize/overlays/telco-hub/kustomization.yaml file.
+Uncomment the resource URL for a component to enable it, or comment it to disable it.
+resources: # Example: Uncomment to enable Logging Operator # - https://github.com/openshift-kni/telco-reference//telco-hub/configuration/reference-crs/optional/logging Apply the changes by running the operator-upgrade command:
+$ ./pattern.sh make operator-upgrade Customizing environment patches To change environment-specific configurations, such as Operator sources for disconnected environments:
+Edit the patches: section in the kustomize/overlays/telco-hub/kustomization.yaml file.
+Add or change a patch to target the necessary resource.
+# ClusterLogForwarder with hub-specific labelsconfiguration - target: group: observability.openshift.io version: v1 kind: ClusterLogForwarder name: instance namespace: openshift-logging patch: |- - op: replace path: &#34;/spec/outputs/0/kafka/url&#34; value: &#34;tcp://jumphost.inbound.lab:9092/logs&#34; - op: add path: /spec/filters/0/openshiftLabels value: cluster-role: hub environment: production telco-component: hub Apply the configuration changes:
+$ ./pattern.sh make operator-upgrade Monitoring the deployment You can check the health and synchronization status of the pattern components through the OpenShift Container Platform CLI or the ArgoCD UI.
+Monitoring from the CLI Describe the main telco-hub application to view detailed status and synchronization information:
+$ oc describe applications.argoproj.io telco-config -n telco-hub-pattern-hub Describe the clusters and policies application to view status of deployed managed clusters:
+$ o$ oc describe applications.argoproj.io clusters policies -n telco-hub-pattern View all the ArgoCD applications managed by the pattern:
+$ ./pattern.sh make argo-healthcheck Accessing the ArgoCD UI Retrieve the route for the telco-hub application:
+$ echo &#34;ArgoCD UI: https://$(oc get route hub-gitops-server -n telco-hub-pattern-hub -o jsonpath=&#39;{.spec.host}&#39;)&#34; Retrieve the default administrator password:
+$ oc extract secret/hub-gitops-cluster -n telco-hub-pattern-hub --to=- Retrieve the route for the clusters and policies applications:
+$ echo &#34;ArgoCD UI: https://$(oc get route telco-hub-gitops-server -n telco-hub-pattern -o jsonpath=&#39;{.spec.host}&#39;)&#34; Retrieve the default administrator password:
+$ oc extract secret/telco-hub-gitops-cluster -n telco-hub-pattern --to=- You can also access the ArgoCD UI from the application launcher (nine-box icon) in the OpenShift Container Platform console.
+Troubleshooting This section covers common issues and their resolutions.
+Component synchronization failures Problem: An ArgoCD application in the telco-hub-pattern-hub namespace displays a SyncError or Degraded status.
+Diagnosis: Check the application’s detailed status to identify the failing resource.
+$ oc describe applications.argoproj.io &lt;app_name&gt; -n telco-hub-pattern-hub Solution: Verify that the component configuration in kustomization.yaml is correct and that all kustomize patches are valid. Ensure that any prerequisite components are enabled and healthy.
+Git repository access Problem: ArgoCD cannot access the github.com/openshift-kni/telco-reference repository.
+Diagnosis: Check the ArgoCD application logs for Git-related errors, such as &#34;repository unavailable&#34; or certificate validation failures.
+Solution:
+For standard, connected environments, verify that the hub cluster has network connectivity to github.com.
+For disconnected (air-gapped) environments, you must verify the following two common issues:
+Wrong repository URL: Ensure that the kustomize/overlays/telco-hub/kustomization.yaml file is updated to point to the correct location, branch, and path of the mirrored repository.
+Certificate related errors: If ArgoCD cannot verify the repository’s TLS certificates, you might need to add those certificates to the argocd-tls-certs-cm patch in kustomize/overlays/telco-hub/kustomization.yaml.
+Component dependencies Problem: A component fails to install because a required operator or custom resource definition (CRD) is missing.
+Diagnosis: The component’s operator logs or the ArgoCD sync status indicates &#34;resource not found&#34; or &#34;missing dependency&#34;.
+Solution: Ensure that all required components, such as Red Hat Advanced Cluster Management (RHACM) or Topology Aware Lifecycle Manager (TALM), are enabled (uncommented) in kustomization.yaml before enabling optional components that depend on them.
+Additional resources RHACM Configuration
+GitOps Setup
+TALM Management
+Optional Components
+Example Overlays
+OpenShift GitOps
+Advanced Cluster Management
+Zero Touch Provisioning
+`,url:"https://validatedpatterns.io/patterns/telco-hub/managing-the-pattern/",breadcrumb:"/patterns/telco-hub/managing-the-pattern/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-required-hardware/":{title:"Required hardware",tags:[],content:` Required hardware Red Hat OpenShift Container Platform OpenShift Container Platform is a cloud-based Kubernetes container platform. The foundation of OpenShift Container Platform is based on Kubernetes and therefore shares the same technology. It is designed to allow applications and the data centers that support them to expand from just a few machines and applications to thousands of machines that serve millions of clients. OpenShift Container Platform enables you to do the following:
 Provide developers and IT organizations with cloud application platforms that can be used for deploying applications on secure and scalable resources.
 Require minimal configuration and management overhead.
 Bring the Kubernetes platform to customer data centers and cloud.
@@ -4620,7 +4714,46 @@ Who is behind this? Today, a team of Red Hat engineers including Andrew Beekhof 
 Excited or intrigued by what you see here? We’d love to hear your thoughts and ideas! Try the patterns contained here and see below for links to our repositories and issue trackers.
 How can I get involved? Try out what we’ve done and submit issues to our issue trackers.
 We will review pull requests to our pattern repositories.
-`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/layered-zero-trust/":{title:"Layered Zero Trust",tags:[],content:`About the Layered Zero Trust pattern Zero trust is an approach to security architecture based on the idea that every interaction starts in an untrusted state. The Layered Zero Trust pattern shows how to implement zero trust in a Red Hat OpenShift Container Platform environment. The pattern identifies specific transactions between an actor and a resource. For these transactions, you can determine the context and enforce policies.
+`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/telco-hub/":{title:"Telco Hub",tags:[],content:`About the Telco Hub pattern The Telco Hub pattern is a GitOps-first validated pattern for deploying and operating a Telco-focused management hub on Red Hat OpenShift Container Platform. It uses a GitOps approach to centralize multi-cluster operations, lifecycle management, and policy enforcement to simplify the deployment and Day 2 operations of Telco workloads and edge clusters.
+When the pattern installation is complete, the hub cluster provides:
+A dedicated GitOps (ArgoCD) instance created to manage spoke clusters. This instance includes resource tuning for scalability and an ACM plugin for simplified creation of policies.
+Support for Zero Touch Provisioning (ZTP) workflows, which provide automated cluster installation and configuration.
+The Topology Aware Lifecycle Manager (TALM) for integrated cluster management and upgrade capabilities.
+Centralized management of distributed telco infrastructure.
+Background Telco networks and cloud-native network functions (CNFs) require fast, repeatable lifecycle operations, strict dependency management, and consistent configuration across many clusters and edge sites. This pattern packages a production-ready, GitOps-based hub that uses validated upstream telco-reference CRs and applies environment-specific Kustomize overlays so Operators deploy and manage Telco platforms consistently.
+Use Cases Telco Edge Hub Management: Deploy and manage multiple edge clusters from a central hub
+Zero Touch Provisioning: Automated cluster installation and configuration via ZTP workflow
+Multi-Cluster Operations: Centralized management of distributed telco infrastructure
+GitOps Workflows: Infrastructure-as-code with automated deployment and synchronization
+Red Hat technologies Red Hat OpenShift Container Platform
+Red Hat Advanced Cluster Management (RHACM)
+Red Hat OpenShift GitOps (ArgoCD)
+Topology Aware Lifecycle Manager (TALM)
+Optional: Local Storage Operator (LSO)
+Optional: Red Hat OpenShift Data Foundation (ODF)
+Optional: Red Hat Cluster Logging Operator (CLO)
+Other technologies Support for disconnected (air-gapped) environments through local registries, cluster proxy configuration, and image mirroring (ImageSetConfiguration).
+A dedicated GitOps (ArgoCD) instance that includes resource tuning for scalability and an ACM plugin for simplified creation of policies for managed clusters.
+Architecture The Telco Hub pattern architecture consists of the following key components:
+telco-hub-pattern/ ├── kustomize/overlays/telco-hub/ # 🔧 Kustomize Overlay Configuration │ └── kustomization.yaml # Component selection and patches ├── kustomize/air-gapped/ # 🛡️ Disconnected (air-gapped) assets │ ├── imageset-config.yaml # Image mirroring (oc-mirror) │ ├── prerequisites/ # Cluster proxy, catalogs, CAs │ │ └── kustomization.yaml │ └── README.md # Disconnected deployment guide ├── values-hub.yaml # Hub Cluster Definition ├── values-global.yaml # Global Pattern Settings └── docs/ # Documentation # Consumed Remote Resources (via kustomize): # https://github.com/openshift-kni/telco-reference/tree/main/telco-hub/configuration/reference-crs/ ├── required/ # 🔧 Essential Components │ ├── acm/ # Advanced Cluster Management │ ├── gitops/ # GitOps Operators &amp; Configuration │ ├── talm/ # Topology Aware Lifecycle Manager │ └── registry/ # Local Registry (disconnected) └── optional/ # 🔌 Optional Components ├── lso/ # Local Storage Operator ├── odf-internal/ # OpenShift Data Foundation └── logging/ # Cluster Logging Stack Design principles Principle
+Description
+Benefit
+Reference-based
+Direct consumption of official telco-reference configurations
+Always use validated, upstream telco designs
+GitOps-Native
+ArgoCD manages all deployments via validated patterns framework
+Automated, auditable infrastructure changes
+Kustomize-First
+Environment-specific overlays without modifying upstream configs
+Customize while maintaining upstream compatibility
+Component Selection
+Declarative component enablement via kustomize resources
+Granular control over telco-hub functionality
+`,url:"https://validatedpatterns.io/patterns/telco-hub/",breadcrumb:"/patterns/telco-hub/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/layered-zero-trust/":{title:"Layered Zero Trust",tags:[],content:`About the Layered Zero Trust pattern Zero trust is an approach to security architecture based on the idea that every interaction starts in an untrusted state. The Layered Zero Trust pattern shows how to implement zero trust in a Red Hat OpenShift Container Platform environment. The pattern identifies specific transactions between an actor and a resource. For these transactions, you can determine the context and enforce policies.
 Because of the breadth and diversity of possible interactions between components in Red Hat OpenShift Container Platform, this pattern is presented as a set of abstract, stackable layers. These layers provide the prerequisite capabilities that are needed to implement appropriate enforcement points. For each instance, this pattern describes the associated actors, transactions, and the zero-trust policy that you can implement within the platform. To provide context for users, this pattern uses relevant business use cases and traces them to the associated implementation components.
 Use case The pattern addresses the shortcomings of traditional cybersecurity methods, such as defensive hardening and reactive detection. It is particularly effective for the following types of systems and environments:
 Distributed systems, such as cloud and edge environments.
@@ -4665,10 +4798,7 @@ External Secrets Operator: Synchronizes secrets from external systems into the c
 Compliance Operator: Provides ability to scan and remediate cluster hardening based on profiles
 QTodo application: Serves as a sample Quarkus-based application to show zero trust principles.
 PostgreSQL database: Provides the backend database for the demonstration application.
-`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/",breadcrumb:"/patterns/layered-zero-trust/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
-Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/",breadcrumb:"/patterns/layered-zero-trust/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
 `,url:"https://validatedpatterns.io/blog/",breadcrumb:"/blog/"},"https://validatedpatterns.io/blog/2025-08-29-new-common-makefile-structure/":{title:"From slim common to no common",tags:[],content:` Retiring the common Directory with a Smarter Makefile We’re simplifying our Validated Patterns workflow in a big way: the common directory is going away.
 Why does this matter? Fewer moving parts, leaner repositories, and updates that flow automatically to every pattern. Instead of juggling wrapper scripts and redundant logic across repos, everything now runs through a centralized, smarter Makefile.
 This post explains why we made the change, how it benefits you, and what you need to do to start using this streamlined approach.
