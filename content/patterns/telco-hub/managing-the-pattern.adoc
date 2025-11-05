@@ -122,14 +122,14 @@ You can check the health and synchronization status of the pattern components th
 +
 [source,terminal]
 ----
-$ oc describe applications.argoproj.io telco-config -n telco-hub-pattern-hub
+$ oc describe applications.argoproj.io hub-config -n telco-hub-pattern-hub
 ----
 +
 . Describe the `clusters` and `policies` application to view status of deployed managed clusters:
 +
 [source,terminal]
 ----
-$ o$ oc describe applications.argoproj.io clusters policies -n telco-hub-pattern
+$ oc describe applications.argoproj.io clusters policies -n telco-hub-pattern
 ----
 +
 . View all the ArgoCD applications managed by the pattern:
