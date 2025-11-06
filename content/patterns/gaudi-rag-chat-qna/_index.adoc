@@ -1,6 +1,7 @@
 ---
 title: OPEA QnA chat accelerated with Intel Gaudi
 date: 2024-06-01
+tier: sandbox
 validated: false
 summary: This pattern helps you deploy stack enabling Intel Gaudi Accelerator and it also deploys RAG application - Chat QnA
 rh_products:
@@ -32,7 +33,7 @@ include::modules/comm-attributes.adoc[]
 
 Background::
 Validated pattern is based on https://github.com/opea-project/GenAIExamples/tree/main/ChatQnA[OPEA [Open Platform for Enterprise AI\] example - Chat QnA]. OPEA is an ecosystem orchestration framework to integrate performant GenAI technologies & workflows leading to quicker GenAI adoption and business value. Another purpose of this pattern is to deploy whole infrastructure stack enabling Intel Gaudi accelerator. Accelerator is used in the AI inferencing process. Pattern makes use of GitOps approach. GitOps uses Git repositories as a single source of truth to deliver infrastructure-as-code. Submitted code will be checked by the continuous integration (CI) process, while the continuous delivery (CD) process checks and applies requirements for things like security, infrastructure-as-code, or any other boundaries set for the application framework. All changes to code are tracked, making updates easy while also providing version control should a rollback be needed.
- 
+
 
 Components::
 * Kernel Module Management operator (KMM) and HabanaAI operator are responsible for providing Gaudi accelerators within the OpenShift cluster, including drivers and monitoring metrics
@@ -55,7 +56,7 @@ Components::
 Following solution is based on https://github.com/opea-project/GenAIExamples/tree/main/ChatQnA[OPEA [Open Platform for Enterprise AI\] example - Chat QnA], but it is additionally wrapped in the Validated Patterns framework. It means that it uses GitOps approach, where every defined component is a microservice and its status can be easily tracked using ArgoCD dashboard. Moreover this approach makes use of OpenShift Data Foundation solution to store all data, like machine learning model on the cluster. AI model in this case is `Llama-2-70b-chat-hf`. High-level structure of Validated Pattern is shown below:
 
 //figure 1 originally
-.Overview of the solution 
+.Overview of the solution
 image::/images/gaudi-rag-chat-qna/gaudi-rag-chat-qna-vp-overview.png[OPEA QnA chat accelerated with Intel Gaudi Validated Pattern architecture]
 
 
