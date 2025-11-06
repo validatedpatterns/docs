@@ -1,0 +1,38 @@
+---
+ date: 2025-11-06
+ title: Openshift External Secrets Operator Support
+ summary: We've started using the newly released Openshift External Secrets Operator and we now move to a more fully supported solution
+ author: Michele Baldessari
+ blog_tags:
+ - patterns
+ - announce
+---
+:toc:
+:imagesdir: /images
+
+We are excited to announce that the **validatedpatterns/multicloud-gitops** repository is now using the supported Red Hat OpenShift External Secrets Operator
+when running on **OpenShift 4.20** deployments.
+
+== Why the Switch to Red Hat ESO Matters
+
+While the community version of ESO has served us well, switching to the Red Hat
+supported version for OpenShift 4.20 brings several immediate benefits:
+
+=== Enterprise-Grade Assurance
+By utilizing a Red Hat supported Operator, our validated pattern now relies on
+components that offer the highest level of stability and receive official
+technical support.
+
+=== Simplified Compliance and Integration
+The Red Hat ESO is officially tested and validated for compatibility with
+**OpenShift Container Platform (OCP) 4.20**. This ensures a smooth, predictable
+installation process and deep integration with OCP’s internal mechanisms,
+reducing the risk of runtime issues. And also making the upgrades more tested.
+
+=== Consistent GitOps Workflow
+
+The needed changes are quite minor: just switch to the new external-secrets namespace
+and use the openshift-external-secrets helm chart. See
+link:https://github.com/validatedpatterns/multicloud-gitops/blob/main/values-4.20-hub.yaml[hub]
+and link:https://github.com/validatedpatterns/multicloud-gitops/blob/main/values-4.20-group-one.yaml[spoke]
+how this can be done.
