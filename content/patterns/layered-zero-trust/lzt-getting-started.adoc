@@ -27,10 +27,10 @@ Follow these instructions to configure and deploy the Layered Zero Trust pattern
 
 * Fulfill the general link:https://validatedpatterns.io/learn/quickstart/#_prerequisites[prerequisites for Validated Patterns].
 
-* Depending on the characteristics of your cluster, you might need additional hardware resources for the Advanced Cluster Management (ACM) component.
+* Depending on the characteristics of your cluster, you might need additional hardware resources for the {rh-rhacm-first} component.
 For a single-node cluster, you can start with 4 vCPUs, 16 GB of memory, and 120 GB of storage.
 +
-For more details about ACM sizing, see link:https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/install/index#sizing-your-cluster[Sizing your cluster].
+For more details about {rh-rhacm} sizing, see link:https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/install/index#sizing-your-cluster[Sizing your cluster].
 
 * (Optional) The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm].
 
@@ -85,6 +85,11 @@ origin  git@github.com:<your_username>/layered-zero-trust.git (push)
 upstream    https://github.com/validatedpatterns/layered-zero-trust.git (fetch)
 upstream    https://github.com/validatedpatterns/layered-zero-trust.git (push)
 ----
++
+[WARNING]
+====
+The Layered Zero Trust pattern's default deployment assumes that none of its components have been installed previously. Verify that your {ocp} environment does not already contain any of xref:/patterns/layered-zero-trust/index.html#architecture [the listed components] before proceeding.
+====
 
 . Create a local copy of the secret values file that can safely include
 credentials. Run the following command:
@@ -177,3 +182,63 @@ The Layered Zero-Trust pattern installs the following two {ocp} GitOps instances
 . **Hub Argo CD**: Manages Cluster Argo CD instance and the individual components that belong to the pattern on the hub {ocp} instance.
 
 If every Argo CD application reports a **Healthy** status, the pattern has been deployed successfully.
+
+
+[id="lzt-importing-existing-clusters"]
+== Importing existing clusters
+
+The pattern supports importing pre-existing {ocp} clusters into the Hub cluster, converting them into *Managed Clusters*.
+
+[WARNING]
+====
+Do not use the `ClusterPools` configuration settings for {rh-rhacm} chart provisioning. The `ClusterPools` technology is limited to cloud environments.
+
+Instead, use the `acm-managed-clusters` chart to import your existing standalone clusters.
+====
+
+.Procedure
+
+. Copy the `kubeconfig` file of the cluster you want to import to your local system.
+
+. In the `values-secret.yaml` file, define the `kubeconfig` secret by providing the local file system path to the `kubeconfig` file you copied in Step 1.
++
+[source,yaml]
+----
+  - name: kubeconfig-spoke
+    vaultPrefixes:
+    - hub
+    fields:
+    - name: content
+      path: ~/.kube/kubeconfig-ztvp-spoke
+----
+
+. In the `values-hub.yaml` file, add a new entry in the `clusterGroup.managedClusterGroups` key.
++
+[source,yaml]
+----
+  managedClusterGroups:
+    exampleRegion:
+      name: group-one
+      acmlabels:
+        - name: clusterGroup
+          value: group-one
+      helmOverrides:
+        - name: clusterGroup.isHubCluster
+          value: false
+----
+
+. Also in the `values-hub.yaml` file, add your cluster definition in the `acmManagedClusters.clusters` key.
++
+[source,yaml]
+----
+acmManagedClusters:
+  clusters:
+    - name: ztvp-spoke-1
+      clusterGroup: group-one
+      labels:
+        cloud: auto-detect
+        vendor: auto-detect
+      kubeconfigVaultPath: secret/data/hub/kubeconfig-spoke
+----
+
+. Deploy the pattern.
