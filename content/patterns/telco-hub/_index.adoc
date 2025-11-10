@@ -15,9 +15,9 @@ aliases: /telco-hub/
 # uncomment once this exists
 # pattern_logo: telco-hub.png
 links:
-  github: https://github.com/validatedpatterns/telco-hub-pattern
+  github: https://github.com/validatedpatterns-sandbox/telco-hub-pattern
   install: getting-started
-  bugs: https://github.com/validatedpatterns/telco-hub-pattern/issues
+  bugs: https://github.com/validatedpatterns-sandbox/telco-hub-pattern/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ci: telco-hub
 ---

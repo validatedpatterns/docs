@@ -36,7 +36,7 @@ include::modules/comm-attributes.adoc[]
 +
 [source,terminal]
 ----
-$ git clone https://github.com/validatedpatterns/telco-hub-pattern.git
+$ git clone https://github.com/validatedpatterns-sandbox/telco-hub-pattern.git
 $ cd telco-hub-pattern
 ----
 
