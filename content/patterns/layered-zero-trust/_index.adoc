@@ -91,6 +91,9 @@ The pattern consists of the following key components:
 * link:https://external-secrets.io[External Secrets Operator (ESO)]
 ** Synchronizes secrets stored in HashiCorp Vault with {ocp}.
 
+* link:https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14[{rh-rhacm-first}]
+** Provides a management control plane in multi-cluster scenarios.
+
 [id="sidecar-pattern"]
 ==== Sidecar pattern
 
@@ -119,6 +122,7 @@ The following technologies are used in this solution:
 * *Red{nbsp}Hat build of Keycloak*: Manages identity and access for users and services.
 * *{rh-gitops}*: A GitOps continuous delivery (CD) solution based on ArgoCD
 * *OpenShift Cert Manager*: Manages the lifecycle of certificates for secure communication.
+* *{rh-rhacm}*: Provides management capabilities in multi-cluster scenarios.
 * *External Secrets Operator*: Synchronizes secrets from external systems into the cluster.
 * *Compliance Operator*: Provides ability to scan and remediate cluster hardening based on profiles
 * *QTodo application*: Serves as a sample Quarkus-based application to show zero trust principles.
