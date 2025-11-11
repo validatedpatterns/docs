@@ -593,8 +593,8 @@ default StorageClass which provides dynamic PersistentVolume storage.
 To customize the default configuration, you must have a GitHub account and a token with repositories permissions, to read from and write to your forks.
 Access to Podman (or Docker) for execution of the container images used by pattern.sh script for provisioning.
 Fulfill the general prerequisites for Validated Patterns.
-Depending on the characteristics of your cluster, you might need additional hardware resources for the Advanced Cluster Management (ACM) component. For a single-node cluster, you can start with 4 vCPUs, 16 GB of memory, and 120 GB of storage.
-For more details about ACM sizing, see Sizing your cluster.
+Depending on the characteristics of your cluster, you might need additional hardware resources for the Red Hat Advanced Cluster Management (RHACM) component. For a single-node cluster, you can start with 4 vCPUs, 16 GB of memory, and 120 GB of storage.
+For more details about RHACM sizing, see Sizing your cluster.
 (Optional) The Helm binary, for instructions, see Installing Helm.
 The Layered Zero Trust pattern’s default deployment assumes that none of its components have been installed previously. Verify that your OpenShift Container Platform environment does not already contain any of the listed components before proceeding.
 Repository setup Follow these instructions for setting up the project repository:
@@ -604,7 +604,8 @@ $ git clone git@github.com:&lt;your_username&gt;/layered-zero-trust.git Go to yo
 $ cd &lt;/path_to_your_repository&gt; Set up upstream remote repository:
 $ git remote add -f upstream git@github.com/validatedpatterns/layered-zero-trust.git Verify the setup of your remote repositories by running the following command:
 $ git remote -v Example output:
-origin git@github.com:&lt;your_username&gt;/layered-zero-trust.git (fetch) origin git@github.com:&lt;your_username&gt;/layered-zero-trust.git (push) upstream https://github.com/validatedpatterns/layered-zero-trust.git (fetch) upstream https://github.com/validatedpatterns/layered-zero-trust.git (push) Create a local copy of the secret values file that can safely include credentials. Run the following command:
+origin git@github.com:&lt;your_username&gt;/layered-zero-trust.git (fetch) origin git@github.com:&lt;your_username&gt;/layered-zero-trust.git (push) upstream https://github.com/validatedpatterns/layered-zero-trust.git (fetch) upstream https://github.com/validatedpatterns/layered-zero-trust.git (push) The Layered Zero Trust pattern’s default deployment assumes that none of its components have been installed previously. Verify that your OpenShift Container Platform environment does not already contain any of the listed components before proceeding.
+Create a local copy of the secret values file that can safely include credentials. Run the following command:
 $ cp values-secret.yaml.template ~/values-secret-layered-zero-trust.yaml To prevent pushing secrets to your Git repository, the command places the values-secret.yaml file in your home directory. You derive this file from the values-secrets.yaml.template file located in the pattern’s top-level directory. When you create new patterns, add your secrets to the values-secret.yaml file in your home directory.
 Create a new feature branch, for example my-branch from the main branch for your content:
 $ git checkout -b my-branch main (Optional) To customize the execution of the pattern, optionally change the Helm values files and then commit the changes.
@@ -626,6 +627,14 @@ The Layered Zero-Trust pattern installs the following two OpenShift Container Pl
 Cluster Argo CD: Deploys an App-of-Apps application named layered-zero-trust-hub. This application installs the pattern’s components.
 Hub Argo CD: Manages Cluster Argo CD instance and the individual components that belong to the pattern on the hub OpenShift Container Platform instance.
 If every Argo CD application reports a Healthy status, the pattern has been deployed successfully.
+Importing existing clusters The pattern supports importing pre-existing OpenShift Container Platform clusters into the Hub cluster, converting them into Managed Clusters.
+Do not use the ClusterPools configuration settings for RHACM chart provisioning. The ClusterPools technology is limited to cloud environments.
+Instead, use the acm-managed-clusters chart to import your existing standalone clusters.
+Procedure Copy the kubeconfig file of the cluster you want to import to your local system.
+In the values-secret.yaml file, define the kubeconfig secret by providing the local file system path to the kubeconfig file you copied in Step 1.
+- name: kubeconfig-spoke vaultPrefixes: - hub fields: - name: content path: ~/.kube/kubeconfig-ztvp-spoke In the values-hub.yaml file, add a new entry in the clusterGroup.managedClusterGroups key.
+managedClusterGroups: exampleRegion: name: group-one acmlabels: - name: clusterGroup value: group-one helmOverrides: - name: clusterGroup.isHubCluster value: false Also in the values-hub.yaml file, add your cluster definition in the acmManagedClusters.clusters key.
+acmManagedClusters: clusters: - name: ztvp-spoke-1 clusterGroup: group-one labels: cloud: auto-detect vendor: auto-detect kubeconfigVaultPath: secret/data/hub/kubeconfig-spoke Deploy the pattern.
 `,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-getting-started/",breadcrumb:"/patterns/layered-zero-trust/lzt-getting-started/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-getting-started/":{title:"Getting started",tags:[],content:` Deploying the MLOps Fraud Detection pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
 A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 For installation tooling dependencies, see Patterns quick start.
@@ -4984,6 +4993,8 @@ HashiCorp Vault
 Stores sensitive assets securely.
 External Secrets Operator (ESO)
 Synchronizes secrets stored in HashiCorp Vault with OpenShift Container Platform.
+Red Hat Advanced Cluster Management (RHACM)
+Provides a management control plane in multi-cluster scenarios.
 Sidecar pattern The sidecar pattern is a deployment model where a separate container or process, known as a sidecar, runs alongside the main application to handle auxiliary tasks. In an OpenShift Container Platform environment, pods simplify this by ensuring the sidecar and main application share the same lifecycle. This approach benefits Zero Trust architectures by enabling centralized enforcement of security policies such as authentication, authorization, traffic encryption (mTLS), rate limiting, auditing, and logging, without requiring developers to add this logic to every microservice. It separates concerns, simplifies development, and allows security policies to be updated independently of the main application.
 While sidecars are often criticized for adding complexity and resource usage, these are often misconceptions:
 Complexity: Sidecars simplify the main application by offloading tasks, and modern platforms, such as OpenShift Container Platform, are designed to manage them efficiently.
@@ -4996,6 +5007,7 @@ HashiCorp Vault: Provides secure secret storage and management.
 Red Hat build of Keycloak: Manages identity and access for users and services.
 Red Hat OpenShift GitOps: A GitOps continuous delivery (CD) solution based on ArgoCD
 OpenShift Cert Manager: Manages the lifecycle of certificates for secure communication.
+RHACM: Provides management capabilities in multi-cluster scenarios.
 External Secrets Operator: Synchronizes secrets from external systems into the cluster.
 Compliance Operator: Provides ability to scan and remediate cluster hardening based on profiles
 QTodo application: Serves as a sample Quarkus-based application to show zero trust principles.
