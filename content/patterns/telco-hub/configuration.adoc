@@ -84,7 +84,7 @@ This component provides ArgoCD applications for synchronizing cluster deployment
 Optional components::
 These components should be enabled based on specific workload and storage requirements:
 
-* LocalStorage Operator (LSO): Enable if you plan to use LSO as your storage backend.
+* LocalStorage Operator (LSO): Enable if you plan to use LSO to manage storage for ODF.
 * Red Hat OpenShift Data Foundation (ODF): Enable if you plan to use ODF as your storage backend.
 * Cluster Logging Operator (Logging): Enable if you require the cluster logging operator for log aggregation.
 
