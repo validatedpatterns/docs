@@ -225,6 +225,10 @@ image::/images/ramendr-starter-kit/ramendr-clusters-built.png[ramendr-starter-ki
 image::/images/ramendr-starter-kit/ramendr-starter-kit-hub-applications.png[ramendr-starter-kit-hub-applications,title="RamenDR Starter Kit Applications"]
 . Eventually, the Virtual Machines will be deployed and the Disaster Recovery Placement Control (DRPC) will show that resources are now protected. This screen can be reached via *All Clusters → Data Services → Disaster Recovery → Protected Applications* on the hub cluster. Normally it will be faster to synchronize Kubernetes objects than Application volumes. When these indicators both show Healthy it is safe to trigger a failover:
 +
+.ramendr-starter-kit-running-vms
+image::/images/ramendr-starter-kit/ramendr-starter-kit-running-vms.png[ramendr-starter-kit-running-vms,title="RamenDR Starter Kit Applications"]
+. You might want to see the VMs themselves running. They will be on the primary cluster in the *Virtualization → VirtualMachines* area. The pattern configures 4 RHEL9 VMs by default:
++
 .ramendr-starter-kit-trigger-failover
 image::/images/ramendr-starter-kit/ramendr-starter-kit-trigger-failover-1.png[ramendr-starter-kit-trigger-failover-1,title="RamenDR Starter Kit Trigger Failover, part 1"]
 . Clicking the "Failover" option will bring up a modal dialog that indicates where the failover will move the workload, and when the last known good state of the workload is. Click on the "Initiate" button to begin the failover:
