@@ -242,4 +242,4 @@ image::/images/ramendr-starter-kit/ramendr-starter-kit-failover-cleanup-script.p
 . After a few minutes, the resources should show healthy and protected again (the PVCs take a few minutes to synchronize):
 +
 .ramendr-starter-kit-failover-reprotected
-image::/images/ramendr-starter-kit/ramendr-starter-kit-failover-reprotected.png[ramendr-starter-kit-failover-cleanup-reprotected,title="RamenDR Starter Kit Reprotected"]
+image::/images/ramendr-starter-kit/ramendr-starter-kit-reprotected.png[ramendr-starter-kit-reprotected,title="RamenDR Starter Kit Reprotected"]
