@@ -6,6 +6,13 @@
  blog_tags:
  - patterns
  - secrets
+ keywords:
+ - secrets management
+ - hashicorp vault
+ - external secrets operator
+ - kubernetes secrets
+ - validated patterns
+ - security
 ---
 
 # More Secrets Options Now Available with Validated Patterns

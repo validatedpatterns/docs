@@ -5,6 +5,14 @@
  author: Michele Baldessari
  blog_tags:
  - patterns
+ keywords:
+ - hashicorp vault
+ - kubernetes secrets
+ - secret management
+ - external secrets
+ - pushsecret
+ - validated patterns
+ - gitops
 ---
 
 # Pushing Secrets to HashiCorp Vault

@@ -8,6 +8,15 @@ blog_tags:
 - xray
 - validated-pattern
 aliases: /2021/12/31/medical-diagnosis/
+keywords:
+- medical diagnosis
+- ai machine learning
+- xray analysis
+- healthcare
+- validated patterns
+- pneumonia detection
+- knative
+- kafka
 ---
 
 # Validated Pattern: Medical Diagnosis

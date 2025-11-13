@@ -5,6 +5,13 @@
  author: Martin Jackson
  blog_tags:
  - patterns
+ keywords:
+ - kubeconfig
+ - kubernetes authentication
+ - token authentication
+ - openshift
+ - validated patterns
+ - cluster access
 ---
 
 # Writing a Kubeconfig File if You Need One

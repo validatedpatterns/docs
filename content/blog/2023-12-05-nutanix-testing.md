@@ -8,6 +8,13 @@
  - announce
  - nutanix
  aliases: /2023/12/04/nutanix-platform-announce/
+ keywords:
+ - nutanix platform
+ - multicloud gitops
+ - validated patterns
+ - platform testing
+ - openshift
+ - ci testing
 ---
 
 I am pleased to announce the addition of the Nutanix platform to our CI dashboard for the Multi-cloud GitOps pattern.

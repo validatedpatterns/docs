@@ -1,0 +1,88 @@
+{{- /*
+  Generate a dynamic Open Graph image for blog posts
+  This partial creates a custom OG image with the blog post title
+  Falls back to default images if generation fails
+*/ -}}
+
+{{- $ogImage := "" }}
+{{- $pageTitle := .Title }}
+{{- $pageDate := .Date.Format "January 2, 2006" }}
+{{- $author := .Params.author | default "Validated Patterns" }}
+
+{{- /* Check if page has a custom image first */ -}}
+{{- if .Params.image }}
+  {{- with resources.Get .Params.image }}
+    {{- $ogImage = . }}
+  {{- else }}
+    {{- /* Image is a URL, return it directly */ -}}
+    {{- $ogImage = .Params.image }}
+  {{- end }}
+{{- else if .Params.featured_image }}
+  {{- with resources.Get .Params.featured_image }}
+    {{- $ogImage = . }}
+  {{- else }}
+    {{- $ogImage = .Params.featured_image }}
+  {{- end }}
+{{- else if eq .Section "blog" }}
+  {{- /* Generate dynamic OG image for blog posts */ -}}
+  {{- $baseImage := resources.Get "images/validated-patterns.png" }}
+  {{- if $baseImage }}
+    {{- /* Create a processed version of the image for OG */ -}}
+    {{- $ogImage = $baseImage.Resize "1200x630 Center" }}
+    {{- $ogImage = $ogImage.Filter (images.GaussianBlur 2) }}
+    {{- $ogImage = $ogImage.Filter (images.Brightness -20) }}
+  {{- end }}
+  
+  {{- /* If we want to use SVG-based generation instead */ -}}
+  {{- /* Note: SVG generation for better text rendering */ -}}
+  {{- if not $ogImage }}
+    {{- $svg := printf `
+    <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad" x1="0%%" y1="0%%" x2="100%%" y2="100%%">
+          <stop offset="0%%" style="stop-color:#0066CC;stop-opacity:1" />
+          <stop offset="100%%" style="stop-color:#003d79;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="630" fill="url(#grad)"/>
+      <text x="60" y="120" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white">
+        %s
+      </text>
+      <text x="60" y="550" font-family="Arial, sans-serif" font-size="24" fill="#e0e0e0">
+        %s
+      </text>
+      <text x="60" y="590" font-family="Arial, sans-serif" font-size="20" fill="#b0b0b0">
+        Validated Patterns Blog
+      </text>
+    </svg>` (substr $pageTitle 0 60) $pageDate }}
+    
+    {{- $svgContent := $svg | resources.FromString (printf "og-images/blog/%s.svg" .File.BaseFileName) }}
+    {{- $ogImage = $svgContent }}
+  {{- end }}
+{{- end }}
+
+{{- /* Fallback to site defaults */ -}}
+{{- if not $ogImage }}
+  {{- if .Site.Params.default_share_image }}
+    {{- $ogImage = resources.Get .Site.Params.default_share_image }}
+    {{- if not $ogImage }}
+      {{- $ogImage = .Site.Params.default_share_image }}
+    {{- end }}
+  {{- else }}
+    {{- $ogImage = resources.Get "images/validated-patterns.png" }}
+  {{- end }}
+{{- end }}
+
+{{- /* Return the final image URL */ -}}
+{{- if $ogImage }}
+  {{- if reflect.IsMap $ogImage }}
+    {{- /* It's a Hugo resource */ -}}
+    {{- return $ogImage.Permalink }}
+  {{- else }}
+    {{- /* It's a string URL */ -}}
+    {{- return ($ogImage | absURL) }}
+  {{- end }}
+{{- else }}
+  {{- return (.Site.Params.site_logo | absURL) }}
+{{- end }}
+

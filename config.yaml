@@ -7,6 +7,12 @@ paginate: 6
 timeout: 300
 params:
   site_logo: /images/validated-patterns.png
+  # SEO and Social Media Settings
+  description: "Validated Patterns are GitOps-driven, automated, and rigorously tested application stacks for hybrid cloud deployments on Red Hat OpenShift. Deploy complex solutions with unprecedented speed and confidence."
+  default_share_image: /images/validated-patterns.png
+  twitter_handle: "@RedHat"
+  github_repo: "validatedpatterns/docs"
+  github_branch: "main"
 security:
   exec:
     allow: ["^dart-sass-embedded$", "^go$", "^npx$", "^postcss$", "^asciidoctor$"]
@@ -45,3 +51,8 @@ menus:
     - name: Workshop
       url: https://play.validatedpatterns.io
       weight: 25
+sitemap:
+  changeFreq: monthly
+  priority: 0.5
+  filename: sitemap.xml
+enableRobotsTXT: true

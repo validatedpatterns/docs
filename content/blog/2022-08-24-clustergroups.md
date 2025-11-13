@@ -6,6 +6,14 @@ author: Martin Jackson
 blog_tags:
 - validated-pattern
 aliases: /2022/08/24/clustergroups/
+keywords:
+- clustergroups
+- multicluster
+- validated patterns
+- kubernetes
+- openshift
+- cluster management
+- gitops
 ---
 
 # What Is a clusterGroup?

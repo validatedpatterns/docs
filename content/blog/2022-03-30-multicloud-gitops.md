@@ -8,6 +8,15 @@ blog_tags:
 - xray
 - validated-pattern
 aliases: /2022/03/30/multicloud-gitops/
+keywords:
+- multicloud
+- gitops
+- argocd
+- rhacm
+- kubernetes
+- openshift
+- validated patterns
+- cluster management
 ---
 
 # Validated Pattern: Multi-Cloud GitOps

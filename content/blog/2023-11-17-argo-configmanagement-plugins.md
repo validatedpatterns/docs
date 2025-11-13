@@ -11,6 +11,14 @@ blog_tags:
 - pipelines
 - gitops
 aliases: /2023/11/17/argocd-cmps/
+keywords:
+- argocd
+- config management plugins
+- gitops
+- validated patterns
+- kubernetes
+- openshift
+- sidecar plugins
 ---
 
 # Argo CD Configuration Management Plugins and the Validated Patterns Framework

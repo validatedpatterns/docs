@@ -13,6 +13,15 @@ blog_tags:
 - pipelines
 - quay
 aliases: /2022/12/01/multicluster-devsecops/
+keywords:
+- devsecops
+- openshift pipelines
+- security scanning
+- quay registry
+- advanced cluster security
+- validated patterns
+- ci/cd
+- gitops
 ---
 
 # Multicluster DevSecOps

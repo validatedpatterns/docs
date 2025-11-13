@@ -1,0 +1,80 @@
+{{- if and (eq .Section "patterns") (not .IsNode) -}}
+{{- $image := "" -}}
+{{- if .Params.image -}}
+  {{- $image = .Params.image | absURL -}}
+{{- else if .Params.featured_image -}}
+  {{- $image = .Params.featured_image | absURL -}}
+{{- else if .Site.Params.default_share_image -}}
+  {{- $image = .Site.Params.default_share_image | absURL -}}
+{{- else -}}
+  {{- $image = .Site.Params.site_logo | absURL -}}
+{{- end -}}
+
+{{- $description := "" -}}
+{{- if .Description -}}
+  {{- $description = .Description -}}
+{{- else if .Summary -}}
+  {{- $description = .Summary -}}
+{{- else -}}
+  {{- $description = .Site.Params.description | default "Validated Patterns documentation" -}}
+{{- end -}}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "{{ .Title }}",
+  "description": "{{ $description | plainify }}",
+  {{- if $image }}
+  "image": {
+    "@type": "ImageObject",
+    "url": "{{ $image }}",
+    "width": 1200,
+    "height": 630
+  },
+  {{- end }}
+  "url": "{{ .Permalink }}",
+  {{- if .Date }}
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- end }}
+  {{- if .Lastmod }}
+  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- end }}
+  "author": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ .Site.Params.site_logo | absURL }}",
+      "width": 200,
+      "height": 200
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  }
+  {{- if .Params.rh_products -}}
+  ,
+  "about": [
+    {{- range $index, $product := .Params.rh_products -}}
+    {{- if $index -}},{{- end -}}
+    {
+      "@type": "SoftwareApplication",
+      "name": "{{ $product }}"
+    }
+    {{- end -}}
+  ]
+  {{- end -}}
+  {{- if .Params.industries -}}
+  ,
+  "industry": {{ .Params.industries | jsonify }}
+  {{- end }}
+}
+</script>
+{{- end -}}
+

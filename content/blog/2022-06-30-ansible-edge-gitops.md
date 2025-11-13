@@ -7,6 +7,13 @@ blog_tags:
 - ansible-edge-gitops
 - patterns
 aliases: /2022/06/30/ansible-edge-gitops/
+keywords:
+- ansible automation
+- edge computing
+- gitops
+- openshift virtualization
+- validated patterns
+- hybrid cloud
 ---
 
 # Validated Pattern: Ansible Edge GitOps
