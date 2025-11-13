@@ -1,0 +1,79 @@
+---
+title: RamenDR Starter Kit
+date: 2025-11-13
+tier: sandbox
+summary: This pattern demonstrates the use of Red Hat OpenShift Data Foundations for Virtualization Regional Disaster Recovery
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift Virtualization
+- Red Hat Enterprise Linux
+- Red Hat OpenShift Data Foundation
+- Red Hat OpenShift Data Foundation MultiCluster Orchestrator
+- Red Hat OpenShift Data Foundation DR Hub Operator
+- Red Hat Advanced Cluster Management
+industries: []
+aliases: /ramendr-starter-kit/
+pattern_logo: ansible-edge.png
+links:
+  github: https://github.com/validatedpatterns-sandbox/ramendr-starter-kit/
+  install: getting-started
+  bugs: https://github.com/validatedpatterns-sandbox/ramendr-starter-kit/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+ci: ramendr-starter-kit
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== RamenDR Regional Disaster Recovery with Virtualization Starter Kit
+
+This pattern sets up three clusters as recommended for OpenShift Data Foundations Regional Disaster Recovery as 
+documented here(https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/4.18/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index).
+
+Of additional interest is that the workload that it sets up protection for and can failover involves running virtual
+machines.
+
+The setup process is relatively intricate; the goal of this pattern is to handle all the intricate parts and present
+a functional DR-capable starting point for Virtual Machine workloads. In particular this pattern takes care to sequence
+installations and validate pre-requisites for all of the core components of the Disaster Recovery system.
+
+=== Background
+
+It would be ideal if all applications in the world understood availability concepts natively and had their own 
+integrated regional failover strategies. However, many workloads do not, and users who need regional disaster recovery
+capabilities need to solve this problem for the applications that cannot solve it for themselves.
+
+This pattern uses OpenShift Virtualization (the productization of Kubevirt) to simulate the Edge environment for VMs.
+
+==== Solution elements
+
+==== Red Hat Technologies
+
+* Red Hat OpenShift Container Platform (Kubernetes)
+* Red Hat Advanced Cluster Management (RHACM)
+* Red Hat OpenShift Data Foundations (ODF, including Multicluster Orchestrator)
+* Submariner (VPN)
+* Red Hat OpenShift GitOps (ArgoCD)
+* OpenShift Virtualization (Kubevirt)
+* Red Hat Enterprise Linux 9 (on the VMs)
+
+==== Other technologies this pattern Uses
+
+* HashiCorp Vault (Community Edition)
+* External Secrets Operator (Community Edition)
+
+=== Architecture
+
+Similar to other Validated Patterns, this pattern starts with a central management hub. The hub cluster then builds
+two managed clusters using Hive, which are in different regions as usually required for Regional Disaster Recovery.
+
+==== Logical architecture
+
+TBD
+
+==== Physical architecture
+
+TBD
+

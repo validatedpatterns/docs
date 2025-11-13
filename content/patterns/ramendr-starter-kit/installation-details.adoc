@@ -1,0 +1,18 @@
+---
+title: Installation Details
+weight: 20
+aliases: /ansible-edge-gitops/installation-details/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Installation Steps
+
+=== Major Validation Scripts
+
+== Triggering a Failover
+
+=== How to Run Manual Cleanup

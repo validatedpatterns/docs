@@ -1,0 +1,245 @@
+---
+title: Getting Started
+weight: 10
+aliases: /ramendr-starter-kit/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="deploying-ramendr-starter-kit-pattern"]
+== Deploying the RamenDR Starter Kit Pattern
+
+.Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
+* A GitHub account with a personal access token that has repository read and write permissions.
+* The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm]
+* Additional installation tool dependencies. For details, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
+
+It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
+
+[id="preparing-for-deployment"]
+== Preparing for deployment
+.Procedure
+
+. Fork the link:https://github.com/validatedpatterns-sandbox/ramendr-starter-kit[ramendr-starter-kit] repository on GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
+
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+$ git clone git@github.com:your-username/ramendr-starter-kit.git
+----
+
+. Go to your repository: Ensure you are in the root directory of your Git repository by using:
++
+[source,terminal]
+----
+$ cd /path/to/your/repository
+----
+
+. Run the following command to set the upstream repository:
++
+[source,terminal]
+----
+$ git remote add -f upstream git@github.com:validatedpatterns/ramendr-starter-kit.git
+----
+
+. Verify the setup of your remote repositories by running the following command:
++
+[source,terminal]
+----
+$ git remote -v
+----
++
+.Example output
++
+[source,terminal]
+----
+origin	git@github.com:kquinn1204/ramendr-starter-kit.git (fetch)
+origin	git@github.com:kquinn1204/ramendr-starter-kit.git (push)
+upstream	git@github.com:validatedpatterns-sandbox/ramendr-starter-kit.git (fetch)
+upstream	git@github.com:validatedpatterns-sandbox/ramendr-starter-kit.git (push)
+----
+
+. Make a local copy of secrets template outside of your repository to hold credentials for the pattern.
++
+[WARNING]
+====
+Do not add, commit, or push this file to your repository. Doing so may expose personal credentials to GitHub.
+====
++
+Run the following commands:
++
+[source,terminal]
+----
+$ cp values-secret.yaml.template ~/values-secret.yaml
+----
+
+. Populate this file with secrets, or credentials, that are needed to deploy the pattern successfully:
++
+[source,terminal]
+----
+$ vi ~/values-secret.yaml
+----
+
+.. Edit the `vm-ssh` section to include the username, private key, and public key. To ensure the seamless flow of the pattern, the value associated with the `privatekey` and `publickey` has been updated with `path`. For example: 
++
+[source,yaml]
+----
+  - name: vm-ssh
+    vaultPrefixes:
+    - global
+    fields:
+    - name: username
+      value: 'cloud-user'
+    - name: privatekey
+      path: '/path/to/private-ssh-key'
+    - name: publickey
+      path: '/path/to/public-ssh-key'
+----
++
+Paste the path to your locally stored private and public keys. If you do not have a key pair, generate one using `ssh-keygen`.
+
+.. Edit the `cloud-init` section to include the `userData` block to use with cloud-init. For example:
++
+[source,yaml]
+----
+  - name: cloud-init
+    vaultPrefixes:
+    - global
+    fields:
+    - name: userData
+      value: |-
+        #cloud-config
+        user: 'cloud-user'
+        password: 'cloud-user'
+        chpasswd: { expire: False }
+----
+
+.. Edit the `aws` section to refer to the file containing your AWS credentials:
++
+[source,yaml]
+----
+  - name: aws
+    fields:
+      - name: aws_access_key_id
+        ini_file: ~/.aws/credentials
+        ini_key: aws_access_key_id
+      - name: aws_secret_access_key
+        ini_file: ~/.aws/credentials
+        ini_key: aws_secret_access_key
+      - name: baseDomain
+        value: aws.example.com
+      - name: pullSecret
+        path: ~/pull_secret.json
+      - name: ssh-privatekey
+        path: ~/.ssh/privatekey
+      - name: ssh-publickey
+        path: ~/.ssh/publickey
+----
+
+.. Edit the `openshiftPullSecret` section to refer to the file containing your OpenShift pull secret:
++
+[source,yaml]
+----
+  - name: openshiftPullSecret
+    fields:
+      - name: .dockerconfigjson
+        path: ~/pull_secret.json
+----
+
+. Create and switch to a new branch named `my-branch`, by running the following command:
++
+[source,terminal]
+----
+$ git checkout -b my-branch
+----
+
+. If you made any changes to files tracked by git, git add them and then commit the changes by running the following command:
++
+[source,terminal]
+----
+$ git commit -m "any updates"
+----
+
+. Push the changes to your forked repository:
++
+[source,terminal]
+----
+$ git push origin my-branch
+----
+
+The preferred way to install this pattern is by using the script `./pattern.sh` script. 
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the pattern by using the pattern.sh file
+
+To deploy the pattern by using the `pattern.sh` file, complete the following steps:
+
+. Log in to your cluster by following this procedure:
+
+.. Obtain an API token by visiting link:https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request[https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request].
+
+.. Log in to the cluster by running the following command: 
++
+[source,terminal]
+----
+$ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
+----
++
+Or log in by running the following command:
++
+[source,terminal]
+----
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster. Run the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
+
+.Verification
+
+. Verify that the Operators have been installed on the hub cluster. Navigate to *Operators → Installed Operators* page in the OpenShift Container Platform web console on the Hub cluster (in the "local-cluster" view), 
++
+.ramendr-starter-kit-operators
+image::/images/ramendr-starter-kit/ramendr-hub-operators.png[ramendr-starter-kit-operators,title="RamenDR Hub Operators"]
+
+
+. Verify that the primary and secondary managed clusters have been built. This can take close to an hour on AWS. On the hub cluster, navigate to *All Clusters* in the OpenShift Container Plaform web console:
++
+.ramendr-starter-kit-clusters
+image::/images/ramendr-starter-kit/ramendr-clusters-built.png[ramendr-starter-kit-operators,title="RamenDR Clusters"]
+. Wait some time for everything to deploy to all the clusters. It might take up to another hour from when the managed clusters finish building. You can track the progress through the `Hub ArgoCD` UI from the nines menu, especially the "opp-policy" and the "regional-dr" applications. Most of the critical resources are in the regional-dr application (at present, the opp-policy app may show missing/out-of-sync, and the regional-dr app may show OutOfSync - even when both are healthy. We are working on a fix, track bug progress link:https://github.com/validatedpatterns-sandbox/ramendr-starter-kit/issues/4[here]): 
++
+.ramendr-starter-kit-operators-applications
+image::/images/ramendr-starter-kit/ramendr-starter-kit-hub-applications.png[ramendr-starter-kit-hub-applications,title="RamenDR Starter Kit Applications"]
+. Eventually, the Virtual Machines will be deployed and the Disaster Recovery Placement Control (DRPC) will show that resources are now protected. This screen can be reached via *All Clusters → Data Services → Disaster Recovery → Protected Applications* on the hub cluster. Normally it will be faster to synchronize Kubernetes objects than Application volumes. When these indicators both show Healthy it is safe to trigger a failover:
++
+.ramendr-starter-kit-trigger-failover
+image::/images/ramendr-starter-kit/ramendr-starter-kit-trigger-failover-1.png[ramendr-starter-kit-trigger-failover-1,title="RamenDR Starter Kit Trigger Failover, part 1"]
+. Clicking the "Failover" option will bring up a modal dialog that indicates where the failover will move the workload, and when the last known good state of the workload is. Click on the "Initiate" button to begin the failover:
++
+.ramendr-starter-kit-trigger-failover-part-2
+image::/images/ramendr-starter-kit/ramendr-starter-kit-trigger-failover-2.png[ramendr-starter-kit-trigger-failover-2,title="RamenDR Starter Kit Trigger Failover, part 2"]
+. While the failover is happening, you can watch the progress of it in the activity area. When it is done, it will say (with a discovered application) that it is necessary to clean up application resources to allow replication to start in the other direction. Notice that the primary cluster should have changed:
++
+.ramendr-starter-kit-trigger-failover-cleanup
+image::/images/ramendr-starter-kit/ramendr-starter-kit-failover-cleanup.png[ramendr-starter-kit-failover-cleanup,title="RamenDR Starter Kit Failover Cleanup"]
+. The pattern provides a script to do this cleanup. Invoke it with your Hub cluster KUBECONFIG set and running `./pattern.sh scripts/cleanup-gitops-vms-non-primary.sh`:
++
+.ramendr-starter-kit-failover-cleanup-script
+image::/images/ramendr-starter-kit/ramendr-starter-kit-failover-cleanup-script.png[ramendr-starter-kit-failover-cleanup-script,title="RamenDR Starter Kit Failover Cleanup"]
+. After a few minutes, the resources should show healthy and protected again (the PVCs take a few minutes to synchronize):
++
+.ramendr-starter-kit-failover-reprotected
+image::/images/ramendr-starter-kit/ramendr-starter-kit-failover-reprotected.png[ramendr-starter-kit-failover-cleanup-reprotected,title="RamenDR Starter Kit Reprotected"]
