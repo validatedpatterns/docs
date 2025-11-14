@@ -1,0 +1,27 @@
+{{- if .IsHome -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Red Hat",
+  "url": "https://www.redhat.com",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "{{ .Site.Params.site_logo | absURL }}",
+    "width": 200,
+    "height": 200
+  },
+  "sameAs": [
+    "https://github.com/validatedpatterns",
+    "https://www.linkedin.com/company/red-hat",
+    "https://twitter.com/RedHat"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "Community Support",
+    "url": "https://openshiftcommons.slack.com/archives/C059ABEU2ET"
+  }
+}
+</script>
+{{- end -}}
+

@@ -9,6 +9,14 @@ blog_tags:
 - patterns
 - GitOps
 aliases: /2022/10/12/acm-provisioning/
+keywords:
+- rhacm
+- cluster provisioning
+- multicluster
+- gitops
+- validated patterns
+- openshift
+- cluster management
 ---
 
 # Multi-cluster GitOps with Provisioning

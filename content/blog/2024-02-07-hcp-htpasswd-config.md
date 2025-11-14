@@ -6,6 +6,14 @@ author: Jonny Rickard
 blog_tags:
 - patterns
 - how-to
+keywords:
+- htpasswd
+- oauth
+- authentication
+- hosted control plane
+- openshift
+- validated patterns
+- cluster configuration
 ---
 
 # Configure HTPasswd OAuth provider for hosted clusters

@@ -6,6 +6,13 @@
  blog_tags:
  - patterns
  aliases: /2023/12/15/understanding-namespaces/
+ keywords:
+ - kubernetes namespaces
+ - operator groups
+ - openshift
+ - validated patterns
+ - namespace management
+ - clustergroup
 ---
 
 # Understanding Namespace Creation using the Validated Patterns Framework

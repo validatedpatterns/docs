@@ -1,0 +1,75 @@
+{{- if and (eq .Section "blog") (not .IsNode) -}}
+{{- $image := "" -}}
+{{- if .Params.image -}}
+  {{- $image = .Params.image | absURL -}}
+{{- else if .Params.featured_image -}}
+  {{- $image = .Params.featured_image | absURL -}}
+{{- else if .Site.Params.default_share_image -}}
+  {{- $image = .Site.Params.default_share_image | absURL -}}
+{{- else -}}
+  {{- $image = .Site.Params.site_logo | absURL -}}
+{{- end -}}
+
+{{- $description := "" -}}
+{{- if .Description -}}
+  {{- $description = .Description -}}
+{{- else if .Summary -}}
+  {{- $description = .Summary -}}
+{{- else -}}
+  {{- $description = .Site.Params.description | default "Validated Patterns documentation" -}}
+{{- end -}}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ .Title }}",
+  "description": "{{ $description | plainify }}",
+  {{- if $image }}
+  "image": {
+    "@type": "ImageObject",
+    "url": "{{ $image }}",
+    "width": 1200,
+    "height": 630
+  },
+  {{- end }}
+  "url": "{{ .Permalink }}",
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- if .Lastmod }}
+  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- else }}
+  "dateModified": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- end }}
+  {{- if .Params.author }}
+  "author": {
+    "@type": "Person",
+    "name": "{{ .Params.author }}"
+  },
+  {{- else }}
+  "author": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}"
+  },
+  {{- end }}
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ .Site.Params.site_logo | absURL }}",
+      "width": 200,
+      "height": 200
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  }
+  {{- if .Params.blog_tags -}}
+  ,
+  "keywords": {{ .Params.blog_tags | jsonify }}
+  {{- end }}
+}
+</script>
+{{- end -}}
+

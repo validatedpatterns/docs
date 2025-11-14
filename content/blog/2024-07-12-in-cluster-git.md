@@ -6,6 +6,14 @@
  blog_tags:
  - patterns
  - git
+ keywords:
+ - gitea
+ - in-cluster git
+ - git server
+ - validated patterns
+ - gitops
+ - kubernetes
+ - openshift
 ---
 
 # In-cluster Git Server

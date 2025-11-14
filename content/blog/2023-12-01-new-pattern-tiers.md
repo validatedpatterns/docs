@@ -7,6 +7,13 @@ blog_tags:
 - patterns
 - announce
 aliases: /2023/12/01/pattern-tiers/
+keywords:
+- pattern tiers
+- validated patterns
+- sandbox
+- tested
+- maintained
+- pattern classification
 ---
 
 The efforts here started off with 2 different classes of patterns: “Community” and “Validated”, however this terminology dates back to before the effort had arrived at “Validated Patterns” as the official project name.

@@ -6,6 +6,14 @@ author: Michele Baldessari
 blog_tags:
 - acm
 aliases: /2022/03/23/acm-mustonlyhave/
+keywords:
+- rhacm
+- policy enforcement
+- musthave
+- mustonlyhave
+- validated patterns
+- cluster governance
+- openshift
 ---
 
 Recently a user reported an issue when using the multicloud-gitops pattern: Namely, after testing changes in a feature branch (adding a helm application), said changes were not appearing on the remote clusters.

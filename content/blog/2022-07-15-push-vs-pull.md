@@ -8,6 +8,14 @@ blog_tags:
 - patterns
 - GitOps
 aliases: /2022/07/15/push-vs-pull/
+keywords:
+- push vs pull
+- change management
+- gitops
+- ansible
+- validated patterns
+- edge computing
+- deployment strategies
 ---
 
 # Push or Pull? Strategies for Large Scale Technology Change Management on the Edge

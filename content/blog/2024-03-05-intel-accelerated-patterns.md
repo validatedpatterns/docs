@@ -7,6 +7,15 @@ blog_tags:
 - patterns
 - announce
 aliases: /2024/02/02/intel-patterns/
+keywords:
+- intel amx
+- hardware acceleration
+- ai workloads
+- machine learning
+- intel xeon
+- validated patterns
+- openshift ai
+- deep learning
 ---
 # Intel AMX accelerated patterns increase AI performance while reducing cost
 

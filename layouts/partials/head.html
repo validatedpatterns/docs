@@ -1,6 +1,129 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  {{- /* Description Meta Tag */ -}}
+  {{- $description := "" }}
+  {{- if .Description }}
+    {{- $description = .Description }}
+  {{- else if .Summary }}
+    {{- $description = .Summary | truncate 155 }}
+  {{- else if .Site.Params.description }}
+    {{- $description = .Site.Params.description }}
+  {{- else }}
+    {{- $description = "Validated Patterns are an evolution of how you deploy applications in a hybrid cloud. Deploy full application stacks through GitOps-based frameworks for business-centric solutions with CI." }}
+  {{- end }}
+  <meta name="description" content="{{ $description }}">
+  
+  {{- /* Author Meta Tag for Blog Posts */ -}}
+  {{- if and (eq .Section "blog") .Params.author }}
+  <meta name="author" content="{{ .Params.author }}">
+  {{- end }}
+  
+  {{- /* Keywords Meta Tag */ -}}
+  {{- if .Params.keywords }}
+  <meta name="keywords" content="{{ delimit .Params.keywords ", " }}">
+  {{- end }}
+  
+  {{- /* Theme Color for Mobile Browsers */ -}}
+  <meta name="theme-color" content="#0066CC">
+  
+  {{- /* Canonical URL */ -}}
+  {{- if .Params.canonical_url }}
+  <link rel="canonical" href="{{ .Params.canonical_url }}">
+  {{- else }}
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{- end }}
+  
+  {{- /* Favicon */ -}}
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/validated-patterns.png">
+  
+  {{- /* DNS Prefetch and Preconnect for Performance */ -}}
+  <link rel="dns-prefetch" href="//use.fontawesome.com">
+  <link rel="dns-prefetch" href="//analytics.ossupstream.org">
+  <link rel="preconnect" href="https://use.fontawesome.com" crossorigin>
+  
+  {{- /* Open Graph Meta Tags */ -}}
+  {{- $ogTitle := .Title }}
+  {{- if .IsHome }}
+    {{- $ogTitle = .Site.Title }}
+  {{- end }}
+  <meta property="og:title" content="{{ $ogTitle }}">
+  <meta property="og:description" content="{{ $description }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:site_name" content="{{ .Site.Title }}">
+  <meta property="og:locale" content="en_US">
+  
+  {{- /* Open Graph Image - Use dynamic generation for blog posts */ -}}
+  {{- $ogImage := "" }}
+  {{- if .Params.og_image }}
+    {{- /* Custom OG image specified in front matter */ -}}
+    {{- $ogImage = .Params.og_image | absURL }}
+  {{- else if .Params.image }}
+    {{- $ogImage = .Params.image | absURL }}
+  {{- else if .Params.featured_image }}
+    {{- $ogImage = .Params.featured_image | absURL }}
+  {{- else if and (eq .Section "blog") (not .IsHome) }}
+    {{- /* Generate dynamic OG image for blog posts */ -}}
+    {{- $ogImage = partial "render-blog-og-image.html" . }}
+  {{- else if .Site.Params.default_share_image }}
+    {{- $ogImage = .Site.Params.default_share_image | absURL }}
+  {{- else }}
+    {{- $ogImage = .Site.Params.site_logo | absURL }}
+  {{- end }}
+  {{- if $ogImage }}
+  <meta property="og:image" content="{{ $ogImage }}">
+  <meta property="og:image:alt" content="{{ $ogTitle }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  {{- end }}
+  
+  {{- /* Open Graph Type and Article Metadata */ -}}
+  {{- if eq .Section "blog" }}
+  <meta property="og:type" content="article">
+  {{- if .Date }}
+  <meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+  {{- end }}
+  {{- if .Lastmod }}
+  <meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+  {{- end }}
+  {{- if .Params.author }}
+  <meta property="article:author" content="{{ .Params.author }}">
+  {{- end }}
+  {{- if .Params.blog_tags }}
+    {{- range .Params.blog_tags }}
+  <meta property="article:tag" content="{{ . }}">
+    {{- end }}
+  {{- end }}
+  {{- else }}
+  <meta property="og:type" content="website">
+  {{- end }}
+  
+  {{- /* Twitter Card Meta Tags */ -}}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ $ogTitle }}">
+  <meta name="twitter:description" content="{{ $description }}">
+  {{- if $ogImage }}
+  <meta name="twitter:image" content="{{ $ogImage }}">
+  <meta name="twitter:image:alt" content="{{ $ogTitle }}">
+  {{- end }}
+  {{- if .Site.Params.twitter_handle }}
+  <meta name="twitter:site" content="{{ .Site.Params.twitter_handle }}">
+  <meta name="twitter:creator" content="{{ .Site.Params.twitter_handle }}">
+  {{- end }}
+  
+  {{- /* Structured Data - JSON-LD Schemas */ -}}
+  {{ partial "schema-website.html" . }}
+  {{ partial "schema-organization.html" . }}
+  {{ partial "schema-breadcrumbs.html" . }}
+  {{- if eq .Section "blog" }}
+  {{ partial "schema-article.html" . }}
+  {{- end }}
+  {{- if eq .Section "patterns" }}
+  {{ partial "schema-techarticle.html" . }}
+  {{- end }}
+  
   {{ $sass := resources.Get "sass/patternfly.scss" }}
   {{ $style := $sass | resources.ToCSS }}
   <link rel="stylesheet" href="{{ $style.Permalink }}">
@@ -12,7 +135,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.3.0/css/fontawesome.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.3.0/css/brands.css">
   <title>{{ if eq .IsHome false }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
-  
+
   <!-- Matomo -->
   <script>
     var _paq = window._paq = window._paq || [];

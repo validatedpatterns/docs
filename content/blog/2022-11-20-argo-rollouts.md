@@ -7,6 +7,14 @@ blog_tags:
 - patterns
 - GitOps
 aliases: /2022/11/03/argo-rollouts/
+keywords:
+- argo rollouts
+- progressive delivery
+- blue green deployment
+- canary deployment
+- gitops
+- validated patterns
+- kubernetes
 ---
 
 # Progressive Delivery with Argo Rollouts

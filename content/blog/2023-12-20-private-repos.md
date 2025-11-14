@@ -7,6 +7,13 @@
  - patterns
  - announce
  aliases: /2023/12/20/private-repositories/
+ keywords:
+ - private git repositories
+ - ssh authentication
+ - argocd
+ - validated patterns
+ - git security
+ - repository access
 ---
 
 We're excited to announce that support for private repositories is now

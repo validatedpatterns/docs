@@ -1,0 +1,38 @@
+{{- if not .IsHome -}}
+{{- $url := .Permalink -}}
+{{- $sections := split .RelPermalink "/" -}}
+{{- $position := 1 -}}
+{{- $breadcrumbItems := slice -}}
+
+{{- /* Add Home breadcrumb */ -}}
+{{- $homeItem := dict "@type" "ListItem" "position" $position "name" "Home" "item" .Site.BaseURL -}}
+{{- $breadcrumbItems = $breadcrumbItems | append $homeItem -}}
+{{- $position = add $position 1 -}}
+
+{{- /* Build breadcrumb path */ -}}
+{{- $currentPath := "" -}}
+{{- range $index, $section := $sections -}}
+  {{- if and (ne $section "") (ne $section "index.html") -}}
+    {{- $currentPath = printf "%s/%s" $currentPath $section -}}
+    {{- $sectionPage := $.Site.GetPage $currentPath -}}
+    {{- $name := $section | humanize | title -}}
+    {{- if $sectionPage -}}
+      {{- $name = $sectionPage.Title -}}
+    {{- end -}}
+    {{- $item := dict "@type" "ListItem" "position" $position "name" $name "item" (printf "%s%s" $.Site.BaseURL $currentPath) -}}
+    {{- $breadcrumbItems = $breadcrumbItems | append $item -}}
+    {{- $position = add $position 1 -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if gt (len $breadcrumbItems) 1 -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": {{ $breadcrumbItems | jsonify }}
+}
+</script>
+{{- end -}}
+{{- end -}}
+

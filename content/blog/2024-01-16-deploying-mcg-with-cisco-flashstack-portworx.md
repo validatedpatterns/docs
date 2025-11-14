@@ -5,6 +5,14 @@
  author: Lester Claudio
  blog_tags:
  - patterns
+ keywords:
+ - cisco flashstack
+ - portworx enterprise
+ - multicloud gitops
+ - validated patterns
+ - openshift
+ - data center
+ - storage
 ---
 
 # Deploying Multicloud GitOps with Cisco FlashStack Data Center and Portworx Enterprise
