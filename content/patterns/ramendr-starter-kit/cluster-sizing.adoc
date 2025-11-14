@@ -1,0 +1,21 @@
+---
+title: Cluster sizing
+weight: 50
+aliases: /ramendr-starter-kit/cluster-sizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/comm-attributes.adoc[]
+include::modules/ramendr-starter-kit/metadata-ramendr-starter-kit.adoc[]
+
+The OpenShift hub cluster is made of 3 Control Plane nodes and 3 Workers for the cluster; the 3 workers are standard
+compute nodes.  For the node sizes we used the **m5.4xlarge** on AWS.
+
+This pattern has only been tested on AWS only right now because of the integration of both Hive and OpenShift
+Virtualization. We may publish a later revision that supports more hyperscalers.
+
+include::modules/cluster-sizing-template.adoc[]
+
