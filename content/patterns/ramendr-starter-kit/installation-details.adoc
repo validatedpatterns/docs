@@ -77,7 +77,11 @@ Thus it runs from the Hub cluster.
 * charts/hub/rdr/scripts/drpc-health-check-argocd-sync-disable.sh
 
 This script disables sync on the rdr application to prevent ArgoCD from changing something during the
-failover process.
+
+* charts/hub/rdr/scripts/submariner-sg-tag.sh
+
+During development of the pattern we discovered a bug in submariner that can prevent LoadBalancer services from
+being created correctly after submariner is installed. This is a workaround for that bug.
 
 
 
