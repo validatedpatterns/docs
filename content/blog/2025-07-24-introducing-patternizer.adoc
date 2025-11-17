@@ -44,7 +44,7 @@ Navigate to your repository's root and run the Patternizer container, mounting y
 +
 [source,bash]
 ----
-podman run -v "$PWD:/repo:z" quay.io/hybridcloudpatterns/patternizer init
+podman run --pull=newer -v "$PWD:$PWD:z" -w "$PWD" quay.io/validatedpatterns/patternizer init
 ----
 +
 This single command scans your repository for Helm charts and generates all the necessary files to turn it into a Validated Pattern.
@@ -88,7 +88,7 @@ Run the `init` command with the `--with-secrets` flag:
 
 [source,bash]
 ----
-podman run -v "$PWD:/repo:z" quay.io/hybridcloudpatterns/patternizer init --with-secrets
+podman run --pull=newer -v "$PWD:$PWD:z" -w "$PWD" quay.io/validatedpatterns/patternizer init --with-secrets
 ----
 
 This command updates your configuration to integrate with External Secrets Operator (ESO) and Vault. It generates a `values-secret.yaml.template` for defining your secrets and automatically adds the required operator subscriptions to your pattern.
