@@ -67,14 +67,14 @@ Adopting the new approach is straightforward whether you're bootstrapping a bran
 +
 [source,bash]
 ----
-podman run -v "$PWD:/repo:z" quay.io/validatedpatterns/patternizer init
+podman run --pull=newer -v "$PWD:$PWD:z" -w "$PWD" quay.io/validatedpatterns/patternizer init
 ----
 +
 Add secrets scaffolding at any time with:
 +
 [source,bash]
 ----
-podman run -v "$PWD:/repo:z" quay.io/validatedpatterns/patternizer init --with-secrets
+podman run --pull=newer -v "$PWD:$PWD:z" -w "$PWD" quay.io/validatedpatterns/patternizer init --with-secrets
 ----
 . Review the changes (`values-*.yaml`, `pattern.sh`, `Makefile`, `Makefile-common`), then commit.
 . Try it out:
@@ -95,7 +95,7 @@ Move from the legacy `common` structure to the new Makefile-driven setup with a 
 
 [source,bash]
 ----
-podman run -v "$PWD:/repo:z" quay.io/validatedpatterns/patternizer upgrade
+podman run --pull=newer -v "$PWD:$PWD:z" -w "$PWD" quay.io/validatedpatterns/patternizer upgrade
 ----
 
 What this does:
@@ -111,7 +111,7 @@ If you prefer to fully replace your `Makefile` with the default version, run:
 
 [source,bash]
 ----
-podman run -v "$PWD:/repo:z" quay.io/validatedpatterns/patternizer upgrade --replace-makefile
+podman run --pull=newer -v "$PWD:$PWD:z" -w "$PWD" quay.io/validatedpatterns/patternizer upgrade --replace-makefile
 ----
 
 After upgrading, commit the changes and use the targets described below (for example, `./pattern.sh make show` or `./pattern.sh make install`).
@@ -341,7 +341,7 @@ Ready to try it? Run:
 
 [source,bash]
 ----
-podman run -v "$PWD:/repo:z" quay.io/validatedpatterns/patternizer upgrade
+podman run --pull=newer -v "$PWD:$PWD:z" -w "$PWD" quay.io/validatedpatterns/patternizer upgrade
 ----
 
 and commit the changes. Your repo will instantly be on the new path.
