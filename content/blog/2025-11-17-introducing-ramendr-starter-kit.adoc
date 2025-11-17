@@ -1,0 +1,113 @@
+---
+ date: 2025-11-17
+ title: Introducing RamenDR Starter Kit
+ summary: A New Pattern to illustrate Regional DR for Virtualization Workloads running on OpenShift Data Foundation
+ author: Martin Jackson
+ blog_tags:
+ - patterns
+ - announce
+---
+:toc:
+:imagesdir: /images
+
+We are excited to announce that the **validatedpatterns-sandbox/ramendr-starter-kit** repository is now available and
+has reached the Sandbox tier of Validated Patterns.
+
+== The Pattern
+
+TBD
+
+== On the use of AI to generate scripts
+
+This pattern is also noteworthy in that all of the major shell scripts in the pattern were written by
+Cursor. This was a major learning experience, both in the capabilities of modern AI coding tools, and in some
+of their limitations.
+
+=== The Good
+
+* Error handling and visual output are better than the shell sripts (or Ansible code) I would have written if
+I had written all of this from scratch.
+* The "inner loop" of development felt a lot faster using the generated code than if I had written it all from
+scratch. The value in this pattern is in the use of the components together, not in finding new and novel
+ways to retrieve certificate material from a running OpenShift cluster.
+
+=== The Bad
+
+* Even when the context "knew" it was working on OpenShift and Hive, it used different mechanisms to retrieve
+kubeconfig files for managed clusters. I had to remind it to use a known-good mechanism, which had worked for
+downloading kubeconfigs to the user workstation.
+* Several of these scripts are bash scripts wrappen in Kubernetes jobs or cronjobs. The generator had some problems
+with using local variables in places it could not, and in using shell here documents in places that was not allowed
+in YAML. Eventually I set the context that we were better off using `File.get` calls and externalizing the scripts
+from the jobs altogether.
+
+=== The Ugly
+
+* I am uncomfortable at the level of duplication in the code. Time will tell whether some of these scripts will become
+problematic to maintain. A more rigorous analysis might find several opportunities to refactor code.
+* The sheer volume of code makes it a bit daunting to look at. All of the major scripts in the pattern are over 150
+lines long, and the longest (as of this publication) is over 1300 lines long.
+* Some of the choices of technique and loading dependencies were a bit too generic. We have images for Validated
+Patterns that provide things like a Python interpreter with access to the YAML module, the AWS CLI, and other things
+that turned out to be useful. I left in the cursor frameworks for downloading things like the AWS CLI, because they
+correctly detect that those dependencies are already installed and may prove beneficial if we move to different
+images.
+
+== DR Terminology - What are we talking about?
+
+**High Availability (“HA”)** includes all characteristics, qualities and workflows of a system that prevent
+unavailability events for workloads. This is a very broad category, and includes things like redundancy built into
+individual disks, such that failure of a single drive does not result in outage to the workload. Load balancing,
+redundant power supplies, running a workload across multiple fault domains, are some of the techniques that belong to
+HA, because they keep the workload from becoming unavailable in the first place. Usually HA is completely automatic in that it does not require a real-time human in the loop.
+
+**Disaster Recovery (“DR”)** includes the characteristics, qualities and workflows of a system to recover from an
+outage event when there has been data loss. DR events often also include things that are recognized as major
+environmental disasters (such as weather events like hurricanes, tornadoes, fires), or other large-scale problems that
+cause widespread devastation or disruption to a location where workloads run, such that critical personnel might also
+be affected (i.e. unavailable because they are dead or disabled) and questions of how decisions will be made without
+key decision makers are also considered. (This is often included under the heading of “Business Continuity,” which is
+closely related to DR.) There are two critical differences between HA and DR: The first is the expectation of human
+decision-making in the loop, and the other is the data loss aspect. That is, in a DR event we know we have lost data;
+we are working on how much is acceptable to lose and how quickly we can restore workloads. This is what makes it
+fundamentally a different thing than HA; but some organizations do not really see or enforce this distinction and that
+leads to a lot of confusion. Some vendors also do not strongly make this distinction, which does not discourage that
+confusion.
+
+DR policies can be driven by external regulatory or legal requirements, or an organization’s internal understanding of
+what such external legal and regulatory requirements mean. That is to say - the law may not specifically require a
+particular level of DR, but the organization interprets the law to mean that is what they need to do to be compliant
+to the law or regulation. The Sarbanes Oxley Act (“SOX”) in the US was adopted after the Enron and Worldcom financial
+scandals of the early 2000’s, but includes a number of requirements for accurate financial reporting, which many
+organizations have used to justify and fund substantial BC/DR programs.
+
+**Business Continuity: (“BC”, but usually used together with DR as “BCDR” or BC/DR”)** refers to primarily the people
+side of recovery from disasters. Large organizations will have teams that focus on BC/DR and use that term in the team
+title or name. Such teams will be responsible for making sure that engineering and application groups are compliant to
+the organization’s BC/DR policies. This can involve scheduling and running BC/DR “drills” and actual live testing of
+BC/DR technologies.
+
+**Recovery Time Objective (“RTO”)** is the amount of time it takes to restore a failed workload to service. This is
+NOT the amount of data that is tolerable to lose - that is defined by the companion RPO.
+
+**Recovery Point Objective (“RPO”)** is the amount of data a workload can stand to lose. One confusing aspect of RPO is that it can be defined as a time interval (as opposed to, say, a number of transactions). But an RPO of “5 minutes”
+should be read as “we want to lose no more than 5 minutes’ worth of data.
+
+RPO/RTO: So lots of people want a 0/0 RPO/RTO, often without understanding what it takes to implement that. It can be
+fantastically expensive, even for the world’s largest and best-funded organizations.
+
+== Why Does it Matter?
+
+In a perfect world, every application would have its own knowledge of where it is available and would shard and
+replicate its own data. But many appplications were built without these concepts in mind, and even if a company
+wanted to and could afford re-writing every application, it could not re-write them and deploy them all at once.
+
+Thus, users benefit from being able to rely on technology products and solutions to enable a regional disaster
+recovery capability when the application does not support it natively.
+
+The ability to recover a workload in the event of a regional disaster is considered a requirement in several
+industries for applications that the user deems critical enough to require DR support for, but unable to provide
+it natively in the application.
+
+
+
