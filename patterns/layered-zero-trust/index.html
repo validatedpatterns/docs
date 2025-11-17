@@ -4856,13 +4856,13 @@ Built-in docs: Every Makefile-common includes a link back to this post, so the r
 make help target: Run ./pattern.sh make help to see the list of available targets directly in your terminal.
 Getting Started with the New Structure Adopting the new approach is straightforward whether you’re bootstrapping a brand-new pattern repository or upgrading an existing one.
 New repositories From the root of your repo, run:
-podman run -v &#34;$PWD:/repo:z&#34; quay.io/validatedpatterns/patternizer init Add secrets scaffolding at any time with:
-podman run -v &#34;$PWD:/repo:z&#34; quay.io/validatedpatterns/patternizer init --with-secrets Review the changes (values-*.yaml, pattern.sh, Makefile, Makefile-common), then commit.
+podman run --pull=newer -v &#34;$PWD:$PWD:z&#34; -w &#34;$PWD&#34; quay.io/validatedpatterns/patternizer init Add secrets scaffolding at any time with:
+podman run --pull=newer -v &#34;$PWD:$PWD:z&#34; -w &#34;$PWD&#34; quay.io/validatedpatterns/patternizer init --with-secrets Review the changes (values-*.yaml, pattern.sh, Makefile, Makefile-common), then commit.
 Try it out:
 ./pattern.sh make show ./pattern.sh make install Existing repositories Move from the legacy common structure to the new Makefile-driven setup with a single command:
-podman run -v &#34;$PWD:/repo:z&#34; quay.io/validatedpatterns/patternizer upgrade What this does: * Removes common (if present) * Removes ./pattern.sh (symlink or file), then copies the latest script * Copies Makefile-common to the repo root * Updates your Makefile: If it already contains include Makefile-common, it is left unchanged If it exists but lacks the include, the include is prepended to the first line ** If it doesn’t exist, a default Makefile is created
+podman run --pull=newer -v &#34;$PWD:$PWD:z&#34; -w &#34;$PWD&#34; quay.io/validatedpatterns/patternizer upgrade What this does: * Removes common (if present) * Removes ./pattern.sh (symlink or file), then copies the latest script * Copies Makefile-common to the repo root * Updates your Makefile: If it already contains include Makefile-common, it is left unchanged If it exists but lacks the include, the include is prepended to the first line ** If it doesn’t exist, a default Makefile is created
 If you prefer to fully replace your Makefile with the default version, run:
-podman run -v &#34;$PWD:/repo:z&#34; quay.io/validatedpatterns/patternizer upgrade --replace-makefile After upgrading, commit the changes and use the targets described below (for example, ./pattern.sh make show or ./pattern.sh make install).
+podman run --pull=newer -v &#34;$PWD:$PWD:z&#34; -w &#34;$PWD&#34; quay.io/validatedpatterns/patternizer upgrade --replace-makefile After upgrading, commit the changes and use the targets described below (for example, ./pattern.sh make show or ./pattern.sh make install).
 Using Makefile-common Patterns shipped without the common dir now have a Makefile-common that provides consistent developer and user targets.
 How commands are executed All targets are thin wrappers around ansible playbooks defined in rhvp.cluster_utils. By default, ANSIBLE_STDOUT_CALLBACK is set to null which means all of the noise from ansible is suppressed. If you need it, set that variable in your environment export ANSIBLE_STDOUT_CALLBACK=default or just directly use it as part of calling the make targets (ANSIBLE_STDOUT_CALLBACK=default ./pattern.sh make &lt;target&gt;).
 When you are getting started with secrets it can be difficult to debug what may be wrong in your secret values files. To aid debugging, you could try running:
@@ -4957,7 +4957,7 @@ make load-secrets Loads secrets into Vault in the cluster if global.secretLoader
 Wrapping Up By retiring the common directory, we’ve eliminated duplication and made every pattern repo smaller, simpler, and easier to maintain.
 With a single, centralized Makefile: * Updates flow automatically across all patterns * Repositories stay lean and uncluttered * Developers get a consistent, predictable experience
 Ready to try it? Run:
-podman run -v &#34;$PWD:/repo:z&#34; quay.io/validatedpatterns/patternizer upgrade and commit the changes. Your repo will instantly be on the new path.
+podman run --pull=newer -v &#34;$PWD:$PWD:z&#34; -w &#34;$PWD&#34; quay.io/validatedpatterns/patternizer upgrade and commit the changes. Your repo will instantly be on the new path.
 `,url:"https://validatedpatterns.io/blog/2025-08-29-new-common-makefile-structure/",breadcrumb:"/blog/2025-08-29-new-common-makefile-structure/"},"https://validatedpatterns.io/blog/2025-08-11-olmv1-support-and-chart-dependencies/":{title:"Supporting the Latest Standards with Validated Patterns",tags:[],content:` Open Source Technology is always evolving, and we need to be prepared to evolve with it. In OpenShift 4.18, Red Hat promoted the new OLMv1 packaging standard to General Availability. OLM is the Operator Lifecycle Manager, a vital component of OpenShift. Users generally do not interact with OLM as such, but they are familiar with how OpenShift offers Operators to install on clusters and OperatorHub - all of the operators advertized there are offered as OLM packages.
 Up until this point, Validated Patterns have only supported installation via OLMv0. OLMv1 uses the same packaging format, but places some restrictions on what the bundles can and cannot do. Further, OLMv1 requires a serviceAccount to explicitly be named to install the bundle. This required changes to one of the framework’s key charts, and that in turn led to changes with how we manage our chart publication pipeline. This blog post will cover three topics:
 Support for OLMv1 objects (ClusterExtensions) in the Validated Patterns Framework
@@ -4991,7 +4991,7 @@ Prepare your repository:
 Clone your repository and create a new branch for the pattern initialization.
 git clone https://github.com/your-org/your-awesome-app.git cd your-awesome-app git checkout -b feature/initialize-pattern Initialize the pattern:
 Navigate to your repository’s root and run the Patternizer container, mounting your current directory.
-podman run -v &#34;$PWD:/repo:z&#34; quay.io/hybridcloudpatterns/patternizer init This single command scans your repository for Helm charts and generates all the necessary files to turn it into a Validated Pattern.
+podman run --pull=newer -v &#34;$PWD:$PWD:z&#34; -w &#34;$PWD&#34; quay.io/validatedpatterns/patternizer init This single command scans your repository for Helm charts and generates all the necessary files to turn it into a Validated Pattern.
 Review and commit:
 Commit the newly generated files to your branch.
 git add . git commit -m &#39;feat: Initialize Validated Pattern with Patternizer&#39; git push -u origin feature/initialize-pattern Install your new pattern!
@@ -5004,7 +5004,7 @@ values-prod.yaml: A cluster group-specific values file (for the default prod gro
 The tool is designed to be idempotent. You can continue adding Helm charts to your repository and just rerun the init command. It will intelligently update the necessary values files while preserving any manual changes you’ve made.
 Need Secrets? We’ve Got You Covered When your pattern is ready to handle sensitive information, you can easily add scaffolding for secrets management.
 Run the init command with the --with-secrets flag:
-podman run -v &#34;$PWD:/repo:z&#34; quay.io/hybridcloudpatterns/patternizer init --with-secrets This command updates your configuration to integrate with External Secrets Operator (ESO) and Vault. It generates a values-secret.yaml.template for defining your secrets and automatically adds the required operator subscriptions to your pattern.
+podman run --pull=newer -v &#34;$PWD:$PWD:z&#34; -w &#34;$PWD&#34; quay.io/validatedpatterns/patternizer init --with-secrets This command updates your configuration to integrate with External Secrets Operator (ESO) and Vault. It generates a values-secret.yaml.template for defining your secrets and automatically adds the required operator subscriptions to your pattern.
 Current Scope and Future Direction Patternizer is in its infancy, and its initial focus is on solving the Helm-to-Pattern problem. As such, there are a few things to keep in mind:
 Helm-Based Patterns Only: The tool is currently designed exclusively for creating patterns from Helm charts. If you need an Ansible-based GitOps pattern, this tool will not be helpful.
 Operators Need Manual Addition: Patternizer creates the Argo CD Applications, Namespaces, and Projects for your Helm charts. If your pattern requires Operators from OperatorHub, you will need to manually add them to the subscriptions section in your cluster group values file (e.g., values-prod.yaml). Patternizer conveniently creates this section as an empty map for you.
