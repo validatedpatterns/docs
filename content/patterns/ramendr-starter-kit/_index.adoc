@@ -39,6 +39,11 @@ The setup process is relatively intricate; the goal of this pattern is to handle
 a functional DR-capable starting point for Virtual Machine workloads. In particular this pattern takes care to sequence
 installations and validate pre-requisites for all of the core components of the Disaster Recovery system.
 
+In particular, this pattern must be customized to specify DNS basedomains for the managed clusters, which makes 
+forking the pattern (which we generally recommend anyway, in case you want to make other customizations) effectively
+a requirement. The link:https://validatedpatterns-sandbox/patterns/getting-started[**Getting Started**] doc has
+details on what needs to be changed and how to commit and push those changes.
+
 === Background
 
 It would be ideal if all applications in the world understood availability concepts natively and had their own 
