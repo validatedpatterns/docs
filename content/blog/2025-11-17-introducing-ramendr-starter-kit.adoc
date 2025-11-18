@@ -14,8 +14,8 @@ We are excited to announce that the link:https://validatedpatterns.io/patterns/r
 
 == The Pattern
 
-This Validated Pattern draws on previous work that models Regional Disaster Recovery, and adds Virtualization to
-the the managed clusters, and starts virtual machines and can fail them over and back between managed clusters.
+This Validated Pattern draws on previous work that models Regional Disaster Recovery, adds Virtualization to
+the managed clusters, and starts virtual machines and can fail them over and back between managed clusters.
 
 The pattern ensures that all of the prerequisites are set up correctly and in order, and ensures that things like
 the SSL CA certificate copying that is necessary for both the Ceph replication and the OADP/Velero replication
