@@ -10,14 +10,34 @@
 :toc:
 :imagesdir: /images
 
-We are excited to announce that the **validatedpatterns-sandbox/ramendr-starter-kit** repository is now available and
-has reached the Sandbox tier of Validated Patterns.
+We are excited to announce that the link:https://validatedpatterns.io/patterns/ramendr-starter-kit/[**validatedpatterns-sandbox/ramendr-starter-kit**] repository is now available and has reached the Sandbox tier of Validated Patterns.
 
 == The Pattern
 
-TBD
+This Validated Pattern draws on previous work that models Regional Disaster Recovery, and adds Virtualization to
+the the managed clusters, and starts virtual machines and can fail them over and back between managed clusters.
 
-== On the use of AI to generate scripts
+The pattern ensures that all of the prerequisites are set up correctly and in order, and ensures that things like
+the SSL CA certificate copying that is necessary for both the Ceph replication and the OADP/Velero replication
+will work correctly.
+
+The user is in control of when the failover happens; the pattern provides a script to do the explicit failover
+required for Ramen Regional DR of a discovered application.
+
+== Why Does DR Matter?
+
+In a perfect world, every application would have its own knowledge of where it is available and would shard and
+replicate its own data. But many appplications were built without these concepts in mind, and even if a company
+wanted to and could afford re-writing every application, it could not re-write them and deploy them all at once.
+
+Thus, users benefit from being able to rely on technology products and solutions to enable a regional disaster
+recovery capability when the application does not support it natively.
+
+The ability to recover a workload in the event of a regional disaster is considered a requirement in several
+industries for applications that the user deems critical enough to require DR support for, but unable to provide
+it natively in the application.
+
+== Learnings from Developing the Pattern: On the use of AI to generate scripts
 
 This pattern is also noteworthy in that all of the major shell scripts in the pattern were written by
 Cursor. This was a major learning experience, both in the capabilities of modern AI coding tools, and in some
@@ -95,19 +115,6 @@ should be read as “we want to lose no more than 5 minutes’ worth of data.
 
 RPO/RTO: So lots of people want a 0/0 RPO/RTO, often without understanding what it takes to implement that. It can be
 fantastically expensive, even for the world’s largest and best-funded organizations.
-
-== Why Does it Matter?
-
-In a perfect world, every application would have its own knowledge of where it is available and would shard and
-replicate its own data. But many appplications were built without these concepts in mind, and even if a company
-wanted to and could afford re-writing every application, it could not re-write them and deploy them all at once.
-
-Thus, users benefit from being able to rely on technology products and solutions to enable a regional disaster
-recovery capability when the application does not support it natively.
-
-The ability to recover a workload in the event of a regional disaster is considered a requirement in several
-industries for applications that the user deems critical enough to require DR support for, but unable to provide
-it natively in the application.
 
 == Special Thanks
 
