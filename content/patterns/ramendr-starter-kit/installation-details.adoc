@@ -1,0 +1,88 @@
+---
+title: Installation Details
+weight: 20
+aliases: /ansible-edge-gitops/installation-details/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Installation Steps
+
+.Installation Steps
+
+The pattern will execute the following steps on the cluster:
+
+. Apply Subscriptions and Applications to Hub Cluster
+. This includes ACM, ODF and ODF MultiCluster Operator on the hub cluster
+. Build managed clusters (ocp-primary and ocp-secondary) with Hive
+.. The managed clusters have identical configuration regarding Subscriptions and Applications, so they are both in the resilient clusterGroup
+. opp-policy app is responsible for copying CA certificates to the following places:
+.. Creating a configmap cluster-proxy-ca-bundle in namespace openshift-config
+.. Assigning this configmap to the proxy cluster resource
+.. Adding the certificate material to ramen-dr-cluster-operator config in openshift-dr-system
+. regional-dr app is responsible for:
+.. ensuring ODF is setup properly
+.. Installing submariner add-ons on managed clusters
+.. Creating DRPolicy, MirrorPeer, DRPC, and Placement objects for RamenDR
+.. Installing the VM workload on the primary cluster
+.. Disabling Sync on the regional-dr app to prevent potential conflicts later
+
+=== Various Scripts included in the pattern and how to use them
+
+* scripts/cleanup-gitops-vms-non-primary.sh
+
+Designed to be run when you need to manually cleanup resources from a "failed" cluster.
+Intended to be run with the kubeconfig from the hub cluster; it will determine where to
+delete resources based on the current DRPC state.
+
+* scripts/download-kubeconfigs.sh
+
+Will download and extract the kubeconfigs for the managed clusters to the current directory.
+Useful when you need to check something or do something on one of the managed clusters.
+
+* charts/hub/opp/scripts/argocd-health-monitor.sh
+
+Ensures that ArgoCD is progressing properly in deploying resources. A workaround for an ArgoCD
+bug we ran into during development.
+
+* charts/hub/opp/scripts/odf-ssl-precheck.sh
+
+Ensures all the preconditions have been met for extracting certificates to distribute among the
+clusters.
+
+* charts/hub/opp/scripts/odf-ssl-certificate-extraction.sh
+
+This script does the actual work of extracting and distributing the CA material to the various
+places it needs to go. Will also restart velero (OADP) pods if needed.
+
+* charts/hub/rdr/scripts/odf-dr-prerequisites-check.sh
+
+Ensures that ODF is fully ready to be configured for Disaster Recovery. In particular waits for ODF
+to finish deployment and for the NooBaa/S3 service to be operational on all clusters.
+
+* charts/hub/rdr/scripts/submariner-prerequisites-check.sh
+
+Ensures that submariner is running properly and operational on both clusters. This is required for
+ODF PVC replication to work.
+
+* charts/hub/rdr/scripts/edge-gitops-vms-deploy.sh
+
+This script deploys the VM workload to the primary cluster. It uses the Validated Patterns helm chart but
+is not an argo application to avoid starting up resources on clusters where we do not want them running.
+Thus it runs from the Hub cluster.
+
+* charts/hub/rdr/scripts/drpc-health-check-argocd-sync-disable.sh
+
+This script disables sync on the rdr application to prevent ArgoCD from changing something during the
+
+* charts/hub/rdr/scripts/submariner-sg-tag.sh
+
+During development of the pattern we discovered a bug in submariner that can prevent LoadBalancer services from
+being created correctly after submariner is installed. This is a workaround for that bug.
+
+
+
+
