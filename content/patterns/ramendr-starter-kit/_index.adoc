@@ -66,14 +66,5 @@ This pattern uses OpenShift Virtualization (the productization of Kubevirt) to s
 
 === Architecture
 
-Similar to other Validated Patterns, this pattern starts with a central management hub. The hub cluster then builds
-two managed clusters using Hive, which are in different regions as usually required for Regional Disaster Recovery.
-
-==== Logical architecture
-
-TBD
-
-==== Physical architecture
-
-TBD
-
+.ramendr-architecture-diagram
+image::/images/ramendr-starter-kit/ramendr-architecture.drawio.png[ramendr-starter-kit-architecture,title="RamenDR Starter Kit Architecture"]

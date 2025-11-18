@@ -109,5 +109,12 @@ The ability to recover a workload in the event of a regional disaster is conside
 industries for applications that the user deems critical enough to require DR support for, but unable to provide
 it natively in the application.
 
+== Special Thanks
 
+This pattern was an especially challenging one to design and complete, because of the number of elements in it
+and the timing issues inherent in eventual-consistency models. Therefore, special thanks are due to the following
+people, without whom this pattern would not exist:
 
+* The authors of the original link:https://github.com/validatedpatterns/regional-resiliency-pattern[regional-resiliency-pattern], which provided the foundation for the ODF and RamenDR components, and building the managed clusters via Hive
+* Aswin Suryanarayanan, who helped immensely with some late challenges with Submariner
+* Annette Clewett, without whom this pattern would not exist. Annette took the time to thoroughly explain all of RamenDR's dependencies and how to orchestrate them all correctly.
