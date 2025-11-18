@@ -30,7 +30,7 @@ include::modules/comm-attributes.adoc[]
 == RamenDR Regional Disaster Recovery with Virtualization Starter Kit
 
 This pattern sets up three clusters as recommended for OpenShift Data Foundations Regional Disaster Recovery as 
-documented here(https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/4.18/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index).
+documented link:https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/4.18/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index[here].
 
 Of additional interest is that the workload that it sets up protection for and can failover involves running virtual
 machines.
