@@ -1,0 +1,58 @@
+---
+title: Explore this pattern
+weight: 20
+aliases: /mlops-fraud-detection/mfd-explore-this-pattern/
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== RHOAI Components
+
+Most of the components installed as part of this pattern are available in the RHOAI console. You can navigate to this page by selecting the link to Red Hat OpenShift AI in the 9-dots menu of the OpenShift console.
+
+.The RHOAI Link
+image::/images/mlops-fraud-detection/mfd-rhoai-link.png[]
+
+=== The Kubeflow Pipeline
+
+A Kubeflow pipeline to build and train the fraud detection model is automatically created and run as part of the pattern's installation. You can see more details of this pipeline inside of RHOAI by selecting the Pipelines tab.
+
+.The Pipelines Tab
+image::/images/mlops-fraud-detection/mfd-pipelines-tab.png[]
+
+In this tab we can see the fraud-detection pipeline deployed as part of this pattern. To see the specific run that trained the initial model, we can select the Runs tab below the Pipelines tab and select the job-run item.
+
+.The Runs Tab
+image::/images/mlops-fraud-detection/mfd-runs-tab.png[]
+
+On this page, we can see a diagram of the pipeline including the 3 major steps: getting the training data, training the model, and uploading the model to Minio. It's possible to check out the logs of any of the stages, like the training stage, where we can see the accuracy changing over each epoch of model training.
+
+.The job-run Pipeline Details
+image::/images/mlops-fraud-detection/mfd-job-run-detail.png[]
+
+NOTE: You can find the source code for this pipeline run in the pattern repo at link:https://github.com/validatedpatterns/mlops-fraud-detection/blob/main/src/kubeflow-pipelines/small-model/train_upload_model.yaml[src/kubeflow-pipelines/small-model].
+
+=== Kserve Model Serving
+
+You can see the model deployment inside of RHOAI in the Model Deployments tab.
+
+.The Model Deployment
+image::/images/mlops-fraud-detection/mfd-model-deployments.png[]
+
+== The Inferencing App
+
+The pattern installs a simple Gradio frontend to communicate with your fraud detection model. To reach it, click the link in the 9-dots menu in your OpenShift cluster.
+
+.The Inferencing App Link
+image::/images/mlops-fraud-detection/mfd-inf-app-link.png[]
+
+You can manually set transaction details in the form on the left but the app also ships with two examples, a fraudulent transaction on top and a non-fraudulent transaction on the bottom.
+
+.Using the Fraud Example
+image::/images/mlops-fraud-detection/mfd-inferencing-app.png[]
+
+IMPORTANT: Due to the non-deterministic nature of training the small model, it may not always identify these transactions accurately.
+
+NOTE: The source code for the inferencing app is in the pattern repo at link:https://github.com/validatedpatterns/mlops-fraud-detection/blob/main/src/inferencing-app/app.py[src/inferencing-app].

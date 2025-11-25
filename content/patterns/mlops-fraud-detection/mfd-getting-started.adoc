@@ -11,4 +11,4 @@ include::modules/mfd-deploying-mfd-pattern.adoc[leveloffset=1]
 
 = Next Steps
 
-* link:../mfd-running-the-demo[Run the demo].
+* link:../mfd-explore-this-pattern[Explore this pattern].
