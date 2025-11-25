@@ -52,7 +52,7 @@ jobs:
 
     steps:
       - name: Checkout pattern repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: ${{ env.PATTERN_DIR }}
 
@@ -75,7 +75,7 @@ jobs:
         working-directory: ${{ env.PATTERN_DIR }}
 
       - name: Checkout docs repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: ${{ env.DOCS_DIR }}
           repository: ${{ env.DOCS_REPO }}
