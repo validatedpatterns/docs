@@ -41,7 +41,7 @@ In this blog, we’re going to use OpenShift Gitops to deploy the Argo Rollouts 
 
 ## Preparation
 
-Let’s start by deploying the argo-rollouts pattern from the [argo-rollouts](https://github.com/hybrid-cloud-patterns/argo-rollouts). For this demo, I have deployed a 3-Node compact cluster using `m5.2xlarge` machine types in AWS. This demo will only use rollouts to deploy onto a single cluster.
+Let’s start by deploying the argo-rollouts pattern from the [argo-rollouts](https://github.com/validatedpatterns/argo-rollouts). For this demo, I have deployed a 3-Node compact cluster using `m5.2xlarge` machine types in AWS. This demo will only use rollouts to deploy onto a single cluster.
 
 ```sh
 
@@ -65,7 +65,7 @@ argo-rollouts-7d9dd-master-2   Running   m5.2xlarge   us-east-2   us-east-2c   1
 
 If you've never deployed OpenShift before, you could try [ROSA](https://cloud.redhat.com/learn/getting-started-red-hat-openshift-service-aws-rosa/deploy-rosa-cluster) the pay-as-you-go OpenShift managed service.
 
-Next, you'll need to create a fork of the [argo-rollouts](https://github.com/hybrid-cloud-patterns/argo-rollouts/) repo.
+Next, you'll need to create a fork of the [argo-rollouts](https://github.com/validatedpatterns/argo-rollouts/) repo.
 Go there in a browser, make sure you’re logged in to GitHub, click the “Fork” button, and confirm the destination by clicking the big green "Create fork" button.
 
 Next, [install the Validated Patterns operator](https://validatedpatterns.io/infrastructure/using-validated-pattern-operator/) from Operator Hub.
@@ -73,7 +73,7 @@ Next, [install the Validated Patterns operator](https://validatedpatterns.io/inf
 And finally, click through to the installed operator, and select the `Create
 instance` button and fill out the Create a Pattern form.  Most of the defaults
 are fine, but make sure you update the GitSpec URL to point to your fork of
-`argo-rollouts`, rather than `https://github.com/hybrid-cloud-patterns/argo-rollouts`.
+`argo-rollouts`, rather than `https://github.com/validatedpatterns/argo-rollouts`.
 
 To see what’s going on, click on “Installed Operators” and then change the Project to “All Projects”. After a bit, you will see the following operators installed:
 Advanced Cluster Manager for Kubernetes
