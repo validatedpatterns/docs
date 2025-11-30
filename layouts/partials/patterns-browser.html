@@ -26,7 +26,8 @@
         </div>
       </div>
     <div class="pf-c-content" >
-      {{ $patterns := where $.Pages "Section" "patterns"}}
+      {{ $patterns := where $.Pages "Type" "patterns"}}
+      {{ $patterns := where $patterns "BundleType" "branch"}}
       <div class="pf-l-stack pf-m-gutter">
         <div class="pf-l-stack__item pf-u-text-align-right pattern-count-style">
           <label class="pf-c-form__label" for="form-vertical-name">
