@@ -161,8 +161,11 @@ Paste the path to your locally stored private and public keys. If you do not hav
 $ git checkout -b my-branch
 ----
 
-. In particular, you will almost certainly need to customize the pattern because the pattern cannot infer the AWS 
-domain(s) you have control over. Especially, edit the link:https://github.com/validatedpatterns-sandbox/ramendr-starter-kit/blob/main/charts/hub/rdr/values.yaml[hub/rdr/values.yaml] to edit the `baseDomain` and possibly edit the `aws.region` settings. If you made any changes to this or any other files tracked by git, git add them and then commit the changes by running the following command:
+. The pattern will infer the baseDomain of your cluster based on the clusterDomain which is tracked by the pattern
+operator. Previously, this required the pattern to be forked to be useful - but this is no longer the case (you may 
+still wish to change other settings in the RDR chart's values file, such as `aws.region` settings. This file is at
+link:https://github.com/validatedpatterns-sandbox/ramendr-starter-kit/blob/main/charts/hub/rdr/values.yaml[hub/rdr/values.yaml]. If you do make customizations to this or other files, it is necessary to fork the pattern so that the changes
+will be seen by ArgoCD.  If you made any changes to this or any other files tracked by git, git add them and then commit the changes by running the following command:
 +
 [source,terminal]
 ----
