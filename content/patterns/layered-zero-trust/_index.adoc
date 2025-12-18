@@ -1,7 +1,7 @@
 ---
 title: Layered Zero Trust
 date: 2025-09-12
-tier: sandbox
+tier: tested
 summary: Layered Zero Trust demonstrates how to operationalize Zero Trust security principles when using products in the Red Hat Portfolio.
 rh_products:
 - Red Hat OpenShift Container Platform
