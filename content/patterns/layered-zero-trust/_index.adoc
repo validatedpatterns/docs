@@ -97,7 +97,7 @@ The pattern consists of the following key components:
 ** Provides a management control plane in multi-cluster scenarios.
 
 * link:https://docs.redhat.com/en/documentation/red_hat_quay/3.15[Red{nbsp}Hat Quay]
-** Enables a private repository for OCI images within our environment.
+** Enables a private repository for OCI images within the environment.
 
 * link:https://docs.redhat.com/en/documentation/red_hat_openshift_container_storage/4.8/html/managing_hybrid_and_multicloud_resources/index[Multicloud Object Gateway]
 ** Provides an object storage service for {ocp}.
@@ -106,7 +106,7 @@ The pattern consists of the following key components:
 ** Provides cryptographic signing and verification of software artifacts and container images.
 
 * link:https://docs.redhat.com/es/documentation/red_hat_trusted_profile_analyzer/2.2[Red{nbsp}Hat Trusted Profile Analyzer (RHTPA)]
-** Provides the storage and management means for _Software Bills of Materials_ (SBOMs), with cross-referencing capabilities between SBOMs and CVEs/Security Advisories.
+** Provides the storage and management means for _Software Bill of Materials_ (SBOMs), with cross-referencing capabilities between SBOMs and CVEs/Security Advisories.
 
 [id="sidecar-pattern"]
 ==== Sidecar pattern
@@ -141,7 +141,7 @@ The following technologies are used in this solution:
 * *Compliance Operator*: Provides ability to scan and remediate cluster hardening based on profiles
 * *QTodo application*: Serves as a sample Quarkus-based application to show zero trust principles.
 * *PostgreSQL database*: Provides the backend database for the demonstration application.
-* *Multicloud Object Gateway*: Lightweight object storage service for {ocp}. Used as storage by Quay.
+* *Multicloud Object Gateway*: Lightweight object storage service for {ocp}. Used by Quay for the storage of binary blobs.
 * *Red{nbsp}Hat Quay*: Private registry for OCI images.
-* *Red{nbsp}Hat Trusted Artifact Signer*: Facilitates signing and verification of binary objects in the cluster.
+* *Red{nbsp}Hat Trusted Artifact Signer*: Facilitates signing and verification of software artifacts.
 * *Red{nbsp}Hat Trusted Profile Analyzer*: Enables SBOM file analysis and vulnerability detection.
