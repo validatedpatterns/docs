@@ -17,6 +17,7 @@ links:
   install: getting-started
   bugs: https://github.com/validatedpatterns-sandbox/omnicloud-as-a-service/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+
 ci: omnicloud
 ---
 
@@ -37,7 +38,7 @@ To overcome these obstacles, organizations need an automated, self-service solut
 
 Omnicloud as a Service pattern was created to address these challenges by offering Omnicloud as a Service capabilities, empowering teams to deploy OpenShift workflows quickly, consistently, and securely across multiple cloud platforms, while minimizing manual effort and accelerating time to innovation.
 
-<img width="1850" height="1059" alt="image" src="https://github.com/user-attachments/assets/b0170cc5-ab50-4fb9-b645-771a26f6ddf9" />
+<img width="1850" height="1059" alt="image" src="/images/omnicloud/workflow.png" />
 
 #### Key features of OCaaS includes
 

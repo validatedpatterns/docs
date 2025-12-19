@@ -50,7 +50,7 @@ The Omnicloud as a Service setup currently spans multiple environments, with an 
 
 Execution of pattern also involves importing of newly deployed cluster into RHACM, and a DevOps cartridge containing preconfigured development tools are deployed in a dedicated namespace for the developer. Additionally, an Active Directory (AD) user account is created and integrated with OpenShift to enable domain-based authentication.
 
-<img width="2000" height="1125" alt="image" src="https://github.com/user-attachments/assets/4463797f-f1e5-44d9-a621-d6e85f8a91ae" />
+<img width="2000" height="1125" alt="image" src="/images/omnicloud/ocaas_logical.png" />
 
 ## Key Concepts
 
@@ -177,21 +177,21 @@ The default login user for the AAP interface is admin, and the password is rando
 Follow these steps to log in to the Ansible Automation Platform using the OpenShift console:
 
 1. In the OpenShift console, go to Workloads > Secrets and select the ansible-automation-platform project if you want to limit the number of secrets you can see.
-   <img width="1897" height="622" alt="image" src="https://github.com/user-attachments/assets/1b3e9a26-36cd-4fdc-9673-8b78be9cc9bb" />
+   <img width="1897" height="622" alt="image" src="/images/omnicloud/aap_ocp_secrets.png" />
 
    Select the controller-admin-password.
    In the Data field click Reveal values to display the password.
-   <img width="1206" height="515" alt="image" src="https://github.com/user-attachments/assets/6014b602-c5c5-4a1d-87ca-0f27f9b6ff63" />
+   <img width="1206" height="515" alt="image" src="/images/omnicloud/aap_controller_secret.png" />
 
 2. Under Networking > Routes, click the URL for the aap route to open the Ansible Automation Platform interface.
 
    Log in using the admin user and the password you retrieved from the aap-admin-password secret. A screen similar to the following appears:
 
-   <img width="1918" height="1007" alt="image" src="https://github.com/user-attachments/assets/53a0d729-d6da-4af0-abc6-86376a78863f" />
+   <img width="1918" height="1007" alt="image" src="/images/omnicloud/aap_console.png" />
 
 ## Automation Breakdown
 
-<img width="1141" height="658" alt="image" src="https://github.com/user-attachments/assets/2192ba4a-7a3c-4fe3-931a-11cc20c6f761" />
+<img width="1141" height="658" alt="image" src="/images/omnicloud/directory_layout.png" />
 
 ## Technical Requirements
 
@@ -204,7 +204,7 @@ branch: main
 
 This pattern is currenty tested on AWS, Azure & GCP environment running with Red Hat OpenShift cluster version 4.19. The codebase utilizes the following languages and tools: Shell, Python, Makefile, and Docker
 
-<img width="1902" height="835" alt="image" src="https://github.com/user-attachments/assets/c0c508d7-562a-4212-98b1-545499c859cc" />
+<img width="1902" height="835" alt="image" src="/images/omnicloud/ocaas_detail_workflow.png" />
 
 This workflow demonstrates a robust, automated solution for self-service provisioning and de-provisioning of Red Hat OpenShift Container Platform (OCP) clusters across multiple cloud providers (e.g., Google Cloud, Azure, AWS). The automation leverages Ansible Automation Platform (AAP) to manage the deployment tasks and Red Hat Advanced Cluster Management (RHACM) to orchestrate and manage the resulting clusters. This approach enables rapid, consistent, and repeatable cluster creation on demand.
 
@@ -266,7 +266,7 @@ For connected environments:
 
 ###### Table 1. Hub cluster minimum requirements
 
-<img width="551" height="225" alt="image" src="https://github.com/user-attachments/assets/354621c7-8c12-4c91-aa86-4e248ba23d84" />
+<img width="551" height="225" alt="image" src="/images/omnicloud/cluster_sizing.png" />
 
 ## Getting Started
 
