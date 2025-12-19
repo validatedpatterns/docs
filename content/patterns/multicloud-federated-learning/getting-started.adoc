@@ -1,0 +1,233 @@
+---
+title: Getting Started
+weight: 10
+aliases: /multicloud-federated-learning/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Deploying the Multicloud Federated Learning Pattern
+
+=== Prerequisites
+
+==== Ensure the following tools are installed:
+
+- link:https://kubernetes.io/docs/reference/kubectl/[`kubectl`]
+- link:https://kubectl.docs.kubernetes.io/installation/kustomize/[`kustomize`]
+- link:https://kind.sigs.k8s.io/[`kind`] (recommended version > v0.9.0)
+- link:https://www.gnu.org/software/make/[`make`] (for build automation)
+
+==== Optional (for container image building):
+
+- link:https://podman.io/[Podman] or link:https://www.docker.com/[Docker]
+- link:https://go.dev/doc/install[Go] (version 1.19 or higher)
+
+===== Advanced Cluster Management Environment
+
+Prepare at least three clusters: one hub cluster and two managed clusters.
+
+Verify the managed clusters are registered on the hub by running:
+
+[source,terminal]
+----
+$ kubectl get mcl
+----
+
+Example output:
+[source,terminal]
+----
+NAME       HUB ACCEPTED   MANAGED CLUSTER URLS                  JOINED   AVAILABLE   AGE
+cluster1   true           https://api.***.com:6443              True     True        5m
+cluster2   true           https://api.***.com:6443              True     True        5m
+----
+
+=== Deploy Federated Learning Controller
+
+. Clone and navigate to the repository:
++
+[source,terminal]
+----
+$ git clone git@github.com:open-cluster-management-io/addon-contrib.git
+$ cd federated-learning-controller
+----
+
+. Build and push the controller image (or use pre-built `quay.io/myan/federated-learning-controller:latest`):
++
+[source,terminal]
+----
+$ make docker-build docker-push IMG=<IMG> 
+----
+
+. Deploy the controller to the hub cluster:
++
+[source,terminal]
+----
+$ kubectl config use-context kind-hub
+$ make deploy IMG=<controller-image> NAMESPACE=<controller-namespace(default is open-cluster-management)>
+----
+
+. Verify the deployment:
++
+The federated learning controller is running in the open-cluster-management namespace by default.
++
+[source,terminal]
+----
+$ kubectl get pods -n open-cluster-management
+----
++
+Example output
++
+[source,terminal]
+----
+NAME                                            READY   STATUS      RESTARTS   AGE
+cluster-manager-d9db64db5-c7kfj                 1/1     Running     0          3d22h
+cluster-manager-d9db64db5-t7grh                 1/1     Running     0          3d22h
+cluster-manager-d9db64db5-wndd8                 1/1     Running     0          3d22h
+federated-learning-controller-d7df846c9-nb4wc   1/1     Running     0          3d22h
+----
+
+=== Deploy the Federated Learning Instance
+
+. Build the Application Image
++
+*Note*: You can skip this step by using the pre-built image `quay.io/myan/flower-app-torch:latest`.
++
+[source,terminal]
+----
+$ cd examples/flower
+
+$ export REGISTRY=<your-registry>
+$ export IMAGE_TAG=<your-tag>
+$ make build-app-image
+$ make push-app-image
+----
++ 
+Image format: `<REGISTRY>/flower-app-torch:<IMAGE_TAG>`
+
+. Deploy a Federated Learning Instance
++
+In this example, both the server and clients use the same image—either the one built above or the pre-built `quay.io/myan/flower-app-torch:latest`. Once the resource is created, the server is deployed to the hub cluster, and the clients are prepared for deployment to the managed clusters.
++
+Create a `FederatedLearning` resource in the controller namespace on the hub cluster:
++
+[source,yaml]
+----
+apiVersion: federation-ai.open-cluster-management.io/v1alpha1
+kind: FederatedLearning
+metadata:
+  name: federated-learning-sample
+spec:
+  framework: flower
+  server:
+    image: <REGISTRY>/flower-app-torch:<IMAGE_TAG>
+    rounds: 3
+    minAvailableClients: 2
+    listeners:
+      - name: server-listener
+        port: 8080
+        type: LoadBalancer
+    storage:
+      type: PersistentVolumeClaim
+      name: model-pvc
+      path: /data/models
+      size: 2Gi
+  client:
+    image: <REGISTRY>/flower-app-torch:<IMAGE_TAG>
+    placement:
+      clusterSets:
+        - global
+      predicates:
+        - requiredClusterSelector:
+            claimSelector:
+              matchExpressions:
+                - key: federated-learning-sample.client-data
+                  operator: Exists
+----
+
+. Schedule the Federated Learning Clients into Managed Clusters
++
+The above configuration schedules only clusters with a `ClusterClaim` having the key `federated-learning-sample.client-data`. You can combine this with other scheduling policies (refer to the Placement API for details).
++
+Add the `ClusterClaim` object to these clusters own the data for the client:
+
+.. **Cluster1: **
++
+[source,terminal]
+----
+$ kubectl config use-context kind-cluster1
+
+$ cat <<EOF | kubectl apply -f -
+apiVersion: cluster.open-cluster-management.io/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: federated-learning-sample.client-data
+spec:
+  value: /data/private/cluster1
+EOF
+----
+
+.. **Cluster2: **
++
+[source,terminal]
+----
+$ kubectl config use-context kind-cluster2
+$ cat <<EOF | kubectl apply -f -
+apiVersion: cluster.open-cluster-management.io/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: federated-learning-sample.client-data
+spec:
+  value: /data/private/cluster2
+EOF
+----
+
+. Check the status of the federated learning instance
+
+.. After creating the instance, the server initially shows a status of `Waiting`
++
+*Example - server in hub cluster:*
++
+[source,terminal]
+----
+$ kubectl get pods
+NAME                                            READY   STATUS      RESTARTS   AGE
+federated-learning-sample-server-7jnfs          0/1     Completed   0          9m
+----
+
+.. Once the required clients are ready, status changes to `Running`
++
+*Example - client in managed cluster:*
++
+[source,terminal]
+----
+$ kubectl get pods -n open-cluster-management
+NAME                                     READY   STATUS      RESTARTS   AGE
+federated-learning-sample-client-75sc8   0/1     Completed   0          8m
+----
+
+.. After the training and aggregation rounds complete, the status becomes `Completed`
++
+*Example - federated learning instance:*
++
+[source,terminal]
+----
+status:
+  listeners:
+  - address: 172.18.0.2:31166
+    name: listener(service):federated-learning-sample-server
+    port: 31166
+    type: NodePort
+  message: Model training successful. Check storage for details
+  phase: Completed
+----
+
+.. Download and Verify the Trained Model
++
+The trained MNIST model is saved in the `model-pvc` volume.
++
+- link:https://github.com/open-cluster-management-io/addon-contrib/blob/main/federated-learning-controller/examples/notebooks/deploy[Deploy a Jupyter notebook server]
+- link:https://github.com/open-cluster-management-io/addon-contrib/blob/main/federated-learning-controller/examples/notebooks/1.hub-evaluation.ipynb[Validate the model]
+
