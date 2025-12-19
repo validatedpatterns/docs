@@ -70,6 +70,11 @@ The solution integrates many Red{nbsp}Hat components to offer:
 * Cryptographic signing and verification.
 * SBOM vulnerability analysis.
 
+It also optionally integrates hosting of workloads in using confidential containers:
+
+* Per container confidential workload management using OpenShift Sandboxed containers, built on Kata containers.
+* Remote attestation enforced with a key broker service via Red Hat build of Trustee.
+
 [id="architecture"]
 === Architecture
 
@@ -107,6 +112,14 @@ The pattern consists of the following key components:
 
 * link:https://docs.redhat.com/es/documentation/red_hat_trusted_profile_analyzer/2.2[Red{nbsp}Hat Trusted Profile Analyzer (RHTPA)]
 ** Provides the storage and management means for _Software Bill of Materials_ (SBOMs), with cross-referencing capabilities between SBOMs and CVEs/Security Advisories.
+Optionally:
+
+* link:https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.11/html/deploying_confidential_containers/index[Red{nbsp}Hat OpenShift sandboxed containers]
+** Provides the ability to create confidential containers
+
+* link:https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.11/html/deploying_red_hat_build_of_trustee/index[Red{nbsp}Hat build of Trustee]
+** Acts as a key broker service and measures the security of confidential containers
+
 
 [id="sidecar-pattern"]
 ==== Sidecar pattern
