@@ -2,42 +2,238 @@
 menu:
   learn:
     parent: About Validated Patterns
-title: Validated Pattern tiers
+title: Validated Pattern tiers in depth
 weight: 11
 aliases: /about-validated-patterns/about-patterns-tiers-types/
 ---
 
 :toc:
 
-:_content-type: ASSEMBLY
+:_mod-docs-content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-[id="pattern-tiers"]
-== {solution-name-upstream} tiers
+[id="pattern-tiers-depth"]
+= Validated Pattern tiers in-depth
 
-The different tiers of {solution-name-upstream} are designed to facilitate ongoing maintenance, support, and testing effort for a pattern. To contribute to a pattern that suits your solution or to learn about onboarding your own pattern, understand the following pattern tiers.
+[role="_abstract"]
+Patterns are categorized into distinct tiers: *Sandbox*, *Tested*, and *Maintained*.
 
-[cols=".^1,.^2,5"]
+The different tiers of Validated Patterns are designed to facilitate ongoing maintenance, support, and testing efforts for a pattern.
+The tiering system emphasizes the requirements a pattern meets, rather than focusing on who does the maintenance.
+
+The following table describes each pattern tier and a short description of what the tier means in practice.
+
+[cols=".^1,.^2,5a"]
 |===
 |Icon|Pattern tier|Description
 
-|image:pattern-tier-sandbox.png[]
-|link:/contribute/sandbox/[{sandbox-tier-first}]
-|A pattern categorized under the {sandbox} tier provides you with an entry point to onboard to {solution-name-upstream}. The minimum requirement to qualify for the {sandbox} tier is to start with the patterns framework and include minimal documentation.
+|image:pattern-tier-sandbox.png[Sandbox tier]
+|xref:#sandbox-tier[{sandbox-tier-first}]
+|A Sandbox pattern is:
 
-The patterns in this tier might be in a work-in-progress state; and they might have been manually tested on a limited set of platforms.
+* A starting point for extending existing patterns, rather than creating new ones from scratch.
+* Capable of being deployed onto a freshly installed {ocp} cluster without prior modification or tuning.
+* Designed to be useful without relying on private or closed source sample applications.
 
 
-|image:pattern-tier-tested.png[]
-|link:/contribute/tested/[{tested-tier-first}]
-|A pattern categorized under the {tested} tier implies that the pattern might have been recently working on at least one recent version of {rh-ocp}. Qualifying for this tier might require additional work for the pattern’s owner, who might be a partner or a motivated subject matter expert (SME).
+|image:pattern-tier-tested.png[Tested tier]
+|xref:#tested-tier[{tested-tier-first}]
+|A Tested pattern is:
 
-The patterns in this tier might have a defined business problem with a demonstration. The patterns might have a manual or automated test plan, which passes at least once for each new {rh-ocp} minor version.
+* A solution that undergoes a manual or automated test plan, which passes at least once for each new {ocp} minor version.
+* Tested on generally available (GA) releases.
+* Subject to implementation review by the patterns team to ensure its flexibility across various platforms, environments, and relevant industries.
+* Publicly visible link:/ci[CI status], providing transparency about the pattern's current state.
 
-|image:pattern-tier-maintained.png[]
-|link:/contribute/maintained/[{maintained-tier-first}]
-|A pattern categorized under the {maintained} tier implies that the pattern might have been functional on all currently supported extended update support (EUS) versions of {rh-ocp}. Qualifying for this tier might require additional work for the pattern’s owner who might be a partner or a motivated SME.
+|image:pattern-tier-maintained.png[Maintained tier]
+|xref:#maintained-tier[{maintained-tier-first}]
+|A Maintained pattern is:
 
-The patterns in this tier might have a formal release process with patch releases. They might have continuous integration (CI) automation testing.
+* Rigorously tested through an automated CI pipeline to ensure functionality across {ocp} versions, catching issues such as API deprecations quickly.
+* Tested on multiple GA releases as well as pre-release bits to ensure compatibility ahead of time.
+* Considered a "lifecycle" of a reference architecture, not just a point-in-time snapshot, ensuring it remains current and functional.
+* Built upon real-world solution architectures demonstrating business value.
+* Continuously validated to ensure all integrated components work seamlessly together as good or better after upgrades.
+* Includes only supported services and components.
 
+|===
+
+[id="sandbox-tier"]
+== Sandbox tier 
+
+The Sandbox tier serves as the entry point for onboarding new Validated Patterns.
+Patterns in this tier are typically in a work-in-progress state and might have only been manually tested on a limited set of platforms.
+The primary goal for patterns here is to get started with the Validated Patterns framework and establish foundational documentation.
+
+Following are the main characteristics and requirements for patterns to be in the sandbox tier:
+
+* *Deployability*: The pattern must be deployable onto a newly installed {ocp} cluster without requiring any modification.
+* *Documentation*: The pattern must include a top-level README document highlighting the problem this pattern solves, along with an architecture diagram.
+* *Support policy*: The pattern must explicitly document the support policy for the pattern. For patterns in the sandbox tier, it is often community-based best-effort support.
+* *Open contribution*: The pattern should encourage contributions and should be open to collaboration from the community.
+
+[NOTE]
+====
+For patterns in the process of being created, the site indicates the current state of development in the sandbox tier including the link to the source repository for the pattern.
+For example, the `status` shows, `In development`, or `Finished but waiting for documentation`, or `Testing` and other similar statuses.
+====
+
+Following are some examples of the patterns in the sandbox tier:
+
+* link:/amd-rag-chat-qna[OPEA Chat QnA accelerated with AMD Instinct]
+* link:/virtualization-starter-kit[Virtualization Starter Kit]
+* link:/federated-edge-observability[Federated Edge Observability]
+
+[role="_additional-resources"]
+.Additional resources
+
+* For more information about creating a new pattern, see link:/contribute/creating-a-pattern[Creating a pattern].
+* For more information about nominating your pattern for the Sandbox tier, see link:/contribute/sandbox/#nominating-a-pattern-for-sandbox-tier[Nominating a pattern for the sandbox tier]
+
+[id="tested-tier"]
+== Tested tier
+
+The Tested tier provides additional assurance that a pattern is functional, reliable, and the pattern creators have put in effort to meet additional criteria.
+
+A pattern categorized under the tested tier indicates that the pattern has been tested within the last quarter on at least the most recent Extended Update Support (EUS) version of {rh-ocp}.
+You can view the specifics about the testing, including whether it is manual or automated, on the Status Page.
+
+Following are the main characteristics and requirements for patterns to be in the tested tier:
+
+* *Business use case and demo**: Must have a defined business use case with a demonstration.
+* *Architecture and guides*: Must include a standardized architecture diagram and a written guide for demonstrating the pattern.
+* *Test plan*: Must include a test plan covering all highlighted features, defining how to validate successful deployment and operational functionality. The test plan must pass at least once per quarter.
+* *{ocp} version testing*: Must nominate and test against at least one currently supported {ocp} release.
+* *Transparency*: Must create a publicly available JSON file that records the result of the latest test for each combination of pattern, platform, and {ocp} version.
+* *Focus*: Primarily focuses on functionality rather than performance.
+
+Following are some examples of the patterns in the tested tier:
+
+* link:/rag-llm-gitops[AI Generation with LLM and RAG]
+* link:/travelops[TravelOps]
+
+[id="maintained-tier"]
+== Maintained tier
+
+The Maintained tier represents the highest level of validation for a pattern.
+The Validated Patterns team prioritizes these patterns for continuous testing to ensure they remain functional across {ocp} updates and API changes.
+
+Patterns in this tier are functional on the currently supported stable versions of {ocp}. This includes the two latest Extended Update Support (EUS) releases and the active standard minor version between them.
+For example, 4.18 (EUS), 4.19, and 4.20 (EUS).
+
+Additionally, Validated Patterns in this tier undergo rigorous continuous integration (CI) testing. Testing environments are tailored to individual pattern requirements, using platforms such as Google Cloud, AWS, Microsoft Azure, and bare metal. The specific testing environment is listed in the testing results on the pattern page and the link:/ci[CI status] page.
+
+Following are the main characteristics and requirements for patterns to be in the maintained tier:
+
+* *Comprehensive testing*: Must include test plan automation that runs on every change to the pattern, or on a schedule no less frequently than once per week. This should be included in the Git repository to allow for others to use these same tests in other environments.
+* *Broad compatibility*: Must be tested on a sliding set of {ocp} releases, specifically the two latest Extended Update Support (EUS) releases and the active standard minor version between them. For example, 4.18 (EUS), 4.19, and 4.20 (EUS). List any hardware or cloud environment requirements.
+
+* *Timely fixes*: Must fix any breakage in a timely manner.
+* *Product review*: Their architectures must be reviewed by representatives of each consumed Red{nbsp}Hat product to ensure consistency with product roadmaps.
+* *Support policy documentation*: Must document their support policy.
+* *No Technology Preview features*: Do not rely on Technology Preview functionality or features that are hidden behind feature gates. Ensure that all services, features, and capabilities are supportable. This support does not need to come from Red{nbsp}Hat, but a support path must exist.
+
+Following are some examples of the patterns in the maintained tier:
+
+* link:/ansible-edge-gitops[Ansible Edge GitOps]
+* link:/multicloud-gitops[Multicloud GitOps]
+* link:/industrial-edge[Industrial Edge]
+* link:/medical-diagnosis[Medical Diagnosis]
+
+[id="feature-breakdown-by-tiers"]
+== Feature breakdown by tiers
+
+[cols="4,^1,^1,^1", options="header"]
+|===
+| Feature | Sandbox | Tested | Maintained
+
+| *Deploys on fresh OpenShift without modification*
+| ✓
+| ✓
+| ✓
+
+| *Useful without private/closed source apps*
+| ✓
+| ✓
+| ✓
+
+| *Open contribution and collaboration*
+| ✓
+| ✓
+| ✓
+
+| *Documented support policy*
+| ✓
+| ✓
+| ✓
+
+| *README with problem statement*
+| ✓
+| ✓
+| ✓
+
+| *Includes architecture diagram*
+| ✓
+| ✓
+| ✓
+
+| *Business use case with demo*
+| -
+| ✓
+| ✓
+
+| *Standardized architecture diagram and written guide*
+| -
+| ✓
+| ✓
+
+| *Test plan passes at least once per quarter*
+| -
+| ✓
+| ✓
+
+| *Tested on at least 1 supported OCP version*
+| -
+| ✓
+| ✓
+
+| *Publicly visible test results (JSON)*
+| -
+| ✓
+| ✓
+
+| *Implementation review*
+| -
+| ✓
+| ✓
+
+| *Automated CI pipeline (every change or weekly)*
+| -
+| -
+| ✓
+
+| *Tested on 2 latest EUS and active interim versions*
+| -
+| -
+| ✓
+
+| *Tested on pre-release bits*
+| -
+| -
+| ✓
+
+| *Timely fixes for breakage*
+| -
+| -
+| ✓
+
+| *No Tech Preview or feature-gated features*
+| -
+| -
+| ✓
+
+| *Includes only supported services and components*
+| -
+| -
+| ✓
 |===
