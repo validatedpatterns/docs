@@ -108,8 +108,20 @@ The pattern consists of the following key components:
 * link:https://docs.redhat.com/es/documentation/red_hat_trusted_profile_analyzer/2.2[Red{nbsp}Hat Trusted Profile Analyzer (RHTPA)]
 ** Provides the storage and management means for _Software Bill of Materials_ (SBOMs), with cross-referencing capabilities between SBOMs and CVEs/Security Advisories.
 
+[id="architecture-diagram"]
+==== Architecture diagram
+
+The layered zero trust architecture enforces a Zero Trust model through four decoupled layers:
+
+* *Identity*: Keycloak manages user authentication, while SPIRE assigns short-lived, cryptographic identities to workloads for secure service-to-service recognition.
+* *Secure Transport*: Sidecar proxies intercept traffic to enforce mutual TLS (mTLS), ensuring all communication is encrypted and mutually authenticated without application code changes.
+* *Secrets*: Vault centrally stores sensitive data, which is securely synced into the cluster by the External Secrets Operator only when needed.
+* *Compliance*: RHACM and the Compliance Operator monitor the environment to ensure consistent policy enforcement and infrastructure hardening.
+
+image::layered-zero-trust/layered-zero-trust-architecture-diagram.png[Layered Zero Trust architecture diagram]
+
 [id="sidecar-pattern"]
-==== Sidecar pattern
+=== Sidecar pattern
 
 The sidecar pattern is a deployment model where a separate container or process, known as a sidecar, runs alongside the main application to handle auxiliary tasks.
 In an {ocp} environment, pods simplify this by ensuring the sidecar and main application share the same lifecycle.
@@ -125,6 +137,35 @@ While sidecars are often criticized for adding complexity and resource usage, th
 The Layered Zero Trust pattern uses the sidecar approach to offload critical security functions from the main application.
 This centralizes policy enforcement, simplifies development, and separates security concerns.
 The sidecar patterns in this approach handle tasks such as authentication and authorization, traffic encryption, rate limiting, and auditing and logging.
+
+[id="applied-sidecar-pattern-data-protection"]
+==== Applied sidecar pattern: Data protection
+
+The following diagrams illustrate how the sidecar pattern is applied in practice to solve the Data Protection use case.
+They demonstrate how an application (`qtodo`) retrieves database credentials dynamically without hard-coding secrets.
+
+===== Logical structure
+
+The logical structure diagram shows the composition of the application pod and its relationship to the infrastructure.
+
+* *Decoupled components*: The `qtodo` application logic is separated from security functions. The application container runs alongside helper sidecars (spiffe-vault-client, spiffe-helper) and init containers.
+* *Infrastructure layers*: The sidecars bridge the gap between the application and the platform services:
+
+** *Workload identity*: The sidecars interface with SPIRE to prove the pod's identity.
+** *Secret management*: They connect to HashiCorp Vault to fetch secrets.
+** *Trust anchors*: Keycloak and Cert Manager provide the root trust for the ecosystem.
+
+image::layered-zero-trust/layered-zero-trust-data-protection-logical.png[Logical structure of the sidecar pattern for data protection]
+
+===== Schematic Workflow
+
+The schematic diagram details the step-by-step execution flow, matching the numbered markers in the schematic:
+
+* *Identity minting* (Steps 3-6): Upon startup, the SPIRE Agent validates the pod (via node attestors and kubelet) and mints a cryptographic identity (SPIFFE ID).
+* *Secret retrieval* (Step 7): The spiffe-vault-client sidecar uses this verified identity to authenticate with HashiCorp Vault and request the specific credentials needed for the database.
+* *Secure access* (Steps 8-9): The credentials are passed to the application, allowing it to authenticate and establish a connection to the PostgreSQL database securely.
+
+image::layered-zero-trust/layered-zero-trust-data-protection-schematic.png[Schematic workflow of the sidecar pattern for data protection]
 
 [id="about-technology"]
 == About the technology
