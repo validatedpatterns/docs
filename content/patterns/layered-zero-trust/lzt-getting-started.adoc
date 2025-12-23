@@ -16,7 +16,7 @@ Follow these instructions to configure and deploy the Layered Zero Trust pattern
 
 .Prerequisites
 
-* An {ocp} 4.19 or newer cluster with:
+* An {ocp} 4.20 or newer cluster with:
 
 .. publicly signed certificates for Ingress.
 .. default `StorageClass` which provides dynamic `PersistentVolume` storage.

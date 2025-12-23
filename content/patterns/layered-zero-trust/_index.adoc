@@ -77,14 +77,14 @@ The Layered Zero Trust pattern architecture consists of many components that wor
 
 The pattern consists of the following key components:
 
-* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/security_and_compliance/compliance-operator[Compliance Operator]
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/security_and_compliance/compliance-operator[Compliance Operator]
 ** Provides {ocp} cluster hardening.
 
 * link:https://access.redhat.com/products/red-hat-build-of-keycloak/[Red{nbsp}Hat build of Keycloak (RHBK)]
 ** Provides identities for pattern components.
 ** Provides an OIDC client that authenticates users to a web application.
 
-* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/security_and_compliance/zero-trust-workload-identity-manager[Red{nbsp}Hat Zero Trust Workload Identity Manager]
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/security_and_compliance/zero-trust-workload-identity-manager[Red{nbsp}Hat Zero Trust Workload Identity Manager]
 ** Provides identities to workloads running in {ocp}.
 
 * link:https://www.hashicorp.com/en/products/vault[HashiCorp Vault]
