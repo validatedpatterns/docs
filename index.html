@@ -2597,7 +2597,7 @@ For disconnected environments: One or more openshift clusters deployed in a disc
 An OCI-compliant registry that is accessible from the disconnected network
 A Git Repository that is accessible from the disconnected network
 For more information on disconnected installation, see Validated Patterns in a disconnected Network.
-`,url:"https://validatedpatterns.io/learn/quickstart/",breadcrumb:"/learn/quickstart/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-secure-multitier/":{title:"Secure multi-tier applications",tags:[],content:`Use case: Secure multi-tier applications This use case demonstrates securing a common application design pattern: a frontend application using a database for persistent storage.
+`,url:"https://validatedpatterns.io/learn/quickstart/",breadcrumb:"/learn/quickstart/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-secure-multitier/":{title:"Secure multitiered applications",tags:[],content:`Use case: Secure multitiered applications This use case demonstrates securing a common application design pattern: a frontend application using a database for persistent storage.
 The Layered Zero Trust Pattern includes the qtodo application, which demonstrates a secure just-in-time (JIT) credential mechanism.
 Instead of relying on static credentials stored within the application, the qtodo application uses a JIT method to dynamically fetch database credentials from a central credential store.
 Application components and architecture The qtodo application consists of the following key components and their security roles:
@@ -3931,7 +3931,70 @@ TBD - screen shots
 Pipeline 4: Build, Scan, Sign and Push to Prod Pipeline 4 demonstrates a more complete pipeline that builds, scans and also signs the image before pushing.
 Pipeline 4 is the preferred DevSecOps approach and can be modified to include more security based tasks. E.g. when using a base image for a build, the signature of that image can be checked before the build step even starts.
 TBD - screen shots
-`,url:"https://validatedpatterns.io/patterns/devsecops/secure-supply-chain-demo/",breadcrumb:"/patterns/devsecops/secure-supply-chain-demo/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting common pattern deployment issues Problem Validated Pattern installation process is stuck on deploying Vault
+`,url:"https://validatedpatterns.io/patterns/devsecops/secure-supply-chain-demo/",breadcrumb:"/patterns/devsecops/secure-supply-chain-demo/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-automated-secure-supply-chain/":{title:"Secure supply chain - Automated approach",tags:[],content:`Use case: Automating the secure supply chain The Secure multitiered applications use case describes how to implement a secure supply chain for application development by using Red Hat Trusted Artifact Signer (RHTAS) and the Red Hat Trusted Profile Analyzer (RHTPA). This use case demonstrates automation of the secure supply chain for application development by using Red Hat OpenShift Pipelines.
+OpenShift Pipelines orchestrates the application building and certification process. The Zero Trust Validated Pattern (ZTVP) creates a pipeline in the cluster named qtodo-supply-chain.
+Pipeline tasks The pipeline includes the following tasks:
+qtodo-clone-repository: Clones the qtodo repository.
+qtodo-build-artifact: Builds an uber-jar of the qtodo application.
+qtodo-sign-artifact: Signs the generated JAR file.
+qtodo-verify-artifact: Verifies the JAR signature.
+qtodo-build-image: Builds a container image and uploads it to a registry.
+qtodo-sign-image: Signs the container image.
+qtodo-generate-sbom: Generates an SBOM from the image.
+qtodo-sbom-attestation: Creates a signed attestation and attaches it to the image.
+qtodo-upload-sbom: Uploads the SBOM file to RHTPA.
+qtodo-verify-image: Verifies the attestation and signature.
+Running the pipeline Start the pipeline by using the OpenShift Container Platform web console or the CLI.
+Running the pipeline from the web console To start a pipeline execution from the OpenShift Container Platform Web console:
+Procedure Log in to the OpenShift Container Platform web console.
+From the left navigation bar, select Pipelines → Pipelines.
+In the layered-zero-trust-hub project, find the qtodo-supply-chain pipeline.
+Click the Options menu (⋮) and select Start.
+Verify the parameters. Most default values are correct for single-cluster mode.
+Configure the following workspaces:
+For qtodo-source, select PersistentVolumeClaim and ensure the PVC name is qtodo-workspace-source.
+For registry-auth-config, select Secret and ensure the secret name is qtodo-registry-auth.
+Click Start.
+Running the pipeline from the CLI Start a pipeline execution by creating a PipelineRun resource that references the qtodo-supply-chain pipeline.
+Procedure Create a file named qtodo-pipeline.yaml with the following content:
+apiVersion: tekton.dev/v1 kind: PipelineRun metadata: generateName: qtodo-manual-run- namespace: layered-zero-trust-hub spec: pipelineRef: name: qtodo-supply-chain taskRunTemplate: serviceAccountName: pipeline timeouts: pipeline: 1h0m0s workspaces: - name: qtodo-source persistentVolumeClaim: claimName: qtodo-workspace-source - name: registry-auth-config secret: secretName: qtodo-registry-auth Verify the values for the PVC storage and registry configuration.
+Create the PipelineRun resource:
+$ oc create -f qtodo-pipeline.yaml Verification Review the pipeline logs using the Tekton CLI:
+$ tkn pipeline logs -n layered-zero-trust-hub -L -f Inspecting pipeline results Verify the status and output of the pipeline by using the web console or the CLI.
+Inspecting results from the web console You can inspect the results of the pipeline execution from the OpenShift Container Platform web console.
+Procedure Log in to the OpenShift Container Platform web console.
+From the left navigation bar, select Pipelines → Pipelines.
+In the layered-zero-trust-hub project, find the qtodo-supply-chain pipeline.
+Click the PipelineRun link in the Last run column.
+In the Details tab, view the summary of the pipeline execution and tasks.
+Click on a task or the Logs tab to see the output of specific tasks.
+Inspecting results from the CLI You can inspect the results of the pipeline execution by using the CLI.
+Procedure Verify that the pipeline completed successfully:
+$ oc get pipelinerun -n layered-zero-trust-hub NAME SUCCEEDED REASON STARTTIME COMPLETIONTIME qtodo-manual-run-p46f7 True Succeeded 7m4s 2m12s Review the TaskRuns to see the results of each step:
+$ oc get taskruns -n layered-zero-trust-hub NAME SUCCEEDED REASON STARTTIME COMPLETIONTIME qtodo-manual-run-p46f7-qtodo-build-artifact True Succeeded 7m44s 5m17s qtodo-manual-run-p46f7-qtodo-build-image True Succeeded 4m55s 4m4s qtodo-manual-run-p46f7-qtodo-clone-repository True Succeeded 7m55s 7m44s ... Identify the pods associated with the tasks in the layered-zero-trust-hub namespace:
+$ oc get pods -n layered-zero-trust-hub NAME READY STATUS RESTARTS AGE qtodo-manual-run-p46f7-qtodo-build-artifact-pod 0/1 Completed 0 10m qtodo-manual-run-p46f7-qtodo-build-image-pod 0/1 Completed 0 7m21s ... Review the pod logs to view the output of a specific step. For example, to view image verification messages:
+$ oc logs -n layered-zero-trust-hub qtodo-manual-run-p46f7-qtodo-verify-image-pod Success: true Result: SUCCESS Violations: 0, Warnings: 0, Successes: 3 Component: Unnamed ImageRef: quay-registry-quay-quay-enterprise.apps.example.com/ztvp/qtodo@sha256:df6506e93a141cfcaeb3b4686b558cddd963410a146b10c3cbd1319122f5f880 Results: ✓ [Success] builtin.attestation.signature_check ... ✓ [Success] builtin.image.signature_check ... Reviewing integrated services The supply chain results are visible in the services used during the build process.
+Reviewing images in Quay If you used Quay as the image registry, you can review the built image inside the registry.
+Procedure Obtain the credentials for the Quay web interface:
+Quay URL:
+$ echo &#34;https://$(oc get route -n quay-enterprise \\ -l quay-component=quay-app-route \\ -o jsonpath=&#39;{.items[0].spec.host}&#39;)&#34; Quay username: Use the value specified in values-hub.yaml or quay-user.
+Quay password:
+$ oc get secret -n layered-zero-trust-hub qtodo-quay-password -o json | jq &#39;.data[&#34;password&#34;] | @base64d&#39; Log in to the Quay web interface.
+Select the ztvp/qtodo repository.
+In the navigation menu, select Tags.
+Verify that the latest tag is signed and that the .att attestation file is present.
+Reviewing Rekor verification records Use the Rekor search interface to check verification records. Search by email address or record index.
+Procedure Get the URL for the Rekor search interface:
+$ echo &#34;https://$(oc get route -n trusted-artifact-signer -l app.kubernetes.io/component=rekor-ui -o jsonpath=&#39;{.items[0].spec.host}&#39;)&#34; Reviewing RHTPA results The RHTPA web UI uses OIDC for user authentication. If you are using Keycloak integrated with the pattern, use the following commands to obtain the credentials.
+Procedure Get the credentials:
+RHTPA URL:
+$ echo &#34;https://$(oc get route -n trusted-profile-analyzer \\ -l app.kubernetes.io/name=server \\ -o jsonpath=&#39;{.items[0].spec.host}&#39;)&#34; RHTPA user: rhtpa-user
+RHTPA user password:
+$ oc get secret keycloak-users -n keycloak-system -o json \\ | jq &#39;.data[&#34;rhtpa-user-password&#34;] | @base64d&#39; Review the SBOM in the RHTPA web interface:
+Log in to the RHTPA web interface using Keycloak credentials.
+In the navigation menu, select SBOMs.
+Select the container image name from the list of available SBOMs.
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-automated-secure-supply-chain/",breadcrumb:"/patterns/layered-zero-trust/lzt-automated-secure-supply-chain/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting common pattern deployment issues Problem Validated Pattern installation process is stuck on deploying Vault
 Solution Most common reason of this is that prerequisites are not satisfied. Please refer to section Getting started → Prerequisites and make sure all is done before proceeding to pattern deployment.
 Problem Downloading AI model Llama-3.1-8B-Instruct using supplied Jupyter notebook is failing or deployment fails after model is downloaded
 Solution Most often this is due to some network errors while downloading the model. If not sure if whole model was downloaded, please clear the storage bucket and repeat the download process.
@@ -5148,6 +5211,8 @@ Red Hat Trusted Artifact Signer (RHTAS)
 Provides cryptographic signing and verification of software artifacts and container images.
 Red Hat Trusted Profile Analyzer (RHTPA)
 Provides the storage and management means for Software Bill of Materials (SBOMs), with cross-referencing capabilities between SBOMs and CVEs/Security Advisories.
+Red Hat OpenShift Pipelines
+Provides a cloud-native continuous integration and continuous deployment (CI/CD) solution on OpenShift Container Platform.
 Architecture diagram The layered zero trust architecture enforces a Zero Trust model through four decoupled layers:
 Identity: Keycloak manages user authentication, while SPIRE assigns short-lived, cryptographic identities to workloads for secure service-to-service recognition.
 Secure Transport: Sidecar proxies intercept traffic to enforce mutual TLS (mTLS), ensuring all communication is encrypted and mutually authenticated without application code changes.
@@ -5185,6 +5250,7 @@ Multicloud Object Gateway: Lightweight object storage service for OpenShift Cont
 Red Hat Quay: Private registry for OCI images.
 Red Hat Trusted Artifact Signer: Facilitates signing and verification of software artifacts.
 Red Hat Trusted Profile Analyzer: Enables SBOM file analysis and vulnerability detection.
+Red Hat OpenShift Pipelines: Enables a native CI/CD solution on OpenShift Container Platform.
 `,url:"https://validatedpatterns.io/patterns/layered-zero-trust/",breadcrumb:"/patterns/layered-zero-trust/"},"https://validatedpatterns.io/blog/2025-08-29-new-common-makefile-structure/":{title:"From slim common to no common",tags:[],content:` Retiring the common Directory with a Smarter Makefile We’re simplifying our Validated Patterns workflow in a big way: the common directory is going away.
 Why does this matter? Fewer moving parts, leaner repositories, and updates that flow automatically to every pattern. Instead of juggling wrapper scripts and redundant logic across repos, everything now runs through a centralized, smarter Makefile.
 This post explains why we made the change, how it benefits you, and what you need to do to start using this streamlined approach.
