@@ -447,7 +447,7 @@ There should appear form Deploy model. Fill all the inputs like in following ima
 If everything is setup correctly go to tab Models again to check status of TGI. It should be looking like this:
 RAG Chat demo After whole setup is complete demo application is ready to use. Chat QnA UI address can be obtained by running following command:
 echo &#34;http://$(oc -n gaudi-llm get route chatqna-gaudi-ui-server -ojsonpath=&#39;{.spec.host}&#39;)&#34; `,url:"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-getting-started/",breadcrumb:"/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-getting-started/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-getting-started/":{title:"Getting started",tags:[],content:`Deploying the Layered Zero Trust pattern Follow these instructions to configure and deploy the Layered Zero Trust pattern.
-Prerequisites An OpenShift Container Platform 4.19 or newer cluster with:
+Prerequisites An OpenShift Container Platform 4.20 or newer cluster with:
 publicly signed certificates for Ingress.
 default StorageClass which provides dynamic PersistentVolume storage.
 To customize the default configuration, you must have a GitHub account and a token with repositories permissions, to read from and write to your forks.
