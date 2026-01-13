@@ -1,5 +1,5 @@
 ---
-title: Secure multi-tier applications
+title: Secure multitiered applications
 weight: 20
 aliases: /layered-zero-trust/lzt-secure-multitier
 ---
@@ -10,7 +10,7 @@ aliases: /layered-zero-trust/lzt-secure-multitier
 include::modules/comm-attributes.adoc[]
 
 [id="lzt-secure-multitier"]
-= Use case: Secure multi-tier applications
+= Use case: Secure multitiered applications
 
 This use case demonstrates securing a common application design pattern: a frontend application using a database for persistent storage.
 

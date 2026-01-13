@@ -1,0 +1,272 @@
+---
+title: Secure supply chain - Automated approach
+weight: 40
+aliases: /layered-zero-trust/lzt-automated-secure-supply-chain/
+---
+
+:toc:
+:imagesdir: /images
+:_mod-docs-content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="lzt-automated-secure-supply-chain"]
+= Use case: Automating the secure supply chain
+
+[role="_abstract"]
+The xref:/patterns/layered-zero-trust/lzt-secure-multitier/index.html [Secure multitiered applications] use case describes how to implement a secure supply chain for application development by using Red{nbsp}Hat Trusted Artifact Signer (RHTAS) and the Red{nbsp}Hat Trusted Profile Analyzer (RHTPA). This use case demonstrates automation of the secure supply chain for application development by using link:https://docs.redhat.com/en/documentation/red_hat_openshift_pipelines/1.20[{rh-pipelines-first}].
+
+{pipelines-short} orchestrates the application building and certification process. The Zero Trust Validated Pattern (ZTVP) creates a pipeline in the cluster named `qtodo-supply-chain`.
+
+[id="pipeline-tasks"]
+== Pipeline tasks
+
+The pipeline includes the following tasks:
+
+* **qtodo-clone-repository**: Clones the `qtodo` repository.
+* **qtodo-build-artifact**: Builds an `uber-jar` of the `qtodo` application.
+* **qtodo-sign-artifact**: Signs the generated JAR file.
+* **qtodo-verify-artifact**: Verifies the JAR signature.
+* **qtodo-build-image**: Builds a container image and uploads it to a registry.
+* **qtodo-sign-image**: Signs the container image.
+* **qtodo-generate-sbom**: Generates an SBOM from the image.
+* **qtodo-sbom-attestation**: Creates a signed attestation and attaches it to the image.
+* **qtodo-upload-sbom**: Uploads the SBOM file to RHTPA.
+* **qtodo-verify-image**: Verifies the attestation and signature.
+
+[id="run-pipeline"]
+== Running the pipeline
+
+Start the pipeline by using the {ocp} web console or the CLI.
+
+[id="run-pipeline-console"]
+=== Running the pipeline from the web console
+
+To start a pipeline execution from the {ocp} Web console:
+
+.Procedure
+
+. Log in to the {ocp} web console.
+. From the left navigation bar, select **Pipelines** -> **Pipelines**.
+. In the **layered-zero-trust-hub** project, find the **qtodo-supply-chain** pipeline.
+. Click the **Options** menu (⋮) and select **Start**.
+. Verify the parameters. Most default values are correct for single-cluster mode.
+. Configure the following workspaces:
+
+* For **qtodo-source**, select **PersistentVolumeClaim** and ensure the PVC name is **qtodo-workspace-source**.
+* For **registry-auth-config**, select **Secret** and ensure the secret name is **qtodo-registry-auth**.
+. Click **Start**.
+
+[id="run-pipeline-cli"]
+=== Running the pipeline from the CLI
+
+Start a pipeline execution by creating a `PipelineRun` resource that references the `qtodo-supply-chain` pipeline.
+
+.Procedure
+
+. Create a file named `qtodo-pipeline.yaml` with the following content:
++
+[source,yaml]
+----
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: qtodo-manual-run-
+  namespace: layered-zero-trust-hub
+spec:
+  pipelineRef:
+    name: qtodo-supply-chain
+  taskRunTemplate:
+    serviceAccountName: pipeline
+  timeouts:
+    pipeline: 1h0m0s
+  workspaces:
+  - name: qtodo-source
+    persistentVolumeClaim:
+      claimName: qtodo-workspace-source
+  - name: registry-auth-config
+    secret:
+      secretName: qtodo-registry-auth
+----
++
+Verify the values for the PVC storage and registry configuration.
+
+. Create the `PipelineRun` resource:
++
+[source,terminal]
+----
+$ oc create -f qtodo-pipeline.yaml
+----
+
+.Verification
+
+* Review the pipeline logs using the Tekton CLI:
++
+[source,terminal]
+----
+$ tkn pipeline logs -n layered-zero-trust-hub -L -f
+----
+
+[id="inspect-results"]
+== Inspecting pipeline results
+
+Verify the status and output of the pipeline by using the web console or the CLI.
+
+[id="inspect-results-ui"]
+=== Inspecting results from the web console
+
+You can inspect the results of the pipeline execution from the {ocp} web console.
+
+.Procedure
+
+. Log in to the {ocp} web console.
+. From the left navigation bar, select **Pipelines** -> **Pipelines**.
+. In the **layered-zero-trust-hub** project, find the **qtodo-supply-chain** pipeline.
+. Click the *PipelineRun* link in the *Last run* column.
+. In the *Details* tab, view the summary of the pipeline execution and tasks.
+. Click on a task or the *Logs* tab to see the output of specific tasks.
+
+[id="inspect-results-cli"]
+=== Inspecting results from the CLI
+
+You can inspect the results of the pipeline execution by using the CLI.
+
+.Procedure
+
+. Verify that the pipeline completed successfully:
++
+[source,terminal]
+----
+$ oc get pipelinerun -n layered-zero-trust-hub
+
+NAME                        SUCCEEDED   REASON      STARTTIME   COMPLETIONTIME
+qtodo-manual-run-p46f7      True        Succeeded   7m4s        2m12s
+----
+
+. Review the `TaskRuns` to see the results of each step:
++
+[source,terminal]
+----
+$ oc get taskruns -n layered-zero-trust-hub
+
+NAME                                               SUCCEEDED   REASON             STARTTIME   COMPLETIONTIME
+qtodo-manual-run-p46f7-qtodo-build-artifact        True        Succeeded          7m44s       5m17s
+qtodo-manual-run-p46f7-qtodo-build-image           True        Succeeded          4m55s       4m4s
+qtodo-manual-run-p46f7-qtodo-clone-repository      True        Succeeded          7m55s       7m44s
+...
+----
+
+. Identify the pods associated with the tasks in the `layered-zero-trust-hub` namespace:
++
+[source,terminal]
+----
+$ oc get pods -n layered-zero-trust-hub
+
+NAME                                                    READY   STATUS      RESTARTS   AGE
+qtodo-manual-run-p46f7-qtodo-build-artifact-pod         0/1     Completed   0          10m
+qtodo-manual-run-p46f7-qtodo-build-image-pod            0/1     Completed   0          7m21s
+...
+----
+
+. Review the pod logs to view the output of a specific step. For example, to view image verification messages:
++
+[source,terminal]
+----
+$ oc logs -n layered-zero-trust-hub qtodo-manual-run-p46f7-qtodo-verify-image-pod
+
+Success: true
+Result: SUCCESS
+Violations: 0, Warnings: 0, Successes: 3
+Component: Unnamed
+ImageRef: quay-registry-quay-quay-enterprise.apps.example.com/ztvp/qtodo@sha256:df6506e93a141cfcaeb3b4686b558cddd963410a146b10c3cbd1319122f5f880
+
+Results:
+✓ [Success] builtin.attestation.signature_check
+...
+✓ [Success] builtin.image.signature_check
+...
+----
+
+[id="review-services"]
+== Reviewing integrated services
+
+The supply chain results are visible in the services used during the build process.
+
+[id="review-quay"]
+=== Reviewing images in Quay
+
+If you used Quay as the image registry, you can review the built image inside the registry.
+
+.Procedure
+
+. Obtain the credentials for the Quay web interface:
+
+* *Quay URL*:
++
+[source,terminal]
+----
+$ echo "https://$(oc get route -n quay-enterprise \
+    -l quay-component=quay-app-route \
+    -o jsonpath='{.items[0].spec.host}')"
+----
+* *Quay username*: Use the value specified in `values-hub.yaml` or `quay-user`.
+* *Quay password*:
++
+[source,terminal]
+----
+$ oc get secret -n layered-zero-trust-hub qtodo-quay-password -o json | jq '.data["password"] | @base64d'
+----
+
+. Log in to the Quay web interface.
+. Select the **ztvp/qtodo** repository.
+. In the navigation menu, select **Tags**.
+. Verify that the `latest` tag is signed and that the `.att` attestation file is present.
+
+image::/images/layered-zero-trust/quay-web-ui.png[Quay Web UI]
+
+[id="review-rekor"]
+=== Reviewing Rekor verification records
+
+Use the Rekor search interface to check verification records. Search by email address or record index.
+
+.Procedure
+
+* Get the URL for the Rekor search interface:
++
+[source,terminal]
+----
+$ echo "https://$(oc get route -n trusted-artifact-signer -l app.kubernetes.io/component=rekor-ui -o jsonpath='{.items[0].spec.host}')"
+----
+
+image::/images/layered-zero-trust/rekor-web-ui.png[Rekor's Search UI]
+
+[id="review-rhtpa"]
+=== Reviewing RHTPA results
+
+The RHTPA web UI uses OIDC for user authentication. If you are using *Keycloak* integrated with the pattern, use the following commands to obtain the credentials.
+
+.Procedure
+
+. Get the credentials:
+* *RHTPA URL*:
++
+[source,terminal]
+----
+$ echo "https://$(oc get route -n trusted-profile-analyzer \
+    -l app.kubernetes.io/name=server \
+    -o jsonpath='{.items[0].spec.host}')"
+----
+* *RHTPA user*: `rhtpa-user`
+* *RHTPA user password*:
++
+[source,terminal]
+----
+$ oc get secret keycloak-users -n keycloak-system -o json \
+    | jq '.data["rhtpa-user-password"] | @base64d'
+----
+
+. Review the SBOM in the RHTPA web interface:
+.. Log in to the RHTPA web interface using Keycloak credentials.
+.. In the navigation menu, select **SBOMs**.
+.. Select the container image name from the list of available SBOMs.
+
+image::/images/layered-zero-trust/rhtpa-web-ui.png[RHTPA Web UI]

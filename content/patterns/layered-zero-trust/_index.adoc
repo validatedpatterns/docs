@@ -108,6 +108,9 @@ The pattern consists of the following key components:
 * link:https://docs.redhat.com/es/documentation/red_hat_trusted_profile_analyzer/2.2[Red{nbsp}Hat Trusted Profile Analyzer (RHTPA)]
 ** Provides the storage and management means for _Software Bill of Materials_ (SBOMs), with cross-referencing capabilities between SBOMs and CVEs/Security Advisories.
 
+* link:https://docs.redhat.com/en/documentation/red_hat_openshift_pipelines/1.20[Red{nbsp}Hat OpenShift Pipelines]
+** Provides a cloud-native continuous integration and continuous deployment (CI/CD) solution on {ocp}.
+
 [id="architecture-diagram"]
 ==== Architecture diagram
 
@@ -186,3 +189,4 @@ The following technologies are used in this solution:
 * *Red{nbsp}Hat Quay*: Private registry for OCI images.
 * *Red{nbsp}Hat Trusted Artifact Signer*: Facilitates signing and verification of software artifacts.
 * *Red{nbsp}Hat Trusted Profile Analyzer*: Enables SBOM file analysis and vulnerability detection.
+* *Red{nbsp}Hat OpenShift Pipelines*: Enables a native CI/CD solution on {ocp}.
