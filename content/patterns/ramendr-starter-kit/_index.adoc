@@ -15,9 +15,9 @@ industries: []
 aliases: /ramendr-starter-kit/
 pattern_logo: ansible-edge.png
 links:
-  github: https://github.com/validatedpatterns-sandbox/ramendr-starter-kit/
+  github: https://github.com/validatedpatterns/ramendr-starter-kit/
   install: getting-started
-  bugs: https://github.com/validatedpatterns-sandbox/ramendr-starter-kit/issues
+  bugs: https://github.com/validatedpatterns/ramendr-starter-kit/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ci: ramendr-starter-kit
 ---
@@ -41,7 +41,7 @@ installations and validate pre-requisites for all of the core components of the 
 
 In particular, this pattern must be customized to specify DNS basedomains for the managed clusters, which makes 
 forking the pattern (which we generally recommend anyway, in case you want to make other customizations) effectively
-a requirement. The link:https://validatedpatterns-sandbox/patterns/getting-started[**Getting Started**] doc has
+a requirement. The link:https://validatedpatterns/patterns/getting-started[**Getting Started**] doc has
 details on what needs to be changed and how to commit and push those changes.
 
 === Background

@@ -27,7 +27,7 @@ It is desirable to have a cluster for deploying the GitOps management hub assets
 == Preparing for deployment
 .Procedure
 
-. Fork the link:https://github.com/validatedpatterns-sandbox/ramendr-starter-kit[ramendr-starter-kit] repository on GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
+. Fork the link:https://github.com/validatedpatterns/ramendr-starter-kit[ramendr-starter-kit] repository on GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
 
 . Clone the forked copy of this repository.
 +
@@ -63,8 +63,8 @@ $ git remote -v
 ----
 origin	git@github.com:kquinn1204/ramendr-starter-kit.git (fetch)
 origin	git@github.com:kquinn1204/ramendr-starter-kit.git (push)
-upstream	git@github.com:validatedpatterns-sandbox/ramendr-starter-kit.git (fetch)
-upstream	git@github.com:validatedpatterns-sandbox/ramendr-starter-kit.git (push)
+upstream	git@github.com:validatedpatterns/ramendr-starter-kit.git (fetch)
+upstream	git@github.com:validatedpatterns/ramendr-starter-kit.git (push)
 ----
 
 . Make a local copy of secrets template outside of your repository to hold credentials for the pattern.
@@ -164,7 +164,7 @@ $ git checkout -b my-branch
 . The pattern will infer the baseDomain of your cluster based on the clusterDomain which is tracked by the pattern
 operator. Previously, this required the pattern to be forked to be useful - but this is no longer the case (you may 
 still wish to change other settings in the RDR chart's values file, such as `aws.region` settings. This file is at
-link:https://github.com/validatedpatterns-sandbox/ramendr-starter-kit/blob/main/charts/hub/rdr/values.yaml[hub/rdr/values.yaml]. If you do make customizations to this or other files, it is necessary to fork the pattern so that the changes
+link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/charts/hub/rdr/values.yaml[hub/rdr/values.yaml]. If you do make customizations to this or other files, it is necessary to fork the pattern so that the changes
 will be seen by ArgoCD.  If you made any changes to this or any other files tracked by git, git add them and then commit the changes by running the following command:
 +
 [source,terminal]
@@ -223,7 +223,7 @@ image::/images/ramendr-starter-kit/ramendr-hub-operators.png[ramendr-starter-kit
 +
 .ramendr-starter-kit-clusters
 image::/images/ramendr-starter-kit/ramendr-clusters-built.png[ramendr-starter-kit-operators,title="RamenDR Clusters"]
-. Wait some time for everything to deploy to all the clusters. It might take up to another hour from when the managed clusters finish building. You can track the progress through the `Hub ArgoCD` UI from the nines menu, especially the "opp-policy" and the "regional-dr" applications. Most of the critical resources are in the regional-dr application (at present, the opp-policy app may show missing/out-of-sync, and the regional-dr app may show OutOfSync - even when both are healthy. We are working on a fix, track bug progress link:https://github.com/validatedpatterns-sandbox/ramendr-starter-kit/issues/4[here]): 
+. Wait some time for everything to deploy to all the clusters. It might take up to another hour from when the managed clusters finish building. You can track the progress through the `Hub ArgoCD` UI from the nines menu, especially the "opp-policy" and the "regional-dr" applications. Most of the critical resources are in the regional-dr application (at present, the opp-policy app may show missing/out-of-sync, and the regional-dr app may show OutOfSync - even when both are healthy. We are working on a fix, track bug progress link:https://github.com/validatedpatterns/ramendr-starter-kit/issues/4[here]): 
 +
 .ramendr-starter-kit-operators-applications
 image::/images/ramendr-starter-kit/ramendr-starter-kit-hub-applications.png[ramendr-starter-kit-hub-applications,title="RamenDR Starter Kit Applications"]
