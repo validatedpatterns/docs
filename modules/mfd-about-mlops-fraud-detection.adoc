@@ -2,13 +2,15 @@
 :imagesdir: ../../images
 
 [id="about-mlops-fraud-detection-pattern"]
-= About the MLOps Fraud Detection
+= About the MLOps Fraud Detection Pattern
+
+NOTE: This pattern has been reworked for a modern RHOAI experience. To see the original pattern, check out the link:https://github.com/validatedpatterns/mlops-fraud-detection/tree/legacy[legacy branch].
 
 MLOps Credit Card Fraud Detection use case::
-* Build and train models in RHODS to detect credit card fraud
-* Track and store those models with MLFlow
-* Serve a model stored in MLFlow using RHODS Model Serving (or MLFlow serving)
-* Deploy a model application in OpenShift that runs sends data to the served model and displays the prediction
+* Build, train and serve models in RHOAI to detect credit card fraud
+* Use Kubeflow pipelines in RHOAI for declarative model building workflows
+* Store models in S3-compatible storage with Minio
+* Serve ML models using Kserve on RHOAI
 
 +
 Background::
@@ -21,8 +23,9 @@ The model is built on a Credit Card Fraud Detection model, which predicts if a c
 
 == Technology Highlights:
 * Event-Driven Architecture
-* Data Science on OpenShift
-* Model registry using MLFlow
+* Data Science on Red Hat OpenShift AI
+* Declarative MLOps pipeline with Kubeflow
+* ML model serving with Kserve
 
 == Solution Discussion
 
@@ -33,7 +36,7 @@ This architecture pattern demonstrates four strengths:
 * *Cost Efficiency*: By automating the detection process, AI reduces the need for extensive manual review of transactions, which can be time-consuming and costly.
 * *Flexibility and Agility*: An cloud native architecture that supports the use of microservices, containers, and serverless computing, allowing for more flexible and agile development and deployment of AI models. This means faster iteration and deployment of new fraud detection algorithms.
 
-== Demo Video
-
-.Overview of the solution for credit card fraud detection
-video::9Yx_XUOMMYI[youtube]
+[INFO]
+====
+This pattern is based on the OpenShift AI tutorial for link:https://docs.redhat.com/en/documentation/red_hat_openshift_ai_cloud_service/1/html-single/openshift_ai_tutorial_-_fraud_detection_example/index[fraud detection].
+====

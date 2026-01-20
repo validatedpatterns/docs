@@ -1,0 +1,12 @@
+---
+title: Fraud Detection on IBM Fusion
+weight: 30
+aliases: /mlops-fraud-detection/mfd-ibm-fustion/
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+== MLOPS credit card fraud detection on IBM Fusion
+
+This pattern is deployed with IBM Fusion. For more details, see the link:https://community.ibm.com/community/user/blogs/saif-adil/2026/01/08/deploying-ai-driven-credit-card-fraud-detection[IBM Community Post].
