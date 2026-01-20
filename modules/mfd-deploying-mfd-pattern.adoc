@@ -6,26 +6,17 @@
 
 == Prerequisites
 
-. An OpenShift cluster (Go to https://console.redhat.com/openshift/create[the OpenShift console]). Cluster must have a dynamic StorageClass to provision PersistentVolumes. 
+. An OpenShift cluster (Go to https://console.redhat.com/openshift/create[the OpenShift console]). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
 // See also link:../../mlops-fraud-detection/cluster-sizing[sizing your cluster].
 . A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 
 For installation tooling dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
 
-The use of this pattern depends on having a Red Hat OpenShift cluster. In this version of the validated pattern
-there is no dedicated Hub / Edge cluster for the *MLOps Fraud Detection* pattern. This single node pattern can be extend as a managed cluster(s) to a central hub. 
-// See link:../../mlops-fraud-detection/ideas-for-customization[ideas for customization.]
-
 If you do not have a running Red Hat OpenShift cluster you can start one on a
 public or private cloud by using link:https://console.redhat.com/openshift/create[Red Hat's cloud service].
 
-[id="utilities"]
-= Utilities
-
-A number of utilities have been built by the validated patterns team to lower the barrier to entry for using the community or Red Hat Validated Patterns. To use these utilities you will need to export some environment variables for your cloud provider:
-
-[id="preparation"]
-= Preparation
+[id="installation"]
+= Installing this pattern
 
 . Fork the link:https://github.com/validatedpatterns/mlops-fraud-detection[mlops-fraud-detection] repo on GitHub. It is necessary to fork because your fork will be updated as part of the GitOps and DevOps processes.
 . Clone the forked copy of this repository.
@@ -33,68 +24,6 @@ A number of utilities have been built by the validated patterns team to lower th
 [source,terminal]
 ----
 git clone git@github.com:<your-username>/mlops-fraud-detection.git
-----
-
-. Create a local copy of the Helm secrets values file that can safely include credentials
-+
-*DO NOT COMMIT THIS FILE*
-+
-You do not want to push credentials to GitHub.
-+
-[source,terminal]
-----
-cp values-secret-mlops-fraud-detection.yaml.template ~/values-secret.yaml
-vi ~/values-secret.yaml
-----
-
-*values-secret.yaml example*
-
-[source,yaml]
-----
-secrets:
-//Nothing at time of writing.
-----
-
-When you edit the file you can make changes to the various DB and Grafana passwords if you wish.
-
-. Customize the `values-global.yaml` for your deployment
-+
-[source,terminal]
-----
-git checkout -b my-branch
-vi values-global.yaml
-----
-
-*Replace instances of PROVIDE_ with your specific configuration*
-
-[source,yaml]
-----
-global:
-  pattern: mlops-fraud-detection
-  hubClusterDomain: "AUTO" # this is for test only This value is automatically fetched when Invoking against a cluster
-
-  options:
-    useCSV: false
-    syncPolicy: Automatic
-    installPlanApproval: Automatic
-
-main:
-  clusterGroupName: hub
-----
-
-[source,terminal]
-----
-   git add values-global.yaml
-   git commit values-global.yaml
-   git push origin my-branch
-----
-
-. You can deploy the pattern using the link:/infrastructure/using-validated-pattern-operator/[validated pattern operator]. If you do use the operator then skip to Validating the Environment below.
-. Preview the changes that will be made to the Helm charts.
-+
-[source,terminal]
-----
-./pattern.sh make show
 ----
 
 . Login to your cluster using oc login or exporting the KUBECONFIG
@@ -111,82 +40,11 @@ oc login
 export KUBECONFIG=~/my-ocp-env/auth/kubeconfig
 ----
 
-[id="check-the-values-files-before-deployment-getting-started"]
-== Check the values files before deployment
-
-You can run a check before deployment to make sure that you have the required variables to deploy the
-MLOps Fraud Detection Validated Pattern.
-
-You can run `make predeploy` to check your values. This will allow you to review your values and changed them in
-the case there are typos or old values.  The values files that should be reviewed prior to deploying the
-MLOps Fraud Detection Validated Pattern are:
-
-|===
-| Values File | Description
-
-| values-secret.yaml / values-secret-mlops-fraud-detection.yaml
-| This is the values file that will include the rhpam and fhir-psql-db sections with all database et al secrets
-
-| values-global.yaml
-| File that is used to contain all the global values used by Helm
-|===
-
-= Deploy
-
-. Apply the changes to your cluster
+. Install this pattern on your cluster
 +
 [source,terminal]
 ----
 ./pattern.sh make install
 ----
-+
-If the install fails and you go back over the instructions and see what was missed and change it, then run `make update` to continue the installation.
 
-. This takes some time. Especially for the OpenShift Data Foundation operator components to install and synchronize. The `make install` provides some progress updates during the install. It can take up to twenty minutes. Compare your `make install` run progress with the following video showing a successful install.
-
-. Check that the operators have been installed in the UI.
-.. To verify, in the OpenShift Container Platform web console, navigate to *Operators → Installed Operators* page.
- .. Check that the Operator is installed in the `openshift-operators` namespace and its status is `Succeeded`.
-
-[id="using-openshift-gitops-to-check-on-application-progress-getting-started"]
-== Using OpenShift GitOps to check on Application progress
-
-You can also check on the progress using OpenShift GitOps to check on the various applications deployed.
-
-. Obtain the ArgoCD URLs and passwords.
-+
-The URLs and login credentials for ArgoCD change depending on the pattern
-name and the site names they control.  Follow the instructions below to find
-them, however you choose to deploy the pattern.
-+
-Display the fully qualified domain names, and matching login credentials, for
-all ArgoCD instances:
-+
-[source,terminal]
-----
-ARGO_CMD=`oc get secrets -A -o jsonpath='{range .items[*]}{"oc get -n "}{.metadata.namespace}{" routes; oc -n "}{.metadata.namespace}{" extract secrets/"}{.metadata.name}{" --to=-\\n"}{end}' | grep gitops-cluster`
-CMD=`echo $ARGO_CMD | sed 's|- oc|-;oc|g'`
-eval $CMD
-----
-+
-The result should look something like:
-+
-[,text]
-----
-NAME                       HOST/PORT                                                                                      PATH   SERVICES                   PORT    TERMINATION            WILDCARD
-hub-gitops-server   hub-gitops-server-mlops-fraud-detection-hub.apps.mfd-cluster.aws.validatedpatterns.com          hub-gitops-server   https   passthrough/Redirect   None
-# admin.password
-xsyYU6eSWtwniEk1X3jL0c2TGfQgVpDH
-NAME                      HOST/PORT                                                                         PATH   SERVICES                  PORT    TERMINATION            WILDCARD
-cluster                   cluster-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com                          cluster                   8080    reencrypt/Allow        None
-kam                       kam-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com                              kam                       8443    passthrough/None       None
-openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.mfd-cluster.aws.validatedpatterns.com          openshift-gitops-server   https   passthrough/Redirect   None
-# admin.password
-FdGgWHsBYkeqOczE3PuRpU1jLn7C2fD6
-----
-+
-The most important ArgoCD instance to examine at this point is `mlops-fraud-detection-hub`. This is where all the applications for the pattern can be tracked.
-
-. Check all applications are synchronised. There are thirteen different ArgoCD "applications" deployed as part of this pattern.
-
-
+The installation will conclude when all the ArgoCD applications installed as part of this pattern are healthy and synced.
