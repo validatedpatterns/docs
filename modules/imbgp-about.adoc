@@ -1,0 +1,70 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-ingress-mesh-bgp-pattern"]
+= About the Ingress Mesh BGP pattern
+
+Use case::
+
+* Deploy multi-cluster applications with unified ingress using BGP-based load balancing.
+* Enable anycast IP addressing for seamless failover between OpenShift clusters.
+* Connect services across clusters using Red Hat Service Interconnect (Skupper) for secure east-west traffic.
+* Demonstrate enterprise-grade BGP routing integration with Kubernetes/OpenShift environments.
++
+[NOTE]
+====
+This pattern is designed for AWS environments and simulates a datacenter-like BGP network topology using EC2 instances as routing infrastructure.
+====
+
+Background::
+Modern distributed applications often span multiple clusters for high availability, geographic distribution, or workload isolation. Traditional ingress solutions provide per-cluster access, but organizations need unified entry points that can intelligently route traffic across clusters.
+
+This pattern addresses these requirements by combining:
+
+* *MetalLB with BGP mode* - Provides load balancer services that advertise routes via BGP, enabling anycast addressing where the same IP is reachable through multiple clusters.
+* *Red Hat Service Interconnect (Skupper)* - Creates a secure application-layer virtual network connecting services across clusters without requiring VPN or special network configurations.
+* *FRRouting (FRR)* - Industry-standard routing software running on EC2 instances that acts as the BGP peering infrastructure, simulating top-of-rack (TOR) switches and core routers.
+
+[id="about-solution-imbgp"]
+== About the solution
+
+This pattern deploys a complete multi-cluster networking demonstration on AWS that includes:
+
+* Two OpenShift clusters designated as "west" (hub) and "east" (spoke)
+* A simulated routing infrastructure with FRR-based routers
+* MetalLB configured in BGP mode on both clusters
+* Red Hat Service Interconnect linking services between clusters
+* A hello-world application deployed across both clusters demonstrating the connectivity
+
+The solution uses ECMP (Equal-Cost Multi-Path) routing to distribute traffic across both clusters when accessing the anycast IP address.
+
+.Benefits of the Ingress Mesh BGP pattern:
+
+* *Unified service access* - Single IP address reaches services on multiple clusters
+* *Automatic failover* - BGP route withdrawal provides fast failover when a cluster becomes unavailable
+* *Secure cross-cluster communication* - Skupper encrypts all inter-cluster traffic using mutual TLS
+* *No network infrastructure changes* - Skupper works over existing networks without VPNs or firewall changes
+* *GitOps-driven deployment* - All components are deployed and managed through ArgoCD
+
+[id="about-technology-imbgp"]
+== About the technology
+
+The following technologies are used in this solution:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Platform]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments.
+
+https://www.redhat.com/en/technologies/management/advanced-cluster-management[Red Hat Advanced Cluster Management for Kubernetes]::
+Controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale.
+
+https://www.redhat.com/en/technologies/cloud-computing/service-interconnect[Red Hat Service Interconnect]::
+Based on the open source Skupper project, Red Hat Service Interconnect enables secure communication between services across different environments without requiring VPN infrastructure or special firewall rules. It creates a virtual application network that works at Layer 7.
+
+https://metallb.universe.tf/[MetalLB]::
+A load-balancer implementation for bare metal Kubernetes clusters, using standard routing protocols. In this pattern, MetalLB operates in BGP mode to advertise service IPs as routes to the upstream network infrastructure.
+
+https://frrouting.org/[FRRouting (FRR)]::
+A free and open source Internet routing protocol suite for Linux and Unix platforms. It implements BGP, OSPF, RIP, and other protocols. In this pattern, FRR runs on EC2 instances to simulate datacenter routing infrastructure.
+
+Kubernetes Gateway API::
+The next generation of Kubernetes Ingress, providing a more expressive and extensible API for managing traffic into and within a cluster. Red Hat Service Interconnect uses Gateway API for exposing services.

@@ -1,0 +1,126 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="architecture-ingress-mesh-bgp"]
+= Architecture
+
+The Ingress Mesh BGP pattern demonstrates a multi-cluster networking architecture that combines BGP-based anycast ingress with service mesh connectivity. The architecture simulates an enterprise network topology on AWS.
+
+[id="network-topology-imbgp"]
+== Network topology
+
+The pattern creates the following network components on AWS:
+
+.Network topology diagram
+image::ingress-mesh-bgp/network.svg[Network Topology,700]
+
+=== VPCs and subnets
+
+The pattern provisions several VPCs to simulate separate network segments:
+
+* *Client-Core VPC (192.168.8.0/24)* - Contains the client VM and core router
+* *Core-West TOR VPC (192.168.12.0/24)* - Connects the core router to the west cluster's top-of-rack router
+* *Core-East TOR VPC (192.168.16.0/24)* - Connects the core router to the east cluster's top-of-rack router
+* *West Workers VPC (10.0.0.0/16)* - The west OpenShift cluster's VPC
+* *East Workers VPC (10.1.0.0/16)* - The east OpenShift cluster's VPC
+
+=== Routing infrastructure
+
+The pattern deploys EC2 instances running FRRouting to create a simulated datacenter network:
+
+[cols="1,1,2"]
+|===
+|Component |ASN |Description
+
+|Core Router
+|64666
+|Central router that peers with both TOR routers and advertises client network routes
+
+|West TOR
+|64001
+|Top-of-rack router for the west cluster, peers with core and west OpenShift workers
+
+|East TOR
+|64002
+|Top-of-rack router for the east cluster, peers with core and east OpenShift workers
+
+|West OpenShift (MetalLB)
+|65001
+|MetalLB speakers on west cluster workers, peer with west TOR
+
+|East OpenShift (MetalLB)
+|65002
+|MetalLB speakers on east cluster workers, peer with east TOR
+|===
+
+=== Anycast addressing
+
+Both clusters advertise the same anycast IP range (192.168.155.0/24) via BGP. When a client accesses an anycast IP:
+
+. The core router receives BGP advertisements from both TOR routers for the anycast range
+. ECMP routing distributes traffic across both paths
+. Requests reach either the west or east cluster based on the routing decision
+. If one cluster becomes unavailable, BGP route withdrawal automatically redirects traffic to the remaining cluster
+
+[id="cluster-components-imbgp"]
+== Cluster components
+
+=== West cluster (Hub)
+
+The west cluster acts as the management hub and includes:
+
+* *Red Hat Advanced Cluster Management* - Manages the east cluster as a spoke
+* *HashiCorp Vault* - Centralized secrets management
+* *External Secrets Operator* - Synchronizes secrets from Vault to Kubernetes
+* *MetalLB* - Provides BGP-advertised load balancer services (ASN 65001)
+* *Red Hat Service Interconnect (Skupper)* - Hosts the Skupper site with link access enabled
+* *Hello-world application* - Frontend component of the demo application
+
+=== East cluster (Spoke)
+
+The east cluster is a managed spoke that includes:
+
+* *External Secrets Operator* - Retrieves secrets from the hub's Vault
+* *MetalLB* - Provides BGP-advertised load balancer services (ASN 65002)
+* *Red Hat Service Interconnect (Skupper)* - Connects back to the west cluster's Skupper site
+* *Hello-world application* - Backend component of the demo application
+
+[id="service-interconnect-imbgp"]
+== Red Hat Service Interconnect
+
+Red Hat Service Interconnect (based on Skupper) creates a virtual application network between the clusters:
+
+* The west cluster hosts a Skupper site with `linkAccess: default`, allowing other sites to connect
+* The east cluster establishes a link to the west cluster using a pre-shared access token
+* Services exposed through Skupper listeners become accessible across both clusters
+* All traffic between sites is encrypted using mutual TLS
+
+The pattern uses the Skupper v2 API with the following components:
+
+* *Site* - Defines the Skupper installation in each namespace
+* *Listener* - Exposes a service to the Skupper network
+* *Connector* - Connects a local workload to a Skupper-exposed service
+* *AccessGrant/AccessToken* - Manages secure connection between sites
+
+[id="gitops-structure-imbgp"]
+== GitOps structure
+
+The pattern follows the Validated Patterns framework:
+
+----
+ingress-mesh-bgp/
+├── values-global.yaml      # Global configuration
+├── values-west.yaml        # West (hub) cluster configuration
+├── values-east.yaml        # East (spoke) cluster configuration
+├── charts/
+│   ├── all/
+│   │   ├── hello-world/    # Demo application
+│   │   ├── metallb/        # MetalLB configuration
+│   │   └── rhsi/           # Skupper configuration for west
+│   └── east-site/
+│       └── rhsi-east/      # Skupper configuration for east
+└── ansible/
+    └── playbooks/          # Infrastructure automation
+----
+
+ArgoCD manages the deployment of all components, with Red Hat Advanced Cluster Management distributing configurations to the appropriate clusters.

@@ -1,0 +1,21 @@
+---
+title: Getting started
+weight: 10
+aliases: /ingress-mesh-bgp/imbgp-getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/imbgp-deploying.adoc[leveloffset=1]
+
+[id="next-steps_imbgp-getting-started"]
+== Next steps
+
+After the pattern is deployed and working correctly, you can:
+
+* Verify the BGP routing is functioning correctly by checking the routing table on the core router
+* Test the anycast service by accessing it from the client VM
+* Explore the Red Hat Service Interconnect (Skupper) console to see the cross-cluster connectivity
