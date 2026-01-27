@@ -23,6 +23,6 @@ Pattern consumers can now rest assured that the core pattern functionality will 
 
 This would not be possible without the wonderful co-operation of Nutanix, who are doing all the work of deploying OpenShift and our pattern on their platform, executing the tests, and reporting the results.
 
-To facilitate this, the patterns team have begun the process of open sourcing the downstream tests for all our patterns.  Soon all tests will live alongside the the patterns they target, allowing them to be easily executed and/or improved by pattern consumers and platform owners.
+To facilitate this, the patterns team have begun the process of open sourcing the downstream tests for all our patterns.  Soon all tests will live alongside the patterns they target, allowing them to be easily executed and/or improved by pattern consumers and platform owners.
 
 Our thanks once again to Nutanix.

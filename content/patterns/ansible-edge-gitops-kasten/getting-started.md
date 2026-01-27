@@ -101,7 +101,7 @@ secrets:
         chpasswd: { expire: False }
 ```
 
-* A manifest file with an entitlement to run Ansible Automation Platform. This file (which will be a .zip file) will be posted to to Ansible Automation Platform instance to enable its use.  Instructions for creating a manifest file can be found [here](https://www.redhat.com/en/blog/how-create-and-use-red-hat-satellite-manifest)
+* A manifest file with an entitlement to run Ansible Automation Platform. This file (which will be a .zip file) will be posted to Ansible Automation Platform instance to enable its use.  Instructions for creating a manifest file can be found [here](https://www.redhat.com/en/blog/how-create-and-use-red-hat-satellite-manifest)
 
 ```yaml
   - name: aap-manifest

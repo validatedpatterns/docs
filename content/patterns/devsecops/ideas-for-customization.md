@@ -32,4 +32,4 @@ While this can be done with any of the patterns the Multicluster DevSecOps patte
 
 1. `values-smart-signs.yaml`
 
-GitOps and DevSecOps would be used to make sure that applications would be deployed on the correct clusters. Some of the "clusters" might be light single-node clusters.  Some applications be be deployed to several cluster groups. E.g. the application to place information on a smart sign might also be deployed to the tram cars that also have smart signs in passenger compartments or the engineers compartment.
+GitOps and DevSecOps would be used to make sure that applications would be deployed on the correct clusters. Some of the "clusters" might be light single-node clusters.  Some applications can be deployed to several cluster groups. E.g. the application to place information on a smart sign might also be deployed to the tram cars that also have smart signs in passenger compartments or the engineers compartment.

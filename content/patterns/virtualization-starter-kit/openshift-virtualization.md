@@ -281,7 +281,7 @@ Click on the "three dots" menu on the right, which will open a dialog like the f
 
 [![show-vm-open-console](/images/virtualization-starter-kit/aeg-open-vm-console.png)](/images/virtualization-starter-kit/aeg-open-vm-console.png)
 
-The virtual machine console view will show a standard RHEL console login screen. It can be accessed using the the initial user name (`cloud-user` by default) and password (which is what is specified in the Helm chart Values as either the password specific to that machine group, or the default cloudInit.
+The virtual machine console view will show a standard RHEL console login screen. It can be accessed using the initial user name (`cloud-user` by default) and password (which is what is specified in the Helm chart Values as either the password specific to that machine group, or the default cloudInit.
 
 ### Initial User login (cloud-user)
 

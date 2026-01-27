@@ -33,7 +33,7 @@ aliases: /omnicloud/getting-started/
 
 ### Glossary
 
-- Red Hat Openshift Container Platform : OCP is an enterprise Kubernetes platform that enables organizations to build, deploy, and manage containerized applications at scale.
+- Red Hat OpenShift Container Platform : OCP is an enterprise Kubernetes platform that enables organizations to build, deploy, and manage containerized applications at scale.
 - Red Hat Ansible Automation Platform : AAP is an enterprise-grade automation solution that enables organizations to automate IT processes, application deployments, and infrastructure management across hybrid and multi-cloud environment
 - Red Hat Advanced Cluster Management : centralized platform for managing multiple OpenShift clusters across on-premises, hybrid, and multi-cloud environments.
 - Hub Cluster : Control plane cluster which deploys & manages OpenShift cluster on targeted cloud or on-prem environment.
@@ -280,7 +280,7 @@ For connected environments:
   [https://console.redhat.com/openshift/downloads]
   ```
 
-- Login to the Openshift cluster using:
+- Login to the OpenShift cluster using:
 
   ```
   $ oc login --token=<API token> --server=<API URL:6443>

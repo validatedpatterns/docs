@@ -133,7 +133,7 @@ cluster that will be running the demo can be discovered, so rather than requirin
 mechanism that extracted that information and stored it as a Helm variable. Meanwhile, the components of industrial-edge
 that used this information had very opinionated kustomize-based deployment mechanisms and workflows to update them.
 We did not want to change this mechanism at the time, so it was better for us to work out how to apply Helm templating
-on top of a set of of manifests that kustomize had already rendered. The CMP 1.0 framework was suitable for this, and
+on top of a set of manifests that kustomize had already rendered. The CMP 1.0 framework was suitable for this, and
 fairly straightforward to use, so we did. However, we did not, at that time, put any thought into parameterizing the
 use of config management plugins; making too radical a change to how the repo server worked would have difficult, and
 would have required injecting a new (and unsupported) image into a product; not something to be undertaken lightly.
