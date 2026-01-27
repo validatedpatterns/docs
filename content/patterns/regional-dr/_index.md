@@ -22,12 +22,12 @@ As more and more institution and mission critical organizations are moving
 in the cloud, the possible impact of having a provider failure, might this be
 only related to only one region, is very high.
 
-This pattern is designed to prove the resiliency capabilities of Red Hat Openshift 
+This pattern is designed to prove the resiliency capabilities of Red Hat OpenShift
 in such scenario. 
 
-The Regional Disaster Recovery Pattern, is designed to setup an multiple instances 
-of Openshift Container Platform cluster connectedbetween them to prove multi-region 
-resiliency by maintaing the application running in the event of a regional failure. 
+The Regional Disaster Recovery Pattern is designed to set up multiple instances
+of OpenShift Container Platform cluster connected between them to prove multi-region
+resiliency by maintaining the application running in the event of a regional failure. 
 
 In this scenario we will be working in a  Regional Disaster Recovery setup, and the 
 synchronization parameters can be specified in the value file. 
@@ -67,7 +67,7 @@ so consider this when designing your infrastructure deployment on the values
 files of the pattern). This is the main reason because this RegionalDR is
 configured in an Active-Passive mode.
 
-It requires an already existing Openshift cluster, which will be used for installing the
+It requires an already existing OpenShift cluster, which will be used for installing the
 pattern, deploying active and passive clusters manage the application
 scheduling.
 
@@ -85,10 +85,10 @@ clusters.
 
 The _Regional DR Pattern_ leverages [Red Hat OpenShift Data Foundation][odf]'s
 [Regional DR][rdr] solution, automating applications failover between
-[Red Had Advanced Cluster Management][acm] managed clusters in different regions.
+[Red Hat Advanced Cluster Management][acm] managed clusters in different regions.
 
 - The pattern is kick-started by ansible and uses ACM to overlook and orchestrate the process 
-- The demo application uses MongoDB writing its data on a Persistent Volume Claim backe by ODF
+- The demo application uses MongoDB writing its data on a Persistent Volume Claim backed by ODF
 - We have developed a DR trigger which will be used to start the DR process 
 - The end user needs to configure which PV's need synchronization and the latencies 
 - ACS Can be used for eventual policies 
@@ -96,11 +96,11 @@ The _Regional DR Pattern_ leverages [Red Hat OpenShift Data Foundation][odf]'s
   hybernated clusters ready to be used 
 
 ### Red Hat Technologies
-- [Red Hat Openshift Container Platform][ocp]
-- [Red Hat Openshift Data Foundation][odf]
-- [Red Hat Openshift GitOps][ops]
-- [Red Hat Openshift Advanced Cluster Management][acm]
-- [Red Hat Openshift Advanced Cluster Security][acs]
+- [Red Hat OpenShift Container Platform][ocp]
+- [Red Hat OpenShift Data Foundation][odf]
+- [Red Hat OpenShift GitOps][ops]
+- [Red Hat OpenShift Advanced Cluster Management][acm]
+- [Red Hat OpenShift Advanced Cluster Security][acs]
 
 ## Operators and Technologies this Pattern Uses
 - [Regional DR Trigger Operator][opr]
@@ -108,9 +108,9 @@ The _Regional DR Pattern_ leverages [Red Hat OpenShift Data Foundation][odf]'s
 
 ## Tested on
 
-- Red Hat Openshift Container Platform v4.13
-- Red Hat Openshift Container Platform v4.14
-- Red Hat Openshift Container Platform v4.15
+- Red Hat OpenShift Container Platform v4.13
+- Red Hat OpenShift Container Platform v4.14
+- Red Hat OpenShift Container Platform v4.15
 
 ## Architecture
 This section explains the architecture deployed by this Pattern and its Logical
@@ -123,7 +123,7 @@ and Physical perspectives.
 
 
 ## Installation
-This patterns is designed to be installed in an Openshift cluster which will
+This pattern is designed to be installed in an OpenShift cluster which will
 work as the orchestrator for the other clusters involved. The Adanced Cluster Manager 
 installed will neither run the applications nor store any data from them, but it
 will take care of the plumbing of the various clusters involved, 

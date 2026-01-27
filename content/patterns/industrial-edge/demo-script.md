@@ -8,7 +8,7 @@ the latest product and technology improvements.
 
 * Show Red Hat Operators being deployed
 * Show available Red Hat Pipelines for the Industrial Edge pattern
-* Show the seed pipeline running and explain what is is doing
+* Show the seed pipeline running and explain what it is doing
 * Demonstration of the Red Hat ArgoCD views
 * Show the openshift-gitops-server view
 * Show the datacenter-gitops-server view

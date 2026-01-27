@@ -62,7 +62,7 @@ loaded by the appropriate backend code.
 Users of the pattern framework will be able to change secrets backends as straightforwardly
 as we can make possible. The only other change the user will need to make (to use another
 ESO backend) is to use the backend's mechanism to refer to keys. (For example: in Vault,
-keys have have names like `secret/data/global/config-demo`; in the Kubernetes backend
+keys have names like `secret/data/global/config-demo`; in the Kubernetes backend
 it would just be the secret object name that's being used to store the secret material,
 such as `config-demo`).
 
@@ -297,7 +297,7 @@ and running them.
 
 `k8s_secret_utils` is used for loading both the `kubernetes` and `none` backends. It
 
-### Changes to to vault_utils Ansible Role
+### Changes to vault_utils Ansible Role
 
 Some code has been factored out of `vault_utils` and now lives in roles called `cluster_pre_check` and
 `find_vp_secrets` roles. A new task file has been added, `push_parsed_secrets.yaml` that knows how to use

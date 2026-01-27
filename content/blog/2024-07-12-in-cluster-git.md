@@ -64,7 +64,7 @@ There are fundamentally two ways to set up the in-cluster gitea server.
 
 ## Configuration
 
-Once the the in-gitea cluster is enabled, its configuration will be done via a normal argo application
+Once the in-cluster gitea is enabled, its configuration will be done via a normal argo application
 that can be seen in the cluster-wide argo:
 ![gitea-argo-application](/images/gitea-argocd-application.png)
 

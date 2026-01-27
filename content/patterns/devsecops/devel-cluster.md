@@ -66,4 +66,4 @@ There are a number of steps you can do to check that the components have deploye
 
 ## Next up
 
-Deploy the the Multicluster DevSecOps [secured production cluster](/devsecops/production-cluster)
+Deploy the Multicluster DevSecOps [secured production cluster](/devsecops/production-cluster)

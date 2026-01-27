@@ -36,7 +36,7 @@ The hub can be modified to deploy OpenShift Pipelines if needed. See Development
 
 The Secure Supply Chain pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform (OCP) customers are using or deploying for the x86_64 architecture.
 
-The Hub OpenShift Cluster is made up of the the following on the AWS deployment tested:
+The Hub OpenShift Cluster is made up of the following on the AWS deployment tested:
 
 | Node Type | Number of nodes | Cloud Provider | Instance Type
 | :---- | :----: | :---- | :----
