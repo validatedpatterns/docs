@@ -1,8 +1,8 @@
 // This file has been generated automatically from the pattern-metadata.yaml file
 // Do not edit manually!
-:metadata_version: 1.0
+:metadata_version: 2.0
 :name: ansible-edge-gitops
-:pattern_version: 1.0
+:pattern_version: 2.0
 :display_name: Ansible Edge GitOps
 :repo_url: https://github.com/validatedpatterns/ansible-edge-gitops
 :docs_repo_url: https://github.com/validatedpatterns/docs
@@ -14,7 +14,7 @@
 :requirements_hub_compute_platform_aws_replicas: 3
 :requirements_hub_compute_platform_aws_type: m5.4xlarge
 :requirements_hub_controlPlane_platform_aws_replicas: 3
-:requirements_hub_controlPlane_platform_aws_type: m5.4xlarge
+:requirements_hub_controlPlane_platform_aws_type: m5.metal
 :extra_features_hypershift_support: false
 :extra_features_spoke_support: false
 :external_requirements: 
