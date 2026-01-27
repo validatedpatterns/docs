@@ -26,6 +26,7 @@
 :ie-pattern: Industrial Edge pattern
 :ie: Industrial Edge
 :fe-pattern: Federated Edge Observability pattern
+:mcfl-parttern: Multicloud Federated Learning pattern
 :mcg-pattern: Multicloud GitOps pattern
 :amx-mcg-pattern: Intel AMX accelerated Multicloud GitOps pattern
 :mcg-sgx-hello-world-pattern: Intel SGX protected application in Multicloud GitOps pattern
