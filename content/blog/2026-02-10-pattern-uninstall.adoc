@@ -1,0 +1,45 @@
+---
+ date: 2026-02-10
+ title: Experimental support for pattern uninstall
+ summary: Uninstalling patterns now possible
+ author: Akos Eros
+ blog_tags:
+ - patterns
+ - announce
+---
+:toc:
+:imagesdir: /images
+
+We are excited to announce that uninstalling patterns are now experimentally supported from pattern operator version 0.0.65
+
+== Initial approach
+
+When we initialy started to work on supporting pattern uninstall, the naive approach was to remove the app of apps, and let argocd handle and clean up the rest.
+Unfortunatelly this path was unfeasable for two reasons: some long outstanding issues in argocd regarding application health checks,
+link:https://github.com/argoproj/argo-cd/issues/6708[**here**] and link:https://github.com/argoproj/argo-cd/issues/10550[**here**]
+and the hub-spoke architecture with acm policies.
+
+== Gory implementation details
+
+We decided to go with a more fine grained solution, and do phases: delete spoke child applications, delete spoke app of apps, delete hub child applications, delete hub app of apps.
+The main controll is in the operator, we pass the phase as a variable to clustergroup chart, and to the acm chart.
+In order to achive this, we made some changes to the clustergroup chart, to remove child applications when needed. 
+In the acm chart we also needed some changes to support distinction between the phases in hub and spoke clusters.
+The resource removal is still managed by argocd.
+To initiate the uninstallation, only the pattern cr needs to be deleted. 
+[source,bash]
+----
+oc delete -n openshift-operators patterns/<pattern-name>
+----
+The patterns operator, and cluster-wide OpenShift GitOps instance will remain installed.
+In prior operator version the gitops subscription was owned by the pattern CR, we transfer the ownership to the patterns operator.
+
+== Known limitations
+
+We did our due diligence and tested the uninstallation of the mcg pattern with both hub and spoke clusters.
+____
+"By design, when OLM uninstalls an operator it does not remove any of the operator’s owned CRDs, APIServices, or CRs in order to prevent data loss."
+____
+With the above in mind, we only remove operators/subscriptions, and do not remove any crds.
+If the operator is installed to a namespace, its ClusterServiceVersion will be removed (when the namespace is deleted).
+However if its installed to a namespace that is not cleaned up (ie: openshift-operators) the csv will remain in the cluster.
