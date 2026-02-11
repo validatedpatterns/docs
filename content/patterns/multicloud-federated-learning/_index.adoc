@@ -1,0 +1,79 @@
+---
+title: Multicloud Federated Learning
+date: 2025-05-23
+summary: This pattern helps you develop and deploy federated learning applications on an open hybrid cloud via Open Cluster Management.
+rh_products:
+- Red Hat Advanced Cluster Management
+- Red Hat OpenShift Container Platform
+industries:
+- General
+aliases: /multicloud-federated-learning/
+links:
+  install: getting-started
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+  bugs: https://github.com/open-cluster-management-io/addon-contrib/issues
+ci: multicloudfederatedlearning
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Multicloud Federated Learning
+
+=== Background
+
+As machine learning (ML) evolves, protecting data privacy becomes increasingly important. Since ML depends on large volumes of data, it is essential to secure that data without disrupting the learning process.
+
+Federated learning addresses this by allowing multiple clusters or organizations to collaboratively train models without sharing sensitive data. Computation happens where the data lives, ensuring privacy, regulatory compliance, and efficiency.
+
+By integrating federated learning  with {rh-rhacm-first}, this pattern provides an automated and scalable solution for deploying federated learning workloads across hybrid and multicluster environments.
+
+==== Technologies 
+* Open Cluster Management (OCM)
+  - ManagedCluster
+  - ManifestWork
+  - Placement
+  ...
+* Federated Learning Frameworks 
+  - Flower
+  - OpenFL
+  ...
+* Grafana
+* OpenTelemetry
+
+=== Why Use Advanced Cluster Management for Federated Learning?
+
+- **Advanced Cluster Management (ACM)** simplifies and automates the deployment and orchestration of federated learning workloads across clusters:
+
+- **Automatic Deployment & Simplified Operations**: ACM provides a unified and automated approach to running federated learning workflows across different runtimes (e.g., Flower, OpenFL). Its controller manages the entire federated learning lifecycle—including setup, coordination, status tracking, and teardown—across multiple clusters in a multicloud environment. This eliminates repetitive manual configurations, significantly reduces operational overhead, and ensures consistent, scalable federated learning deployments.
+
+- **Dynamic Client Selection**: ACM is scheduling capabilities allow federated learning clients to be selected not only based on where the data resides, but also dynamically based on cluster labels, resource availability, and governance criteria. This enables a more adaptive and intelligent approach to client participation.
+
+Together, these capabilities support a **flexible federated learning client model**, where clusters can join or exit the training process dynamically, without requiring static or manual configuration.
+
+=== Benefits
+
+- Privacy-preserving training without moving sensitive data
+
+- Automated dynamic federated learning client orchestration across distributed clusters
+
+- Adaptable to different federated learning frameworks, such as OpenFL and Flower
+
+- Scalability across hybrid and edge clusters
+
+- Lower infrastructure and operational costs
+
+This approach empowers organizations to build smarter, privacy-first AI solutions with less complexity and more flexibility.
+
+=== Architecture
+
+image::/images/multicloud-federated-learning/multicluster-federated-learning-workflow.png[multicloud-federated-learning-workflow]
+
+- In this architecture, a central **Hub Cluster** acts as the aggregator, running the Federated Learning controller and scheduling workloads using ACM APIs like `Placement` and `ManifestWork`. 
+
+- Multiple **Managed Clusters**, potentially across different clouds, serve as federated learning clients—each holding private data. These clusters pull the global model from the hub, train it locally, and push model updates back. 
+
+- The controller manages this lifecycle using custom resources and supports runtimes like Flower and OpenFL. This setup enables scalable, multi-cloud model training with **data privacy preserved by design**, requiring no changes to existing federated learning training code.
+
