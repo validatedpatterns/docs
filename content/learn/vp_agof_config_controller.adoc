@@ -4,7 +4,7 @@ menu:
     parent: Validated patterns frameworks
 title: Using the Controller Configuration collection 
 weight: 25
-aliases: /ocp-framework/agof/
+aliases: /ocp-framework/agof/config-controller/
 ---
 
 :toc:
@@ -14,7 +14,7 @@ include::modules/comm-attributes.adoc[]
 
 == Overview of the Ansible GitOps Framework (AGOF) Installation Process
 
-The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate the deployment and configuration of Ansible Automation Platform (AAP) environments using  link:https://opengitops.dev/[GitOps principles]. It leverages Ansible to manage infrastructure and application provisioning in a declarative, version-controlled way. AGOF provides a structured approach to setting up cloud infrastructure, installing AAP components, and handing over control to the AAP Controller for ongoing automation and management. An overview of the steps involved in configuring a basic demo minimal demo application are listed here: 
+The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate the deployment and configuration of Ansible Automation Platform (AAP) environments using link:https://opengitops.dev/[GitOps principles]. It leverages Ansible to manage infrastructure and application provisioning in a declarative, version-controlled way. AGOF provides a structured approach to setting up cloud infrastructure, installing AAP components, and handing over control to the AAP Controller for ongoing automation and management. An overview of the steps involved in configuring a basic minimal demo application are listed here:
 
 === 1. Pre-Init Environment (Bootstrap Ansible)
 
@@ -29,7 +29,7 @@ The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate 
 === 3. Handover to Ansible Controller
 
 * *Controller Setup*: The Ansible Automation Platform (AAP) Controller and optionally the Automation Hub are installed and configured. Entitlements are managed through a manifest, and execution environments and collections are downloaded and prepared.
-* *GitOps Mode*: After configuration, AGOF transitions to GitOps mode. GGit commits made by the controller to the repositories manage all environment changes, ensuring declarative and automated infrastructure management from this point onward.
+* *GitOps Mode*: After configuration, AGOF transitions to GitOps mode. Git commits made by the controller to the repositories manage all environment changes, ensuring declarative and automated infrastructure management from this point onward.
 
 == Controller configuration collection
 
