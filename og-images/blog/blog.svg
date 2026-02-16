@@ -25,7 +25,7 @@
   <text x="60" y="280" font-family="Red Hat Display, Arial, sans-serif" font-size="52" font-weight="700" fill="white">Blog</text>
   
   <!-- Metadata -->
-  <text x="60" y="520" font-family="Red Hat Display, Arial, sans-serif" font-size="24" font-weight="400" fill="white" opacity="0.8">November 17, 2025</text>
+  <text x="60" y="520" font-family="Red Hat Display, Arial, sans-serif" font-size="24" font-weight="400" fill="white" opacity="0.8">February 16, 2026</text>
   
   <!-- Brand -->
   <line x1="60" y1="575" x2="300" y2="575" stroke="white" stroke-width="2" opacity="0.5"/>
