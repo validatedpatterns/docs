@@ -1,0 +1,15 @@
+---
+title: Medical Diagnosis on IBM Fusion
+weight: 60
+aliases: /medical-diagnosis/ibm-fusion/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: REFERENCE
+include::modules/comm-attributes.adoc[]
+
+[id="medical-diagnosis-on-ibm-fusion"]
+
+== Deploying Medical Diagnosis on IBM Fusion
+This pattern can be deployed on IBM Fusion. For more details, see the link:https://community.ibm.com/community/user/blogs/saif-adil/2026/02/13/deploying-medical-diagnosis-ai-on-ibm-fusion[IBM Community Post].
