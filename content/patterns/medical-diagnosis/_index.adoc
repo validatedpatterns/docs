@@ -7,6 +7,8 @@ rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat OpenShift Serverless
 - Red Hat OpenShift Data Foundation
+partners:
+  - IBM Fusion
 industries:
 - medical
 aliases: /medical-diagnosis/
