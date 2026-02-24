@@ -24,27 +24,26 @@ The `namespace` parameter in a Kubernetes Helm chart specifies namespaces within
 [source,yaml]
 ----
 namespaces:
-    - open-cluster-management
-    - vault
-    - golang-external-secrets
-    - config-demo
-    - hello-world
+  - open-cluster-management
+  - vault
+  - golang-external-secrets
+  - config-demo
+  - hello-world
 ----
 *Namespaces with Labels and Annotations*:
 
 [source,yaml]
 ----
- namespaces:
-    open-cluster-management: {}
-    vault: {}
-    golang-external-secrets: {}
-    config-demo:
-      labels:
-        app: 'config-demo'
-        tier: 'test'
-      annotations:
-        'test/annotation': true
-    hello-world: {}
-
+namespaces:
+  open-cluster-management: {}
+  vault: {}
+  golang-external-secrets: {}
+  config-demo:
+    labels:
+      app: 'config-demo'
+      tier: 'test'
+    annotations:
+      'test/annotation': true
+  hello-world: {}
 ----
 In this example, we add “app” and “tier” labels to the config-demo app, and the annotation “test/annotation: true” to it. All other namespaces are created with defaults.
