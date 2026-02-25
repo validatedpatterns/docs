@@ -73,6 +73,7 @@ The west cluster acts as the management hub and includes:
 * *HashiCorp Vault* - Centralized secrets management
 * *External Secrets Operator* - Synchronizes secrets from Vault to Kubernetes
 * *MetalLB* - Provides BGP-advertised load balancer services (ASN 65001)
+* *Gateway API* - Routes incoming traffic to appropriate services, providing the intermediary layer between BGP ingress and Skupper
 * *Red Hat Service Interconnect (Skupper)* - Hosts the Skupper site with link access enabled
 * *Hello-world application* - Frontend component of the demo application
 
@@ -82,8 +83,30 @@ The east cluster is a managed spoke that includes:
 
 * *External Secrets Operator* - Retrieves secrets from the hub's Vault
 * *MetalLB* - Provides BGP-advertised load balancer services (ASN 65002)
+* *Gateway API* - Routes incoming traffic to appropriate services, providing the intermediary layer between BGP ingress and Skupper
 * *Red Hat Service Interconnect (Skupper)* - Connects back to the west cluster's Skupper site
 * *Hello-world application* - Backend component of the demo application
+
+[id="metallb-imbgp"]
+== MetalLB
+
+MetalLB provides load balancer services on bare metal and cloud environments where cloud-native load balancers are not available or not suitable:
+
+* Each cluster runs MetalLB in BGP mode with a unique ASN (65001 for west, 65002 for east)
+* MetalLB speakers on worker nodes peer with the local TOR router and advertise service IPs via BGP
+* Both clusters advertise the same anycast IP range (192.168.155.0/24), enabling ECMP routing from the core
+* When a cluster becomes unavailable, its BGP routes are withdrawn and traffic is automatically redirected to the remaining cluster
+
+[id="gateway-api-imbgp"]
+== Gateway API
+
+Gateway API provides the L4/L7 routing layer between BGP ingress and application services:
+
+* *GatewayClass* - Defined by infrastructure providers to describe the type of gateway infrastructure available
+* *Gateway* - Created by operations teams to instantiate a gateway from a GatewayClass, defining listeners and allowed routes
+* *HTTPRoute / GRPCRoute* - Created by application developers to describe how traffic should be routed to their services
+
+Gateway API is the intermediary step between BGP and Skupper. Traffic arriving at a cluster via BGP-advertised anycast IPs passes through Gateway API for service routing before reaching Skupper for inter-cluster communication. This separation of concerns allows application developers to define their own routing rules on approved gateways without relying on network infrastructure teams.
 
 [id="service-interconnect-imbgp"]
 == Red Hat Service Interconnect
