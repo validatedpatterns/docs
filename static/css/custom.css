@@ -211,13 +211,6 @@ td > code {
   border-color:  #f3f3f3;
 }
 
-.pf-c-jump-links__link.pf-m-current,
-.pf-c-jump-links__link.pf-m-current:hover,
-.pf-c-jump-links__link.pf-m-current:not(.pf-m-expanded)
-.pf-c-nav__link {
-    color: var(--pf-c-nav__link--m-current--Color);
-    background-color: var(--pf-c-nav__link--m-current--BackgroundColor);
-}
 
 /* Makes nav items like accordion items */
 /* Need this to unify the look of the pages */
@@ -439,39 +432,172 @@ main.pf-c-page__main {
   }
 }
 
-/* STICKY NAV ON THE LEFT */
-
+/* Sticky positioning used by CI key sidebar */
 .sticky {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  padding: 40px var(--pf-global--spacer--lg);
+}
+
+/* ON THIS PAGE - Desktop sidebar */
+
+.otp-desktop {
   max-height: calc(100vh - 76px);
   overflow-y: auto;
-  /* Hide TOC scrollbar IE, Edge & Firefox */
-  /*-ms-overflow-style: none;
-  scrollbar-width: none; */
   order: 1;
-  padding: 40px var(--pf-global--spacer--lg) var(--pf-global--spacer--lg)
-    var(--pf-global--spacer--2xl);
-  /* flex-grow: 1; */
+  padding: 40px var(--pf-global--spacer--lg) var(--pf-global--spacer--lg) var(--pf-global--spacer--xl);
   background: none;
   margin: 0;
   position: sticky;
   top: 0;
-  min-width: 250px; /* Reduced from 400px */
+  max-width: 240px;
+  flex-shrink: 0;
   align-self: flex-start;
   z-index: 501;
 }
 
-/* Mobile adjustments for sticky navigation */
-@media (max-width: 992px) {
-  .sticky {
-    position: relative;
-    min-width: 100%;
-    max-height: none;
-    padding: var(--pf-global--spacer--md);
-  }
+.otp-desktop__header {
+  margin-bottom: 12px;
 }
 
-.active {
-  background-color: red;
+.otp-desktop__title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--pf-global--Color--200, #6a6e73);
+  margin: 0;
+}
+
+/* ON THIS PAGE - Mobile collapsible bar */
+
+.otp-mobile {
+  display: none;
+}
+
+/* Shared link/list styles */
+
+.otp-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.otp-list .otp-list {
+  padding-left: 16px;
+}
+
+.otp-item {
+  margin: 0;
+}
+
+.otp-link {
+  display: block;
+  padding: 4px 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--pf-global--Color--200, #6a6e73);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  padding-left: 12px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.otp-link:hover {
+  color: var(--pf-global--link--Color, #06c);
+  text-decoration: none;
+}
+
+.otp-link.active {
+  color: var(--pf-global--link--Color, #06c);
+  border-left-color: var(--pf-global--link--Color, #06c);
+  font-weight: 500;
+}
+
+.otp-list .otp-list .otp-link {
+  font-size: 0.8rem;
+}
+
+@media (max-width: 1024px) {
+  .otp-desktop {
+    display: none !important;
+  }
+
+  .otp-mobile {
+    display: block;
+    width: 100%;
+    margin-bottom: 0;
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    background-color: var(--pf-global--BackgroundColor--light-100, #fff);
+    border-bottom: 1px solid var(--pf-global--BorderColor--100, #d2d2d2);
+  }
+
+  .otp-mobile__toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--pf-global--Color--200, #6a6e73);
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .otp-mobile__toggle:hover {
+    color: var(--pf-global--Color--100, #151515);
+  }
+
+  .otp-mobile__label {
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .otp-mobile__chevron {
+    font-size: 0.65rem;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .otp-mobile.is-open .otp-mobile__chevron {
+    transform: rotate(90deg);
+  }
+
+  .otp-mobile__current {
+    color: var(--pf-global--Color--100, #151515);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .otp-mobile__dropdown {
+    display: none;
+    padding: 0 15px 12px 15px;
+    background-color: var(--pf-global--BackgroundColor--light-100, #fff);
+  }
+
+  .otp-mobile.is-open .otp-mobile__dropdown {
+    display: block;
+  }
+
+  .otp-mobile .otp-link {
+    padding: 6px 12px;
+    border-left: none;
+  }
+
+  .otp-mobile .otp-link:hover,
+  .otp-mobile .otp-link.active {
+    background-color: var(--pf-global--BackgroundColor--200, #f0f0f0);
+    border-radius: 4px;
+  }
 }
 
 /* SCROLLSPY */
@@ -490,24 +616,6 @@ nav.ul.li.a {
   font-size: 0.8rem;
 }
 
-/* Emphasizes that second levels in the toc are further inside*/
-aside ul ul {
-  margin-left: 20px !important;
-}
-/* Makes the font size smaller inside the TOC */
-nav ul ul ul a {
-  font-size: 0.8rem !important;
-}
-
-.pf-c-jump-links__link {
-  padding-top: 0;
-  font-size: 0.9rem;
-  color: var(--pf-global--icon--Color--light);
-}
-
-.pf-c-jump-links__link:hover {
-  color: var(--pf-global--link--Color--light);
-}
 
 a code {
     display: contents;
@@ -1392,12 +1500,6 @@ h6 .anchor::before {
   /* Override PatternFly flex utility to use block layout */
   .pf-u-display-flex {
     display: block !important;
-  }
-
-  /* Hide TOC on tablets and mobile */
-  .pf-c-jump-links,
-  aside.pf-c-jump-links {
-    display: none !important;
   }
 
   /* Main content takes full width */

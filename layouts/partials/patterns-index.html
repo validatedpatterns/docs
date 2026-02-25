@@ -3,10 +3,12 @@
     {{ partial "menu-patterns.html" . }}
   </div>
 </div>
-<main class="pf-c-page__main" tabindex="0" data-bs-spy="scroll" data-bs-target="#TableOfContents" data-bs-offset="50">
+<main class="pf-c-page__main" tabindex="0">
   <section class="pf-c-page__main-section">
+    {{ partial "toc-mobile.html" . }}
     {{ partial "page-toolbar.html" . }}
     <div class="pf-u-display-flex">
+      {{ partial "toc.html" . }}
       <div class="pf-c-content">
         <div class="pf-c-panel pf-m-raised">
           <div class="pf-c-panel__main">
@@ -106,7 +108,6 @@
           </div>
         </div>
       </div>
-      {{ partial "toc.html" . }}
     </div>
   </section>
   {{ partial "footer.html" . }}
