@@ -1265,6 +1265,7 @@ h6 .anchor::before {
     display: block;
   }
 
+
   /* Hide the header tools on mobile - they should only show when toggled */
   .pf-c-page__header-tools {
     display: none;
@@ -2650,4 +2651,237 @@ h6 .anchor::before {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+/* ========================================================================
+   Page Toolbar — sidebar toggle + breadcrumbs + page actions in one row
+   ======================================================================== */
+
+.page-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+}
+
+.page-toolbar__toggle {
+  flex: 0 0 auto;
+  display: none;
+  position: static;
+  z-index: auto;
+}
+
+.page-toolbar__breadcrumbs {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.page-toolbar__actions {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.page-toolbar .sidebar-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.375rem;
+  font-size: 0.625rem;
+  color: #151515;
+  background: transparent;
+  border: 1px solid #d2d2d2;
+  border-radius: 3px;
+  box-shadow: none;
+  transition: background-color 0.15s;
+}
+
+.page-toolbar .sidebar-toggle:hover {
+  background: #f0f0f0;
+  box-shadow: none;
+  transform: none;
+}
+
+.page-toolbar .sidebar-toggle:focus {
+  outline: 2px solid #06c;
+  outline-offset: 1px;
+}
+
+/* ========================================================================
+   Page Actions — split button with dropdown
+   ======================================================================== */
+
+.page-actions {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.page-actions__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: var(--pf-global--FontSize--sm, 0.875rem);
+  color: var(--pf-global--Color--100, #151515);
+  background: transparent;
+  border: 1px solid var(--pf-global--BorderColor--100, #d2d2d2);
+  border-radius: var(--pf-global--BorderRadius--sm, 3px) 0 0 var(--pf-global--BorderRadius--sm, 3px);
+  cursor: pointer;
+  transition: background-color 0.15s;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+.page-actions__button:hover {
+  background-color: var(--pf-global--BackgroundColor--200, #f0f0f0);
+}
+
+.page-actions__button.is-copied {
+  color: var(--pf-global--success-color--100, #3e8635);
+}
+
+.page-actions__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  padding: 0.375rem;
+  font-size: 0.625rem;
+  color: var(--pf-global--Color--100, #151515);
+  background: transparent;
+  border: 1px solid var(--pf-global--BorderColor--100, #d2d2d2);
+  border-left: none;
+  border-radius: 0 var(--pf-global--BorderRadius--sm, 3px) var(--pf-global--BorderRadius--sm, 3px) 0;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  line-height: 1;
+}
+
+.page-actions__toggle:hover {
+  background-color: var(--pf-global--BackgroundColor--200, #f0f0f0);
+}
+
+.page-actions__menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  min-width: 200px;
+  margin: 0.25rem 0 0;
+  padding: 0.5rem 0;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #d2d2d2;
+  border-radius: 3px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 0 2px rgba(0, 0, 0, 0.06);
+}
+
+.page-actions__menu.is-open {
+  display: block;
+}
+
+.page-actions__menu li {
+  list-style: none;
+}
+
+.page-actions__menu button,
+.page-actions__menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: var(--pf-global--FontSize--sm, 0.875rem);
+  color: var(--pf-global--Color--100, #151515);
+  background: none;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.page-actions__menu button:hover,
+.page-actions__menu a:hover {
+  background-color: #f0f0f0;
+}
+
+.page-actions__menu .page-actions__divider {
+  height: 1px;
+  margin: 0.375rem 0;
+  background-color: #d2d2d2;
+  padding: 0;
+}
+
+.page-actions__menu i {
+  width: 1em;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ========================================================================
+   Breadcrumb truncation — collapse middle items on narrow screens
+   ======================================================================== */
+
+.pf-c-breadcrumb__item--ellipsis {
+  display: none;
+}
+
+.pf-c-breadcrumb__expand-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--pf-global--link--Color, #06c);
+  padding: 0;
+}
+
+.pf-c-breadcrumb__expand-btn:hover {
+  color: var(--pf-global--link--Color--hover, #004080);
+  text-decoration: underline;
+}
+
+.pf-c-breadcrumb.is-truncated .pf-c-breadcrumb__item--collapsible {
+  display: none;
+}
+
+.pf-c-breadcrumb.is-truncated .pf-c-breadcrumb__item--ellipsis {
+  display: flex;
+}
+
+/* Copy button label — full/short variants */
+.page-actions__label-short {
+  display: none;
+}
+
+/* ========================================================================
+   Responsive — show sidebar toggle inside toolbar on mobile/tablet
+   ======================================================================== */
+
+@media (max-width: 1199px) {
+  .pf-c-page__sidebar:not(.active) ~ .pf-c-page__main .page-toolbar__toggle {
+    display: flex;
+    align-items: center;
+  }
+
+  .page-actions__label-full {
+    display: none;
+  }
+
+  .page-actions__label-short {
+    display: inline;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-actions__menu {
+    right: 0;
+    min-width: 180px;
+  }
 }

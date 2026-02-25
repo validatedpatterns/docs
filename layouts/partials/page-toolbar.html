@@ -1,0 +1,13 @@
+<div class="page-toolbar">
+  <div class="page-toolbar__toggle">
+    {{ partial "sidebar-toggle.html" . }}
+  </div>
+  <div class="page-toolbar__breadcrumbs">
+    {{ partial "breadcrumbs.html" . }}
+  </div>
+  {{- if not (and .IsSection .Parent.IsHome) }}
+  <div class="page-toolbar__actions">
+    {{ partial "page-actions.html" . }}
+  </div>
+  {{- end }}
+</div>
