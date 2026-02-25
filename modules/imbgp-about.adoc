@@ -9,6 +9,7 @@ Use case::
 * Deploy multi-cluster applications with unified ingress using BGP-based load balancing.
 * Enable anycast IP addressing for seamless failover between OpenShift clusters.
 * Connect services across clusters using Red Hat Service Interconnect (Skupper) for secure east-west traffic.
+* Leverage Kubernetes Gateway API to give application developers self-service control over service routing without depending on network infrastructure teams.
 * Demonstrate enterprise-grade BGP routing integration with Kubernetes/OpenShift environments.
 +
 [NOTE]
@@ -25,6 +26,8 @@ This pattern addresses these requirements by combining:
 * *Gateway API* - Delivers L4 and L7 service routing via next generation Ingress, Load Balancing, and Service Mesh APIs. Provides GatewayClasses (infrastructure) and Gateways (operations) so application developers can create routes (HTTPRoute, GRPCRoute, etc.) for their services.
 * *Red Hat Service Interconnect (Skupper)* - Creates a secure application-layer virtual network connecting services across clusters without requiring VPN or special network configurations.
 * *FRRouting (FRR)* - Industry-standard routing software running on EC2 instances that acts as the BGP peering infrastructure, simulating top-of-rack (TOR) switches and core routers.
+
+Gateway API plays a central role in this architecture. It is the intermediary layer between BGP and Skupper: traffic arriving at a cluster via BGP-advertised anycast IPs is routed through Gateway API down to the appropriate Skupper site, where Skupper handles inter-cluster routing for sparse deployments or services not locally available. Gateway API also separates concerns across organizational roles — infrastructure teams define GatewayClasses, operations teams create Gateways, and application developers independently manage their own Routes (HTTPRoute, GRPCRoute, etc.) for both simple routing and more advanced mesh-like routing scenarios.
 
 [id="about-solution-imbgp"]
 == About the solution
