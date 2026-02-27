@@ -1,0 +1,220 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="deploying-imbgp-pattern"]
+= Deploying the Ingress Mesh BGP pattern
+
+The Ingress Mesh BGP pattern demonstrates multi-cluster networking with BGP-based load balancing and service mesh connectivity. Deploying this pattern requires:
+
+* Two OpenShift clusters on AWS in the same region
+* A BGP routing infrastructure (created by the pattern's Ansible automation)
+* The Validated Patterns framework
+
+[NOTE]
+====
+This pattern is designed specifically for AWS and requires the ability to create EC2 instances for the routing infrastructure.
+====
+
+.Prerequisites
+
+* Two OpenShift clusters on AWS:
+** One cluster designated as "west" (hub)
+** One cluster designated as "east" (spoke)
+** To create OpenShift clusters, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console] and select *OpenShift -> Red Hat OpenShift Container Platform -> Create cluster*.
+** See the https://github.com/validatedpatterns/ingress-mesh-bgp/tree/main/docs/install-configs[install-configs folder] in the repository for example `install-config.yaml` files.
+
+* Both clusters must have dynamic `StorageClass` for `PersistentVolumes`. Verify by running:
++
+[source,terminal]
+----
+$ oc get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,DEFAULT:.metadata.annotations."storageclass\.kubernetes\.io/is-default-class"
+----
+
+* AWS credentials configured for Ansible with permissions to:
+** Create and manage EC2 instances
+** Create and manage VPCs and subnets
+** Create and manage security groups
+
+* SSH key pair for accessing the EC2 instances (default: `~/.ssh/id_rsa.pub`)
+
+* https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies] including:
+** `git`
+** `podman` or `docker`
+** `oc` CLI
+** `ansible` with required collections
+
+.Procedure
+
+. Fork the https://github.com/validatedpatterns/ingress-mesh-bgp[ingress-mesh-bgp] repository on GitHub.
+
+. Clone the forked repository:
++
+[source,terminal]
+----
+$ git clone git@github.com:<your-username>/ingress-mesh-bgp.git
+$ cd ingress-mesh-bgp
+----
+
+. Set up the upstream remote:
++
+[source,terminal]
+----
+$ git remote add -f upstream git@github.com/validatedpatterns/ingress-mesh-bgp.git
+----
+
+. Create a working branch:
++
+[source,terminal]
+----
+$ git checkout -b my-branch main
+$ git push -u origin my-branch
+----
+
+. Deploy the west (hub) and east (spoke) OpenShift clusters on AWS.
++
+[NOTE]
+====
+For simplicity, the pattern defaults to a single Availability Zone. See the example install-config files in `docs/install-configs/` for reference.
+====
+
+. Set the environment variables pointing to your cluster kubeconfig files:
++
+[source,terminal]
+----
+$ export WESTCONFIG=~/west-hub/auth/kubeconfig
+$ export EASTCONFIG=~/east-spoke/auth/kubeconfig
+----
+
+. Deploy the BGP routing infrastructure:
++
+[source,terminal]
+----
+$ make bgp-routing
+----
++
+This Ansible playbook creates:
+
+* Client VM for testing
+* Core router (FRR) with BGP ASN 64666
+* West TOR router (FRR) with BGP ASN 64001
+* East TOR router (FRR) with BGP ASN 64002
+* VPC peering between all components
++
+The command also generates `/tmp/launch_tmux.sh`, which starts a tmux session with SSH access to all EC2 instances.
+
+. If you used custom `install-config.yaml` files, update the MetalLB peer addresses (This is usually not needed):
++
+.. Edit `values-west.yaml` and update `metal.peerAddress` to match your west cluster's TOR router IP
+.. Edit `values-east.yaml` and update `metal.peerAddress` to match your east cluster's TOR router IP
+.. Commit and push the changes to your branch
+
+. Install the pattern on the west (hub) cluster:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
++
+This command:
+
+* Installs the Validated Patterns Operator
+* Deploys ArgoCD and configures GitOps
+* Installs Red Hat Advanced Cluster Management
+* Deploys MetalLB with BGP configuration
+* Deploys Red Hat Service Interconnect (Skupper)
+* Deploys the hello-world frontend application
+
+. Wait for all applications to synchronize in the Hub ArgoCD instance (accessible via the nine-box menu). All applications should show "Healthy" and "Synced" status.
+
+. Import the east (spoke) cluster into the management hub:
++
+[source,terminal]
+----
+$ make import
+----
++
+This registers the east cluster with Red Hat Advanced Cluster Management, which then deploys the spoke components automatically.
+
+.Verification
+
+At this point both clusters have are fully configured.
+
+. Run the generated tmux launcher to access the EC2 VMs:
++
+[source,terminal]
+----
+$ /tmp/launch_tmux.sh
+----
+
+. On the client VM, verify connectivity to the anycast IP for the hello world application. The "apps.mcg-hub.aws.validatedpatterns.io" tells us that the chosen route was going through the west TOR switch and on to the hub cluster:
++
+[source,terminal]
+----
+$ curl http://192.168.155.151/hello
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Hello World</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    <br>
+    <h2>
+    Pod is running on Local Cluster Domain 'apps.mcg-hub.aws.validatedpatterns.io' <br>
+    <br>
+    <br>
+    <br>
+    Hub Cluster domain is 'apps.mcg-hub.aws.validatedpatterns.io' <br>
+    </h2>
+  </body>
+</html>
+----
+
+. On the core router, verify ECMP routing is configured:
++
+[source,terminal]
+----
+$ ip r
+----
++
+.Expected output
++
+[source,terminal]
+----
+default via 192.168.8.1 dev enX0 proto dhcp src 192.168.8.100 metric 100
+192.168.8.0/24 dev enX0 proto kernel scope link src 192.168.8.100 metric 100
+192.168.12.0/24 dev enX1 proto kernel scope link src 192.168.12.200 metric 101
+192.168.16.0/24 dev enX2 proto kernel scope link src 192.168.16.200 metric 101
+192.168.155.150 nhid 46 proto bgp metric 20
+        nexthop via 192.168.12.100 dev enX1 weight 1
+        nexthop via 192.168.16.100 dev enX2 weight 1
+192.168.155.151 nhid 46 proto bgp metric 20
+        nexthop via 192.168.12.100 dev enX1 weight 1
+        nexthop via 192.168.16.100 dev enX2 weight 1
+----
++
+The output shows that routes to the anycast IPs (192.168.155.150 and 192.168.155.151) have multiple next-hops, indicating ECMP is working.
+
+. Check the BGP peering status on any FRR router:
++
+[source,terminal]
+----
+$ sudo vtysh -c "show bgp summary"
+----
+
+[id="cleanup-imbgp"]
+== Cleaning up
+
+To destroy the routing infrastructure:
+
+[WARNING]
+====
+Always clean up the BGP routing infrastructure *before* destroying the OpenShift clusters.
+====
+
+[source,terminal]
+----
+$ make bgp-routing-cleanup
+----
+
+After the routing infrastructure is removed, you can safely destroy the OpenShift clusters.

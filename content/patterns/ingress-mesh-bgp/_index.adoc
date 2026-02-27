@@ -1,0 +1,33 @@
+---
+title: Ingress Mesh BGP
+date: 2025-01-26
+tier: sandbox
+summary: This pattern demonstrates multi-cluster service mesh networking using MetalLB with BGP and Red Hat Service Interconnect (Skupper) for cross-cluster connectivity.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat Advanced Cluster Management
+- Red Hat Service Interconnect
+industries:
+- General
+- Telecommunications
+aliases: /ingress-mesh-bgp/
+# pattern_logo: ingress-mesh-bgp.png  # TODO: Create pattern logo
+links:
+  github: https://github.com/validatedpatterns/ingress-mesh-bgp
+  install: imbgp-getting-started
+  bugs: https://github.com/validatedpatterns/ingress-mesh-bgp/issues
+ci: ingressmeshbgp
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/imbgp-about.adoc[leveloffset=+1]
+
+include::modules/imbgp-architecture.adoc[leveloffset=+1]
+
+[id="next-steps_imbgp-index"]
+== Next steps
+
+* link:imbgp-getting-started[Deploy the Ingress Mesh BGP pattern].
