@@ -1,0 +1,19 @@
+{{- $toc := .TableOfContents -}}
+{{- if and $toc (not (eq $toc "<nav id=\"TableOfContents\"></nav>")) -}}
+
+{{- $tocHTML := $toc | replaceRE " id=\"TableOfContents\"" "" | replaceRE "<ul>" "<ul class=\"otp-list\">" | replaceRE "<li>" "<li class=\"otp-item\">" | replaceRE "<a" "<a class=\"otp-link\"" -}}
+
+<nav class="otp-mobile" aria-label="On this page">
+  <button class="otp-mobile__toggle" type="button" aria-expanded="false">
+    <span class="otp-mobile__label">On this page</span>
+    <span class="otp-mobile__chevron" aria-hidden="true">
+      <i class="fas fa-chevron-right"></i>
+    </span>
+    <span class="otp-mobile__current">Overview</span>
+  </button>
+  <div class="otp-mobile__dropdown">
+    {{- $tocHTML | safeHTML }}
+  </div>
+</nav>
+
+{{- end -}}

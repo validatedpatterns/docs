@@ -63,13 +63,15 @@ function codeWasCopied(button) {
 }
 
 function addCopyButtonToDom(button, highlightDiv) {
-    dataLang = highlightDiv.querySelector("pre > code[data-lang]").attributes["data-lang"].value;
+    const codeEl = highlightDiv.querySelector("pre > code[data-lang]");
+    if (!codeEl) return;
+    dataLang = codeEl.attributes["data-lang"].value;
     highlightDiv.classList.add("pf-c-code-block__content")
     pre = highlightDiv.getElementsByTagName("pre");
     pre[0].classList.add("pf-c-code-block__pre")
     code = pre[0].getElementsByTagName("code");
     code[0].classList.add("pf-c-code-block__code")
-    console.log(highlightDiv);
+    //console.log(highlightDiv);
     highlightDiv.insertBefore(button, highlightDiv.firstChild);
     const codeBlock = createElementAndClass("div", "pf-c-code-block");
     codeBlock.setAttribute("data-lang", dataLang)

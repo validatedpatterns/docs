@@ -5,13 +5,12 @@
       {{ partial "menu-patterns.html" . }}
     </div>
   </div>
-  <main class="pf-c-page__main" tabindex="0" data-bs-spy="scroll" data-bs-target="#TableOfContents" data-bs-offset="50">
+  <main class="pf-c-page__main" tabindex="0">
     <section class="pf-c-page__main-section pf-m-fill">
-      <!-- Sidebar toggle for mobile -->
-      <div class="sidebar-toggle-container">
-        {{ partial "sidebar-toggle.html" . }}
-      </div>
+      {{ partial "toc-mobile.html" . }}
+      {{ partial "page-toolbar.html" . }}
       <div class="pf-u-display-flex">
+        {{ partial "toc.html" . }}
         <div class="pf-c-content">
           {{ .Content }}
 
@@ -42,7 +41,6 @@
             </div>
           </div>
         </div>
-          {{ partial "toc.html" . }}
       </div>
     </section>
     {{ partial "footer.html" . }}

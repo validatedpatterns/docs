@@ -1,10 +1,13 @@
-<aside class="pf-c-jump-links pf-m-vertical sticky pf-m-expandable pf-m-non-expandable-on-2xl" aria-label="Table of contents">
-    <div class="pf-l-stack__item">
-      <div class="pf-c-jump-links__header">
-        <div class="pf-c-jump-links__label">
-          <h1>Table of Contents</h1>
-        </div>
-      </div>
-      {{- .TableOfContents | replaceRE "<ul>" "<ul class=\"pf-c-jump-links__list\">" | replaceRE "<li>" "<li class=\"pf-c-jump-links__item\">" | replaceRE "<a" "<a class=\"pf-c-jump-links__link\"" | safeHTML }}
-    </div>
+{{- $toc := .TableOfContents -}}
+{{- if and $toc (not (eq $toc "<nav id=\"TableOfContents\"></nav>")) -}}
+
+{{- $tocHTML := $toc | replaceRE " id=\"TableOfContents\"" "" | replaceRE "<ul>" "<ul class=\"otp-list\">" | replaceRE "<li>" "<li class=\"otp-item\">" | replaceRE "<a" "<a class=\"otp-link\"" -}}
+
+<aside class="otp-desktop" aria-label="On this page">
+  <div class="otp-desktop__header">
+    <h2 class="otp-desktop__title">On this page</h2>
+  </div>
+  {{- $tocHTML | safeHTML }}
 </aside>
+
+{{- end -}}
