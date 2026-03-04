@@ -114,5 +114,5 @@ If the user approves fixes, edit the files to resolve the selected issues. After
 
 For detailed guidance, consult:
 - IBM Style Guide
-- Red Hat Supplementary Style Guide: https://redhat-documentation.github.io/supplementary-style-guide
+- Red Hat Supplementary Style Guide: https://redhat-documentation.github.io/supplementary-style-guide/ssg.md
 - Merriam-Webster Dictionary for spelling

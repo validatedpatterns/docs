@@ -149,7 +149,7 @@ learn pages, contribute pages, or full pattern page sets).
 
 See `modules/doc-guidelines.adoc` for the full documentation style guide.
 
-- Follow the [Red Hat Supplementary Style Guide](https://redhat-documentation.github.io/supplementary-style-guide/) and [IBM Style](https://www.ibm.com/docs/en/ibm-style).
+- Follow the [Red Hat Supplementary Style Guide](https://redhat-documentation.github.io/supplementary-style-guide/ssg.md) and [IBM Style](https://www.ibm.com/docs/en/ibm-style).
 - Use present tense, active voice, and second person ("you").
 - Sentence-style capitalization in titles and headings.
 - Use gerund-form headings for procedures ("Creating", "Managing", "Using").
