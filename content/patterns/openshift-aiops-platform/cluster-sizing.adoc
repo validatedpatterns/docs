@@ -1,0 +1,162 @@
+---
+title: Cluster sizing
+weight: 50
+aliases: /openshift-aiops-platform/openshift-aiops-platform-cluster-sizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+
+include::modules/comm-attributes.adoc[]
+include::modules/openshift-aiops-platform/metadata-openshift-aiops-platform.adoc[]
+
+include::modules/cluster-sizing-template.adoc[]
+
+[id="additional-sizing-considerations-openshift-aiops"]
+== Additional sizing considerations for AIOps workloads
+
+The OpenShift AIOps Self-Healing Platform has specific resource requirements beyond the baseline cluster sizing due to its observability, machine learning, and data storage needs.
+
+=== Hub cluster sizing recommendations
+
+The hub cluster hosts the majority of the AIOps platform components including observability aggregation, ML training and inference, and the self-healing decision engine.
+
+The pattern supports two deployment topologies, which are automatically detected during deployment using `make show-cluster-info`:
+
+*Standard HighlyAvailable Topology*::
++
+Recommended for production multi-cluster deployments:
++
+*Control Plane Nodes*::
+* Minimum: 3 nodes
+* vCPUs per node: 8
+* Memory per node: 32 GB
+* Sufficient for ACM, GitOps, and platform operators
+
+*Compute Nodes*::
+* Minimum: 6 nodes
+* vCPUs per node: 16
+* Memory per node: 64 GB
+* Required for OpenShift AI workloads, observability stack, and data storage
+
+*Total Hub Cluster Resources*::
+* Control plane: 24 vCPUs, 96 GB memory
+* Compute: 96 vCPUs, 384 GB memory
+* Combined: 120 vCPUs, 480 GB memory
+
+*Single Node OpenShift (SNO) Topology*::
++
+Suitable for edge deployments, development, or single-cluster self-healing scenarios:
++
+*Single Node Requirements*::
+* Minimum: 1 node
+* vCPUs: 8 minimum, 16+ recommended
+* Memory: 32 GB minimum, 64 GB recommended
+* Storage: 120 GB minimum, 250 GB recommended
+* Combined control plane and compute workloads on one node
++
+[NOTE]
+====
+SNO deployments have reduced high availability but are suitable for edge locations, development environments, or scenarios where a single cluster is being managed. The pattern automatically detects SNO topology and adjusts resource allocation and storage configuration accordingly.
+
+To verify cluster topology before deployment:
+[source,terminal]
+----
+make show-cluster-info
+----
+
+During deployment, OpenShift Data Foundation (ODF) installation is automated via `make configure-cluster`, which adjusts for SNO topology when detected.
+====
+
+=== Spoke cluster requirements
+
+Spoke clusters have minimal overhead from the AIOps platform since most processing occurs on the hub:
+
+* Standard OpenShift cluster sizing for your workloads
+* Add 2 vCPUs and 4 GB memory per node for observability agents (Prometheus, Fluentd, OpenTelemetry)
+* No additional nodes required specifically for AIOps
+
+=== Storage considerations
+
+The pattern requires persistent storage for several components:
+
+*Metrics Storage (Thanos)*::
+* 500 GB minimum for 30 days of retention
+* 1 TB recommended for 60 days
+* Scale based on number of clusters and metric cardinality
+* Storage class: Block storage with good IOPS (gp3, Premium SSD)
+
+*Log Storage (Loki)*::
+* 200 GB minimum for 15 days of retention
+* 500 GB recommended for 30 days
+* Scale based on log volume from applications
+* Storage class: Block or object storage
+
+*Model Storage (S3-compatible)*::
+* 50 GB minimum for model artifacts and registry
+* 100 GB recommended for multiple model versions and A/B testing
+* Storage class: Object storage (S3, MinIO, ODF)
+
+*Incident History Database*::
+* 50 GB minimum for incident data and ML training datasets
+* 100 GB recommended for extended history
+* Storage class: Block storage with good IOPS
+
+*Total Storage Requirements*::
+* Minimum: 800 GB
+* Recommended: 1.75 TB
+* Consider using OpenShift Data Foundation for unified storage
+
+=== Scaling recommendations by cluster count
+
+Resource requirements scale with the number of managed clusters:
+
+*1-5 Spoke Clusters*::
+* Use baseline hub sizing (5 compute nodes)
+* 1 TB total storage
+* Suitable for development and small production deployments
+
+*6-20 Spoke Clusters*::
+* Scale to 7-9 compute nodes
+* 2 TB total storage
+* Consider dedicated nodes for observability workloads
+* May require metrics downsampling for cost optimization
+
+*21-50 Spoke Clusters*::
+* Scale to 10-15 compute nodes
+* 4 TB total storage
+* Use separate node pools for ML, observability, and data storage
+* Implement metric federation and sampling strategies
+* Consider dedicated Kafka or similar for event streaming
+
+*50+ Spoke Clusters*::
+* Enterprise deployment requiring detailed capacity planning
+* Consider horizontal scaling of observability components
+* Implement tiered storage with hot/warm/cold data lifecycle
+* May require multiple hub clusters for geographic distribution
+* Consult Red Hat for sizing recommendations
+
+=== Network requirements
+
+*Bandwidth*::
+* Each spoke cluster generates approximately 1-5 Mbps of metrics and logs
+* Hub cluster needs sufficient ingress bandwidth: 50 Mbps for 10 spokes, 250 Mbps for 50 spokes
+* Model inference is low bandwidth (<1 Mbps)
+
+*Latency*::
+* Observability can tolerate latency up to 1 second
+* Real-time self-healing performs best with <200ms latency to spoke clusters
+* Consider regional hub clusters for global deployments
+
+=== GPU requirements (Optional)
+
+GPU acceleration is optional but recommended for ML training:
+
+*ML Model Training*::
+* Not required for inference (CPU-based inference is sufficient)
+* Recommended for faster model training: 1-2 NVIDIA GPUs (T4, V100, or A100)
+* Reduces training time from hours to minutes for large datasets
+* Use GPU node pools with taints to reserve for ML workloads
+
+The baseline cluster sizing includes sufficient CPU resources for inference. Add GPUs only if training time is a concern or if experimenting with larger neural network models.

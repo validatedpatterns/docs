@@ -1,0 +1,42 @@
+---
+title: OpenShift AIOps Self-Healing Platform
+date: 2026-02-26
+tier: community
+summary: This pattern provides an AI-powered self-healing platform for OpenShift clusters, combining deterministic automation with machine learning for intelligent incident response.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift AI
+- Red Hat OpenShift GitOps
+- Red Hat OpenShift Pipelines
+- Red Hat OpenShift Data Foundation
+- Red Hat Advanced Cluster Management for Kubernetes
+industries:
+- General
+pattern_logo: openshift-aiops-platform.png
+links:
+  github: https://github.com/KubeHeal/openshift-aiops-platform
+  install: getting-started
+  arch: https://github.com/KubeHeal/openshift-aiops-platform/blob/main/docs/adrs/002-hybrid-self-healing-approach.md
+  bugs: https://github.com/KubeHeal/openshift-aiops-platform/issues
+  feedback: https://github.com/KubeHeal/openshift-aiops-platform/discussions
+ci: openshift-aiops-platform
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/oaiops-about.adoc[leveloffset=+1]
+
+include::modules/oaiops-solution-elements.adoc[leveloffset=+2]
+
+include::modules/oaiops-architecture.adoc[leveloffset=+1]
+
+[id="next-steps_openshift-aiops-platform-index"]
+== Next steps
+
+* link:getting-started[Deploy the OpenShift AIOps Self-Healing Platform]
+* Review the link:cluster-sizing[cluster sizing requirements]
+* Explore link:ideas-for-customization[customization options] to adapt the pattern to your use case
+* Read the link:{github-url}/blob/main/docs/adrs/002-hybrid-self-healing-approach.md[hybrid self-healing architecture decision record]
+* Join the discussion at link:{feedback-url}[GitHub Discussions]

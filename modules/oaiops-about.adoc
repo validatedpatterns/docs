@@ -1,0 +1,119 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-openshift-aiops-platform"]
+= About the OpenShift AIOps Self-Healing Platform
+
+Use case::
+
+* Automatically detect and remediate common infrastructure and application issues in OpenShift clusters
+* Combine coordination engine REST API with machine learning models for intelligent incident response
+* Implement remediation workflows with audit trail via coordination engine
+* Reduce Mean Time to Resolution (MTTR) through automated self-healing
+* Enable continuous learning from incident history to improve prediction accuracy
+* Manage multi-cluster environments with centralized observability and remediation
+* Support both standard HighlyAvailable clusters and Single Node OpenShift (SNO) deployments
+
++
+Background::
+
+Organizations operating Kubernetes at scale face an increasing volume of operational incidents that require rapid response. Manual intervention becomes a bottleneck, leading to prolonged outages and increased operational costs. Traditional monitoring and alerting systems can identify problems but require human operators to diagnose and remediate issues.
+
+The OpenShift AIOps Self-Healing Platform addresses this challenge through a hybrid approach that combines coordination engine REST API with AI-driven machine learning predictions. When an incident is detected, notebooks or the MCP server analyze the issue using ML model inference (Isolation Forest for anomaly detection, Random Forest Regressor for predictive analytics) to determine remediation actions with confidence scores. The Go-based coordination engine orchestrates remediation workflows, integrates with deployment methods (ArgoCD, Helm, Operator-managed), and provides health monitoring endpoints. Current capabilities include pod lifecycle management, with deployment resource updates and declarative remediation patterns under active development.
+
+This architecture delivers intelligent remediation through ML-driven anomaly detection while maintaining deployment method awareness (ArgoCD sync vs direct pod management). The platform uses two trained models deployed via KServe: Isolation Forest for real-time anomaly detection and Random Forest Regressor for predictive resource usage forecasting. The continuous learning pipeline includes 33 Jupyter notebooks for model training, validation, and deployment, enabling progressive automation capability expansion.
+
+The pattern is deployed using the Validated Patterns framework with the Validated Patterns Operator, ensuring all components are version controlled and auditable. The platform uses a hybrid management model combining cluster-scoped resource management via Ansible with namespaced resource management via ArgoCD. The platform continuously learns from incident outcomes through automated model training workflows using Tekton Pipelines integrated with Red Hat OpenShift AI. Models are trained weekly via NotebookValidationJob custom resources and deployed to KServe for low-latency inference during incident response.
+
+The pattern supports both standard HighlyAvailable multi-node clusters and Single Node OpenShift (SNO) deployments, with automatic topology detection and configuration during deployment.
+
+For a hands-on walkthrough of the complete self-healing workflow, see the link:https://kubeheal.github.io/self-healing-workshop/modules/index.html[Self-Healing Workshop] which demonstrates end-to-end scenarios including anomaly detection, model training, MCP server integration, and AI-powered remediation with OpenShift Lightspeed.
+
+[id="about-solution"]
+== About the solution
+
+The OpenShift AIOps Self-Healing Platform provides an end-to-end solution for automated incident response across multiple OpenShift clusters:
+
+* *Intelligent Self-Healing Architecture*: Combines three key components:
+** *ML Analysis Layer*: Two KServe-deployed models (Isolation Forest for anomaly detection, Random Forest Regressor for predictive analytics) analyze cluster metrics and predict remediation actions
+** *Jupyter Notebook Interface*: 33 production-ready notebooks organized in 9 categories provide the primary development and integration interface, with automated validation via NotebookValidationJob CRs
+** *Go-based Coordination Engine*: Orchestrates remediation workflows via REST API endpoints (`/health`, `/api/v1/health`), integrates with deployment methods (ArgoCD, Helm, Operator-managed), and provides Prometheus metrics on port 9090. Current capabilities include pod lifecycle management, with deployment resource updates under active development
+
+* *Multi-Cluster Architecture*: Hub cluster manages observability and AI/ML operations, with support for spoke cluster integration via Red Hat Advanced Cluster Management (multi-cluster features under development)
+
+* *MCP Server Integration*: Go-based MCP (Model Context Protocol) server with 12+ tools provides AI assistants like OpenShift Lightspeed with cluster health data, enabling natural language interaction with the self-healing platform
+
+* *Continuous Learning*: Tekton Pipelines orchestrate weekly model retraining based on collected metrics and anomalies. Models are validated via NotebookValidationJob CRs and deployed to KServe with zero-downtime updates
+
+* *Topology-Aware Deployment*: Automatic detection and configuration for both HighlyAvailable (HA) multi-node clusters and Single Node OpenShift (SNO) deployments, with storage class selection (CephFS for HA, gp3-csi for SNO) and resource allocation adjusted per topology
+
+Benefits and capabilities of the self-healing platform:
+
+* *Anomaly Detection*: Isolation Forest model detects unusual patterns in cluster metrics with 100 estimators and 3% contamination rate, trained weekly on hybrid synthetic and real Prometheus data
+* *Predictive Analytics*: Random Forest Regressor forecasts resource usage 1 hour ahead (12 steps at 5-minute intervals) to enable proactive scaling
+* *Deployment Awareness*: Coordination engine detects how applications were deployed (ArgoCD, Helm, Operator, Manual) and applies appropriate remediation strategies
+* *Production Validation*: 94%+ validation success rate across 33 notebooks on both SNO and HA cluster topologies
+* *AI Assistant Integration*: OpenShift Lightspeed users can query cluster health and trigger remediation through natural language via the MCP server
+* *Observable Operations*: Complete Prometheus metrics exposure, health check endpoints, and incident tracking enable monitoring and continuous improvement
+* *Scalable Architecture*: Pattern supports Single Node OpenShift (edge/development) through HighlyAvailable multi-node clusters (production) with automatic topology detection
+
+[id="about-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift Container Platform]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments. OpenShift provides the foundation for running both the self-healing platform components and the workloads being monitored.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai[Red Hat OpenShift AI]::
+A flexible, scalable MLOps platform with tools to build, deploy, and manage AI-enabled applications. In this pattern, OpenShift AI provides Jupyter workbench environments for model development (33 notebooks), KServe for model serving (Isolation Forest and Random Forest Regressor models), and integration with the data science gateway for OAuth-authenticated access. Models are stored in S3-compatible storage (NooBaa on HA clusters, external S3 on SNO) and deployed via KServe InferenceServices.
+
+https://www.redhat.com/en/technologies/management/advanced-cluster-management[Red Hat Advanced Cluster Management for Kubernetes]::
+Controls clusters and applications from a single console, with built-in security policies. Extends the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale. ACM provides the multi-cluster observability capabilities that feed the self-healing engine with metrics, logs, and traces from spoke clusters.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Red Hat OpenShift GitOps]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. In this pattern, the coordination engine detects ArgoCD-managed applications and triggers ArgoCD sync operations for remediation when appropriate. The Validated Patterns framework uses GitOps for deploying all platform components with a hybrid management model (cluster-scoped via Ansible, namespaced via ArgoCD).
+
+https://access.redhat.com/documentation/en-us/red_hat_openshift_pipelines/1.14[Red Hat OpenShift Pipelines]::
+A cloud-native, continuous integration and continuous delivery (CI/CD) solution based on Kubernetes resources. It uses Tekton building blocks to automate deployments across multiple platforms. In this pattern, Tekton Pipelines orchestrate weekly model training workflows, triggered automatically via NotebookValidationJob custom resources. Trained models are validated and deployed to KServe upon successful completion.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation[Red Hat OpenShift Data Foundation]::
+Software-defined storage for containers. Supports file, block, and object storage for persistent data storage needs. In this pattern, ODF deployment varies by cluster topology: HighlyAvailable clusters use full ODF with Ceph (CephFS for shared model storage, Ceph RBD for block storage) and NooBaa for S3-compatible object storage; Single Node OpenShift uses MCG-only ODF (NooBaa S3 without Ceph) to minimize resource consumption. Storage classes are automatically selected based on topology detection during deployment.
+
+This solution also uses a variety of *observability tools* integrated with Red Hat Advanced Cluster Management:
+
+* *Thanos* for long-term metrics storage and multi-cluster query aggregation
+* *Grafana* for visualization of metrics, incidents, and self-healing outcomes
+* *Prometheus* for metrics collection and alerting
+* *OpenTelemetry* for distributed tracing across microservices
+
+[id="getting-started"]
+== Getting started
+
+To understand how these components work together in practice:
+
+*Self-Healing Workshop*::
+The comprehensive link:https://kubeheal.github.io/self-healing-workshop/modules/index.html[Self-Healing Workshop] provides hands-on labs demonstrating the complete platform:
++
+* *Module 0*: Introduction and Architecture - Understanding how the platform works
+* *Module 1*: ML Model Training with Tekton - Train anomaly detection models using the notebooks
+* *Module 2*: Deploy MCP Server & Configure Lightspeed - Setup AI assistant integration
+* *Module 3*: End-to-End Self-Healing with Lightspeed - Interactive AI-powered cluster management
+* *Module 4*: Extra Credit - Advanced ML techniques (LSTM, ensemble methods) and custom deployment
+* *Module 5*: Notebook Catalog & Use Cases - Complete guide to all 33 notebooks
+
+*Pattern Documentation*::
+This documentation site provides:
++
+* link:/patterns/openshift-aiops-platform/architecture/[Architecture details] - Deep dive into coordination engine, ML pipeline, and deployment architecture
+* link:/patterns/openshift-aiops-platform/solution-elements/[Solution elements] - Component-by-component explanation
+* link:/patterns/openshift-aiops-platform/deploying/[Deployment guide] - Step-by-step installation instructions for both HA and SNO topologies
+* link:/patterns/openshift-aiops-platform/ideas-for-customization/[Customization guide] - Extending the platform for your specific use cases
+
+*Source Code & ADRs*::
+For developers and architects:
++
+* link:https://github.com/KubeHeal/openshift-aiops-platform[Pattern Repository] - Main pattern with Helm charts, notebooks, and deployment manifests
+* link:https://github.com/KubeHeal/openshift-aiops-platform/tree/main/docs/adrs[Architecture Decision Records] - Detailed ADRs documenting all design decisions
+* link:https://github.com/KubeHeal/openshift-coordination-engine[Coordination Engine] - Go-based remediation orchestrator
+* link:https://github.com/KubeHeal/openshift-cluster-health-mcp[MCP Server] - Model Context Protocol server for AI assistant integration

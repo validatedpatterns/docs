@@ -1,0 +1,1600 @@
+---
+title: Ideas for customization
+weight: 60
+aliases: /openshift-aiops-platform/ideas-for-customization/
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="about-customizing-openshift-aiops-pattern"]
+= About customizing the OpenShift AIOps Self-Healing Platform
+
+One of the major goals of the Validated Patterns development process is to create modular and customizable solutions. The OpenShift AIOps Self-Healing Platform provides a framework for intelligent, automated incident response that can be adapted to your specific infrastructure, applications, and operational requirements.
+
+The pattern's hybrid approach combining deterministic runbooks with machine learning predictions makes it highly customizable. You can start with runbooks for well-understood problems in your environment, then gradually introduce ML-based automation as you collect incident data and train models specific to your workload patterns.
+
+[id="real-world-deployment-examples"]
+== Real-world deployment examples
+
+This section provides examples from actual production deployments to help you understand how the pattern components work together in practice.
+
+=== Multi-model inference serving
+
+A typical deployment runs multiple ML models concurrently for different prediction tasks:
+
+[source,terminal]
+----
+oc get inferenceservice -n self-healing-platform -o wide
+----
+
+Example output from a running cluster:
+
+----
+NAME                   URL                                                                       READY
+anomaly-detector       http://anomaly-detector-predictor.self-healing-platform.svc.cluster.local       True
+predictive-analytics   http://predictive-analytics-predictor.self-healing-platform.svc.cluster.local   True
+----
+
+The `anomaly-detector` model uses Isolation Forest for detecting unusual patterns in metrics, while `predictive-analytics` uses Random Forest Regressor for forecasting resource usage 1 hour ahead. Both models are trained weekly via automated notebooks and deployed via KServe, accessible to the Go-based coordination engine for decision-making.
+
+=== Topology-aware storage configuration
+
+Storage configuration adapts automatically based on cluster topology (SNO vs HA):
+
+[source,terminal]
+----
+oc get pvc -n self-healing-platform
+----
+
+*Example: HA cluster storage pattern (ocs-storagecluster-cephfs):*
+
+----
+NAME                            CAPACITY   ACCESS MODES   STORAGECLASS
+model-storage-pvc               10Gi       RWX            ocs-storagecluster-cephfs
+model-storage-gpu-pvc           10Gi       RWO            gp3-csi
+workbench-data-development      20Gi       RWO            ocs-storagecluster-cephfs
+----
+
+*Example: SNO cluster storage pattern (gp3-csi):*
+
+----
+NAME                            CAPACITY   ACCESS MODES   STORAGECLASS
+model-storage-pvc               10Gi       RWO            gp3-csi
+workbench-data-development      20Gi       RWO            gp3-csi
+----
+
+*Storage class selection by topology:*
+
+* *HA clusters:* Use `ocs-storagecluster-cephfs` (RWX) for shared model storage accessed by multiple pods, plus `gp3-csi` (RWO) for GPU training nodes (CephFS unavailable on GPU nodes)
+* *SNO clusters:* Use `gp3-csi` (RWO) exclusively - simpler, more reliable, and works everywhere
+* *S3 storage:* NooBaa S3 available on both topologies (full ODF on HA, MCG-only on SNO)
+
+=== Platform configuration tuning
+
+Customize operational parameters via the platform ConfigMap:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-config
+  namespace: self-healing-platform
+data:
+  # Cluster identification
+  CLUSTER_NAME: hub
+
+  # Service ports
+  COORDINATION_ENGINE_PORT: "8080"
+  METRICS_PORT: "8090"
+
+  # Environment settings
+  ENVIRONMENT: development  # or production, staging
+  LOG_LEVEL: INFO  # DEBUG for troubleshooting, WARN for production
+
+  # Timeouts and intervals
+  MODEL_SERVING_TIMEOUT: 30s  # Increase for complex models
+  PROMETHEUS_SCRAPE_INTERVAL: 30s  # Balance between freshness and load
+
+  # Optional: Custom settings
+  MAX_CONCURRENT_REMEDIATIONS: "5"
+  ENABLE_DRY_RUN_MODE: "false"
+----
+
+*Tuning recommendations:*
+
+* *Development:* `LOG_LEVEL: DEBUG`, shorter timeouts for faster iteration
+* *Production:* `LOG_LEVEL: WARN`, longer timeouts for stability, enable rate limiting
+
+=== Core platform components
+
+The pattern deploys these core services:
+
+*Coordination Engine (Go-based):*
+- Deployment: `quay.io/takinosh/openshift-coordination-engine:ocp-4.18-latest`
+- Ports: 8080 (API), 9090 (Prometheus metrics)
+- Resources: 200m CPU / 256Mi memory (requests), 500m CPU / 512Mi memory (limits)
+- Function: Orchestrates remediation actions, integrates with KServe models
+
+*MCP Server (Go-based standalone):*
+- Repository: `openshift-cluster-health-mcp`
+- Protocol: Model Context Protocol (MCP) over HTTP
+- Port: 8080 (ClusterIP service)
+- Tools: 12+ MCP tools for cluster health, pod management, Prometheus queries
+- Function: Provides MCP-compliant interface for AI assistants (OpenShift Lightspeed)
+
+Both components are implemented in Go for better performance and native Kubernetes client support.
+
+=== Jupyter notebook catalog
+
+The pattern includes 33 production-ready Jupyter notebooks organized in 9 directories, covering the complete self-healing workflow:
+
+*00-setup/* (3 notebooks) - Platform prerequisites
+- Platform readiness validation
+- KServe model onboarding
+- Python environment setup
+
+*01-data-collection/* (5 notebooks) - Metrics and event collection
+- Prometheus metrics collection
+- OpenShift events analysis
+- Log parsing analysis
+- Feature store demo
+- Synthetic anomaly generation
+
+*02-anomaly-detection/* (5 notebooks) - ML model training
+- Isolation Forest implementation (primary anomaly detector)
+- Time-series anomaly detection (ARIMA, Prophet)
+- LSTM-based prediction (GPU-accelerated)
+- Ensemble anomaly methods
+- Predictive analytics with KServe (Random Forest Regressor)
+
+*03-self-healing-logic/* (3 notebooks) - Remediation workflows
+- Rule-based remediation
+- AI-driven decision making
+- Hybrid healing workflows
+
+*04-model-serving/* (3 notebooks) - KServe deployment
+- KServe model deployment
+- Inference pipeline setup
+- Model versioning and MLOps
+
+*05-end-to-end-scenarios/* (4 notebooks) - Complete demos
+- Complete platform demo
+- Pod crash loop healing
+- Resource exhaustion detection
+- Network anomaly response
+
+*06-mcp-lightspeed-integration/* (4 notebooks) - AI assistant integration
+- MCP server integration
+- OpenShift Lightspeed integration
+- LlamaStack integration
+- End-to-end troubleshooting workflow
+
+*07-monitoring-operations/* (3 notebooks) - Platform observability
+- Prometheus metrics monitoring
+- Model performance monitoring
+- Healing success tracking
+
+*08-advanced-scenarios/* (3 notebooks) - Production use cases
+- Security incident response automation
+- Predictive scaling and capacity planning
+- Cost optimization and resource efficiency
+
+These notebooks are validated as part of the deployment process and serve as customization templates for your environment.
+
+[id="understanding-customization-approaches"]
+== Understanding customization approaches
+
+There are several levels at which you can customize this pattern:
+
+*Runbook Customization*::
+Add, modify, or remove runbooks to match the specific incidents common in your environment. Runbooks are defined as YAML ConfigMaps and can remediate infrastructure issues, application problems, or integrate with external systems.
+
+*AI Agent Customization*::
+Develop custom AI agents for specialized incident response scenarios. The pattern includes a comprehensive link:https://github.com/KubeHeal/openshift-aiops-platform/blob/main/AGENTS.md[AI Agent Development Guide] covering agent architecture, state management, tool integration, and best practices. Agents can be developed and tested using the included Jupyter workbench environment with interactive notebooks.
+
+*ML Model Customization*::
+Train custom models on your historical incident data to improve prediction accuracy for your specific workload characteristics. The pattern includes a complete MLOps pipeline for this purpose, with Jupyter notebooks for feature engineering, model training, and evaluation workflows.
+
+*Observability Customization*::
+Extend the observability stack to collect custom metrics, traces, or logs specific to your applications. Add custom Prometheus exporters, OpenTelemetry instrumentation, or log parsing rules.
+
+*Integration Customization*::
+Integrate with your existing tooling such as ITSM systems (ServiceNow, Jira), communication platforms (Slack, Microsoft Teams), or monitoring tools (Datadog, Splunk).
+
+*Policy Customization*::
+Adjust confidence thresholds, auto-remediation policies, change windows, and approval workflows to match your operational risk tolerance and compliance requirements.
+
+*Deployment Topology*::
+Customize for your deployment topology - the pattern supports both standard HighlyAvailable multi-node clusters and Single Node OpenShift (SNO) deployments with automatic topology detection.
+
+[id="industry-specific-extensions"]
+== Industry-specific extensions
+
+The pattern can be adapted for different industries with specific operational challenges:
+
+=== Financial services
+
+Financial institutions could customize the pattern to:
+
+* *Detect and remediate trading platform issues*: Automatically restart hung trading engines, clear message queues, or fail over to backup systems when latency thresholds are exceeded
+* *Maintain compliance during remediation*: Ensure all automated actions are logged with full audit trails, include compliance metadata in Git commits, and enforce approval workflows for production changes
+* *Handle high-frequency transaction workloads*: Train models to recognize degradation patterns in transaction processing rates and automatically scale resources or reroute traffic before SLA violations occur
+* *Integrate with fraud detection*: Coordinate with fraud detection systems to automatically quarantine suspicious services or scale up security monitoring when anomalies are detected
+
+=== Telecommunications
+
+Telco operators could extend the pattern for:
+
+* *Network function virtualization (NFV) self-healing*: Detect and remediate issues in virtualized network functions (vNF) such as routers, firewalls, or load balancers running on OpenShift
+* *5G core network automation*: Automatically handle scaling, failure recovery, and configuration drift in 5G core components
+* *Edge site management*: Manage self-healing across hundreds or thousands of edge OpenShift clusters with intermittent connectivity
+* *Service Level Agreement (SLA) protection*: Proactively remediate issues before they cause SLA violations by predicting degradation based on metric trends
+
+=== Healthcare
+
+Healthcare organizations could customize for:
+
+* *HIPAA-compliant remediation*: Ensure all automated actions maintain data privacy, include encryption for sensitive logs, and restrict access to patient data during troubleshooting
+* *Critical system prioritization*: Assign priority levels to different workloads (e.g., life-critical systems vs. administrative apps) and route high-priority incidents to immediate automated remediation while lower-priority issues follow approval workflows
+* *Integration with medical device management*: Coordinate with IoT device management platforms to detect and remediate connectivity or data flow issues from medical devices
+* *Disaster recovery automation*: Automatically fail over critical healthcare applications to disaster recovery sites when primary data center issues are detected
+
+=== Retail and e-commerce
+
+Retail organizations could adapt the pattern for:
+
+* *Seasonal traffic handling*: Automatically scale infrastructure during peak shopping periods (Black Friday, holiday season) and detect when auto-scaling is not keeping up with demand
+* *Payment processing reliability*: Immediately detect and remediate payment gateway issues to prevent revenue loss, with escalation to humans for financial system changes
+* *Inventory system resilience*: Automatically remediate database connection issues, cache failures, or API timeouts in inventory management systems
+* *Point-of-sale (POS) edge management*: Manage self-healing across distributed POS systems in retail stores, handling connectivity issues and local system failures
+
+[id="extending-runbook-library"]
+== Extending the runbook library
+
+[NOTE]
+====
+**Status:** Coming Soon
+
+The declarative runbook library feature (ConfigMap-based runbooks) is planned for a future release. Currently, remediation actions are implemented through notebooks that integrate with the Coordination Engine REST API.
+====
+
+The pattern's hybrid self-healing approach combines deterministic automation with AI-driven analysis. While a declarative runbook format is planned, you can currently implement deterministic remediation logic using the Coordination Engine API.
+
+=== Current approach: Coordination Engine API integration
+
+Notebooks can submit anomalies and trigger remediation actions programmatically:
+
+[source,python]
+----
+import requests
+
+# Submit anomaly to coordination engine
+response = requests.post(
+    'http://coordination-engine.self-healing-platform.svc.cluster.local:8080/api/v1/anomalies',
+    json={
+        'timestamp': '2026-03-06T12:00:00Z',
+        'type': 'resource_exhaustion',
+        'severity': 'critical',
+        'namespace': 'production-apps',
+        'confidence_score': 0.92,
+        'recommended_action': 'scale_down_pods',
+        'metadata': {
+            'deployment': 'web-frontend',
+            'memory_usage_percent': 95
+        }
+    }
+)
+
+# Check remediation status
+anomaly_id = response.json()['id']
+status = requests.get(
+    f'http://coordination-engine:8080/api/v1/anomalies/{anomaly_id}'
+)
+print(f"Remediation status: {status.json()['status']}")
+----
+
+*Available Coordination Engine endpoints:*
+
+|===
+|Endpoint |Method |Purpose
+
+|`/health`
+|GET
+|Health check and readiness probe
+
+|`/api/v1/anomalies`
+|POST
+|Submit anomaly for processing
+
+|`/api/v1/anomalies/<id>`
+|GET
+|Get anomaly status and resolution
+
+|`/api/v1/remediate`
+|POST
+|Trigger remediation action directly
+
+|`/api/v1/status`
+|GET
+|Engine status and metrics
+
+|`/metrics`
+|GET
+|Prometheus metrics endpoint
+|===
+
+See the `03-self-healing-logic/` notebooks for complete examples of integrating with the coordination engine.
+
+=== Planned: Declarative runbook format
+
+A future release will support ConfigMap-based runbook definitions:
+
+[source,yaml]
+----
+# Future feature - not yet implemented
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: runbook-high-memory-usage
+  namespace: self-healing-platform
+  labels:
+    aiops.kubeheal.io/runbook: "true"
+data:
+  runbook.yaml: |
+    name: restart-high-memory-pod
+    description: Restart pods with memory usage above 90%
+
+    triggers:
+      - type: prometheus
+        query: |
+          (container_memory_usage_bytes / container_spec_memory_limit_bytes) > 0.9
+        duration: 5m
+
+    remediation:
+      type: coordination_engine_api
+      action: restart_deployment
+----
+
+This declarative format will allow platform administrators to define remediation procedures without writing Python code.
+
+[id="integrating-ai-assistants"]
+== Integrating with AI assistants
+
+The pattern includes a Model Context Protocol (MCP) server that provides AI assistants with access to cluster health and operations data.
+
+=== MCP Server integration
+
+The Go-based MCP server is pre-deployed and provides 12+ tools for cluster operations:
+
+*Deployed MCP Server:*
+- Service: `http://mcp-server.self-healing-platform.svc.cluster.local:8080`
+- Protocol: Model Context Protocol (MCP) over HTTP
+- Integration: OpenShift Lightspeed uses this server automatically
+
+*Available MCP tools:*
+
+- `get-cluster-health` - Node, pod, and deployment health status
+- `list-pods` - Pod listing with label selectors
+- `get-prometheus-metrics` - Query Prometheus for cluster metrics
+- `analyze-logs` - Container log analysis
+- Additional cluster management tools
+
+=== OpenShift Lightspeed integration
+
+The pattern integrates with OpenShift Lightspeed for AI-powered cluster management:
+
+[source,terminal]
+----
+# Access OpenShift Lightspeed in the OpenShift Console
+# Navigate to: Help menu → OpenShift Lightspeed
+
+# Example queries:
+# - "Show me pods with high memory usage in self-healing-platform namespace"
+# - "What anomalies has the coordination engine detected?"
+# - "Check the status of InferenceServices"
+----
+
+OpenShift Lightspeed automatically uses the MCP server to access real-time cluster data when answering questions.
+
+=== Custom remediation logic
+
+For custom remediation workflows, develop Python notebooks that integrate with the Coordination Engine API:
+
+[source,python]
+----
+# Example: Custom remediation notebook
+import requests
+from datetime import datetime
+
+def detect_custom_anomaly():
+    """Implement custom anomaly detection logic."""
+    # Your custom detection code
+    return {
+        'type': 'custom_performance_degradation',
+        'severity': 'warning',
+        'confidence': 0.85
+    }
+
+def submit_to_coordination_engine(anomaly):
+    """Submit detected anomaly for remediation."""
+    response = requests.post(
+        'http://coordination-engine:8080/api/v1/anomalies',
+        json={
+            'timestamp': datetime.utcnow().isoformat(),
+            **anomaly
+        }
+    )
+    return response.json()
+
+# Detect and submit
+anomaly = detect_custom_anomaly()
+result = submit_to_coordination_engine(anomaly)
+print(f"Submitted anomaly {result['id']}, status: {result['status']}")
+----
+
+See the `06-mcp-lightspeed-integration/` notebooks for complete integration examples.
+
+[id="development-workflow-best-practices"]
+== Development workflow best practices
+
+The Jupyter workbench environment provides a complete development platform for customizing the self-healing platform.
+
+=== Accessing the development environment
+
+The Jupyter workbench is accessed through the OpenShift AI dashboard with OAuth authentication.
+
+.Procedure
+
+. Get the OpenShift AI dashboard URL:
++
+[source,terminal]
+----
+oc get route data-science-gateway -n openshift-ingress -o jsonpath='{.spec.host}'
+----
++
+Example output:
++
+----
+data-science-gateway.apps.cluster-7r4mf.7r4mf.sandbox458.opentlc.com
+----
+
+. Open the dashboard URL in your browser (use `https://`):
++
+----
+https://data-science-gateway.apps.<cluster-domain>
+----
+
+. Authenticate with your OpenShift credentials (OAuth2 authentication)
+
+. Navigate to **Data Science Projects** → **self-healing-platform**
+
+. In the **Workbenches** section, click **Open** next to `self-healing-workbench`
+
+. The JupyterLab environment opens with:
++
+* Pre-loaded notebooks from the repository
+* Persistent storage mounted at `/opt/app-root/src/data`
+* Model storage mounted at `/mnt/models`
+* Access to coordination engine and KServe models
+
+. Verify the workbench configuration:
++
+[source,terminal]
+----
+# From a terminal within JupyterLab
+df -h | grep -E "data|models"
+----
++
+Example output:
++
+----
+/dev/mapper/vg0-workbench    20G  2.1G   18G  11% /opt/app-root/src/data
+/dev/mapper/vg0-models        10G  1.2G  8.8G  12% /mnt/models
+----
+
+=== Notebook organization structure
+
+Organize your custom notebooks following the pattern's structure:
+
+----
+notebooks/
+├── 01-environment-setup/
+│   ├── 01-validate-cluster-access.ipynb
+│   └── 02-configure-credentials.ipynb
+├── 02-anomaly-detection/
+│   ├── 01-isolation-forest-implementation.ipynb
+│   ├── 02-ensemble-anomaly-methods.ipynb
+│   └── 05-predictive-analytics-kserve.ipynb
+├── 03-incident-response/
+│   ├── 01-rule-based-remediation.ipynb
+│   ├── 02-ai-driven-decision-making.ipynb
+│   └── 03-hybrid-healing-workflows.ipynb
+├── 04-integration/
+│   ├── 01-mcp-server-integration.ipynb
+│   ├── 02-openshift-lightspeed-integration.ipynb
+│   └── 03-llamastack-integration.ipynb
+└── 05-custom/
+    ├── my-custom-model.ipynb
+    └── my-custom-runbook.ipynb
+----
+
+=== Validation notebook pattern
+
+All notebooks should include validation cells to ensure they execute correctly:
+
+[source,python]
+----
+# Validation cell (at end of notebook)
+import os
+import sys
+
+def validate_notebook_execution():
+    """Validate this notebook executed successfully."""
+    required_variables = ['model', 'accuracy_score', 'inference_service_name']
+
+    for var in required_variables:
+        if var not in globals():
+            print(f"❌ Validation FAILED: {var} not defined")
+            sys.exit(1)
+
+    if accuracy_score < 0.70:
+        print(f"❌ Validation FAILED: accuracy {accuracy_score} below threshold")
+        sys.exit(1)
+
+    print("✓ Notebook validation PASSED")
+    return True
+
+# Run validation
+validate_notebook_execution()
+----
+
+This pattern enables automated testing via NotebookValidationJobs.
+
+=== Testing changes before deployment
+
+Before deploying custom models or remediation logic to production:
+
+. Test in the Jupyter environment interactively
+. Create a NotebookValidationJob custom resource for automated testing:
++
+[source,yaml]
+----
+apiVersion: mlops.mlops.dev/v1alpha1
+kind: NotebookValidationJob
+metadata:
+  name: my-custom-notebook-validation
+  namespace: self-healing-platform
+  labels:
+    app.kubernetes.io/name: my-custom-notebook-validation
+    app.kubernetes.io/component: notebook-validation
+spec:
+  notebook:
+    git:
+      url: https://github.com/KubeHeal/openshift-aiops-platform.git
+      ref: main
+    path: notebooks/05-custom/my-custom-model.ipynb
+  podConfig:
+    containerImage: image-registry.openshift-image-registry.svc:5000/self-healing-platform/notebook-validator:latest
+    serviceAccountName: self-healing-workbench
+    resources:
+      requests:
+        cpu: 2000m
+        memory: 4Gi
+      limits:
+        cpu: 4000m
+        memory: 8Gi
+    volumeMounts:
+    - name: model-storage
+      mountPath: /mnt/models
+    volumes:
+    - name: model-storage
+      persistentVolumeClaim:
+        claimName: model-storage-pvc
+    envFrom:
+    - secretRef:
+        name: model-storage-config
+  timeout: 45m
+----
+
+. Apply the NotebookValidationJob:
++
+[source,terminal]
+----
+oc apply -f my-custom-notebook-validation.yaml
+----
+
+. Monitor validation job status:
++
+[source,terminal]
+----
+oc get notebookvalidationjob my-custom-notebook-validation -n self-healing-platform -w
+----
+
+. Review validation results:
++
+[source,terminal]
+----
+# Get the validation job pod name
+POD=$(oc get pods -n self-healing-platform -l app.kubernetes.io/name=my-custom-notebook-validation --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[-1].metadata.name}')
+
+# View logs
+oc logs -n self-healing-platform $POD
+----
++
+Successful validation shows:
++
+----
+✓ Notebook validation PASSED
+All cells executed successfully
+----
+
+[id="training-custom-ml-models"]
+== Training custom ML models
+
+The pattern includes a MLOps pipeline for training incident prediction models on your data.
+
+The Jupyter workbench environment includes pre-configured notebooks for model training workflows:
+
+.Procedure
+
+. Access Jupyter notebooks for model training:
++
+[source,terminal]
+----
+oc port-forward self-healing-workbench-0 8888:8888 -n self-healing-platform
+----
++
+Open http://localhost:8888 and navigate to the `notebooks/ml-training/` directory.
+
+. Review the available training notebooks:
++
+* `data-preparation.ipynb` - Data collection and preprocessing
+* `feature-engineering.ipynb` - Creating features from incident data
+* `model-training.ipynb` - Training and hyperparameter tuning
+* `model-evaluation.ipynb` - Evaluating model performance
+* `model-deployment.ipynb` - Deploying models via KServe
+
+. Collect historical incident data from your environment. The pattern stores incidents in a database with features including:
+* Alert name and labels
+* Metric values at incident time
+* Error messages from logs
+* Remediation action taken
+* Outcome (success/failure)
+* Time to resolution
+
+. Prepare a training dataset by exporting incidents from the database:
++
+[source,terminal]
+----
+oc exec -n aiops-mlops deployment/incident-collector -- \
+  python export_training_data.py --start-date 2025-01-01 --output-file /data/incidents.csv
+----
+
+. Review the feature engineering pipeline in the Kubeflow Pipeline definition:
++
+[source,terminal]
+----
+oc get pipeline incident-prediction-training -n aiops-mlops -o yaml
+----
+
+. Customize feature engineering for your environment by editing the pipeline ConfigMap:
++
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: feature-engineering-config
+  namespace: aiops-mlops
+data:
+  features.yaml: |
+    # Add custom metrics as features
+    custom_metrics:
+      - name: api_latency_p95
+        query: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
+      - name: error_rate
+        query: rate(http_requests_total{status=~"5.."}[5m])
+
+    # Configure temporal features
+    temporal_features:
+      - hour_of_day
+      - day_of_week
+      - is_business_hours
+      - is_change_window
+
+    # Feature transformations
+    transformations:
+      - type: log_transform
+        columns: [api_latency_p95, memory_usage_bytes]
+      - type: one_hot_encoding
+        columns: [alert_name, namespace]
+----
+
+. Trigger a model training run:
++
+[source,terminal]
+----
+oc create -f - <<EOF
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: incident-model-training-
+  namespace: aiops-mlops
+spec:
+  pipelineRef:
+    name: incident-prediction-training
+  params:
+    - name: training-data-path
+      value: /data/incidents.csv
+    - name: model-version
+      value: "v2.0"
+  workspaces:
+    - name: data
+      persistentVolumeClaim:
+        claimName: training-data-pvc
+EOF
+----
+
+. Monitor training progress in the OpenShift AI dashboard or via CLI:
++
+[source,terminal]
+----
+oc get pipelinerun -n aiops-mlops -w
+----
+
+. Once training completes, evaluate the model performance:
++
+[source,terminal]
+----
+oc logs -n aiops-mlops -l pipeline-run=incident-model-training-xxxxx | grep "Model accuracy"
+----
+
+. If performance is satisfactory, promote the model to production via A/B testing:
++
+[source,terminal]
+----
+oc patch inferenceservice incident-prediction -n aiops-inference --type=merge -p '{
+  "spec": {
+    "canaryTrafficPercent": 10,
+    "canary": {
+      "predictor": {
+        "model": {
+          "storageUri": "s3://models/incident-prediction/v2.0"
+        }
+      }
+    }
+  }
+}'
+----
+
+[id="integrating-external-systems"]
+== Integrating with external systems
+
+The self-healing platform can integrate with your existing operational tooling:
+
+=== ServiceNow integration
+
+Create incidents or work orders in ServiceNow for high-impact remediations:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: servicenow-integration
+  namespace: aiops-engine
+data:
+  config.yaml: |
+    servicenow:
+      instance_url: https://mycompany.service-now.com
+      username: aiops-integration
+      password_secret: servicenow-credentials
+
+      # Create incident for high-severity issues
+      create_incident_on:
+        - confidence_score: "<0.60"  # Low confidence - human review
+        - severity: "critical"
+        - namespace: "production-*"
+
+      # Update incident when remediation completes
+      update_incident_on_resolution: true
+
+      # Incident template
+      incident_template:
+        short_description: "AIOps detected issue: {{ alert_name }}"
+        description: |
+          Cluster: {{ cluster_name }}
+          Namespace: {{ namespace }}
+          Alert: {{ alert_name }}
+          Confidence: {{ confidence_score }}
+          Recommended Action: {{ predicted_remediation }}
+        category: "Infrastructure"
+        subcategory: "OpenShift"
+        priority: "{{ severity }}"
+----
+
+=== Slack integration
+
+Send notifications to Slack channels for automated actions:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: slack-integration
+  namespace: aiops-engine
+data:
+  config.yaml: |
+    slack:
+      webhook_url_secret: slack-webhook
+
+      # Notify on auto-remediation
+      notify_on_remediation:
+        enabled: true
+        channel: "#platform-ops"
+        message_template: |
+          :robot_face: *Self-Healing Action Executed*
+          *Cluster:* {{ cluster_name }}
+          *Issue:* {{ alert_name }}
+          *Action:* {{ remediation_action }}
+          *Confidence:* {{ confidence_score | round(2) }}%
+          *Status:* {{ status }}
+          <{{ argocd_url }}|View in ArgoCD> | <{{ grafana_url }}|View Dashboard>
+
+      # Notify on escalation
+      notify_on_escalation:
+        enabled: true
+        channel: "#platform-ops-urgent"
+        mention_users: ["@oncall"]
+        message_template: |
+          :warning: *Manual Intervention Required*
+          *Cluster:* {{ cluster_name }}
+          *Issue:* {{ alert_name }}
+          *AI Suggestion:* {{ predicted_remediation }}
+          *Confidence:* {{ confidence_score | round(2) }}% (below threshold)
+          <{{ incident_url }}|View Incident Details>
+----
+
+=== PagerDuty integration
+
+Integrate with PagerDuty for on-call escalations:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pagerduty-integration
+  namespace: aiops-engine
+data:
+  config.yaml: |
+    pagerduty:
+      integration_key_secret: pagerduty-key
+
+      # Automatically resolve PD incidents when self-healing succeeds
+      auto_resolve_on_success: true
+
+      # Only create PD incident if auto-remediation fails
+      create_incident_on:
+        - remediation_status: "failed"
+        - severity: "critical"
+
+      # De-duplicate with existing alerts
+      dedup_key_template: "aiops-{{ cluster_name }}-{{ namespace }}-{{ alert_name }}"
+----
+
+[id="confidence-threshold-tuning"]
+== Confidence threshold tuning
+
+The confidence threshold determines when the platform executes remediation automatically versus escalating to humans. You can tune this based on your risk tolerance:
+
+.Procedure
+
+. Review current confidence score distribution in Grafana:
++
+Navigate to the "ML Model Performance" dashboard and check the "Confidence Score Distribution" panel.
+
+. Analyze the trade-off between automation coverage and false positive rate:
++
+[source,terminal]
+----
+oc exec -n aiops-mlops deployment/model-analyzer -- \
+  python analyze_confidence.py --threshold 0.80 --show-coverage
+----
+
+. Adjust the threshold in `values-global.yaml`:
++
+[source,yaml]
+----
+global:
+  aiops:
+    # Default: 0.80 (80% confidence required for auto-remediation)
+    confidence_threshold: 0.90  # More conservative
+
+    # Optionally set different thresholds by severity
+    confidence_thresholds_by_severity:
+      critical: 0.95  # Very high confidence for critical
+      warning: 0.80   # Lower threshold for warnings
+      info: 0.70      # Even lower for informational
+----
+
+. Commit and push changes to trigger GitOps sync:
++
+[source,terminal]
+----
+git add values-global.yaml
+git commit -m "Adjust confidence thresholds for production"
+git push origin main
+----
+
+. Monitor the effect on automation rate and escalation volume.
+
+[id="multi-tenancy-customization"]
+== Multi-tenancy customization
+
+For environments with multiple teams or tenants, you can customize self-healing policies per namespace or team:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tenant-policies
+  namespace: aiops-engine
+data:
+  policies.yaml: |
+    # Default policy for all namespaces
+    default:
+      enable_auto_remediation: true
+      confidence_threshold: 0.80
+      max_actions_per_hour: 10
+      require_approval: false
+
+    # Policy for production namespaces
+    tenant_policies:
+      - namespace_pattern: "prod-*"
+        enable_auto_remediation: true
+        confidence_threshold: 0.90  # Higher threshold
+        max_actions_per_hour: 5     # Rate limiting
+        require_approval: true      # Always need approval
+        approval_team: "production-team"
+
+      - namespace_pattern: "dev-*"
+        enable_auto_remediation: true
+        confidence_threshold: 0.70  # Lower threshold OK
+        max_actions_per_hour: 20    # Higher limit
+        require_approval: false
+
+      - namespace_pattern: "sandbox-*"
+        enable_auto_remediation: false  # No automation
+        require_approval: true
+----
+
+[id="advanced-observability"]
+== Advanced observability customization
+
+Extend the observability stack for your specific applications:
+
+=== Custom Prometheus exporters
+
+Deploy custom exporters for application-specific metrics:
+
+[source,yaml]
+----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: custom-app-exporter
+  namespace: monitoring
+spec:
+  template:
+    spec:
+      containers:
+      - name: exporter
+        image: myorg/custom-exporter:latest
+        ports:
+        - containerPort: 9090
+          name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-app-exporter
+  namespace: monitoring
+  labels:
+    app: custom-app-exporter
+spec:
+  ports:
+  - port: 9090
+    name: metrics
+  selector:
+    app: custom-app-exporter
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: custom-app-exporter
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: custom-app-exporter
+  endpoints:
+  - port: metrics
+    interval: 30s
+----
+
+=== Custom Grafana dashboards
+
+Create dashboards specific to your workloads:
+
+[source,terminal]
+----
+oc create configmap custom-dashboard \
+  -n aiops-observability \
+  --from-file=my-app-dashboard.json \
+  --dry-run=client -o yaml | oc apply -f -
+
+oc label configmap custom-dashboard \
+  -n aiops-observability \
+  grafana_dashboard=1
+----
+
+[id="storage-configuration-patterns"]
+== Storage configuration patterns
+
+Storage class selection significantly impacts performance, cost, and scalability of the self-healing platform.
+
+=== Storage class selection guide
+
+Different components have different storage requirements:
+
+[cols="3,2,2,4",options="header"]
+|===
+|Component |Access Mode |Storage Class |Rationale
+
+|Model artifacts (shared)
+|RWX
+|CephFS or NFS
+|Multiple pods read models, training data, notebooks
+
+|Jupyter workbench data
+|RWO
+|CephFS or EBS
+|Single workbench pod, moderate I/O
+
+|GPU model training scratch
+|RWO
+|EBS gp3-csi or local SSD
+|High IOPS required for training pipelines
+
+|Long-term model registry
+|S3-compatible
+|NooBaa or AWS S3
+|Versioned model storage, lifecycle policies
+
+|Prometheus metrics storage
+|RWO
+|EBS gp3-csi
+|Time-series database with high write throughput
+
+|Log aggregation
+|RWO
+|EBS gp3-csi or CephFS
+|High write volume, retention policies
+|===
+
+=== Example: Optimizing for HA clusters with ODF
+
+For HighlyAvailable clusters with OpenShift Data Foundation:
+
+[source,yaml]
+----
+# values-hub.yaml excerpt
+clusterGroup:
+  storage:
+    # Default storage class for most workloads
+    storageClass: "ocs-storagecluster-cephfs"
+
+    # Per-component overrides
+    componentStorage:
+      # GPU training needs high IOPS
+      gpu-training:
+        storageClass: "gp3-csi"
+        size: "100Gi"
+
+      # Shared model artifacts on CephFS
+      model-artifacts:
+        storageClass: "ocs-storagecluster-cephfs"
+        accessMode: "ReadWriteMany"
+        size: "50Gi"
+
+      # Prometheus on fast block storage
+      prometheus:
+        storageClass: "ocs-storagecluster-ceph-rbd"
+        size: "50Gi"
+----
+
+=== Example: Optimizing for SNO with cloud storage
+
+For Single Node OpenShift with cloud provider storage:
+
+[source,yaml]
+----
+# values-hub.yaml excerpt for AWS SNO
+clusterGroup:
+  cluster:
+    topology: "sno"
+
+  storage:
+    # Use cloud provider storage for all workloads
+    storageClass: "gp3-csi"
+
+    # External S3 for model artifacts (no ODF on SNO)
+    externalS3:
+      enabled: true
+      endpoint: "s3.amazonaws.com"
+      bucket: "my-org-aiops-models"
+      region: "us-east-1"
+----
+
+=== Storage capacity planning
+
+Based on real-world deployments, recommended storage allocations:
+
+*Minimum (Development/POC):*
+- Workbench data: 10-20 GB
+- Model storage: 10 GB
+- Model artifacts: 20 GB
+- Total: ~50 GB
+
+*Production (HA cluster):*
+- Workbench data: 50 GB (multiple data scientists)
+- Model storage: 50-100 GB (model versions, A/B testing)
+- Model artifacts: 100-200 GB (training datasets, experiment results)
+- Prometheus metrics: 50-100 GB (30-day retention)
+- Log storage: 50-100 GB (application logs, audit trails)
+- Total: ~350-500 GB
+
+*Enterprise (Multi-cluster hub):*
+- Scale linearly based on number of managed clusters
+- Consider object storage (S3) for long-term artifact retention
+- Implement lifecycle policies to archive old models/datasets
+
+[id="testing-customizations-safely"]
+== Testing customizations safely
+
+Before deploying customizations to production:
+
+. Test in a non-production cluster first
+. Use GitOps preview environments or ArgoCD sync waves
+. Enable dry-run mode to see what actions would be taken without executing:
++
+[source,yaml]
+----
+global:
+  aiops:
+    dry_run_mode: true  # Log actions but don't execute
+----
+
+. Start with low-risk namespaces or development environments
+. Monitor for false positives and adjust runbooks or thresholds
+. Gradually roll out to production with confidence thresholds tuned conservatively
+
+[id="making-changes-to-see-pattern-in-action"]
+== Making changes to see the pattern in action
+
+You can experiment with the pattern to observe self-healing in action:
+
+=== Simulate a failing pod
+
+. Deploy a test application that will fail:
++
+[source,terminal]
+----
+oc create namespace aiops-test
+oc run failing-pod --image=busybox --namespace=aiops-test -- sh -c 'exit 1'
+----
+
+. Watch the self-healing engine detect the CrashLoopBackOff:
++
+[source,terminal]
+----
+oc logs -n aiops-engine deployment/decision-engine -f | grep failing-pod
+----
+
+. Check if a runbook triggered or ML model predicted an action:
++
+[source,terminal]
+----
+oc get events -n aiops-test --field-selector involvedObject.name=failing-pod
+----
+
+=== Simulate high memory usage
+
+. Deploy a memory stress test:
++
+[source,terminal]
+----
+oc run memory-hog --image=polinux/stress --namespace=aiops-test -- \
+  stress --vm 1 --vm-bytes 512M --vm-hang 0
+----
+
+. Watch Prometheus alerts fire:
++
+[source,terminal]
+----
+oc get prometheusrule -n openshift-monitoring
+----
+
+. Observe if the self-healing platform triggers remediation (based on your runbooks).
+
+=== Adjust model serving and observe A/B testing
+
+. Check current model traffic distribution:
++
+[source,terminal]
+----
+oc get inferenceservice incident-prediction -n aiops-inference -o yaml | grep -A 5 canary
+----
+
+. Shift more traffic to the canary model:
++
+[source,terminal]
+----
+oc patch inferenceservice incident-prediction -n aiops-inference --type=merge -p '{
+  "spec": {
+    "canaryTrafficPercent": 50
+  }
+}'
+----
+
+. Monitor model performance metrics in Grafana to compare the two models.
+
+[id="resource-planning"]
+== Resource planning and sizing
+
+Plan cluster resources based on deployment topology and expected workload.
+
+=== HA cluster resource allocation
+
+Example from a production HA deployment with 7 nodes:
+
+[source,terminal]
+----
+oc get nodes -o custom-columns=NAME:.metadata.name,CPU:.status.allocatable.cpu,MEMORY:.status.allocatable.memory
+----
+
+Example output:
+
+----
+NAME                                        CPU      MEMORY
+ip-10-0-18-100.us-east-2.compute.internal   15500m   63295548Ki  (~62GB)
+ip-10-0-26-216.us-east-2.compute.internal   3500m    14584996Ki  (~14GB)
+ip-10-0-34-148.us-east-2.compute.internal   7500m    31004812Ki  (~30GB)
+ip-10-0-51-193.us-east-2.compute.internal   15500m   63295540Ki  (~62GB)
+ip-10-0-54-59.us-east-2.compute.internal    7500m    31004812Ki  (~30GB)
+ip-10-0-59-112.us-east-2.compute.internal   15500m   63295544Ki  (~62GB)
+ip-10-0-8-246.us-east-2.compute.internal    7500m    31004812Ki  (~30GB)
+
+Total: ~57 CPU cores, ~185GB RAM
+----
+
+*Component resource usage (HA cluster):*
+
+|===
+|Component |CPU Request |Memory Request |Replicas
+
+|anomaly-detector-predictor
+|500m
+|1Gi
+|1-2
+
+|predictive-analytics-predictor
+|2000m (GPU preferred)
+|4Gi
+|1-2
+
+|coordination-engine
+|1000m
+|2Gi
+|1-3 (HA)
+
+|mcp-server
+|500m
+|512Mi
+|1-2
+
+|self-healing-workbench
+|2000m
+|4Gi
+|1
+
+|Prometheus
+|2000m
+|8Gi
+|1-2 (HA)
+
+|ODF (full stack)
+|8000m
+|16Gi
+|3 nodes
+
+|*Total (estimated)*
+|*~20-25 cores*
+|*~50-60GB*
+|
+|===
+
+*Recommendations:*
+
+* HA clusters: Minimum 3 worker nodes with 16 cores and 64GB RAM each
+* Reserve 25-30% overhead for OpenShift platform services
+* For GPU workloads: Add nodes with NVIDIA GPUs (T4, V100, A100)
+* Enable auto-scaling for worker nodes in cloud environments
+
+=== SNO resource allocation
+
+For Single Node OpenShift deployments:
+
+*Minimum SNO configuration:*
+- CPU: 8 cores (16 vCPUs recommended)
+- Memory: 32 GB (64 GB recommended)
+- Storage: 120 GB root disk + additional storage for PVCs
+
+*SNO component adjustments:*
+
+- Reduce replica counts to 1 for all components
+- Use MCG-only (no Ceph) for object storage
+- Disable GPU-based predictive analytics unless GPU available
+- Consider external S3 instead of ODF to save resources
+
+[source,yaml]
+----
+# values-hub.yaml for SNO
+clusterGroup:
+  cluster:
+    topology: "sno"
+
+  # Resource limits for SNO
+  resources:
+    coordination-engine:
+      replicas: 1
+      cpu: "500m"
+      memory: "1Gi"
+
+    anomaly-detector:
+      replicas: 1
+      cpu: "500m"
+      memory: "1Gi"
+
+    # Disable GPU model on SNO
+    predictive-analytics:
+      enabled: false
+----
+
+=== Scaling for multi-cluster management
+
+When managing multiple clusters as spokes:
+
+*Hub cluster scaling formula:*
+- Base: Resources listed above for HA cluster
+- Per spoke cluster: Add ~1 CPU core, 2GB RAM
+- Example: Managing 10 spoke clusters = Base + 10 cores + 20GB RAM
+
+*Storage scaling:*
+- Metrics retention: ~5-10 GB per spoke cluster per 30 days
+- Model storage: Shared across clusters (no linear increase)
+
+[id="workshop-and-learning-resources"]
+== Workshop and learning resources
+
+The OpenShift AIOps Platform includes a comprehensive workshop with 33 Jupyter notebooks covering every aspect of self-healing automation.
+
+=== Self-Healing Workshop
+
+The official workshop provides hands-on learning modules:
+
+* **Module 0**: Introduction & Architecture - How the platform works
+* **Module 1**: ML Model Training with Tekton - Train anomaly detection models
+* **Module 2**: Deploy MCP Server & Configure Lightspeed - Setup integration
+* **Module 3**: End-to-End Self-Healing with Lightspeed - Interactive AI-powered management
+* **Module 4**: Extra Credit - Advanced ML (LSTM, ensemble) and custom deployment
+* **Module 5**: Notebook Catalog & Use Cases - Guide to all 33+ notebooks
+
+Access the workshop at: https://kubeheal.github.io/self-healing-workshop/
+
+=== Notebook Catalog by Category
+
+The platform includes 33 Jupyter notebooks organized by use case. Access them via the workbench:
+
+[source,terminal]
+----
+oc port-forward self-healing-workbench-0 8888:8888 -n self-healing-platform
+# Open http://localhost:8888
+----
+
+*Category 00: Setup & Validation (3 notebooks)*
+
+* `00-platform-readiness-validation.ipynb` - Validates cluster prerequisites
+* `01-kserve-model-onboarding.ipynb` - Deploy models to KServe
+* `environment-setup.ipynb` - Configure Python environment
+
+*Category 01: Data Collection (5 notebooks)*
+
+* `prometheus-metrics-collection.ipynb` - Query Prometheus for training data
+* `openshift-events-analysis.ipynb` - Extract Kubernetes events
+* `log-parsing-analysis.ipynb` - Parse container logs for errors
+* `feature-store-demo.ipynb` - Feature engineering for ML
+* `synthetic-anomaly-generation.ipynb` - Generate test anomalies
+
+*Category 02: Anomaly Detection (5 notebooks)*
+
+* `01-isolation-forest-implementation.ipynb` - Isolation Forest (fast, explainable)
+* `02-time-series-anomaly-detection.ipynb` - Time series methods (ARIMA, Prophet)
+* `03-lstm-based-prediction.ipynb` - LSTM neural networks (requires GPU)
+* `04-ensemble-anomaly-methods.ipynb` - Combine algorithms via voting
+* `05-predictive-analytics-kserve.ipynb` - Deploy to KServe for inference
+
+*Category 03: Self-Healing Logic (3 notebooks)*
+
+* `rule-based-remediation.ipynb` - Deterministic remediation rules
+* `ai-driven-decision-making.ipynb` - ML-based action selection
+* `hybrid-healing-workflows.ipynb` - Combine rules + AI
+
+*Category 04: Model Serving (3 notebooks)*
+
+* `kserve-model-deployment.ipynb` - Full KServe deployment workflow
+* `inference-pipeline-setup.ipynb` - Pre/post processing pipelines
+* `model-versioning-mlops.ipynb` - Versioning and A/B testing
+
+*Category 05: End-to-End Scenarios (4 notebooks)*
+
+* `complete-platform-demo.ipynb` - Full platform demonstration
+* `pod-crash-loop-healing.ipynb` - Detect and remediate CrashLoopBackOff
+* `resource-exhaustion-detection.ipynb` - CPU/memory pressure detection
+* `network-anomaly-response.ipynb` - Network anomaly detection and response
+
+*Category 06: MCP & Lightspeed Integration (4 notebooks)*
+
+* `mcp-server-integration.ipynb` - Test MCP server functionality
+* `openshift-lightspeed-integration.ipynb` - Lightspeed API usage
+* `llamastack-integration.ipynb` - LlamaStack for local LLMs
+* `end-to-end-troubleshooting-workflow.ipynb` - AI-guided debugging
+
+*Category 07: Monitoring & Operations (3 notebooks)*
+
+* `prometheus-metrics-monitoring.ipynb` - Custom Prometheus metrics
+* `model-performance-monitoring.ipynb` - Track accuracy, drift detection
+* `healing-success-tracking.ipynb` - Measure self-healing effectiveness
+
+*Category 08: Advanced Scenarios (3 notebooks)*
+
+* `security-incident-response-automation.ipynb` - Security automation
+* `predictive-scaling-capacity-planning.ipynb` - Predict capacity needs
+* `cost-optimization-resource-efficiency.ipynb` - Resource right-sizing
+
+=== Algorithm Selection Guide
+
+Choose the right anomaly detection approach based on your use case:
+
+[cols="2,2,3"]
+|===
+|Scenario |Recommended Notebook |Rationale
+
+|Quick start, simple anomalies
+|`01-isolation-forest-implementation.ipynb`
+|Fast training, no GPU needed, explainable results
+
+|Time-based patterns (daily/weekly cycles)
+|`02-time-series-anomaly-detection.ipynb`
+|Captures seasonality and trends
+
+|Complex multi-variate patterns
+|`03-lstm-based-prediction.ipynb`
+|Deep learning captures complex relationships (requires GPU)
+
+|Production deployment
+|`04-ensemble-anomaly-methods.ipynb`
+|Combines models for robust, low-false-positive detection
+|===
+
+=== Python Integration Examples
+
+The workshop includes production-ready Python integration examples:
+
+*Automated Alert Response Pattern:*
+
+[source,python]
+----
+from lightspeed_client import LightspeedClient
+
+def handle_prometheus_alert(alert, server_url):
+    """Respond to Prometheus alert with AI analysis."""
+
+    # Build context from alert
+    context = {
+        'alert_name': alert['labels']['alertname'],
+        'namespace': alert['labels'].get('namespace'),
+        'severity': alert['labels'].get('severity'),
+        'description': alert['annotations'].get('description'),
+    }
+
+    # Query Lightspeed for analysis
+    client = LightspeedClient(server_url)
+    analysis = client.query(
+        f"Analyze this alert and suggest remediation: {context['description']}",
+        context=context
+    )
+
+    # Decide on action based on confidence
+    if analysis['confidence'] > 0.8:
+        return {'action': 'auto_remediate', 'confidence': analysis['confidence']}
+    elif analysis['confidence'] > 0.6:
+        return {'action': 'recommend', 'confidence': analysis['confidence']}
+    else:
+        return {'action': 'escalate', 'reason': 'low_confidence'}
+----
+
+*Available integration patterns:*
+
+* `lightspeed_client.py` - OpenShift Lightspeed client library
+* `pattern_alert_response.py` - Automated alert response
+* `pattern_batch_analysis.py` - Batch anomaly analysis
+* `pattern_capacity_planning.py` - Capacity prediction
+* `monitor_cluster.py` - Continuous cluster monitoring
+
+Download examples from: https://github.com/KubeHeal/self-healing-workshop/tree/main/examples/python
+
+=== Hybrid Healing Approach
+
+The platform combines deterministic rules with AI decision-making:
+
+[source]
+----
+Incoming Anomaly
+      │
+      ▼
+┌──────────────────┐
+│  Rule Matcher    │───→ Known Issue? ───→ Apply Rule-Based Fix
+│  (Deterministic) │                              │
+└──────────────────┘                              │
+      │ No Match                                  │
+      ▼                                           │
+┌──────────────────┐                              │
+│  AI Decision     │───→ Novel Issue? ───→ AI-Recommended Fix
+│  (ML-Based)      │                              │
+└──────────────────┘                              │
+      │                                           │
+      └───────────────────────────────────────────┘
+                        │
+                        ▼
+              Coordination Engine
+              (Conflict Resolution)
+----
+
+This hybrid approach provides:
+
+* **Speed**: Rules provide instant response for known issues
+* **Intelligence**: AI handles novel problems requiring analysis
+* **Safety**: Coordination engine prevents conflicting actions
+* **Learning**: New patterns from AI decisions can become rules
+
+[id="contributing-improvements-back"]
+== Contributing improvements back
+
+If you develop valuable runbooks, ML model improvements, or integrations, consider contributing them back to the community:
+
+. Fork the pattern repository: https://github.com/KubeHeal/openshift-aiops-platform
+. Create a branch for your enhancement
+. Add your customization with documentation
+. Submit a pull request with a clear description of the use case and benefits
+. Engage with the community in GitHub Discussions
+
+By contributing, you help other organizations facing similar challenges and benefit from community review and improvements to your contributions.
+
+For questions or support, visit the link:https://github.com/KubeHeal/openshift-aiops-platform/discussions[GitHub Discussions forum].
