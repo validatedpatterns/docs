@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="400" fill="#0066CC"/>
+
+  <!-- Decorative circles representing clusters -->
+  <circle cx="120" cy="150" r="40" fill="#FFFFFF" opacity="0.3"/>
+  <circle cx="280" cy="150" r="40" fill="#FFFFFF" opacity="0.3"/>
+  <circle cx="200" cy="250" r="40" fill="#FFFFFF" opacity="0.3"/>
+
+  <!-- Central AI/Brain icon suggestion -->
+  <circle cx="200" cy="180" r="60" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="200" cy="180" r="45" fill="#0066CC"/>
+
+  <!-- Simple gear/automation indicator -->
+  <path d="M 200 135 L 210 145 L 200 155 L 190 145 Z" fill="#FFFFFF"/>
+  <path d="M 200 205 L 210 195 L 200 185 L 190 195 Z" fill="#FFFFFF"/>
+  <path d="M 165 180 L 175 190 L 175 170 Z" fill="#FFFFFF"/>
+  <path d="M 235 180 L 225 190 L 225 170 Z" fill="#FFFFFF"/>
+
+  <!-- Title text -->
+  <text x="200" y="320" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+    AIOps Platform
+  </text>
+  <text x="200" y="350" font-family="Arial, sans-serif" font-size="18" fill="#FFFFFF" text-anchor="middle" opacity="0.9">
+    Self-Healing OpenShift
+  </text>
+</svg>
