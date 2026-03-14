@@ -12,75 +12,104 @@ include::modules/comm-attributes.adoc[]
 
 == Deploying
 
-1. Install an link:../coco-pattern-azure-requirements/[OpenShift Cluster on Azure] 
+=== Prerequisites
 
-2. Update the link:../coco-pattern-azure-requirements/#_azure_configuration_required_for_the_validated_pattern[required Azure configuration and secrets]
+1. Install an link:../coco-pattern-azure-requirements/[OpenShift 4.17+ Cluster on Azure]
 
-3. `./pattern.sh make install`
+2. Update the link:../coco-pattern-azure-requirements/#_azure_configuration_required_for_the_validated_pattern[required Azure configuration and secrets] in `values-global.yaml`, including the Azure service principal, DNS resource group, and cluster networking details.
 
-4. Wait: The cluster needs to reboot all nodes at least once, and reprovision the ingress to use the let's encrypt certificates.
+3. Fork the repository and clone it locally. ArgoCD reconciles against your fork, so all configuration changes must be committed and pushed.
 
-5. If the services do not come up use the ArgoCD UI to triage potential timeouts.
+4. Run `bash scripts/gen-secrets.sh` to generate KBS key pairs, attestation policy seeds, and copy the values-secret template to `~/values-secret-coco-pattern.yaml`. This script will not overwrite existing secrets.
+
+5. Run `bash scripts/get-pcr.sh` to retrieve PCR measurements from the peer-pod VM image. This stores the measurements at `~/.coco-pattern/measurements.json`, which are loaded into Vault and used by the attestation service. Requires `podman`, `skopeo`, and a pull secret at `~/pull-secret.json`.
+
+6. Review and customise `~/values-secret-coco-pattern.yaml`. This file controls what secrets are loaded into Vault, including attestation policies, KBS key material, and PCR measurements. See the comments in `values-secret.yaml.template` for details on each field.
+
+=== Single cluster deployment
+
+The single-cluster topology uses the `simple` clusterGroup. All components — Trustee, Vault, ACM, sandboxed containers, and workloads — are deployed on one cluster.
+
+1. Ensure `main.clusterGroupName: simple` is set in `values-global.yaml`
+
+2. `./pattern.sh make install`
+
+3. Wait for the cluster to reboot all nodes. The sandboxed containers operator applies a MachineConfig update that triggers a rolling reboot. Monitor progress via the ArgoCD UI or `oc get nodes`.
+
+4. If the services do not come up, use the ArgoCD UI to triage potential timeouts. Peer-pod VMs may need to be restarted if they time out during initial provisioning.
+
+=== Multi-cluster deployment
+
+The multi-cluster topology separates the trusted zone (hub) from the untrusted workload zone (spoke). The hub cluster runs Trustee, Vault, and ACM. The spoke cluster runs the sandboxed containers operator and confidential workloads.
+
+1. Set `main.clusterGroupName: trusted-hub` in `values-global.yaml`
+
+2. Deploy the hub cluster: `./pattern.sh make install`
+
+3. Wait for ACM (`MultiClusterHub`) to reach `Running` state on the hub cluster: `oc get multiclusterhub -n open-cluster-management`
+
+4. Provision a second OpenShift 4.17+ cluster on Azure for the spoke
+
+5. Import the spoke cluster into ACM with the label `clusterGroup=spoke` (see https://validatedpatterns.io/learn/importing-a-cluster/[importing a cluster]). ACM will automatically deploy the `spoke` clusterGroup applications to the imported cluster.
+
+6. The spoke cluster will install the sandboxed containers operator, deploy peer-pod infrastructure, and launch the sample workloads. Monitor progress in the ACM console or via ArgoCD on the spoke.
 
 == Simple Confidential container tests
 
-The pattern deploys some simple tests of CoCo with this pattern. 
-A "Hello Openshift" (e.g. `curl` to return "Hello Openshift!") application has been deployed in three form factor.
+The pattern deploys some simple tests of CoCo with this pattern.
+A "Hello Openshift" (e.g. `curl` to return "Hello Openshift!") application has been deployed in three configurations:
 
-1. A vanilla kubernetes pod at `oc get pods -n hello-openshift standard`
-2. A confidential container `oc get pods -n hello-openshift secure`
-3. A confidential container with a relaxed policy at `oc get pods -n hello-openshift insecure-policy`
+1. A vanilla kubernetes pod: `oc get pods -n hello-openshift standard`
+2. A confidential container with a strict policy: `oc get pods -n hello-openshift secure`
+3. A confidential container with a relaxed policy: `oc get pods -n hello-openshift insecure-policy`
 
-In this case the insecure policy is designed to allow a user to be able to exec into the confidential container. 
+In this case the insecure policy is designed to allow a user to be able to exec into the confidential container.
 Typically this is disabled by an immutable policy established at pod creation time.
 
-
-Doing a `oc get pods` for either of the pods running a confidential container should show the `runtimeClassName: kata-remote` for the pod.
+Doing `oc get pod -n hello-openshift secure -o yaml` for either of the pods running a confidential container should show `runtimeClassName: kata-remote`, confirming it is running as a peer-pod.
 
 // Add a azure portal image grab next boot
-Logging into azure once the pods have been provisioned will show that each of these two pods has been provisioned with it's own `Standard_DC2as_v5` virtual machine.
+Logging into the Azure portal once the pods have been provisioned will show that each of these two confidential pods has been provisioned with its own `Standard_DC2as_v5` virtual machine. These VMs are visible under the cluster's resource group.
 
 === `oc exec` testing
 
-In a OpenShift cluster without confidential containers, Role Based Access Control (RBAC), may be used to prevent users from using `oc exec` to access a container container to mutate it.
+In an OpenShift cluster without confidential containers, Role Based Access Control (RBAC) may be used to prevent users from using `oc exec` to access a container to mutate it.
 However:
 
 1. Cluster admins can always circumvent this capability
-2. Anyone logged into the node directly can also circumvent this capability.
+2. Anyone logged into the node directly can also circumvent this capability
 
-Confidential containers can prevent this. Running: `oc exec -n hello-openshift -it secure -- bash` will result in a denial of access, irrespective of the user undertaking the action, including `kubeadmin`.
-For running this with either the standard pod `oc exec -n hello-openshift -it standard -- bash`, or the CoCo pod with the policy disabled `oc exec -n hello-openshift -it insecure-policy -- bash` will allow shell access.
+Confidential containers enforce this boundary at the hardware level, independent of RBAC. Running: `oc exec -n hello-openshift -it secure -- bash` will result in a denial of access, irrespective of the user undertaking the action, including `kubeadmin`. The policy is baked into the pod at creation time and cannot be modified at runtime.
+
+For comparison, `oc exec -n hello-openshift -it standard -- bash` (the standard pod) and `oc exec -n hello-openshift -it insecure-policy -- bash` (the CoCo pod with a relaxed policy) will both allow shell access.
 
 
 
 === Confidential Data Hub testing
 
-Part of the CoCo VM is a component called the Confidential Data Hub (CDH), which simplifies access to the Trustee Key Broker service for end applications.
+Part of the CoCo VM is a component called the Confidential Data Hub (CDH), which simplifies access to the Trustee Key Broker Service (KBS) for end applications. The CDH runs inside the confidential VM and handles attestation transparently — applications simply make HTTP requests to a localhost endpoint.
+
 Find out more about how the CDH and Trustee work together https://www.redhat.com/en/blog/introducing-confidential-containers-trustee-attestation-services-solution-overview-and-use-cases[here].
 
 image::coco-pattern/trustee.png[]
 
-The CDH presents to containers within the pod (only), via a localhost URL. The CoCo container with an insecure policy can be used for testing the behaviour.
+The CDH presents to containers within the pod (only), via a localhost URL. The CoCo container with an insecure policy can be used for testing the behaviour, since it allows `oc exec`.
 
 
 - `oc exec -n hello-openshift -it insecure-policy -- bash` to get a shell into a confidential container
 
-- https://github.com/validatedpatterns/coco-pattern/blob/main/charts/hub/trustee/templates/kbs.yaml[Trustee's configuration] specifies the list of secrets which the KBS can access with the `kbsSecretResources` attribute.
+- https://github.com/butler54/trustee-chart[Trustee's configuration] specifies the list of secrets which the KBS can access with the `kbsSecretResources` attribute. These are mapped to Vault paths (e.g. `secret/data/hub/kbsres1`).
 
 - Secrets within the CDH can be accessed (by default) at `http://127.0.0.1:8006/cdh/resource/default/$K8S_SECRET/$K8S_SECRET_KEY`.
 
 - In this case `http://127.0.0.1:8006/cdh/resource/default/passphrase/passphrase` by default will return a string which was randomly generated when the pattern was deployed.
 
-- This should be the same as result as `oc get secrets -n trustee-operator-system passphrase -o yaml | yq '.data.passphrase'` | base64 -d`
+- To verify, compare the CDH output against the Vault-backed secret: `oc get secrets -n trustee-operator-system passphrase -o yaml | yq '.data.passphrase' | base64 -d`. The values should match.
 
-- Tailing the logs for the kbs container e.g. `oc logs -n trustee-operator-system kbs-deployment-5b574bccd6-twjxh -f` shows the evidence which is flowing to the KBS from the CDH.
+- Tailing the logs for the KBS container (e.g. `oc logs -n trustee-operator-system -l app=kbs -f`) shows the attestation evidence flowing from the CDH to the KBS, including TEE evidence validation.
 
+=== kbs-access application
 
+The `kbs-access` application is a web service deployed in the `kbs-access` namespace. It retrieves secrets from Trustee via the CDH and presents them through a web interface. This provides a convenient way to verify that the full attestation pipeline is working end-to-end without needing to exec into a pod.
 
-
-
-
-
-
-
-
+Access the application via its OpenShift route: `oc get route -n kbs-access`.

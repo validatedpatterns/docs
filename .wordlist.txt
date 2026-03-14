@@ -1,3 +1,4 @@
+
 aaaee
 aab
 aap
@@ -13,7 +14,6 @@ actualweight
 additionalimages
 addon
 addons
-addr
 addr
 adoc
 ae
@@ -39,9 +39,9 @@ anattama
 anonymized
 anonymizer
 ansible
+api's
 apicast
 apicurito
-api's
 apis
 apiversion
 appdev
@@ -107,7 +107,9 @@ byo
 cacert
 cakephp
 canarypausestep
+cas
 cdd
+cdh
 cdn
 centos
 centric
@@ -155,11 +157,13 @@ cmzwn
 cncf
 cnv
 cockroachdb
+coco
 codepath
 coffeeshop
 colocated
 compliancetype
 conf
+confidentialcontainers
 config
 configmanagement
 configmap
@@ -171,6 +175,7 @@ containerimage
 controlplane
 controlplaneendpoint
 coreos
+cosign
 cp
 crd
 crds
@@ -192,6 +197,7 @@ ctrl
 cuda
 customerloyalty
 customermocker
+customise
 customizable
 customizations
 cves
@@ -413,6 +419,7 @@ hybridcloudpatterns
 hyperconverged
 hyperscaler
 hypershift
+hyperthreading
 iaa
 iam
 ib
@@ -420,6 +427,7 @@ ibmcloud
 idempotence
 idms
 idp
+ietf
 iframe
 ignoredifferences
 iio
@@ -504,6 +512,9 @@ kam
 kamelet
 kasten
 kastendr
+kata
+katacontainers
+kbs
 keycloak
 keypair
 keypairs
@@ -563,6 +574,7 @@ lsv
 lvm
 lvms
 machineapi
+machineconfig
 machineconfigpool
 machineconfigs
 machineset
@@ -618,6 +630,7 @@ mq
 mqtt
 multicloud
 multicluster
+multiclusterhub
 multisource
 multisourceconfig
 musthave
@@ -686,8 +699,8 @@ opendatahub
 openid
 openjdk
 openshift
-openshiftpullsecret
 openshift's
+openshiftpullsecret
 openshiftsdn
 openshiftversion
 openssl
@@ -700,6 +713,7 @@ operatorgroups
 operatorhub
 operatorsource
 opr
+osc
 osspa
 osx
 ouput
@@ -722,6 +736,7 @@ patternsh
 patternsoperator
 pbivukilnpoe
 pci
+pcr
 pem
 performant
 persistentvolumeclaim
@@ -787,6 +802,7 @@ querier
 quickassist
 quickstart
 rabbitmq
+raci
 rbac
 rbklxs
 rdma
@@ -803,8 +819,8 @@ renderers
 replicaset
 replicasets
 repo
-repolist
 repo's
+repolist
 repos
 repourl
 reranked
@@ -847,6 +863,7 @@ runtimes
 rxpm
 saas
 saml
+sandboxed
 sas
 sbom
 scada
@@ -880,6 +897,7 @@ signin
 sigstore
 siteadmin
 skipdryrunonmissingresource
+skopeo
 sla
 slas
 sme
@@ -939,6 +957,7 @@ targetport
 tbd
 tcp
 techpreview
+tee
 tei
 tekron
 tekton
@@ -984,6 +1003,7 @@ tradeoff
 tradeoffs
 transactional
 travelops
+trustee
 trvlops
 tsa
 tst
@@ -1002,8 +1022,8 @@ unsealvault
 untrusted
 updatingconfig
 updatingversion
-upstreaming
 upstream's
+upstreaming
 ure
 uri
 usecsv

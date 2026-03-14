@@ -11,16 +11,15 @@ include::modules/comm-attributes.adoc[]
 :imagesdir: ../../../images
 = Azure requirements
 
-This demo currently has been tested only on azure.
-The configuration tested used the `openshift-install`.
-https://docs.openshift.com/container-platform/4.16/installing/installing_azure/installing-azure-default.html[OpenShift documentation] contains details on how to do this.
+This pattern has been tested on Microsoft Azure using self-managed OpenShift clusters provisioned with `openshift-install`.
+https://docs.openshift.com/container-platform/4.17/installing/installing_azure/installing-azure-default.html[OpenShift documentation] contains details on how to install a cluster on Azure.
 
-The documentation outlines https://docs.openshift.com/container-platform/4.16/installing/installing_azure/installing-azure-account.html[minimum required configuration] for an azure account.
+The documentation outlines the https://docs.openshift.com/container-platform/4.17/installing/installing_azure/installing-azure-account.html[minimum required configuration] for an Azure account.
 
 == Changes required
 
-Do not accept default sizes for OpenShift install. It is recommended to up the workers to at least `Standard_D8s_v5`.
-This can be done by using `openshift-install create install-config` first and adjusting the workers under platform e.g.:
+Do not accept default sizes for OpenShift install. It is recommended to increase the worker node size to at least `Standard_D8s_v5`.
+This can be done by using `openshift-install create install-config` first and adjusting the workers under platform, for example:
 
 [source,yaml]
 ----
@@ -35,29 +34,31 @@ This can be done by using `openshift-install create install-config` first and ad
 
 On a cloud provider the virtual machines for the kata containers use "peer pods" which are running directly on the cloud provider's hypervisor (see the diagram below).
 This means that access is required to the "confidential computing" virtual machine class. On Azure the `Standard_DCas_v5` class of virtual machines are used.
-These virtual machines are *NOT* available in all regions. Users will also need to up the specific limits for `Standard_DC2as_v5` virtual machines.
+These virtual machines are *NOT* available in all regions. Check https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/[Azure products by region] to confirm availability in your target region.
+
+Users will also need to request quota increases for the `Standard_DC2as_v5` (and optionally `Standard_DC4as_v5`, `Standard_DC8as_v5`, `Standard_DC16as_v5`) virtual machine families in their target region. By default, Azure subscriptions may have zero quota for confidential computing VM sizes.
 
 image::coco-pattern/peer_pods.png[Schematic diagram of peer pods vs standard kata containers]
 
-DNS for the openshift cluster also *MUST* be provided by azure DNS.
+DNS for the OpenShift cluster *MUST* be provided by Azure DNS. The pattern uses Azure DNS for both the cluster's ingress and for cert-manager DNS01 challenge validation when issuing certificates.
 
 == Azure configuration required for the validated pattern
 
-The validated pattern requires access to azure apis to provision peer-pod VMs and to obtain certificates from let's encrypt.
+The validated pattern requires access to Azure APIs to provision peer-pod VMs.
 
 Azure configuration information must be provided in two places:
 
-- The a secret must be loaded using a ../../../learn/secrets-management-in-the-validated-patterns-framework/[values-secret] file.
-  The https://github.com/validatedpatterns/coco-pattern/blob/main/values-secret.yaml.template[`values-secret.yaml.template`] file provides the appropriate structure
+- A secret must be loaded using a ../../../learn/secrets-management-in-the-validated-patterns-framework/[values-secret] file.
+  The https://github.com/validatedpatterns/coco-pattern/blob/main/values-secret.yaml.template[`values-secret.yaml.template`] file provides the appropriate structure. The Azure client secret (service principal password) is stored here and loaded into Vault.
 
-- A broader set of information about the cluster is required in https://github.com/validatedpatterns/coco-pattern/blob/main/values-global.yaml[`values-global.yaml`] (see below).
+- A broader set of information about the cluster is required in https://github.com/validatedpatterns/coco-pattern/blob/main/values-global.yaml[`values-global.yaml`] (see below). These values are used by the sandboxed containers operator to provision peer-pod VMs in the correct Azure subscription, resource group, and virtual network.
 
 
 [source,yaml]
 ----
 global:
   azure:
-    clientID: '' # Service principle ID
+    clientID: '' # Service principal ID
     subscriptionID: ''
     tenantID: '' # Tenant ID
     DNSResGroup: '' # Resource group for the azure DNS hosted zone
@@ -68,3 +69,4 @@ global:
     clusterRegion: ''
 ----
 
+The `clusterResGroup`, `clusterSubnet`, and `clusterNSG` values can be found in the Azure portal after the cluster has been provisioned, or via `openshift-install` metadata. The `DNSResGroup` and `hostedZoneName` correspond to the Azure DNS zone used for the cluster's base domain.
