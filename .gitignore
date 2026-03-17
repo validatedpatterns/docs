@@ -17,3 +17,5 @@ Gemfile.lock
 .vale
 modules/.vale.ini
 .vale.ini
+.claude
+.cursor
