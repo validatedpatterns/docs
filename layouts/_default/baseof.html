@@ -11,6 +11,12 @@
         <script src="{{ "js/codeblock.js"  | relURL }}"></script>
         <script src="{{ "js/mobile-nav.js"  | relURL }}"></script>
         <script src="{{ "js/page-actions.js"  | relURL }}"></script>
+        {{ if .Store.Get "hasMermaid" }}
+        <script type="module">
+            import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+        {{ end }}
     </body>
     <!-- Uncomment when you have sorted out the feedback partials option
         <body>
