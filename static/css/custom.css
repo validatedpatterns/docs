@@ -1094,6 +1094,35 @@ div.paragraph {
 
 /* TABLES */
 
+/* Markdown tables in content areas */
+.pf-c-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--pf-global--spacer--md);
+}
+
+.pf-c-content table th,
+.pf-c-content table td {
+  padding: var(--pf-global--spacer--md);
+  text-align: left;
+  border-bottom: 1px solid var(--pf-global--BorderColor--100);
+}
+
+.pf-c-content table th {
+  font-weight: var(--pf-global--FontWeight--bold);
+  font-size: var(--pf-global--FontSize--sm);
+  background-color: var(--pf-global--BackgroundColor--light-200);
+}
+
+.pf-c-content table tbody tr:nth-child(odd) {
+  background-color: var(--pf-global--BackgroundColor--light-100);
+}
+
+.pf-c-content table tbody tr:nth-child(even) {
+  background-color: var(--pf-global--BackgroundColor--light-200);
+}
+
+/* AsciiDoc tables */
 table.tableblock tr > :first-child {
   padding-left: 1rem;
 }
