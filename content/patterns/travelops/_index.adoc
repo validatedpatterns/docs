@@ -1,5 +1,5 @@
 ---
-title: TravelOps 
+title: TravelOps
 date: 2024-02-09
 tier: tested
 summary: This pattern enables you to secure your applications using Red Hat Service Mesh.
@@ -13,9 +13,9 @@ industries:
 - General
 aliases: /travelops/
 links:
-  github: https://github.com/validatedpatterns-sandbox/travelops
+  github: https://github.com/validatedpatterns/travelops
   install: getting-started
-  bugs: https://github.com/validatedpatterns-sandbox/travelops/issues
+  bugs: https://github.com/validatedpatterns/travelops/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ci: travelops
 ---
@@ -32,4 +32,3 @@ include::modules/trvlops-architecture.adoc[leveloffset=+1]
 == Next steps
 
 * link:getting-started[Deploy the Pattern].
-
