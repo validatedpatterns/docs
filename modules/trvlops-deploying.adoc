@@ -9,7 +9,7 @@
 * An OpenShift cluster
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
  ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
- ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. Verify that a dynamic `StorageClass` exists before creating one by running the following command: 
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`. Verify that a dynamic `StorageClass` exists before creating one by running the following command:
 +
 [source,terminal]
 ----
@@ -38,7 +38,7 @@ public or private cloud by using https://console.redhat.com/openshift/create[Red
 
 .Procedure
 
-. Fork the https://github.com/validatedpatterns-sandbox/travelops[travelops] repository on GitHub.
+. Fork the https://github.com/validatedpatterns/travelops[travelops] repository on GitHub.
 
 . Clone the forked copy of this repository.
 +
@@ -51,14 +51,14 @@ $ git clone git@github.com:your-username/travelops.git
 +
 [source,terminal]
 ----
-$ cd /path/to/your/repository 
+$ cd /path/to/your/repository
 ----
 
 . Run the following command to set the upstream repository:
 +
 [source,terminal]
 ----
-$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/travelops.git 
+$ git remote add -f upstream git@github.com:validatedpatterns/travelops.git
 ----
 
 . Verify the setup of your remote repositories by running the following command:
@@ -74,9 +74,9 @@ $ git remote -v
 ----
 origin	git@github.com:<your-username>/travelops.git (fetch)
 origin	git@github.com:<your-username>/travelops.git (push)
-upstream	https://github.com/validatedpatterns-sandbox/travelops.git (fetch)
-upstream	https://github.com/validatedpatterns-sandbox/travelops.git (push)
----- 
+upstream	https://github.com/validatedpatterns/travelops.git (fetch)
+upstream	https://github.com/validatedpatterns/travelops.git (push)
+----
 
 . Create a local copy of the secret values file that can safely include credentials. Run the following commands:
 +
@@ -118,7 +118,7 @@ Do not commit this file. Committing it may expose personal credentials to GitHub
 $ git switch -c my-branch
 ----
 
-.. Edit the `values-hub.yaml` file to customize the deployment for your cluster by running the following command: 
+.. Edit the `values-hub.yaml` file to customize the deployment for your cluster by running the following command:
 +
 [source,terminal]
 ----
@@ -164,7 +164,7 @@ To deploy the pattern by using the `pattern.sh` script, complete the following s
 $ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
 ----
 
-. Alternatively log in by running the following command: 
+. Alternatively log in by running the following command:
 +
 [source,terminal]
 ----
@@ -187,7 +187,7 @@ $ ./pattern.sh make install
 
  .. Set your project to `All Projects` and verify the operators are installed and have a status of `Succeeded`.
 
-. Verify that all applications are synchronized. Under *Networking* -> *Routes* with the project set to *travelops-hub* select the *Location URL* associated with the *hub-gitops-server* . All application are report status as `Synched`. 
+. Verify that all applications are synchronized. Under *Networking* -> *Routes* with the project set to *travelops-hub* select the *Location URL* associated with the *hub-gitops-server* . All application are report status as `Synched`.
 +
 image::travelops/ossm-sync-success.png[ArgoCD Applications,link="/images/travelops/ossm-sync-success.png"]
 
@@ -227,9 +227,9 @@ When we see the &#x1F512; icon next to our applications and in the top right han
 * The "&#x1F512;" is present next to the logged in user in top right corner of the window.
 * 7 applications in the `travel-agency` tile with the "&#x1F512;" next to `Istio config`
 * 1 application in the `travel-control` tile with the "&#x1F512;" next to `Istio config`
-* 3 applications in the `travel-portal` tile with the "&#x1F512;" next to `Istio config` 
+* 3 applications in the `travel-portal` tile with the "&#x1F512;" next to `Istio config`
 
-. Review your Kiali dashboard 
+. Review your Kiali dashboard
 +
 image:travelops/ossm-kiali-db-arrows.png[Kiali Dashboard,link="/images/travelops/ossm-kiali-db-arrows.png"]
 
@@ -242,10 +242,10 @@ In the left hand menu:
 
 . Cilck *Graph*.
 
-. In the `Namespace` dropdown, select `travel-agency`. 
+. In the `Namespace` dropdown, select `travel-agency`.
 
 . Exit the menu
 
 You should see all of the deployments and services that make up the travel-agency application.
 +
-image:travelops/travel-agency-svc-kiali.png[Travel Agency,link="/images/travelops/travel-agency-svc-kiali.png"] 
+image:travelops/travel-agency-svc-kiali.png[Travel Agency,link="/images/travelops/travel-agency-svc-kiali.png"]
