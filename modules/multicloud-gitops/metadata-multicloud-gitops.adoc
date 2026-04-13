@@ -4,11 +4,11 @@
 :name: multicloud-gitops
 :pattern_version: 1.0
 :display_name: Multicloud Gitops
-:repo_url: https://github.com/validatedpatterns/multicloud-gitops
+:repo_url: https://github.com/validatedpatterns-sandbox/omnicloud-as-a-service
 :docs_repo_url: https://github.com/validatedpatterns/docs
-:issues_url: https://github.com/validatedpatterns/multicloud-gitops/issues
-:docs_url: https://validatedpatterns.io/patterns/multicloud-gitops/
-:ci_url: https://validatedpatterns.io/ci/?pattern=mcgitops
+:issues_url: https://github.com/validatedpatterns-sandbox/omnicloud-as-a-service/issues
+:docs_url: https://validatedpatterns.io/patterns/omnicloud/
+:ci_url: https://validatedpatterns.io/ci/?pattern=omnicloud
 :tier: maintained
 :owners: mbaldessari, darkdoc
 :requirements_hub_compute_platform_gcp_replicas: 3
