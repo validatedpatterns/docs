@@ -1,6 +1,6 @@
 # This GH action has the goal to fetch the pattern-metadata.yaml file (if existing)
 # and output all of its flattened yaml structure into asciidoc variables for the pattern
-# 
+#
 # It needs a secret called DOCS_TOKEN to be set in the pattern's repository
 # that calls this GH action. It has to be  a PAT token with the following
 # permissions on the `validatedpatterns/docs` repository
@@ -20,15 +20,23 @@ name: Update docs from pattern's metadata
 on:
   workflow_call:
     secrets:
+      METADATA_SYNC_PRIVATE_KEY:
+        required: false
+        description: The private key for the Validated Patterns Metadata Sync app (must be set if DOCS_TOKEN is not)
       DOCS_TOKEN:
         required: false
-        description: The token used to create a PR in the docs repository
+        description: PAT with read/write (content and PRs) for validatedpatterns/docs repo (must be set if METADATA_SYNC_PRIVATE_KEY is not)
     inputs:
       DOCS_BRANCH:
         description: "Branch of the docs git repo to use"
         required: false
         type: string
         default: "main"
+      METADATA_SYNC_APP_ID:
+        description: "Validated Patterns Metadata Sync app id"
+        required: false
+        type: string
+        default: "3329715"
 
 env:
   DOCS_DIR: docs
@@ -74,13 +82,32 @@ jobs:
           } >> "${GITHUB_ENV}"
         working-directory: ${{ env.PATTERN_DIR }}
 
+      - name: Generate token with Metadata Sync GitHub App
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+        id: app-token
+        with:
+          app-id: ${{ vars.METADATA_SYNC_APP_ID }}
+          private-key: ${{ secrets.METADATA_SYNC_PRIVATE_KEY }}
+          owner: validatedpatterns
+          repositories: docs
+        continue-on-error: true
+
+      - name: Resolve Documentation Token
+        # Use App token if available, else fall back to the legacy secret
+        run: |
+          if [ -n "${{ steps.app-token.outputs.token }}" ]; then
+            echo "FINAL_TOKEN=${{ steps.app-token.outputs.token }}" >> $GITHUB_ENV
+          else
+            echo "FINAL_TOKEN=${{ secrets.DOCS_TOKEN }}" >> $GITHUB_ENV
+          fi
+
       - name: Checkout docs repository
         uses: actions/checkout@v6
         with:
           path: ${{ env.DOCS_DIR }}
           repository: ${{ env.DOCS_REPO }}
           ref: ${{ inputs.DOCS_BRANCH }}
-          token: ${{ secrets.DOCS_TOKEN }}
+          token: ${{ env.FINAL_TOKEN }}
 
       - name: Template the cluster variables on to the patterns-variables .adoc file
         run: |-
@@ -104,4 +131,4 @@ jobs:
           gh pr edit -B "${{ inputs.DOCS_BRANCH }}" --title 'Cluster variables change for ${{ env.PATTERN }}' --body 'Created by Github action'
         working-directory: ${{ env.DOCS_DIR }}
         env:
-          GITHUB_TOKEN: ${{ secrets.DOCS_TOKEN }}
+          GITHUB_TOKEN: ${{ env.FINAL_TOKEN }}
