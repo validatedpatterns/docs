@@ -1,0 +1,78 @@
+---
+ date: 2026-04-13
+ title: Validated Patterns now deploys its own ArgoCD instance
+ summary: The 0.0.70 patterns operator now creates and manages a dedicated ArgoCD instance in the vp-gitops namespace instead of relying on the default openshift-gitops instance
+ author: Michele Baldessari
+ blog_tags:
+ - patterns
+ - argocd
+ - gitops
+---
+:toc:
+:imagesdir: /images
+
+== Preamble
+
+Until now the Validated Patterns operator relied on the default ArgoCD instance
+created by the OpenShift GitOps operator in the `openshift-gitops` namespace.
+While this worked, it meant that the patterns framework shared its ArgoCD
+instance with whatever else the cluster administrator or the gitops operator
+itself might configure there. Starting with the 0.0.70 version of the patterns
+operator, new deployments will get their own dedicated ArgoCD instance running
+in a brand-new `vp-gitops` namespace.
+
+== Why the change
+
+Sharing the default `openshift-gitops` ArgoCD instance had a few drawbacks:
+
+* *Potential conflicts* Any other workload or operator that also relied on the
+  default ArgoCD instance could interfere with the patterns deployment,
+  and vice versa.
+* *Lifecycle coupling* Upgrades or configuration changes to the
+  gitops-operator's default instance could unexpectedly affect a running
+  pattern.
+* *Limited customization* Because the default instance is owned and managed by
+  the gitops-operator, the patterns operator had limited control over its
+  configuration (e.g. init-containers, resource settings, sync policies).
+
+By owning its own ArgoCD instance in the `vp-gitops` namespace, the patterns
+operator can configure it exactly the way it needs without worrying about
+external interference.
+
+== What changes for new deployments
+
+On a fresh cluster where no previous Validated Patterns deployment exists, the
+operator now:
+
+1. Tells the gitops-operator to *not* create the default ArgoCD instance by
+   setting the `DISABLE_DEFAULT_ARGOCD_INSTANCE=true` environment variable on
+   the gitops-operator subscription. This avoids having an unused ArgoCD
+   instance sitting in `openshift-gitops`.
+2. Creates the `vp-gitops` namespace itself and deploys a dedicated ArgoCD CR
+   there.
+3. Creates a *ConsoleLink* resource so that the new ArgoCD instance shows up
+   in the OpenShift console application menu (the nine-box), labelled
+   "ArgoCD VP". This makes it easy to find and access.
+
+== What changes for existing deployments
+
+*Nothing.* If you already have a running Validated Patterns deployment that
+uses the default `openshift-gitops` ArgoCD instance, it will continue to work
+exactly as before. The operator detects whether the legacy
+`openshift-gitops/openshift-gitops` ArgoCD CR exists at reconciliation time.
+If it does, the operator operates in legacy mode: it keeps using the existing
+instance and does not set `DISABLE_DEFAULT_ARGOCD_INSTANCE` on the
+gitops-operator subscription. Your environment is not affected in any way.
+
+This detection happens automatically on every reconcile loop, so there is no
+manual configuration or migration step needed. Existing clusters that upgrade
+the patterns operator will simply keep running as they always have.
+
+== Summary
+
+This change gives the Validated Patterns framework its own independent ArgoCD
+instance, improving isolation and giving the operator full control over its
+GitOps engine. Existing deployments are unaffected and will continue to use
+the `openshift-gitops` instance they were deployed with. New deployments will
+automatically get the dedicated `vp-gitops` instance with no additional
+configuration required.
