@@ -11,7 +11,7 @@ aliases: /devsecops/getting-started/
 1. An OpenShift cluster (Go to [the OpenShift console](https://console.redhat.com/openshift/create)). Cluster must have a dynamic StorageClass to provision PersistentVolumes. See also [sizing your cluster](../../devsecops/cluster-sizing).
 1. A second OpenShift cluster for development using secure CI pipelines.
 1. A third OpenShift cluster for production. (optional but desirable)
-1. A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
+1. A GitHub account and a personal access token. The Tekton CI/CD pipelines use this token to clone repositories, push commits, and create pull requests. You can use either a classic token or a fine-grained token. For details, see [GitHub token scopes](#github-token-scopes).
 1. Tools Podman and Git. (see below)
 
 If you do not have running Red Hat OpenShift clusters you can start one on a
@@ -23,7 +23,7 @@ service](https://console.redhat.com/openshift/create).
 In addition to the openshift cluster, you will need to prepare a number of secrets, or credentials, which will be used
 in the pattern in various ways. To do this, copy the [values-secret.yaml template](https://github.com/validatedpatterns/multicluster-devsecops/blob/main/values-secret.yaml.template) to your home directory as `values-secret.yaml` and replace the explanatory text as follows:
 
-* Your git repository username and password. The password must be base64 encoded.
+* Your GitHub username and personal access token. Use the token as the password value. For required token scopes, see [GitHub token scopes](#github-token-scopes). The token must be base64 encoded.
 
 ```yaml
 ---
@@ -31,9 +31,10 @@ secrets:
   # NEVER COMMIT THESE VALUES TO GIT
   git:
     # Go to: https://github.com/settings/tokens
-    # Then: echo -n 'your string value' | base64
+    # For required scopes, see the "GitHub token scopes" section in the docs
+    # Then: echo -n 'your-token' | base64
     username: USERNAME
-    password: 'encoded password in single quotes'
+    password: 'encoded token in single quotes'
 ```
 
 * You application secret.  TBD This may change when the application is changed.
@@ -46,6 +47,36 @@ secrets:
     # Secret used for demonstrating vault storage, external secrets, and ACM distribution secure
     secret: PLAINTEXT
 ```
+
+## GitHub token scopes
+
+The Tekton CI/CD pipelines require a GitHub personal access token to clone repositories, push commits, and create pull requests. You can use a classic token or a fine-grained token.
+
+### Option 1: Classic token
+
+Create a [personal access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) with the following scope:
+
+| Scope | Reason |
+|-------|--------|
+| **`repo`** | Grants read and write access to repositories, including the ability to create pull requests |
+
+To create the token, go to [GitHub Settings > Tokens](https://github.com/settings/tokens).
+
+### Option 2: Fine-grained token
+
+If you prefer more restrictive permissions, create a [fine-grained personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token) with the following repository permissions:
+
+| Permission | Access | Reason |
+|------------|--------|--------|
+| **Contents** | Read and write | Clone repositories and push commits |
+| **Pull requests** | Read and write | Create pull requests through the GitHub API |
+
+When you create a fine-grained token, you must also configure these settings:
+
+- **Resource owner**: Select the GitHub account or organization that owns your fork.
+- **Repository access**: Grant access to your fork of the `multicluster-devsecops` repository. If the pipelines interact with additional repositories, include those as well.
+
+> **Note:** Fine-grained tokens are scoped to specific repositories and owners. If your organization restricts fine-grained token usage, you must use a classic token instead.
 
 # Preparing to deploy
 
