@@ -1142,7 +1142,8 @@ To resolve this you need to run the following to load the secrets into the vault
 $ ./pattern.sh make load-secrets You must have created a local copy of the secret values file by running the following command:
 $ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml The deployment will not take long but it should deploy successfully.
 Alternatively you can deploy the Multicloud GitOps pattern by using the command line script pattern.sh.
-Deploying the cluster by using the pattern.sh script To deploy the cluster by using the pattern.sh script, complete the following steps:
+Deploying the cluster by using the pattern.sh script Prerequisites Access to an OpenShift Container Platform cluster by using an account with cluster-admin permissions.
+To deploy the cluster by using the pattern.sh script, complete the following steps:
 Navigate to the root directory of the cloned repository by running the following command:
 $ cd /path/to/your/repository Log in to your cluster by running the following this procedure:
 Obtain an API token by visiting https://oauth-openshift.apps.&lt;your-cluster&gt;.&lt;domain&gt;/oauth/token/request
