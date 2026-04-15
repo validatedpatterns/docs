@@ -14,7 +14,7 @@ aliases: /trilio-cr/prerequisites/
 | DR Spoke | Disaster Recovery target | 3 worker nodes, 8 vCPU / 32 GB each |
 
 Both clusters must:
-- Run Red{nbsp}Hat OpenShift 4.18 or later
+- Run Red&nbsp;Hat OpenShift 4.18 or later
 - Have network access to the shared S3 bucket
 - Be reachable by ACM on the hub
 
