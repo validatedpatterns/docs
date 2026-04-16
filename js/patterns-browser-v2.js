@@ -267,7 +267,7 @@ function checkCategoryObject(patternTerms, filterTerms, filter_type) {
 
 function renderSpinner() {
   // HTML for the loading spinner
-  return (`div class="pf-l-bullseye">
+  return (`<div class="pf-l-bullseye">
     <div class="pf-l-bullseye__item">
       <svg class="pf-c-spinner" role="progressbar" viewBox="0 0 100 100" aria-label="Loading..." >
       <circle class="pf-c-spinner__path" cx="50" cy="50" r="45" fill="none" />
