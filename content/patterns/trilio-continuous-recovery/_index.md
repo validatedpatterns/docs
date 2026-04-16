@@ -4,9 +4,9 @@ date: 2026-04-08
 tier: sandbox
 summary: A demonstration of Trilio Continuous Restore for stateful applications
 rh_products:
-  - Red{nbsp}Hat OpenShift Container Platform
-  - Red{nbsp}Hat OpenShift GitOps
-  - Red{nbsp}Hat Advanced Cluster Management
+  - Red&nbsp;Hat OpenShift Container Platform
+  - Red&nbsp;Hat OpenShift GitOps
+  - Red&nbsp;Hat Advanced Cluster Management
 partners:
   - Trilio
 industries:
@@ -19,16 +19,16 @@ links:
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ---
 
-# Trilio Continuous Restore — Red{nbsp}Hat Validated Pattern
+# Trilio Continuous Restore — Red&nbsp;Hat Validated Pattern
 
 ## Overview
 
-This Validated Pattern delivers an automated, GitOps-driven Disaster Recovery (DR) solution for stateful applications running on Red{nbsp}Hat OpenShift. By integrating [Trilio for Kubernetes](https://trilio.io) with the [Red{nbsp}Hat Validated Patterns framework](https://validatedpatterns.io), the pattern delivers:
+This Validated Pattern delivers an automated, GitOps-driven Disaster Recovery (DR) solution for stateful applications running on Red&nbsp;Hat OpenShift. By integrating [Trilio for Kubernetes](https://trilio.io) with the [Red&nbsp;Hat Validated Patterns framework](https://validatedpatterns.io), the pattern delivers:
 
 - **Automated backup** of stateful workloads on the primary (hub) cluster
 - **Continuous Restore** — Trilio's accelerated Recovery Time Objective (RTO) DR path that continuously pre-stages backup data on the DR cluster so that recovery requires only metadata retrieval, not a full data transfer
 - **Automated DR testing** — the full backup-to-restore lifecycle runs as a scheduled, self-healing GitOps workflow with no human intervention after initial setup
-- **Multi-cluster lifecycle management** through Red{nbsp}Hat Advanced Cluster Management (ACM)
+- **Multi-cluster lifecycle management** through Red&nbsp;Hat Advanced Cluster Management (ACM)
 
 ### Use case
 
@@ -78,9 +78,9 @@ graph TD
 |-----------|-------|------|
 | Trilio Operator | Hub + Spoke | Installed through Operator Lifecycle Manager (OLM) from the `certified-operators` catalog, channel `5.3.x` |
 | TrilioVaultManager | Hub + Spoke | Trilio operand Custom Resource (CR); manages the Trilio data plane |
-| Red{nbsp}Hat OpenShift | Hub + Spoke | Container orchestration platform; provides OLM, storage, networking, and the GitOps operator substrate |
-| Red{nbsp}Hat OpenShift GitOps (ArgoCD) | Hub + Spoke | GitOps sync engine; all configuration is driven from Git |
-| Red{nbsp}Hat Advanced Cluster Management (ACM) | Hub | Cluster lifecycle, policy enforcement, and spoke provisioning |
+| Red&nbsp;Hat OpenShift | Hub + Spoke | Container orchestration platform; provides OLM, storage, networking, and the GitOps operator substrate |
+| Red&nbsp;Hat OpenShift GitOps (ArgoCD) | Hub + Spoke | GitOps sync engine; all configuration is driven from Git |
+| Red&nbsp;Hat Advanced Cluster Management (ACM) | Hub | Cluster lifecycle, policy enforcement, and spoke provisioning |
 | Validated Patterns Imperative CronJob | Hub + Spoke | Runs the automated DR lifecycle on a 10-minute schedule |
 | BackupTarget | Hub + Spoke | Points to the shared S3 bucket; the spoke BackupTarget has the EventTarget flag set |
 | BackupPlan | Hub | Defines backup scope (wordpress namespace), quiesce/unquiesce hooks, and retention |
@@ -99,9 +99,9 @@ graph TD
 ## Links
 
 - [Trilio for Kubernetes documentation](https://docs.trilio.io/kubernetes)
-- [Red{nbsp}Hat Validated Patterns](https://validatedpatterns.io)
+- [Red&nbsp;Hat Validated Patterns](https://validatedpatterns.io)
 - [Validated Patterns imperative framework](https://validatedpatterns.io/learn/imperative-actions/)
-- [Red{nbsp}Hat Advanced Cluster Management (ACM)](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes)
+- [Red&nbsp;Hat Advanced Cluster Management (ACM)](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes)
 - [External Secrets Operator](https://external-secrets.io)
 
 ## Next steps
