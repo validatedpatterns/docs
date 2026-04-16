@@ -3,6 +3,7 @@
 :metadata_version: 2.0
 :name: ansible-edge-gitops
 :pattern_version: 2.0
+:description: Ansible Edge GitOps demonstrates managing edge devices and VMs at scale using Ansible Automation Platform on OpenShift, bringing GitOps practices to environments that lack native GitOps support.
 :display_name: Ansible Edge GitOps
 :repo_url: https://github.com/validatedpatterns/ansible-edge-gitops
 :docs_repo_url: https://github.com/validatedpatterns/docs
