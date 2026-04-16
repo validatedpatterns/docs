@@ -114,12 +114,11 @@ When you create a fine-grained token, you must also configure these settings:
    vi ~/values-secret.yaml
    ```
 
-1. Customize the deployment for your cluster. Change the appropriate values in `values-global.yaml`
+1. Optional: Customize the deployment for your cluster. The `values-global.yaml` file contains global settings for the pattern. For a description of each field, see [Global configuration reference](/learn/values-global-configuration/). If you make changes, commit and push them:
 
    ```sh
-   vi values-global.yaml
    git add values-global.yaml
-   git commit values-global.yaml
+   git commit -m "Customize values-global for my cluster"
    git push origin my-branch
    ```
 

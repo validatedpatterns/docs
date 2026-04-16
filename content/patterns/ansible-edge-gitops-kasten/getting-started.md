@@ -211,13 +211,12 @@ To install a collection that is not currently installed:
     git push origin my-branch
     ```
 
-1. Customize the deployment for your cluster (Optional - the defaults in values-global.yaml are designed to work in AWS):
+1. Optional: Customize the deployment for your cluster. The defaults in `values-global.yaml` are designed to work in AWS. For a description of each field, see [Global configuration reference](/learn/values-global-configuration/). If you make changes, create a branch, commit, and push:
 
    ```sh
    git checkout -b my-branch
-   vi values-global.yaml
    git add values-global.yaml
-   git commit values-global.yaml
+   git commit -m "Customize values-global for my cluster"
    git push origin my-branch
    ```
 
