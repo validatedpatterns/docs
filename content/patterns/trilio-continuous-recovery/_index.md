@@ -4,9 +4,9 @@ date: 2026-04-08
 tier: sandbox
 summary: A demonstration of Trilio Continuous Restore for stateful applications
 rh_products:
-  - Red&nbsp;Hat OpenShift Container Platform
-  - Red&nbsp;Hat OpenShift GitOps
-  - Red&nbsp;Hat Advanced Cluster Management
+  - Red Hat OpenShift Container Platform
+  - Red Hat OpenShift GitOps
+  - Red Hat Advanced Cluster Management
 partners:
   - Trilio
 industries:
