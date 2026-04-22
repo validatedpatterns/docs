@@ -335,8 +335,8 @@ DO NOT COMMIT THIS FILE
 You do not want to push credentials to GitHub.
 cp values-secret.yaml.template ~/values-secret.yaml vi ~/values-secret.yaml values-secret.yaml example
 secrets: - name: rhpam vaultPrefixes: - global fields: - name: rhpam_api_passwd value: kieserver - name: sso_siteadmin_password value: r3dh4t1! - name: kie_admin_password value: admin - name: kieserver_user_password value: kieserver - name: psql_passwd value: rhpam - name: fhir-psql-db vaultPrefixes: - global fields: - name: psql_credentials_secret value: psql_secret - name: psql_user_name value: fhir - name: psql_user_passwd value: fhir When you edit the file you can make changes to the various DB and Grafana passwords if you wish.
-Customize the values-global.yaml for your deployment
-git checkout -b my-branch vi values-global.yaml Replace instances of PROVIDE_ with your specific configuration
+Customize the values-global.yaml for your deployment. For a description of each field, see Global configuration reference.
+git checkout -b my-branch Replace instances of PROVIDE_ with your specific configuration
 global: pattern: emerging-disease-detection hubClusterDomain: &#34;AUTO&#34; # this is for test only This value is automatically fetched when Invoking against a cluster options: useCSV: false syncPolicy: Automatic installPlanApproval: Automatic main: clusterGroupName: hub gitOpsSpec: operatorChannel: gitops-1.9 git add values-global.yaml git commit values-global.yaml git push origin my-branch You can deploy the pattern using the validated pattern operator. If you do use the operator then skip to Validating the Environment below.
 Preview the changes that will be made to the Helm charts.
 ./pattern.sh make show Login to your cluster using oc login or exporting the KUBECONFIG
@@ -380,7 +380,8 @@ cp values-secret.yaml.template ~/values-gaudi-rag-chat-qna.yaml vi ~/values-gaud
 (Optional) If cluster is behind proxy values-global.yaml should be similar to the following:
 If the cluster is behind proxy remember to change proxy values of fields gaudillm.build_envs and gaudillm.runtime_envs in values-global.yaml file to appropriate ones.
 gaudillm: namespace: gaudi-llm build_envs: - name: http_proxy value: http://proxy-internal.cluster1.gaudi.internal:912 - name: https_proxy value: http://proxy-internal.cluster1.gaudi.internal:912 - name: HTTP_PROXY value: http://proxy-internal.cluster1.gaudi.internal:912 - name: HTTPS_PROXY value: http://proxy-internal.cluster1.gaudi.internal:912 - name: no_proxy value: .cluster.local,.gaudi.internal,.cluster1.gaudi.internal,.svc,192.168.122.0/24,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.cluster1.gaudi.internal,localhost - name: NO_PROXY value: .cluster.local,.gaudi.internal,.cluster1.gaudi.internal,.svc,192.168.122.0/24,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.cluster1.gaudi.internal,localhost runtime_envs: - name: http_proxy value: http://proxy-internal.cluster1.gaudi.internal:912 - name: https_proxy value: http://proxy-internal.cluster1.gaudi.internal:912 - name: HTTP_PROXY value: http://proxy-internal.cluster1.gaudi.internal:912 - name: HTTPS_PROXY value: http://proxy-internal.cluster1.gaudi.internal:912 - name: no_proxy value: .cluster.local,.gaudi.internal,.cluster1.gaudi.internal,.svc,192.168.122.0/24,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.cluster1.gaudi.internal,localhost - name: NO_PROXY value: .cluster.local,.gaudi.internal,.cluster1.gaudi.internal,.svc,192.168.122.0/24,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.cluster1.gaudi.internal,localhost Customize the deployment for your cluster. Run the following command:
-git checkout -b my-branch vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator.
+git checkout -b my-branch For a description of each field in values-global.yaml, see Global configuration reference. Edit the file, then commit and push:
+git add values-global.yaml git commit -m &#34;Customize values-global for my cluster&#34; git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator.
 If you have not set HuggingFace token in secrets file there will be prompt to set the token.
 Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
 Login to your cluster by running the following command:
@@ -551,8 +552,9 @@ Procedure Fork the amx-accelerated-rhoai-multicloud-gitops repository on GitHub.
 Clone the forked copy of this repository.
 git clone git@github.com:your-username/amx-accelerated-rhoai-multicloud-gitops.git Create a local copy of the secret values file that can safely include credentials for the config-demo application and edit it if you want to customize the secret. If not, the framework generates a random password.
 cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml Do not commit this file. You do not want to push personal credentials to GitHub.
-(Optional) You may customize the deployment for your cluster depending on your needs by editing values-global.yaml and values-hub.yaml. To do this run the following commands:
-git checkout -b my-branch vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator - both methods are described below.
+Optional: Customize the deployment for your cluster by editing values-global.yaml and values-hub.yaml. For a description of each field, see Global configuration reference. To do this, run the following commands:
+git checkout -b my-branch Edit the file, then commit and push:
+git add values-global.yaml git commit -m &#34;Customize values-global for my cluster&#34; git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator - both methods are described below.
 Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
 Login to your cluster by running the following command:
 oc login Optional: Set the KUBECONFIG variable for the kubeconfig file path:
@@ -608,7 +610,8 @@ Clone the forked copy of this repository.
 git clone git@github.com:your-username/amx-accelerated-multicloud-gitops.git Create a local copy of the secret values file that can safely include credentials for the config-demo application and edit it if you want to customize the secret. If not, the framework generates a random password.
 cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml Do not commit this file. You do not want to push personal credentials to GitHub.
 (Optional) You may customize the deployment for your cluster depending on your needs by editing values-global.yaml and values-hub.yaml. To do this run the following commands:
-git checkout -b my-branch vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator - both methods are described below.
+git checkout -b my-branch For a description of each field in values-global.yaml, see Global configuration reference. Edit the file, then commit and push:
+git add values-global.yaml git commit -m &#34;Customize values-global for my cluster&#34; git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator - both methods are described below.
 Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
 Login to your cluster by running the following command:
 oc login Optional: Set the KUBECONFIG variable for the kubeconfig file path:
@@ -670,8 +673,9 @@ Procedure Fork the multicloud-gitops-qat repository on GitHub.
 Clone the forked copy of this repository.
 git clone git@github.com:your-username/qat-accelerated-istio.git Create a local copy of the secret values file that can safely include credentials for the config-demo application and edit it if you want to customize the secret. If not, the framework generates a random password.
 cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml Do not commit this file. You do not want to push personal credentials to GitHub.
-(Optional) You may customize the deployment for your cluster depending on your needs by editing values-global.yaml and values-hub.yaml. To do this run the following commands:
-git checkout -b my-branch vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator - both methods are described below.
+Optional: Customize the deployment for your cluster by editing values-global.yaml and values-hub.yaml. For a description of each field, see Global configuration reference. To do this, run the following commands:
+git checkout -b my-branch Edit the file, then commit and push:
+git add values-global.yaml git commit -m &#34;Customize values-global for my cluster&#34; git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator - both methods are described below.
 Deploying the cluster by using the pattern.sh file This is preferred way of installation, as it does not require from user to manually generate and put certificates in Hashicorp Vault. To deploy the cluster by using the pattern.sh file, complete the following steps:
 Login to your cluster by running the following command:
 oc login Optional: Set the KUBECONFIG variable for the kubeconfig file path:
@@ -746,7 +750,8 @@ Clone the forked copy of this repository.
 git clone git@github.com:your-username/multicloud-gitops-sgx-hello-world.git Create a local copy of the secret values file that can safely include credentials for the config-demo application and edit it if you want to customize the secret. If not, the framework generates a random password.
 cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml Do not commit this file. You do not want to push personal credentials to GitHub.
 (Optional) You may customize the deployment for your cluster depending on your needs by editing values-global.yaml and values-hub.yaml. To do this run the following commands:
-git checkout -b my-branch vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch (Optional) Prepare and build hello-world docker image and convert it to secure version using GSC - described below. The sample image is available on Red Hat container registry (quay.io/hybridcloudpatterns/hello-world-sgx:3.12) and is pulled automatically during pattern installation process with default variables.
+git checkout -b my-branch For a description of each field in values-global.yaml, see Global configuration reference. Edit the file, then commit and push:
+git add values-global.yaml git commit -m &#34;Customize values-global for my cluster&#34; git push origin my-branch (Optional) Prepare and build hello-world docker image and convert it to secure version using GSC - described below. The sample image is available on Red Hat container registry (quay.io/hybridcloudpatterns/hello-world-sgx:3.12) and is pulled automatically during pattern installation process with default variables.
 Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator - both methods are described below.
 Optional: Prepare docker image and convert it to use Intel SGX To build docker image and convert it to secure version with SGX, complete the following steps using machine dedicated for GSC conversion:
 Create an empty file named Dockerfile:
@@ -829,8 +834,9 @@ Fork the sgx-multicloud-gitops-vault repository on GitHub.
 Clone the forked copy of this repository.
 git clone git@github.com:your-username/sgx-multicloud-gitops-vault.git Create a local copy of the secret values file that can safely include credentials for the config-demo application and edit it if you want to customize the secret. If not, the framework generates a random password.
 cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml Do not commit this file. You do not want to push personal credentials to GitHub.
-(Optional) You may customize the deployment for your cluster depending on your needs by editing values-global.yaml and values-hub.yaml. To do this run the following commands:
-git checkout -b my-branch vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch (Optional) The SGX-protected Vault container image is available as a pre-built image and currently, the pattern is configured to use as is. When there is a need to build it on your own and protect it with SGX, then follow the description below.
+Optional: Customize the deployment for your cluster by editing values-global.yaml and values-hub.yaml. For a description of each field, see Global configuration reference. To do this, run the following commands:
+git checkout -b my-branch Edit the file, then commit and push:
+git add values-global.yaml git commit -m &#34;Customize values-global for my cluster&#34; (Optional) The SGX-protected Vault container image is available as a pre-built image and currently, the pattern is configured to use as is. When there is a need to build it on your own and protect it with SGX, then follow the description below.
 Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator - both methods are described below.
 (Optional) Prepare Vault docker image and convert to SGX Pre-built protected Vault image is available to pull from quay.io/hybridcloudpatterns/sgx-protected-vault. If a user would like to build such an image on their own, there are step-by-step instructions below.
 Prerequisites: Gramine Shielded Containers application requires a machine with the same OS as the input image to create an SGX converted image. In this case, it would be Red Hat Enterprise Linux 8.8. This machine does not have to have the SGX feature enabled because it will be used for conversion purposes only.
@@ -1002,8 +1008,8 @@ git clone git@github.com:your-username/ansible-edge-gitops-kasten.git Create a l
 WARNING: DO NOT COMMIT THIS FILE
 You do not want to push personal credentials to GitHub.
 cp values-secret.yaml.template ~/values-secret.yaml vi ~/values-secret.yaml Customize default Kasten settings to specify the configuration of your S3 backup target:
-git checkout -b my-branch vi values-kasten.yaml --- kasten: kdrSecretKey: secret/data/hub/kastendr-passphrase policyDefaults: locationProfileName: my-location-profile presetName: daily-backup ignoreExceptions: false locationProfileDefaults: secretKey: secret/data/hub/aws-creds immutable: false protectionPeriod: 120h0m0s # 5 Days s3Region: us-east-1 locationProfiles: location-profile-1: name: my-location-profile bucketName: your-bucket-name # REPLACE with the AWS S3 bucket name to store backup data immutable: false # SET true only if AWS S3 bucket was created with Versioning/Object Lock enabled; otherwise false protectionPeriod: 168h0m0s # 7 Days # OPTIONAL, override default immutablility period. Caution, you will not be able to delete backup data for this amount of time! git add values-kasten.yaml git commit values-kasten.yaml git push origin my-branch Customize the deployment for your cluster (Optional - the defaults in values-global.yaml are designed to work in AWS):
-git checkout -b my-branch vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch Please review the Patterns quick start page. This section describes deploying the pattern using pattern.sh. You can deploy the pattern using the validated pattern operator. If you do use the operator then skip to Validating the Environment below.
+git checkout -b my-branch vi values-kasten.yaml --- kasten: kdrSecretKey: secret/data/hub/kastendr-passphrase policyDefaults: locationProfileName: my-location-profile presetName: daily-backup ignoreExceptions: false locationProfileDefaults: secretKey: secret/data/hub/aws-creds immutable: false protectionPeriod: 120h0m0s # 5 Days s3Region: us-east-1 locationProfiles: location-profile-1: name: my-location-profile bucketName: your-bucket-name # REPLACE with the AWS S3 bucket name to store backup data immutable: false # SET true only if AWS S3 bucket was created with Versioning/Object Lock enabled; otherwise false protectionPeriod: 168h0m0s # 7 Days # OPTIONAL, override default immutablility period. Caution, you will not be able to delete backup data for this amount of time! git add values-kasten.yaml git commit values-kasten.yaml git push origin my-branch Optional: Customize the deployment for your cluster. The defaults in values-global.yaml are designed to work in AWS. For a description of each field, see Global configuration reference. If you make changes, create a branch, commit, and push:
+git checkout -b my-branch git add values-global.yaml git commit -m &#34;Customize values-global for my cluster&#34; git push origin my-branch Please review the Patterns quick start page. This section describes deploying the pattern using pattern.sh. You can deploy the pattern using the validated pattern operator. If you do use the operator then skip to Validating the Environment below.
 (Optional) Preview the changes. If you&rsquo;d like to review what is been deployed with the pattern, pattern.sh provides a way to show what will be deployed.
 ./pattern.sh make show Apply the changes to your cluster. This will install the pattern via the Validated Patterns Operator, and then run any necessary follow-up steps.
 ./pattern.sh make install The installation process will take between 45-60 minutes to complete. If you want to know the details of what is happening during that time, the entire process is documented here.
@@ -1051,10 +1057,9 @@ Edit the kiosk-extra section and populate as shown below:
 - name: aap-manifest fields: - name: path: &#39;~/Downloads/&lt;manifest_filename&gt;.zip&#39; base64: true Edit the automation-hub-token section to include the token generated at the Load token link at Automation Hub Token to generate a token. For example:
 - name: automation-hub-token fields: - name: token path: &#39;/path/to/automation-hub-token&#39; Optionally: Edit the agof-vault-file section to use the following (you do not need additional secrets for this pattern):
 - name: agof-vault-file fields: - name: agof-vault-file value: &#39;---&#39; base64: true Create and switch to a new branch named my-branch, by running the following command:
-$ git checkout -b my-branch Edit the values-global.yaml file to customize the deployment for your cluster. The defaults in values-global.yaml are designed to work in AWS. For example:
-$ vi values-global.yaml Add the changes to the staging area by running the following command:
-$ git add values-global.yaml Commit the changes by running the following command:
-$ git commit -m &#34;any updates&#34; Push the changes to your forked repository:
+$ git checkout -b my-branch Optional: Edit the values-global.yaml file to customize the deployment for your cluster. The defaults are designed to work in AWS. For a description of each field, see Global configuration reference.
+If you make changes, stage and commit them:
+$ git add values-global.yaml $ git commit -m &#34;Customize values-global for my cluster&#34; Push the changes to your forked repository:
 $ git push origin my-branch The preferred way to install this pattern is by using the script ./pattern.sh script.
 Deploying the pattern by using the pattern.sh file To deploy the pattern by using the pattern.sh file, complete the following steps:
 Log in to your cluster by following this procedure:
@@ -1127,8 +1132,8 @@ Clone the forked copy of the multicluster-devsecops repository. Use branch v1.0.
 git clone git@github.com:{your-username}/multicluster-devsecops.git cd multicluster-devsecops git checkout v1.0 You could create your own branch where your specific values will be pushed to:
 git checkout -b my-branch A values-secret.yaml file is used to automate setup of secrets needed for:
 A Git repository (E.g. Github, GitLab etc.) Quay registry deployment secrets. Any application secrets that are needed. DO NOT COMMIT THIS FILE. You do not want to push personal credentials to GitHub. Instead copy the template file values-secret.yaml.template to your home directory. Change the values in that file to ones that fit your environment.
-cp values-secret.yaml.template ~/values-secret.yaml vi ~/values-secret.yaml Customize the deployment for your cluster. Change the appropriate values in values-global.yaml
-vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch Getting Started Video Make sure to set up the values-secret.yaml and values-global.yaml correctly (see above). For a demonstration of the deployment, click on the image below to launch the video.
+cp values-secret.yaml.template ~/values-secret.yaml vi ~/values-secret.yaml Optional: Customize the deployment for your cluster. The values-global.yaml file contains global settings for the pattern. For a description of each field, see Global configuration reference. If you make changes, commit and push them:
+git add values-global.yaml git commit -m &#34;Customize values-global for my cluster&#34; git push origin my-branch Getting Started Video Make sure to set up the values-secret.yaml and values-global.yaml correctly (see above). For a demonstration of the deployment, click on the image below to launch the video.
 How to deploy Please review the Patterns quick start page. This section describes deploying the pattern using pattern.sh. You can deploy the pattern using the validated pattern operator. If you do use the operator then skip to Validating the Environment below.
 Preview the changes. If you&rsquo;d like to review what is been deployed with the pattern, pattern.sh provides a way to show what will be deployed.
 ./pattern.sh make show Login to your cluster using oc login or exporting the kubernetes kubeconfig file with KUBECONFIG:
@@ -1222,10 +1227,9 @@ Edit the cloud-init section to include the userData block to use with cloud-init
 - name: agof-vault-file fields: - name: agof-vault-file value: &#39;---&#39; base64: true Edit the otel-cert section to include the path to a pre-existing TLS key and certificate. Populate as shown below:
 - name: otel-cert fields: - name: tls.key path: &#39;~/federated-edge-observability-otel-collector-edge-observability-stack.key&#39; - name: tls.crt path: &#39;~/federated-edge-observability-otel-collector-edge-observability-stack.crt&#39; Certificates for the OpenTelemetry collector infrastructure. Snakeoil that is, self-signed certificates are automatically generated by the makefile as follows by the make snakeoil-certs target, which is automatically run by make install.
 Create and switch to a new branch named my-branch, by running the following command:
-$ git checkout -b my-branch Edit the values-global.yaml file to customize the deployment for your cluster. The defaults in values-global.yaml are designed to work in AWS. For example:
-$ vi values-global.yaml Add the changes to the staging area by running the following command:
-$ git add values-global.yaml Commit the changes by running the following command:
-$ git commit -m &#34;No updates&#34; Push the changes to your forked repository:
+$ git checkout -b my-branch Optional: Edit the values-global.yaml file to customize the deployment for your cluster. The defaults are designed to work in AWS. For a description of each field, see Global configuration reference.
+If you make changes, stage and commit them:
+$ git add values-global.yaml $ git commit -m &#34;Customize values-global for my cluster&#34; Push the changes to your forked repository:
 $ git push origin my-branch The preferred way to install this pattern is to use the script ./pattern.sh script.
 Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
 Log in to your cluster by running the following this procedure:
@@ -1320,8 +1324,8 @@ Do not commit this file. You do not want to push personal credentials to GitHub.
 Run the following commands:
 $ cp values-secret.yaml.template ~/values-secret-medical-diagnosis.yaml $ vi ~/values-secret-medical-diagnosis.yaml Example values-secret.yaml file version &#34;2.0&#34; secrets: # NEVER COMMIT THESE VALUES TO GIT # Database login credentials and configuration - name: xraylab fields: - name: database-user value: xraylab - name: database-host value: xraylabdb - name: database-db value: xraylabdb - name: database-master-user value: xraylab - name: database-password onMissingValue: generate vaultPolicy: validatedPatternDefaultPolicy - name: database-root-password onMissingValue: generate vaultPolicy: validatedPatternDefaultPolicy - name: database-master-password onMissingValue: generate vaultPolicy: validatedPatternDefaultPolicy # Grafana Dashboard admin user/password - name: grafana fields: - name: GF_SECURITY_ADMIN_USER: value: root - name: GF_SECURITY_ADMIN_PASSWORD: onMissingValue: generate vaultPolicy: validatedPatternDefaultPolicy By default, Vault password policy generates the passwords for you. However, you can create your own passwords.
 When defining a custom password for the database users, avoid using the $ special character as it gets interpreted by the shell and will ultimately set the incorrect desired password.
-To customize the deployment for your cluster, update the values-global.yaml file by running the following commands:
-$ git checkout -b my-branch $ vi values-global.yaml Replace &#39;bucketSource&#39; value. User can set any bucket name without special signs (besides &#39;-&#39;) and numbers.
+To customize the deployment for your cluster, update the values-global.yaml file. For a description of each field, see Global configuration reference. Run the following command to create a branch:
+$ git checkout -b my-branch Replace &#39;bucketSource&#39; value. User can set any bucket name without special signs (besides &#39;-&#39;) and numbers.
 ...omitted datacenter: cloudProvider: PROVIDE_CLOUDPROVIDER # Not required for on-prem storageClassName: &#34;ocs-storagecluster-cephfs&#34; # Default filesystem storage used on on-prem cluster, can be changed by user region: PROVIDE_REGION # Not required for on-prem clustername: &#34;&#34; # Not required for on-prem, pattern uses on-prem cluster value instead domain: &#34;&#34; # Not required for on-prem, pattern uses on-prem cluster value instead s3: # Values for S3 bucket access # bucketSource: &#34;provide s3 bucket name where images are stored&#34; bucketSource: &#34;PROVIDE_BUCKET_SOURCE&#34; # Bucket base name used for image-generator and image-server applications. bucketBaseName: &#34;xray-source&#34; $ git add values-global.yaml $ git commit values-global.yaml $ git push origin my-branch To deploy the pattern, you can use the Validated Patterns Operator. If you do use the Operator, skip to validating the environment.
 Installing Validated Pattern this way may cause other components dependent on Vault to not start properly.
 After Validated pattern is installed using operator from OperatorHub user must type in secrets (from values-secret.yaml) into vault manually.
@@ -1417,8 +1421,8 @@ $ cp values-secret.yaml.template ~/values-secret-medical-diagnosis.yaml Example 
 If you want to create custom passwords for the database users you will need to edit this file:
 $ vi ~/values-secret-medical-diagnosis.yaml When defining a custom password for the database users, avoid using the $ special character as it gets interpreted by the shell and will ultimately set the incorrect desired password.
 Create and switch to a new branch named my-branch, by running the following command:
-$ git checkout -b my-branch Edit the values-global.yaml updating the S3 and datacenter details.
-$ vi values-global.yaml Example edited values-global.yaml file global: pattern: xray options: useCSV: False syncPolicy: Automatic installPlanApproval: Automatic datacenter: storageClassName: gp3-csi cloudProvider: aws region: us-east-1 clustername: mytestcluster domain: aws.validatedpatterns.io xraylab: namespace: &#34;xraylab-1&#34; s3: # Values for S3 bucket access # bucketSource: &#34;provide s3 bucket name where images are stored&#34; bucketSource: kevtest-bucket # Bucket base name used for image-generator and image-server applications. bucketBaseName: &#34;xray-source&#34; main: clusterGroupName: hub multiSourceConfig: enabled: true clusterGroupChartVersion: 0.9.* # Example Configuration #datacenter: # cloudProvider: aws # storageClassName: gp2 # region: us-east-1 # clustername: example-sample # domain: patterns.redhat.com Add values-global.yaml to the staging area:
+$ git checkout -b my-branch Edit the values-global.yaml file to update the S3 and datacenter details. For a description of each field, see Global configuration reference.
+Example edited values-global.yaml file global: pattern: xray options: useCSV: False syncPolicy: Automatic installPlanApproval: Automatic datacenter: storageClassName: gp3-csi cloudProvider: aws region: us-east-1 clustername: mytestcluster domain: aws.validatedpatterns.io xraylab: namespace: &#34;xraylab-1&#34; s3: # Values for S3 bucket access # bucketSource: &#34;provide s3 bucket name where images are stored&#34; bucketSource: kevtest-bucket # Bucket base name used for image-generator and image-server applications. bucketBaseName: &#34;xray-source&#34; main: clusterGroupName: hub multiSourceConfig: enabled: true clusterGroupChartVersion: 0.9.* # Example Configuration #datacenter: # cloudProvider: aws # storageClassName: gp2 # region: us-east-1 # clustername: example-sample # domain: patterns.redhat.com Add values-global.yaml to the staging area:
 $ git add values-global.yaml Commit the staged changes with a message:
 $ git commit -m &#34;Update values-global.yaml&#34; Push the changes to your forked repository:
 $ git push origin my-branch You can proceed to install the Medical Diagnosis pattern pattern by using the web console or from command line by using the script ./pattern.sh script.
@@ -1481,8 +1485,8 @@ Fork the rh-multicloud-gitops-pxe repository on GitHub. It is recommended to for
 Clone the forked copy of this repository.
 git clone git@github.com:your-username/multicloud-gitops-pxe.git Create a local copy of the secret values file that can safely include credentials.
 Warning: Do not commit this file. You do not want to push personal credentials to GitHub. Note that if you do not want to customize the secrets, these steps are not needed. The framework generates a random password for the config-demo application.
-cp values-secret.yaml.template ~/values-secret-multicloud-gitops-pxe.yaml vi ~/values-secret-multicloud-gitops-pxe.yaml Customize the deployment for your cluster.
-git checkout -b my-branch vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch You can deploy the pattern by running ./pattern.sh make install or by using the validated pattern operator.
+cp values-secret.yaml.template ~/values-secret-multicloud-gitops-pxe.yaml vi ~/values-secret-multicloud-gitops-pxe.yaml Optional: Customize the deployment for your cluster. The values-global.yaml file contains global settings for the pattern. For a description of each field, see Global configuration reference. If you make changes, create a branch, commit, and push:
+git checkout -b my-branch git add values-global.yaml git commit -m &#34;Customize values-global for my cluster&#34; git push origin my-branch You can deploy the pattern by running ./pattern.sh make install or by using the validated pattern operator.
 Deploying the cluster by using the pattern.sh file To deploy the cluster by using the pattern.sh file, complete the following steps:
 Login to your cluster using oc login or exporting the KUBECONFIG.
 oc login or set KUBECONFIG to the path to your kubeconfig file. For example:
@@ -1783,12 +1787,11 @@ $ cp values-secret.yaml.template ~/values-secret.yaml Edit values-secret.yaml po
 # NEVER COMMIT THESE VALUES TO GIT version: &#34;2.0&#34; secrets: # These are credentials to allow you to push to your image registry (quay.io) for application images - name: imageregistry fields: # eg. Quay -&gt; Robot Accounts -&gt; Robot Login - name: username value: &#34;my-quay-username&#34; - name: password value: &#34;my-quay-password&#34; Do not commit this file. You do not want to push personal credentials to GitHub.
 Customize the deployment for your cluster by following these steps:
 Create a new branch named my-branch and switch to it by running the following command:
-$ git switch -c my-branch Edit the values-hub.yaml file to customize the deployment for your cluster by running the following command:
-$ vi values-global.yaml The defaults should suffice if you just want to see the apps running. The values that you might change are under the imageregistry, if you copied the images to your own quay account and hostname. If you like, you can change the git settings of account, email and hostname to reflect your own account settings.
+$ git switch -c my-branch Optional: Edit the values-global.yaml file to customize the deployment for your cluster. For a description of each field, see Global configuration reference.
+The defaults should suffice if you want to see the apps running. The values that you might change are under the imageregistry, if you copied the images to your own quay account and hostname. You can also change the git settings of account, email and hostname to reflect your own account settings.
 If you plan to customize the build of the applications themselves, there are revision and imageTag settings for each of them.
-Stage the changes to the values-hub.yaml file by running the following commands:
-$ git add values-global.yaml Commit the changes to the values-hub.yaml file by running the following commands:
-$ git commit -m &#34;update deployment for my-branch&#34; Push the changes to the values-global.yaml file by running the following command:
+If you made changes, stage and commit them by running the following commands:
+$ git add values-global.yaml $ git commit -m &#34;Customize values-global for my cluster&#34; Push the changes to the values-global.yaml file by running the following command:
 $ git push origin my-branch Deploy the pattern by running ./pattern.sh make install or by using the Validated Patterns Operator.
 Deploying the pattern by using the pattern.sh script To deploy the pattern by using the pattern.sh script, complete the following steps:
 Log in to your cluster by running the following:
@@ -1880,8 +1883,8 @@ Clone the forked copy of this repository.
 git clone git@github.com:your-username/virtualization-starter-kit.git Create a local copy of the Helm values file that can safely include credentials
 WARNING: DO NOT COMMIT THIS FILE
 You do not want to push personal credentials to GitHub.
-cp values-secret.yaml.template ~/values-secret.yaml vi ~/values-secret.yaml Customize the deployment for your cluster (Optional - the defaults in values-global.yaml are designed to work in AWS):
-git checkout -b my-branch vi values-global.yaml git add values-global.yaml git commit values-global.yaml git push origin my-branch Please review the Patterns quick start page. This section describes deploying the pattern using pattern.sh. You can deploy the pattern using the validated pattern operator. If you do use the operator then skip to Validating the Environment below.
+cp values-secret.yaml.template ~/values-secret.yaml vi ~/values-secret.yaml Optional: Customize the deployment for your cluster. The defaults in values-global.yaml are designed to work in AWS. For a description of each field, see Global configuration reference. If you make changes, create a branch, commit, and push:
+git checkout -b my-branch git add values-global.yaml git commit -m &#34;Customize values-global for my cluster&#34; git push origin my-branch Please review the Patterns quick start page. This section describes deploying the pattern using pattern.sh. You can deploy the pattern using the validated pattern operator. If you do use the operator then skip to Validating the Environment below.
 (Optional) Preview the changes. If you&rsquo;d like to review what is been deployed with the pattern, pattern.sh provides a way to show what will be deployed.
 ./pattern.sh make show Apply the changes to your cluster. This will install the pattern via the Validated Patterns Operator, and then run any necessary follow-up steps.
 ./pattern.sh make install The installation process will take between 45-60 minutes to complete. If you want to know the details of what is happening during that time, the entire process is documented here.
@@ -4965,7 +4968,42 @@ A tested pattern should focus on functionality not performance.
 Can Teams creating tested pattern can provide their own service level agreement (SLA).
 A technical document for Quality Engineering (QE) team that defines how to validate if the pattern has been successfully deployed and is functionally operational. For example, see Validating an Industrial Edge Deployment.
 A tested pattern meeting additional criteria can be nominated for promotion to the Maintained tier.
-`,url:"https://validatedpatterns.io/contribute/tested/",breadcrumb:"/contribute/tested/"},"https://validatedpatterns.io/contribute/maintained/":{title:"Validated Patterns - Maintained tier",tags:[],content:`About the Validated Patterns Maintained tier A pattern categorized under the maintained tier implies that the pattern was known to be functional on all currently supported extended update support (EUS) versions of Red Hat OpenShift Container Platform. Qualifying for this tier might require additional work for the pattern’s owner who might be a partner or a sufficiently motivated subject matter expert (SME).
+`,url:"https://validatedpatterns.io/contribute/tested/",breadcrumb:"/contribute/tested/"},"https://validatedpatterns.io/learn/values-global-configuration/":{title:"Global configuration reference",tags:[],content:`Global configuration reference Every validated pattern includes a values-global.yaml file at the repository root. This file defines configuration settings that apply across all clusters and environments in the pattern.
+global section The global section contains settings that Helm distributes to all sub-charts in the pattern.
+global.pattern Specifies the name of the validated pattern. The framework uses this value internally to identify the pattern.
+global: pattern: multicloud-gitops Do not change this value unless you are creating a new pattern.
+global.options The options block sets default behaviors for operator management and ArgoCD synchronization across all clusters.
+global: options: useCSV: false syncPolicy: Automatic installPlanApproval: Automatic Table 1. Options fields Field Default Description syncPolicy
+Automatic
+Sets the default ArgoCD synchronization policy. Automatic syncs changes from Git to the cluster without manual intervention. Manual requires an administrator to trigger each sync.
+installPlanApproval
+Automatic
+Controls how Operator Lifecycle Manager (OLM) handles operator upgrades. With Automatic, operators check for and apply updates periodically. Manual requires an administrator to approve each upgrade.
+useCSV
+false
+Determines whether subscriptions use specific ClusterServiceVersions (CSV) for operator installation. When set to false, the subscription channel determines which version to install. Set to true when you need to pin operators to specific versions.
+main section The main section defines settings for the primary cluster that manages the pattern.
+main.clusterGroupName Identifies the main ClusterGroup, which acts as the hub or starting point for the pattern. A ClusterGroup represents a set of clusters that share nearly identical configurations and serve a common architectural purpose.
+main: clusterGroupName: hub The value must match a corresponding values-&lt;clusterGroupName&gt;.yaml file in the repository. For example, clusterGroupName: hub requires a values-hub.yaml file. Most patterns use hub for the primary cluster.
+For more information about ClusterGroups, see ClusterGroup in values files.
+main.multiSourceConfig Controls whether ArgoCD uses multi-source applications, enabling Helm charts to be fetched from external repositories in addition to the local Git repository.
+main: multiSourceConfig: enabled: true Table 2. multiSourceConfig fields Field Default Description enabled
+true
+Enables multi-source ArgoCD applications. This is the recommended setting for most deployments.
+clusterGroupChartVersion
+(optional)
+Constrains the version of the ClusterGroup Helm chart to fetch. Accepts semver ranges such as 0.9.*.
+helmRepoUrl
+(optional)
+Overrides the Helm chart repository URL. Use this for disconnected or air-gapped environments where charts are hosted on an internal registry.
+For more information about disconnected environments, see Disconnected installation.
+Example values-global.yaml The following example shows a typical values-global.yaml file for the Multicloud GitOps pattern:
+--- global: pattern: multicloud-gitops options: useCSV: false syncPolicy: Automatic installPlanApproval: Automatic main: clusterGroupName: hub multiSourceConfig: enabled: true For most patterns, the default values provide a working configuration. Customize specific fields only when your environment requires different behavior, such as pinning operator versions or deploying in a disconnected environment.
+Additional resources Exploring values files
+ClusterGroup in values files
+Disconnected installation
+Adding a specific operator version to a pattern
+`,url:"https://validatedpatterns.io/learn/values-global-configuration/",breadcrumb:"/learn/values-global-configuration/"},"https://validatedpatterns.io/contribute/maintained/":{title:"Validated Patterns - Maintained tier",tags:[],content:`About the Validated Patterns Maintained tier A pattern categorized under the maintained tier implies that the pattern was known to be functional on all currently supported extended update support (EUS) versions of Red Hat OpenShift Container Platform. Qualifying for this tier might require additional work for the pattern’s owner who might be a partner or a sufficiently motivated subject matter expert (SME).
 Nominating a pattern for the maintained tier If your pattern qualifies or meets the criteria for maintained tier, submit your nomination to validatedpatterns@googlegroups.com.
 Each maintained pattern represents an ongoing maintenance, support, and testing effort. Finite team capacity means that it is not possible for the team to take on this responsibility for all Validated Patterns.
 For this reason we have designed the tiers and our processes to facilitate this to occur outside of the team by any sufficiently motivated party, including other parts of Red Hat, partners, and even customers.
@@ -5220,11 +5258,10 @@ git clone git@github.com:&lt;your-workspace&gt;/industrial-edge.git
 If you want to customize credentials, create a local copy of the secrets values file. Do not push the secrets file to GitHub.
 Create a local copy of the secrets template file:
 $ cp values-secret.yaml.template ~/values-secret.yaml Edit the file and securely add your cluster-specific credentials:
-$ vi ~/values-secret.yaml Customize the deployment for your cluster. Customization involves updating the values-global.yaml file with configurations specific to your cluster environment.
-Edit the values-global.yaml file:
-$ vi values-global.yaml Commit the updated values-global.yaml file to the repository:
-$ git commit values-global.yaml Push the committed changes:
-$ git push `,url:"https://validatedpatterns.io/learn/workflow/",breadcrumb:"/learn/workflow/"},"https://validatedpatterns.io/learn/secrets-management-in-the-validated-patterns-framework/":{title:"Secrets management in the Validated Patterns framework",tags:[],content:`Overview of secrets management Secrets management is a critical aspect of software development, especially when dealing with sensitive information such as passwords, API keys, and tokens. In the context of GitOps, where the state of an application is stored in a Git repository, managing secrets requires careful handling to avoid exposing sensitive information. Managing secrets in values files involves securely handling this sensitive information within configuration files, ensuring that these secrets are safely stored and managed, thereby reducing the risk of exposure or unauthorized access.
+$ vi ~/values-secret.yaml Optional: Customize the deployment for your cluster. The values-global.yaml file contains global settings such as the ArgoCD sync policy, operator install plan approval, and the cluster group name. Review the file and update any values that your environment requires.
+For a description of each field, see Global configuration reference.
+If you make changes, commit and push them:
+$ git add values-global.yaml $ git commit -m &#34;Customize values-global for my cluster&#34; $ git push `,url:"https://validatedpatterns.io/learn/workflow/",breadcrumb:"/learn/workflow/"},"https://validatedpatterns.io/learn/secrets-management-in-the-validated-patterns-framework/":{title:"Secrets management in the Validated Patterns framework",tags:[],content:`Overview of secrets management Secrets management is a critical aspect of software development, especially when dealing with sensitive information such as passwords, API keys, and tokens. In the context of GitOps, where the state of an application is stored in a Git repository, managing secrets requires careful handling to avoid exposing sensitive information. Managing secrets in values files involves securely handling this sensitive information within configuration files, ensuring that these secrets are safely stored and managed, thereby reducing the risk of exposure or unauthorized access.
 Recommended Practices
 Avoid committing secrets to Git repositories: Never store secrets directly in Git repositories, including private ones, as they can be accidentally exposed or accessed by unauthorized users. If secrets are committed, they should be considered compromised and rotated immediately.
 Use secret references: Instead of storing actual secret values in configuration files, store references to those secrets. This method is supported by major secret management solutions like HashiCorp Vault, AWS Secrets Manager, and Azure Key Vault. Applications can fetch the secrets securely at runtime using these references.
@@ -5317,7 +5354,7 @@ The three-fold distinction in validated patterns, &#34;Global,&#34; &#34;Main,&#
 In Validated patterns, values files follow Helm rules, but the &#34;global&#34; and &#34;ClusterGroup&#34; sections have distinct meanings within this framework.
 Increasingly, more value files are designed solely for overriding base chart values. These files may not always have &#34;ClusterGroup,&#34; &#34;Main,&#34; or &#34;Global&#34; values. The decision to include these sections depends on the specific overrides required for each case.
 Key sections of values files:
-Global Global values refer to configuration settings shared across multiple charts within a deployment. These values are distributed among various charts to avoid redundancy and configuration setting repetition, promoting consistency. Each pattern includes a values-global.yaml file, which contains configurations that are automatically incorporated into the application specification processed by the GitOps operator.
+Global Global values refer to configuration settings shared across multiple charts within a deployment. These values are distributed among various charts to avoid redundancy and configuration setting repetition, promoting consistency. Each pattern includes a values-global.yaml file, which contains configurations that are automatically incorporated into the application specification processed by the GitOps operator. For a detailed description of each field in values-global.yaml, see Global configuration reference.
 ClusterGroup The ClusterGroup holds a specific significance within validated patterns. It defines clusters that are anticipated to share nearly identical configurations, serving a common architectural purpose. A ClusterGroup may consist of one or many members. Conventionally, there is a main ClusterGroup defined in main.clusterGroupName in values-global.yaml, acting as the hub or starting point for each pattern. Additional ClusterGroups can be managed by the main ClusterGroup through tools like Red Hat Advanced Cluster Management (RHACM).
 Not all value files contain a ClusterGroup section; instead values-global sets the starting point, and these value files can subsequently define managed clusters.
 `,url:"https://validatedpatterns.io/learn/values-files/",breadcrumb:"/learn/values-files/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/mcg-amx-rhoai-ideas-for-customization/":{title:"Ideas for customization",tags:[],content:` Ideas for customization About customizing the pattern Multicloud GitOps pattern One of the major goals of the Validated Patterns development process is to create modular, customizable demos. The Multicloud Gitops is just an example of a pattern managing multiple clusters in a GitOps fashion. It contains a very simple config-demo application, which prints out a secret that was injected into the vault through an out-of-band mechanism.
