@@ -1,0 +1,44 @@
+---
+title: NetApp DR Starter Kit 
+date: 2026-04-20
+tier: sandbox
+summary: This pattern provides a starter kit for implementing disaster recovery (DR) using NetApp solutions. It includes best practices, reference architectures, and deployment guides to help organizations quickly set up and manage their DR environments with NetApp technologies.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift External Secrets
+- Red Hat Advanced Cluster Management for Kubernetes
+- Red Hat OpenShift GitOps
+- Red Hat OpenShift Virtualization
+industries:
+- General
+aliases: /netapp-dr-starter-kit/
+links:
+  github: https://github.com/validatedpatterns-sandbox/netapp-dr-starter-kit
+  install: getting-started
+  bugs: https://github.com/validatedpatterns-sandbox/netapp-dr-starter-kit/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+ci: netapp-dr-starter-kit
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+= NetApp DR Starter Kit
+
+== This pattern is under contstruction and the docs will be added soon!
+
+[WARNING]
+====
+This pattern is currently in the sandbox tier, which means it is a work in progress and may not be fully tested or documented. We welcome contributions and feedback to help improve this pattern and move it to higher tiers.
+==== 
+
+//include::modules/trvlops-about.adoc[leveloffset=+1]
+
+//include::modules/trvlops-architecture.adoc[leveloffset=+1]
+
+//[id="next-steps_trvlops-index"]
+// == Next steps
+
+//* link:getting-started[Deploy the Pattern].
+
