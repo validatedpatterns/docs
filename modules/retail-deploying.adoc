@@ -100,29 +100,18 @@ Do not commit this file. You do not want to push personal credentials to GitHub.
 $ git switch -c my-branch
 ----
 
-.. Edit the `values-hub.yaml` file to customize the deployment for your cluster by running the following command: 
+.. Optional: Edit the `values-global.yaml` file to customize the deployment for your cluster. For a description of each field, see link:/learn/values-global-configuration/[Global configuration reference].
 +
-[source,terminal]
-----
-$ vi values-global.yaml
-----
+The defaults should suffice if you want to see the apps running. The values that you might change are under the `imageregistry`, if you copied the images to your own quay account and hostname. You can also change the `git` settings of `account`, `email` and `hostname` to reflect your own account settings.
 +
-The defaults should suffice if you just want to see the apps running. The values that you might change are under the `imageregistry`, if you copied the images to your own quay account and hostname. If you like, you can change the `git` settings of `account`, `email` and `hostname` to reflect your own account settings.
-+
-If you plan to customize the build of the applications themselves, there are `revision` and `imageTag` settings for each of them. 
+If you plan to customize the build of the applications themselves, there are `revision` and `imageTag` settings for each of them.
 
-.. Stage the changes to the `values-hub.yaml` file by running the following commands:
+.. If you made changes, stage and commit them by running the following commands:
 +
 [source,terminal]
 ----
 $ git add values-global.yaml
-----
-
-.. Commit the changes to the `values-hub.yaml` file by running the following commands:
-+
-[source,terminal]
-----
-$ git commit -m "update deployment for my-branch"
+$ git commit -m "Customize values-global for my cluster"
 ----
 
 .. Push the changes to the `values-global.yaml` file by running the following command:

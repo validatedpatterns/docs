@@ -81,12 +81,11 @@ secrets:
 
 When you edit the file you can make changes to the various DB and Grafana passwords if you wish.
 
-. Customize the `values-global.yaml` for your deployment
+. Customize the `values-global.yaml` for your deployment. For a description of each field, see link:/learn/values-global-configuration/[Global configuration reference].
 +
 [source,terminal]
 ----
 git checkout -b my-branch
-vi values-global.yaml
 ----
 
 *Replace instances of PROVIDE_ with your specific configuration*

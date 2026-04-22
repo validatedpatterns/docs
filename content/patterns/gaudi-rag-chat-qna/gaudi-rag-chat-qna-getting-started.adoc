@@ -103,23 +103,12 @@ If the cluster is behind proxy remember to change proxy values of fields `gaudil
 git checkout -b my-branch
 ----
 +
-[source,terminal]
-----
-vi values-global.yaml
-----
+For a description of each field in `values-global.yaml`, see link:/learn/values-global-configuration/[Global configuration reference]. Edit the file, then commit and push:
 +
 [source,terminal]
 ----
 git add values-global.yaml
-----
-+
-[source,terminal]
-----
-git commit values-global.yaml
-----
-+
-[source,terminal]
-----
+git commit -m "Customize values-global for my cluster"
 git push origin my-branch
 ----
 

@@ -1,0 +1,153 @@
+---
+menu:
+  learn:
+    parent: Validated patterns frameworks
+title: Global configuration reference
+weight: 55
+aliases: /learn/values-global-configuration/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="values-global-configuration"]
+= Global configuration reference
+
+Every validated pattern includes a `values-global.yaml` file at the repository root. This file defines configuration settings that apply across all clusters and environments in the pattern.
+
+[id="global-section"]
+== `global` section
+
+The `global` section contains settings that Helm distributes to all sub-charts in the pattern.
+
+[id="global-pattern"]
+=== `global.pattern`
+
+Specifies the name of the validated pattern. The framework uses this value internally to identify the pattern.
+
+[source,yaml]
+----
+global:
+  pattern: multicloud-gitops
+----
+
+Do not change this value unless you are creating a new pattern.
+
+[id="global-options"]
+=== `global.options`
+
+The `options` block sets default behaviors for operator management and ArgoCD synchronization across all clusters.
+
+[source,yaml]
+----
+global:
+  options:
+    useCSV: false
+    syncPolicy: Automatic
+    installPlanApproval: Automatic
+----
+
+.Options fields
+[cols="2,1,5",options="header"]
+|===
+| Field | Default | Description
+
+| `syncPolicy`
+| `Automatic`
+| Sets the default ArgoCD synchronization policy. `Automatic` syncs changes from Git to the cluster without manual intervention. `Manual` requires an administrator to trigger each sync.
+
+| `installPlanApproval`
+| `Automatic`
+| Controls how Operator Lifecycle Manager (OLM) handles operator upgrades. With `Automatic`, operators check for and apply updates periodically. `Manual` requires an administrator to approve each upgrade.
+
+| `useCSV`
+| `false`
+| Determines whether subscriptions use specific `ClusterServiceVersions` (CSV) for operator installation. When set to `false`, the subscription channel determines which version to install. Set to `true` when you need to pin operators to specific versions.
+|===
+
+[id="main-section"]
+== `main` section
+
+The `main` section defines settings for the primary cluster that manages the pattern.
+
+[id="main-clustergroupname"]
+=== `main.clusterGroupName`
+
+Identifies the main ClusterGroup, which acts as the hub or starting point for the pattern. A ClusterGroup represents a set of clusters that share nearly identical configurations and serve a common architectural purpose.
+
+[source,yaml]
+----
+main:
+  clusterGroupName: hub
+----
+
+The value must match a corresponding `values-<clusterGroupName>.yaml` file in the repository. For example, `clusterGroupName: hub` requires a `values-hub.yaml` file. Most patterns use `hub` for the primary cluster.
+
+For more information about ClusterGroups, see link:/learn/clustergroup-in-values-files/[ClusterGroup in values files].
+
+[id="main-multisourceconfig"]
+=== `main.multiSourceConfig`
+
+Controls whether ArgoCD uses multi-source applications, enabling Helm charts to be fetched from external repositories in addition to the local Git repository.
+
+[source,yaml]
+----
+main:
+  multiSourceConfig:
+    enabled: true
+----
+
+.multiSourceConfig fields
+[cols="2,1,5",options="header"]
+|===
+| Field | Default | Description
+
+| `enabled`
+| `true`
+| Enables multi-source ArgoCD applications. This is the recommended setting for most deployments.
+
+| `clusterGroupChartVersion`
+| (optional)
+| Constrains the version of the ClusterGroup Helm chart to fetch. Accepts semver ranges such as `0.9.*`.
+
+| `helmRepoUrl`
+| (optional)
+| Overrides the Helm chart repository URL. Use this for disconnected or air-gapped environments where charts are hosted on an internal registry.
+|===
+
+For more information about disconnected environments, see link:/learn/disconnected-installation/[Disconnected installation].
+
+[id="example-values-global"]
+== Example `values-global.yaml`
+
+The following example shows a typical `values-global.yaml` file for the Multicloud GitOps pattern:
+
+[source,yaml]
+----
+---
+global:
+  pattern: multicloud-gitops
+
+  options:
+    useCSV: false
+    syncPolicy: Automatic
+    installPlanApproval: Automatic
+
+main:
+  clusterGroupName: hub
+
+  multiSourceConfig:
+    enabled: true
+----
+
+For most patterns, the default values provide a working configuration. Customize specific fields only when your environment requires different behavior, such as pinning operator versions or deploying in a disconnected environment.
+
+[id="additional-resources"]
+== Additional resources
+
+* link:/values-files/[Exploring values files]
+* link:/learn/clustergroup-in-values-files/[ClusterGroup in values files]
+* link:/learn/disconnected-installation/[Disconnected installation]
+* link:/learn/vp_add_specific_ops_to_pattern/[Adding a specific operator version to a pattern]

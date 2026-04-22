@@ -49,13 +49,12 @@ service](https://console.redhat.com/openshift/create).
     vi ~/values-secret-multicloud-gitops-pxe.yaml
     ```
 
-5. Customize the deployment for your cluster.
+5. Optional: Customize the deployment for your cluster. The `values-global.yaml` file contains global settings for the pattern. For a description of each field, see [Global configuration reference](/learn/values-global-configuration/). If you make changes, create a branch, commit, and push:
 
    ```sh
    git checkout -b my-branch
-   vi values-global.yaml
    git add values-global.yaml
-   git commit values-global.yaml
+   git commit -m "Customize values-global for my cluster"
    git push origin my-branch
    ```
 

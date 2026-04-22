@@ -108,12 +108,11 @@ By default, Vault password policy generates the passwords for you. However, you 
 When defining a custom password for the database users, avoid using the `$` special character as it gets interpreted by the shell and will ultimately set the incorrect desired password.
 ====
 
-. To customize the deployment for your cluster, update the `values-global.yaml` file by running the following commands:
+. To customize the deployment for your cluster, update the `values-global.yaml` file. For a description of each field, see link:/learn/values-global-configuration/[Global configuration reference]. Run the following command to create a branch:
 +
 [source,terminal]
 ----
 $ git checkout -b my-branch
-$ vi values-global.yaml
 ----
 +
 Replace 'bucketSource' value. User can set any bucket name without special signs (besides '-') and numbers.

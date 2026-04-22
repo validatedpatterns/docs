@@ -51,30 +51,19 @@ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml
 Do not commit this file. You do not want to push personal credentials to GitHub.
 ====
 
-. (Optional) You may customize the deployment for your cluster depending on your needs by editing values-global.yaml and values-hub.yaml. To do this run the following commands:
+. Optional: Customize the deployment for your cluster by editing `values-global.yaml` and `values-hub.yaml`. For a description of each field, see link:/learn/values-global-configuration/[Global configuration reference]. To do this, run the following commands:
 +
 [source,terminal]
 ----
 git checkout -b my-branch
 ----
 +
-[source,terminal]
-----
-vi values-global.yaml
-----
+Edit the file, then commit and push:
 +
 [source,terminal]
 ----
 git add values-global.yaml
-----
-+
-[source,terminal]
-----
-git commit values-global.yaml
-----
-+
-[source,terminal]
-----
+git commit -m "Customize values-global for my cluster"
 git push origin my-branch
 ----
 

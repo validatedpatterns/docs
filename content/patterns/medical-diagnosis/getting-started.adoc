@@ -242,12 +242,7 @@ When defining a custom password for the database users, avoid using the `$` spec
 $ git checkout -b my-branch
 ----
 
-. Edit the `values-global.yaml` updating the S3 and datacenter details. 
-+
-[source,terminal]
-----
-$ vi values-global.yaml
-----
+. Edit the `values-global.yaml` file to update the S3 and datacenter details. For a description of each field, see link:/learn/values-global-configuration/[Global configuration reference].
 +
 .Example edited `values-global.yaml` file
 +

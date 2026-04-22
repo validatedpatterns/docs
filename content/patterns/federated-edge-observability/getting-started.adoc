@@ -184,25 +184,14 @@ Certificates for the OpenTelemetry collector infrastructure. `Snakeoil` that is,
 $ git checkout -b my-branch
 ----
 
-. Edit the `values-global.yaml` file to customize the deployment for your cluster. The defaults in `values-global.yaml` are designed to work in AWS. For example:
+. Optional: Edit the `values-global.yaml` file to customize the deployment for your cluster. The defaults are designed to work in AWS. For a description of each field, see link:/learn/values-global-configuration/[Global configuration reference].
 +
-[source,terminal]
-----
-$ vi values-global.yaml
-----
-
-. Add the changes to the staging area by running the following command:
+If you make changes, stage and commit them:
 +
 [source,terminal]
 ----
 $ git add values-global.yaml
-----
-
-. Commit the changes by running the following command:
-+
-[source,terminal]
-----
-$ git commit -m "No updates"
+$ git commit -m "Customize values-global for my cluster"
 ----
 
 . Push the changes to your forked repository:
