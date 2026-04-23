@@ -21,14 +21,16 @@ This procedure walks through deploying the OpenShift AIOps Self-Healing Platform
 
 *Required Local Tools*::
 * `oc` CLI (matching your OpenShift version)
-* `kubectl` CLI
-* `helm` CLI version 3.12 or later
-* `podman` for building/pulling Ansible execution environment
-* `ansible-navigator` for running Ansible automation
-* `yq` for YAML processing
 * `git` CLI installed locally
 * `make` for running deployment targets
+* `podman` — used by `pattern.sh` to run Ansible playbooks in a container
+
+*Optional Local Tools (for advanced operations)*::
+* `kubectl` CLI
+* `helm` CLI version 3.12 or later
+* `yq` for YAML processing
 * `jq` for JSON processing
+* `ansible-navigator` for running Ansible automation locally (not required for `./pattern.sh make install`)
 
 *Optional: RHEL Prerequisite Installer*::
 * For RHEL 9/10 systems, a prerequisite installation script is available
@@ -37,7 +39,6 @@ This procedure walks through deploying the OpenShift AIOps Self-Healing Platform
 *Required Access*::
 * Cluster admin credentials for the hub cluster
 * GitHub account for forking the pattern repository (MANDATORY)
-* Red Hat Ansible Automation Hub token (for building execution environment, if not using pre-built image)
 
 == Preparing for deployment
 
@@ -259,37 +260,52 @@ clusterGroup:
     storageClass: "gp3-csi"  # Example for AWS SNO clusters
 ----
 
-. Copy the secrets template file:
+. Review the secrets template to understand what source secrets are needed for your configuration:
 +
 [source,terminal]
 ----
-cp values-secret.yaml.template values-secret.yaml
-----
-
-. Edit `values-secret.yaml` and configure required secrets:
-+
-[source,yaml]
-----
-version: "2.0"
-secrets:
-  - name: aws-s3-secret
-    fields:
-    - name: AWS_ACCESS_KEY_ID
-      value: <your-aws-access-key>
-    - name: AWS_SECRET_ACCESS_KEY
-      value: <your-aws-secret-key>
+cat values-secret.yaml.template
 ----
 +
 [NOTE]
 ====
-The pattern uses S3-compatible storage for metrics, logs, and model artifacts. You can use AWS S3, MinIO, or OpenShift Data Foundation's S3 service.
+*Default deployment (GitHub public repository, no Gitea):*
+No source secrets are required in `values-secret.yaml` for a default deployment. The pattern sets `gitea.enabled: false` by default, which disables the optional `git-credentials` and `gitea-credentials` ExternalSecrets that would otherwise require a token. The `secretLoader` is also disabled (`global.secretLoader.disabled: true`), so Vault pre-flight checks are bypassed when using Kubernetes-native secrets.
+
+*Optional: AWS S3 credentials* — if you want to configure external S3 storage instead of using the in-cluster OpenShift Data Foundation S3 service, add AWS credentials as Kubernetes secrets directly:
+[source,terminal]
+----
+oc create secret generic aws-s3-secret \
+  --from-literal=AWS_ACCESS_KEY_ID=<your-access-key> \
+  --from-literal=AWS_SECRET_ACCESS_KEY=<your-secret-key> \
+  -n self-healing-platform
+----
+
+*Optional: Gitea integration* — if you want to use an internal Gitea instance instead of GitHub, set `gitea.enabled: true` in `values-hub.yaml` and provide the required credentials:
+[source,yaml]
+----
+version: "2.0"
+secrets:
+  - name: git-credentials-source
+    fields:
+    - name: username
+      value: <gitea-username>
+    - name: password
+      value: <gitea-password-or-token>
+  - name: gitea-credentials-source
+    fields:
+    - name: username
+      value: <gitea-admin-username>
+    - name: password
+      value: <gitea-admin-password>
+----
 ====
 
 . Commit your customized values files to your fork:
 +
 [source,terminal]
 ----
-git add values-global.yaml values-hub.yaml values-secret.yaml
+git add values-global.yaml values-hub.yaml
 git commit -m "Configure AIOps platform for deployment"
 git push origin main
 ----
@@ -505,78 +521,62 @@ If resources are insufficient, deployment may fail or components may not schedul
 
 == Deploying the pattern
 
-The pattern deploys using the Validated Patterns Operator with Ansible prerequisites.
+The pattern deploys using the Validated Patterns framework. A single command installs the Validated Patterns Operator, creates all ArgoCD applications, and waits for convergence.
+
+[IMPORTANT]
+====
+Ensure you have logged into OpenShift (`oc login ...`) and set the `git.repoURL` in `values-global.yaml` to YOUR fork before running the install command.
+====
 
 .Procedure
 
-. Validate cluster prerequisites:
+. Run the pattern installation:
 +
 [source,terminal]
 ----
-make check-prerequisites
-----
-+
-This verifies:
-* OpenShift version compatibility
-* Required storage classes
-* Cluster topology
-* Network connectivity
-* Available resources
-
-. Deploy Ansible prerequisites (RBAC, secrets, namespace):
-+
-[source,terminal]
-----
-make operator-deploy-prereqs
-----
-+
-This creates:
-* `self-healing-platform-hub` namespace
-* Service accounts and RBAC for Ansible
-* Secret management configuration
-
-. Deploy the pattern via Validated Patterns Operator:
-+
-[source,terminal]
-----
-make operator-deploy
+./pattern.sh make install
 ----
 +
 This command:
-* Deploys the Validated Patterns Operator
-* Creates the pattern's root ArgoCD application
-* Waits for the operator to initialize
 +
-The deployment takes approximately 20-30 minutes depending on cluster size and network speed.
+* Installs the Validated Patterns Operator from OperatorHub
+* Creates the `Pattern` custom resource that bootstraps ArgoCD
+* Deploys all operators via OLM subscriptions (Red Hat OpenShift AI, Pipelines, Serverless, External Secrets)
+* Applies all application Helm charts to the `self-healing-platform` namespace
+* Runs imperative Ansible jobs (creates `DataScienceCluster` for RHOAI)
++
+The deployment takes approximately 20-30 minutes depending on cluster size and network speed. The command exits with code `0` when the pattern is accepted by the operator (ArgoCD convergence continues in the background).
 
-. Wait for the root ArgoCD application to be created:
+. Wait for all ArgoCD applications to reach `Synced/Healthy`:
 +
 [source,terminal]
 ----
-oc wait --for=jsonpath='{.kind}'=Application \
-  application/self-healing-platform \
-  -n self-healing-platform-hub \
-  --timeout=120s
+# Monitor the hub application (created by the VP Operator)
+oc get applications.argoproj.io -n self-healing-platform-hub -w
 ----
-
-. Trigger ArgoCD synchronization:
++
+Expected final state:
 +
 [source,terminal]
 ----
-oc annotate application self-healing-platform \
+NAME                    SYNC STATUS   HEALTH STATUS
+self-healing-platform   Synced        Healthy
+----
++
+[NOTE]
+====
+The `self-healing-platform-hub` application in the `vp-gitops` namespace manages the hub group subscriptions and namespaces. On clusters with an existing Red Hat OpenShift AI (RHOAI) installation, this application may show `Degraded` due to a known RHOAI CRD version history issue. This does not prevent the pattern from functioning correctly.
+====
+
+. Trigger a hard refresh if ArgoCD shows `OutOfSync` after the install:
++
+[source,terminal]
+----
+oc annotate application.argoproj.io self-healing-platform \
   -n self-healing-platform-hub \
   argocd.argoproj.io/refresh=hard \
   --overwrite
 ----
-
-. Verify ArgoCD application health:
-+
-[source,terminal]
-----
-make argo-healthcheck
-----
-+
-This checks that all ArgoCD applications are synced and healthy.
 
 . Run comprehensive deployment validation pipeline:
 +
