@@ -5,17 +5,7 @@
       <ul class="pf-c-nav__list">
           <li class="pf-c-nav__item">
             <a href="{{ .RelPermalink }}" class="pf-c-nav__link">
-              All
-            </a>
-          </li>
-          <li class="pf-c-nav__item">
-            <a href="{{ .RelPermalink }}?date=all" class="pf-c-nav__link">
-              By Date
-            </a>
-          </li>
-          <li class="pf-c-nav__item">
-            <a href="{{ .RelPermalink }}?pattern=all" class="pf-c-nav__link">
-              By Pattern
+              Overview
             </a>
           </li>
           <li class="pf-c-nav__item">
@@ -23,14 +13,14 @@
               By Platform
             </a>
           </li>
-          <li class="pf-c-nav__item pf-m-expanded">
+          <li class="pf-c-nav__item">
             <a href="{{ .RelPermalink }}?version=all" class="pf-c-nav__link">
               By Version
             </a>
           </li>
           <li class="pf-c-nav__item">
-            <a href="{{ .RelPermalink }}?operator=all" class="pf-c-nav__link">
-              By Operator
+            <a href="{{ .RelPermalink }}?date=all" class="pf-c-nav__link">
+              History
             </a>
           </li>
       </ul>
