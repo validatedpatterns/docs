@@ -1,6 +1,6 @@
 ---
-title: RamenDR Starter Kit
-date: 2025-11-13
+title: Portworx DR
+date: 2026-04-24
 tier: sandbox
 summary: This pattern demonstrates the use of Red Hat OpenShift Data Foundations for Virtualization Regional Disaster Recovery
 rh_products:
@@ -15,9 +15,9 @@ industries: []
 aliases: /portworx-dr/
 pattern_logo: ansible-edge.png
 links:
-  github: https://github.com/validatedpatterns/portworx-dr/
+  github: https://github.com/validatedpatterns-sandbox/portworx-dr/
   install: getting-started
-  bugs: https://github.com/validatedpatterns/portworx-dr/issues
+  bugs: https://github.com/validatedpatterns-sandbox/portworx-dr/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ci: portworx-dr
 ---

@@ -27,7 +27,7 @@ It is desirable to have a cluster for deploying the GitOps management hub assets
 == Preparing for deployment
 .Procedure
 
-. Fork the link:https://github.com/validatedpatterns/portworx-dr[portworx-dr] repository on GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
+. Fork the link:https://github.com/validatedpatterns-sandbox/portworx-dr[portworx-dr] repository on GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
 
 . Clone the forked copy of this repository.
 +
@@ -47,7 +47,7 @@ $ cd /path/to/your/repository
 +
 [source,terminal]
 ----
-$ git remote add -f upstream git@github.com:validatedpatterns/portworx-dr.git
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/portworx-dr.git
 ----
 
 . Verify the setup of your remote repositories by running the following command:
@@ -63,8 +63,8 @@ $ git remote -v
 ----
 origin	git@github.com:kquinn1204/portworx-dr.git (fetch)
 origin	git@github.com:kquinn1204/portworx-dr.git (push)
-upstream	git@github.com:validatedpatterns/portworx-dr.git (fetch)
-upstream	git@github.com:validatedpatterns/portworx-dr.git (push)
+upstream	git@github.com:validatedpatterns-sandbox/portworx-dr.git (fetch)
+upstream	git@github.com:validatedpatterns-sandbox/portworx-dr.git (push)
 ----
 
 . Make a local copy of secrets template outside of your repository to hold credentials for the pattern.
@@ -86,40 +86,6 @@ $ cp values-secret.yaml.template ~/values-secret.yaml
 [source,terminal]
 ----
 $ vi ~/values-secret.yaml
-----
-
-.. Edit the `vm-ssh` section to include the username, private key, and public key. To ensure the seamless flow of the pattern, the value associated with the `privatekey` and `publickey` has been updated with `path`. For example: 
-+
-[source,yaml]
-----
-  - name: vm-ssh
-    vaultPrefixes:
-    - global
-    fields:
-    - name: username
-      value: 'cloud-user'
-    - name: privatekey
-      path: '/path/to/private-ssh-key'
-    - name: publickey
-      path: '/path/to/public-ssh-key'
-----
-+
-Paste the path to your locally stored private and public keys. If you do not have a key pair, generate one using `ssh-keygen`.
-
-.. Edit the `cloud-init` section to include the `userData` block to use with cloud-init. For example:
-+
-[source,yaml]
-----
-  - name: cloud-init
-    vaultPrefixes:
-    - global
-    fields:
-    - name: userData
-      value: |-
-        #cloud-config
-        user: 'cloud-user'
-        password: 'cloud-user'
-        chpasswd: { expire: False }
 ----
 
 .. Edit the `aws` section to refer to the file containing your AWS credentials:
@@ -144,14 +110,74 @@ Paste the path to your locally stored private and public keys. If you do not hav
         path: ~/.ssh/publickey
 ----
 
-.. Edit the `openshiftPullSecret` section to refer to the file containing your OpenShift pull secret:
+.. Add a Portworx Enterprise DR license:
 +
 [source,yaml]
 ----
-  - name: openshiftPullSecret
+  - name: portworx
+    vaultPrefixes:
+    - global
     fields:
-      - name: .dockerconfigjson
-        path: ~/pull_secret.json
+    - name: dr_license
+      path: "/path/to/enterprise+dr/license"
+      description: "The portworx dr license that can be activated with `pxctl license activate saas --key <license>`"
+----
+
+.. Add the kubeconfigs for both clusters:
++
+[source,yaml]
+----
+  - name: kubeconfigs
+    vaultPrefixes:
+    - global
+    fields:
+    - name: primary_kubeconfig
+      path: "/path/to/primary/cluster/kubeconfig"
+      description: "path to the the kubeconfig for the primary cluster"
+    - name: secondary_kubeconfig
+      path: "/path/to/secondary/cluster/kubeconfig"
+      description: "path to the the kubeconfig for the secondary (failover) cluster"
+----
+
+.. Add an Ansible Automation Platform manifest:
++
+[source,yaml]
+----
+  - name: aap-manifest
+    vaultPrefixes:
+    - hub
+    fields:
+    - name: b64content
+      path: '~/Downloads/<manifest_filename>.zip'
+      base64: true
+      description: "Manifest obtained from following https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/installing_on_openshift_container_platform/assembly-gateway-licensing-operator-copy#assembly-aap-obtain-manifest-files"
+----
+
+.. Add an Ansible Automation Platform Automation Hub token:
++
+[source,yaml]
+----
+  - name: automation-hub-token
+    vaultPrefixes:
+    - hub
+    fields:
+    - name: token
+      path: '/path/to/automation-hub-token'
+      description: "Automation hub token obtained from https://console.redhat.com/ansible/automation-hub/token"
+----
+
+.. Add an AGOF Vault File. Normally the content "---" is sufficient:
++
+[source,yaml]
+----
+  - name: agof-vault-file
+    vaultPrefixes:
+    - hub
+    fields:
+    - name: agof-vault-file
+      value: '---'
+      base64: true
+      description: "Needed for AGOF, do not change!"
 ----
 
 . Create and switch to a new branch named `my-branch`, by running the following command:
