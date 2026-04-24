@@ -1,0 +1,70 @@
+---
+title: CoCo pattern tested environments
+weight: 10
+aliases: /coco-pattern/coco-pattern-tested-environments/
+---
+
+
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+:imagesdir: ../../../images
+
+= Tested environments
+
+== Current version (4.*)
+
+Version 4 is the first release of the pattern using Generally Available (GA) versions of the CoCo stack. All prior versions used Technology Preview releases of Trustee.
+
+=== Supported components
+- OpenShift Sandboxed Containers Operator 1.11
+- Red Hat Build of Trustee 1.0 (first GA release)
+- OpenShift Container Platform 4.17+
+- cert-manager operator (stable-v1 channel)
+- Red Hat Advanced Cluster Management (for multi-cluster topology)
+- HashiCorp Vault (secrets management)
+
+=== Single cluster
+Tested on Azure with the `simple` clusterGroup using self-managed OpenShift provisioned via `openshift-install`. In this topology all components — Trustee, Vault, ACM, sandboxed containers operator, and sample workloads — are deployed on a single cluster.
+
+Worker nodes use `Standard_D8s_v5` or larger. Peer-pod VMs for confidential containers use `Standard_DC2as_v5` from the Azure confidential computing VM family. Azure DNS is required for the cluster's hosted zone.
+
+=== Multiple clusters
+Tested with `trusted-hub` + `spoke` clusterGroups on Azure, both using self-managed OpenShift.
+
+- `trusted-hub`: Vault, ACM, Trustee (KBS + attestation service), cert-manager. This cluster acts as the trust anchor and ACM hub.
+- `spoke`: Sandboxed containers operator, peer-pod infrastructure, and sample workloads (hello-openshift, kbs-access). Imported into ACM with the `clusterGroup=spoke` label.
+
+The spoke cluster connects back to the hub's Trustee instance for attestation and secret retrieval. Secrets are synchronised from the hub's Vault to the spoke via the External Secrets operator.
+
+== Version history
+
+All pattern versions prior to v4 used Technology Preview (pre-GA) releases of Trustee. Version 4 is a breaking change that moves to GA components and adds multi-cluster support.
+
+|===
+| Pattern version | Trustee | OSC | Min OCP | Notes
+
+| 4.* (current)
+| 1.0 (GA)
+| 1.11
+| 4.17
+| First GA release. Multi-cluster support. cert-manager replaces Let's Encrypt.
+
+| 3.*
+| 0.4.* (Tech Preview)
+| 1.10.*
+| 4.16
+| Single cluster only. Tested on Azure (self-managed and ARO).
+
+| 2.*
+| 0.3.* (Tech Preview)
+| 1.9.*
+| 4.16
+| Single cluster only. Tested on Azure (self-managed and ARO).
+
+| 1.0.0
+| 0.2.0 (Tech Preview)
+| 1.8.1
+| 4.16
+| Initial release. Single cluster only. Self-managed OpenShift on Azure.
+|===

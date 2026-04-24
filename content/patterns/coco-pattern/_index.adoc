@@ -25,48 +25,59 @@ include::modules/comm-attributes.adoc[]
 
 = About the Confidential Containers pattern
 
-Confidential computing is a technology for securing data in use. It uses a https://en.wikipedia.org/wiki/Trusted_execution_environment[Trusted Execution Environment] provided within the hardware of the processor to prevent access from others who have access to the system.
-https://confidentialcontainers.org/[Confidential containers] is a project to standardize the consumption of confidential computing by making the security boundary for confidential computing to be a Kubernetes pod. https://katacontainers.io/[Kata containers] is used to establish the boundary via a shim VM.
+Confidential computing is a technology for securing data in use. It uses a https://en.wikipedia.org/wiki/Trusted_execution_environment[Trusted Execution Environment] (TEE) provided within the hardware of the processor to prevent access from others who have access to the system, including cluster administrators and hypervisor operators.
+https://confidentialcontainers.org/[Confidential containers] is a project to standardize the consumption of confidential computing by making the security boundary for confidential computing a Kubernetes pod. https://katacontainers.io/[Kata containers] is used to establish the boundary via a shim VM.
 
-A core goal of confidential computing is to use this technology to isolate the workload from both Kubernetes and hypervisor administrators.
+A core goal of confidential computing is to use this technology to isolate the workload from both Kubernetes and hypervisor administrators. In practice this means that even a `kubeadmin` user cannot `exec` into a running confidential container or inspect its memory.
 
-image::coco-pattern/isolation.png[Schematic describing the isolation of confidential contains from the hosting system]
+image::coco-pattern/isolation.png[Schematic describing the isolation of confidential containers from the hosting system]
 
 
-This pattern uses https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.7/html/user_guide/deploying-on-azure#deploying-cc_azure-cc[Red Hat OpenShift sandbox containers] to deploy and configure confidential containers on Microsoft Azure.
+This pattern uses https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.11/html/deploying_confidential_containers/cc-overview[Red Hat OpenShift sandbox containers] to deploy and configure confidential containers on Microsoft Azure. On Azure, confidential containers run as "peer pods" — VMs from the `Standard_DCas_v5` family provisioned directly on the Azure hypervisor rather than nested inside OpenShift worker nodes.
 
-It deploys three copies of 'Hello OpenShift' to demonstrate some of the security boundaries that enforced with confidential containers.
+It deploys three copies of 'Hello OpenShift' to demonstrate some of the security boundaries enforced with confidential containers, along with a `kbs-access` application that verifies end-to-end secret delivery from the Key Broker Service.
 
 == Requirements
 
-- An an azure account with the link:./coco-pattern-azure-requirements/[required access rights]
-- An OpenShift cluster, within the Azure environment updated beyond 4.16.10
+- An Azure account with the link:./coco-pattern-azure-requirements/[required access rights], including quota for `Standard_DCas_v5` confidential VMs
+- An OpenShift 4.17+ cluster within the Azure environment
+- Tools: `podman`, `yq`, `jq`, `skopeo`
+- An OpenShift pull secret at `~/pull-secret.json`
 
 
 == Security considerations
 
 **This pattern is a demonstration only and contains configuration that is not best practice**
 
-- The default configuration deploys everything in a single cluster for testing purposes. The https://www.ietf.org/archive/id/draft-ietf-rats-architecture-22.html[RATS] architecture mandates that the Key Broker Service (e.g. https://github.com/confidential-containers/trustee[Trustee]) is in a trusted security zone.
-- The https://github.com/confidential-containers/trustee/tree/main/attestation-service[Attestation Service] has wide open security policies.
+- The pattern supports both single-cluster (`simple` clusterGroup) and multi-cluster (`trusted-hub` + `spoke`) topologies. The default is single-cluster, which breaks the RACI separation expected in a remote attestation architecture. In the single-cluster topology, the Key Broker Service and the workloads it protects run on the same cluster, meaning a compromised cluster could affect both. The multi-cluster topology addresses this by separating the trusted zone (Trustee, Vault, ACM on the hub) from the untrusted workload zone (spoke). The https://www.ietf.org/archive/id/draft-ietf-rats-architecture-22.html[RATS] architecture mandates that the Key Broker Service (e.g. https://github.com/confidential-containers/trustee[Trustee]) is in a trusted security zone.
+- The https://github.com/confidential-containers/trustee/tree/main/attestation-service[Attestation Service] has wide open security policies. The default `insecure` policy accepts all images without signature verification. For production use, configure the `signed` policy in `values-secret.yaml.template` and provide cosign public keys.
 
 == Future work
 
-* Deploying the environment the 'Trusted' environment including the KBS on a separate cluster to the secured workloads
 * Deploying to alternative environments supporting confidential computing including bare metal x86 clusters; IBM Cloud; IBM Z
-* Finishing the sample AI application
+* Finishing the sample AI application for confidential inference with protected GPUs
+* Supporting air-gapped deployments
 
 == Architecture
 
-Confidential Containers typically has two environments. A trusted zone, and an untrusted zone. In these zones, Trustee, and the sandbox container operator are deployed, respectively.
+Confidential Containers typically has two environments. A trusted zone, and an untrusted zone. In the trusted zone, the Key Broker Service (Trustee), attestation service, and secrets management (Vault) are deployed. In the untrusted zone, the sandboxed containers operator provisions confidential VMs and runs workloads.
 
-** For demonstration purposes the pattern currently is converged on one cluster**
+The pattern supports both single-cluster and multi-cluster topologies. In the single-cluster topology (`simple` clusterGroup), all components are converged on one cluster. In the multi-cluster topology, the `trusted-hub` clusterGroup runs on the hub cluster and the `spoke` clusterGroup runs on one or more managed clusters imported via ACM. See link:./coco-pattern-getting-started/[Getting started] for deployment options.
 
 image::coco-pattern/overview-schematic.png[Schematic describing the high level architecture of confidential containers]
 
+=== Key components
 
+- **Red Hat Build of Trustee 1.0**: The Key Broker Service (KBS) and attestation service. Trustee verifies that workloads are running in a genuine TEE before releasing secrets. Certificates for Trustee are managed by cert-manager using self-signed CAs.
+- **HashiCorp Vault**: Secrets backend for the Validated Patterns framework. Stores KBS keys, attestation policies, and PCR measurements.
+- **OpenShift Sandboxed Containers 1.11**: Deploys and manages peer-pod VMs for confidential workloads. Operator subscriptions are pinned to specific CSV versions with manual install plan approval to ensure version consistency.
+- **Red Hat Advanced Cluster Management (ACM)**: Manages the spoke cluster in multi-cluster deployments. Policies and applications are deployed to the spoke via ACM's application lifecycle management.
 
 
 == References
-- https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.7/html/user_guide/about-osc#about-confidential-containers_about-osc[OpenShift sandboxed containers documentation]
+- https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.11[OpenShift Sandboxed Containers 1.11 documentation]
+- https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.11/html/deploying_confidential_containers/cc-overview[Deploying confidential containers on OpenShift]
+- https://docs.redhat.com/en/documentation/red_hat_build_of_trustee/1.0[Red Hat Build of Trustee 1.0 documentation]
+- https://www.redhat.com/en/blog/red-hat-openshift-sandboxed-containers-111-and-red-hat-build-trustee-10-accelerate-confidential-computing-across-hybrid-cloud[OSC 1.11 and Trustee 1.0 announcement blog]
 - https://www.redhat.com/en/blog/exploring-openshift-confidential-containers-solution[OpenShift confidential containers solution blog]
+- https://www.redhat.com/en/blog/introducing-confidential-containers-trustee-attestation-services-solution-overview-and-use-cases[Trustee attestation services overview]
