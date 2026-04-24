@@ -92,22 +92,17 @@ $ vi ~/values-secret.yaml
 +
 [source,yaml]
 ----
-  - name: aws
+  - name: aws-creds
+    vaultPrefixes:
+    - global
     fields:
-      - name: aws_access_key_id
-        ini_file: ~/.aws/credentials
-        ini_key: aws_access_key_id
-      - name: aws_secret_access_key
-        ini_file: ~/.aws/credentials
-        ini_key: aws_secret_access_key
-      - name: baseDomain
-        value: aws.example.com
-      - name: pullSecret
-        path: ~/pull_secret.json
-      - name: ssh-privatekey
-        path: ~/.ssh/privatekey
-      - name: ssh-publickey
-        path: ~/.ssh/publickey
+    - name: aws_access_key_id
+      value: ""
+      description: "An aws access key that can provision VMs and manage IAM (if using portworx)"
+
+    - name: aws_secret_access_key
+      value: ""
+      description: "An aws access secret key that can provision VMs and manage IAM (if using portworx)"
 ----
 
 .. Add a Portworx Enterprise DR license:
