@@ -1,0 +1,58 @@
+---
+title: Portworx DR
+date: 2026-04-24
+tier: sandbox
+summary: This pattern demonstrates the use of Red Hat Ansible Automation Platform to configure and execute Portworx Enterprise Disaster Recovery.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat OpenShift Virtualization
+- Red Hat Enterprise Linux
+- Red Hat OpenShift Data Foundation
+- Red Hat OpenShift Data Foundation MultiCluster Orchestrator
+- Red Hat OpenShift Data Foundation DR Hub Operator
+- Red Hat Advanced Cluster Management
+industries: []
+aliases: /portworx-dr/
+pattern_logo: ansible-edge.png
+links:
+  github: https://github.com/validatedpatterns-sandbox/portworx-dr/
+  install: getting-started
+  bugs: https://github.com/validatedpatterns-sandbox/portworx-dr/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+ci: portworx-dr
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Portworx Disaster Recovery
+
+This pattern demonstrates the use of Ansible Automation Platform to orchestrate Portworx Disaster Recovery
+on AWS with a simple example application (boutique).
+
+=== Background
+
+It would be ideal if all applications in the world understood availability concepts natively and had their own
+integrated regional failover strategies. However, many workloads do not, and users who need regional disaster recovery
+capabilities need to solve this problem for the applications that cannot solve it for themselves.
+
+==== Solution elements
+
+==== Red Hat Technologies
+
+* Red Hat OpenShift Container Platform (Kubernetes)
+* Red Hat Ansible Automation Platform
+* Red Hat Advanced Cluster Management (RHACM)
+* Red Hat OpenShift GitOps (ArgoCD)
+* Red Hat External Secrets Operator
+
+==== Other technologies this pattern Uses
+
+* HashiCorp Vault (Community Edition)
+* Portworx Enterprise
+
+=== Architecture
+
+Coming Soon

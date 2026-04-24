@@ -1,0 +1,238 @@
+---
+title: Getting Started
+weight: 10
+aliases: /portworx-dr/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="deploying-portworx-dr-pattern"]
+== Deploying the Portworx DR Pattern
+
+.Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
+* A GitHub account with a personal access token that has repository read and write permissions.
+* The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm]
+* Additional installation tool dependencies. For details, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
+
+It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
+
+[id="preparing-for-deployment"]
+== Preparing for deployment
+.Procedure
+
+. Fork the link:https://github.com/validatedpatterns-sandbox/portworx-dr[portworx-dr] repository on GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
+
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+$ git clone git@github.com:your-username/portworx-dr.git
+----
+
+. Go to your repository: Ensure you are in the root directory of your Git repository by using:
++
+[source,terminal]
+----
+$ cd /path/to/your/repository
+----
+
+. Run the following command to set the upstream repository:
++
+[source,terminal]
+----
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/portworx-dr.git
+----
+
+. Verify the setup of your remote repositories by running the following command:
++
+[source,terminal]
+----
+$ git remote -v
+----
++
+.Example output
++
+[source,terminal]
+----
+origin	git@github.com:kquinn1204/portworx-dr.git (fetch)
+origin	git@github.com:kquinn1204/portworx-dr.git (push)
+upstream	git@github.com:validatedpatterns-sandbox/portworx-dr.git (fetch)
+upstream	git@github.com:validatedpatterns-sandbox/portworx-dr.git (push)
+----
+
+. Make a local copy of secrets template outside of your repository to hold credentials for the pattern.
++
+[WARNING]
+====
+Do not add, commit, or push this file to your repository. Doing so may expose personal credentials to GitHub.
+====
++
+Run the following commands:
++
+[source,terminal]
+----
+$ cp values-secret.yaml.template ~/values-secret.yaml
+----
+
+. Populate this file with secrets, or credentials, that are needed to deploy the pattern successfully:
++
+[source,terminal]
+----
+$ vi ~/values-secret.yaml
+----
+
+.. Edit the `aws` section to refer to the file containing your AWS credentials:
++
+[source,yaml]
+----
+  - name: aws
+    fields:
+      - name: aws_access_key_id
+        ini_file: ~/.aws/credentials
+        ini_key: aws_access_key_id
+      - name: aws_secret_access_key
+        ini_file: ~/.aws/credentials
+        ini_key: aws_secret_access_key
+      - name: baseDomain
+        value: aws.example.com
+      - name: pullSecret
+        path: ~/pull_secret.json
+      - name: ssh-privatekey
+        path: ~/.ssh/privatekey
+      - name: ssh-publickey
+        path: ~/.ssh/publickey
+----
+
+.. Add a Portworx Enterprise DR license:
++
+[source,yaml]
+----
+  - name: portworx
+    vaultPrefixes:
+    - global
+    fields:
+    - name: dr_license
+      path: "/path/to/enterprise+dr/license"
+      description: "The portworx dr license that can be activated with `pxctl license activate saas --key <license>`"
+----
+
+.. Add the kubeconfigs for both clusters:
++
+[source,yaml]
+----
+  - name: kubeconfigs
+    vaultPrefixes:
+    - global
+    fields:
+    - name: primary_kubeconfig
+      path: "/path/to/primary/cluster/kubeconfig"
+      description: "path to the the kubeconfig for the primary cluster"
+    - name: secondary_kubeconfig
+      path: "/path/to/secondary/cluster/kubeconfig"
+      description: "path to the the kubeconfig for the secondary (failover) cluster"
+----
+
+.. Add an Ansible Automation Platform manifest:
++
+[source,yaml]
+----
+  - name: aap-manifest
+    vaultPrefixes:
+    - hub
+    fields:
+    - name: b64content
+      path: '~/Downloads/<manifest_filename>.zip'
+      base64: true
+      description: "Manifest obtained from following https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/installing_on_openshift_container_platform/assembly-gateway-licensing-operator-copy#assembly-aap-obtain-manifest-files"
+----
+
+.. Add an Ansible Automation Platform Automation Hub token:
++
+[source,yaml]
+----
+  - name: automation-hub-token
+    vaultPrefixes:
+    - hub
+    fields:
+    - name: token
+      path: '/path/to/automation-hub-token'
+      description: "Automation hub token obtained from https://console.redhat.com/ansible/automation-hub/token"
+----
+
+.. Add an AGOF Vault File. Normally the content "---" is sufficient:
++
+[source,yaml]
+----
+  - name: agof-vault-file
+    vaultPrefixes:
+    - hub
+    fields:
+    - name: agof-vault-file
+      value: '---'
+      base64: true
+      description: "Needed for AGOF, do not change!"
+----
+
+. Create and switch to a new branch named `my-branch`, by running the following command:
++
+[source,terminal]
+----
+$ git checkout -b my-branch
+----
+
+. The pattern will infer the baseDomain of your cluster based on the clusterDomain which is tracked by the pattern
+operator. Previously, this required the pattern to be forked to be useful - but this is no longer the case (you may 
+still wish to change other settings in the RDR chart's values file, such as `aws.region` settings. This file is at
+link:https://github.com/validatedpatterns/portworx-dr/blob/main/charts/hub/rdr/values.yaml[hub/rdr/values.yaml]. If you do make customizations to this or other files, it is necessary to fork the pattern so that the changes
+will be seen by ArgoCD.  If you made any changes to this or any other files tracked by git, git add them and then commit the changes by running the following command:
++
+[source,terminal]
+----
+$ git commit -m "any updates"
+----
+
+. Push the changes to your forked repository:
++
+[source,terminal]
+----
+$ git push origin my-branch
+----
+
+The preferred way to install this pattern is by using the script `./pattern.sh` script. 
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the pattern by using the pattern.sh file
+
+To deploy the pattern by using the `pattern.sh` file, complete the following steps:
+
+. Log in to your cluster by following this procedure:
+
+.. Obtain an API token by visiting link:https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request[https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request].
+
+.. Log in to the cluster by running the following command: 
++
+[source,terminal]
+----
+$ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
+----
++
+Or log in by running the following command:
++
+[source,terminal]
+----
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster. Run the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
