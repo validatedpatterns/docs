@@ -1,0 +1,87 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="solution-elements-openshift-aiops"]
+= Solution elements
+
+The OpenShift AIOps Self-Healing Platform is built on several key architectural components that work together to provide intelligent, automated incident response.
+
+[TIP]
+====
+**Learn by Doing**: The link:https://kubeheal.github.io/self-healing-workshop/modules/index.html[Self-Healing Workshop] provides hands-on labs demonstrating each solution element in practice. Workshop modules cover ML model training (Module 1), MCP server deployment (Module 2), end-to-end self-healing with Lightspeed (Module 3), and advanced ML techniques (Module 4).
+====
+
+== Intelligent Self-Healing Architecture
+
+The platform uses ML-driven analysis combined with deployment-aware remediation:
+
+*ML-Based Anomaly Detection*::
+Two trained models deployed via KServe analyze cluster behavior: **Isolation Forest** (100 estimators, 3% contamination rate) detects unusual patterns in real-time metrics, while **Random Forest Regressor** (100 trees, max_depth=20) forecasts resource usage 1 hour ahead. Models are trained weekly on hybrid synthetic and real Prometheus data (7-day and 30-day lookback periods respectively) via automated Tekton Pipelines triggered by NotebookValidationJob custom resources.
+
+*Jupyter Notebook Development Interface*::
+33 production-ready notebooks organized in 9 directories provide the primary interface for model development, testing, and remediation integration. Categories include setup (3 notebooks), data collection (5), anomaly detection (5), self-healing logic (3), model serving (3), end-to-end scenarios (4), MCP/Lightspeed integration (4), monitoring (3), and advanced scenarios (3). Notebooks integrate with the coordination engine REST API to submit anomalies and trigger remediation workflows.
+
+*Go-Based Coordination Engine*::
+Orchestrates remediation workflows via REST API endpoints. **Currently implemented**: `/health` and `/api/v1/health` endpoints for health monitoring, deployment method detection (ArgoCD, Helm, Operator, Manual), and pod lifecycle management. **Under active development**: Deployment resource updates (memory/CPU limit adjustments), `/api/v1/remediation/trigger` endpoint for programmatic remediation. **Planned**: Declarative ConfigMap-based remediation pattern definitions. The engine integrates with KServe models for anomaly detection, monitors dependencies (Kubernetes API, KServe services), and exposes Prometheus metrics on port 9090.
+
+== Multi-Cluster Observability
+
+Red Hat Advanced Cluster Management provides the observability foundation:
+
+*Centralized Metrics Collection*::
+Prometheus metrics from all spoke clusters are aggregated in the hub cluster using Thanos. This provides a single pane of glass for querying metrics across the entire fleet and enables correlation of incidents across multiple clusters.
+
+*Distributed Tracing*::
+OpenTelemetry instrumentation captures traces across microservices, allowing the self-healing engine to understand the full context of distributed system failures and identify root causes beyond simple metric thresholds.
+
+*Log Aggregation*::
+Centralized log collection enables the platform to analyze error patterns in application logs, correlate log events with metrics, and extract features for ML model training.
+
+*Custom Metrics*::
+Pattern-specific metrics track self-healing effectiveness including remediation success rate, confidence scores, time to resolution, and false positive rates. These metrics feed dashboards and drive continuous improvement.
+
+== Deployment-Aware Remediation
+
+The coordination engine adapts remediation strategies based on how applications were deployed:
+
+*Deployment Method Detection*::
+The coordination engine automatically detects whether applications are managed by ArgoCD, deployed via Helm, managed by Operators, or manually deployed. This detection drives the remediation strategy selection.
+
+*ArgoCD Integration*::
+For ArgoCD-managed applications, the coordination engine triggers ArgoCD sync operations to reconcile application state with Git. This respects GitOps principles and maintains Git as the source of truth for configuration.
+
+*Direct Remediation*::
+For non-ArgoCD applications, the coordination engine performs direct Kubernetes API operations. Current capabilities include pod lifecycle management (delete/recreate). Under development: Deployment resource updates (memory limits, CPU requests, replica counts).
+
+*Remediation Tracking*::
+The coordination engine provides Prometheus metrics tracking remediation attempts, workflow duration, ArgoCD sync operations, and ML-enhanced detection events. Health check endpoints (`/health`, `/api/v1/health`) enable monitoring of the coordination engine and its dependencies (Kubernetes API, KServe services, RBAC permissions).
+
+== MLOps Pipeline
+
+The platform implements automated model lifecycle management:
+
+*Data Collection*::
+Prometheus metrics (via 7-day and 30-day lookback queries) combined with synthetic anomaly generation provide training data. Notebooks in the `01-data-collection/` directory extract features including metric time-series patterns, OpenShift event analysis, log parsing, and feature store integration.
+
+*Model Training*::
+Tekton Pipelines orchestrate weekly automated retraining triggered by NotebookValidationJob custom resources. Two models are maintained: **Isolation Forest** (notebooks/02-anomaly-detection/01-isolation-forest-implementation.ipynb) and **Random Forest Regressor** (notebooks/02-anomaly-detection/05-predictive-analytics-kserve.ipynb). Training notebooks execute in containerized environments with access to model storage PVCs and S3 credentials.
+
+*Model Storage*::
+Trained model artifacts are stored in S3-compatible storage: NooBaa (full ODF on HA clusters) or external S3 (SNO clusters). Models are persisted to `/mnt/models/` directories mounted from persistent volume claims (CephFS RWX on HA, gp3-csi RWO on SNO). Model files include serialized scikit-learn objects (`.pkl` format) and associated metadata.
+
+*Model Serving*::
+KServe InferenceServices deploy models with two endpoints: `anomaly-detector-predictor` and `predictive-analytics-predictor`. Each service provides HTTP REST API on port 8080 with `/v1/models/model:predict` endpoint for inference. The coordination engine calls these services directly via cluster-internal DNS (no external ML service wrapper). Models support autoscaling based on request volume and provide readiness/liveness probes.
+
+*Validation and Deployment*::
+NotebookValidationJob CRs validate notebook execution before model deployment. Successful validation triggers model updates in KServe InferenceServices. Validation results are tracked (94%+ success rate across 33 notebooks on both SNO and HA topologies). The `notebook-validator:latest` image (built from workbench base) executes notebooks via papermill with timeout protection (45 minutes default).
+
+== Technology Highlights
+
+The pattern demonstrates several modern operational practices:
+
+* *Event-Driven Architecture*: Incident detection triggers automated workflows
+* *Hybrid AI*: Combines symbolic AI (rules) with machine learning for robust decision-making
+* *MLOps*: Full lifecycle management for ML models in production
+* *GitOps*: Declarative, auditable infrastructure and application management
+* *Multi-Cluster*: Scalable architecture for managing large OpenShift fleets
+* *Observability*: Comprehensive monitoring, logging, and tracing
