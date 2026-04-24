@@ -11,6 +11,8 @@ rh_products:
 - Red Hat OpenShift Data Foundation MultiCluster Orchestrator
 - Red Hat OpenShift Data Foundation DR Hub Operator
 - Red Hat Advanced Cluster Management
+partners:
+- Portworx by Everpure
 industries: []
 aliases: /portworx-dr/
 pattern_logo: ansible-edge.png
