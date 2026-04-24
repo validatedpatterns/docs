@@ -2,7 +2,7 @@
 title: Portworx DR
 date: 2026-04-24
 tier: sandbox
-summary: This pattern demonstrates the use of Red Hat OpenShift Data Foundations for Virtualization Regional Disaster Recovery
+summary: This pattern demonstrates the use of Red Hat Ansible Automation Platform to configure and execute Portworx Enterprise Disaster Recovery.
 rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat OpenShift Virtualization
