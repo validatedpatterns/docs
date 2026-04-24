@@ -10,7 +10,7 @@ aliases: /portworx-dr/getting-started/
 include::modules/comm-attributes.adoc[]
 
 [id="deploying-portworx-dr-pattern"]
-== Deploying the RamenDR Starter Kit Pattern
+== Deploying the Portworx DR PatternPortworx DR PatternPortworx DR PatternPortworx DR Pattern
 
 .Prerequisites
 
