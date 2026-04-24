@@ -1663,7 +1663,39 @@ As part of installing by using the script pattern.sh pattern, HashiCorp Vault is
 For more information, see section on Vault.
 Verify installation by checking the OpenShift AI Dashboard Access the OpenShift AI dashboard from nines menu on the OpenShift Console and select the link for Red Hat OpenShift AI.
 Log in to the dashboard using your OpenShift credentials. You will find an environment that is ready for further configuration. This pattern provides the fundamental platform pieces to support MLOps workflows. The installation of OpenShift Pipelines enables the immediate use of pipelines if that is the desired approach for deployment.
-`,url:"https://validatedpatterns.io/patterns/openshift-ai/getting-started/",breadcrumb:"/patterns/openshift-ai/getting-started/"},"https://validatedpatterns.io/patterns/rag-llm-cpu/getting-started/":{title:"Getting Started",tags:[],content:`Prerequisites Podman is installed on your system. You are logged into a Red Hat OpenShift 4 cluster with administrator permissions. Deploying the pattern Fork the rag-llm-cpu Git repository.
+`,url:"https://validatedpatterns.io/patterns/openshift-ai/getting-started/",breadcrumb:"/patterns/openshift-ai/getting-started/"},"https://validatedpatterns.io/patterns/portworx-dr/getting-started/":{title:"Getting Started",tags:[],content:` Deploying the Portworx DR Pattern Prerequisites An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select OpenShift -&gt; Red Hat OpenShift Container Platform -&gt; Create cluster.
+A GitHub account with a personal access token that has repository read and write permissions.
+The Helm binary, for instructions, see Installing Helm
+Additional installation tool dependencies. For details, see Patterns quick start.
+It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
+Preparing for deployment Procedure Fork the portworx-dr repository on GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
+Clone the forked copy of this repository.
+$ git clone git@github.com:your-username/portworx-dr.git Go to your repository: Ensure you are in the root directory of your Git repository by using:
+$ cd /path/to/your/repository Run the following command to set the upstream repository:
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/portworx-dr.git Verify the setup of your remote repositories by running the following command:
+$ git remote -v Example output origin	git@github.com:kquinn1204/portworx-dr.git (fetch) origin	git@github.com:kquinn1204/portworx-dr.git (push) upstream	git@github.com:validatedpatterns-sandbox/portworx-dr.git (fetch) upstream	git@github.com:validatedpatterns-sandbox/portworx-dr.git (push) Make a local copy of secrets template outside of your repository to hold credentials for the pattern.
+Do not add, commit, or push this file to your repository. Doing so may expose personal credentials to GitHub.
+Run the following commands:
+$ cp values-secret.yaml.template ~/values-secret.yaml Populate this file with secrets, or credentials, that are needed to deploy the pattern successfully:
+$ vi ~/values-secret.yaml Edit the aws section to refer to the file containing your AWS credentials:
+- name: aws fields: - name: aws_access_key_id ini_file: ~/.aws/credentials ini_key: aws_access_key_id - name: aws_secret_access_key ini_file: ~/.aws/credentials ini_key: aws_secret_access_key - name: baseDomain value: aws.example.com - name: pullSecret path: ~/pull_secret.json - name: ssh-privatekey path: ~/.ssh/privatekey - name: ssh-publickey path: ~/.ssh/publickey Add a Portworx Enterprise DR license:
+- name: portworx vaultPrefixes: - global fields: - name: dr_license path: &#34;/path/to/enterprise+dr/license&#34; description: &#34;The portworx dr license that can be activated with \`pxctl license activate saas --key &lt;license&gt;\`&#34; Add the kubeconfigs for both clusters:
+- name: kubeconfigs vaultPrefixes: - global fields: - name: primary_kubeconfig path: &#34;/path/to/primary/cluster/kubeconfig&#34; description: &#34;path to the the kubeconfig for the primary cluster&#34; - name: secondary_kubeconfig path: &#34;/path/to/secondary/cluster/kubeconfig&#34; description: &#34;path to the the kubeconfig for the secondary (failover) cluster&#34; Add an Ansible Automation Platform manifest:
+- name: aap-manifest vaultPrefixes: - hub fields: - name: b64content path: &#39;~/Downloads/&lt;manifest_filename&gt;.zip&#39; base64: true description: &#34;Manifest obtained from following https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/installing_on_openshift_container_platform/assembly-gateway-licensing-operator-copy#assembly-aap-obtain-manifest-files&#34; Add an Ansible Automation Platform Automation Hub token:
+- name: automation-hub-token vaultPrefixes: - hub fields: - name: token path: &#39;/path/to/automation-hub-token&#39; description: &#34;Automation hub token obtained from https://console.redhat.com/ansible/automation-hub/token&#34; Add an AGOF Vault File. Normally the content &#34;---&#34; is sufficient:
+- name: agof-vault-file vaultPrefixes: - hub fields: - name: agof-vault-file value: &#39;---&#39; base64: true description: &#34;Needed for AGOF, do not change!&#34; Create and switch to a new branch named my-branch, by running the following command:
+$ git checkout -b my-branch The pattern will infer the baseDomain of your cluster based on the clusterDomain which is tracked by the pattern operator. Previously, this required the pattern to be forked to be useful - but this is no longer the case (you may still wish to change other settings in the RDR chart’s values file, such as aws.region settings. This file is at hub/rdr/values.yaml. If you do make customizations to this or other files, it is necessary to fork the pattern so that the changes will be seen by ArgoCD. If you made any changes to this or any other files tracked by git, git add them and then commit the changes by running the following command:
+$ git commit -m &#34;any updates&#34; Push the changes to your forked repository:
+$ git push origin my-branch The preferred way to install this pattern is by using the script ./pattern.sh script.
+Deploying the pattern by using the pattern.sh file To deploy the pattern by using the pattern.sh file, complete the following steps:
+Log in to your cluster by following this procedure:
+Obtain an API token by visiting https://oauth-openshift.apps.&lt;your-cluster&gt;.&lt;domain&gt;/oauth/token/request.
+Log in to the cluster by running the following command:
+$ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your-cluster&gt;.&lt;domain&gt;:6443 Or log in by running the following command:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
+$ ./pattern.sh make install `,url:"https://validatedpatterns.io/patterns/portworx-dr/getting-started/",breadcrumb:"/patterns/portworx-dr/getting-started/"},"https://validatedpatterns.io/patterns/rag-llm-cpu/getting-started/":{title:"Getting Started",tags:[],content:`Prerequisites Podman is installed on your system. You are logged into a Red Hat OpenShift 4 cluster with administrator permissions. Deploying the pattern Fork the rag-llm-cpu Git repository.
 Clone the forked repository by running the following command:
 $ git clone git@github.com:your-username/rag-llm-cpu.git Navigate to the root directory of your Git repository:
 $ cd rag-llm-cpu Create a local copy of the secret values file by running the following command:
@@ -4499,7 +4531,12 @@ Microsoft Azure
 Worker
 3
 Standard_D16as_v4
-`,url:"https://validatedpatterns.io/patterns/openshift-ai/cluster-sizing/",breadcrumb:"/patterns/openshift-ai/cluster-sizing/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` AI Generation with LLM and RAG pattern hub/datacenter cluster size The AI Generation with LLM and RAG pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
+`,url:"https://validatedpatterns.io/patterns/openshift-ai/cluster-sizing/",breadcrumb:"/patterns/openshift-ai/cluster-sizing/"},"https://validatedpatterns.io/patterns/portworx-dr/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` Unresolved directive in &lt;stdin&gt; - include::modules/portworx-dr/metadata-portworx-dr.adoc[]
+The OpenShift hub cluster is made of 3 Control Plane nodes and 3 Workers for the cluster; the 3 workers are standard compute nodes. For the node sizes we used the m5.4xlarge on AWS.
+This pattern has only been tested on AWS only right now because of the integration of both Hive and OpenShift Virtualization. We may publish a later revision that supports more hyperscalers.
+{display_name} pattern hub/datacenter cluster size The {display_name} pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
+The datacenter hub OpenShift cluster uses the following the deployment configuration:
+Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type `,url:"https://validatedpatterns.io/patterns/portworx-dr/cluster-sizing/",breadcrumb:"/patterns/portworx-dr/cluster-sizing/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` AI Generation with LLM and RAG pattern hub/datacenter cluster size The AI Generation with LLM and RAG pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
 The datacenter hub OpenShift cluster uses the following the deployment configuration:
 Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type Amazon Web Services
 Control Plane
@@ -5381,11 +5418,21 @@ Who is behind this? Today, a team of Red Hat engineers including Andrew Beekhof 
 Excited or intrigued by what you see here? We’d love to hear your thoughts and ideas! Try the patterns contained here and see below for links to our repositories and issue trackers.
 How can I get involved? Try out what we’ve done and submit issues to our issue trackers.
 We will review pull requests to our pattern repositories.
-`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/netapp-dr-starter-kit/":{title:"NetApp DR Starter Kit",tags:[],content:`NetApp DR Starter Kit This pattern is under contstruction and the docs will be added soon! This pattern is currently in the sandbox tier, which means it is a work in progress and may not be fully tested or documented. We welcome contributions and feedback to help improve this pattern and move it to higher tiers.
-`,url:"https://validatedpatterns.io/patterns/netapp-dr-starter-kit/",breadcrumb:"/patterns/netapp-dr-starter-kit/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/portworx-dr/":{title:"Portworx DR",tags:[],content:` Portworx Disaster Recovery This pattern demonstrates the use of Ansible Automation Platform to orchestrate Portworx Disaster Recovery on AWS with a simple example application (boutique).
+Background It would be ideal if all applications in the world understood availability concepts natively and had their own integrated regional failover strategies. However, many workloads do not, and users who need regional disaster recovery capabilities need to solve this problem for the applications that cannot solve it for themselves.
+Solution elements Red Hat Technologies Red Hat OpenShift Container Platform (Kubernetes)
+Red Hat Ansible Automation Platform
+Red Hat Advanced Cluster Management (RHACM)
+Red Hat OpenShift GitOps (ArgoCD)
+Red Hat External Secrets Operator
+Other technologies this pattern Uses HashiCorp Vault (Community Edition)
+Portworx Enterprise
+Architecture Coming Soon
+`,url:"https://validatedpatterns.io/patterns/portworx-dr/",breadcrumb:"/patterns/portworx-dr/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
 Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/netapp-dr-starter-kit/":{title:"NetApp DR Starter Kit",tags:[],content:`NetApp DR Starter Kit This pattern is under contstruction and the docs will be added soon! This pattern is currently in the sandbox tier, which means it is a work in progress and may not be fully tested or documented. We welcome contributions and feedback to help improve this pattern and move it to higher tiers.
+`,url:"https://validatedpatterns.io/patterns/netapp-dr-starter-kit/",breadcrumb:"/patterns/netapp-dr-starter-kit/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
 `,url:"https://validatedpatterns.io/blog/",breadcrumb:"/blog/"},"https://validatedpatterns.io/blog/2026-04-13-own-argocd-instance/":{title:"Validated Patterns now deploys its own ArgoCD instance",tags:[],content:` Preamble Until now the Validated Patterns operator relied on the default ArgoCD instance created by the OpenShift GitOps operator in the openshift-gitops namespace. While this worked, it meant that the patterns framework shared its ArgoCD instance with whatever else the cluster administrator or the gitops operator itself might configure there. Starting with the 0.0.70 version of the patterns operator, new deployments will get their own dedicated ArgoCD instance running in a brand-new vp-gitops namespace.
 Why the change Sharing the default openshift-gitops ArgoCD instance had a few drawbacks:
 Potential conflicts Any other workload or operator that also relied on the default ArgoCD instance could interfere with the patterns deployment, and vice versa.
