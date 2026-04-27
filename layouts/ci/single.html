@@ -11,12 +11,11 @@
   <main class="pf-c-page__main">
     <section class="pf-c-page__main-section">
       {{ partial "page-toolbar.html" . }}
-      <div class="pf-u-display-flex">
-      <div class="pf-c-content">
+      <div class="pf-c-content ci-dashboard">
         <h1>{{- .Title -}}</h1>
-        {{ .Content }}
+        <p class="ci-subtitle">{{ .Content }}</p>
       <script type="text/javascript" src="/js/dashboard.v2.js"></script>
-      <div class='ci-results'>
+      <div class="ci-results">
           <div id="ci-dataset">
             {{ partial "spinner.html" . }}
            </div>
@@ -26,13 +25,6 @@
           </script>
       </div>
       </div>
-      <aside class="pf-c-jump-links pf-m-vertical sticky pf-m-expandable pf-m-non-expandable-on-2xl">
-        <div class="pf-l-grid__item pf-m-4-col">
-          {{ partial "ci-key.html" . }}
-        </div>
-      </aside>
-      </div>
-
     </section>
     {{ partial "footer.html" . }}
   </main>

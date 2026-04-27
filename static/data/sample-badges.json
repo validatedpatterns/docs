@@ -1,0 +1,605 @@
+[
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "industrialedge-aws-4.18-stable-badge.json",
+        "pattern": "industrialedge",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-16"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitopshcp-aws-4.20-stable-badge.json",
+        "pattern": "mcgitopshcp",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-15"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "ragllm-aws-4.21-stable-badge.json",
+        "pattern": "ragllm",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-15"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "ragllm-azr-4.20-stable-badge.json",
+        "pattern": "ragllm",
+        "platform": "azr",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-15"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "aegitops-aws-4.18-stable-badge.json",
+        "pattern": "aegitops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-14"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "aegitops-aws-4.21-stable-badge.json",
+        "pattern": "aegitops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-14"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "hypershift-aws-4.20-stable-badge.json",
+        "pattern": "hypershift",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-14"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "medicaldiag-aws-4.18-stable-badge.json",
+        "pattern": "medicaldiag",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-14"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "hypershift-aws-4.21-stable-badge.json",
+        "pattern": "hypershift",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-13"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitops-aws-4.21-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-13"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "medicaldiag-aws-4.21-stable-badge.json",
+        "pattern": "medicaldiag",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-13"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "medicaldiag-azr-4.20-stable-badge.json",
+        "pattern": "medicaldiag",
+        "platform": "azr",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-13"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "openshiftai-intel-4.18-stable-badge.json",
+        "pattern": "openshiftai",
+        "platform": "intel",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-12"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "openshiftai-intel-4.20-stable-badge.json",
+        "pattern": "openshiftai",
+        "platform": "intel",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-12"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "openshiftai-intel-4.21-stable-badge.json",
+        "pattern": "openshiftai",
+        "platform": "intel",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-12"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitops-intel-4.18-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "intel",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-11"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitops-intel-4.20-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "intel",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-11"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitops-intel-4.21-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "intel",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-11"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitopsstandalone-aws-4.21-stable-badge.json",
+        "pattern": "mcgitopsstandalone",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-11"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "openshiftai-aws-4.21-stable-badge.json",
+        "pattern": "openshiftai",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-11"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "patternsoperator-aws-4.18-stable-badge.json",
+        "pattern": "patternsoperator",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-11"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "travelops-aws-4.21-stable-badge.json",
+        "pattern": "travelops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-11"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "coco-azr-4.21-stable-badge.json",
+        "pattern": "coco",
+        "platform": "azr",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-10"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitopshcp-aws-4.21-stable-badge.json",
+        "pattern": "mcgitopshcp",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-10"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "openshiftai-aws-4.18-stable-badge.json",
+        "pattern": "openshiftai",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-10"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "hypershift-aws-4.18-stable-badge.json",
+        "pattern": "hypershift",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-09"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "travelops-aws-4.18-stable-badge.json",
+        "pattern": "travelops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-09"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "travelops-aws-4.20-stable-badge.json",
+        "pattern": "travelops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-09"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "industrialedge-azr-4.20-stable-badge.json",
+        "pattern": "industrialedge",
+        "platform": "azr",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-08"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "ragllm-aws-4.18-stable-badge.json",
+        "pattern": "ragllm",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-08"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "aegitops-aws-4.20-stable-badge.json",
+        "pattern": "aegitops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-07"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitopsstandalone-aws-4.20-stable-badge.json",
+        "pattern": "mcgitopsstandalone",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-07"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "coco-azr-4.18-stable-badge.json",
+        "pattern": "coco",
+        "platform": "azr",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "coco-azr-4.20-stable-badge.json",
+        "pattern": "coco",
+        "platform": "azr",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "layeredzerotrust-aws-4.20-stable-badge.json",
+        "pattern": "layeredzerotrust",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitops-aws-4.20-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitops-azr-4.18-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "azr",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitopshcp-aws-4.18-stable-badge.json",
+        "pattern": "mcgitopshcp",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitopsstandalone-gcp-4.18-stable-badge.json",
+        "pattern": "mcgitopsstandalone",
+        "platform": "gcp",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "openshiftai-aws-4.20-stable-badge.json",
+        "pattern": "openshiftai",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "patternsoperator-aws-4.20-stable-badge.json",
+        "pattern": "patternsoperator",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-04-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitopsstandalone-aws-4.18-stable-badge.json",
+        "pattern": "mcgitopsstandalone",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-04-05"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitops-gcp-4.21-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "gcp",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-04-01"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "agof-aws-none-stable-badge.json",
+        "pattern": "agof",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "none",
+        "date": "2026-03-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "industrialedge-aws-4.21-stable-badge.json",
+        "pattern": "industrialedge",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.21",
+        "date": "2026-02-27"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitops-aws-4.18-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.18",
+        "date": "2026-02-23"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "aegitops-aws-4.19-stable-badge.json",
+        "pattern": "aegitops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-17"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitops-aws-4.19-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-16"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitopshcp-aws-4.19-stable-badge.json",
+        "pattern": "mcgitopshcp",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-16"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "medicaldiag-aws-4.20-stable-badge.json",
+        "pattern": "medicaldiag",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.20",
+        "date": "2026-02-16"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "hypershift-aws-4.19-stable-badge.json",
+        "pattern": "hypershift",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-13"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "ragllm-aws-4.19-stable-badge.json",
+        "pattern": "ragllm",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-13"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "medicaldiag-azr-4.19-stable-badge.json",
+        "pattern": "medicaldiag",
+        "platform": "azr",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-09"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "openshiftai-intel-4.19-stable-badge.json",
+        "pattern": "openshiftai",
+        "platform": "intel",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-08"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitops-intel-4.19-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "intel",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-07"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitopsstandalone-aws-4.19-stable-badge.json",
+        "pattern": "mcgitopsstandalone",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "openshiftai-aws-4.19-stable-badge.json",
+        "pattern": "openshiftai",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-06"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "travelops-aws-4.19-stable-badge.json",
+        "pattern": "travelops",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-05"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "industrialedge-aws-4.19-stable-badge.json",
+        "pattern": "industrialedge",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-04"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "coco-azr-4.19-stable-badge.json",
+        "pattern": "coco",
+        "platform": "azr",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-03"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "patternsoperator-aws-4.19-stable-badge.json",
+        "pattern": "patternsoperator",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-03"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "mcgitops-gcp-4.19-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "gcp",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2026-02-01"
+    },
+    {
+        "base": "https://storage.googleapis.com/vp-results",
+        "key": "layeredzerotrust-aws-4.19-stable-badge.json",
+        "pattern": "layeredzerotrust",
+        "platform": "aws",
+        "operator": "N/A",
+        "version": "4.19",
+        "date": "2025-12-22"
+    },
+    {
+        "base": "https://vp-ntnx-results.s3.amazonaws.com",
+        "key": "mcgitops-nutanix-4.12-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "nutanix",
+        "operator": "N/A",
+        "version": "4.12",
+        "date": "2024-04-03"
+    },
+    {
+        "base": "https://vp-ntnx-results.s3.amazonaws.com",
+        "key": "mcgitops-nutanix-4.13-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "nutanix",
+        "operator": "N/A",
+        "version": "4.13",
+        "date": "2024-04-03"
+    },
+    {
+        "base": "https://vp-ntnx-results.s3.amazonaws.com",
+        "key": "mcgitops-nutanix-4.14-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "nutanix",
+        "operator": "N/A",
+        "version": "4.14",
+        "date": "2024-04-03"
+    },
+    {
+        "base": "https://vp-ntnx-results.s3.amazonaws.com",
+        "key": "mcgitops-nutanix-4.15-stable-badge.json",
+        "pattern": "mcgitops",
+        "platform": "nutanix",
+        "operator": "N/A",
+        "version": "4.15",
+        "date": "2024-04-03"
+    }
+]
