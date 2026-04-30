@@ -1,5 +1,5 @@
 ---
-title: Getting Started
+title: Getting started
 weight: 10
 aliases: /portworx-dr/getting-started/
 ---
@@ -21,7 +21,7 @@ include::modules/comm-attributes.adoc[]
 * The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm]
 * Additional installation tool dependencies. For details, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
 
-It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
+Use a cluster for deploying the GitOps management hub assets and a separate cluster for the managed clusters.
 
 [id="preparing-for-deployment"]
 == Preparing for deployment
@@ -36,7 +36,7 @@ It is desirable to have a cluster for deploying the GitOps management hub assets
 $ git clone git@github.com:your-username/portworx-dr.git
 ----
 
-. Go to your repository: Ensure you are in the root directory of your Git repository by using:
+. Go to the root directory of your Git repository:
 +
 [source,terminal]
 ----
@@ -182,11 +182,8 @@ $ vi ~/values-secret.yaml
 $ git checkout -b my-branch
 ----
 
-. The pattern will infer the baseDomain of your cluster based on the clusterDomain which is tracked by the pattern
-operator. Previously, this required the pattern to be forked to be useful - but this is no longer the case (you may 
-still wish to change other settings in the RDR chart's values file, such as `aws.region` settings. This file is at
-link:https://github.com/validatedpatterns/portworx-dr/blob/main/charts/hub/rdr/values.yaml[hub/rdr/values.yaml]. If you do make customizations to this or other files, it is necessary to fork the pattern so that the changes
-will be seen by ArgoCD.  If you made any changes to this or any other files tracked by git, git add them and then commit the changes by running the following command:
+. The pattern infers the baseDomain of your cluster based on the clusterDomain, which the pattern operator tracks. Previously, you had to fork the pattern, but this is no longer the case. You might still want to change other settings in the RDR chart's values file, such as `aws.region` settings. This file is at
+link:https://github.com/validatedpatterns/portworx-dr/blob/main/charts/hub/rdr/values.yaml[hub/rdr/values.yaml]. If you customize this or other files, you must fork the pattern so that ArgoCD can detect the changes. If you changed any files tracked by git, add and commit the changes by running the following command:
 +
 [source,terminal]
 ----
@@ -200,7 +197,7 @@ $ git commit -m "any updates"
 $ git push origin my-branch
 ----
 
-The preferred way to install this pattern is by using the script `./pattern.sh` script. 
+Install this pattern by using the `./pattern.sh` file.
 
 [id="deploying-cluster-using-patternsh-file"]
 == Deploying the pattern by using the pattern.sh file
@@ -209,13 +206,13 @@ To deploy the pattern by using the `pattern.sh` file, complete the following ste
 
 . Log in to your cluster by following this procedure:
 
-.. Obtain an API token by visiting link:https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request[https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request].
+.. Obtain an API token by visiting link:https://oauth-openshift.apps.<your_cluster>.<domain>/oauth/token/request[https://oauth-openshift.apps.<your_cluster>.<domain>/oauth/token/request].
 
 .. Log in to the cluster by running the following command: 
 +
 [source,terminal]
 ----
-$ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
+$ oc login --token=<retrieved-token> --server=https://api.<your_cluster>.<domain>:6443
 ----
 +
 Or log in by running the following command:

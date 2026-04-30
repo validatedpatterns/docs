@@ -31,30 +31,27 @@ include::modules/comm-attributes.adoc[]
 
 == Portworx Disaster Recovery
 
-This pattern demonstrates the use of Ansible Automation Platform to orchestrate Portworx Disaster Recovery
+This pattern demonstrates the use of {ansible} to orchestrate Portworx Disaster Recovery
 on AWS with a simple example application (boutique).
 
 === Background
 
-It would be ideal if all applications in the world understood availability concepts natively and had their own
-integrated regional failover strategies. However, many workloads do not, and users who need regional disaster recovery
-capabilities need to solve this problem for the applications that cannot solve it for themselves.
+Not all applications have integrated regional failover strategies. Users who need regional disaster recovery
+capabilities must solve this problem for the applications that cannot solve it for themselves.
 
-==== Solution elements
+==== Red Hat technologies
 
-==== Red Hat Technologies
-
-* Red Hat OpenShift Container Platform (Kubernetes)
-* Red Hat Ansible Automation Platform
-* Red Hat Advanced Cluster Management (RHACM)
-* Red Hat OpenShift GitOps (ArgoCD)
+* {rh-ocp} (Kubernetes)
+* {rh-ansible}
+* {rh-rhacm-first}
+* {rh-gitops} (ArgoCD)
 * Red Hat External Secrets Operator
 
-==== Other technologies this pattern Uses
+==== Other technologies this pattern uses
 
-* HashiCorp Vault (Community Edition)
+* {hashicorp-vault} (Community Edition)
 * Portworx Enterprise
 
 === Architecture
 
-Coming Soon
+Coming soon
