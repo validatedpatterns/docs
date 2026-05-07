@@ -2,7 +2,7 @@
 title: Confidential Containers pattern
 date: 2024-10-03
 tier: sandbox
-summary: Deploy confidential containers on OpenShift using hardware-backed Trusted Execution Environments (TEEs) on Azure and bare metal with Intel TDX, AMD SEV-SNP, and NVIDIA H100 confidential GPU support.
+summary: Deploy confidential containers on OpenShift using hardware-backed Trusted Execution Environments (TEEs) on Azure and bare metal with Intel TDX, AMD SEV-SNP, and NVIDIA confidential GPU support.
 rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
@@ -36,9 +36,9 @@ image::coco-pattern/isolation.png[Schematic describing the isolation of confiden
 
 This pattern deploys and configures https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12/html/deploying_confidential_containers/cc-overview[Red Hat OpenShift Sandboxed Containers] for confidential computing workloads on both cloud (Microsoft Azure) and bare metal infrastructure.
 
-**Cloud deployments** use "peer pods" — confidential VMs from the Azure `Standard_DCas_v5` family provisioned directly on the Azure hypervisor rather than nested inside OpenShift worker nodes.
+**Cloud deployments** use "peer pods" — confidential VMs provisioned directly on the Azure hypervisor rather than nested inside OpenShift worker nodes. Azure offers https://learn.microsoft.com/en-us/azure/confidential-computing/virtual-machine-options[multiple confidential VM families]; this pattern defaults to the `Standard_DCas_v5` family but can be configured to use other families via `values-global.yaml`.
 
-**Bare metal deployments** support Intel TDX (Trusted Domain Extensions) and AMD SEV-SNP (Secure Encrypted Virtualization - Secure Nested Paging) hardware TEEs, with optional NVIDIA H100 confidential GPU support for protected GPU workloads.
+**Bare metal deployments** support Intel TDX (Trusted Domain Extensions) and AMD SEV-SNP (Secure Encrypted Virtualization - Secure Nested Paging) hardware TEEs, with optional **Technology Preview** NVIDIA confidential GPU support (H100, H200, B100, B200) for protected GPU workloads.
 
 The pattern includes sample applications demonstrating security boundaries and secret delivery: three variants of 'Hello OpenShift' and a `kbs-access` web service for verifying end-to-end attestation and secret retrieval from the Key Broker Service.
 
@@ -49,13 +49,13 @@ The pattern supports four deployment topologies, selected by setting `main.clust
 - **`simple`** — Single-cluster Azure deployment with all components (Trustee, Vault, ACM, sandboxed containers, workloads) on one cluster
 - **`trusted-hub` + `spoke`** — Multi-cluster Azure deployment separating the trusted zone (hub with Trustee/Vault/ACM) from the untrusted workload zone (spoke)
 - **`baremetal`** — Single-cluster bare metal with Intel TDX or AMD SEV-SNP support
-- **`baremetal-gpu`** — Bare metal with NVIDIA H100 confidential GPU support
+- **`baremetal-gpu`** — **Technology Preview:** Bare metal with Intel TDX or AMD SEV-SNP and NVIDIA confidential GPU support (H100, H200, B100, B200)
 
 == Requirements
 
 === Azure deployments
 
-- An Azure account with the link:./coco-pattern-azure-requirements/[required access rights], including quota for `Standard_DCas_v5` confidential VMs
+- An Azure account with the link:./coco-pattern-azure-requirements/[required access rights], including quota for Azure https://learn.microsoft.com/en-us/azure/confidential-computing/virtual-machine-options[confidential VM families] (default: `Standard_DCas_v5`)
 - An OpenShift 4.19.28+ cluster within the Azure environment
 - Azure DNS hosting the cluster's DNS zone
 - Tools: `podman`, `yq`, `jq`, `skopeo`
@@ -65,9 +65,9 @@ The pattern supports four deployment topologies, selected by setting `main.clust
 
 - OpenShift 4.19.28+ cluster on bare metal with Intel TDX or AMD SEV-SNP hardware
 - BIOS/firmware configured to enable TDX or SEV-SNP
-- Available block devices for LVMS storage (auto-discovered)
+- HostPath Provisioner (HPP) for persistent storage
 - For Intel TDX: an Intel PCS API key from https://api.portal.trustedservices.intel.com[Intel Trusted Services]
-- For GPU topology: NVIDIA H100 GPUs with confidential computing firmware
+- For GPU topology (**Technology Preview**): NVIDIA GPUs with confidential computing firmware (H100, H200, B100, B200)
 - Tools: `podman`, `yq`, `jq`, `skopeo`
 - An OpenShift pull secret at `~/pull-secret.json`
 
@@ -126,7 +126,6 @@ Without these hardening steps, the attestation service will approve any workload
 
 == Future work
 
-* Extending bare metal GPU support to additional GPU models and configurations
 * Deploying to IBM Cloud and IBM Z confidential computing environments
 * Supporting air-gapped deployments
 * Enhanced AI/ML workload examples demonstrating confidential inference at scale
@@ -152,8 +151,8 @@ image::coco-pattern/overview-schematic.png[Schematic describing the high level a
 - **Kyverno**: Policy engine that dynamically injects `cc_init_data` annotations into confidential pods. Manages the distribution of attestation agent configuration (KBS TLS certificates, policy files) from centralized ConfigMaps to workload namespaces.
 - **Red Hat Advanced Cluster Management (ACM)**: Manages the spoke cluster in multi-cluster deployments. Policies and applications are deployed to the spoke via ACM's application lifecycle management.
 - **Node Feature Discovery (NFD)** _(bare metal only)_: Detects Intel TDX and AMD SEV-SNP hardware capabilities and labels nodes accordingly for runtime class scheduling.
-- **Intel DCAP** _(bare metal with TDX)_: Provisioning Certificate Caching Service (PCCS) and Quote Generation Service (QGS) for Intel TDX remote attestation via the Intel PCS API.
-- **NVIDIA GPU Operator** _(GPU topology only)_: Manages NVIDIA H100 confidential GPUs with CC Manager, VFIO passthrough, and Kata device plugins for GPU-enabled confidential workloads.
+- **Intel DCAP** _(bare metal with Intel TDX)_: Provisioning Certificate Caching Service (PCCS) and Quote Generation Service (QGS) for Intel TDX remote attestation via the Intel PCS API.
+- **NVIDIA GPU Operator** _(GPU topology only, Technology Preview)_: Manages NVIDIA confidential GPUs (H100, H200, B100, B200) with CC Manager, VFIO passthrough, and Kata device plugins for GPU-enabled confidential workloads.
 
 
 == Intel TDX support
