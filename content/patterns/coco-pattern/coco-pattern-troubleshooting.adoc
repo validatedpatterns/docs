@@ -1,0 +1,720 @@
+---
+title: Troubleshooting
+weight: 40
+aliases: /coco-pattern/coco-pattern-troubleshooting/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: REFERENCE
+include::modules/comm-attributes.adoc[]
+
+= Troubleshooting confidential containers deployments
+
+This page provides solutions to common issues encountered when deploying and operating the Confidential Containers pattern.
+
+== General CoCo issues
+
+'''
+Problem:: CoCo pods stuck in `Pending` or `ContainerCreating` state
+
+Solution:: This is most commonly caused by incomplete MachineConfig application or KataConfig not being ready.
++
+Check if nodes have finished rebooting after MachineConfig updates:
++
+[source,terminal]
+----
+oc get nodes
+oc get mcp
+----
++
+Wait for all MachineConfigPools to show `UPDATED=True` and `DEGRADED=False`.
++
+Verify the KataConfig is ready:
++
+[source,terminal]
+----
+oc get kataconfig -n openshift-sandboxed-containers-operator
+----
++
+The status should show `InProgress: False` and the RuntimeClasses should be created (`kata-remote` for Azure, `kata-cc` for bare metal).
++
+If the KataConfig is stuck, check the operator logs:
++
+[source,terminal]
+----
+oc logs -n openshift-sandboxed-containers-operator \
+  -l name=openshift-sandboxed-containers-operator -f
+----
+
+'''
+Problem:: ArgoCD applications not syncing or showing timeouts
+
+Solution:: Check application dependencies and sync order. Some applications depend on others being ready first.
++
+**Note**: ArgoCD applications are deployed in per-clusterGroup namespaces, not in `openshift-gitops`. Use `oc get applications -A` to locate them.
++
+View application health across all namespaces:
++
+[source,terminal]
+----
+oc get applications -A
+----
++
+For stuck applications, check sync status and errors:
++
+[source,terminal]
+----
+oc describe application <app-name> -n <app-namespace>
+----
++
+Common dependency order issues:
++
+- Vault must be ready before external-secrets applications
+- Kyverno must be deployed before workload applications that need cc_init_data injection
+- cert-manager must be ready before Trustee (which depends on certificates)
++
+Manually sync the stuck application (use `--force` if needed):
++
+[source,terminal]
+----
+argocd app sync <app-name> --force
+----
+
+'''
+Problem:: Peer-pod VM provisioning failures on Azure
+
+Solution:: Verify Azure quota, region support, and networking configuration.
++
+The pattern defaults to `Standard_DCas_v5` VMs, but you can configure other Azure https://learn.microsoft.com/en-us/azure/confidential-computing/virtual-machine-options[confidential VM families] in `values-global.yaml` by changing the VM size parameters.
++
+Check that your Azure region supports your chosen confidential VM family (default: `Standard_DCas_v5`):
++
+Visit https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/ and search for your VM family in your target region.
++
+Verify quota for confidential VM sizes in your subscription:
++
+Navigate to **Azure Portal > Subscriptions > Usage + quotas** and filter for "DC" or "EC" families depending on your chosen VM type. Request a quota increase if needed.
++
+Check sandboxed containers operator logs for Azure API errors:
++
+[source,terminal]
+----
+oc logs -n openshift-sandboxed-containers-operator \
+  -l name=openshift-sandboxed-containers-operator --tail=100
+----
++
+Verify Azure service principal credentials in Vault:
++
+[source,terminal]
+----
+oc exec -n vault vault-0 -- vault kv get secret/hub/azure
+----
++
+Ensure `values-global.yaml` has correct Azure networking values (`clusterSubnet`, `clusterNSG`, `clusterResGroup`).
+
+'''
+Problem:: `oc exec` denied unexpectedly into a confidential container
+
+Solution:: This is expected behavior for containers with strict policies. Verify which policy the pod is using.
++
+Check the pod's initdata annotation:
++
+[source,terminal]
+----
+oc get pod <pod-name> -n <namespace> -o yaml | grep coco.io/initdata-configmap
+----
++
+Pods using `initdata` ConfigMap have strict policies that deny exec. Pods using `debug-initdata` allow exec.
++
+The strict policy is a security feature, not a bug. To test CDH functionality interactively, use a pod with `coco.io/initdata-configmap: debug-initdata` (like the `insecure-policy` pod in hello-openshift).
+
+'''
+Problem:: CDH not returning secrets or attestation failures
+
+Solution:: Verify KBS TLS certificate propagation and attestation policy configuration.
++
+Check that initdata ConfigMaps exist and contain the KBS TLS certificate:
++
+[source,terminal]
+----
+oc get configmap -n <workload-namespace> initdata -o yaml | grep INITDATA
+----
++
+If the ConfigMap is missing, check if Kyverno propagated it:
++
+[source,terminal]
+----
+oc get configmap -n imperative -l coco.io/type=initdata
+----
++
+The source ConfigMap should exist in the `imperative` namespace. If missing, the `init-data-gzipper` job may have failed:
++
+[source,terminal]
+----
+oc logs -n imperative jobs/init-data-gzipper --tail=50
+----
++
+Check KBS logs for attestation errors:
++
+[source,terminal]
+----
+oc logs -n trustee-operator-system -l app=kbs -f
+----
++
+Look for messages like `Attestation verification failed` or `PCR mismatch`.
+
+== Kyverno-specific issues
+
+'''
+Problem:: `cc_init_data` annotation not injected into CoCo pods
+
+Solution:: Verify Kyverno is running and the CoCo pod has the required annotation trigger.
++
+Check Kyverno pods are healthy:
++
+[source,terminal]
+----
+oc get pods -n kyverno
+----
++
+All Kyverno pods should be `Running`. If not, check logs:
++
+[source,terminal]
+----
+oc logs -n kyverno -l app.kubernetes.io/component=admission-controller
+----
++
+Verify the pod has the `coco.io/initdata-configmap` annotation:
++
+[source,terminal]
+----
+oc get pod <pod-name> -n <namespace> -o yaml | grep coco.io/initdata-configmap
+----
++
+If missing, the deployment/pod template must include this annotation. Kyverno only injects `cc_init_data` if this annotation is present.
++
+Check if the Kyverno policy exists:
++
+[source,terminal]
+----
+oc get clusterpolicy inject-coco-initdata
+----
++
+Review policy status and events:
++
+[source,terminal]
+----
+oc describe clusterpolicy inject-coco-initdata
+----
+
+'''
+Problem:: initdata ConfigMap validation failures
+
+Solution:: The ConfigMap is missing required fields. Check the ValidatingPolicy for requirements.
++
+View validation policy:
++
+[source,terminal]
+----
+oc get validatingpolicy validate-initdata-configmap -o yaml
+----
++
+Required fields in initdata ConfigMaps:
++
+- `version`
+- `algorithm` (sha256, sha384, or sha512)
+- `policy.rego` (OPA policy)
+- `aa.toml` (attestation agent config)
+- `cdh.toml` (confidential data hub config)
++
+Check Kyverno policy reports for validation errors:
++
+[source,terminal]
+----
+oc get policyreport -A
+oc describe policyreport <report-name> -n <namespace>
+----
+
+'''
+Problem:: CoCo pods not picking up new initdata after cert rotation or KBS TLS changes
+
+Solution:: Kyverno's autogen is disabled by design to ensure rollout restarts pick up new initdata. You must manually restart deployments.
++
+Rollout restart the deployment to pick up new initdata:
++
+[source,terminal]
+----
+oc rollout restart deployment/<deployment-name> -n <namespace>
+----
++
+Verify the new CoCo pods have the updated `cc_init_data` annotation:
++
+[source,terminal]
+----
+oc get pod <new-pod-name> -n <namespace> -o yaml | \
+  grep io.katacontainers.config.hypervisor.cc_init_data
+----
++
+The annotation value should be a long base64-encoded string. If it matches the old value, the ConfigMap may not have been updated. Check the source ConfigMap in the `imperative` namespace.
+
+== Bare metal issues
+
+'''
+Problem:: NFD not detecting TDX or SEV-SNP capabilities
+
+Solution:: Verify BIOS/firmware configuration and kernel module loading.
++
+For **Intel TDX**:
++
+Check if TDX is enabled in BIOS. Consult your hardware vendor's documentation for TEE enablement.
++
+Verify the TDX kernel module is loaded:
++
+[source,terminal]
+----
+oc debug node/<node-name> -- chroot /host lsmod | grep tdx
+----
++
+Expected output should include `kvm_intel` with TDX support.
++
+Check NFD worker logs:
++
+[source,terminal]
+----
+oc logs -n openshift-nfd -l app=nfd-worker
+----
++
+For **AMD SEV-SNP**:
++
+Check if SEV-SNP is enabled in BIOS.
++
+Verify SEV capabilities:
++
+[source,terminal]
+----
+oc debug node/<node-name> -- chroot /host cat /sys/module/kvm_amd/parameters/sev
+----
++
+Expected output: `Y` (enabled)
+
+'''
+Problem:: PCCS service not starting (Intel TDX)
+
+Solution:: Verify the Intel PCS API key is configured correctly in secrets.
++
+Check PCCS pod logs:
++
+[source,terminal]
+----
+oc logs -n intel-dcap deployment/pccs-deployment
+----
++
+Look for authentication errors or missing API key messages.
++
+Verify the PCCS secret exists and contains the API key:
++
+[source,terminal]
+----
+oc get secret -n intel-dcap pccs-api-key -o yaml
+----
++
+The secret should have `PCCS_API_KEY` field (base64 encoded).
++
+If the secret is missing or incorrect, update `~/values-secret-coco-pattern.yaml` with your Intel PCS API key and re-run:
++
+[source,terminal]
+----
+./pattern.sh make upgrade
+----
+
+'''
+Problem:: QGS DaemonSet not scheduling (Intel TDX)
+
+Solution:: QGS requires nodes labeled with TDX capability. Verify NFD labeled the nodes correctly.
++
+Check node labels:
++
+[source,terminal]
+----
+oc get nodes --show-labels | grep tdx
+----
++
+Nodes with TDX should have `intel.feature.node.kubernetes.io/tdx=true`.
++
+If labels are missing, NFD may not have detected TDX. See "NFD not detecting TDX" troubleshooting above.
++
+Check QGS DaemonSet status:
++
+[source,terminal]
+----
+oc get daemonset -n intel-dcap qgs-daemonset
+----
++
+If `DESIRED` is 0, no nodes match the nodeSelector. If `DESIRED` > 0 but `READY` is 0, check pod events:
++
+[source,terminal]
+----
+oc describe pod -n intel-dcap -l app=qgs
+----
+
+'''
+Problem:: KataConfig not creating RuntimeClass on bare metal
+
+Solution:: This can be a timing issue where the operator has not finished reconciling. Check operator logs.
++
+Verify the KataConfig CR exists:
++
+[source,terminal]
+----
+oc get kataconfig -n openshift-sandboxed-containers-operator
+----
++
+Check the KataConfig status and conditions:
++
+[source,terminal]
+----
+oc describe kataconfig -n openshift-sandboxed-containers-operator
+----
++
+Check sandboxed containers operator logs for errors:
++
+[source,terminal]
+----
+oc logs -n openshift-sandboxed-containers-operator \
+  -l name=openshift-sandboxed-containers-operator --tail=100
+----
++
+If the RuntimeClass is missing after 10+ minutes, manually trigger reconciliation by adding an annotation:
++
+[source,terminal]
+----
+oc annotate kataconfig example-kataconfig \
+  reconcile-trigger="$(date)" --overwrite
+----
+
+== GPU issues
+
+'''
+Problem:: GPU Operator install plan pending (requires manual approval)
+
+Solution:: This is expected behavior. The pattern uses manual install plan approval for version control.
++
+List pending install plans:
++
+[source,terminal]
+----
+oc get installplan -n nvidia-gpu-operator
+----
++
+Approve the install plan:
++
+[source,terminal]
+----
+oc patch installplan <install-plan-name> -n nvidia-gpu-operator \
+  --type merge -p '{"spec":{"approved":true}}'
+----
+
+'''
+Problem:: `kata-cc-nvidia-gpu` RuntimeClass missing
+
+Solution:: This is often a timing issue. The GPU reconciliation job should trigger RuntimeClass creation.
++
+Check if the `reconcile-kataconfig-gpu` job has run:
++
+[source,terminal]
+----
+oc get jobs -n imperative reconcile-kataconfig-gpu
+----
++
+Check job logs:
++
+[source,terminal]
+----
+oc logs -n imperative jobs/reconcile-kataconfig-gpu
+----
++
+If the job hasn't run, it may be waiting for GPU nodes to be labeled. Verify GPU Operator labeled the nodes:
++
+[source,terminal]
+----
+oc get nodes --show-labels | grep nvidia
+----
++
+Nodes with GPUs should have `nvidia.com/gpu.present=true`.
++
+Manually trigger KataConfig reconciliation:
++
+[source,terminal]
+----
+oc annotate kataconfig example-kataconfig \
+  reconcile-trigger="$(date)" --overwrite -n openshift-sandboxed-containers-operator
+----
+
+'''
+Problem:: GPU workload stuck in `Pending` state
+
+Solution:: Verify IOMMU is enabled and GPUs are bound to VFIO driver.
++
+Check pod events:
++
+[source,terminal]
+----
+oc describe pod <gpu-pod-name> -n gpu-workload
+----
++
+Common issues:
++
+**IOMMU not enabled**: Check kernel parameters:
++
+[source,terminal]
+----
+oc debug node/<node-name> -- chroot /host cat /proc/cmdline | grep iommu
+----
++
+Expected: `intel_iommu=on` (Intel) or `amd_iommu=on` (AMD)
++
+If missing, verify the MachineConfig applied:
++
+[source,terminal]
+----
+oc get mc | grep iommu
+----
++
+Nodes must reboot for IOMMU kernel parameters to take effect.
++
+**GPU not bound to VFIO**: Check GPU driver binding:
++
+[source,terminal]
+----
+oc debug node/<gpu-node> -- chroot /host lspci -nnk -d 10de:
+----
++
+GPUs should show `Kernel driver in use: vfio-pci`. If not, check VFIO manager logs:
++
+[source,terminal]
+----
+oc logs -n nvidia-gpu-operator -l app=nvidia-vfio-manager
+----
+
+'''
+Problem:: CC Manager not enabling confidential mode on GPU
+
+Solution:: Verify the GPU firmware supports confidential computing and CC Manager is configured correctly.
++
+Check GPU CC Manager logs:
++
+[source,terminal]
+----
+oc logs -n nvidia-gpu-operator -l app=nvidia-cc-manager
+----
++
+Verify GPU supports CC mode:
++
+[source,terminal]
+----
+oc debug node/<gpu-node> -- chroot /host nvidia-smi -q | grep "CC Mode"
+----
++
+Expected output: `CC Mode: Enabled`
++
+If CC mode is not supported, the GPU firmware may not have confidential computing capabilities. NVIDIA confidential GPUs (H100, H200, B100, B200) with specific firmware versions support CC mode. Consult https://docs.nvidia.com/confidential-computing/[NVIDIA confidential computing documentation] for supported GPU models and firmware requirements.
+
+== Attestation issues
+
+'''
+Problem:: Attestation failing with PCR mismatch
+
+Solution:: PCR measurements are stale or were extracted from a different image version.
++
+Check KBS logs for the specific PCR that failed:
++
+[source,terminal]
+----
+oc logs -n trustee-operator-system -l app=kbs --tail=100 | grep PCR
+----
++
+Re-extract PCR measurements from the current peer-pod image:
++
+**For Azure**:
++
+[source,terminal]
+----
+bash scripts/get-pcr.sh
+----
++
+**For bare metal**: Follow the manual PCR collection procedure for your hardware. See link:../coco-pattern-tested-environments/[tested environments] for guidance.
++
+Update `~/values-secret-coco-pattern.yaml` with the new measurements and refresh Vault:
++
+[source,terminal]
+----
+./pattern.sh make upgrade
+oc rollout restart deployment/kbs-deployment -n trustee-operator-system
+----
+
+'''
+Problem:: TDX attestation failures (Intel)
+
+Solution:: Verify the collateral service (PCCS) is reachable and caching quotes.
++
+Check if Trustee can reach PCCS:
++
+[source,terminal]
+----
+oc exec -n trustee-operator-system deployment/kbs-deployment -- \
+  curl -k https://pccs-service.intel-dcap.svc.cluster.local:8042/version
+----
++
+Expected: JSON response with PCCS version information.
++
+If connection fails, verify PCCS is running:
++
+[source,terminal]
+----
+oc get pods -n intel-dcap -l app=pccs
+----
++
+Check PCCS logs for errors fetching collateral from Intel PCS API:
++
+[source,terminal]
+----
+oc logs -n intel-dcap deployment/pccs-deployment | grep -i error
+----
++
+Verify the Trustee KBS configuration points to the correct PCCS service:
++
+[source,terminal]
+----
+oc get configmap -n trustee-operator-system kbs-config -o yaml | grep collateralService
+----
++
+Expected: `pccs-service.intel-dcap.svc.cluster.local:8042`
+
+'''
+Problem:: SEV-SNP attestation failures (AMD)
+
+Solution:: Verify SEV-SNP is enabled in firmware and certificate chain verification is working.
++
+Check if SEV-SNP is enabled at the kernel level:
++
+[source,terminal]
+----
+oc debug node/<node-name> -- chroot /host cat /sys/module/kvm_amd/parameters/sev
+----
++
+Expected: `Y` (enabled)
++
+Verify SEV-SNP is enabled in BIOS. Consult https://www.amd.com/en/developer/sev.html[AMD SEV developer documentation] and your hardware vendor's BIOS documentation for SEV-SNP enablement procedures.
++
+Check KBS logs for certificate chain verification errors:
++
+[source,terminal]
+----
+oc logs -n trustee-operator-system -l app=kbs --tail=100 | grep -i "cert\|sev"
+----
++
+AMD SEV-SNP uses a certificate chain-based attestation model, so no external collateral service (like PCCS) is required. The certificate chain is embedded in the attestation evidence.
+
+== Operational issues
+
+'''
+Problem:: Vault secrets not loaded after initial deployment
+
+Solution:: MCO-driven node reboots during initial pattern deployment can cause Vault secret loading to time out.
++
+Wait for all nodes to finish rebooting:
++
+[source,terminal]
+----
+oc get mcp
+----
++
+All MachineConfigPools should show `UPDATED=True` and `DEGRADED=False`.
++
+Re-trigger secret loading:
++
+[source,terminal]
+----
+./pattern.sh make upgrade
+----
++
+Verify Vault is unsealed and healthy:
++
+[source,terminal]
+----
+oc get pods -n vault
+oc exec -n vault vault-0 -- vault status
+----
++
+If Vault is sealed, follow the Vault unsealing procedure documented in the Validated Patterns framework.
+
+'''
+Problem:: CoCo pods starting before `cc_init_data` annotations are ready
+
+Solution:: CoCo pods may start before Kyverno injects the `cc_init_data` annotations, causing attestation failures.
++
+Delete the pod to trigger recreation with correct annotations:
++
+[source,terminal]
+----
+oc delete pod <pod-name> -n <namespace>
+----
++
+The deployment will recreate the pod, and Kyverno will inject the `cc_init_data` annotation during admission.
++
+Verify the new pod has the annotation:
++
+[source,terminal]
+----
+oc get pod <new-pod-name> -n <namespace> -o yaml | \
+  grep io.katacontainers.config.hypervisor.cc_init_data
+----
+
+'''
+Problem:: TDX attestation failures after cluster rebuild (SGX registration not reset)
+
+Solution:: Stale SGX registration state persists in BIOS/firmware after rebuilding a bare metal TDX cluster.
++
+Before rebuilding a TDX cluster, perform an SGX factory reset in BIOS. The exact procedure varies by hardware vendor. Consult your server vendor's BIOS documentation or the https://cc-enabling.trustedservices.intel.com/intel-tdx-enabling-guide/04/hardware_setup/#install-intel-tdx-enabled-bios[Intel TDX BIOS setup guide] for reset procedures.
++
+Common BIOS settings to check:
++
+- SGX Factory Reset (enables clearing of previous registration)
+- TDX enablement (must be re-enabled after SGX reset)
+- TME (Total Memory Encryption) settings
++
+Without an SGX reset, the platform's attestation evidence will not match expected values and Trustee will reject attestation requests.
+
+'''
+Problem:: Confidential containers failing due to TEE not enabled in BIOS
+
+Solution:: Verify that TDX or SEV-SNP is actually enabled at the BIOS/firmware level.
++
+**For Intel TDX**:
++
+Check BIOS settings according to the https://cc-enabling.trustedservices.intel.com/intel-tdx-enabling-guide/04/hardware_setup/#install-intel-tdx-enabled-bios[Intel TDX BIOS setup guide].
++
+Verify TDX is detected by the kernel:
++
+[source,terminal]
+----
+oc debug node/<node-name> -- chroot /host dmesg | grep -i tdx
+----
++
+Expected: Messages indicating TDX initialization succeeded.
++
+**For AMD SEV-SNP**:
++
+Check BIOS settings according to the https://www.amd.com/en/developer/sev.html[AMD SEV developer documentation] and your hardware vendor's TEE enablement guide.
++
+Verify SEV-SNP is detected by the kernel:
++
+[source,terminal]
+----
+oc debug node/<node-name> -- chroot /host dmesg | grep -i sev
+----
++
+Expected: Messages indicating SEV-SNP initialization succeeded.
++
+If TEE capabilities are not detected at the kernel level, Node Feature Discovery (NFD) will not label nodes, and confidential runtime classes will not be schedulable. Fix the BIOS configuration before proceeding with pattern deployment.
