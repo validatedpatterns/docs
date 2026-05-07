@@ -174,9 +174,28 @@ Intel Trusted Domain Extensions (TDX) is a hardware-based TEE technology that is
 
 The pattern's Intel DCAP chart deploys PCCS as a centralized caching service and QGS as a DaemonSet on TDX nodes. Quote generation happens within the TEE, with PCCS providing attestation collateral to Trustee for verification.
 
-== NVIDIA confidential GPU support
+== AMD SEV-SNP support
 
-NVIDIA H100 GPUs with confidential computing firmware enable GPU-accelerated workloads to run inside TEEs with hardware-enforced memory encryption and attestation. The pattern's `baremetal-gpu` topology provides full support for NVIDIA confidential GPUs on bare metal.
+AMD Secure Encrypted Virtualization - Secure Nested Paging (SEV-SNP) is a hardware-based TEE technology that provides VM isolation through memory encryption and integrity protection. SEV-SNP extends AMD's SEV technology with secure nested paging to protect against additional attack vectors. The pattern provides full AMD SEV-SNP support on bare metal deployments.
+
+**Key features:**
+
+- **Automatic hardware detection**: Node Feature Discovery (NFD) detects SEV-SNP-capable processors and labels nodes with `amd.feature.node.kubernetes.io/snp=true`
+- **Certificate chain-based attestation**: AMD SEV-SNP uses a certificate chain model for attestation verification, eliminating the need for a collateral caching service like Intel's PCCS
+- **Transparent runtime selection**: The `kata-cc` RuntimeClass automatically uses the SEV-SNP handler (`kata-snp`) on labeled nodes
+- **MachineConfig automation**: Kernel parameters for SEV-SNP enablement and vsock modules are applied automatically
+
+**Deployment requirements:**
+
+- AMD EPYC processors with SEV-SNP support (3rd Gen Milan or newer)
+- BIOS/firmware with SEV-SNP enabled
+- No external attestation service required (certificate chain-based model)
+
+AMD SEV-SNP's certificate chain approach simplifies the attestation infrastructure compared to Intel TDX, as the full certificate chain is embedded in the attestation evidence sent to Trustee for verification.
+
+== NVIDIA confidential GPU support (**Technology Preview**)
+
+NVIDIA confidential GPUs with confidential computing firmware enable GPU-accelerated workloads to run inside TEEs with hardware-enforced memory encryption and attestation. The pattern's `baremetal-gpu` topology provides support for NVIDIA confidential GPUs (H100, H200, B100, B200) on bare metal with either Intel TDX or AMD SEV-SNP as the host TEE platform.
 
 **Key features:**
 
@@ -184,16 +203,16 @@ NVIDIA H100 GPUs with confidential computing firmware enable GPU-accelerated wor
 - **Confidential Computing Manager**: NVIDIA CC Manager enforces confidential mode at the GPU firmware level
 - **GPU attestation**: The GPU's attestation evidence is included in the TEE's attestation report to Trustee
 - **Kata device plugin**: The NVIDIA Kata sandbox device plugin exposes GPUs as schedulable resources (`nvidia.com/pgpu`)
+- **Multi-platform support**: Works with both Intel TDX and AMD SEV-SNP host TEE platforms
 
 **Deployment requirements:**
 
-- NVIDIA H100 GPUs with confidential computing firmware
-- IOMMU-capable system (kernel parameters applied via MachineConfig)
+- NVIDIA GPUs with confidential computing firmware (H100, H200, B100, B200)
+- Intel TDX or AMD SEV-SNP enabled bare metal host
+- IOMMU-capable system (kernel parameters applied via MachineConfig: `intel_iommu=on` or `amd_iommu=on`)
 - NVIDIA GPU Operator v26.3.0+
 
-The pattern includes a sample CUDA workload (`gpu-vectoradd`) that demonstrates GPU-accelerated computation within a confidential container, verifying both GPU functionality and attestation integration.
-
-**Note**: AMD SEV-SNP is also supported on bare metal as an alternative TEE technology. SEV-SNP uses AMD EPYC processors with encrypted memory and secure nested paging. However, additional enhancements and testing are planned for future releases, so Intel TDX and NVIDIA confidential GPUs are currently the primary focus for bare metal deployments.
+The pattern includes a sample CUDA workload (`gpu-vectoradd`) that demonstrates GPU-accelerated computation within a confidential container, verifying both GPU functionality and attestation integration. Testing has been performed with Intel TDX + H100; AMD SEV-SNP + GPU configurations are expected to work but have not been fully validated.
 
 == References
 
@@ -213,8 +232,15 @@ The pattern includes a sample CUDA workload (`gpu-vectoradd`) that demonstrates 
 **Intel TDX:**
 
 - https://www.intel.com/content/www/us/en/developer/tools/trust-domain-extensions/overview.html[Intel TDX overview]
+- https://cc-enabling.trustedservices.intel.com/intel-tdx-enabling-guide/03/hardware_selection/[Intel TDX hardware selection guide]
+- https://cc-enabling.trustedservices.intel.com/intel-tdx-enabling-guide/04/hardware_setup/#install-intel-tdx-enabled-bios[Intel TDX BIOS setup guide]
 - https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12/html/deploying_confidential_containers/deploying-confidential-containers-on-bare-metal[Deploying confidential containers on bare metal]
 - https://api.portal.trustedservices.intel.com[Intel Provisioning Certificate Service]
+
+**AMD SEV-SNP:**
+
+- https://www.amd.com/en/developer/sev.html[AMD SEV developer page]
+- https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12/html/deploying_confidential_containers/deploying-confidential-containers-on-bare-metal[Deploying confidential containers on bare metal]
 
 **NVIDIA Confidential Computing:**
 

@@ -91,6 +91,7 @@ bh
 bitnami
 bj
 bjp
+blackwell
 bls
 bluegreen
 bluegreenpause
@@ -297,6 +298,7 @@ env
 envi
 envs
 ep
+epyc
 erp
 eso
 eso's
@@ -347,6 +349,7 @@ gcp
 gcqna
 genai
 genaiexamples
+genoa
 genrsa
 gf
 gh
@@ -406,6 +409,7 @@ hostingcluster
 hostname
 howto
 hpc
+hpp
 htpasswd
 httpbin
 httpd
@@ -617,6 +621,7 @@ microcontrollers
 microservice
 microservices
 middleware
+milan
 militaries
 millicore
 mins

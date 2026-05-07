@@ -33,10 +33,11 @@ This can be done by using `openshift-install create install-config` first and ad
 ----
 
 On a cloud provider the virtual machines for the kata containers use "peer pods" which are running directly on the cloud provider's hypervisor (see the diagram below).
-This means that access is required to the "confidential computing" virtual machine class. On Azure the `Standard_DCas_v5` class of virtual machines are used.
-These virtual machines are *NOT* available in all regions. Check https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/[Azure products by region] to confirm availability in your target region.
+This means that access is required to Azure https://learn.microsoft.com/en-us/azure/confidential-computing/virtual-machine-options[confidential VM families]. Azure offers multiple confidential computing VM families including `Standard_DCas_v5` (AMD SEV-SNP), `Standard_DCes_v5` (Intel TDX), `Standard_ECas_v5` (AMD SEV-SNP, memory-optimized), and others. **This pattern defaults to `Standard_DCas_v5`** but can be configured to use other confidential VM families by modifying the VM size parameters in `values-global.yaml`.
 
-Users will also need to request quota increases for the `Standard_DC2as_v5` (and optionally `Standard_DC4as_v5`, `Standard_DC8as_v5`, `Standard_DC16as_v5`) virtual machine families in their target region. By default, Azure subscriptions may have zero quota for confidential computing VM sizes.
+These confidential VMs are *NOT* available in all regions. Check https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/[Azure products by region] to confirm availability of your chosen VM family in your target region.
+
+Users will also need to request quota increases for their chosen confidential VM family (e.g., `Standard_DC2as_v5`, `Standard_DC4as_v5`, `Standard_DC8as_v5`, `Standard_DC16as_v5` for the DCas_v5 family) in their target region. By default, Azure subscriptions may have zero quota for confidential computing VM sizes.
 
 image::coco-pattern/peer_pods.png[Schematic diagram of peer pods vs standard kata containers]
 

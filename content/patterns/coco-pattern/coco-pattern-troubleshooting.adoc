@@ -16,7 +16,7 @@ This page provides solutions to common issues encountered when deploying and ope
 == General CoCo issues
 
 '''
-Problem:: Pods stuck in `Pending` or `ContainerCreating` state
+Problem:: CoCo pods stuck in `Pending` or `ContainerCreating` state
 
 Solution:: This is most commonly caused by incomplete MachineConfig application or KataConfig not being ready.
 +
@@ -52,18 +52,20 @@ Problem:: ArgoCD applications not syncing or showing timeouts
 
 Solution:: Check application dependencies and sync order. Some applications depend on others being ready first.
 +
-View application health in ArgoCD:
+**Note**: ArgoCD applications are deployed in per-clusterGroup namespaces, not in `openshift-gitops`. Use `oc get applications -A` to locate them.
++
+View application health across all namespaces:
 +
 [source,terminal]
 ----
-oc get applications -n openshift-gitops
+oc get applications -A
 ----
 +
 For stuck applications, check sync status and errors:
 +
 [source,terminal]
 ----
-oc describe application <app-name> -n openshift-gitops
+oc describe application <app-name> -n <app-namespace>
 ----
 +
 Common dependency order issues:
@@ -72,11 +74,11 @@ Common dependency order issues:
 - Kyverno must be deployed before workload applications that need cc_init_data injection
 - cert-manager must be ready before Trustee (which depends on certificates)
 +
-Manually sync the stuck application:
+Manually sync the stuck application (use `--force` if needed):
 +
 [source,terminal]
 ----
-argocd app sync <app-name>
+argocd app sync <app-name> --force
 ----
 
 '''
@@ -84,13 +86,15 @@ Problem:: Peer-pod VM provisioning failures on Azure
 
 Solution:: Verify Azure quota, region support, and networking configuration.
 +
-Check that your Azure region supports `Standard_DCas_v5` VMs:
+The pattern defaults to `Standard_DCas_v5` VMs, but you can configure other Azure https://learn.microsoft.com/en-us/azure/confidential-computing/virtual-machine-options[confidential VM families] in `values-global.yaml` by changing the VM size parameters.
 +
-Visit https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/ and search for "DCas" in your target region.
+Check that your Azure region supports your chosen confidential VM family (default: `Standard_DCas_v5`):
++
+Visit https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/ and search for your VM family in your target region.
 +
 Verify quota for confidential VM sizes in your subscription:
 +
-Navigate to **Azure Portal > Subscriptions > Usage + quotas** and filter for "DC" families. Request a quota increase if needed.
+Navigate to **Azure Portal > Subscriptions > Usage + quotas** and filter for "DC" or "EC" families depending on your chosen VM type. Request a quota increase if needed.
 +
 Check sandboxed containers operator logs for Azure API errors:
 +
@@ -163,9 +167,9 @@ Look for messages like `Attestation verification failed` or `PCR mismatch`.
 == Kyverno-specific issues
 
 '''
-Problem:: `cc_init_data` annotation not injected into pods
+Problem:: `cc_init_data` annotation not injected into CoCo pods
 
-Solution:: Verify Kyverno is running and the pod has the required annotation trigger.
+Solution:: Verify Kyverno is running and the CoCo pod has the required annotation trigger.
 +
 Check Kyverno pods are healthy:
 +
@@ -233,7 +237,7 @@ oc describe policyreport <report-name> -n <namespace>
 ----
 
 '''
-Problem:: Pods not picking up new initdata after cert rotation or KBS TLS changes
+Problem:: CoCo pods not picking up new initdata after cert rotation or KBS TLS changes
 
 Solution:: Kyverno's autogen is disabled by design to ensure rollout restarts pick up new initdata. You must manually restart deployments.
 +
@@ -244,7 +248,7 @@ Rollout restart the deployment to pick up new initdata:
 oc rollout restart deployment/<deployment-name> -n <namespace>
 ----
 +
-Verify the new pods have the updated `cc_init_data` annotation:
+Verify the new CoCo pods have the updated `cc_init_data` annotation:
 +
 [source,terminal]
 ----
@@ -514,7 +518,7 @@ oc debug node/<gpu-node> -- chroot /host nvidia-smi -q | grep "CC Mode"
 +
 Expected output: `CC Mode: Enabled`
 +
-If CC mode is not supported, the GPU firmware may not have confidential computing capabilities. Only NVIDIA H100 GPUs with specific firmware versions support CC mode. Consult NVIDIA documentation for supported GPU models and firmware requirements.
+If CC mode is not supported, the GPU firmware may not have confidential computing capabilities. NVIDIA confidential GPUs (H100, H200, B100, B200) with specific firmware versions support CC mode. Consult https://docs.nvidia.com/confidential-computing/[NVIDIA confidential computing documentation] for supported GPU models and firmware requirements.
 
 == Attestation issues
 
@@ -586,3 +590,131 @@ oc get configmap -n trustee-operator-system kbs-config -o yaml | grep collateral
 ----
 +
 Expected: `pccs-service.intel-dcap.svc.cluster.local:8042`
+
+'''
+Problem:: SEV-SNP attestation failures (AMD)
+
+Solution:: Verify SEV-SNP is enabled in firmware and certificate chain verification is working.
++
+Check if SEV-SNP is enabled at the kernel level:
++
+[source,terminal]
+----
+oc debug node/<node-name> -- chroot /host cat /sys/module/kvm_amd/parameters/sev
+----
++
+Expected: `Y` (enabled)
++
+Verify SEV-SNP is enabled in BIOS. Consult https://www.amd.com/en/developer/sev.html[AMD SEV developer documentation] and your hardware vendor's BIOS documentation for SEV-SNP enablement procedures.
++
+Check KBS logs for certificate chain verification errors:
++
+[source,terminal]
+----
+oc logs -n trustee-operator-system -l app=kbs --tail=100 | grep -i "cert\|sev"
+----
++
+AMD SEV-SNP uses a certificate chain-based attestation model, so no external collateral service (like PCCS) is required. The certificate chain is embedded in the attestation evidence.
+
+== Operational issues
+
+'''
+Problem:: Vault secrets not loaded after initial deployment
+
+Solution:: MCO-driven node reboots during initial pattern deployment can cause Vault secret loading to time out.
++
+Wait for all nodes to finish rebooting:
++
+[source,terminal]
+----
+oc get mcp
+----
++
+All MachineConfigPools should show `UPDATED=True` and `DEGRADED=False`.
++
+Re-trigger secret loading:
++
+[source,terminal]
+----
+./pattern.sh make upgrade
+----
++
+Verify Vault is unsealed and healthy:
++
+[source,terminal]
+----
+oc get pods -n vault
+oc exec -n vault vault-0 -- vault status
+----
++
+If Vault is sealed, follow the Vault unsealing procedure documented in the Validated Patterns framework.
+
+'''
+Problem:: CoCo pods starting before `cc_init_data` annotations are ready
+
+Solution:: CoCo pods may start before Kyverno injects the `cc_init_data` annotations, causing attestation failures.
++
+Delete the pod to trigger recreation with correct annotations:
++
+[source,terminal]
+----
+oc delete pod <pod-name> -n <namespace>
+----
++
+The deployment will recreate the pod, and Kyverno will inject the `cc_init_data` annotation during admission.
++
+Verify the new pod has the annotation:
++
+[source,terminal]
+----
+oc get pod <new-pod-name> -n <namespace> -o yaml | \
+  grep io.katacontainers.config.hypervisor.cc_init_data
+----
+
+'''
+Problem:: TDX attestation failures after cluster rebuild (SGX registration not reset)
+
+Solution:: Stale SGX registration state persists in BIOS/firmware after rebuilding a bare metal TDX cluster.
++
+Before rebuilding a TDX cluster, perform an SGX factory reset in BIOS. The exact procedure varies by hardware vendor. Consult your server vendor's BIOS documentation or the https://cc-enabling.trustedservices.intel.com/intel-tdx-enabling-guide/04/hardware_setup/#install-intel-tdx-enabled-bios[Intel TDX BIOS setup guide] for reset procedures.
++
+Common BIOS settings to check:
++
+- SGX Factory Reset (enables clearing of previous registration)
+- TDX enablement (must be re-enabled after SGX reset)
+- TME (Total Memory Encryption) settings
++
+Without an SGX reset, the platform's attestation evidence will not match expected values and Trustee will reject attestation requests.
+
+'''
+Problem:: Confidential containers failing due to TEE not enabled in BIOS
+
+Solution:: Verify that TDX or SEV-SNP is actually enabled at the BIOS/firmware level.
++
+**For Intel TDX**:
++
+Check BIOS settings according to the https://cc-enabling.trustedservices.intel.com/intel-tdx-enabling-guide/04/hardware_setup/#install-intel-tdx-enabled-bios[Intel TDX BIOS setup guide].
++
+Verify TDX is detected by the kernel:
++
+[source,terminal]
+----
+oc debug node/<node-name> -- chroot /host dmesg | grep -i tdx
+----
++
+Expected: Messages indicating TDX initialization succeeded.
++
+**For AMD SEV-SNP**:
++
+Check BIOS settings according to the https://www.amd.com/en/developer/sev.html[AMD SEV developer documentation] and your hardware vendor's TEE enablement guide.
++
+Verify SEV-SNP is detected by the kernel:
++
+[source,terminal]
+----
+oc debug node/<node-name> -- chroot /host dmesg | grep -i sev
+----
++
+Expected: Messages indicating SEV-SNP initialization succeeded.
++
+If TEE capabilities are not detected at the kernel level, Node Feature Discovery (NFD) will not label nodes, and confidential runtime classes will not be schedulable. Fix the BIOS configuration before proceeding with pattern deployment.
