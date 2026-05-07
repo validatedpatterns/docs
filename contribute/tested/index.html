@@ -59,16 +59,73 @@ Most patterns also include the deployment of an RHACM operator to manage multi-c
 Edge patterns Many patterns include both a data center and one or more edge clusters. The following diagram outlines the general deployment flow for applications on an edge cluster. Edge OpenShift clusters are typically smaller than data center clusters and might be deployed on a three-node cluster that allows workloads on control plane nodes, or even on a Single-node OpenShift cluster. These edge clusters can be deployed on bare metal, local virtual machines, or in a public or private cloud.
 GitOps for edge After provisioning the edge cluster, import or join it with the hub or data center cluster. For instructions on how to import the cluster, see Importing a cluster.
 After importing the cluster, RHACM on the data center deploys an RHACM agent and agent-addon pod into the edge cluster. RHACM then installs OpenShift GitOps, which deploys the required applications based on the specified criteria.
-`,url:"https://validatedpatterns.io/learn/about-validated-patterns/",breadcrumb:"/learn/about-validated-patterns/"},"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-azure-requirements/":{title:"Azure requirements",tags:[],content:`Azure requirements This demo currently has been tested only on azure. The configuration tested used the openshift-install. OpenShift documentation contains details on how to do this.
-The documentation outlines minimum required configuration for an azure account.
-Changes required Do not accept default sizes for OpenShift install. It is recommended to up the workers to at least Standard_D8s_v5. This can be done by using openshift-install create install-config first and adjusting the workers under platform e.g.:
-- architecture: amd64 hyperthreading: Enabled name: worker platform: azure: type: Standard_D8s_v5 replicas: 3 On a cloud provider the virtual machines for the kata containers use &#34;peer pods&#34; which are running directly on the cloud provider’s hypervisor (see the diagram below). This means that access is required to the &#34;confidential computing&#34; virtual machine class. On Azure the Standard_DCas_v5 class of virtual machines are used. These virtual machines are NOT available in all regions. Users will also need to up the specific limits for Standard_DC2as_v5 virtual machines.
-DNS for the openshift cluster also MUST be provided by azure DNS.
-Azure configuration required for the validated pattern The validated pattern requires access to azure apis to provision peer-pod VMs and to obtain certificates from let’s encrypt.
+`,url:"https://validatedpatterns.io/learn/about-validated-patterns/",breadcrumb:"/learn/about-validated-patterns/"},"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-azure-requirements/":{title:"Azure requirements",tags:[],content:`Azure requirements This pattern has been tested on Microsoft Azure using self-managed OpenShift 4.19.28+ clusters provisioned with openshift-install. OpenShift documentation contains details on how to install a cluster on Azure.
+The documentation outlines the minimum required configuration for an Azure account.
+Changes required Do not accept default sizes for OpenShift install. It is recommended to increase the worker node size to at least Standard_D8s_v5. This can be done by using openshift-install create install-config first and adjusting the workers under platform, for example:
+- architecture: amd64 hyperthreading: Enabled name: worker platform: azure: type: Standard_D8s_v5 replicas: 3 On a cloud provider the virtual machines for the kata containers use &#34;peer pods&#34; which are running directly on the cloud provider’s hypervisor (see the diagram below). This means that access is required to Azure confidential VM families. Azure offers multiple confidential computing VM families including Standard_DCas_v5 (AMD SEV-SNP), Standard_DCes_v5 (Intel TDX), Standard_ECas_v5 (AMD SEV-SNP, memory-optimized), and others. This pattern defaults to Standard_DCas_v5 but can be configured to use other confidential VM families by modifying the VM size parameters in values-global.yaml.
+These confidential VMs are NOT available in all regions. Check Azure products by region to confirm availability of your chosen VM family in your target region.
+Users will also need to request quota increases for their chosen confidential VM family (e.g., Standard_DC2as_v5, Standard_DC4as_v5, Standard_DC8as_v5, Standard_DC16as_v5 for the DCas_v5 family) in their target region. By default, Azure subscriptions may have zero quota for confidential computing VM sizes.
+DNS for the OpenShift cluster MUST be provided by Azure DNS. The pattern uses Azure DNS for both the cluster’s ingress and for cert-manager DNS01 challenge validation when issuing certificates.
+Azure configuration required for the validated pattern The validated pattern requires access to Azure APIs to provision peer-pod VMs.
 Azure configuration information must be provided in two places:
-The a secret must be loaded using a ../../../learn/secrets-management-in-the-validated-patterns-framework/[values-secret] file. The values-secret.yaml.template file provides the appropriate structure
-A broader set of information about the cluster is required in values-global.yaml (see below).
-global: azure: clientID: &#39;&#39; # Service principle ID subscriptionID: &#39;&#39; tenantID: &#39;&#39; # Tenant ID DNSResGroup: &#39;&#39; # Resource group for the azure DNS hosted zone hostedZoneName: &#39;&#39; # the hosted zone name clusterResGroup: &#39;&#39; # Resource group of the cluster clusterSubnet: &#39;&#39; # subnet of the cluster clusterNSG: &#39;&#39; # network security group of the worker nodes in the cluster clusterRegion: &#39;&#39; `,url:"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-azure-requirements/",breadcrumb:"/patterns/coco-pattern/coco-pattern-azure-requirements/"},"https://validatedpatterns.io/contribute/contribute-to-docs/":{title:"Contributor's guide",tags:[],content:` Contribute to Validated Patterns documentation Different ways to contribute There are a few different ways you can contribute to Validated Patterns documentation:
+A secret must be loaded using a ../../../learn/secrets-management-in-the-validated-patterns-framework/[values-secret] file. The values-secret.yaml.template file provides the appropriate structure. The Azure client secret (service principal password) is stored here and loaded into Vault.
+A broader set of information about the cluster is required in values-global.yaml (see below). These values are used by the sandboxed containers operator to provision peer-pod VMs in the correct Azure subscription, resource group, and virtual network.
+global: azure: clientID: &#39;&#39; # Service principal ID subscriptionID: &#39;&#39; tenantID: &#39;&#39; # Tenant ID DNSResGroup: &#39;&#39; # Resource group for the Azure DNS hosted zone hostedZoneName: &#39;&#39; # the hosted zone name clusterResGroup: &#39;&#39; # Resource group of the cluster clusterSubnet: &#39;&#39; # subnet of the cluster clusterNSG: &#39;&#39; # network security group of the worker nodes in the cluster clusterRegion: &#39;&#39; The clusterResGroup, clusterSubnet, and clusterNSG values can be found in the Azure portal after the cluster has been provisioned, or via openshift-install metadata. The DNSResGroup and hostedZoneName correspond to the Azure DNS zone used for the cluster’s base domain.
+`,url:"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-azure-requirements/",breadcrumb:"/patterns/coco-pattern/coco-pattern-azure-requirements/"},"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-tested-environments/":{title:"CoCo pattern tested environments",tags:[],content:`Tested environments Current version (5.*) Version 5 introduces Kyverno-based cc_init_data injection, bare metal support (Intel TDX, AMD SEV-SNP), and Technology Preview NVIDIA confidential GPU support (H100, H200, B100, B200).
+Supported components OpenShift Sandboxed Containers Operator 1.12
+Red Hat Build of Trustee 1.1
+OpenShift Container Platform 4.19.28+
+Kyverno 3.7.*
+cert-manager operator (stable-v1 channel)
+Red Hat Advanced Cluster Management (for multi-cluster topology)
+HashiCorp Vault (secrets management)
+Node Feature Discovery Operator (for bare metal)
+Intel Device Plugins Operator (for Intel TDX)
+NVIDIA GPU Operator v26.3.0+ (for GPU topology)
+Azure single cluster Tested on Azure with the simple clusterGroup using self-managed OpenShift 4.19.28+ provisioned via openshift-install. In this topology all components — Trustee, Vault, ACM, sandboxed containers operator, Kyverno, and sample workloads — are deployed on a single cluster.
+Worker nodes use Standard_D8s_v5 or larger. Peer-pod VMs for confidential containers default to Standard_DC2as_v5 from the Azure confidential computing VM family, but other Azure confidential VM families can be configured in values-global.yaml. Azure DNS is required for the cluster’s hosted zone.
+Important: Azure confidential VM availability varies by region. Before deploying, verify that your target region supports Standard_DCas_v5 VMs and that your subscription has sufficient quota. See the Azure requirements page for regional availability details.
+Azure multiple clusters Tested with trusted-hub + spoke clusterGroups on Azure, both using self-managed OpenShift 4.19.28+.
+trusted-hub: Vault, ACM, Trustee (KBS + attestation service), cert-manager, Kyverno. This cluster acts as the trust anchor and ACM hub.
+spoke: Sandboxed containers operator, Kyverno, peer-pod infrastructure, and sample workloads (hello-openshift, kbs-access). Imported into ACM with the clusterGroup=spoke label.
+The spoke cluster connects back to the hub’s Trustee instance for attestation and secret retrieval. Secrets are synchronised from the hub’s Vault to the spoke via the External Secrets operator.
+Bare metal single cluster (Intel TDX) Tested on Single Node OpenShift (SNO) with Intel TDX hardware using the baremetal clusterGroup. All components run on a single node.
+Hardware configuration: - Intel Xeon Sapphire Rapids processors (4th Gen) with TDX enabled in BIOS - HPP (HostPath Provisioner) for storage - NFD detects TDX capability and labels the node with intel.feature.node.kubernetes.io/tdx=true
+Deployed components: - Trustee, Vault, Kyverno, sandboxed containers operator, NFD, Intel DCAP (PCCS + QGS) - Sample workloads use runtimeClassName: kata-cc with the kata-tdx handler - PCCS connects to Intel PCS API for attestation collateral
+Note: Multi-node bare metal clusters are expected to work but have not been validated.
+Bare metal single cluster (AMD SEV-SNP) Tested on Single Node OpenShift (SNO) with AMD SEV-SNP hardware using the baremetal clusterGroup.
+Hardware configuration: - AMD EPYC Genoa processors with SEV-SNP enabled in BIOS - HPP (HostPath Provisioner) for storage - NFD detects SEV-SNP capability and labels the node with amd.feature.node.kubernetes.io/snp=true
+Deployed components: - Trustee, Vault, Kyverno, sandboxed containers operator, NFD - Sample workloads use runtimeClassName: kata-cc with the kata-snp handler - No PCCS required (AMD uses certificate chain-based attestation)
+Bare metal GPU single cluster (Technology Preview) Tested on Single Node OpenShift (SNO) with Intel TDX and NVIDIA confidential GPUs using the baremetal-gpu clusterGroup. This topology supports both Intel TDX and AMD SEV-SNP as the host TEE platform.
+Hardware configuration: - Intel Xeon Sapphire Rapids processors with TDX enabled in BIOS (tested) or AMD EPYC Milan/Genoa processors with SEV-SNP (expected to work) - NVIDIA confidential GPUs with confidential computing firmware (tested with H100; H200, B100, B200 supported) - IOMMU enabled for GPU passthrough - HPP (HostPath Provisioner) for storage
+Deployed components: - All components from bare metal Intel TDX or AMD SEV-SNP configuration - NVIDIA GPU Operator with CC Manager, VFIO manager, and Kata device plugin - GPU workload (gpu-vectoradd) uses runtimeClassName: kata-cc-nvidia-gpu - GPU attestation integrated with Trustee KBS
+Version history All pattern versions prior to v4 used Technology Preview (pre-GA) releases of Trustee.
+Pattern version Trustee OSC Min OCP Notes 5.* (current)
+1.1 (GA)
+1.12
+4.19.28+
+Kyverno-based cc_init_data injection. Bare metal support (Intel TDX, AMD SEV-SNP). NVIDIA confidential GPU support (Technology Preview: H100, H200, B100, B200).
+4.*
+1.0 (GA)
+1.11
+4.17+
+First GA release. Multi-cluster support. cert-manager replaces Let’s Encrypt.
+3.*
+0.4.* (Tech Preview)
+1.10.*
+4.16
+Single cluster only. Tested on Azure (self-managed and ARO).
+2.*
+0.3.* (Tech Preview)
+1.9.*
+4.16
+Single cluster only. Tested on Azure (self-managed and ARO).
+1.0.0
+0.2.0 (Tech Preview)
+1.8.1
+4.16
+Initial release. Single cluster only. Self-managed OpenShift on Azure.
+`,url:"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-tested-environments/",breadcrumb:"/patterns/coco-pattern/coco-pattern-tested-environments/"},"https://validatedpatterns.io/contribute/contribute-to-docs/":{title:"Contributor's guide",tags:[],content:` Contribute to Validated Patterns documentation Different ways to contribute There are a few different ways you can contribute to Validated Patterns documentation:
 Email the Validated Patterns team at hybrid-cloud-patterns@googlegroups.com.
 Create a GitHub or Jira issue .
 Submit a pull request (PR). To create a PR, create a local clone of your own fork of the Validated Patterns docs repository, make your changes, and submit a PR. This option is best if you have substantial changes.
@@ -280,30 +337,117 @@ Open Platform for Enterprise AI (OPEA)
 Various microservices
 ChatQnA application
 Hugging Face Llama-3.1-8B-Instruct model
-`,url:"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-getting-started/",breadcrumb:"/patterns/amd-rag-chat-qna/amd-rag-chat-qna-getting-started/"},"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-getting-started/":{title:"Getting started",tags:[],content:` Deploying Install an OpenShift Cluster on Azure
-Update the required Azure configuration and secrets
+`,url:"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-getting-started/",breadcrumb:"/patterns/amd-rag-chat-qna/amd-rag-chat-qna-getting-started/"},"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-getting-started/":{title:"Getting started",tags:[],content:` Deploying Prerequisites Azure deployments Install an OpenShift 4.19.28+ Cluster on Azure
+Update the required Azure configuration and secrets in values-global.yaml, including the Azure service principal, DNS resource group, and cluster networking details.
+Fork the repository and clone it locally. ArgoCD reconciles against your fork, so all configuration changes must be committed and pushed.
+Run bash scripts/gen-secrets.sh to generate KBS key pairs, attestation policy seeds, and copy the values-secret template to ~/values-secret-coco-pattern.yaml. This script will not overwrite existing secrets.
+Run bash scripts/get-pcr.sh to retrieve PCR measurements from the peer-pod VM image. This stores the measurements at ~/.coco-pattern/measurements.json, which are loaded into Vault and used by the attestation service. Requires podman, skopeo, and a pull secret at ~/pull-secret.json.
+Review and customise ~/values-secret-coco-pattern.yaml. This file controls what secrets are loaded into Vault, including attestation policies, KBS key material, and PCR measurements. See the comments in values-secret.yaml.template for details on each field.
+Bare metal deployments Install OpenShift 4.19.28+ on bare metal with Intel TDX or AMD SEV-SNP hardware
+Ensure BIOS/firmware is configured to enable TDX or SEV-SNP. For Intel TDX, consult the Intel TDX BIOS setup guide. For AMD SEV-SNP, consult the AMD SEV developer documentation and your hardware vendor’s TEE enablement procedures.
+For Intel TDX: Obtain an Intel PCS API key from Intel Trusted Services
+Fork the repository and clone it locally. ArgoCD reconciles against your fork, so all configuration changes must be committed and pushed.
+Run bash scripts/gen-secrets.sh to generate KBS key pairs and PCCS secrets (for Intel TDX)
+For bare metal, PCR measurements must be collected manually after the first boot. See the tested environments page for guidance on PCR collection for bare metal. Store the measurements at ~/.coco-pattern/measurements.json.
+Review and customise ~/values-secret-coco-pattern.yaml. For Intel TDX, uncomment the PCCS secrets section and provide your Intel PCS API key. See the comments in values-secret.yaml.template for details on each field.
+Single cluster deployment The single-cluster topology uses the simple clusterGroup. All components — Trustee, Vault, ACM, sandboxed containers, and workloads — are deployed on one cluster.
+Ensure main.clusterGroupName: simple is set in values-global.yaml
 ./pattern.sh make install
-Wait: The cluster needs to reboot all nodes at least once, and reprovision the ingress to use the let’s encrypt certificates.
-If the services do not come up use the ArgoCD UI to triage potential timeouts.
-Simple Confidential container tests The pattern deploys some simple tests of CoCo with this pattern. A &#34;Hello Openshift&#34; (e.g. curl to return &#34;Hello Openshift!&#34;) application has been deployed in three form factor.
-A vanilla kubernetes pod at oc get pods -n hello-openshift standard
-A confidential container oc get pods -n hello-openshift secure
-A confidential container with a relaxed policy at oc get pods -n hello-openshift insecure-policy
+Wait for the cluster to reboot all nodes. The sandboxed containers operator applies a MachineConfig update that triggers a rolling reboot. Monitor progress via the ArgoCD UI or oc get nodes.
+If the services do not come up, use the ArgoCD UI to triage potential timeouts. Peer-pod VMs may need to be restarted if they time out during initial provisioning.
+Multi-cluster deployment The multi-cluster topology separates the trusted zone (hub) from the untrusted workload zone (spoke). The hub cluster runs Trustee, Vault, and ACM. The spoke cluster runs the sandboxed containers operator and confidential workloads.
+Set main.clusterGroupName: trusted-hub in values-global.yaml
+Deploy the hub cluster: ./pattern.sh make install
+Wait for ACM (MultiClusterHub) to reach Running state on the hub cluster: oc get multiclusterhub -n open-cluster-management
+Provision a second OpenShift 4.17+ cluster on Azure for the spoke
+Import the spoke cluster into ACM with the label clusterGroup=spoke (see importing a cluster). ACM will automatically deploy the spoke clusterGroup applications to the imported cluster.
+The spoke cluster will install the sandboxed containers operator, deploy peer-pod infrastructure, and launch the sample workloads. Monitor progress in the ACM console or via ArgoCD on the spoke.
+Bare metal deployment The bare metal topology uses the baremetal clusterGroup for Intel TDX or AMD SEV-SNP hardware without GPUs.
+Set main.clusterGroupName: baremetal in values-global.yaml
+Run bash scripts/gen-secrets.sh to generate KBS key pairs and PCCS secrets (for Intel TDX)
+For Intel TDX: uncomment the PCCS secrets section in ~/values-secret-coco-pattern.yaml and provide your Intel PCS API key. AMD SEV-SNP deployments do not require PCCS.
+Review and customize ~/values-secret-coco-pattern.yaml with any additional secrets or attestation policy customizations
+./pattern.sh make install
+Wait for the cluster to reboot nodes. The pattern applies MachineConfig updates for:
+TDX/SEV-SNP kernel parameters (e.g., kvm_intel.tdx=1 for Intel TDX, kvm_amd.sev=1 for AMD SEV-SNP)
+nohibernate kernel argument
+vsock-loopback kernel module configuration + Monitor node reboot progress: oc get nodes or oc get mcp + Note: MCO-driven reboots during initial deployment may cause Vault secret loading to time out. If secrets fail to load after nodes finish rebooting (oc get mcp shows UPDATED=True), manually re-trigger secret loading by running ./pattern.sh make upgrade.
+Bare metal support is currently tested on Single Node OpenShift (SNO) configurations. Multi-node bare metal clusters are expected to work but have not been validated.
+Automatic hardware detection:
+The pattern automatically detects and configures your TEE hardware:
+Node Feature Discovery (NFD) labels nodes based on detected capabilities:
+Intel TDX: intel.feature.node.kubernetes.io/tdx=true
+AMD SEV-SNP: amd.feature.node.kubernetes.io/snp=true
+HostPath Provisioner (HPP) provides persistent storage for bare metal deployments
+RuntimeClass: The kata-cc RuntimeClass is created automatically, using kata-tdx or kata-snp handler based on detected hardware
+Both kata-tdx and kata-snp RuntimeClasses are deployed; only the one matching your hardware will have schedulable nodes
+Intel DCAP components (PCCS and QGS) deploy unconditionally but DaemonSets only schedule on Intel TDX nodes via NFD label selectors
+Optional PCCS node pinning: For Intel TDX deployments, you can pin the PCCS service to a specific node by running bash scripts/get-pccs-node.sh and setting baremetal.pccs.nodeSelector in the baremetal chart values.
+Bare metal GPU deployment (Technology Preview) The baremetal-gpu topology extends the bare metal deployment with NVIDIA confidential GPU support (H100, H200, B100, B200). This topology works with both Intel TDX and AMD SEV-SNP as the host TEE platform.
+Set main.clusterGroupName: baremetal-gpu in values-global.yaml
+Run bash scripts/gen-secrets.sh to generate KBS keys and PCCS secrets
+For Intel TDX: uncomment the PCCS secrets in ~/values-secret-coco-pattern.yaml and provide your Intel PCS API key
+./pattern.sh make install
+Wait for the cluster to reboot nodes. The GPU topology adds IOMMU configuration to the MachineConfig, which enables GPU passthrough to confidential VMs:
+Intel: intel_iommu=on
+AMD: amd_iommu=on + All nodes will reboot to apply these kernel parameters. + Note: MCO-driven reboots may cause Vault secret loading to time out. If needed, re-run ./pattern.sh make upgrade after nodes finish rebooting.
+Approve the GPU Operator install plan when it appears. The pattern uses installPlanApproval: Manual to ensure version control. Check for pending install plans: + [source,bash] ---- oc get installplan -n nvidia-gpu-operator ---- + Approve the install plan: + [source,bash] ---- oc patch installplan &lt;install-plan-name&gt; -n nvidia-gpu-operator \\ --type merge -p &#39;{&#34;spec&#34;:{&#34;approved&#34;:true}}&#39; ----
+The baremetal-gpu topology applies IOMMU MachineConfig to all nodes and triggers reboots even on clusters without GPUs. If you do not have GPUs, use the baremetal topology instead. The GPU workload (gpu-vectoradd) will remain in Pending state on systems without GPUs but is otherwise harmless.
+GPU-specific components:
+NVIDIA GPU Operator: Manages GPU drivers, device plugins, and confidential computing manager
+Kata device plugin: Exposes GPUs as schedulable resources (nvidia.com/pgpu)
+CC Manager: Enables confidential mode at the GPU firmware level
+VFIO Manager: Binds GPUs to VFIO for passthrough to Kata VMs
+RuntimeClass: kata-cc-nvidia-gpu is created for GPU-enabled confidential pods
+GPU workload verification:
+The pattern deploys a gpu-vectoradd sample workload that runs a CUDA vector addition inside a confidential container. Check the logs to verify GPU functionality:
+oc logs -n gpu-workload deployment/gpu-vectoradd Expected output should show successful CUDA execution and GPU device detection.
+Updating PCR measurements Platform Configuration Register (PCR) measurements are cryptographic hashes of the peer-pod VM’s boot components and runtime state. The attestation service verifies these measurements to ensure workloads are running in a genuine, unmodified TEE. When the peer-pod VM image is updated (for example, when upgrading OpenShift Sandboxed Containers), the PCR values change and must be refreshed.
+When to update PCR measurements Update PCR measurements after:
+Upgrading the OpenShift Sandboxed Containers operator
+Updating the peer-pod VM image (podvm-image configmap)
+Changing kernel parameters or boot configuration in the peer-pod image
+Applying security patches that modify the VM boot chain
+Update workflow Retrieve new measurements: Run the PCR extraction script against the updated peer-pod image:
+bash scripts/get-pcr.sh This fetches the current peer-pod image from your cluster’s registry, extracts the measurements, and stores them at ~/.coco-pattern/measurements.json.
+Update Vault secrets: The measurements are loaded into Vault via values-secret-coco-pattern.yaml. If you previously deployed the pattern, update the pcrMeasurements field in your values-secret file with the new content from ~/.coco-pattern/measurements.json.
+Sync to the cluster: Push the updated values-secret file to refresh Vault:
+./pattern.sh make upgrade This reloads secrets into Vault and triggers the External Secrets operator to sync the new PCR values to the trustee-operator-system namespace.
+Restart the attestation service: The attestation service caches policy configuration. Restart it to pick up the new PCR measurements:
+oc rollout restart deployment/kbs-deployment -n trustee-operator-system Verify: Deploy a test confidential pod or restart an existing one. Check the KBS logs to confirm successful attestation with the new measurements:
+oc logs -n trustee-operator-system -l app=kbs -f | grep &#34;Attestation succeeded&#34; Troubleshooting attestation failures If confidential pods fail to start or cannot retrieve secrets after an update:
+Check KBS logs for attestation errors:
+oc logs -n trustee-operator-system -l app=kbs --tail=100 Look for messages like PCR mismatch or Attestation verification failed.
+Verify PCR measurements are loaded into Vault and synced to the cluster:
+# Check Vault has the measurements oc exec -n vault vault-0 -- vault kv get secret/hub/pcrMeasurements # Check the External Secret synced to the namespace oc get secret -n trustee-operator-system attestation-policy -o yaml Compare expected vs actual PCR values: The KBS logs show the PCR values presented by the peer-pod. Compare these against the expected values in ~/.coco-pattern/measurements.json. If they differ, re-run scripts/get-pcr.sh to ensure you extracted measurements from the correct image version.
+Confirm peer-pod image version: Verify the peer-pod is using the expected image:
+# Check the peer-pod configmap oc get configmap peer-pods-cm -n openshift-sandboxed-containers-operator -o yaml | grep podvm-image If the PCR values still do not match after following these steps, the peer-pod VM image may have been modified outside the standard upgrade process, or hyperthreading/firmware settings may differ from the image used during PCR extraction.
+Simple Confidential container tests The pattern deploys some simple tests of CoCo with this pattern. A &#34;Hello Openshift&#34; (e.g. curl to return &#34;Hello Openshift!&#34;) application has been deployed in three configurations:
+A vanilla kubernetes pod: oc get pods -n hello-openshift standard
+A confidential container with a strict policy: oc get pods -n hello-openshift secure
+A confidential container with a relaxed policy: oc get pods -n hello-openshift insecure-policy
 In this case the insecure policy is designed to allow a user to be able to exec into the confidential container. Typically this is disabled by an immutable policy established at pod creation time.
-Doing a oc get pods for either of the pods running a confidential container should show the runtimeClassName: kata-remote for the pod.
-Logging into azure once the pods have been provisioned will show that each of these two pods has been provisioned with it’s own Standard_DC2as_v5 virtual machine.
-oc exec testing In a OpenShift cluster without confidential containers, Role Based Access Control (RBAC), may be used to prevent users from using oc exec to access a container container to mutate it. However:
+Doing oc get pod -n hello-openshift secure -o yaml for either of the pods running a confidential container should show:
+Azure deployments: runtimeClassName: kata-remote (peer-pod provisioned on Azure hypervisor)
+Bare metal deployments: runtimeClassName: kata-cc (Kata container running on TDX/SEV-SNP hardware)
+Bare metal GPU deployments: runtimeClassName: kata-cc-nvidia-gpu (GPU-enabled Kata container)
+Azure-specific verification: Logging into the Azure portal once the pods have been provisioned will show that each confidential pod has its own Standard_DC2as_v5 virtual machine. These VMs are visible under the cluster’s resource group.
+oc exec testing In an OpenShift cluster without confidential containers, Role Based Access Control (RBAC) may be used to prevent users from using oc exec to access a container to mutate it. However:
 Cluster admins can always circumvent this capability
-Anyone logged into the node directly can also circumvent this capability.
-Confidential containers can prevent this. Running: oc exec -n hello-openshift -it secure — bash will result in a denial of access, irrespective of the user undertaking the action, including kubeadmin. For running this with either the standard pod oc exec -n hello-openshift -it standard — bash, or the CoCo pod with the policy disabled oc exec -n hello-openshift -it insecure-policy — bash will allow shell access.
-Confidential Data Hub testing Part of the CoCo VM is a component called the Confidential Data Hub (CDH), which simplifies access to the Trustee Key Broker service for end applications. Find out more about how the CDH and Trustee work together here.
-The CDH presents to containers within the pod (only), via a localhost URL. The CoCo container with an insecure policy can be used for testing the behaviour.
+Anyone logged into the node directly can also circumvent this capability
+Confidential containers enforce this boundary at the hardware level, independent of RBAC. Running: oc exec -n hello-openshift -it secure — bash will result in a denial of access, irrespective of the user undertaking the action, including kubeadmin. The policy is baked into the pod at creation time and cannot be modified at runtime.
+For comparison, oc exec -n hello-openshift -it standard — bash (the standard pod) and oc exec -n hello-openshift -it insecure-policy — bash (the CoCo pod with a relaxed policy) will both allow shell access.
+Confidential Data Hub testing Part of the CoCo VM is a component called the Confidential Data Hub (CDH), which simplifies access to the Trustee Key Broker Service (KBS) for end applications. The CDH runs inside the confidential VM and handles attestation transparently — applications simply make HTTP requests to a localhost endpoint.
+Find out more about how the CDH and Trustee work together here.
+The CDH presents to containers within the pod (only), via a localhost URL. The CoCo container with an insecure policy can be used for testing the behaviour, since it allows oc exec.
 oc exec -n hello-openshift -it insecure-policy — bash to get a shell into a confidential container
-Trustee’s configuration specifies the list of secrets which the KBS can access with the kbsSecretResources attribute.
+Trustee’s configuration specifies the list of secrets which the KBS can access with the kbsSecretResources attribute. These are mapped to Vault paths (e.g. secret/data/hub/kbsres1).
 Secrets within the CDH can be accessed (by default) at http://127.0.0.1:8006/cdh/resource/default/$K8S_SECRET/$K8S_SECRET_KEY.
 In this case http://127.0.0.1:8006/cdh/resource/default/passphrase/passphrase by default will return a string which was randomly generated when the pattern was deployed.
-This should be the same as result as oc get secrets -n trustee-operator-system passphrase -o yaml | yq &#39;.data.passphrase&#39; | base64 -d\`
-Tailing the logs for the kbs container e.g. oc logs -n trustee-operator-system kbs-deployment-5b574bccd6-twjxh -f shows the evidence which is flowing to the KBS from the CDH.
+To verify, compare the CDH output against the Vault-backed secret: oc get secrets -n trustee-operator-system passphrase -o yaml | yq &#39;.data.passphrase&#39; | base64 -d. The values should match.
+Tailing the logs for the KBS container (e.g. oc logs -n trustee-operator-system -l app=kbs -f) shows the attestation evidence flowing from the CDH to the KBS, including TEE evidence validation.
+kbs-access application The kbs-access application is a web service deployed in the kbs-access namespace. It retrieves secrets from Trustee via the CDH and presents them through a web interface. This provides a convenient way to verify that the full attestation pipeline is working end-to-end without needing to exec into a pod.
+Access the application via its OpenShift route: oc get route -n kbs-access.
 `,url:"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-getting-started/",breadcrumb:"/patterns/coco-pattern/coco-pattern-getting-started/"},"https://validatedpatterns.io/patterns/emerging-disease-detection/edd-getting-started/":{title:"Getting started",tags:[],content:` Deploying the Emerging Disease Detection pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
 A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 For installation tooling dependencies, see Patterns quick start.
@@ -4254,7 +4398,181 @@ Problem Downloading AI model Llama-3.1-8B-Instruct using supplied Jupyter notebo
 Solution Most often this is due to some network errors while downloading the model. If not sure if whole model was downloaded, please clear the storage bucket and repeat the download process.
 Problem Builds of OPEA chat resources are failing, i.e. cannot pull images
 Solution If all Build resources are failing due to Image Pull errors, ensure there is no proxy issue. Refer to section Getting started → Procedure. Also make sure that Image Registry is properly set up.
-`,url:"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-troubleshooting/",breadcrumb:"/patterns/amd-rag-chat-qna/amd-rag-chat-qna-troubleshooting/"},"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting common Pattern Deployment issues Problem Validated Pattern installation process is stuck on deploying Vault
+`,url:"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-troubleshooting/",breadcrumb:"/patterns/amd-rag-chat-qna/amd-rag-chat-qna-troubleshooting/"},"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-troubleshooting/":{title:"Troubleshooting",tags:[],content:`Troubleshooting confidential containers deployments This page provides solutions to common issues encountered when deploying and operating the Confidential Containers pattern.
+General CoCo issues Problem CoCo pods stuck in Pending or ContainerCreating state
+Solution This is most commonly caused by incomplete MachineConfig application or KataConfig not being ready.
+Check if nodes have finished rebooting after MachineConfig updates:
+oc get nodes oc get mcp Wait for all MachineConfigPools to show UPDATED=True and DEGRADED=False.
+Verify the KataConfig is ready:
+oc get kataconfig -n openshift-sandboxed-containers-operator The status should show InProgress: False and the RuntimeClasses should be created (kata-remote for Azure, kata-cc for bare metal).
+If the KataConfig is stuck, check the operator logs:
+oc logs -n openshift-sandboxed-containers-operator \\ -l name=openshift-sandboxed-containers-operator -f Problem ArgoCD applications not syncing or showing timeouts
+Solution Check application dependencies and sync order. Some applications depend on others being ready first.
+Note: ArgoCD applications are deployed in per-clusterGroup namespaces, not in openshift-gitops. Use oc get applications -A to locate them.
+View application health across all namespaces:
+oc get applications -A For stuck applications, check sync status and errors:
+oc describe application &lt;app-name&gt; -n &lt;app-namespace&gt; Common dependency order issues:
+Vault must be ready before external-secrets applications
+Kyverno must be deployed before workload applications that need cc_init_data injection
+cert-manager must be ready before Trustee (which depends on certificates)
+Manually sync the stuck application (use --force if needed):
+argocd app sync &lt;app-name&gt; --force Problem Peer-pod VM provisioning failures on Azure
+Solution Verify Azure quota, region support, and networking configuration.
+The pattern defaults to Standard_DCas_v5 VMs, but you can configure other Azure confidential VM families in values-global.yaml by changing the VM size parameters.
+Check that your Azure region supports your chosen confidential VM family (default: Standard_DCas_v5):
+Visit https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/ and search for your VM family in your target region.
+Verify quota for confidential VM sizes in your subscription:
+Navigate to Azure Portal &gt; Subscriptions &gt; Usage + quotas and filter for &#34;DC&#34; or &#34;EC&#34; families depending on your chosen VM type. Request a quota increase if needed.
+Check sandboxed containers operator logs for Azure API errors:
+oc logs -n openshift-sandboxed-containers-operator \\ -l name=openshift-sandboxed-containers-operator --tail=100 Verify Azure service principal credentials in Vault:
+oc exec -n vault vault-0 -- vault kv get secret/hub/azure Ensure values-global.yaml has correct Azure networking values (clusterSubnet, clusterNSG, clusterResGroup).
+Problem oc exec denied unexpectedly into a confidential container
+Solution This is expected behavior for containers with strict policies. Verify which policy the pod is using.
+Check the pod’s initdata annotation:
+oc get pod &lt;pod-name&gt; -n &lt;namespace&gt; -o yaml | grep coco.io/initdata-configmap Pods using initdata ConfigMap have strict policies that deny exec. Pods using debug-initdata allow exec.
+The strict policy is a security feature, not a bug. To test CDH functionality interactively, use a pod with coco.io/initdata-configmap: debug-initdata (like the insecure-policy pod in hello-openshift).
+Problem CDH not returning secrets or attestation failures
+Solution Verify KBS TLS certificate propagation and attestation policy configuration.
+Check that initdata ConfigMaps exist and contain the KBS TLS certificate:
+oc get configmap -n &lt;workload-namespace&gt; initdata -o yaml | grep INITDATA If the ConfigMap is missing, check if Kyverno propagated it:
+oc get configmap -n imperative -l coco.io/type=initdata The source ConfigMap should exist in the imperative namespace. If missing, the init-data-gzipper job may have failed:
+oc logs -n imperative jobs/init-data-gzipper --tail=50 Check KBS logs for attestation errors:
+oc logs -n trustee-operator-system -l app=kbs -f Look for messages like Attestation verification failed or PCR mismatch.
+Kyverno-specific issues Problem cc_init_data annotation not injected into CoCo pods
+Solution Verify Kyverno is running and the CoCo pod has the required annotation trigger.
+Check Kyverno pods are healthy:
+oc get pods -n kyverno All Kyverno pods should be Running. If not, check logs:
+oc logs -n kyverno -l app.kubernetes.io/component=admission-controller Verify the pod has the coco.io/initdata-configmap annotation:
+oc get pod &lt;pod-name&gt; -n &lt;namespace&gt; -o yaml | grep coco.io/initdata-configmap If missing, the deployment/pod template must include this annotation. Kyverno only injects cc_init_data if this annotation is present.
+Check if the Kyverno policy exists:
+oc get clusterpolicy inject-coco-initdata Review policy status and events:
+oc describe clusterpolicy inject-coco-initdata Problem initdata ConfigMap validation failures
+Solution The ConfigMap is missing required fields. Check the ValidatingPolicy for requirements.
+View validation policy:
+oc get validatingpolicy validate-initdata-configmap -o yaml Required fields in initdata ConfigMaps:
+version
+algorithm (sha256, sha384, or sha512)
+policy.rego (OPA policy)
+aa.toml (attestation agent config)
+cdh.toml (confidential data hub config)
+Check Kyverno policy reports for validation errors:
+oc get policyreport -A oc describe policyreport &lt;report-name&gt; -n &lt;namespace&gt; Problem CoCo pods not picking up new initdata after cert rotation or KBS TLS changes
+Solution Kyverno’s autogen is disabled by design to ensure rollout restarts pick up new initdata. You must manually restart deployments.
+Rollout restart the deployment to pick up new initdata:
+oc rollout restart deployment/&lt;deployment-name&gt; -n &lt;namespace&gt; Verify the new CoCo pods have the updated cc_init_data annotation:
+oc get pod &lt;new-pod-name&gt; -n &lt;namespace&gt; -o yaml | \\ grep io.katacontainers.config.hypervisor.cc_init_data The annotation value should be a long base64-encoded string. If it matches the old value, the ConfigMap may not have been updated. Check the source ConfigMap in the imperative namespace.
+Bare metal issues Problem NFD not detecting TDX or SEV-SNP capabilities
+Solution Verify BIOS/firmware configuration and kernel module loading.
+For Intel TDX:
+Check if TDX is enabled in BIOS. Consult your hardware vendor’s documentation for TEE enablement.
+Verify the TDX kernel module is loaded:
+oc debug node/&lt;node-name&gt; -- chroot /host lsmod | grep tdx Expected output should include kvm_intel with TDX support.
+Check NFD worker logs:
+oc logs -n openshift-nfd -l app=nfd-worker For AMD SEV-SNP:
+Check if SEV-SNP is enabled in BIOS.
+Verify SEV capabilities:
+oc debug node/&lt;node-name&gt; -- chroot /host cat /sys/module/kvm_amd/parameters/sev Expected output: Y (enabled)
+Problem PCCS service not starting (Intel TDX)
+Solution Verify the Intel PCS API key is configured correctly in secrets.
+Check PCCS pod logs:
+oc logs -n intel-dcap deployment/pccs-deployment Look for authentication errors or missing API key messages.
+Verify the PCCS secret exists and contains the API key:
+oc get secret -n intel-dcap pccs-api-key -o yaml The secret should have PCCS_API_KEY field (base64 encoded).
+If the secret is missing or incorrect, update ~/values-secret-coco-pattern.yaml with your Intel PCS API key and re-run:
+./pattern.sh make upgrade Problem QGS DaemonSet not scheduling (Intel TDX)
+Solution QGS requires nodes labeled with TDX capability. Verify NFD labeled the nodes correctly.
+Check node labels:
+oc get nodes --show-labels | grep tdx Nodes with TDX should have intel.feature.node.kubernetes.io/tdx=true.
+If labels are missing, NFD may not have detected TDX. See &#34;NFD not detecting TDX&#34; troubleshooting above.
+Check QGS DaemonSet status:
+oc get daemonset -n intel-dcap qgs-daemonset If DESIRED is 0, no nodes match the nodeSelector. If DESIRED &gt; 0 but READY is 0, check pod events:
+oc describe pod -n intel-dcap -l app=qgs Problem KataConfig not creating RuntimeClass on bare metal
+Solution This can be a timing issue where the operator has not finished reconciling. Check operator logs.
+Verify the KataConfig CR exists:
+oc get kataconfig -n openshift-sandboxed-containers-operator Check the KataConfig status and conditions:
+oc describe kataconfig -n openshift-sandboxed-containers-operator Check sandboxed containers operator logs for errors:
+oc logs -n openshift-sandboxed-containers-operator \\ -l name=openshift-sandboxed-containers-operator --tail=100 If the RuntimeClass is missing after 10+ minutes, manually trigger reconciliation by adding an annotation:
+oc annotate kataconfig example-kataconfig \\ reconcile-trigger=&#34;$(date)&#34; --overwrite GPU issues Problem GPU Operator install plan pending (requires manual approval)
+Solution This is expected behavior. The pattern uses manual install plan approval for version control.
+List pending install plans:
+oc get installplan -n nvidia-gpu-operator Approve the install plan:
+oc patch installplan &lt;install-plan-name&gt; -n nvidia-gpu-operator \\ --type merge -p &#39;{&#34;spec&#34;:{&#34;approved&#34;:true}}&#39; Problem kata-cc-nvidia-gpu RuntimeClass missing
+Solution This is often a timing issue. The GPU reconciliation job should trigger RuntimeClass creation.
+Check if the reconcile-kataconfig-gpu job has run:
+oc get jobs -n imperative reconcile-kataconfig-gpu Check job logs:
+oc logs -n imperative jobs/reconcile-kataconfig-gpu If the job hasn’t run, it may be waiting for GPU nodes to be labeled. Verify GPU Operator labeled the nodes:
+oc get nodes --show-labels | grep nvidia Nodes with GPUs should have nvidia.com/gpu.present=true.
+Manually trigger KataConfig reconciliation:
+oc annotate kataconfig example-kataconfig \\ reconcile-trigger=&#34;$(date)&#34; --overwrite -n openshift-sandboxed-containers-operator Problem GPU workload stuck in Pending state
+Solution Verify IOMMU is enabled and GPUs are bound to VFIO driver.
+Check pod events:
+oc describe pod &lt;gpu-pod-name&gt; -n gpu-workload Common issues:
+IOMMU not enabled: Check kernel parameters:
+oc debug node/&lt;node-name&gt; -- chroot /host cat /proc/cmdline | grep iommu Expected: intel_iommu=on (Intel) or amd_iommu=on (AMD)
+If missing, verify the MachineConfig applied:
+oc get mc | grep iommu Nodes must reboot for IOMMU kernel parameters to take effect.
+GPU not bound to VFIO: Check GPU driver binding:
+oc debug node/&lt;gpu-node&gt; -- chroot /host lspci -nnk -d 10de: GPUs should show Kernel driver in use: vfio-pci. If not, check VFIO manager logs:
+oc logs -n nvidia-gpu-operator -l app=nvidia-vfio-manager Problem CC Manager not enabling confidential mode on GPU
+Solution Verify the GPU firmware supports confidential computing and CC Manager is configured correctly.
+Check GPU CC Manager logs:
+oc logs -n nvidia-gpu-operator -l app=nvidia-cc-manager Verify GPU supports CC mode:
+oc debug node/&lt;gpu-node&gt; -- chroot /host nvidia-smi -q | grep &#34;CC Mode&#34; Expected output: CC Mode: Enabled
+If CC mode is not supported, the GPU firmware may not have confidential computing capabilities. NVIDIA confidential GPUs (H100, H200, B100, B200) with specific firmware versions support CC mode. Consult NVIDIA confidential computing documentation for supported GPU models and firmware requirements.
+Attestation issues Problem Attestation failing with PCR mismatch
+Solution PCR measurements are stale or were extracted from a different image version.
+Check KBS logs for the specific PCR that failed:
+oc logs -n trustee-operator-system -l app=kbs --tail=100 | grep PCR Re-extract PCR measurements from the current peer-pod image:
+For Azure:
+bash scripts/get-pcr.sh For bare metal: Follow the manual PCR collection procedure for your hardware. See tested environments for guidance.
+Update ~/values-secret-coco-pattern.yaml with the new measurements and refresh Vault:
+./pattern.sh make upgrade oc rollout restart deployment/kbs-deployment -n trustee-operator-system Problem TDX attestation failures (Intel)
+Solution Verify the collateral service (PCCS) is reachable and caching quotes.
+Check if Trustee can reach PCCS:
+oc exec -n trustee-operator-system deployment/kbs-deployment -- \\ curl -k https://pccs-service.intel-dcap.svc.cluster.local:8042/version Expected: JSON response with PCCS version information.
+If connection fails, verify PCCS is running:
+oc get pods -n intel-dcap -l app=pccs Check PCCS logs for errors fetching collateral from Intel PCS API:
+oc logs -n intel-dcap deployment/pccs-deployment | grep -i error Verify the Trustee KBS configuration points to the correct PCCS service:
+oc get configmap -n trustee-operator-system kbs-config -o yaml | grep collateralService Expected: pccs-service.intel-dcap.svc.cluster.local:8042
+Problem SEV-SNP attestation failures (AMD)
+Solution Verify SEV-SNP is enabled in firmware and certificate chain verification is working.
+Check if SEV-SNP is enabled at the kernel level:
+oc debug node/&lt;node-name&gt; -- chroot /host cat /sys/module/kvm_amd/parameters/sev Expected: Y (enabled)
+Verify SEV-SNP is enabled in BIOS. Consult AMD SEV developer documentation and your hardware vendor’s BIOS documentation for SEV-SNP enablement procedures.
+Check KBS logs for certificate chain verification errors:
+oc logs -n trustee-operator-system -l app=kbs --tail=100 | grep -i &#34;cert\\|sev&#34; AMD SEV-SNP uses a certificate chain-based attestation model, so no external collateral service (like PCCS) is required. The certificate chain is embedded in the attestation evidence.
+Operational issues Problem Vault secrets not loaded after initial deployment
+Solution MCO-driven node reboots during initial pattern deployment can cause Vault secret loading to time out.
+Wait for all nodes to finish rebooting:
+oc get mcp All MachineConfigPools should show UPDATED=True and DEGRADED=False.
+Re-trigger secret loading:
+./pattern.sh make upgrade Verify Vault is unsealed and healthy:
+oc get pods -n vault oc exec -n vault vault-0 -- vault status If Vault is sealed, follow the Vault unsealing procedure documented in the Validated Patterns framework.
+Problem CoCo pods starting before cc_init_data annotations are ready
+Solution CoCo pods may start before Kyverno injects the cc_init_data annotations, causing attestation failures.
+Delete the pod to trigger recreation with correct annotations:
+oc delete pod &lt;pod-name&gt; -n &lt;namespace&gt; The deployment will recreate the pod, and Kyverno will inject the cc_init_data annotation during admission.
+Verify the new pod has the annotation:
+oc get pod &lt;new-pod-name&gt; -n &lt;namespace&gt; -o yaml | \\ grep io.katacontainers.config.hypervisor.cc_init_data Problem TDX attestation failures after cluster rebuild (SGX registration not reset)
+Solution Stale SGX registration state persists in BIOS/firmware after rebuilding a bare metal TDX cluster.
+Before rebuilding a TDX cluster, perform an SGX factory reset in BIOS. The exact procedure varies by hardware vendor. Consult your server vendor’s BIOS documentation or the Intel TDX BIOS setup guide for reset procedures.
+Common BIOS settings to check:
+SGX Factory Reset (enables clearing of previous registration)
+TDX enablement (must be re-enabled after SGX reset)
+TME (Total Memory Encryption) settings
+Without an SGX reset, the platform’s attestation evidence will not match expected values and Trustee will reject attestation requests.
+Problem Confidential containers failing due to TEE not enabled in BIOS
+Solution Verify that TDX or SEV-SNP is actually enabled at the BIOS/firmware level.
+For Intel TDX:
+Check BIOS settings according to the Intel TDX BIOS setup guide.
+Verify TDX is detected by the kernel:
+oc debug node/&lt;node-name&gt; -- chroot /host dmesg | grep -i tdx Expected: Messages indicating TDX initialization succeeded.
+For AMD SEV-SNP:
+Check BIOS settings according to the AMD SEV developer documentation and your hardware vendor’s TEE enablement guide.
+Verify SEV-SNP is detected by the kernel:
+oc debug node/&lt;node-name&gt; -- chroot /host dmesg | grep -i sev Expected: Messages indicating SEV-SNP initialization succeeded.
+If TEE capabilities are not detected at the kernel level, Node Feature Discovery (NFD) will not label nodes, and confidential runtime classes will not be schedulable. Fix the BIOS configuration before proceeding with pattern deployment.
+`,url:"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-troubleshooting/",breadcrumb:"/patterns/coco-pattern/coco-pattern-troubleshooting/"},"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting common Pattern Deployment issues Problem Validated Pattern installation process is stuck on deploying Vault
 Solution Most common reason of this is that prerequisites are not satisfied i.e. Image Registry is not set up or CephFs is not set as a default StorageClass. Please refer to section Getting started → Prerequisites and make sure all is done before proceeding to pattern deployment.
 Problem Downloading AI model Llama-2-70b-chat-hf using download-model Jupyter notebook is failing or TGI deployment fails after model is downloaded
 Solution Most often this is due to some network errors while downloading the model. If not sure if whole model was downloaded, please clear bucket model-bucket in RGW storage using aws-cli or any other method, and repeat process of downloading the model.
@@ -6244,22 +6562,113 @@ values-global.yaml:
 main: multiSourceConfig: enabled: true clusterGroupChartVersion: &#34;0.9.*&#34; helmRepoUrl: registry.internal.disconnected.net/hybridcloudpatterns patternsOperator: source: cs-community-operator-index-v4-16 gitops: operatorSource: cs-redhat-operator-index-v4-16 values-hub.yaml:
 acm: mce_operator: source: cs-redhat-operator-index-v4-16 clusterGroup: subscriptions: acm: name: advanced-cluster-management namespace: open-cluster-management channel: release-2.11 source: cs-redhat-operator-index-v4-16 Deploy the pattern At this point we can clone Multicloud Gitops on to a VM that lives in the disconnected network and deploy the pattern. The only thing we need to do first is to point the installation script to the mirrored helm chart inside the disconnected registry.
 # Points to the mirrored VP install chart export PATTERN_DISCONNECTED_HOME=registry.internal.disconnected.net/hybridcloudpatterns ./pattern.sh make install After a while the cluster will converge to its desired final state and the MultiCloud Gitops pattern will be installed successfully.
-`,url:"https://validatedpatterns.io/blog/2024-10-12-disconnected/",breadcrumb:"/blog/2024-10-12-disconnected/"},"https://validatedpatterns.io/patterns/coco-pattern/":{title:"Confidential Containers pattern",tags:[],content:`About the Confidential Containers pattern Confidential computing is a technology for securing data in use. It uses a Trusted Execution Environment provided within the hardware of the processor to prevent access from others who have access to the system. Confidential containers is a project to standardize the consumption of confidential computing by making the security boundary for confidential computing to be a Kubernetes pod. Kata containers is used to establish the boundary via a shim VM.
-A core goal of confidential computing is to use this technology to isolate the workload from both Kubernetes and hypervisor administrators.
-This pattern uses Red Hat OpenShift sandbox containers to deploy and configure confidential containers on Microsoft Azure.
-It deploys three copies of &#39;Hello OpenShift&#39; to demonstrate some of the security boundaries that enforced with confidential containers.
-Requirements An an azure account with the required access rights
-An OpenShift cluster, within the Azure environment updated beyond 4.16.10
-Security considerations This pattern is a demonstration only and contains configuration that is not best practice
-The default configuration deploys everything in a single cluster for testing purposes. The RATS architecture mandates that the Key Broker Service (e.g. Trustee) is in a trusted security zone.
-The Attestation Service has wide open security policies.
-Future work Deploying the environment the &#39;Trusted&#39; environment including the KBS on a separate cluster to the secured workloads
-Deploying to alternative environments supporting confidential computing including bare metal x86 clusters; IBM Cloud; IBM Z
-Finishing the sample AI application
-Architecture Confidential Containers typically has two environments. A trusted zone, and an untrusted zone. In these zones, Trustee, and the sandbox container operator are deployed, respectively.
-For demonstration purposes the pattern currently is converged on one cluster**
-References OpenShift sandboxed containers documentation
+`,url:"https://validatedpatterns.io/blog/2024-10-12-disconnected/",breadcrumb:"/blog/2024-10-12-disconnected/"},"https://validatedpatterns.io/patterns/coco-pattern/":{title:"Confidential Containers pattern",tags:[],content:`About the Confidential Containers pattern Confidential computing is a technology for securing data in use. It uses a Trusted Execution Environment (TEE) provided within the hardware of the processor to prevent access from others who have access to the system, including cluster administrators and hypervisor operators. Confidential containers is a project to standardize the consumption of confidential computing by making the security boundary for confidential computing a Kubernetes pod. Kata containers is used to establish the boundary via a shim VM.
+A core goal of confidential computing is to use this technology to isolate the workload from both Kubernetes and hypervisor administrators. In practice this means that even a kubeadmin user cannot exec into a running confidential container or inspect its memory.
+This pattern deploys and configures Red Hat OpenShift Sandboxed Containers for confidential computing workloads on both cloud (Microsoft Azure) and bare metal infrastructure.
+Cloud deployments use &#34;peer pods&#34; — confidential VMs provisioned directly on the Azure hypervisor rather than nested inside OpenShift worker nodes. Azure offers multiple confidential VM families; this pattern defaults to the Standard_DCas_v5 family but can be configured to use other families via values-global.yaml.
+Bare metal deployments support Intel TDX (Trusted Domain Extensions) and AMD SEV-SNP (Secure Encrypted Virtualization - Secure Nested Paging) hardware TEEs, with optional Technology Preview NVIDIA confidential GPU support (H100, H200, B100, B200) for protected GPU workloads.
+The pattern includes sample applications demonstrating security boundaries and secret delivery: three variants of &#39;Hello OpenShift&#39; and a kbs-access web service for verifying end-to-end attestation and secret retrieval from the Key Broker Service.
+Deployment topologies The pattern supports four deployment topologies, selected by setting main.clusterGroupName in values-global.yaml:
+simple — Single-cluster Azure deployment with all components (Trustee, Vault, ACM, sandboxed containers, workloads) on one cluster
+trusted-hub + spoke — Multi-cluster Azure deployment separating the trusted zone (hub with Trustee/Vault/ACM) from the untrusted workload zone (spoke)
+baremetal — Single-cluster bare metal with Intel TDX or AMD SEV-SNP support
+baremetal-gpu — Technology Preview: Bare metal with Intel TDX or AMD SEV-SNP and NVIDIA confidential GPU support (H100, H200, B100, B200)
+Requirements Azure deployments An Azure account with the required access rights, including quota for Azure confidential VM families (default: Standard_DCas_v5)
+An OpenShift 4.19.28+ cluster within the Azure environment
+Azure DNS hosting the cluster’s DNS zone
+Tools: podman, yq, jq, skopeo
+An OpenShift pull secret at ~/pull-secret.json
+Bare metal deployments OpenShift 4.19.28+ cluster on bare metal with Intel TDX or AMD SEV-SNP hardware
+BIOS/firmware configured to enable TDX or SEV-SNP
+HostPath Provisioner (HPP) for persistent storage
+For Intel TDX: an Intel PCS API key from Intel Trusted Services
+For GPU topology (Technology Preview): NVIDIA GPUs with confidential computing firmware (H100, H200, B100, B200)
+Tools: podman, yq, jq, skopeo
+An OpenShift pull secret at ~/pull-secret.json
+Security considerations This pattern is a demonstration only and contains configurations that are not best practice
+The pattern supports both single-cluster (simple clusterGroup) and multi-cluster (trusted-hub + spoke) topologies. The default is single-cluster, which breaks the RACI separation expected in a remote attestation architecture. In the single-cluster topology, the Key Broker Service and the workloads it protects run on the same cluster, meaning a compromised cluster could affect both. The multi-cluster topology addresses this by separating the trusted zone (Trustee, Vault, ACM on the hub) from the untrusted workload zone (spoke). The RATS architecture mandates that the Key Broker Service (e.g. Trustee) is in a trusted security zone.
+The Attestation Service ships with permissive default policies that accept all container images without verification. This allows quick testing but is unsuitable for production. The threat model assumes that without image signature verification, an attacker with access to the container registry could substitute malicious images that would still receive secrets from the KBS.
+Hardening attestation policies for production For production deployments, configure strict attestation policies:
+Enable the signed policy: Edit ~/values-secret-coco-pattern.yaml and change the attestation policy from insecure to signed:
+kbs: attestation: policy: signed # Changed from &#39;insecure&#39; Generate and register cosign public keys: Container images must be signed with cosign. Generate a key pair and add the public key to the attestation service configuration:
+# Generate cosign key pair cosign generate-key-pair # Add the public key content to values-secret-coco-pattern.yaml kbs: cosignPublicKeys: - | -----BEGIN PUBLIC KEY----- &lt;your cosign public key content&gt; -----END PUBLIC KEY----- Sign your container images: Before deployment, sign all confidential container images:
+# Sign the image cosign sign --key cosign.key your-registry.io/your-image:tag # Verify the signature cosign verify --key cosign.pub your-registry.io/your-image:tag Configure reference values for PCR measurements: For hardware-backed attestation, configure expected PCR values in the policy. These are automatically retrieved by scripts/get-pcr.sh but should be reviewed and locked down in production. See Updating PCR measurements for the workflow when peer-pod images change.
+Without these hardening steps, the attestation service will approve any workload requesting secrets, defeating the confidentiality guarantees of the TEE.
+Future work Deploying to IBM Cloud and IBM Z confidential computing environments
+Supporting air-gapped deployments
+Enhanced AI/ML workload examples demonstrating confidential inference at scale
+Architecture Confidential Containers architecture separates two security zones:
+Trusted zone: Runs the Key Broker Service (Trustee), attestation service, and secrets management (Vault). This zone verifies TEE evidence and releases secrets only to authenticated confidential workloads.
+Untrusted zone: Runs the sandboxed containers operator, confidential workload pods, and the Kyverno policy engine. Workloads in this zone must attest to Trustee before receiving secrets.
+The pattern supports both single-cluster and multi-cluster topologies. In single-cluster topologies (simple, baremetal, baremetal-gpu), all components run on one cluster. In the multi-cluster topology, the trusted-hub clusterGroup runs on the hub cluster and the spoke clusterGroup runs on managed clusters imported via ACM.
+Kyverno’s role: The pattern uses Kyverno to dynamically inject attestation agent configuration (cc_init_data) into confidential pods at admission time. An imperative job generates ConfigMaps containing the KBS TLS certificate and policy files. Kyverno propagates these ConfigMaps to workload namespaces and injects them as pod annotations, ensuring pods have the correct configuration for attestation without manual annotation management.
+Key components Red Hat Build of Trustee 1.1: The Key Broker Service (KBS) and attestation service. Trustee verifies that workloads are running in a genuine TEE before releasing secrets. Certificates for Trustee are managed by cert-manager using self-signed CAs.
+HashiCorp Vault: Secrets backend for the Validated Patterns framework. Stores KBS keys, attestation policies, and PCR measurements.
+OpenShift Sandboxed Containers 1.12: Deploys and manages confidential container infrastructure. On Azure, provisions peer-pod VMs; on bare metal, configures Kata runtimes for TDX/SEV-SNP. Operator subscriptions are pinned to specific CSV versions with manual install plan approval to ensure version consistency.
+Kyverno: Policy engine that dynamically injects cc_init_data annotations into confidential pods. Manages the distribution of attestation agent configuration (KBS TLS certificates, policy files) from centralized ConfigMaps to workload namespaces.
+Red Hat Advanced Cluster Management (ACM): Manages the spoke cluster in multi-cluster deployments. Policies and applications are deployed to the spoke via ACM’s application lifecycle management.
+Node Feature Discovery (NFD) (bare metal only): Detects Intel TDX and AMD SEV-SNP hardware capabilities and labels nodes accordingly for runtime class scheduling.
+Intel DCAP (bare metal with Intel TDX): Provisioning Certificate Caching Service (PCCS) and Quote Generation Service (QGS) for Intel TDX remote attestation via the Intel PCS API.
+NVIDIA GPU Operator (GPU topology only, Technology Preview): Manages NVIDIA confidential GPUs (H100, H200, B100, B200) with CC Manager, VFIO passthrough, and Kata device plugins for GPU-enabled confidential workloads.
+Intel TDX support Intel Trusted Domain Extensions (TDX) is a hardware-based TEE technology that isolates virtual machines from the hypervisor and other VMs using CPU-enforced memory encryption and integrity protection. The pattern provides full Intel TDX support on bare metal deployments.
+Key features:
+Automatic hardware detection: Node Feature Discovery (NFD) detects TDX-capable CPUs and labels nodes with intel.feature.node.kubernetes.io/tdx=true
+Remote attestation: Intel DCAP components (PCCS and QGS) enable quote generation and verification via the Intel PCS API
+Transparent runtime selection: The kata-cc RuntimeClass automatically uses the TDX handler (kata-tdx) on labeled nodes
+MachineConfig automation: Kernel parameters (kvm_intel.tdx=1) and vsock modules are applied automatically
+Deployment requirements:
+Intel Xeon processors with TDX support (4th Gen Sapphire Rapids or newer)
+BIOS/firmware with TDX enabled
+Intel PCS API key (obtainable from Intel Trusted Services)
+The pattern’s Intel DCAP chart deploys PCCS as a centralized caching service and QGS as a DaemonSet on TDX nodes. Quote generation happens within the TEE, with PCCS providing attestation collateral to Trustee for verification.
+AMD SEV-SNP support AMD Secure Encrypted Virtualization - Secure Nested Paging (SEV-SNP) is a hardware-based TEE technology that provides VM isolation through memory encryption and integrity protection. SEV-SNP extends AMD’s SEV technology with secure nested paging to protect against additional attack vectors. The pattern provides full AMD SEV-SNP support on bare metal deployments.
+Key features:
+Automatic hardware detection: Node Feature Discovery (NFD) detects SEV-SNP-capable processors and labels nodes with amd.feature.node.kubernetes.io/snp=true
+Certificate chain-based attestation: AMD SEV-SNP uses a certificate chain model for attestation verification, eliminating the need for a collateral caching service like Intel’s PCCS
+Transparent runtime selection: The kata-cc RuntimeClass automatically uses the SEV-SNP handler (kata-snp) on labeled nodes
+MachineConfig automation: Kernel parameters for SEV-SNP enablement and vsock modules are applied automatically
+Deployment requirements:
+AMD EPYC processors with SEV-SNP support (3rd Gen Milan or newer)
+BIOS/firmware with SEV-SNP enabled
+No external attestation service required (certificate chain-based model)
+AMD SEV-SNP’s certificate chain approach simplifies the attestation infrastructure compared to Intel TDX, as the full certificate chain is embedded in the attestation evidence sent to Trustee for verification.
+NVIDIA confidential GPU support (Technology Preview) NVIDIA confidential GPUs with confidential computing firmware enable GPU-accelerated workloads to run inside TEEs with hardware-enforced memory encryption and attestation. The pattern’s baremetal-gpu topology provides support for NVIDIA confidential GPUs (H100, H200, B100, B200) on bare metal with either Intel TDX or AMD SEV-SNP as the host TEE platform.
+Key features:
+GPU passthrough via VFIO: GPUs are passed through to Kata confidential VMs using IOMMU and VFIO, providing native GPU performance
+Confidential Computing Manager: NVIDIA CC Manager enforces confidential mode at the GPU firmware level
+GPU attestation: The GPU’s attestation evidence is included in the TEE’s attestation report to Trustee
+Kata device plugin: The NVIDIA Kata sandbox device plugin exposes GPUs as schedulable resources (nvidia.com/pgpu)
+Multi-platform support: Works with both Intel TDX and AMD SEV-SNP host TEE platforms
+Deployment requirements:
+NVIDIA GPUs with confidential computing firmware (H100, H200, B100, B200)
+Intel TDX or AMD SEV-SNP enabled bare metal host
+IOMMU-capable system (kernel parameters applied via MachineConfig: intel_iommu=on or amd_iommu=on)
+NVIDIA GPU Operator v26.3.0+
+The pattern includes a sample CUDA workload (gpu-vectoradd) that demonstrates GPU-accelerated computation within a confidential container, verifying both GPU functionality and attestation integration. Testing has been performed with Intel TDX + H100; AMD SEV-SNP + GPU configurations are expected to work but have not been fully validated.
+References OpenShift Sandboxed Containers and Trustee:
+OpenShift Sandboxed Containers 1.12 documentation
+Deploying confidential containers on OpenShift
+Red Hat Build of Trustee 1.1 documentation
 OpenShift confidential containers solution blog
+Trustee attestation services overview
+Kyverno:
+Kyverno documentation
+CoCo pattern Kyverno policies
+Intel TDX:
+Intel TDX overview
+Intel TDX hardware selection guide
+Intel TDX BIOS setup guide
+Deploying confidential containers on bare metal
+Intel Provisioning Certificate Service
+AMD SEV-SNP:
+AMD SEV developer page
+Deploying confidential containers on bare metal
+NVIDIA Confidential Computing:
+NVIDIA Confidential Computing documentation
+NVIDIA GPU Operator documentation
+Related patterns:
+Intel SGX protected Vault for Multicloud GitOps — Uses Intel SGX enclaves (Gramine) for application-level confidential computing, complementary to CoCo’s VM-based TEE approach
+Layered Zero Trust — Demonstrates workload identity (SPIFFE/SPIRE), secrets management (Vault/ESO), and zero-trust principles that complement CoCo’s TEE isolation
 `,url:"https://validatedpatterns.io/patterns/coco-pattern/",breadcrumb:"/patterns/coco-pattern/"},"https://validatedpatterns.io/blog/2024-09-26-slimming-of-common/":{title:"The Slimming of Common",tags:[],content:` Preamble Historically Validated Patterns, shipped all the helm charts and all the ansible code needed to deploy a pattern within the git repository of the pattern itself. The common subfolder in any pattern is a git subtree containing all of the common repository at a certain point in time. Some thoughts around the choice of git subtrees can be found here
 While having common in a git subtree in every pattern repositories has served us fairly well, it came with a number of trade-offs and less than ideal aspects:
 Most people are not really familiar with git subtrees and updating common was fairly cumbersome The pieces inside common (helm charts, ansible &amp; scripts) could not be updated independently Folks would just change the local common folder and not submit changes to the upstream repository, ultimately causing merge conflicts when updating common or when they eventually merged downstream
