@@ -457,6 +457,7 @@ ini
 init
 initcontainer
 initcontainers
+initdata
 insecureunsealvaultinsideclusterschedule
 installplanapproval
 instantiatable
@@ -467,6 +468,7 @@ inteldeviceplugin
 intellection
 interna
 ioat
+iommu
 iot
 iotgateway
 iotsensor
@@ -545,6 +547,7 @@ kubevirt
 kust
 kustomization
 kustomize
+kyverno
 kzwzqibmynhrxxxxxxxxx
 langchain
 lastlog
@@ -668,6 +671,7 @@ nosql
 num
 nutanix
 nvme
+nvswitch
 nvv
 nzrxxxxxxxx
 oauth
@@ -735,6 +739,7 @@ patternrepo
 patternsh
 patternsoperator
 pbivukilnpoe
+pccs
 pci
 pcr
 pem
@@ -742,6 +747,7 @@ performant
 persistentvolumeclaim
 persistentvolumeclaims
 persistentvolumes
+pgpu
 pgsql
 pgvector
 pii
@@ -792,6 +798,7 @@ qat
 qatlib
 qe
 qfdya
+qgs
 ql
 qna
 qtgmclkdlnkwcdpvyxarm
@@ -886,6 +893,7 @@ serviceaccountcreate
 serviceaccountname
 setcap
 setweight
+sevsnp
 sgb
 sgx
 sgxdriver
@@ -901,6 +909,7 @@ skopeo
 sla
 slas
 sme
+sno
 sonarqube
 sourcenamespace
 spawner
@@ -956,6 +965,7 @@ targetns
 targetport
 tbd
 tcp
+tdx
 techpreview
 tee
 tei

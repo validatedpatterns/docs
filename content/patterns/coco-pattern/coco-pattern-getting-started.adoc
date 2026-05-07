@@ -14,7 +14,9 @@ include::modules/comm-attributes.adoc[]
 
 === Prerequisites
 
-1. Install an link:../coco-pattern-azure-requirements/[OpenShift 4.17+ Cluster on Azure]
+==== Azure deployments
+
+1. Install an link:../coco-pattern-azure-requirements/[OpenShift 4.19.28+ Cluster on Azure]
 
 2. Update the link:../coco-pattern-azure-requirements/#_azure_configuration_required_for_the_validated_pattern[required Azure configuration and secrets] in `values-global.yaml`, including the Azure service principal, DNS resource group, and cluster networking details.
 
@@ -25,6 +27,22 @@ include::modules/comm-attributes.adoc[]
 5. Run `bash scripts/get-pcr.sh` to retrieve PCR measurements from the peer-pod VM image. This stores the measurements at `~/.coco-pattern/measurements.json`, which are loaded into Vault and used by the attestation service. Requires `podman`, `skopeo`, and a pull secret at `~/pull-secret.json`.
 
 6. Review and customise `~/values-secret-coco-pattern.yaml`. This file controls what secrets are loaded into Vault, including attestation policies, KBS key material, and PCR measurements. See the comments in `values-secret.yaml.template` for details on each field.
+
+==== Bare metal deployments
+
+1. Install OpenShift 4.19.28+ on bare metal with Intel TDX or AMD SEV-SNP hardware
+
+2. Ensure BIOS/firmware is configured to enable TDX or SEV-SNP. Consult your hardware vendor's documentation for TEE enablement procedures.
+
+3. For Intel TDX: Obtain an Intel PCS API key from https://api.portal.trustedservices.intel.com[Intel Trusted Services]
+
+4. Fork the repository and clone it locally. ArgoCD reconciles against your fork, so all configuration changes must be committed and pushed.
+
+5. Run `bash scripts/gen-secrets.sh` to generate KBS key pairs and PCCS secrets (for Intel TDX)
+
+6. For bare metal, PCR measurements must be collected manually after the first boot. See the link:../coco-pattern-tested-environments/[tested environments] page for guidance on PCR collection for bare metal. Store the measurements at `~/.coco-pattern/measurements.json`.
+
+7. Review and customise `~/values-secret-coco-pattern.yaml`. For Intel TDX, uncomment the PCCS secrets section and provide your Intel PCS API key. See the comments in `values-secret.yaml.template` for details on each field.
 
 === Single cluster deployment
 
@@ -54,6 +72,188 @@ The multi-cluster topology separates the trusted zone (hub) from the untrusted w
 
 6. The spoke cluster will install the sandboxed containers operator, deploy peer-pod infrastructure, and launch the sample workloads. Monitor progress in the ACM console or via ArgoCD on the spoke.
 
+=== Bare metal deployment
+
+The bare metal topology uses the `baremetal` clusterGroup for Intel TDX or AMD SEV-SNP hardware without GPUs.
+
+1. Set `main.clusterGroupName: baremetal` in `values-global.yaml`
+
+2. Run `bash scripts/gen-secrets.sh` to generate KBS key pairs and PCCS secrets (for Intel TDX)
+
+3. For Intel TDX: uncomment the PCCS secrets section in `~/values-secret-coco-pattern.yaml` and provide your Intel PCS API key. AMD SEV-SNP deployments do not require PCCS.
+
+4. Review and customize `~/values-secret-coco-pattern.yaml` with any additional secrets or attestation policy customizations
+
+5. `./pattern.sh make install`
+
+6. Wait for the cluster to reboot nodes. The pattern applies MachineConfig updates for:
+   - TDX/SEV-SNP kernel parameters (e.g., `kvm_intel.tdx=1` for Intel)
+   - `nohibernate` kernel argument
+   - vsock-loopback kernel module configuration
+   +
+   Monitor node reboot progress: `oc get nodes` or `oc get mcp`
+
+[NOTE]
+====
+Bare metal support is currently tested on Single Node OpenShift (SNO) configurations. Multi-node bare metal clusters are expected to work but have not been validated.
+====
+
+**Automatic hardware detection:**
+
+The pattern automatically detects and configures your TEE hardware:
+
+- **Node Feature Discovery (NFD)** labels nodes based on detected capabilities:
+  - Intel TDX: `intel.feature.node.kubernetes.io/tdx=true`
+  - AMD SEV-SNP: `amd.feature.node.kubernetes.io/snp=true`
+- **LVMS** discovers available block devices for persistent storage
+- **RuntimeClass**: The `kata-cc` RuntimeClass is created automatically, using `kata-tdx` or `kata-snp` handler based on detected hardware
+- Both `kata-tdx` and `kata-snp` RuntimeClasses are deployed; only the one matching your hardware will have schedulable nodes
+- **Intel DCAP components** (PCCS and QGS) deploy unconditionally but DaemonSets only schedule on Intel TDX nodes via NFD label selectors
+
+**Optional PCCS node pinning:** For Intel TDX deployments, you can pin the PCCS service to a specific node by running `bash scripts/get-pccs-node.sh` and setting `baremetal.pccs.nodeSelector` in the baremetal chart values.
+
+=== Bare metal GPU deployment
+
+The `baremetal-gpu` topology extends the bare metal deployment with NVIDIA H100 confidential GPU support.
+
+1. Set `main.clusterGroupName: baremetal-gpu` in `values-global.yaml`
+
+2. Run `bash scripts/gen-secrets.sh` to generate KBS keys and PCCS secrets
+
+3. For Intel TDX: uncomment the PCCS secrets in `~/values-secret-coco-pattern.yaml` and provide your Intel PCS API key
+
+4. `./pattern.sh make install`
+
+5. Wait for the cluster to reboot nodes. The GPU topology adds IOMMU configuration to the MachineConfig, which enables GPU passthrough to confidential VMs:
+   - Intel: `intel_iommu=on`
+   - AMD: `amd_iommu=on`
+   +
+   All nodes will reboot to apply these kernel parameters.
+
+6. Approve the GPU Operator install plan when it appears. The pattern uses `installPlanApproval: Manual` to ensure version control. Check for pending install plans:
+   +
+   [source,bash]
+   ----
+   oc get installplan -n nvidia-gpu-operator
+   ----
+   +
+   Approve the install plan:
+   +
+   [source,bash]
+   ----
+   oc patch installplan <install-plan-name> -n nvidia-gpu-operator \
+     --type merge -p '{"spec":{"approved":true}}'
+   ----
+
+[NOTE]
+====
+The `baremetal-gpu` topology applies IOMMU MachineConfig to all nodes and triggers reboots even on clusters without GPUs. If you do not have GPUs, use the `baremetal` topology instead. The GPU workload (`gpu-vectoradd`) will remain in `Pending` state on systems without GPUs but is otherwise harmless.
+====
+
+**GPU-specific components:**
+
+- **NVIDIA GPU Operator**: Manages GPU drivers, device plugins, and confidential computing manager
+- **Kata device plugin**: Exposes GPUs as schedulable resources (`nvidia.com/pgpu`)
+- **CC Manager**: Enables confidential mode at the GPU firmware level
+- **VFIO Manager**: Binds GPUs to VFIO for passthrough to Kata VMs
+- **RuntimeClass**: `kata-cc-nvidia-gpu` is created for GPU-enabled confidential pods
+
+**GPU workload verification:**
+
+The pattern deploys a `gpu-vectoradd` sample workload that runs a CUDA vector addition inside a confidential container. Check the logs to verify GPU functionality:
+
+[source,bash]
+----
+oc logs -n gpu-workload deployment/gpu-vectoradd
+----
+
+Expected output should show successful CUDA execution and GPU device detection.
+
+== Updating PCR measurements
+
+Platform Configuration Register (PCR) measurements are cryptographic hashes of the peer-pod VM's boot components and runtime state. The attestation service verifies these measurements to ensure workloads are running in a genuine, unmodified TEE. When the peer-pod VM image is updated (for example, when upgrading OpenShift Sandboxed Containers), the PCR values change and must be refreshed.
+
+=== When to update PCR measurements
+
+Update PCR measurements after:
+
+- Upgrading the OpenShift Sandboxed Containers operator
+- Updating the peer-pod VM image (`podvm-image` configmap)
+- Changing kernel parameters or boot configuration in the peer-pod image
+- Applying security patches that modify the VM boot chain
+
+=== Update workflow
+
+1. **Retrieve new measurements**: Run the PCR extraction script against the updated peer-pod image:
++
+[source,bash]
+----
+bash scripts/get-pcr.sh
+----
++
+This fetches the current peer-pod image from your cluster's registry, extracts the measurements, and stores them at `~/.coco-pattern/measurements.json`.
+
+2. **Update Vault secrets**: The measurements are loaded into Vault via `values-secret-coco-pattern.yaml`. If you previously deployed the pattern, update the `pcrMeasurements` field in your values-secret file with the new content from `~/.coco-pattern/measurements.json`.
+
+3. **Sync to the cluster**: Push the updated values-secret file to refresh Vault:
++
+[source,bash]
+----
+./pattern.sh make upgrade
+----
++
+This reloads secrets into Vault and triggers the External Secrets operator to sync the new PCR values to the `trustee-operator-system` namespace.
+
+4. **Restart the attestation service**: The attestation service caches policy configuration. Restart it to pick up the new PCR measurements:
++
+[source,bash]
+----
+oc rollout restart deployment/kbs-deployment -n trustee-operator-system
+----
+
+5. **Verify**: Deploy a test confidential pod or restart an existing one. Check the KBS logs to confirm successful attestation with the new measurements:
++
+[source,bash]
+----
+oc logs -n trustee-operator-system -l app=kbs -f | grep "Attestation succeeded"
+----
+
+=== Troubleshooting attestation failures
+
+If confidential pods fail to start or cannot retrieve secrets after an update:
+
+1. **Check KBS logs** for attestation errors:
++
+[source,bash]
+----
+oc logs -n trustee-operator-system -l app=kbs --tail=100
+----
++
+Look for messages like `PCR mismatch` or `Attestation verification failed`.
+
+2. **Verify PCR measurements** are loaded into Vault and synced to the cluster:
++
+[source,bash]
+----
+# Check Vault has the measurements
+oc exec -n vault vault-0 -- vault kv get secret/hub/pcrMeasurements
+
+# Check the External Secret synced to the namespace
+oc get secret -n trustee-operator-system attestation-policy -o yaml
+----
+
+3. **Compare expected vs actual PCR values**: The KBS logs show the PCR values presented by the peer-pod. Compare these against the expected values in `~/.coco-pattern/measurements.json`. If they differ, re-run `scripts/get-pcr.sh` to ensure you extracted measurements from the correct image version.
+
+4. **Confirm peer-pod image version**: Verify the peer-pod is using the expected image:
++
+[source,bash]
+----
+# Check the peer-pod configmap
+oc get configmap peer-pods-cm -n openshift-sandboxed-containers-operator -o yaml | grep podvm-image
+----
+
+If the PCR values still do not match after following these steps, the peer-pod VM image may have been modified outside the standard upgrade process, or hyperthreading/firmware settings may differ from the image used during PCR extraction.
+
 == Simple Confidential container tests
 
 The pattern deploys some simple tests of CoCo with this pattern.
@@ -66,10 +266,13 @@ A "Hello Openshift" (e.g. `curl` to return "Hello Openshift!") application has b
 In this case the insecure policy is designed to allow a user to be able to exec into the confidential container.
 Typically this is disabled by an immutable policy established at pod creation time.
 
-Doing `oc get pod -n hello-openshift secure -o yaml` for either of the pods running a confidential container should show `runtimeClassName: kata-remote`, confirming it is running as a peer-pod.
+Doing `oc get pod -n hello-openshift secure -o yaml` for either of the pods running a confidential container should show:
 
-// Add a azure portal image grab next boot
-Logging into the Azure portal once the pods have been provisioned will show that each of these two confidential pods has been provisioned with its own `Standard_DC2as_v5` virtual machine. These VMs are visible under the cluster's resource group.
+- **Azure deployments**: `runtimeClassName: kata-remote` (peer-pod provisioned on Azure hypervisor)
+- **Bare metal deployments**: `runtimeClassName: kata-cc` (Kata container running on TDX/SEV-SNP hardware)
+- **Bare metal GPU deployments**: `runtimeClassName: kata-cc-nvidia-gpu` (GPU-enabled Kata container)
+
+**Azure-specific verification:** Logging into the Azure portal once the pods have been provisioned will show that each confidential pod has its own `Standard_DC2as_v5` virtual machine. These VMs are visible under the cluster's resource group.
 
 === `oc exec` testing
 
@@ -98,7 +301,7 @@ The CDH presents to containers within the pod (only), via a localhost URL. The C
 
 - `oc exec -n hello-openshift -it insecure-policy -- bash` to get a shell into a confidential container
 
-- https://github.com/butler54/trustee-chart[Trustee's configuration] specifies the list of secrets which the KBS can access with the `kbsSecretResources` attribute. These are mapped to Vault paths (e.g. `secret/data/hub/kbsres1`).
+- https://github.com/validatedpatterns/trustee-chart/[Trustee's configuration] specifies the list of secrets which the KBS can access with the `kbsSecretResources` attribute. These are mapped to Vault paths (e.g. `secret/data/hub/kbsres1`).
 
 - Secrets within the CDH can be accessed (by default) at `http://127.0.0.1:8006/cdh/resource/default/$K8S_SECRET/$K8S_SECRET_KEY`.
 

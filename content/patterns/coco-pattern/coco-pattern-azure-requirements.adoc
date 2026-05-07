@@ -11,10 +11,10 @@ include::modules/comm-attributes.adoc[]
 :imagesdir: ../../../images
 = Azure requirements
 
-This pattern has been tested on Microsoft Azure using self-managed OpenShift clusters provisioned with `openshift-install`.
-https://docs.openshift.com/container-platform/4.17/installing/installing_azure/installing-azure-default.html[OpenShift documentation] contains details on how to install a cluster on Azure.
+This pattern has been tested on Microsoft Azure using self-managed OpenShift 4.19.28+ clusters provisioned with `openshift-install`.
+https://docs.openshift.com/container-platform/4.19/installing/installing_azure/installing-azure-default.html[OpenShift documentation] contains details on how to install a cluster on Azure.
 
-The documentation outlines the https://docs.openshift.com/container-platform/4.17/installing/installing_azure/installing-azure-account.html[minimum required configuration] for an Azure account.
+The documentation outlines the https://docs.openshift.com/container-platform/4.19/installing/installing_azure/installing-azure-account.html[minimum required configuration] for an Azure account.
 
 == Changes required
 
@@ -61,7 +61,7 @@ global:
     clientID: '' # Service principal ID
     subscriptionID: ''
     tenantID: '' # Tenant ID
-    DNSResGroup: '' # Resource group for the azure DNS hosted zone
+    DNSResGroup: '' # Resource group for the Azure DNS hosted zone
     hostedZoneName: '' # the hosted zone name
     clusterResGroup: '' # Resource group of the cluster
     clusterSubnet: '' # subnet of the cluster

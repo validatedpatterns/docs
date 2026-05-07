@@ -1,0 +1,48 @@
+sequenceDiagram
+    participant App as Application<br/>(in TEE)
+    participant CDH as Confidential Data Hub<br/>(localhost:8006)
+    participant AA as Attestation Agent<br/>(in TEE)
+    participant KBS as Trustee KBS
+    participant AS as Attestation Service
+    participant Coll as Collateral Service<br/>(PCCS for TDX)
+    participant GPU as GPU CC Manager<br/>(GPU only)
+    participant Vault as HashiCorp Vault
+
+    Note over App,CDH: Application requests secret
+    App->>CDH: GET /cdh/resource/default/secret-name
+    CDH->>AA: Request TEE evidence
+
+    alt Intel TDX
+        AA->>AA: Generate TDX quote
+        AA->>Coll: Request attestation collateral
+        Coll->>AA: Return PCK cert + TCB info
+    else AMD SEV-SNP
+        AA->>AA: Generate SEV-SNP report
+        Note over AA: AMD uses cert chain (no PCCS)
+    end
+
+    opt NVIDIA GPU Present
+        AA->>GPU: Request GPU attestation evidence
+        GPU->>AA: Return GPU quote + CC mode status
+    end
+
+    AA->>CDH: Return combined evidence
+    CDH->>KBS: Attest with evidence + request secret
+
+    KBS->>AS: Verify attestation evidence
+    AS->>AS: Validate TEE type<br/>(TDX / SEV-SNP / GPU)
+    AS->>AS: Check PCR measurements<br/>against policy
+    AS->>AS: Verify image signature<br/>(if signed policy enabled)
+    AS->>KBS: Attestation result (pass/fail)
+
+    alt Attestation Success
+        KBS->>Vault: Fetch secret
+        Vault->>KBS: Return secret
+        KBS->>CDH: Encrypted secret
+        CDH->>App: Secret (plaintext in TEE)
+        Note over App: Application uses secret<br/>within protected memory
+    else Attestation Failure
+        KBS->>CDH: Error: Attestation failed
+        CDH->>App: Error response
+        Note over App: Secret not released
+    end

@@ -1,0 +1,30 @@
+sequenceDiagram
+    participant KBS as Trustee KBS
+    participant CM as cert-manager
+    participant Job as init-data-gzipper<br/>(Ansible Job)
+    participant SrcCM as imperative/<br/>initdata ConfigMap
+    participant Kyv as Kyverno<br/>Propagation Policy
+    participant WlCM as Workload Namespace<br/>initdata ConfigMap
+    participant KyvInj as Kyverno<br/>Injection Policy
+    participant Pod as Confidential Pod
+
+    KBS->>CM: Request TLS certificate
+    CM->>KBS: Issue self-signed cert
+    Note over Job: Runs periodically
+    Job->>KBS: Fetch TLS cert from secret
+    Job->>Job: Render TOML templates<br/>(aa.toml, cdh.toml, policy.rego)
+    Job->>Job: Gzip + base64 encode
+    Job->>Job: Compute SHA-256 + PCR8
+    Job->>SrcCM: Create/update ConfigMap<br/>with label coco.io/type=initdata
+
+    Note over Kyv: Propagation Policy watches source ConfigMap
+    Kyv->>SrcCM: Detect ConfigMap with label
+    Kyv->>WlCM: Propagate to workload namespaces<br/>(synchronize: true)
+
+    Note over Pod: User creates Pod with annotation<br/>coco.io/initdata-configmap: initdata
+    Pod->>KyvInj: Admission request
+    KyvInj->>WlCM: Read initdata ConfigMap
+    KyvInj->>Pod: Inject cc_init_data annotation<br/>io.katacontainers.config.hypervisor.cc_init_data
+    Pod->>Pod: Start with attestation config
+
+    Note over KyvInj: autogen disabled - rollout restart<br/>required to pick up new initdata

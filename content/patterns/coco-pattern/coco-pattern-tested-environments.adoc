@@ -12,42 +12,99 @@ include::modules/comm-attributes.adoc[]
 
 = Tested environments
 
-== Current version (4.*)
+== Current version (5.*)
 
-Version 4 is the first release of the pattern using Generally Available (GA) versions of the CoCo stack. All prior versions used Technology Preview releases of Trustee.
+Version 5 introduces Kyverno-based `cc_init_data` injection, bare metal support (Intel TDX, AMD SEV-SNP), and NVIDIA H100 confidential GPU support.
 
 === Supported components
-- OpenShift Sandboxed Containers Operator 1.11
-- Red Hat Build of Trustee 1.0 (first GA release)
-- OpenShift Container Platform 4.17+
+- OpenShift Sandboxed Containers Operator 1.12
+- Red Hat Build of Trustee 1.1
+- OpenShift Container Platform 4.19.28+
+- Kyverno 3.7.*
 - cert-manager operator (stable-v1 channel)
 - Red Hat Advanced Cluster Management (for multi-cluster topology)
 - HashiCorp Vault (secrets management)
+- Node Feature Discovery Operator (for bare metal)
+- Intel Device Plugins Operator (for Intel TDX)
+- NVIDIA GPU Operator v26.3.0+ (for GPU topology)
 
-=== Single cluster
-Tested on Azure with the `simple` clusterGroup using self-managed OpenShift provisioned via `openshift-install`. In this topology all components — Trustee, Vault, ACM, sandboxed containers operator, and sample workloads — are deployed on a single cluster.
+=== Azure single cluster
+Tested on Azure with the `simple` clusterGroup using self-managed OpenShift 4.19.28+ provisioned via `openshift-install`. In this topology all components — Trustee, Vault, ACM, sandboxed containers operator, Kyverno, and sample workloads — are deployed on a single cluster.
 
 Worker nodes use `Standard_D8s_v5` or larger. Peer-pod VMs for confidential containers use `Standard_DC2as_v5` from the Azure confidential computing VM family. Azure DNS is required for the cluster's hosted zone.
 
-=== Multiple clusters
-Tested with `trusted-hub` + `spoke` clusterGroups on Azure, both using self-managed OpenShift.
+**Important**: Azure confidential VM availability varies by region. Before deploying, verify that your target region supports `Standard_DCas_v5` VMs and that your subscription has sufficient quota. See the link:../coco-pattern-azure-requirements/[Azure requirements] page for regional availability details.
 
-- `trusted-hub`: Vault, ACM, Trustee (KBS + attestation service), cert-manager. This cluster acts as the trust anchor and ACM hub.
-- `spoke`: Sandboxed containers operator, peer-pod infrastructure, and sample workloads (hello-openshift, kbs-access). Imported into ACM with the `clusterGroup=spoke` label.
+=== Azure multiple clusters
+Tested with `trusted-hub` + `spoke` clusterGroups on Azure, both using self-managed OpenShift 4.19.28+.
+
+- `trusted-hub`: Vault, ACM, Trustee (KBS + attestation service), cert-manager, Kyverno. This cluster acts as the trust anchor and ACM hub.
+- `spoke`: Sandboxed containers operator, Kyverno, peer-pod infrastructure, and sample workloads (hello-openshift, kbs-access). Imported into ACM with the `clusterGroup=spoke` label.
 
 The spoke cluster connects back to the hub's Trustee instance for attestation and secret retrieval. Secrets are synchronised from the hub's Vault to the spoke via the External Secrets operator.
 
+=== Bare metal single cluster (Intel TDX)
+Tested on Single Node OpenShift (SNO) with Intel TDX hardware using the `baremetal` clusterGroup. All components run on a single node.
+
+**Hardware configuration:**
+- Intel Xeon Sapphire Rapids processors (4th Gen) with TDX enabled in BIOS
+- LVMS for storage (auto-discovers available block devices)
+- NFD detects TDX capability and labels the node with `intel.feature.node.kubernetes.io/tdx=true`
+
+**Deployed components:**
+- Trustee, Vault, Kyverno, sandboxed containers operator, NFD, Intel DCAP (PCCS + QGS)
+- Sample workloads use `runtimeClassName: kata-cc` with the `kata-tdx` handler
+- PCCS connects to Intel PCS API for attestation collateral
+
+**Note**: Multi-node bare metal clusters are expected to work but have not been validated.
+
+=== Bare metal single cluster (AMD SEV-SNP)
+Tested on Single Node OpenShift (SNO) with AMD SEV-SNP hardware using the `baremetal` clusterGroup.
+
+**Hardware configuration:**
+- AMD EPYC Genoa processors with SEV-SNP enabled in BIOS
+- LVMS for storage (auto-discovers available block devices)
+- NFD detects SEV-SNP capability and labels the node with `amd.feature.node.kubernetes.io/snp=true`
+
+**Deployed components:**
+- Trustee, Vault, Kyverno, sandboxed containers operator, NFD
+- Sample workloads use `runtimeClassName: kata-cc` with the `kata-snp` handler
+- No PCCS required (AMD uses certificate chain-based attestation)
+
+**Note**: Additional enhancements for AMD SEV-SNP are planned for future releases.
+
+=== Bare metal GPU single cluster (Intel TDX + NVIDIA H100)
+Tested on Single Node OpenShift (SNO) with Intel TDX and NVIDIA H100 confidential GPUs using the `baremetal-gpu` clusterGroup.
+
+**Hardware configuration:**
+- Intel Xeon Sapphire Rapids processors with TDX enabled in BIOS
+- NVIDIA H100 GPUs with confidential computing firmware
+- IOMMU enabled for GPU passthrough
+- LVMS for storage
+
+**Deployed components:**
+- All components from bare metal Intel TDX configuration
+- NVIDIA GPU Operator with CC Manager, VFIO manager, and Kata device plugin
+- GPU workload (`gpu-vectoradd`) uses `runtimeClassName: kata-cc-nvidia-gpu`
+- GPU attestation integrated with Trustee KBS
+
 == Version history
 
-All pattern versions prior to v4 used Technology Preview (pre-GA) releases of Trustee. Version 4 is a breaking change that moves to GA components and adds multi-cluster support.
+All pattern versions prior to v4 used Technology Preview (pre-GA) releases of Trustee.
 
 |===
 | Pattern version | Trustee | OSC | Min OCP | Notes
 
-| 4.* (current)
+| 5.* (current)
+| 1.1 (GA)
+| 1.12
+| 4.19.28+
+| Kyverno-based cc_init_data injection. Bare metal support (Intel TDX, AMD SEV-SNP). NVIDIA H100 confidential GPU support.
+
+| 4.*
 | 1.0 (GA)
 | 1.11
-| 4.17
+| 4.17+
 | First GA release. Multi-cluster support. cert-manager replaces Let's Encrypt.
 
 | 3.*
