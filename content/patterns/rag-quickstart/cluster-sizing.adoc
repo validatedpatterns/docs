@@ -1,0 +1,13 @@
+---
+title: Cluster sizing
+weight: 30
+aliases: /rag-quickstart/cluster-sizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+include::modules/ai-quickstart-rag/metadata-ai-quickstart-rag.adoc[]
+
+include::modules/cluster-sizing-template.adoc[]
