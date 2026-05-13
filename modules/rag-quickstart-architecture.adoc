@@ -1,0 +1,131 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+include::comm-attributes.adoc[]
+
+[id="rag-quickstart-architecture"]
+= RAG Quickstart architecture
+
+The following figure provides a high-level overview of the RAG Quickstart architecture.
+
+.RAG system architecture
+image::rag-quickstart/rag-architecture.png[RAG System Architecture,link="/images/rag-quickstart/rag-architecture.png"]
+
+The architecture consists of two main pipelines:
+
+* *RAG Pipeline* — Handles user queries and generates responses through LlamaStack APIs, with safety guardrails, model serving, and vector retrieval.
+* *Ingestion Pipeline* — Processes documents from multiple sources, generates embeddings, and stores them in the vector database.
+
+[id="rag-quickstart-rag-pipeline"]
+== RAG pipeline
+
+The RAG pipeline processes user queries through the following components:
+
+Frontend UI::
+Provides the user interface for submitting queries and viewing responses. The Streamlit-based UI communicates with the LlamaStack APIs by using REST.
+
+LlamaStack APIs::
+The central orchestration layer that routes queries to the appropriate backend services. LlamaStack provides a standardized interface for model inference, vector retrieval, tool use, and safety guardrails.
+
+Guard Rails::
+Screens both incoming queries and outgoing responses for harmful content using Llama Guard. Llama Guard checks incoming queries for prompt injection, manipulative content, and inappropriate requests. It also validates generated responses for harmful content and compliance before returning them to the user.
+
+Model Servers::
+Serve the LLM for response generation. The pattern supports multiple serving backends including vLLM on Red Hat OpenShift AI, and Ollama for CPU-based deployments. The default model is `meta-llama/Llama-3.2-3B-Instruct`.
+
+Vector DBs::
+Store document embeddings in PostgreSQL with PGVector. When a query arrives, the retriever converts it to a vector embedding and performs a similarity search to find relevant document chunks, which are passed as context to the LLM.
+
+Tools::
+Provide agent-based capabilities for more complex workflows. When agent-based RAG is enabled, LlamaStack can invoke tools to perform multi-step reasoning and retrieval.
+
+[id="rag-quickstart-ingestion-pipeline"]
+== Ingestion pipeline
+
+The ingestion pipeline processes documents and updates the knowledge base. Documents can be ingested from three sources:
+
+S3 Bucket::
+Documents stored in S3-compatible object storage (MinIO) are processed through OpenShift AI Pipelines (Kubeflow) for batch ingestion.
+
+URL::
+The system downloads documents from web URLs and processes them through a Python script for embedding.
+
+Uploads::
+Users can upload documents directly through the frontend UI or retriever listener for on-demand ingestion.
+
+All ingestion paths feed into the Retriever and Embedding Service, which uses Docling libraries to chunk documents into appropriate segments and the all-MiniLM-L6-v2 model to generate vector embeddings. The resulting embeddings are stored in PGVector for retrieval.
+
+[id="rag-quickstart-deployment"]
+== Deployment architecture
+
+The following table describes the pod structure when deployed on OpenShift:
+
+[cols="1,2,3",options="header"]
+|===
+| Pod | Purpose | Key characteristics
+
+| Frontend
+| User interface
+| Streamlit-based UI, communicates with LlamaStack APIs by using REST
+
+| LlamaStack
+| RAG orchestration
+| Central application logic, routes queries to model servers, vector DBs, guard rails, and tools
+
+| LLM Service
+| Language model inference
+| Runs vLLM with Llama models, optimized for GPU utilization, deployed by using KServe InferenceService on {rhoai}
+
+| Guard Rails
+| Content moderation
+| Runs Llama Guard for input and output safety screening, can be independently scaled
+
+| Vector Database
+| Embedding storage and search
+| PostgreSQL with PGVector, requires persistent storage, deployed as StatefulSet
+
+| Embedding Service
+| Vector embeddings
+| Generates embeddings for documents and queries using all-MiniLM-L6-v2
+
+| Ingestion Pipeline
+| Document processing
+| Kubeflow Pipelines workflows, uses Docling for document chunking, connected to S3-compatible storage (MinIO)
+|===
+
+[id="rag-quickstart-technologies"]
+== Implementation technologies
+
+[cols="1,2",options="header"]
+|===
+| Component | Technology
+
+| Application Framework
+| LlamaStack
+
+| LLM Service
+| vLLM with meta-llama/Llama-3.2-3B-Instruct
+
+| Vector Database
+| PostgreSQL + PGVector
+
+| Container Orchestration
+| {rh-ocp} + {rhoai}
+
+| Safety Models
+| meta-llama/Llama-Guard-3-1B
+
+| Embedding Model
+| all-MiniLM-L6-v2
+
+| Document Processing
+| Docling
+
+| Pipeline Orchestration
+| Kubeflow Pipelines
+
+| Object Storage
+| MinIO (S3-compatible)
+
+| Frontend
+| Streamlit
+|===

@@ -1,0 +1,126 @@
+---
+title: Customizing this pattern
+weight: 20
+aliases: /rag-quickstart/customizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="customizing-rag-quickstart"]
+== Customizing the RAG AI Quickstart pattern
+
+Without any changes, this pattern runs a CPU-backed LLM and does not require a GPU. This can be limiting in terms of usable models as well as speed, so you might want to use a GPU instead.
+
+[id="enabling-gpu"]
+=== Enabling GPU support
+
+To enable GPU support, set `global.device` to `gpu` in `values-global.yaml` and push your changes to GitHub. This adds NFD and the NVIDIA GPU Operator to the pattern installation and enables the models to run using an NVIDIA accelerator.
+
+[NOTE]
+====
+If you are running this pattern on an OpenShift cluster on AWS, setting `global.device` to `gpu` automatically creates a GPU (`g6.2xlarge`) machine and add it as a worker node to your cluster.
+====
+
+[id="changing-models"]
+=== Changing models
+
+To update the models, edit `overrides/values-cpu.yaml` (if `global.device` is set to `cpu`) or `overrides/values-gpu.yaml` (if set to `gpu`).
+
+The default CPU-based model is defined as follows:
+
+[source,yaml]
+----
+global:
+  models:
+    llama-3-2-3b-instruct-cpu:
+      id: meta-llama/Llama-3.2-3B-Instruct
+      enabled: true
+      resources:
+        limits:
+          cpu: "6"
+          memory: 48Gi
+        requests:
+          cpu: "2"
+          memory: 24Gi
+      args:
+        - --enable-auto-tool-choice
+        - --chat-template
+        - /chat-templates/tool_chat_template_llama3.2_json.jinja
+        - --tool-call-parser
+        - llama3_json
+        - --dtype
+        - auto
+        - --max-model-len
+        - "16384"
+        - --max-num-seqs
+        - "1"
+----
+
+You can change this to any vLLM-compatible model that you have accepted the terms and conditions for with your HuggingFace API token. You can also adjust the resource parameters as needed for your environment.
+
+The runtime defaults to `vllm/vllm-openai:v0.11.1`. If you need a later version, you can override the image:
+
+[source,yaml]
+----
+llm-service:
+  deviceConfigs:
+    gpu:
+      image: vllm/vllm-openai:nightly
+----
+
+[NOTE]
+====
+The example above sets a GPU-specific container image. To override the CPU-based image instead, use the key `llm-service.deviceConfigs.cpu.image`.
+====
+
+[id="multiple-models"]
+=== Defining multiple models
+
+You can define multiple LLM models to be served simultaneously. For example:
+
+[source,yaml]
+----
+global:
+  models:
+    deepseek-r1:
+      id: Valdemardi/DeepSeek-R1-Distill-Llama-70B-AWQ
+      enabled: true
+      resources:
+        limits:
+          cpu: "32"
+          memory: 200Gi
+        requests:
+          cpu: "24"
+          memory: 150Gi
+      args:
+        - --reasoning-parser
+        - deepseek_r1
+        - --tool-call-parser
+        - llama3_json
+        - --enable-auto-tool-choice
+        - --quantization
+        - awq_marlin
+        - --dtype
+        - float16
+        - --max-model-len
+        - "65536"
+    gpt-oss-120b:
+      id: openai/gpt-oss-120b
+      enabled: true
+      resources:
+        limits:
+          cpu: "32"
+          memory: 200Gi
+        requests:
+          cpu: "24"
+          memory: 150Gi
+      args:
+        - --tool-call-parser
+        - openai
+        - --enable-auto-tool-choice
+----
+
+For a complete list of customizable values, see the link:https://github.com/rh-ai-quickstart/ai-architecture-charts[AI Architecture charts] repository.

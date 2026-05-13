@@ -1,0 +1,75 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+include::comm-attributes.adoc[]
+
+[id="about-rag-quickstart"]
+= About the RAG Quickstart pattern
+
+Use retrieval-augmented generation (RAG) to enhance large language models with specialized data sources for more accurate and context-aware responses.
+
+Use case::
+
+* Deploy a RAG-powered chatbot that connects users to internal documentation through a single chat interface.
+* Explore retrieval-augmented generation capabilities including document ingestion, custom system prompts, and agent-based RAG.
+* Use a GitOps approach to provision AI infrastructure including LLM serving, vector storage, and safety guardrails.
++
+[NOTE]
+====
+Based on the requirements of a specific implementation, certain details might differ. However, all Validated Patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
+====
+
+Background::
+
+This pattern is scaffolding around the link:https://github.com/rh-ai-quickstart/rag[RAG AI Quickstart]. It provisions the OpenShift cluster with link:https://www.redhat.com/en/products/ai/openshift-ai[{rhoai}] in a configuration suitable for LlamaStack. It deploys NFD and the NVIDIA GPU Operator for LLM inference on GPU nodes and manages secrets through the {solution-name-upstream} framework. On AWS, GPU worker nodes can be provisioned automatically. By default, this pattern uses a CPU-based LLM.
+
+Retrieval-Augmented Generation (RAG) enhances Large Language Models (LLMs) by retrieving relevant external knowledge to improve accuracy, reduce hallucinations, and support domain-specific conversations.
+
+The included demo application features FantaCo, a fictional large enterprise that launched a secure RAG chatbot connecting employees to HR, procurement, sales, and IT documentation. Users can explore the capabilities of RAG by:
+
+- Exploring FantaCo's solution
+- Uploading new documents to be embedded
+- Tweaking sampling parameters to influence LLM responses
+- Using custom system prompts
+- Switching between simple and agent-based RAG
+
+[id="about-rag-quickstart-solution"]
+== About the solution
+
+This pattern deploys a complete RAG pipeline on a single OpenShift cluster by using a GitOps approach. The {solution-name-upstream} framework handles infrastructure provisioning, including GPU operators, AI platform configuration, and secrets management. The RAG AI Quickstart delivers the application layer: document ingestion, embedding, retrieval, and LLM-powered chat.
+
+The solution uses LlamaStack to standardize the building blocks of the AI stack with a consistent interface for model serving, vector storage, and safety guardrails. Kubeflow Pipelines ingests documents, embeds them, and stores them in PostgreSQL with PGVector. At query time, the system retrieves relevant embeddings to ground LLM responses in real data.
+
+[id="about-rag-quickstart-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-ocp}]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-gitops}]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai[{rhoai}]::
+A flexible, scalable MLOps platform with tools to build, deploy, and manage AI-enabled applications. This pattern uses {rhoai} to serve the LLM inference endpoint.
+
+https://github.com/meta-llama/llama-stack[LlamaStack]::
+A standardized framework for building AI applications with Llama models. It provides consistent APIs for model inference, vector storage, safety guardrails, and agentic workflows.
+
+https://www.postgresql.org/[PostgreSQL] with https://github.com/pgvector/pgvector[PGVector]::
+An open source relational database extended with PGVector for storing and querying vector embeddings used in document retrieval.
+
+https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2[all-MiniLM-L6-v2]::
+A sentence transformer model used to generate vector embeddings from documents and queries for similarity search.
+
+https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct[Llama 3.2-3B-Instruct]::
+The default large language model used for generating responses. The pattern also supports Llama 3.1-8B and Llama 3.3-70B-Instruct on GPU-equipped clusters.
+
+https://huggingface.co/meta-llama/Llama-Guard-3-1B[Llama Guard 3]::
+A safety model that provides content filtering and guardrails to block harmful requests and responses.
+
+https://www.kubeflow.org/docs/components/pipelines/[Kubeflow Pipelines]::
+A platform for building and deploying ML workflows. This pattern uses Kubeflow Pipelines for document ingestion and embedding.
+
+https://streamlit.io/[Streamlit]::
+An open source Python framework used to build the RAG chatbot user interface.

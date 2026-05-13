@@ -1,0 +1,31 @@
+---
+title: RAG AI Quickstart
+date: 2026-05-13
+tier: sandbox
+summary: This pattern deploys the RAG AI Quickstart with test pipelines on CPU or GPU.
+rh_products:
+  - Red Hat OpenShift Container Platform
+  - Red Hat OpenShift GitOps
+  - Red Hat OpenShift AI
+industries:
+  - General
+aliases: /rag-quickstart/
+links:
+  github: https://github.com/validatedpatterns-sandbox/ai-quickstart-rag
+  install: getting-started
+  bugs: https://github.com/validatedpatterns-sandbox/ai-quickstart-rag/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/rag-quickstart-about.adoc[leveloffset=+1]
+
+include::modules/rag-quickstart-architecture.adoc[leveloffset=+1]
+
+[id="next-steps-rag-quickstart"]
+== Next steps
+
+* link:rag-quickstart-getting-started[Install this pattern.]
