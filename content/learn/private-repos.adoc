@@ -44,6 +44,30 @@ stringData:
     -----END OPENSSH PRIVATE KEY-----
 ----
 
+This secret can now be created with the `bootstrap_secrets` feature like so:
+
+[source,yaml]
+----
+version: "2.0"
+
+bootstrap_secrets:
+  - name: private-repo
+    targetNamespaces:
+      - openshift-operators
+    fields:
+      - name: type
+        value: git
+      - name: sshPrivateKey
+        path: |
+          -----BEGIN OPENSSH PRIVATE KEY-----
+          a3...
+          ...
+          ...
+          -----END OPENSSH PRIVATE KEY-----
+       - name: url
+         value: git@github.com:mbaldessari/mcg-private.git
+----
+
 === Deploy the pattern with the secret
 
 Reference the secret you created by passing `TOKEN_SECRET` and `TOKEN_NAMESPACE` to the install command:
@@ -93,6 +117,29 @@ stringData:
   url: https://gitlab.com/dminnear-rh/mcg-private.git
   username: oauth2
   password: glpat-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+----
+
+Using the `bootstrap_secrets` feature, this can be created as follows:
+
+[source,yaml]
+----
+version: "2.0"
+
+bootstrap_secrets:
+  - name: private-repo
+    targetNamespaces:
+      - openshift-operators
+    labels:
+      argocd.argoproj.io/secret-type: repository
+    fields:
+      - name: type
+        value: git
+       - name: url
+         value: https://gitlab.com/dminnear-rh/mcg-private.git
+      - name: username
+        value: oauth2
+      - name: password
+        value: glpat-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ----
 
 NOTE: The username must be `oauth2`, not your GitLab handle.
