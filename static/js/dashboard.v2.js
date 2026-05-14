@@ -44,6 +44,18 @@ function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+// Still present in badge buckets but no longer in the CI matrix (omit from dashboard)
+var CI_DASHBOARD_EXCLUDED_OCP_VERSIONS = ['4.19']
+
+function excludeRetiredOcpVersionsFromDashboard (badges) {
+  if (!badges || badges.length === 0) {
+    return badges || []
+  }
+  return badges.filter(function (b) {
+    return CI_DASHBOARD_EXCLUDED_OCP_VERSIONS.indexOf(b.version) === -1
+  })
+}
+
 function filterBadges (badges, field, value) {
   if (field === 'pattern') {
     return badges.filter(badge => badge.pattern === value)
@@ -1094,6 +1106,7 @@ function getBadges (xmlText, bucket_url, badge_set) {
 }
 
 function processBadges (badges, options) {
+  badges = excludeRetiredOcpVersionsFromDashboard(badges)
   if (options.get('disable_buttons') === true) {
     processBadgesLegacy(badges, options)
     return

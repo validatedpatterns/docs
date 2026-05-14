@@ -1,0 +1,21 @@
+// This file has been generated automatically from the pattern-metadata.yaml file
+// Do not edit manually!
+:metadata_version: 1.0
+:name: ai-quickstart-rag
+:pattern_version: 1.0
+:description: Deploy an agent-based chatbot with multiple data ingestion pipelines on RHOAI 3.
+:display_name: RAG AI Quickstart
+:repo_url: https://github.com/validatedpatterns-sandbox/ai-quickstart-rag
+:docs_repo_url: https://github.com/validatedpatterns/docs
+:issues_url: https://github.com/validatedpatterns-sandbox/ai-quickstart-rag/issues
+:docs_url: https://validatedpatterns.io/patterns/rag-quickstart/
+:ci_url: https://validatedpatterns.io/ci/?pattern=rag-quickstart
+:tier: sandbox
+:owners: dminnear-rh
+:requirements_hub_compute_platform_aws_replicas: 3
+:requirements_hub_compute_platform_aws_type: m5.4xlarge
+:requirements_hub_controlPlane_platform_aws_replicas: 3
+:requirements_hub_controlPlane_platform_aws_type: m5.xlarge
+:extra_features_hypershift_support: true
+:extra_features_spoke_support: false
+:external_requirements: 
