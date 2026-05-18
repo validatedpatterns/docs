@@ -27,7 +27,7 @@ include::modules/comm-attributes.adoc[]
 = About the Confidential Containers pattern
 
 Confidential computing is a technology for securing data in use. It uses a https://en.wikipedia.org/wiki/Trusted_execution_environment[Trusted Execution Environment] (TEE) provided within the hardware of the processor to prevent access from others who have access to the system, including cluster administrators and hypervisor operators.
-https://confidentialcontainers.org/[Confidential containers] is a project to standardize the consumption of confidential computing by making the security boundary for confidential computing a Kubernetes pod. https://katacontainers.io/[Kata containers] is used to establish the boundary via a shim VM.
+https://confidentialcontainers.org/[Confidential containers] is a project to standardize the consumption of confidential computing by making the security boundary for confidential computing a Kubernetes pod. https://katacontainers.io/[Kata containers] is used to establish the boundary through a shim VM.
 
 A core goal of confidential computing is to use this technology to isolate the workload from both Kubernetes and hypervisor administrators. In practice this means that even a `kubeadmin` user cannot `exec` into a running confidential container or inspect its memory.
 
@@ -36,7 +36,7 @@ image::coco-pattern/isolation.png[Schematic describing the isolation of confiden
 
 This pattern deploys and configures https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12/html/deploying_confidential_containers/cc-overview[Red Hat OpenShift Sandboxed Containers] for confidential computing workloads on both cloud (Microsoft Azure) and bare metal infrastructure.
 
-**Cloud deployments** use "peer pods" — confidential VMs provisioned directly on the Azure hypervisor rather than nested inside OpenShift worker nodes. Azure offers https://learn.microsoft.com/en-us/azure/confidential-computing/virtual-machine-options[multiple confidential VM families]; this pattern defaults to the `Standard_DCas_v5` family but can be configured to use other families via `values-global.yaml`.
+**Cloud deployments** use "peer pods", which are confidential VMs provisioned directly on the Azure hypervisor rather than nested inside OpenShift worker nodes. Azure offers https://learn.microsoft.com/en-us/azure/confidential-computing/virtual-machine-options[multiple confidential VM families]; this pattern defaults to the `Standard_DCas_v5` family but can be configured to use other families by modifying `values-global.yaml`.
 
 **Bare metal deployments** support Intel TDX (Trusted Domain Extensions) and AMD SEV-SNP (Secure Encrypted Virtualization - Secure Nested Paging) hardware TEEs, with optional **Technology Preview** NVIDIA confidential GPU support (H100, H200, B100, B200) for protected GPU workloads.
 
@@ -46,10 +46,10 @@ The pattern includes sample applications demonstrating security boundaries and s
 
 The pattern supports four deployment topologies, selected by setting `main.clusterGroupName` in `values-global.yaml`:
 
-- **`simple`** — Single-cluster Azure deployment with all components (Trustee, Vault, ACM, sandboxed containers, workloads) on one cluster
-- **`trusted-hub` + `spoke`** — Multi-cluster Azure deployment separating the trusted zone (hub with Trustee/Vault/ACM) from the untrusted workload zone (spoke)
-- **`baremetal`** — Single-cluster bare metal with Intel TDX or AMD SEV-SNP support
-- **`baremetal-gpu`** — **Technology Preview:** Bare metal with Intel TDX or AMD SEV-SNP and NVIDIA confidential GPU support (H100, H200, B100, B200)
+- **`simple`**: Single-cluster Azure deployment with all components (Trustee, Vault, ACM, sandboxed containers, workloads) on one cluster
+- **`trusted-hub` + `spoke`**: Multi-cluster Azure deployment separating the trusted zone (hub with Trustee/Vault/ACM) from the untrusted workload zone (spoke)
+- **`baremetal`**: Single-cluster bare metal with Intel TDX or AMD SEV-SNP support
+- **`baremetal-gpu`**: **Technology Preview:** Bare metal with Intel TDX or AMD SEV-SNP and NVIDIA confidential GPU support (H100, H200, B100, B200)
 
 == Requirements
 
@@ -76,7 +76,7 @@ The pattern supports four deployment topologies, selected by setting `main.clust
 
 **This pattern is a demonstration only and contains configurations that are not best practice**
 
-- The pattern supports both single-cluster (`simple` clusterGroup) and multi-cluster (`trusted-hub` + `spoke`) topologies. The default is single-cluster, which breaks the RACI separation expected in a remote attestation architecture. In the single-cluster topology, the Key Broker Service and the workloads it protects run on the same cluster, meaning a compromised cluster could affect both. The multi-cluster topology addresses this by separating the trusted zone (Trustee, Vault, ACM on the hub) from the untrusted workload zone (spoke). The https://www.ietf.org/archive/id/draft-ietf-rats-architecture-22.html[RATS] architecture mandates that the Key Broker Service (e.g. https://github.com/confidential-containers/trustee[Trustee]) is in a trusted security zone.
+- The pattern supports both single-cluster (`simple` clusterGroup) and multi-cluster (`trusted-hub` + `spoke`) topologies. The default is single-cluster, which breaks the RACI separation expected in a remote attestation architecture. In the single-cluster topology, the Key Broker Service and the workloads it protects run on the same cluster, meaning a compromised cluster could affect both. The multi-cluster topology addresses this by separating the trusted zone (Trustee, Vault, ACM on the hub) from the untrusted workload zone (spoke). The https://www.ietf.org/archive/id/draft-ietf-rats-architecture-22.html[RATS] architecture mandates that the Key Broker Service (for example, https://github.com/confidential-containers/trustee[Trustee]) is in a trusted security zone.
 
 - The https://github.com/confidential-containers/trustee/tree/main/attestation-service[Attestation Service] ships with permissive default policies that accept all container images without verification. This allows quick testing but is unsuitable for production. The threat model assumes that without image signature verification, an attacker with access to the container registry could substitute malicious images that would still receive secrets from the KBS.
 
@@ -97,10 +97,13 @@ kbs:
 +
 [source,bash]
 ----
-# Generate cosign key pair
 cosign generate-key-pair
-
-# Add the public key content to values-secret-coco-pattern.yaml
+----
++
+Then add the public key content to `values-secret-coco-pattern.yaml`:
++
+[source,yaml]
+----
 kbs:
   cosignPublicKeys:
     - |
@@ -122,7 +125,7 @@ cosign verify --key cosign.pub your-registry.io/your-image:tag
 
 4. **Configure reference values for PCR measurements**: For hardware-backed attestation, configure expected PCR values in the policy. These are automatically retrieved by `scripts/get-pcr.sh` but should be reviewed and locked down in production. See link:./coco-pattern-getting-started/#_updating_pcr_measurements[Updating PCR measurements] for the workflow when peer-pod images change.
 
-Without these hardening steps, the attestation service will approve any workload requesting secrets, defeating the confidentiality guarantees of the TEE.
+Without these hardening steps, the attestation service approves any workload requesting secrets, defeating the confidentiality guarantees of the TEE.
 
 == Future work
 
@@ -137,21 +140,21 @@ Confidential Containers architecture separates two security zones:
 - **Trusted zone**: Runs the Key Broker Service (Trustee), attestation service, and secrets management (Vault). This zone verifies TEE evidence and releases secrets only to authenticated confidential workloads.
 - **Untrusted zone**: Runs the sandboxed containers operator, confidential workload pods, and the Kyverno policy engine. Workloads in this zone must attest to Trustee before receiving secrets.
 
-The pattern supports both single-cluster and multi-cluster topologies. In single-cluster topologies (`simple`, `baremetal`, `baremetal-gpu`), all components run on one cluster. In the multi-cluster topology, the `trusted-hub` clusterGroup runs on the hub cluster and the `spoke` clusterGroup runs on managed clusters imported via ACM.
+The pattern supports both single-cluster and multi-cluster topologies. In single-cluster topologies (`simple`, `baremetal`, `baremetal-gpu`), all components run on one cluster. In the multi-cluster topology, the `trusted-hub` clusterGroup runs on the hub cluster and the `spoke` clusterGroup runs on managed clusters imported through ACM.
 
-**Kyverno's role**: The pattern uses Kyverno to dynamically inject attestation agent configuration (`cc_init_data`) into confidential pods at admission time. An imperative job generates ConfigMaps containing the KBS TLS certificate and policy files. Kyverno propagates these ConfigMaps to workload namespaces and injects them as pod annotations, ensuring pods have the correct configuration for attestation without manual annotation management.
+**The role of Kyverno**: The pattern uses Kyverno to dynamically inject attestation agent configuration (`cc_init_data`) into confidential pods at admission time. An imperative job generates ConfigMaps containing the KBS TLS certificate and policy files. Kyverno propagates these ConfigMaps to workload namespaces and injects them as pod annotations, ensuring pods have the correct configuration for attestation without manual annotation management.
 
 image::coco-pattern/overview-schematic.png[Schematic describing the high level architecture of confidential containers]
 
 === Key components
 
 - **Red Hat Build of Trustee 1.1**: The Key Broker Service (KBS) and attestation service. Trustee verifies that workloads are running in a genuine TEE before releasing secrets. Certificates for Trustee are managed by cert-manager using self-signed CAs.
-- **HashiCorp Vault**: Secrets backend for the Validated Patterns framework. Stores KBS keys, attestation policies, and PCR measurements.
+- **{hashicorp-vault}**: Secrets backend for the {solution-name-upstream} framework. Stores KBS keys, attestation policies, and PCR measurements.
 - **OpenShift Sandboxed Containers 1.12**: Deploys and manages confidential container infrastructure. On Azure, provisions peer-pod VMs; on bare metal, configures Kata runtimes for TDX/SEV-SNP. Operator subscriptions are pinned to specific CSV versions with manual install plan approval to ensure version consistency.
 - **Kyverno**: Policy engine that dynamically injects `cc_init_data` annotations into confidential pods. Manages the distribution of attestation agent configuration (KBS TLS certificates, policy files) from centralized ConfigMaps to workload namespaces.
-- **Red Hat Advanced Cluster Management (ACM)**: Manages the spoke cluster in multi-cluster deployments. Policies and applications are deployed to the spoke via ACM's application lifecycle management.
+- **{rh-rhacm-first}**: Manages the spoke cluster in multi-cluster deployments. Policies and applications are deployed to the spoke through ACM application lifecycle management.
 - **Node Feature Discovery (NFD)** _(bare metal only)_: Detects Intel TDX and AMD SEV-SNP hardware capabilities and labels nodes accordingly for runtime class scheduling.
-- **Intel DCAP** _(bare metal with Intel TDX)_: Provisioning Certificate Caching Service (PCCS) and Quote Generation Service (QGS) for Intel TDX remote attestation via the Intel PCS API.
+- **Intel DCAP** _(bare metal with Intel TDX)_: Provisioning Certificate Caching Service (PCCS) and Quote Generation Service (QGS) for Intel TDX remote attestation through the Intel PCS API.
 - **NVIDIA GPU Operator** _(GPU topology only, Technology Preview)_: Manages NVIDIA confidential GPUs (H100, H200, B100, B200) with CC Manager, VFIO passthrough, and Kata device plugins for GPU-enabled confidential workloads.
 
 
@@ -162,7 +165,7 @@ Intel Trusted Domain Extensions (TDX) is a hardware-based TEE technology that is
 **Key features:**
 
 - **Automatic hardware detection**: Node Feature Discovery (NFD) detects TDX-capable CPUs and labels nodes with `intel.feature.node.kubernetes.io/tdx=true`
-- **Remote attestation**: Intel DCAP components (PCCS and QGS) enable quote generation and verification via the Intel PCS API
+- **Remote attestation**: Intel DCAP components (PCCS and QGS) enable quote generation and verification through the Intel PCS API
 - **Transparent runtime selection**: The `kata-cc` RuntimeClass automatically uses the TDX handler (`kata-tdx`) on labeled nodes
 - **MachineConfig automation**: Kernel parameters (`kvm_intel.tdx=1`) and vsock modules are applied automatically
 
@@ -172,16 +175,16 @@ Intel Trusted Domain Extensions (TDX) is a hardware-based TEE technology that is
 - BIOS/firmware with TDX enabled
 - Intel PCS API key (obtainable from https://api.portal.trustedservices.intel.com[Intel Trusted Services])
 
-The pattern's Intel DCAP chart deploys PCCS as a centralized caching service and QGS as a DaemonSet on TDX nodes. Quote generation happens within the TEE, with PCCS providing attestation collateral to Trustee for verification.
+The pattern Intel DCAP chart deploys PCCS as a centralized caching service and QGS as a DaemonSet on TDX nodes. Quote generation happens within the TEE, with PCCS providing attestation collateral to Trustee for verification.
 
 == AMD SEV-SNP support
 
-AMD Secure Encrypted Virtualization - Secure Nested Paging (SEV-SNP) is a hardware-based TEE technology that provides VM isolation through memory encryption and integrity protection. SEV-SNP extends AMD's SEV technology with secure nested paging to protect against additional attack vectors. The pattern provides full AMD SEV-SNP support on bare metal deployments.
+AMD Secure Encrypted Virtualization - Secure Nested Paging (SEV-SNP) is a hardware-based TEE technology that provides VM isolation through memory encryption and integrity protection. SEV-SNP extends AMD SEV technology with secure nested paging to protect against additional attack vectors. The pattern provides full AMD SEV-SNP support on bare metal deployments.
 
 **Key features:**
 
 - **Automatic hardware detection**: Node Feature Discovery (NFD) detects SEV-SNP-capable processors and labels nodes with `amd.feature.node.kubernetes.io/snp=true`
-- **Certificate chain-based attestation**: AMD SEV-SNP uses a certificate chain model for attestation verification, eliminating the need for a collateral caching service like Intel's PCCS
+- **Certificate chain-based attestation**: AMD SEV-SNP uses a certificate chain model for attestation verification, eliminating the need for a collateral caching service like Intel PCCS
 - **Transparent runtime selection**: The `kata-cc` RuntimeClass automatically uses the SEV-SNP handler (`kata-snp`) on labeled nodes
 - **MachineConfig automation**: Kernel parameters for SEV-SNP enablement and vsock modules are applied automatically
 
@@ -191,17 +194,17 @@ AMD Secure Encrypted Virtualization - Secure Nested Paging (SEV-SNP) is a hardwa
 - BIOS/firmware with SEV-SNP enabled
 - No external attestation service required (certificate chain-based model)
 
-AMD SEV-SNP's certificate chain approach simplifies the attestation infrastructure compared to Intel TDX, as the full certificate chain is embedded in the attestation evidence sent to Trustee for verification.
+The AMD SEV-SNP certificate chain approach simplifies the attestation infrastructure compared to Intel TDX, as the full certificate chain is embedded in the attestation evidence sent to Trustee for verification.
 
 == NVIDIA confidential GPU support (**Technology Preview**)
 
-NVIDIA confidential GPUs with confidential computing firmware enable GPU-accelerated workloads to run inside TEEs with hardware-enforced memory encryption and attestation. The pattern's `baremetal-gpu` topology provides support for NVIDIA confidential GPUs (H100, H200, B100, B200) on bare metal with either Intel TDX or AMD SEV-SNP as the host TEE platform.
+NVIDIA confidential GPUs with confidential computing firmware enable GPU-accelerated workloads to run inside TEEs with hardware-enforced memory encryption and attestation. The pattern `baremetal-gpu` topology provides support for NVIDIA confidential GPUs (H100, H200, B100, B200) on bare metal with either Intel TDX or AMD SEV-SNP as the host TEE platform.
 
 **Key features:**
 
-- **GPU passthrough via VFIO**: GPUs are passed through to Kata confidential VMs using IOMMU and VFIO, providing native GPU performance
+- **GPU passthrough through VFIO**: GPUs are passed through to Kata confidential VMs by using IOMMU and VFIO, providing native GPU performance
 - **Confidential Computing Manager**: NVIDIA CC Manager enforces confidential mode at the GPU firmware level
-- **GPU attestation**: The GPU's attestation evidence is included in the TEE's attestation report to Trustee
+- **GPU attestation**: The GPU attestation evidence is included in the TEE attestation report to Trustee
 - **Kata device plugin**: The NVIDIA Kata sandbox device plugin exposes GPUs as schedulable resources (`nvidia.com/pgpu`)
 - **Multi-platform support**: Works with both Intel TDX and AMD SEV-SNP host TEE platforms
 
@@ -209,7 +212,7 @@ NVIDIA confidential GPUs with confidential computing firmware enable GPU-acceler
 
 - NVIDIA GPUs with confidential computing firmware (H100, H200, B100, B200)
 - Intel TDX or AMD SEV-SNP enabled bare metal host
-- IOMMU-capable system (kernel parameters applied via MachineConfig: `intel_iommu=on` or `amd_iommu=on`)
+- IOMMU-capable system (kernel parameters applied by using MachineConfig: `intel_iommu=on` or `amd_iommu=on`)
 - NVIDIA GPU Operator v26.3.0+
 
 The pattern includes a sample CUDA workload (`gpu-vectoradd`) that demonstrates GPU-accelerated computation within a confidential container, verifying both GPU functionality and attestation integration. Testing has been performed with Intel TDX + H100; AMD SEV-SNP + GPU configurations are expected to work but have not been fully validated.
@@ -249,5 +252,5 @@ The pattern includes a sample CUDA workload (`gpu-vectoradd`) that demonstrates 
 
 **Related patterns:**
 
-- link:../multicloud-gitops-sgx/[Intel SGX protected Vault for Multicloud GitOps] — Uses Intel SGX enclaves (Gramine) for application-level confidential computing, complementary to CoCo's VM-based TEE approach
-- link:../layered-zero-trust/[Layered Zero Trust] — Demonstrates workload identity (SPIFFE/SPIRE), secrets management (Vault/ESO), and zero-trust principles that complement CoCo's TEE isolation
+- link:../multicloud-gitops-sgx/[Intel SGX protected Vault for Multicloud GitOps]: Uses Intel SGX enclaves (Gramine) for application-level confidential computing, complementary to the CoCo VM-based TEE approach
+- link:../layered-zero-trust/[Layered Zero Trust]: Demonstrates workload identity (SPIFFE/SPIRE), secrets management (Vault/ESO), and zero-trust principles that complement CoCo TEE isolation

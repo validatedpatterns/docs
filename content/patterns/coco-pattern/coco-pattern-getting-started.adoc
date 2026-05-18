@@ -1,11 +1,11 @@
 ---
 title: Getting started
-weight: 10
+weight: 20
 aliases: /coco-pattern/coco-pattern-getting-started/
 ---
 
 :toc:
-
+:imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
@@ -22,11 +22,11 @@ include::modules/comm-attributes.adoc[]
 
 3. Fork the repository and clone it locally. ArgoCD reconciles against your fork, so all configuration changes must be committed and pushed.
 
-4. Run `bash scripts/gen-secrets.sh` to generate KBS key pairs, attestation policy seeds, and copy the values-secret template to `~/values-secret-coco-pattern.yaml`. This script will not overwrite existing secrets.
+4. Run `bash scripts/gen-secrets.sh` to generate KBS key pairs, attestation policy seeds, and copy the values-secret template to `~/values-secret-coco-pattern.yaml`. This script does not overwrite existing secrets.
 
 5. Run `bash scripts/get-pcr.sh` to retrieve PCR measurements from the peer-pod VM image. This stores the measurements at `~/.coco-pattern/measurements.json`, which are loaded into Vault and used by the attestation service. Requires `podman`, `skopeo`, and a pull secret at `~/pull-secret.json`.
 
-6. Review and customise `~/values-secret-coco-pattern.yaml`. This file controls what secrets are loaded into Vault, including attestation policies, KBS key material, and PCR measurements. See the comments in `values-secret.yaml.template` for details on each field.
+6. Review and customize `~/values-secret-coco-pattern.yaml`. This file controls what secrets are loaded into Vault, including attestation policies, KBS key material, and PCR measurements. See the comments in `values-secret.yaml.template` for details on each field.
 
 ==== Bare metal deployments
 
@@ -42,17 +42,17 @@ include::modules/comm-attributes.adoc[]
 
 6. For bare metal, PCR measurements must be collected manually after the first boot. See the link:../coco-pattern-tested-environments/[tested environments] page for guidance on PCR collection for bare metal. Store the measurements at `~/.coco-pattern/measurements.json`.
 
-7. Review and customise `~/values-secret-coco-pattern.yaml`. For Intel TDX, uncomment the PCCS secrets section and provide your Intel PCS API key. See the comments in `values-secret.yaml.template` for details on each field.
+7. Review and customize `~/values-secret-coco-pattern.yaml`. For Intel TDX, uncomment the PCCS secrets section and provide your Intel PCS API key. See the comments in `values-secret.yaml.template` for details on each field.
 
 === Single cluster deployment
 
-The single-cluster topology uses the `simple` clusterGroup. All components — Trustee, Vault, ACM, sandboxed containers, and workloads — are deployed on one cluster.
+The single-cluster topology uses the `simple` clusterGroup. All components, including Trustee, Vault, ACM, sandboxed containers, and workloads, are deployed on one cluster.
 
 1. Ensure `main.clusterGroupName: simple` is set in `values-global.yaml`
 
 2. `./pattern.sh make install`
 
-3. Wait for the cluster to reboot all nodes. The sandboxed containers operator applies a MachineConfig update that triggers a rolling reboot. Monitor progress via the ArgoCD UI or `oc get nodes`.
+3. Wait for the cluster to reboot all nodes. The sandboxed containers operator applies a MachineConfig update that triggers a rolling reboot. Monitor progress in the ArgoCD UI or by running `oc get nodes`.
 
 4. If the services do not come up, use the ArgoCD UI to triage potential timeouts. Peer-pod VMs may need to be restarted if they time out during initial provisioning.
 
@@ -68,9 +68,9 @@ The multi-cluster topology separates the trusted zone (hub) from the untrusted w
 
 4. Provision a second OpenShift 4.17+ cluster on Azure for the spoke
 
-5. Import the spoke cluster into ACM with the label `clusterGroup=spoke` (see https://validatedpatterns.io/learn/importing-a-cluster/[importing a cluster]). ACM will automatically deploy the `spoke` clusterGroup applications to the imported cluster.
+5. Import the spoke cluster into ACM with the label `clusterGroup=spoke` (see https://validatedpatterns.io/learn/importing-a-cluster/[importing a cluster]). ACM automatically deploys the `spoke` clusterGroup applications to the imported cluster.
 
-6. The spoke cluster will install the sandboxed containers operator, deploy peer-pod infrastructure, and launch the sample workloads. Monitor progress in the ACM console or via ArgoCD on the spoke.
+6. The spoke cluster installs the sandboxed containers operator, deploys peer-pod infrastructure, and launches the sample workloads. Monitor progress in the ACM console or in ArgoCD on the spoke.
 
 === Bare metal deployment
 
@@ -87,7 +87,7 @@ The bare metal topology uses the `baremetal` clusterGroup for Intel TDX or AMD S
 5. `./pattern.sh make install`
 
 6. Wait for the cluster to reboot nodes. The pattern applies MachineConfig updates for:
-   - TDX/SEV-SNP kernel parameters (e.g., `kvm_intel.tdx=1` for Intel TDX, `kvm_amd.sev=1` for AMD SEV-SNP)
+   - TDX/SEV-SNP kernel parameters (for example, `kvm_intel.tdx=1` for Intel TDX, `kvm_amd.sev=1` for AMD SEV-SNP)
    - `nohibernate` kernel argument
    - vsock-loopback kernel module configuration
    +
@@ -109,8 +109,8 @@ The pattern automatically detects and configures your TEE hardware:
   - AMD SEV-SNP: `amd.feature.node.kubernetes.io/snp=true`
 - **HostPath Provisioner (HPP)** provides persistent storage for bare metal deployments
 - **RuntimeClass**: The `kata-cc` RuntimeClass is created automatically, using `kata-tdx` or `kata-snp` handler based on detected hardware
-- Both `kata-tdx` and `kata-snp` RuntimeClasses are deployed; only the one matching your hardware will have schedulable nodes
-- **Intel DCAP components** (PCCS and QGS) deploy unconditionally but DaemonSets only schedule on Intel TDX nodes via NFD label selectors
+- Both `kata-tdx` and `kata-snp` RuntimeClasses are deployed; only the one matching your hardware has schedulable nodes
+- **Intel DCAP components** (PCCS and QGS) deploy unconditionally but DaemonSets only schedule on Intel TDX nodes by using NFD label selectors
 
 **Optional PCCS node pinning:** For Intel TDX deployments, you can pin the PCCS service to a specific node by running `bash scripts/get-pccs-node.sh` and setting `baremetal.pccs.nodeSelector` in the baremetal chart values.
 
@@ -130,7 +130,7 @@ The `baremetal-gpu` topology extends the bare metal deployment with NVIDIA confi
    - Intel: `intel_iommu=on`
    - AMD: `amd_iommu=on`
    +
-   All nodes will reboot to apply these kernel parameters.
+   All nodes reboot to apply these kernel parameters.
    +
    **Note**: MCO-driven reboots may cause Vault secret loading to time out. If needed, re-run `./pattern.sh make upgrade` after nodes finish rebooting.
 
@@ -151,7 +151,7 @@ The `baremetal-gpu` topology extends the bare metal deployment with NVIDIA confi
 
 [NOTE]
 ====
-The `baremetal-gpu` topology applies IOMMU MachineConfig to all nodes and triggers reboots even on clusters without GPUs. If you do not have GPUs, use the `baremetal` topology instead. The GPU workload (`gpu-vectoradd`) will remain in `Pending` state on systems without GPUs but is otherwise harmless.
+The `baremetal-gpu` topology applies IOMMU MachineConfig to all nodes and triggers reboots even on clusters without GPUs. If you do not have GPUs, use the `baremetal` topology instead. The GPU workload (`gpu-vectoradd`) remains in `Pending` state on systems without GPUs but is otherwise harmless.
 ====
 
 **GPU-specific components:**
@@ -171,7 +171,7 @@ The pattern deploys a `gpu-vectoradd` sample workload that runs a CUDA vector ad
 oc logs -n gpu-workload deployment/gpu-vectoradd
 ----
 
-Expected output should show successful CUDA execution and GPU device detection.
+The expected output shows successful CUDA execution and GPU device detection.
 
 == Updating PCR measurements
 
@@ -197,7 +197,7 @@ bash scripts/get-pcr.sh
 +
 This fetches the current peer-pod image from your cluster's registry, extracts the measurements, and stores them at `~/.coco-pattern/measurements.json`.
 
-2. **Update Vault secrets**: The measurements are loaded into Vault via `values-secret-coco-pattern.yaml`. If you previously deployed the pattern, update the `pcrMeasurements` field in your values-secret file with the new content from `~/.coco-pattern/measurements.json`.
+2. **Update Vault secrets**: The measurements are loaded into Vault by using `values-secret-coco-pattern.yaml`. If you previously deployed the pattern, update the `pcrMeasurements` field in your values-secret file with the new content from `~/.coco-pattern/measurements.json`.
 
 3. **Sync to the cluster**: Push the updated values-secret file to refresh Vault:
 +
@@ -261,7 +261,7 @@ If the PCR values still do not match after following these steps, the peer-pod V
 == Simple Confidential container tests
 
 The pattern deploys some simple tests of CoCo with this pattern.
-A "Hello Openshift" (e.g. `curl` to return "Hello Openshift!") application has been deployed in three configurations:
+A "Hello Openshift" (for example, `curl` to return "Hello Openshift!") application has been deployed in three configurations:
 
 1. A vanilla kubernetes pod: `oc get pods -n hello-openshift standard`
 2. A confidential container with a strict policy: `oc get pods -n hello-openshift secure`
@@ -270,13 +270,13 @@ A "Hello Openshift" (e.g. `curl` to return "Hello Openshift!") application has b
 In this case the insecure policy is designed to allow a user to be able to exec into the confidential container.
 Typically this is disabled by an immutable policy established at pod creation time.
 
-Doing `oc get pod -n hello-openshift secure -o yaml` for either of the pods running a confidential container should show:
+Running `oc get pod -n hello-openshift secure -o yaml` for either of the pods running a confidential container shows:
 
 - **Azure deployments**: `runtimeClassName: kata-remote` (peer-pod provisioned on Azure hypervisor)
 - **Bare metal deployments**: `runtimeClassName: kata-cc` (Kata container running on TDX/SEV-SNP hardware)
 - **Bare metal GPU deployments**: `runtimeClassName: kata-cc-nvidia-gpu` (GPU-enabled Kata container)
 
-**Azure-specific verification:** Logging into the Azure portal once the pods have been provisioned will show that each confidential pod has its own `Standard_DC2as_v5` virtual machine. These VMs are visible under the cluster's resource group.
+**Azure-specific verification:** Logging into the Azure portal after the pods have been provisioned shows that each confidential pod has its own `Standard_DC2as_v5` virtual machine. These VMs are visible under the cluster's resource group.
 
 === `oc exec` testing
 
@@ -286,37 +286,37 @@ However:
 1. Cluster admins can always circumvent this capability
 2. Anyone logged into the node directly can also circumvent this capability
 
-Confidential containers enforce this boundary at the hardware level, independent of RBAC. Running: `oc exec -n hello-openshift -it secure -- bash` will result in a denial of access, irrespective of the user undertaking the action, including `kubeadmin`. The policy is baked into the pod at creation time and cannot be modified at runtime.
+Confidential containers enforce this boundary at the hardware level, independent of RBAC. Running `oc exec -n hello-openshift -it secure -- bash` results in a denial of access, irrespective of the user undertaking the action, including `kubeadmin`. The policy is baked into the pod at creation time and cannot be modified at runtime.
 
-For comparison, `oc exec -n hello-openshift -it standard -- bash` (the standard pod) and `oc exec -n hello-openshift -it insecure-policy -- bash` (the CoCo pod with a relaxed policy) will both allow shell access.
+For comparison, `oc exec -n hello-openshift -it standard -- bash` (the standard pod) and `oc exec -n hello-openshift -it insecure-policy -- bash` (the CoCo pod with a relaxed policy) both allow shell access.
 
 
 
 === Confidential Data Hub testing
 
-Part of the CoCo VM is a component called the Confidential Data Hub (CDH), which simplifies access to the Trustee Key Broker Service (KBS) for end applications. The CDH runs inside the confidential VM and handles attestation transparently — applications simply make HTTP requests to a localhost endpoint.
+Part of the CoCo VM is a component called the Confidential Data Hub (CDH), which simplifies access to the Trustee Key Broker Service (KBS) for end applications. The CDH runs inside the confidential VM and handles attestation transparently. Applications simply make HTTP requests to a localhost endpoint.
 
 Find out more about how the CDH and Trustee work together https://www.redhat.com/en/blog/introducing-confidential-containers-trustee-attestation-services-solution-overview-and-use-cases[here].
 
 image::coco-pattern/trustee.png[]
 
-The CDH presents to containers within the pod (only), via a localhost URL. The CoCo container with an insecure policy can be used for testing the behaviour, since it allows `oc exec`.
+The CDH presents to containers within the pod (only), through a localhost URL. The CoCo container with an insecure policy can be used for testing the behaviour, because it allows `oc exec`.
 
 
 - `oc exec -n hello-openshift -it insecure-policy -- bash` to get a shell into a confidential container
 
-- https://github.com/validatedpatterns/trustee-chart/[Trustee's configuration] specifies the list of secrets which the KBS can access with the `kbsSecretResources` attribute. These are mapped to Vault paths (e.g. `secret/data/hub/kbsres1`).
+- The https://github.com/validatedpatterns/trustee-chart/[Trustee configuration] specifies the list of secrets that the KBS can access with the `kbsSecretResources` attribute. These are mapped to Vault paths (for example, `secret/data/hub/kbsres1`).
 
 - Secrets within the CDH can be accessed (by default) at `http://127.0.0.1:8006/cdh/resource/default/$K8S_SECRET/$K8S_SECRET_KEY`.
 
-- In this case `http://127.0.0.1:8006/cdh/resource/default/passphrase/passphrase` by default will return a string which was randomly generated when the pattern was deployed.
+- In this case `http://127.0.0.1:8006/cdh/resource/default/passphrase/passphrase` by default returns a string that was randomly generated when the pattern was deployed.
 
-- To verify, compare the CDH output against the Vault-backed secret: `oc get secrets -n trustee-operator-system passphrase -o yaml | yq '.data.passphrase' | base64 -d`. The values should match.
+- To verify, compare the CDH output against the Vault-backed secret: `oc get secrets -n trustee-operator-system passphrase -o yaml | yq '.data.passphrase' | base64 -d`. The values match.
 
-- Tailing the logs for the KBS container (e.g. `oc logs -n trustee-operator-system -l app=kbs -f`) shows the attestation evidence flowing from the CDH to the KBS, including TEE evidence validation.
+- Tailing the logs for the KBS container (for example, `oc logs -n trustee-operator-system -l app=kbs -f`) shows the attestation evidence flowing from the CDH to the KBS, including TEE evidence validation.
 
 === kbs-access application
 
-The `kbs-access` application is a web service deployed in the `kbs-access` namespace. It retrieves secrets from Trustee via the CDH and presents them through a web interface. This provides a convenient way to verify that the full attestation pipeline is working end-to-end without needing to exec into a pod.
+The `kbs-access` application is a web service deployed in the `kbs-access` namespace. It retrieves secrets from Trustee through the CDH and presents them in a web interface. This provides a convenient way to verify that the full attestation pipeline is working end-to-end without needing to exec into a pod.
 
-Access the application via its OpenShift route: `oc get route -n kbs-access`.
+Access the application by using its OpenShift route: `oc get route -n kbs-access`.

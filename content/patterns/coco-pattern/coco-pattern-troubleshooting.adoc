@@ -37,7 +37,7 @@ Verify the KataConfig is ready:
 oc get kataconfig -n openshift-sandboxed-containers-operator
 ----
 +
-The status should show `InProgress: False` and the RuntimeClasses should be created (`kata-remote` for Azure, `kata-cc` for bare metal).
+Verify the status shows `InProgress: False` and the RuntimeClasses are created (`kata-remote` for Azure, `kata-cc` for bare metal).
 +
 If the KataConfig is stuck, check the operator logs:
 +
@@ -118,7 +118,7 @@ Problem:: `oc exec` denied unexpectedly into a confidential container
 
 Solution:: This is expected behavior for containers with strict policies. Verify which policy the pod is using.
 +
-Check the pod's initdata annotation:
+Check the pod initdata annotation:
 +
 [source,terminal]
 ----
@@ -148,7 +148,7 @@ If the ConfigMap is missing, check if Kyverno propagated it:
 oc get configmap -n imperative -l coco.io/type=initdata
 ----
 +
-The source ConfigMap should exist in the `imperative` namespace. If missing, the `init-data-gzipper` job may have failed:
+The source ConfigMap must exist in the `imperative` namespace. If missing, the `init-data-gzipper` job may have failed:
 +
 [source,terminal]
 ----
@@ -178,7 +178,7 @@ Check Kyverno pods are healthy:
 oc get pods -n kyverno
 ----
 +
-All Kyverno pods should be `Running`. If not, check logs:
+All Kyverno pods must be `Running`. If not, check logs:
 +
 [source,terminal]
 ----
@@ -239,7 +239,7 @@ oc describe policyreport <report-name> -n <namespace>
 '''
 Problem:: CoCo pods not picking up new initdata after cert rotation or KBS TLS changes
 
-Solution:: Kyverno's autogen is disabled by design to ensure rollout restarts pick up new initdata. You must manually restart deployments.
+Solution:: Kyverno autogen is disabled by design to ensure rollout restarts pick up new initdata. You must manually restart deployments.
 +
 Rollout restart the deployment to pick up new initdata:
 +
@@ -256,7 +256,7 @@ oc get pod <new-pod-name> -n <namespace> -o yaml | \
   grep io.katacontainers.config.hypervisor.cc_init_data
 ----
 +
-The annotation value should be a long base64-encoded string. If it matches the old value, the ConfigMap may not have been updated. Check the source ConfigMap in the `imperative` namespace.
+The annotation value is a long base64-encoded string. If it matches the old value, the ConfigMap may not have been updated. Check the source ConfigMap in the `imperative` namespace.
 
 == Bare metal issues
 
@@ -276,7 +276,7 @@ Verify the TDX kernel module is loaded:
 oc debug node/<node-name> -- chroot /host lsmod | grep tdx
 ----
 +
-Expected output should include `kvm_intel` with TDX support.
+The expected output includes `kvm_intel` with TDX support.
 +
 Check NFD worker logs:
 +
@@ -319,7 +319,7 @@ Verify the PCCS secret exists and contains the API key:
 oc get secret -n intel-dcap pccs-api-key -o yaml
 ----
 +
-The secret should have `PCCS_API_KEY` field (base64 encoded).
+The secret must have a `PCCS_API_KEY` field (base64 encoded).
 +
 If the secret is missing or incorrect, update `~/values-secret-coco-pattern.yaml` with your Intel PCS API key and re-run:
 +
@@ -340,7 +340,7 @@ Check node labels:
 oc get nodes --show-labels | grep tdx
 ----
 +
-Nodes with TDX should have `intel.feature.node.kubernetes.io/tdx=true`.
+Nodes with TDX have the label `intel.feature.node.kubernetes.io/tdx=true`.
 +
 If labels are missing, NFD may not have detected TDX. See "NFD not detecting TDX" troubleshooting above.
 +
@@ -418,7 +418,7 @@ oc patch installplan <install-plan-name> -n nvidia-gpu-operator \
 '''
 Problem:: `kata-cc-nvidia-gpu` RuntimeClass missing
 
-Solution:: This is often a timing issue. The GPU reconciliation job should trigger RuntimeClass creation.
+Solution:: This is often a timing issue. The GPU reconciliation job triggers RuntimeClass creation.
 +
 Check if the `reconcile-kataconfig-gpu` job has run:
 +
@@ -434,14 +434,14 @@ Check job logs:
 oc logs -n imperative jobs/reconcile-kataconfig-gpu
 ----
 +
-If the job hasn't run, it may be waiting for GPU nodes to be labeled. Verify GPU Operator labeled the nodes:
+If the job has not run, it may be waiting for GPU nodes to be labeled. Verify GPU Operator labeled the nodes:
 +
 [source,terminal]
 ----
 oc get nodes --show-labels | grep nvidia
 ----
 +
-Nodes with GPUs should have `nvidia.com/gpu.present=true`.
+Nodes with GPUs have the label `nvidia.com/gpu.present=true`.
 +
 Manually trigger KataConfig reconciliation:
 +
@@ -490,7 +490,7 @@ Nodes must reboot for IOMMU kernel parameters to take effect.
 oc debug node/<gpu-node> -- chroot /host lspci -nnk -d 10de:
 ----
 +
-GPUs should show `Kernel driver in use: vfio-pci`. If not, check VFIO manager logs:
+GPUs show `Kernel driver in use: vfio-pci`. If not, check VFIO manager logs:
 +
 [source,terminal]
 ----
@@ -630,7 +630,7 @@ Wait for all nodes to finish rebooting:
 oc get mcp
 ----
 +
-All MachineConfigPools should show `UPDATED=True` and `DEGRADED=False`.
+All MachineConfigPools show `UPDATED=True` and `DEGRADED=False`.
 +
 Re-trigger secret loading:
 +
@@ -661,7 +661,7 @@ Delete the pod to trigger recreation with correct annotations:
 oc delete pod <pod-name> -n <namespace>
 ----
 +
-The deployment will recreate the pod, and Kyverno will inject the `cc_init_data` annotation during admission.
+The deployment recreates the pod, and Kyverno injects the `cc_init_data` annotation during admission.
 +
 Verify the new pod has the annotation:
 +
@@ -684,7 +684,7 @@ Common BIOS settings to check:
 - TDX enablement (must be re-enabled after SGX reset)
 - TME (Total Memory Encryption) settings
 +
-Without an SGX reset, the platform's attestation evidence will not match expected values and Trustee will reject attestation requests.
+Without an SGX reset, the platform attestation evidence does not match expected values and Trustee rejects attestation requests.
 
 '''
 Problem:: Confidential containers failing due to TEE not enabled in BIOS
@@ -717,4 +717,4 @@ oc debug node/<node-name> -- chroot /host dmesg | grep -i sev
 +
 Expected: Messages indicating SEV-SNP initialization succeeded.
 +
-If TEE capabilities are not detected at the kernel level, Node Feature Discovery (NFD) will not label nodes, and confidential runtime classes will not be schedulable. Fix the BIOS configuration before proceeding with pattern deployment.
+If TEE capabilities are not detected at the kernel level, Node Feature Discovery (NFD) does not label nodes, and confidential runtime classes are not schedulable. Fix the BIOS configuration before proceeding with pattern deployment.

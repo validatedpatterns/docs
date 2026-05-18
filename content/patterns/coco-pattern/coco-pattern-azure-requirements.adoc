@@ -8,7 +8,7 @@ aliases: /coco-pattern/coco-pattern-azure-requirements/
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-:imagesdir: ../../../images
+:imagesdir: /images
 = Azure requirements
 
 This pattern has been tested on Microsoft Azure using self-managed OpenShift 4.19.28+ clusters provisioned with `openshift-install`.
@@ -37,7 +37,7 @@ This means that access is required to Azure https://learn.microsoft.com/en-us/az
 
 These confidential VMs are *NOT* available in all regions. Check https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/[Azure products by region] to confirm availability of your chosen VM family in your target region.
 
-Users will also need to request quota increases for their chosen confidential VM family (e.g., `Standard_DC2as_v5`, `Standard_DC4as_v5`, `Standard_DC8as_v5`, `Standard_DC16as_v5` for the DCas_v5 family) in their target region. By default, Azure subscriptions may have zero quota for confidential computing VM sizes.
+Users also need to request quota increases for their chosen confidential VM family (for example, `Standard_DC2as_v5`, `Standard_DC4as_v5`, `Standard_DC8as_v5`, `Standard_DC16as_v5` for the DCas_v5 family) in their target region. By default, Azure subscriptions may have zero quota for confidential computing VM sizes.
 
 image::coco-pattern/peer_pods.png[Schematic diagram of peer pods vs standard kata containers]
 
@@ -70,4 +70,4 @@ global:
     clusterRegion: ''
 ----
 
-The `clusterResGroup`, `clusterSubnet`, and `clusterNSG` values can be found in the Azure portal after the cluster has been provisioned, or via `openshift-install` metadata. The `DNSResGroup` and `hostedZoneName` correspond to the Azure DNS zone used for the cluster's base domain.
+The `clusterResGroup`, `clusterSubnet`, and `clusterNSG` values can be found in the Azure portal after the cluster has been provisioned, or by using `openshift-install` metadata. The `DNSResGroup` and `hostedZoneName` correspond to the Azure DNS zone used for the cluster's base domain.
