@@ -1,4 +1,4 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=description content="How to sequence subscriptions in the Validated Patterns framework"><meta name=author content="Martin Jackson"><meta name=theme-color content="#0066CC"><link rel=canonical href=https://validatedpatterns.io/blog/2024-11-07-clustergroup-sequencing/><link rel=icon type=image/x-icon href=/favicon.ico><link rel=apple-touch-icon sizes=180x180 href=/images/validated-patterns.png><link rel=dns-prefetch href=//use.fontawesome.com><link rel=dns-prefetch href=//analytics.ossupstream.org><link rel=preconnect href=https://use.fontawesome.com crossorigin><meta property="og:title" content="Additional Sequencing Capabilities in clusterGroup"><meta property="og:description" content="How to sequence subscriptions in the Validated Patterns framework"><meta property="og:url" content="https://validatedpatterns.io/blog/2024-11-07-clustergroup-sequencing/"><meta property="og:site_name" content="Validated Patterns"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://validatedpatterns.io/og-images/blog/2024-11-07-clustergroup-sequencing.svg"><meta property="og:image:alt" content="Additional Sequencing Capabilities in clusterGroup"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="article"><meta property="article:published_time" content="2024-11-07T00:00:00Z"><meta property="article:modified_time" content="2024-11-07T00:00:00Z"><meta property="article:author" content="Martin Jackson"><meta property="article:tag" content="patterns"><meta property="article:tag" content="how-to"><meta property="article:tag" content="sequencing"><meta property="article:tag" content="subscriptions"><meta name=twitter:card content="summary_large_image"><meta name=twitter:title content="Additional Sequencing Capabilities in clusterGroup"><meta name=twitter:description content="How to sequence subscriptions in the Validated Patterns framework"><meta name=twitter:image content="https://validatedpatterns.io/og-images/blog/2024-11-07-clustergroup-sequencing.svg"><meta name=twitter:image:alt content="Additional Sequencing Capabilities in clusterGroup"><meta name=twitter:site content="@RedHat"><meta name=twitter:creator content="@RedHat"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":"[{\"@type\":\"ListItem\",\"item\":\"https://validatedpatterns.io/\",\"name\":\"Home\",\"position\":1},{\"@type\":\"ListItem\",\"item\":\"https://validatedpatterns.io//blog\",\"name\":\"Blog\",\"position\":2},{\"@type\":\"ListItem\",\"item\":\"https://validatedpatterns.io//blog/2024-11-07-clustergroup-sequencing\",\"name\":\"Additional Sequencing Capabilities in clusterGroup\",\"position\":3}]"}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Additional Sequencing Capabilities in clusterGroup","description":"How to sequence subscriptions in the Validated Patterns framework","image":{"@type":"ImageObject","url":"https:\/\/validatedpatterns.io\/images\/validated-patterns.png","width":1200,"height":630},"url":"https:\/\/validatedpatterns.io\/blog\/2024-11-07-clustergroup-sequencing\/","datePublished":"2024-11-07T00:00:00Z","dateModified":"2024-11-07T00:00:00Z","author":{"@type":"Person","name":"Martin Jackson"},"publisher":{"@type":"Organization","name":"Validated Patterns","logo":{"@type":"ImageObject","url":"https:\/\/validatedpatterns.io\/images\/validated-patterns.png","width":200,"height":200}},"mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/validatedpatterns.io\/blog\/2024-11-07-clustergroup-sequencing\/"},"keywords":"[\"patterns\",\"how-to\",\"sequencing\",\"subscriptions\"]"}</script><link rel=stylesheet href=https://validatedpatterns.io/sass/patternfly.css><link rel=stylesheet href=https://validatedpatterns.io/sass/patternfly-addons.css><link rel=stylesheet href=/css/custom.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/solid.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/fontawesome.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/brands.css><title>Additional Sequencing Capabilities in clusterGroup | Validated Patterns</title>
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=description content='Validated Patterns now includes the idea of "bootstrap" secrets that will be injected directly into your cluster during the secrets loading …'><meta name=author content="Martin Jackson"><meta name=theme-color content="#0066CC"><link rel=canonical href=https://validatedpatterns.io/blog/2026-05-12-introducing-bootstrap-secrets/><link rel=icon type=image/x-icon href=/favicon.ico><link rel=apple-touch-icon sizes=180x180 href=/images/validated-patterns.png><link rel=dns-prefetch href=//use.fontawesome.com><link rel=dns-prefetch href=//analytics.ossupstream.org><link rel=preconnect href=https://use.fontawesome.com crossorigin><meta property="og:title" content='Introducing "Bootstrap" Secrets'><meta property="og:description" content='Validated Patterns now includes the idea of "bootstrap" secrets that will be injected directly into your cluster during the secrets loading …'><meta property="og:url" content="https://validatedpatterns.io/blog/2026-05-12-introducing-bootstrap-secrets/"><meta property="og:site_name" content="Validated Patterns"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://validatedpatterns.io/og-images/blog/2026-05-12-introducing-bootstrap-secrets.svg"><meta property="og:image:alt" content='Introducing "Bootstrap" Secrets'><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="article"><meta property="article:published_time" content="2026-05-12T00:00:00Z"><meta property="article:modified_time" content="2026-05-12T00:00:00Z"><meta property="article:author" content="Martin Jackson"><meta property="article:tag" content="patterns"><meta property="article:tag" content="argocd"><meta property="article:tag" content="gitops"><meta property="article:tag" content="ansible"><meta property="article:tag" content="secrets"><meta name=twitter:card content="summary_large_image"><meta name=twitter:title content='Introducing "Bootstrap" Secrets'><meta name=twitter:description content='Validated Patterns now includes the idea of "bootstrap" secrets that will be injected directly into your cluster during the secrets loading …'><meta name=twitter:image content="https://validatedpatterns.io/og-images/blog/2026-05-12-introducing-bootstrap-secrets.svg"><meta name=twitter:image:alt content='Introducing "Bootstrap" Secrets'><meta name=twitter:site content="@RedHat"><meta name=twitter:creator content="@RedHat"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":"[{\"@type\":\"ListItem\",\"item\":\"https://validatedpatterns.io/\",\"name\":\"Home\",\"position\":1},{\"@type\":\"ListItem\",\"item\":\"https://validatedpatterns.io//blog\",\"name\":\"Blog\",\"position\":2},{\"@type\":\"ListItem\",\"item\":\"https://validatedpatterns.io//blog/2026-05-12-introducing-bootstrap-secrets\",\"name\":\"Introducing \\\"Bootstrap\\\" Secrets\",\"position\":3}]"}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Introducing \u0022Bootstrap\u0022 Secrets","description":"Validated Patterns now includes the idea of \u0026#34;bootstrap\u0026#34; secrets that will be injected directly into your cluster during the secrets loading process.","image":{"@type":"ImageObject","url":"https:\/\/validatedpatterns.io\/images\/validated-patterns.png","width":1200,"height":630},"url":"https:\/\/validatedpatterns.io\/blog\/2026-05-12-introducing-bootstrap-secrets\/","datePublished":"2026-05-12T00:00:00Z","dateModified":"2026-05-12T00:00:00Z","author":{"@type":"Person","name":"Martin Jackson"},"publisher":{"@type":"Organization","name":"Validated Patterns","logo":{"@type":"ImageObject","url":"https:\/\/validatedpatterns.io\/images\/validated-patterns.png","width":200,"height":200}},"mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/validatedpatterns.io\/blog\/2026-05-12-introducing-bootstrap-secrets\/"},"keywords":"[\"patterns\",\"argocd\",\"gitops\",\"ansible\",\"secrets\"]"}</script><link rel=stylesheet href=https://validatedpatterns.io/sass/patternfly.css><link rel=stylesheet href=https://validatedpatterns.io/sass/patternfly-addons.css><link rel=stylesheet href=/css/custom.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/solid.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/fontawesome.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v6.3.0/css/brands.css><title>Introducing "Bootstrap" Secrets | Validated Patterns</title>
 <script>var _paq=window._paq=window._paq||[];_paq.push(["trackPageView"]),_paq.push(["enableLinkTracking"]),function(){e="//analytics.ossupstream.org/",_paq.push(["setTrackerUrl",e+"matomo.php"]),_paq.push(["setSiteId","8"]);var e,n=document,t=n.createElement("script"),s=n.getElementsByTagName("script")[0];t.async=!0,t.src=e+"matomo.js",s.parentNode.insertBefore(t,s)}()</script></head><body><div class=pf-c-page><header class=pf-c-page__header><div class=pf-c-page__header-brand><a href=/ class=pf-c-page__header-brand-link><img src=/images/validated-patterns.png alt="Validated Patterns"></a></div><div class=pf-c-page__header-tools><nav class="pf-c-nav pf-m-horizontal mobile-nav" role=navigation id=mobile-nav><ul class=pf-c-nav__list><li class=pf-c-nav__item><a class=pf-c-nav__link href=/patterns/ title=Patterns>Patterns</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/learn/ title="Learn about Validated Patterns">Learn</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=https://play.validatedpatterns.io title>Workshop</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/contribute/ title="Contribute to Validated Patterns">Contribute</a></li><li class="pf-c-nav__item pf-m-current"><a class=pf-c-nav__link href=/blog/ title=Blog>Blog</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/ci/ title="CI Status">Status</a></li></ul></nav><form id=search action=https://validatedpatterns.io/search/ method=get><div class=pf-c-search-input><div class=pf-c-input-group><div class=pf-c-search-input__bar><span class=pf-c-search-input__text><span class=pf-c-search-input__icon><i class="fas fa-search fa-fw" aria-hidden=true></i>
 </span><input id=search-input name=query class=pf-c-search-input__text-input type=text placeholder=Search aria-label=Search></span></div><button form=search class="pf-c-button pf-m-control" type=submit aria-label=Search value=search>
 <i class="fas fa-arrow-right" aria-hidden=true></i></button></div></div></form></div><div class=pf-c-page__header-tools-group><button class="pf-c-button pf-m-plain main-nav-toggle" type=button aria-label="Main navigation" id=main-nav-toggle>
@@ -6,212 +6,150 @@
 </span></span><span style=padding-left:10px>Back to Blog</span></a></li></ul></div></div></div><main class=pf-c-page__main tabindex=0><section class=pf-c-page__main-section><nav class=otp-mobile aria-label="On this page"><button class=otp-mobile__toggle type=button aria-expanded=false>
 <span class=otp-mobile__label>On this page</span>
 <span class=otp-mobile__chevron aria-hidden=true><i class="fas fa-chevron-right"></i>
-</span><span class=otp-mobile__current>Overview</span></button><div class=otp-mobile__dropdown><nav><ul class=otp-list><li class=otp-item><ul class=otp-list><li class=otp-item><a class=otp-link href=#_preamble>Preamble</a></li><li class=otp-item><a class=otp-link href=#_race_conditions_the_problem>Race Conditions: The Problem</a></li><li class=otp-item><a class=otp-link href=#_the_specific_race_condition_that_led_to_this_feature>The Specific Race Condition that led to this feature</a></li><li class=otp-item><a class=otp-link href=#_sync_waves_and_argocdopenshift_gitops_resource_hooks>Sync-Waves and ArgoCD/OpenShift GitOps Resource Hooks</a></li><li class=otp-item><a class=otp-link href=#_solution_1_sync_waves_for_subscriptions_andor_applications_in_clustergroup>Solution 1: Sync-Waves for Subscriptions (and/or Applications) in clusterGroup</a></li><li class=otp-item><a class=otp-link href=#_solution_2_the_sequencejob_attribute_for_subscriptions_in_clustergroup>Solution 2: The <code>sequenceJob</code> attribute for Subscriptions in clusterGroup</a></li><li class=otp-item><a class=otp-link href=#_solution_3_the_extraobjects_attribute_in_clustergroup>Solution 3: The <code>extraObjects</code> attribute in clusterGroup</a></li><li class=otp-item><a class=otp-link href=#_conclusion>Conclusion</a></li></ul></li></ul></nav></div></nav><div class=pf-u-display-flex><aside class=otp-desktop aria-label="On this page"><div class=otp-desktop__header><h2 class=otp-desktop__title>On this page</h2></div><nav><ul class=otp-list><li class=otp-item><ul class=otp-list><li class=otp-item><a class=otp-link href=#_preamble>Preamble</a></li><li class=otp-item><a class=otp-link href=#_race_conditions_the_problem>Race Conditions: The Problem</a></li><li class=otp-item><a class=otp-link href=#_the_specific_race_condition_that_led_to_this_feature>The Specific Race Condition that led to this feature</a></li><li class=otp-item><a class=otp-link href=#_sync_waves_and_argocdopenshift_gitops_resource_hooks>Sync-Waves and ArgoCD/OpenShift GitOps Resource Hooks</a></li><li class=otp-item><a class=otp-link href=#_solution_1_sync_waves_for_subscriptions_andor_applications_in_clustergroup>Solution 1: Sync-Waves for Subscriptions (and/or Applications) in clusterGroup</a></li><li class=otp-item><a class=otp-link href=#_solution_2_the_sequencejob_attribute_for_subscriptions_in_clustergroup>Solution 2: The <code>sequenceJob</code> attribute for Subscriptions in clusterGroup</a></li><li class=otp-item><a class=otp-link href=#_solution_3_the_extraobjects_attribute_in_clustergroup>Solution 3: The <code>extraObjects</code> attribute in clusterGroup</a></li><li class=otp-item><a class=otp-link href=#_conclusion>Conclusion</a></li></ul></li></ul></nav></aside><div class=pf-c-content><h1>Additional Sequencing Capabilities in clusterGroup</h1><div style="margin:10px 0">by Martin Jackson</div><div style="margin:10px 0">November 7, 2024</div><div style="margin:20px 0"><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>patterns</span>
-</span><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>how-to</span>
-</span><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>sequencing</span>
-</span><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>subscriptions</span></span></div><hr class=pf-c-divider><div class=page-abstract><div class=sect1><h2 id=_preamble><a class=anchor href=#_preamble></a>Preamble</h2><div class=sectionbody><div class=paragraph><p>Ideally, all subscriptions installed in Kubernetes and OpenShift will envision
-all potential conflicts, and will deal gracefully with situations when other
-artifacts installed on the cluster require reconfiguration or different behavior.</p></div><div class=paragraph><p>Architecturally, we have always said that we prefer eventual consistency, by which
-we mean that in the presence of error conditions the software should be prepared to
-retry until it can achieve the state it wants to be in. In practice that means we
-should be able to install a number of artifacts at the same time, and the artifacts
-themselves should be able to achieve the declarative state expressed in their installation.
-But some software does not work this way (even if its stated goal and intention is to
-work this way) and it is advantageous to be able to impose order of events to create
-better situations for installation. For example, even well-crafted software can be
-subject to different kinds of timing problems, as we will illustrate below.</p></div><div class=paragraph><p>Because of this, we have introduced a set of capabilties to the Validated Patterns
-clusterGroup chart to enforce sequencing on the objects in a declarative and
-Kubernetes-native way.</p></div><div class=paragraph><p>In this blog post, we will explore the various options that are available as of
-today in the Validated Patterns framework for enforcing sequencing for subscriptions.
-Inside applications, Validated Patterns has supported these primitives since the first
-release of Medical Diagnosis, and will continue to do so.</p></div><div class=paragraph><p>Since the focus of Validated Patterns on OpenShift is the OpenShift GitOps Operator, these
-capabilities rely on the use of resource hooks, described in the upstream docs <a href=https://argo-cd.readthedocs.io/en/stable/user-guide/resource_hooks/>here</a>.</p></div><div class=paragraph><p>Within the framework, we support resource hooks in three ways:</p></div><div class="olist arabic"><ol class=arabic><li><p>Supporting annotations directly on subscription objects at the clusterGroup level</p></li><li><p>Exposing a new optional sequenceJob attribute on subscriptions that uses resource hooks</p></li><li><p>Exposing a new top-level clusterGroup object, extraObjects, that allows users full control of creating their own
-resource hooks.</p></li></ol></div><div class=paragraph><p>These features are available in version 0.9.9 and later of the Validated Patterns clustergroup chart.</p></div></div></div><div class=sect1><h2 id=_race_conditions_the_problem><a class=anchor href=#_race_conditions_the_problem></a>Race Conditions: The Problem</h2><div class=sectionbody><div class=paragraph><p>Timing issues are one of the key problems of distributed systems. One of the biggest categories of timing problems
-is <a href=https://en.wikipedia.org/wiki/Race_condition>race conditions</a>. In our context, let’s say subscription A reacts to a
-condition in subscription B. Subscription A only checks on that condition during installation time. Thus,
-subscription A’s final state depends on when, exactly, subscription B was installed. Even if A and B were both installed
-at the same time, the normal variance of things like how quickly the software was downloaded could result in different
-parts of the installation being run at different times, and potentially different results.</p></div><div class=paragraph><p>The ideal solution to this problem is for subscription B to always be watching for the presence of subscription A, and
-reconfiguring itself if it sees subscription A being installed. But if subscription B does not want to do this, or
-for some reason cannot do this, or even if a better fix is committed but not yet available, we want to have a set of
-practical solutions in the Validated Patterns framework.</p></div><div class=paragraph><p>So, in the absence of an ideal fix - where all subscriptions are prepared to deal with all possible race outcomes -
-a very effective way of working around the problem is enforce ordering or sequencing of actions.</p></div></div></div><div class=sect1><h2 id=_the_specific_race_condition_that_led_to_this_feature><a class=anchor href=#_the_specific_race_condition_that_led_to_this_feature></a>The Specific Race Condition that led to this feature</h2><div class=sectionbody><div class=paragraph><p>The specific case that gave rise to the development of this feature is a race condition between OpenShift Data
-Foundation (ODF) and OpenShift Virtualization (OCP-Virt), which will be fixed in a future release of OCP-Virt. The
-condition results when OCP-Virt, on installation, discovers a default storageclass, but then subsequently ODF is
-installed, which OCP-Virt has specific optimizations for, related to how images are managed for VM guests to be
-created. One way to workaround the race condition is to ensure that ODF completes creating its storageclasses before
-the OCP-Virt subscription is allowed to install.</p></div></div></div><div class=sect1><h2 id=_sync_waves_and_argocdopenshift_gitops_resource_hooks><a class=anchor href=#_sync_waves_and_argocdopenshift_gitops_resource_hooks></a>Sync-Waves and ArgoCD/OpenShift GitOps Resource Hooks</h2><div class=sectionbody><div class=paragraph><p>The way that resource hooks are designed to work is by giving ordering hints, so that ArgoCD knows what order to
-apply resources in. The mechanism is described in the ArgoCD upstream docs <a href=https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/>here</a>. When sync-waves are in use, all resouces in the same sync-wave have to be "healthy" before
-resources in the numerically next sync-wave are synced. This mechanism gives us a way of having ArgocD help us enforce
-order with objects that it manages.</p></div></div></div><div class=sect1><h2 id=_solution_1_sync_waves_for_subscriptions_andor_applications_in_clustergroup><a class=anchor href=#_solution_1_sync_waves_for_subscriptions_andor_applications_in_clustergroup></a>Solution 1: Sync-Waves for Subscriptions (and/or Applications) in clusterGroup</h2><div class=sectionbody><div class=paragraph><p>The Validated Patterns framework now allows Kubernetes <a href=https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/>annotations</a> to be added directly to subscription objects and application objects in the clusterGroup.
-ArgoCD uses annotations for Resource Hooks. The clustergoup chart now passes any annotations attached to subscriptions
-through to the subscription object(s) that the clustergroup chart creates. For example:</p></div><div class=listingblock><div class=content><pre class="rouge highlight"><code data-lang=yaml>    <span class=na>openshift-virtualization</span><span class=pi>:</span>
-      <span class=na>name</span><span class=pi>:</span> <span class=s>kubevirt-hyperconverged</span>
-      <span class=na>namespace</span><span class=pi>:</span> <span class=s>openshift-cnv</span>
-      <span class=na>channel</span><span class=pi>:</span> <span class=s>stable</span>
-      <span class=na>annotations</span><span class=pi>:</span>
-        <span class=na>argocd.argoproj.io/sync-wave</span><span class=pi>:</span> <span class=s2>&#34;</span><span class=s>10&#34;</span>
+</span><span class=otp-mobile__current>Overview</span></button><div class=otp-mobile__dropdown><nav><ul class=otp-list><li class=otp-item><ul class=otp-list><li class=otp-item><a class=otp-link href=#_preamble>Preamble</a></li><li class=otp-item><a class=otp-link href=#_what_are_bootstrap_secrets>What are "bootstrap" secrets?</a></li><li class=otp-item><a class=otp-link href=#_how_to_use_bootstrap_secrets>How to use bootstrap secrets</a></li><li class=otp-item><a class=otp-link href=#_kubernetes_specific_secret_injector_features>Kubernetes-specific secret injector features</a></li><li class=otp-item><a class=otp-link href=#_example_bootstrap_secret_file>Example Bootstrap Secret file</a></li><li class=otp-item><a class=otp-link href=#_private_git_repositories_a_practical_use_of_this_feature>Private Git Repositories - a Practical Use of this feature</a></li><li class=otp-item><a class=otp-link href=#_technical_details_of_the_change>Technical Details of the change</a></li><li class=otp-item><a class=otp-link href=#_summary>Summary</a></li></ul></li></ul></nav></div></nav><div class=pf-u-display-flex><aside class=otp-desktop aria-label="On this page"><div class=otp-desktop__header><h2 class=otp-desktop__title>On this page</h2></div><nav><ul class=otp-list><li class=otp-item><ul class=otp-list><li class=otp-item><a class=otp-link href=#_preamble>Preamble</a></li><li class=otp-item><a class=otp-link href=#_what_are_bootstrap_secrets>What are "bootstrap" secrets?</a></li><li class=otp-item><a class=otp-link href=#_how_to_use_bootstrap_secrets>How to use bootstrap secrets</a></li><li class=otp-item><a class=otp-link href=#_kubernetes_specific_secret_injector_features>Kubernetes-specific secret injector features</a></li><li class=otp-item><a class=otp-link href=#_example_bootstrap_secret_file>Example Bootstrap Secret file</a></li><li class=otp-item><a class=otp-link href=#_private_git_repositories_a_practical_use_of_this_feature>Private Git Repositories - a Practical Use of this feature</a></li><li class=otp-item><a class=otp-link href=#_technical_details_of_the_change>Technical Details of the change</a></li><li class=otp-item><a class=otp-link href=#_summary>Summary</a></li></ul></li></ul></nav></aside><div class=pf-c-content><h1>Introducing "Bootstrap" Secrets</h1><div style="margin:10px 0">by Martin Jackson</div><div style="margin:10px 0">May 12, 2026</div><div style="margin:20px 0"><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>patterns</span>
+</span><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>argocd</span>
+</span><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>gitops</span>
+</span><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>ansible</span>
+</span><span class="pf-c-label pf-m-grey"><span class=pf-c-label__content>secrets</span></span></div><hr class=pf-c-divider><div class=page-abstract><div class=sect1><h2 id=_preamble><a class=anchor href=#_preamble></a>Preamble</h2><div class=sectionbody><div class=paragraph><p>We have recognized secrets as one of the challenges of GitOps since the beginning
+of the Validated Patterns initiative. As a consequence, we have put thought and
+effort into making the secrets management process with Validated Patterns as easy
+as we can, while still modeling good security practices.</p></div><div class=paragraph><p>One challenge that we have not fully addressed, though, is the occasional need to
+inject secrets into a cluster in order to enable basic cluster functionality. One
+example of when this might happen is when a cluster is attached to an enterprise
+storage array which requires secrets to be present to access the storage. Another
+good example is when the pattern itself is in a credential-protected repository,
+such that ArgoCD, the OpenShift GitOps Operator, needs credentials to be able to
+render the pattern. Previously, users had to use their own mechanisms to inject
+secrets into the cluster, and the Validated Patterns framework did not help with
+this.</p></div><div class=paragraph><p>With this blog post, we are happy to announce that the Validated Patterns framework
+now has a mechanism to help with this problem, which requires minimal effort to
+use and offers some convenience mechanisms, including all of the convenience
+functions (like path and ini_file parsing) that the Patterns secret loading system
+already uses. Additionally, it works within the existing Validated Patterns workflow.</p></div></div></div><div class=sect1><h2 id=_what_are_bootstrap_secrets><a class=anchor href=#_what_are_bootstrap_secrets></a>What are "bootstrap" secrets?</h2><div class=sectionbody><div class=paragraph><p>The "bootstrap" secrets process is somewhat exceptional. The vast majority of secrets in
+Validated Patterns usage are ordinary. But what if you need to do authentication to start
+installing your pattern? Specific examples are when you are using an authenticated private
+repository to hold the pattern itself, as well as any secrets you might need to create a
+default storageclass. In such a case, these secrets must be injected before the pattern
+object itself is created, and since it contains the list of namespaces to create, the early
+phase secrets have a "chicken-and-egg" problem. Previous instructions have provided for the
+manual creation of these objects, but this can be tedious and error prone.</p></div><div class=paragraph><p>Bootstrap secrets are injected immediately after the initial cluster validations in the
+ordinary installation flow. They are allowed to create their own namespaces, but to help with
+idempotence, they check to see if the namespace exists first, and only create if it is missing.</p></div></div></div><div class=sect1><h2 id=_how_to_use_bootstrap_secrets><a class=anchor href=#_how_to_use_bootstrap_secrets></a>How to use bootstrap secrets</h2><div class=sectionbody><div class=paragraph><p>The Validated Patterns secrets v2.0 file format adds a new section, <code>boostrap_secrets</code>. These
+secrets, and these only, will be considered in the "early" secrets installation phase. The
+early secrets installation phase happens just prior to the Patterns Operator and CR creation.
+This is because the pattern CR needs to be able to clone the repository in order to work. A
+secret that is linked to the Pattern CR will automatically be copied to Patterns-managed
+Argo instances.</p></div><div class=paragraph><p>Bootstrap secrets have some special properties:</p></div><div class="olist arabic"><ol class=arabic><li><p>They are always injected using the "none" injector.</p></li><li><p>They are allowed to create <code>targetNamespaces</code> if they do not already exist. (They check
+before creating them, to avoid overwriting existing namespaces with annotations.)</p></li><li><p>Bootstrap secrets loading is always attempted if the section is present, even if the global
+secrets loading feature is disabled via <code>global.secretsLoader.disabled</code> being set to <code>true</code>.</p></li></ol></div><div class=paragraph><p>Additionally, bootstrap secrets are checked and loaded during a <code>make load-secrets</code> run.</p></div></div></div><div class=sect1><h2 id=_kubernetes_specific_secret_injector_features><a class=anchor href=#_kubernetes_specific_secret_injector_features></a>Kubernetes-specific secret injector features</h2><div class=sectionbody><div class=paragraph><p>While it has long been possible, it has not been well documented (or advertized) that
+Validated Patterns can inject secrets directly into kubernetes. The currently available injectors
+that use kubernetes secret injection are <code>kubernetes</code> and <code>none</code>. (They were named based on the
+External Secrets backend they are intended to support.) Some additional conveniences
+are available in values-secret files for kubernetes secret injection, including:</p></div><div class=ulist><ul><li><p><code>targetNamespaces</code>: The same secret can be injected into multiple namespaces. This is useful,
+for example, when you have to inject the same ArgoCD secret into two or more different namespaces. The
+loader treats each secret/namespace as a separate item for injection. Of course a list containing
+one item is always acceptable as well. The loader will attempt to create a minimal namespace if it does
+not already exist, but only during the early (boostrap) secrets loading phase.</p></li><li><p><code>Labels and annotations</code>: You can add arbitrary labels and/or annotations to your secret objects.</p></li><li><p><code>type</code>: Some secret types benefit from having type associated with them. The secret loader
+defaults to <code>Opaque</code> when no type is specified, but will honor a type that is specified.</p></li></ul></div></div></div><div class=sect1><h2 id=_example_bootstrap_secret_file><a class=anchor href=#_example_bootstrap_secret_file></a>Example Bootstrap Secret file</h2><div class=sectionbody><div class=paragraph><p>Given following file, ~/values-secret.yaml:</p></div><div class=listingblock><div class=content><pre>---
+version: &#34;2.0&#34;
 
-    <span class=na>openshift-data-foundation</span><span class=pi>:</span>
-      <span class=na>name</span><span class=pi>:</span> <span class=s>odf-operator</span>
-      <span class=na>namespace</span><span class=pi>:</span> <span class=s>openshift-storage</span>
-      <span class=na>annotations</span><span class=pi>:</span>
-        <span class=na>argocd.argoproj.io/sync-wave</span><span class=pi>:</span> <span class=s2>&#34;</span><span class=s>5&#34;</span></code></pre></div></div><div class=paragraph><p>will result in a subscription object that includes the annotations:</p></div><div class=listingblock><div class=content><pre class="rouge highlight"><code data-lang=yaml><span class=na>apiVersion</span><span class=pi>:</span> <span class=s>operators.coreos.com/v1alpha1</span>
-<span class=na>kind</span><span class=pi>:</span> <span class=s>Subscription</span>
-<span class=na>metadata</span><span class=pi>:</span>
-  <span class=na>annotations</span><span class=pi>:</span>
-    <span class=na>argocd.argoproj.io/sync-wave</span><span class=pi>:</span> <span class=s2>&#34;</span><span class=s>10&#34;</span>
-  <span class=na>labels</span><span class=pi>:</span>
-    <span class=na>app.kubernetes.io/instance</span><span class=pi>:</span> <span class=s>ansible-edge-gitops-hub</span>
-    <span class=na>operators.coreos.com/kubevirt-hyperconverged.openshift-cnv</span><span class=pi>:</span> <span class=s2>&#34;</span><span class=s>&#34;</span>
-  <span class=na>name</span><span class=pi>:</span> <span class=s>kubevirt-hyperconverged</span>
-  <span class=na>namespace</span><span class=pi>:</span> <span class=s>openshift-cnv</span>
-<span class=na>spec</span><span class=pi>:</span>
-  <span class=na>channel</span><span class=pi>:</span> <span class=s>stable</span>
-  <span class=na>installPlanApproval</span><span class=pi>:</span> <span class=s>Automatic</span>
-  <span class=na>name</span><span class=pi>:</span> <span class=s>kubevirt-hyperconverged</span>
-  <span class=na>source</span><span class=pi>:</span> <span class=s>redhat-operators</span>
-  <span class=na>sourceNamespace</span><span class=pi>:</span> <span class=s>openshift-marketplace</span>
+bootstrap_secrets:
+  - name: test-secret
+    annotations:
+      validatedpatterns.io/example: foo
+    labels:
+      validatedpatterns.io/injected-secrets: &#34;true&#34;
+    targetNamespaces:
+      - default
+      - vp-gitops
+    type: kubernetes.io/basic
+    fields:
+      - name: username
+        value: user
+      - name: password
+        value: password
 
-<span class=na>apiVersion</span><span class=pi>:</span> <span class=s>operators.coreos.com/v1alpha1</span>
-<span class=na>kind</span><span class=pi>:</span> <span class=s>Subscription</span>
-<span class=na>metadata</span><span class=pi>:</span>
-  <span class=na>annotations</span><span class=pi>:</span>
-    <span class=na>argocd.argoproj.io/sync-wave</span><span class=pi>:</span> <span class=s2>&#34;</span><span class=s>5&#34;</span>
-  <span class=na>labels</span><span class=pi>:</span>
-    <span class=na>app.kubernetes.io/instance</span><span class=pi>:</span> <span class=s>ansible-edge-gitops-hub</span>
-    <span class=na>operators.coreos.com/odf-operator.openshift-storage</span><span class=pi>:</span> <span class=s2>&#34;</span><span class=s>&#34;</span>
-  <span class=na>name</span><span class=pi>:</span> <span class=s>odf-operator</span>
-  <span class=na>namespace</span><span class=pi>:</span> <span class=s>openshift-storage</span>
-<span class=na>spec</span><span class=pi>:</span>
-  <span class=na>installPlanApproval</span><span class=pi>:</span> <span class=s>Automatic</span>
-  <span class=na>name</span><span class=pi>:</span> <span class=s>odf-operator</span>
-  <span class=na>source</span><span class=pi>:</span> <span class=s>redhat-operators</span>
-  <span class=na>sourceNamespace</span><span class=pi>:</span> <span class=s>openshift-marketplace</span></code></pre></div></div><div class=paragraph><p>With this configuration, any objects created with sync-waves lower than "10" must be healthy before the objects in
-sync-wave "10" sync. In particular, the odf-operator subscription must be healthy before the kubevirt-hyperconverged
-subscription will sync. Similarly, if we defined objects with higher sync-waves than "10", all the resources with
-sync-waves higher than "10" will wait until the resources in "10" are healthy. If the subscriptions in question wait
-until their components are healthy before reporting they are healthy themselves, this might be all you need to do.
-In the case of this particular issue, it was not enough. But because all sequencing in ArgoCD requires the use of
-sync-wave annotations, adding the annotation to the subscription object will be necessary for using the other
-solutions.</p></div><div class=paragraph><p>The sequencing of applications would work the same way, with the same format for adding annotations to the application
-stanzas in the clustergroup.</p></div></div></div><div class=sect1><h2 id=_solution_2_the_sequencejob_attribute_for_subscriptions_in_clustergroup><a class=anchor href=#_solution_2_the_sequencejob_attribute_for_subscriptions_in_clustergroup></a>Solution 2: The <code>sequenceJob</code> attribute for Subscriptions in clusterGroup</h2><div class=sectionbody><div class=paragraph><p>In this situation, we have a subscription that installs an operator, but it is not enough for just the subscriptions
-to be in sync-waves. This is because the subscriptions install operators, and it is the action of the operators
-themselves that we have to sequence. In many of these kinds of situations, we can sequence the action by looking for
-the existence of a single resource. The new <code>sequenceJob</code> construct in subscriptions allows for this kind of
-relationship by creating a Job at the same sync-wave precedence as the subscription, and looking for the existence
-of a single arbitrary resource in an arbitrary namespace. The Job then waits for that resource to appear, and when
-it does, it will be seen as "healthy" and will allow future sync-waves to proceed.</p></div><div class=paragraph><p>In this example, the ODF operator needs to have created a storageclass so that the OCP-Virt operators can use it as
-virtualization storage. If it does not find the kind of storage it wants, it will use the default storageclass
-instead, which may lead to inconsistencies in behavior. We can have the Validated Patterns framework create a
-mostly boilerplate job to look for the needed resource this way:</p></div><div class=listingblock><div class=content><pre class="rouge highlight"><code data-lang=yaml>    <span class=na>openshift-virtualization</span><span class=pi>:</span>
-      <span class=na>name</span><span class=pi>:</span> <span class=s>kubevirt-hyperconverged</span>
-      <span class=na>namespace</span><span class=pi>:</span> <span class=s>openshift-cnv</span>
-      <span class=na>channel</span><span class=pi>:</span> <span class=s>stable</span>
-      <span class=na>annotations</span><span class=pi>:</span>
-        <span class=na>argocd.argoproj.io/sync-wave</span><span class=pi>:</span> <span class=s2>&#34;</span><span class=s>10&#34;</span>
+secrets:
+# ...
+# As before</pre></div></div><div class=paragraph><p>The loader would generate and inject the following two objects:</p></div><div class=listingblock><div class=content><pre>apiVersion: v1
+data:
+  password: cGFzc3dvcmQ=
+  username: dXNlcg==
+kind: Secret
+metadata:
+  annotations:
+    validatedpatterns.io/example: foo
+  creationTimestamp: &#34;2026-05-12T16:47:15Z&#34;
+  labels:
+    validatedpatterns.io/injected-secrets: &#34;true&#34;
+  name: test-secret
+  namespace: default
+  resourceVersion: &#34;158877&#34;
+  uid: be74939e-6acc-41e8-96f3-0439f9e2e0af
+type: kubernetes.io/basic</pre></div></div><div class=paragraph><p>and</p></div><div class=listingblock><div class=content><pre>apiVersion: v1
+data:
+  password: cGFzc3dvcmQ=
+  username: dXNlcg==
+kind: Secret
+metadata:
+  annotations:
+    validatedpatterns.io/example: foo
+  creationTimestamp: &#34;2026-05-12T16:48:02Z&#34;
+  labels:
+    validatedpatterns.io/injected-secrets: &#34;true&#34;
+  name: test-secret
+  namespace: vp-gitops
+  resourceVersion: &#34;158893&#34;
+  uid: 311ba451-da6d-427b-8e0f-1293ef7b18a4
+type: kubernetes.io/basic</pre></div></div></div></div><div class=sect1><h2 id=_private_git_repositories_a_practical_use_of_this_feature><a class=anchor href=#_private_git_repositories_a_practical_use_of_this_feature></a>Private Git Repositories - a Practical Use of this feature</h2><div class=sectionbody><div class=paragraph><p>The primary use of this feature is to enable the use of private repositories to hold Validated Patterns.
+These repositories need authentication. The patterns framework has included support for private repositories
+for some time, but this feature introduces the ability to inject the secret necessary to run those patterns
+without extra manual steps.</p></div><div class=paragraph><p>Given the following repository definition in values-global.yaml:</p></div><div class=listingblock><div class=content><pre>---
+global:
+  pattern: private-pattern-test
+  options:
+    useCSV: false
+    syncPolicy: Automatic
+    installPlanApproval: Automatic
+main:
+  git:
+    repoURL: git@github.com:mhjacks/private-pattern-test.git
+    revision: main
+  tokenSecret: private-repo
+  tokenSecretNamespace: patterns-operator
+  clusterGroupName: hub
+  multiSourceConfig:
+    enabled: true
+    clusterGroupChartVersion: &#34;0.9.*&#34;</pre></div></div><div class=paragraph><p>The following secret file configuration will inject the private-repo secret needed into the
+patterns-operator namespace (creating it if it does not already exist, which at the time it
+is normally installed, it will not):</p></div><div class=listingblock><div class=content><pre>---
+version: &#34;2.0&#34;
 
-    <span class=na>openshift-data-foundation</span><span class=pi>:</span>
-      <span class=na>name</span><span class=pi>:</span> <span class=s>odf-operator</span>
-      <span class=na>namespace</span><span class=pi>:</span> <span class=s>openshift-storage</span>
-      <span class=na>sequenceJob</span><span class=pi>:</span>
-        <span class=na>resourceType</span><span class=pi>:</span> <span class=s>sc</span>
-        <span class=na>resourceName</span><span class=pi>:</span> <span class=s>ocs-storagecluster-ceph-rbd</span>
-      <span class=na>annotations</span><span class=pi>:</span>
-        <span class=na>argocd.argoproj.io/sync-wave</span><span class=pi>:</span> <span class=s2>&#34;</span><span class=s>5&#34;</span></code></pre></div></div><div class=paragraph><p>Note the addition of the <code>sequenceJob</code> section in the odf-operator subscription block. This structure will result
-in the following Job being created alongside the subscriptions:</p></div><div class=listingblock><div class=content><pre class="rouge highlight"><code data-lang=yaml><span class=na>apiVersion</span><span class=pi>:</span> <span class=s>batch/v1</span>
-<span class=na>kind</span><span class=pi>:</span> <span class=s>Job</span>
-<span class=na>metadata</span><span class=pi>:</span>
-  <span class=na>annotations</span><span class=pi>:</span>
-    <span class=na>argocd.argoproj.io/hook</span><span class=pi>:</span> <span class=s>Sync</span>
-    <span class=na>argocd.argoproj.io/sync-wave</span><span class=pi>:</span> <span class=s2>&#34;</span><span class=s>5&#34;</span>
-  <span class=na>labels</span><span class=pi>:</span>
-    <span class=na>app.kubernetes.io/instance</span><span class=pi>:</span> <span class=s>ansible-edge-gitops-hub</span>
-  <span class=na>name</span><span class=pi>:</span> <span class=s>odf-operator-sequencejob</span>
-  <span class=na>namespace</span><span class=pi>:</span> <span class=s>openshift-operators</span>
-<span class=na>spec</span><span class=pi>:</span>
-  <span class=na>backoffLimit</span><span class=pi>:</span> <span class=m>6</span>
-  <span class=na>completionMode</span><span class=pi>:</span> <span class=s>NonIndexed</span>
-  <span class=na>completions</span><span class=pi>:</span> <span class=m>1</span>
-  <span class=na>manualSelector</span><span class=pi>:</span> <span class=kc>false</span>
-  <span class=na>parallelism</span><span class=pi>:</span> <span class=m>1</span>
-  <span class=na>podReplacementPolicy</span><span class=pi>:</span> <span class=s>TerminatingOrFailed</span>
-  <span class=na>selector</span><span class=pi>:</span>
-    <span class=na>matchLabels</span><span class=pi>:</span>
-      <span class=na>batch.kubernetes.io/controller-uid</span><span class=pi>:</span> <span class=s>3084075d-bc1f-4e23-b44d-a13c5d184a6a</span>
-  <span class=na>suspend</span><span class=pi>:</span> <span class=kc>false</span>
-  <span class=na>template</span><span class=pi>:</span>
-    <span class=na>metadata</span><span class=pi>:</span>
-      <span class=na>creationTimestamp</span><span class=pi>:</span> <span class=kc>null</span>
-      <span class=na>labels</span><span class=pi>:</span>
-        <span class=na>batch.kubernetes.io/controller-uid</span><span class=pi>:</span> <span class=s>3084075d-bc1f-4e23-b44d-a13c5d184a6a</span>
-        <span class=na>batch.kubernetes.io/job-name</span><span class=pi>:</span> <span class=s>odf-operator-sequencejob</span>
-        <span class=na>controller-uid</span><span class=pi>:</span> <span class=s>3084075d-bc1f-4e23-b44d-a13c5d184a6a</span>
-        <span class=na>job-name</span><span class=pi>:</span> <span class=s>odf-operator-sequencejob</span>
-    <span class=na>spec</span><span class=pi>:</span>
-      <span class=na>containers</span><span class=pi>:</span>
-      <span class=pi>-</span> <span class=na>command</span><span class=pi>:</span>
-        <span class=pi>-</span> <span class=s>/bin/bash</span>
-        <span class=pi>-</span> <span class=s>-c</span>
-        <span class=pi>-</span> <span class=pi>|</span>
-          <span class=s>while [ 1 ];</span>
-          <span class=s>do</span>
-            <span class=s>oc get sc ocs-storagecluster-ceph-rbd &amp;&amp; break</span>
-            <span class=s>echo &#34;sc ocs-storagecluster-ceph-rbd not found, waiting...&#34;</span>
-            <span class=s>sleep 5</span>
-          <span class=s>done</span>
-          <span class=s>echo &#34;sc ocs-storagecluster-ceph-rbd found, exiting...&#34;</span>
-          <span class=s>exit 0</span>
-        <span class=na>image</span><span class=pi>:</span> <span class=s>quay.io/hybridcloudpatterns/imperative-container:v1</span>
-        <span class=na>imagePullPolicy</span><span class=pi>:</span> <span class=s>IfNotPresent</span>
-        <span class=na>name</span><span class=pi>:</span> <span class=s>odf-operator-sequencejob</span>
-        <span class=na>resources</span><span class=pi>:</span> <span class=pi>{}</span>
-        <span class=na>terminationMessagePath</span><span class=pi>:</span> <span class=s>/dev/termination-log</span>
-        <span class=na>terminationMessagePolicy</span><span class=pi>:</span> <span class=s>File</span>
-      <span class=na>dnsPolicy</span><span class=pi>:</span> <span class=s>ClusterFirst</span>
-      <span class=na>restartPolicy</span><span class=pi>:</span> <span class=s>OnFailure</span>
-      <span class=na>schedulerName</span><span class=pi>:</span> <span class=s>default-scheduler</span>
-      <span class=na>securityContext</span><span class=pi>:</span> <span class=pi>{}</span>
-      <span class=na>terminationGracePeriodSeconds</span><span class=pi>:</span> <span class=s>30</span></code></pre></div></div><div class=paragraph><p>Since the job is created in sync-wave "5" (which it inherits from the subscription it is attached to by default, though
-you can specify a different sync-wave if you prefer), this job must complete before sync-wave "10" starts. So the
-storageclass <code>ocs-storagecluster-ceph-rbd</code> must exist before OCP-Virt starts deploying, ensuring that it will be able
-to "see" and use that storageclass as its default virtualization storage class.</p></div><div class=paragraph><p>Each subscription is permitted one sequenceJob. Each sequenceJob may have the following attributes:</p></div><div class=ulist><ul><li><p><strong>syncWave</strong>: Defaults to the subscription’s syncwave from annotations.</p></li><li><p><strong>resourceType</strong>: Resource kind for the resource to watch for.</p></li><li><p><strong>resourceName</strong>: Name of the resource to watch for.</p></li><li><p><strong>resourceNamespace</strong>: Namespace to watch for the resourceType and resourceName in.</p></li><li><p><strong>hookType</strong>: Any of the permissible ArgoCD Resource Hook types. Defaults to "Sync".</p></li><li><p><strong>image</strong>: Image of the container to use for the job. Defaults to the Validated Patterns imperative image.</p></li><li><p><strong>command</strong>: Command to run inside the container, if the default is not suitable. This also enables you to specify multiple resources to watch for in the same job, or to look for a different condition altogether.</p></li><li><p><strong>disabled</strong>: Set this to true in an override if you wish to disable the sequenceJob for some reason (such as running on
-a different version of OpenShift or running on a different cloud platform).</p></li></ul></div><div class=paragraph><p>If the sequenceJob is not sufficient for your sequencing needs, we have a more generic interface that you can use
-that places no restrictions on the objects you can add, so you can use it to create different kinds of conditions.</p></div></div></div><div class=sect1><h2 id=_solution_3_the_extraobjects_attribute_in_clustergroup><a class=anchor href=#_solution_3_the_extraobjects_attribute_in_clustergroup></a>Solution 3: The <code>extraObjects</code> attribute in clusterGroup</h2><div class=sectionbody><div class=paragraph><p>The most open-ended solution to the sequencing problem involves defining arbitrary objects under the <code>extraObjects</code>
-key for the clustergroup. Here is how you could do that using the example we have been using so far:</p></div><div class=listingblock><div class=content><pre>extraObjects:
-    wait-for-virt-storageclass:
-      apiVersion: batch/v1
-      kind: Job
-      metadata:
-        name: wait-for-virt-storageclass
-        annotations:
-          argocd.argoproj.io/hook: Sync
-          argocd.argoproj.io/sync-wave: &#34;5&#34;
-      spec:
-        parallelism: 1
-        completions: 1
-        template:
-          spec:
-            restartPolicy: OnFailure
-            containers:
-              - name: wait-for-storage-class
-                image: quay.io/hybridcloudpatterns/imperative-container:v1
-                command:
-                  - /bin/bash
-                  - -c
-                  - |
-                    while [ 1 ];
-                    do
-                      oc get sc ocs-storagecluster-ceph-rbd &amp;&amp; break
-                      echo &#34;Storage class ocs-storagecluster-ceph-rbd not found, waiting...&#34;
-                      sleep 5
-                    done
-                    echo &#34;Storage class ocs-storagecluster-ceph-rbd found, exiting&#34;
-                    exit 0</pre></div></div><div class=paragraph><p>Note that each extraObject has a key and value, and the value will be passed almost unaltered as a Kubernetes manifest.
-The special key <code>disabled</code> can be used to disable a specific, named extraObject from being created in subsequent
-overrides.</p></div></div></div><div class=sect1><h2 id=_conclusion><a class=anchor href=#_conclusion></a>Conclusion</h2><div class=sectionbody><div class=paragraph><p>Here is hoping that you do not have sequencing problems to solve in your OpenShift deployments. But if you do, we
-hope you will find this feature in Validated Patterns useful. Please let us know, one way or the other, or if you
-find other uses, especially for the <code>extraObjects</code> feature.</p></div></div></div></div></div></div></section><section id=prefooter class="pf-c-page__main-section footer-dark"><div class="pf-l-grid prefooter-menu-grid"><div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md pf-m-offset-1-col-on-md pf-u-mb-lg pf-u-mb-0-on-sm"><div class="pf-l-grid pf-u-py-xl"><div class="pf-l-grid__item pf-m-6-col-on-sm pf-m-4-col-on-md pf-u-ml-md pf-u-ml-0-on-md pf-u-mb-xl pf-u-mb-0-on-md"><p class="pf-c-title footer-menu-title">QUICKLINKS</p><nav aria-label="Quick Links"><ul class="pf-c-list pf-m-plain"><li><i class="prefooter-icon fa-brands fa-github"></i>
+bootstrap_secrets:
+  - name: private-repo
+    targetNamespaces:
+      - patterns-operator
+    labels:
+      argocd.argoproj.io/secret-type: repository
+    fields:
+      - name: type
+        value: git
+      - name: sshPrivateKey
+        path: ~/.ssh/id_ed25519
+      - name: url
+        value: git@github.com:mhjacks/private-pattern-test.git</pre></div></div></div></div><div class=sect1><h2 id=_technical_details_of_the_change><a class=anchor href=#_technical_details_of_the_change></a>Technical Details of the change</h2><div class=sectionbody><div class=paragraph><p>The "bootstrap" loading process ignores the values-global secrets backend setting during the bootstrap
+phase, forcing the use of the "none" provider instead, which will use the kubernetes secrets injection
+roles with special flags enabled. It searches the discovered secrets file for the bootstrap secrets
+section, loading them as described above. This step runs between cluster validation and pattern operator and object
+creation. The regular secrets injection happens after pattern creation, as before. It is also possible
+to force bootstrap secret loading via <code>./pattern.sh ansible-playbook rhvp.cluster_utils.load_bootstrap_secrets</code>,
+but this is normally not necessary as it is integrated into the typical <code>make install</code> process, as
+well as the <code>make load-secrets</code> process.</p></div><div class=paragraph><p>The benefit to this approach is that all existing patterns can make use of this feature without
+changing their Makefiles. Patterns without the bootstrap secrets section will skip bootstrap secrets
+loading as they will have no bootstrap secrets to load.</p></div><div class=paragraph><p>For each kubernetes secret that is generated, the loader will check for the namespace, and create a
+minimal namespace if it does not already exist, and then create the secret.</p></div></div></div><div class=sect1><h2 id=_summary><a class=anchor href=#_summary></a>Summary</h2><div class=sectionbody><div class=paragraph><p>This change improves the Validated Patterns experience with secrets, streamlining the process of
+installing private patterns. Additional cases, like injecting secrets for CSI drivers, is also
+possible using this new mechanism.</p></div></div></div></div></div></div></section><section id=prefooter class="pf-c-page__main-section footer-dark"><div class="pf-l-grid prefooter-menu-grid"><div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md pf-m-offset-1-col-on-md pf-u-mb-lg pf-u-mb-0-on-sm"><div class="pf-l-grid pf-u-py-xl"><div class="pf-l-grid__item pf-m-6-col-on-sm pf-m-4-col-on-md pf-u-ml-md pf-u-ml-0-on-md pf-u-mb-xl pf-u-mb-0-on-md"><p class="pf-c-title footer-menu-title">QUICKLINKS</p><nav aria-label="Quick Links"><ul class="pf-c-list pf-m-plain"><li><i class="prefooter-icon fa-brands fa-github"></i>
 <a class=footer-link aria-label="GitHub repository" href=https://github.com/validatedpatterns/docs>GitHub repository</a></li><li><i class="prefooter-icon fas fa-check-circle"></i>
 <a class=footer-link aria-label="Available patterns" href=/patterns>Available patterns</a></li></ul></nav></div><div class="pf-l-grid__item pf-m-6-col-on-sm pf-m-4-col-on-md pf-u-mt-lg pf-u-mt-0-on-sm pf-u-ml-md pf-u-ml-0-on-md pf-u-mb-xl pf-u-mb-0-on-md"><p class="pf-c-title footer-menu-title">CONTRIBUTE</p><nav aria-label=Contribute><ul class="pf-c-list pf-m-plain ws-org-pfsite-footer-menu-list"><li><i class="prefooter-icon fas fa-pen"></i>
 <a class=footer-link aria-label="Documentation contributor guidelines" href=/contribute/contribute-to-docs/>Documentation</a></li><li><i class="prefooter-icon fas fa-code"></i>
