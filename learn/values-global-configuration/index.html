@@ -1175,7 +1175,38 @@ Obtain an API token by visiting https://oauth-openshift.apps.&lt;your_cluster&gt
 Log in to the cluster by running the following command:
 $ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your_cluster&gt;.&lt;domain&gt;:6443 Or log in by running the following command:
 $ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
-$ ./pattern.sh make install `,url:"https://validatedpatterns.io/patterns/portworx-dr/getting-started/",breadcrumb:"/patterns/portworx-dr/getting-started/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the OpenShift Virtualization Data Protection Pattern General Prerequisites An OpenShift cluster ( Go to the OpenShift console). See also sizing your cluster. Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks) The helm binary, see here Ansible, which is used in the bootstrap and provisioning phases of the pattern install (and to configure Ansible Automation Platform). Please note that when run on AWS, this pattern will provision an additional worker node, which will be a metal instance (c5n.metal) to run the Edge Virtual Machines. This worker is provisioned through the OpenShift MachineAPI and will be automatically cleaned up when the cluster is destroyed. The use of this pattern depends on having a running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
+$ ./pattern.sh make install `,url:"https://validatedpatterns.io/patterns/portworx-dr/getting-started/",breadcrumb:"/patterns/portworx-dr/getting-started/"},"https://validatedpatterns.io/patterns/rag-quickstart/getting-started/":{title:"Getting started",tags:[],content:` Deploying the RAG AI Quickstart pattern Prerequisites An OpenShift cluster (version 4.18 or later)
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select OpenShift -&gt; Red Hat OpenShift Container Platform -&gt; Create cluster.
+A HuggingFace account with an API token that has read permissions.
+You must accept the terms and conditions for the meta-llama/Llama-3.2-3B-Instruct model with the account that the API token belongs to.
+The Helm binary. For instructions, see Installing Helm.
+Additional installation tool dependencies. For details, see Patterns quick start.
+Preparing for deployment Procedure Fork the ai-quickstart-rag repository on GitHub. You must fork the repository to customize this pattern.
+Clone the forked copy of this repository.
+$ git clone git@github.com:your-username/ai-quickstart-rag.git Go to the root directory of your Git repository:
+$ cd ai-quickstart-rag Run the following command to set the upstream repository:
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/ai-quickstart-rag.git Verify the setup of your remote repositories by running the following command:
+$ git remote -v Example output origin	git@github.com:your-username/ai-quickstart-rag.git (fetch) origin	git@github.com:your-username/ai-quickstart-rag.git (push) upstream	git@github.com:validatedpatterns-sandbox/ai-quickstart-rag.git (fetch) upstream	git@github.com:validatedpatterns-sandbox/ai-quickstart-rag.git (push) Make a local copy of the secrets template outside of your repository to hold credentials for the pattern.
+Do not add, commit, or push this file to your repository. Doing so may expose personal credentials to GitHub.
+Run the following command:
+$ cp values-secret.yaml.template ~/values-secret-ai-quickstart-rag.yaml Populate this file with secrets, or credentials, that are needed to deploy the pattern successfully:
+$ vim ~/values-secret-ai-quickstart-rag.yaml Edit the llm-service section to use your HuggingFace API token:
+- name: llm-service fields: - name: hf_token value: hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Optional: To customize the deployment, create and switch to a new branch by running the following command:
+$ git checkout -b my-branch Make your changes, then stage and commit them:
+$ git add &lt;changed-files&gt; $ git commit -m &#34;Customize deployment&#34; Push the changes to your forked repository:
+$ git push origin my-branch Deploying the pattern by using the pattern.sh file To deploy the pattern by using the pattern.sh file, complete the following steps:
+Log in to your cluster by following this procedure:
+Obtain an API token by visiting https://oauth-openshift.apps.&lt;your_cluster&gt;.&lt;domain&gt;/oauth/token/request.
+Log in to the cluster by running the following command:
+$ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your_cluster&gt;.&lt;domain&gt;:6443 Or log in by running the following command:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
+$ ./pattern.sh make install Verification To verify a successful installation, check the health of the ArgoCD applications:
+Run the following command:
+$ ./pattern.sh make argo-healthcheck It might take several minutes for all applications to synchronize and reach a healthy state. This includes downloading the LLM models and populating the vector database.
+Verify that the Operators are installed by navigating to Operators → Installed Operators in the OpenShift Container Platform web console.
+After all applications are healthy, open the RAG chatbot UI by clicking the route link in the Networking → Routes page of the ai-quickstart-rag-prod namespace.
+`,url:"https://validatedpatterns.io/patterns/rag-quickstart/getting-started/",breadcrumb:"/patterns/rag-quickstart/getting-started/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the OpenShift Virtualization Data Protection Pattern General Prerequisites An OpenShift cluster ( Go to the OpenShift console). See also sizing your cluster. Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks) The helm binary, see here Ansible, which is used in the bootstrap and provisioning phases of the pattern install (and to configure Ansible Automation Platform). Please note that when run on AWS, this pattern will provision an additional worker node, which will be a metal instance (c5n.metal) to run the Edge Virtual Machines. This worker is provisioned through the OpenShift MachineAPI and will be automatically cleaned up when the cluster is destroyed. The use of this pattern depends on having a running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
 If you do not have a running Red Hat OpenShift cluster you can start one on a public or private cloud by using Red Hat&rsquo;s cloud service.
 Credentials Required in Pattern In addition to the OpenShift cluster, you will need to prepare a number of secrets, or credentials, which will be used in the pattern in various ways. To do this, copy the values-secret.yaml template to your home directory as values-secret.yaml and replace the explanatory text as follows:
 AWS Credentials (an access key and a secret key). These are used to provision the metal worker in AWS (which hosts the VMs) and (by default) to access a pre-created S3 bucket for exporting VM backups with Veeam Kasten. --- # NEVER COMMIT THESE VALUES TO GIT version: &#34;2.0&#34; secrets: - name: aws-creds fields: - name: aws_access_key_id value: &#39;An aws access key that can provision EC2 VMs and read/write to S3&#39; - name: aws_secret_access_key value: &#39;An aws access secret key that can provision VMs and read/write to S3&#39; A username and SSH Keypair (private key and public key). These will be used to provide access to the Kiosk VMs in the demo. - name: kiosk-ssh fields: # Username of user to which the privatekey and publickey are attached - cloud-user is a typical value - name: username value: &#39;cloud-user&#39; # Private ssh key of the user who will be able to elevate to root to provision kiosks - name: privatekey value: | -----BEGIN OPENSSH PRIVATE KEY----- b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn ... 5nZRiM0qkhEAAAAKY2xvdWQtdXNlcgE= -----END OPENSSH PRIVATE KEY----- # Public ssh key of the user who will be able to elevate to root to provision kiosks - name: publickey value: | ssh-rsa AAAAB3NzaC1yc2EAAAA...xiVgKANw== cloud-user A Red Hat Subscription Management username and password. These will be used to register Kiosk VM templates to the Red Hat Content Delivery Network and install content on the Kiosk VMs to run the demo. - name: rhsm fields: - name: username value: &#39;username of user to register RHEL VMs&#39; - name: password value: &#39;password of rhsm user in plaintext&#39; Container &ldquo;extra&rdquo; arguments which will set the admin password for the ignition application when it&rsquo;s running. - name: kiosk-extra fields: # Optional extra params to pass to kiosk ignition container, including admin password - name: container_extra_params value: &#39;--privileged -e GATEWAY_ADMIN_PASSWORD=redhat&#39; A userData block to use with cloud-init. This will allow console login as the user you specify (traditionally cloud-user) with the password you specify. The value in cloud-init is used as the default; roles in the edge-gitops-vms chart can also specify other secrets to use by referencing them in the role block. - name: cloud-init fields: - name: userData value: |- #cloud-config user: &#39;username of user for console, probably cloud-user&#39; password: &#39;a suitable password to use on the console&#39; chpasswd: { expire: False } A manifest file with an entitlement to run Ansible Automation Platform. This file (which will be a .zip file) will be posted to Ansible Automation Platform instance to enable its use. Instructions for creating a manifest file can be found here - name: aap-manifest fields: - name: b64content # Ex. /Users/john.doe/ansible-edge-gitops-kasten/my-aap-manifest.zip path: &#39;full path and file name of the Satellite Manifest .zip for entitling Ansible Automation Platform&#39; base64: true A passphrase that will be used to encrypt backups of the Veeam Kasten internal catalog of restore points, a process known as Kasten DR. These Kasten DR backups can be used to restore access to the catalog of previously created application backups in the event of infrastructure failure or cluster loss. - name: kastendr-passphrase fields: - name: key value: &#39;passphrase&#39; Prerequisites for deployment via make install If you are going to install via make install from your workstation, you will need the following tools and packages:
@@ -2508,7 +2539,17 @@ dbProvidersSecret: vault: - key: mssql field: sapassword - key: pgvector # &lt;-
 In your local branch of the rag-llm-gitops git repository change to the ansible/playbooks/templates directory.
 Edit the file gpu-machine-sets.j2 changing the instanceType to for example g5.4xlarge. Save and exit.
 Push the changes to the origin remote repository by running the following command:
-$ git push origin my-test-branch `,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/gpu_provisioning/",breadcrumb:"/patterns/rag-llm-gitops/gpu_provisioning/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-explore-this-pattern/":{title:"Explore this pattern",tags:[],content:` Red Hat OpenShift AI components Most components installed as part of this pattern are available in the Red Hat OpenShift AI (RHOAI) console. To navigate to this page, click the Red Hat OpenShift AI link in the application launcher of the OpenShift console.
+$ git push origin my-test-branch `,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/gpu_provisioning/",breadcrumb:"/patterns/rag-llm-gitops/gpu_provisioning/"},"https://validatedpatterns.io/patterns/rag-quickstart/customizing-this-pattern/":{title:"Customizing this pattern",tags:[],content:` Customizing the RAG AI Quickstart pattern Without any changes, this pattern runs a CPU-backed LLM and does not require a GPU. This can be limiting in terms of usable models as well as speed, so you might want to use a GPU instead.
+Enabling GPU support To enable GPU support, set global.device to gpu in values-global.yaml and push your changes to GitHub. This adds NFD and the NVIDIA GPU Operator to the pattern installation and enables the models to run using an NVIDIA accelerator.
+If you are running this pattern on an OpenShift cluster on AWS, setting global.device to gpu automatically creates a GPU (g6.2xlarge) machine and add it as a worker node to your cluster.
+Changing models To update the models, edit overrides/values-cpu.yaml (if global.device is set to cpu) or overrides/values-gpu.yaml (if set to gpu).
+The default CPU-based model is defined as follows:
+global: models: llama-3-2-3b-instruct-cpu: id: meta-llama/Llama-3.2-3B-Instruct enabled: true resources: limits: cpu: &#34;6&#34; memory: 48Gi requests: cpu: &#34;2&#34; memory: 24Gi args: - --enable-auto-tool-choice - --chat-template - /chat-templates/tool_chat_template_llama3.2_json.jinja - --tool-call-parser - llama3_json - --dtype - auto - --max-model-len - &#34;16384&#34; - --max-num-seqs - &#34;1&#34; You can change this to any vLLM-compatible model that you have accepted the terms and conditions for with your HuggingFace API token. You can also adjust the resource parameters as needed for your environment.
+The runtime defaults to vllm/vllm-openai:v0.11.1. If you need a later version, you can override the image:
+llm-service: deviceConfigs: gpu: image: vllm/vllm-openai:nightly The example above sets a GPU-specific container image. To override the CPU-based image instead, use the key llm-service.deviceConfigs.cpu.image.
+Defining multiple models You can define multiple LLM models to be served simultaneously. For example:
+global: models: deepseek-r1: id: Valdemardi/DeepSeek-R1-Distill-Llama-70B-AWQ enabled: true resources: limits: cpu: &#34;32&#34; memory: 200Gi requests: cpu: &#34;24&#34; memory: 150Gi args: - --reasoning-parser - deepseek_r1 - --tool-call-parser - llama3_json - --enable-auto-tool-choice - --quantization - awq_marlin - --dtype - float16 - --max-model-len - &#34;65536&#34; gpt-oss-120b: id: openai/gpt-oss-120b enabled: true resources: limits: cpu: &#34;32&#34; memory: 200Gi requests: cpu: &#34;24&#34; memory: 150Gi args: - --tool-call-parser - openai - --enable-auto-tool-choice For a complete list of customizable values, see the AI Architecture charts repository.
+`,url:"https://validatedpatterns.io/patterns/rag-quickstart/customizing-this-pattern/",breadcrumb:"/patterns/rag-quickstart/customizing-this-pattern/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-explore-this-pattern/":{title:"Explore this pattern",tags:[],content:` Red Hat OpenShift AI components Most components installed as part of this pattern are available in the Red Hat OpenShift AI (RHOAI) console. To navigate to this page, click the Red Hat OpenShift AI link in the application launcher of the OpenShift console.
 Figure 1. The RHOAI Link Kubeflow pipeline The pattern installation automatically creates and runs a Kubeflow pipeline to build and train the fraud detection model. To view pipeline details in the RHOAI console, select the Pipelines tab.
 Figure 2. The pipelines tab This tab displays the fraud-detection pipeline deployed as part of this pattern. To view the specific run that trained the initial model, select the Runs tab and then select the job-run item.
 Figure 3. The runs tab The Runs page displays a diagram of the pipeline, which includes the following three major steps:
@@ -3632,7 +3673,17 @@ Node type Number of nodes CPU Memory Storage Control Planes + Workers
 2x 5th Generation Intel Xeon Platinum 8568Y+ (48 cores at 2.3 GHz base with Intel SGX)
 512 GB (16x32GB DDR5 5600)
 4x 3.84TB U.2 NVMe PCIe Gen4
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx/mcg-sgx-cluster-sizing/",breadcrumb:"/patterns/multicloud-gitops-sgx/mcg-sgx-cluster-sizing/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:`OpenShift Cluster Sizing for the Ansible Edge GitOps Pattern Tested Platforms The Ansible Edge GitOps pattern has been tested on AWS:
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx/mcg-sgx-cluster-sizing/",breadcrumb:"/patterns/multicloud-gitops-sgx/mcg-sgx-cluster-sizing/"},"https://validatedpatterns.io/patterns/rag-quickstart/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` RAG AI Quickstart pattern hub/datacenter cluster size The RAG AI Quickstart pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
+The datacenter hub OpenShift cluster uses the following the deployment configuration:
+Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type Amazon Web Services
+Control Plane
+3
+m5.xlarge
+Amazon Web Services
+Worker
+3
+m5.4xlarge
+`,url:"https://validatedpatterns.io/patterns/rag-quickstart/cluster-sizing/",breadcrumb:"/patterns/rag-quickstart/cluster-sizing/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:`OpenShift Cluster Sizing for the Ansible Edge GitOps Pattern Tested Platforms The Ansible Edge GitOps pattern has been tested on AWS:
 Certified Cloud Providers 4.9 4.10 Amazon Web Services Tested The pattern is adaptable to running on bare metal/on-prem clusters but has not yet been tested there.
 General OpenShift Minimum Requirements OpenShift 4 has the following minimum requirements for sizing of nodes:
 Minimum 4 vCPU (additional are strongly recommended). Minimum 16 GB RAM (additional memory is strongly recommended, especially if etcd is colocated on Control Planes). Minimum 40 GB hard disk space for the file system containing /var/. Minimum 1 GB hard disk space for the file system containing /usr/local/bin/. There is one application that comprises the Ansible Edge GitOps pattern. In addition, the Ansible Edge GitOps pattern also includes the Advanced Cluster Management (ACM) supporting operator that is installed by OpenShift GitOps using ArgoCD.
@@ -5754,7 +5805,95 @@ Who is behind this? Today, a team of Red Hat engineers including Andrew Beekhof 
 Excited or intrigued by what you see here? We’d love to hear your thoughts and ideas! Try the patterns contained here and see below for links to our repositories and issue trackers.
 How can I get involved? Try out what we’ve done and submit issues to our issue trackers.
 We will review pull requests to our pattern repositories.
-`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
+`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/rag-quickstart/":{title:"RAG AI Quickstart",tags:[],content:` About the RAG Quickstart pattern Use retrieval-augmented generation (RAG) to enhance large language models with specialized data sources for more accurate and context-aware responses.
+Use case Deploy a RAG-powered chatbot that connects users to internal documentation through a single chat interface.
+Explore retrieval-augmented generation capabilities including document ingestion, custom system prompts, and agent-based RAG.
+Use a GitOps approach to provision AI infrastructure including LLM serving, vector storage, and safety guardrails.
+Based on the requirements of a specific implementation, certain details might differ. However, all Validated Patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
+Background This pattern is scaffolding around the RAG AI Quickstart. It provisions the OpenShift cluster with Red Hat OpenShift AI in a configuration suitable for LlamaStack. It deploys NFD and the NVIDIA GPU Operator for LLM inference on GPU nodes and manages secrets through the Validated Patterns framework. On AWS, GPU worker nodes can be provisioned automatically. By default, this pattern uses a CPU-based LLM.
+Retrieval-Augmented Generation (RAG) enhances Large Language Models (LLMs) by retrieving relevant external knowledge to improve accuracy, reduce hallucinations, and support domain-specific conversations.
+The included demo application features FantaCo, a fictional large enterprise that launched a secure RAG chatbot connecting employees to HR, procurement, sales, and IT documentation. Users can explore the capabilities of RAG by:
+Exploring FantaCo’s solution
+Uploading new documents to be embedded
+Tweaking sampling parameters to influence LLM responses
+Using custom system prompts
+Switching between simple and agent-based RAG
+About the solution This pattern deploys a complete RAG pipeline on a single OpenShift cluster by using a GitOps approach. The Validated Patterns framework handles infrastructure provisioning, including GPU operators, AI platform configuration, and secrets management. The RAG AI Quickstart delivers the application layer: document ingestion, embedding, retrieval, and LLM-powered chat.
+The solution uses LlamaStack to standardize the building blocks of the AI stack with a consistent interface for model serving, vector storage, and safety guardrails. Kubeflow Pipelines ingests documents, embeds them, and stores them in PostgreSQL with PGVector. At query time, the system retrieves relevant embeddings to ground LLM responses in real data.
+About the technology The following technologies are used in this solution:
+Red Hat OpenShift Container Platform An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments.
+Red Hat OpenShift GitOps A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git.
+Red Hat OpenShift AI A flexible, scalable MLOps platform with tools to build, deploy, and manage AI-enabled applications. This pattern uses Red Hat OpenShift AI to serve the LLM inference endpoint.
+LlamaStack A standardized framework for building AI applications with Llama models. It provides consistent APIs for model inference, vector storage, safety guardrails, and agentic workflows.
+PostgreSQL with PGVector An open source relational database extended with PGVector for storing and querying vector embeddings used in document retrieval.
+all-MiniLM-L6-v2 A sentence transformer model used to generate vector embeddings from documents and queries for similarity search.
+Llama 3.2-3B-Instruct The default large language model used for generating responses. The pattern also supports Llama 3.1-8B and Llama 3.3-70B-Instruct on GPU-equipped clusters.
+Llama Guard 3 A safety model that provides content filtering and guardrails to block harmful requests and responses.
+Kubeflow Pipelines A platform for building and deploying ML workflows. This pattern uses Kubeflow Pipelines for document ingestion and embedding.
+Streamlit An open source Python framework used to build the RAG chatbot user interface.
+RAG Quickstart architecture The following figure provides a high-level overview of the RAG Quickstart architecture.
+Figure 1. RAG system architecture The architecture consists of two main pipelines:
+RAG Pipeline — Handles user queries and generates responses through LlamaStack APIs, with safety guardrails, model serving, and vector retrieval.
+Ingestion Pipeline — Processes documents from multiple sources, generates embeddings, and stores them in the vector database.
+RAG pipeline The RAG pipeline processes user queries through the following components:
+Frontend UI Provides the user interface for submitting queries and viewing responses. The Streamlit-based UI communicates with the LlamaStack APIs by using REST.
+LlamaStack APIs The central orchestration layer that routes queries to the appropriate backend services. LlamaStack provides a standardized interface for model inference, vector retrieval, tool use, and safety guardrails.
+Guard Rails Screens both incoming queries and outgoing responses for harmful content using Llama Guard. Llama Guard checks incoming queries for prompt injection, manipulative content, and inappropriate requests. It also validates generated responses for harmful content and compliance before returning them to the user.
+Model Servers Serve the LLM for response generation. The pattern supports multiple serving backends including vLLM on Red Hat OpenShift AI, and Ollama for CPU-based deployments. The default model is meta-llama/Llama-3.2-3B-Instruct.
+Vector DBs Store document embeddings in PostgreSQL with PGVector. When a query arrives, the retriever converts it to a vector embedding and performs a similarity search to find relevant document chunks, which are passed as context to the LLM.
+Tools Provide agent-based capabilities for more complex workflows. When agent-based RAG is enabled, LlamaStack can invoke tools to perform multi-step reasoning and retrieval.
+Ingestion pipeline The ingestion pipeline processes documents and updates the knowledge base. Documents can be ingested from three sources:
+S3 Bucket Documents stored in S3-compatible object storage (MinIO) are processed through OpenShift AI Pipelines (Kubeflow) for batch ingestion.
+URL The system downloads documents from web URLs and processes them through a Python script for embedding.
+Uploads Users can upload documents directly through the frontend UI or retriever listener for on-demand ingestion.
+All ingestion paths feed into the Retriever and Embedding Service, which uses Docling libraries to chunk documents into appropriate segments and the all-MiniLM-L6-v2 model to generate vector embeddings. The resulting embeddings are stored in PGVector for retrieval.
+Deployment architecture The following table describes the pod structure when deployed on OpenShift:
+Pod Purpose Key characteristics Frontend
+User interface
+Streamlit-based UI, communicates with LlamaStack APIs by using REST
+LlamaStack
+RAG orchestration
+Central application logic, routes queries to model servers, vector DBs, guard rails, and tools
+LLM Service
+Language model inference
+Runs vLLM with Llama models, optimized for GPU utilization, deployed by using KServe InferenceService on Red Hat OpenShift AI
+Guard Rails
+Content moderation
+Runs Llama Guard for input and output safety screening, can be independently scaled
+Vector Database
+Embedding storage and search
+PostgreSQL with PGVector, requires persistent storage, deployed as StatefulSet
+Embedding Service
+Vector embeddings
+Generates embeddings for documents and queries using all-MiniLM-L6-v2
+Ingestion Pipeline
+Document processing
+Kubeflow Pipelines workflows, uses Docling for document chunking, connected to S3-compatible storage (MinIO)
+Implementation technologies Component Technology Application Framework
+LlamaStack
+LLM Service
+vLLM with meta-llama/Llama-3.2-3B-Instruct
+Vector Database
+PostgreSQL + PGVector
+Container Orchestration
+Red Hat OpenShift Container Platform + Red Hat OpenShift AI
+Safety Models
+meta-llama/Llama-Guard-3-1B
+Embedding Model
+all-MiniLM-L6-v2
+Document Processing
+Docling
+Pipeline Orchestration
+Kubeflow Pipelines
+Object Storage
+MinIO (S3-compatible)
+Frontend
+Streamlit
+Next steps Install this pattern.
+`,url:"https://validatedpatterns.io/patterns/rag-quickstart/",breadcrumb:"/patterns/rag-quickstart/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
 `,url:"https://validatedpatterns.io/blog/",breadcrumb:"/blog/"},"https://validatedpatterns.io/blog/2026-05-12-introducing-bootstrap-secrets/":{title:'Introducing "Bootstrap" Secrets',tags:[],content:` Preamble We have recognized secrets as one of the challenges of GitOps since the beginning of the Validated Patterns initiative. As a consequence, we have put thought and effort into making the secrets management process with Validated Patterns as easy as we can, while still modeling good security practices.
 One challenge that we have not fully addressed, though, is the occasional need to inject secrets into a cluster in order to enable basic cluster functionality. One example of when this might happen is when a cluster is attached to an enterprise storage array which requires secrets to be present to access the storage. Another good example is when the pattern itself is in a credential-protected repository, such that ArgoCD, the OpenShift GitOps Operator, needs credentials to be able to render the pattern. Previously, users had to use their own mechanisms to inject secrets into the cluster, and the Validated Patterns framework did not help with this.
 With this blog post, we are happy to announce that the Validated Patterns framework now has a mechanism to help with this problem, which requires minimal effort to use and offers some convenience mechanisms, including all of the convenience functions (like path and ini_file parsing) that the Patterns secret loading system already uses. Additionally, it works within the existing Validated Patterns workflow.
@@ -5780,10 +5919,7 @@ Given the following repository definition in values-global.yaml:
 The benefit to this approach is that all existing patterns can make use of this feature without changing their Makefiles. Patterns without the bootstrap secrets section will skip bootstrap secrets loading as they will have no bootstrap secrets to load.
 For each kubernetes secret that is generated, the loader will check for the namespace, and create a minimal namespace if it does not already exist, and then create the secret.
 Summary This change improves the Validated Patterns experience with secrets, streamlining the process of installing private patterns. Additional cases, like injecting secrets for CSI drivers, is also possible using this new mechanism.
-`,url:"https://validatedpatterns.io/blog/2026-05-12-introducing-bootstrap-secrets/",breadcrumb:"/blog/2026-05-12-introducing-bootstrap-secrets/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
-Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/portworx-dr/":{title:"Portworx DR",tags:[],content:` Portworx Disaster Recovery This pattern demonstrates the use of Ansible Automation Platform to orchestrate Portworx Disaster Recovery on AWS with a simple example application (boutique).
+`,url:"https://validatedpatterns.io/blog/2026-05-12-introducing-bootstrap-secrets/",breadcrumb:"/blog/2026-05-12-introducing-bootstrap-secrets/"},"https://validatedpatterns.io/patterns/portworx-dr/":{title:"Portworx DR",tags:[],content:` Portworx Disaster Recovery This pattern demonstrates the use of Ansible Automation Platform to orchestrate Portworx Disaster Recovery on AWS with a simple example application (boutique).
 Background Not all applications have integrated regional failover strategies. Users who need regional disaster recovery capabilities must solve this problem for the applications that cannot solve it for themselves.
 Red Hat technologies Red Hat OpenShift Container Platform (Kubernetes)
 Red Hat Ansible Automation Platform
