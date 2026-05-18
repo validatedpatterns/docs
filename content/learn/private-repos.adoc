@@ -54,6 +54,8 @@ bootstrap_secrets:
   - name: private-repo
     targetNamespaces:
       - openshift-operators
+    labels:
+      argocd.argoproj.io/secret-type: repository
     fields:
       - name: type
         value: git
