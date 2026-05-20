@@ -6,30 +6,38 @@ aliases: /hybrid-mesh-platform/getting-started/
 
 # Getting Started
 
-Follow these steps to bootstrap the Hybrid Mesh Platform hub-spoke GitOps platform from the [platform-hub-spoke-config](https://github.com/maximilianopizarro/platform-hub-spoke-config) repository.
+Follow these steps to bootstrap the Hybrid Mesh Platform hub-spoke GitOps environment from the [platform-hub-spoke-config](https://github.com/maximilianopizarro/platform-hub-spoke-config) repository.
 
 ## You'll have when finished
 
 After a successful hub deploy and spoke registration, expect:
 
-- ACM — `east` and `west` in `ManagedCluster` Ready state
-- Argo CD — root Application synced; ApplicationSet pushing `east/` and `west/` charts
-- Industrial Edge — sensors, MQTT, Kafka, line-dashboard on each spoke
-- Skupper — hub `sitesInNetwork: 3`; listeners Ready in `service-interconnect`
-- Grafana — hub dashboards with east/west Prometheus datasources
-- Developer Hub — Industrial Edge catalog + software templates under Create
-- Gitea — route `gitea-gitea.<domain>`; orgs `ws-platformadmin`, `app-of-apps`
-- Quay — route `quay-registry.<domain>` (optional image catalog)
+| Component | Verification |
+| --- | --- |
+| ACM | `east` and `west` in `ManagedCluster` **Available** |
+| Argo CD | Root Application **Synced**; ApplicationSet pushing `east/` and `west/` |
+| Industrial Edge | Sensors, MQTT, Kafka, `line-dashboard` on each spoke |
+| Skupper | Hub `sitesInNetwork: 3`; listeners **Ready** in `service-interconnect` |
+| Grafana | Hub dashboards with `prometheus-east` / `prometheus-west` datasources |
+| Developer Hub | Industrial Edge catalog + software templates under **Create** |
+| Gitea | Route `gitea-gitea.<domain>`; orgs `ws-platformadmin`, `app-of-apps` |
+| Quay | Route `quay-registry.<domain>` (optional image catalog) |
 
 Then continue with [Scaffolding](scaffolding) to deploy a new edge instance on east or west.
 
 ## Prerequisites
 
-- Red Hat OpenShift Container Platform **4.20** (or 4.14 or newer) on each cluster (hub + two spokes is the reference layout).
-- Three clusters: one hub, one east-region spoke, one west-region spoke (labels determine placement).
-- Helm 3 installed locally or in a CI runner (`helm version`).
-- Git client and a Git hosting account (GitHub is used in examples).
-- Optional: `oc` CLI logged into the hub as a cluster-admin for ACM import flows.
+- Red Hat OpenShift Container Platform **4.20** (reference version; 4.14+ supported per cluster)
+- **Three clusters:** one hub, one east-region spoke, one west-region spoke (ACM labels drive placement)
+- **Helm 3** on your workstation or CI runner (`helm version`)
+- **Git** client and hosting account (GitHub in examples)
+- **`oc` CLI** logged into the hub as cluster-admin for ACM import (recommended)
+- Network access to GitHub (or your fork) and container registries from all clusters
+
+### Network requirements (connected environments)
+
+1. Access to public container registries (or mirrored equivalents)
+2. Access to your Git repository (fork of `platform-hub-spoke-config`)
 
 ## Repository layout
 
@@ -44,17 +52,21 @@ Each cluster path is a self-contained Helm chart with its own `Chart.yaml`, `val
 
 ## Step 1: Fork the repository
 
-Fork [platform-hub-spoke-config](https://github.com/maximilianopizarro/platform-hub-spoke-config) so you can customize domains, secrets references, and configuration without coupling to upstream history.
+Fork [platform-hub-spoke-config](https://github.com/maximilianopizarro/platform-hub-spoke-config) so you can customize domains, secrets references, and Git URLs without coupling to upstream history.
 
-Update `gitops.repoUrl` in `values.yaml`, `east/values.yaml`, and `west/values.yaml` to your fork URL.
+Update `gitops.repoUrl` in:
+
+- `values.yaml` (hub)
+- `east/values.yaml`
+- `west/values.yaml`
 
 ## Step 2: Configure cluster domains
 
-Set DNS names for each cluster:
+Set DNS names for each cluster before install.
 
 **Hub** (`values.yaml`):
 
-- `deployer.domain` — hub apps domain
+- `deployer.domain` — hub apps domain (Grafana, Developer Hub, gateway)
 - `clusters.hub.domain`, `clusters.east.domain`, `clusters.west.domain`
 
 **East** (`east/values.yaml`):
@@ -67,12 +79,12 @@ Set DNS names for each cluster:
 - `deployer.domain` — west spoke apps domain
 - `clusters.hub.domain` — hub domain for cross-cluster links
 
-Validate rendering:
+Validate Helm rendering before apply:
 
 ```bash
 helm template test-hub . -f values.yaml --set deployer.domain=apps.hub.example.com
-helm template test-east east/
-helm template test-west west/
+helm template test-east east/ -f east/values.yaml
+helm template test-west west/ -f west/values.yaml
 ```
 
 ## Step 3: Install on the hub
@@ -83,22 +95,27 @@ The hub uses the repository root path (`.`):
 helm install hybrid-mesh-platform . -f values.yaml --set deployer.domain=apps.hub.example.com
 ```
 
-Create an Argo CD `Application` that points at this chart on branch `main`, matching `gitops.revision`, and supply value files via Helm parameters or a values ConfigMap pattern your org prefers.
+For production GitOps, create an Argo CD `Application` pointing at your fork on branch `main` (matching `gitops.revision`). Supply values via Helm parameters or a values ConfigMap pattern your organization prefers.
 
 ## Step 4: Import managed clusters in ACM
 
-From the hub, import east and west clusters using ACM's Import cluster flow or klusterlet automation.
+From the hub, import east and west using ACM **Import cluster** or automated klusterlet flows.
 
 Apply labels used by placement rules:
 
-- `cluster.open-cluster-management.io/clusterset=global`
-- Region labels: `region=east` and `region=west`
+```bash
+# Example — adjust cluster names to match your environment
+oc label managedcluster east region=east
+oc label managedcluster west region=west
+oc label managedcluster east cluster.open-cluster-management.io/clusterset=global
+oc label managedcluster west cluster.open-cluster-management.io/clusterset=global
+```
 
-Ensure spoke kubeconfigs or credentials are stored per ACM requirements.
+Ensure spoke credentials are stored per ACM requirements.
 
 ## Step 5: Register spokes as Argo CD cluster secrets
 
-The ApplicationSet deploys spoke charts remotely. Register each spoke cluster:
+The ApplicationSet deploys spoke charts remotely. Register each spoke on the hub Argo CD instance:
 
 ```bash
 helm upgrade field-content . \
@@ -106,98 +123,110 @@ helm upgrade field-content . \
   --set clusters.west.token=sha256~...
 ```
 
-Or create cluster secrets directly with `oc apply` using label `argocd.argoproj.io/secret-type: cluster`.
+Or create secrets with label `argocd.argoproj.io/secret-type: cluster`.
+
+Spoke cluster names in ACM and Argo CD must match folder names: **`east`** and **`west`**.
 
 ## Step 6: Verify ApplicationSet generates spoke applications
 
-On the hub, confirm the remote GitOps flow:
+Confirm the ACM → GitOps chain:
 
-1. `Placement` selects labeled spokes (`region=east`, `region=west`).
-2. `GitOpsCluster` binds clusters to Argo CD instances.
-3. ApplicationSet pushes each spoke's chart (`east/`, `west/`) to the remote cluster.
-4. Each spoke's Argo CD syncs child Applications locally.
+1. `Placement` `hub-spoke-placement` selects `region=east` and `region=west`
+2. `PlacementDecision` lists those clusters in `openshift-gitops`
+3. `GitOpsCluster` `hub-spoke-gitops` registers clusters in Argo CD
+4. ApplicationSet creates `east-spoke-components` and `west-spoke-components`
+5. Each spoke Argo CD syncs child Applications (namespaces, operators, Industrial Edge, and others)
 
-Check from the hub:
-
-```bash
-oc get applications -n openshift-gitops
-# Should show east-spoke-components, west-spoke-components
-```
-
-Check from each spoke:
+**Hub:**
 
 ```bash
 oc get applications -n openshift-gitops
-# Should show east-namespaces, east-operators, east-industrial-edge-tst, etc.
+# Expect: east-spoke-components, west-spoke-components (Synced / Healthy)
 ```
 
-Healthy sync waves progress: namespaces → operators → platform → observability → Industrial Edge workloads.
+**Each spoke:**
+
+```bash
+oc get applications -n openshift-gitops
+# Expect: east-namespaces, east-operators, east-industrial-edge-tst, etc.
+```
+
+**PlacementDecision:**
+
+```bash
+oc get placementdecisions.cluster.open-cluster-management.io -n openshift-gitops \
+  -l cluster.open-cluster-management.io/placement=hub-spoke-placement -o yaml
+```
+
+Healthy sync waves progress: **namespaces → operators → platform → observability → Industrial Edge workloads**.
 
 ## Deploy with ACM and GitOps
 
-This section explains how Red Hat ACM primitives cooperate with OpenShift GitOps (Argo CD) to drive hub-spoke deployment from Git.
-
 ### ManagedClusterSet
 
-A ManagedClusterSet groups clusters for RBAC and placement. Cluster membership in a set is what downstream objects reference—not individual cluster names embedded in static YAML.
+Groups clusters for RBAC and placement. Downstream objects reference set membership — not hard-coded cluster names in Git.
 
 ### Placement
 
-Placement selects clusters from a ManagedClusterSet using label selectors. Example: select `region=east` for east-only workloads.
+Selects clusters from a ManagedClusterSet using label selectors (for example `region=east`). ACM recomputes decisions as clusters join, leave, or change labels.
 
 ### PlacementDecision
 
-ACM publishes PlacementDecision objects listing concrete cluster names that satisfied a Placement. GitOps integrations watch these decisions to know where to apply manifests without hardcoding kube-apiserver URLs in Git.
+Publishes the concrete cluster names that satisfied a Placement at a given time. The ApplicationSet `clusterDecisionResource` generator watches these decisions.
 
 ### GitOpsCluster
 
-A GitOpsCluster resource associates Argo CD with clusters chosen by placement. Together, `Placement` → `PlacementDecision` → `GitOpsCluster` avoids brittle per-cluster Application YAML checked into Git.
+Associates Argo CD (`openshift-gitops`) with clusters chosen by placement — bridging ACM fleet selection and Argo CD cluster secrets.
 
 ### ApplicationSet with clusterDecisionResource
 
-The ApplicationSet uses a `clusterDecisionResource` generator that reads ACM PlacementDecision objects. For each cluster selected by the Placement, the ApplicationSet creates an Application that deploys the cluster's dedicated Helm chart folder to the remote spoke.
+For each cluster in the PlacementDecision, the ApplicationSet creates an Application that:
 
-- `{{name}}` — cluster name (e.g. `east`, `west`), used as both the repository `path` and `destination.name`
-- Adding a new spoke with correct labels and a matching folder automatically generates a new Application
+- Uses repository path `east/` or `west/` (from `{{name}}`)
+- Deploys to remote cluster `{{name}}` via hub-stored cluster credentials
 
-### Remote deployment model
-
-Each cluster has its own Argo CD instance. The hub's ApplicationSet pushes the per-cluster chart to each spoke's `openshift-gitops` namespace. The spoke's Argo CD then manages the child Applications locally.
-
-Industrial Edge components exist **only** in spoke charts. The hub chart never includes them.
+Adding a spoke with correct labels and a new folder (for example `south/`) automatically generates a new Application when the Placement matches.
 
 ### Troubleshooting: no spoke Applications
 
-| Check | Action |
+| Check | Command / expectation |
 | --- | --- |
-| Placement | `hub-spoke-placement` selects spokes (`region` in `east` \| `west`) |
-| PlacementDecision | `oc get placementdecisions.cluster.open-cluster-management.io -n openshift-gitops -l cluster.open-cluster-management.io/placement=hub-spoke-placement` |
-| Managed clusters | `oc get managedcluster` — Imported / Available |
-| Cluster names | Spokes must be named `east` and `west` matching folder names |
-| Argo CD secrets | Each spoke registered as cluster secret on hub |
-| GitOpsCluster | `hub-spoke-gitops` reconciled |
-| RBAC | `applicationset-placementdecisions` role for ApplicationSet controller |
-| Spoke folders | `east/` and `west/` exist with valid Helm charts |
+| Managed clusters | `oc get managedcluster` — **Available** |
+| Cluster names | Must be `east` and `west` (match repo folders) |
+| Placement | `hub-spoke-placement` includes both regions |
+| PlacementDecision | Decisions list `east`, `west` |
+| GitOpsCluster | `hub-spoke-gitops` reconciled; clusters visible in Argo CD UI |
+| RBAC | Role `applicationset-placementdecisions` for ApplicationSet controller |
+| Spoke charts | `east/` and `west/` valid Helm charts with `Chart.yaml` |
 
 ## Step 7: Kiali multi-cluster (hub)
 
-Hub Kiali can show mesh topology from east and west without Istio trust federation.
+Hub Kiali shows mesh topology from east and west **without** Istio multi-cluster trust federation. Each spoke keeps its own control plane; hub Kiali uses remote secrets and links to spoke Kiali UIs.
 
-With `multiCluster.automateTokens: true` (hub) and `exportTokenForHub: true` (spokes), Argo CD PostSync hook Jobs sync tokens automatically. CronJobs renew tokens every 6 hours.
+### Automated token sync (default)
 
-To disable automation:
+With `multiCluster.automateTokens: true` (hub) and `exportTokenForHub: true` (spokes):
+
+1. Spoke PostSync Job exports `kiali-hub-export` ConfigMap with token
+2. Hub PostSync Job reads ACM `ManagedCluster` apiUrl/caBundle and creates `kiali-multi-cluster-secret`
+3. CronJobs renew tokens every 6 hours
+
+### Manual tokens (optional)
 
 ```bash
 oc create token kiali-service-account -n openshift-cluster-observability-operator --duration=8760h
 helm upgrade field-content . \
   --set multiCluster.automateTokens=false \
   --set clusters.east.kialiToken=sha256~... \
+  --set clusters.east.kialiCaData=LS0tLS1... \
   --reuse-values
 ```
 
+With `auth.strategy: openshift`, users **Log in** per remote cluster the first time they open Kiali for that cluster.
+
 ## Step 8: Developer Hub (Keycloak OIDC)
 
-Developer Hub uses the cluster Keycloak instance with realm `backstage`.
+Developer Hub uses cluster Keycloak (`sso.<domain>`) realm `backstage` — not GitHub OAuth.
 
 ```bash
 SECRET=$(openssl rand -base64 24)
@@ -206,11 +235,19 @@ helm upgrade field-content . \
   --reuse-values
 ```
 
-Log in at `https://developer-hub.<domain>` with your catalog users.
+Or patch after deploy:
 
-## Step 9: Continue AI (DevSpaces + Kaoto templates)
+```bash
+oc create secret generic developer-hub-oidc-auth \
+  --from-literal=OIDC_CLIENT_SECRET="$SECRET" \
+  -n developer-hub --dry-run=client -o yaml | oc apply -f -
+```
 
-After deploy, create the DevSpaces secret (do not commit API keys to Git):
+Log in at `https://developer-hub.<domain>` (for example `platformadmin` / workshop password from your values).
+
+## Step 9: Continue AI (DevSpaces + Kaoto)
+
+Do not commit MaaS API keys to Git. Create the DevSpaces secret after deploy:
 
 ```bash
 oc create secret generic continue-ai-config -n devspaces \
@@ -220,20 +257,28 @@ oc create secret generic continue-ai-config -n devspaces \
   --dry-run=client -o yaml | oc apply -f -
 ```
 
+Industrial Edge catalog loads from an in-cluster ConfigMap. Software templates ship as static assets in the pattern repository under `docs/assets/backstage/software-templates/`.
+
 ### Developer Hub multi-cluster Topology
 
-Spoke workloads appear in Topology / Kubernetes only when:
+Spoke workloads appear in **Topology** / **Kubernetes** only when:
 
-1. `ManagedServiceAccount` + token sync Job completed (`developer-hub-spoke-tokens` Secret exists)
-2. Catalog entities have `backstage.io/kubernetes-cluster: east` or `west`
+1. `developer-hub-spoke-tokens` Secret exists (token sync Job completed)
+2. Catalog entities include `backstage.io/kubernetes-cluster: east` or `west`
 
 ```bash
 oc get secret developer-hub-spoke-tokens -n developer-hub
 oc get job -n developer-hub -l job-name=developer-hub-spoke-token-sync-hook
 ```
 
+### Optional: Quay credentials (hub)
+
+Never commit registry passwords to Git. Generate dockerconfig and pass via Helm at upgrade time if you enable Quay push from pipelines.
+
 ## References
 
-- [ACM Architecture](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/about/welcome-to-red-hat-advanced-cluster-management-for-kubernetes)
+- [ACM documentation](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/about/welcome-to-red-hat-advanced-cluster-management-for-kubernetes)
 - [Multicloud GitOps Validated Pattern](/patterns/multicloud-gitops)
 - [ApplicationSet Generators](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators/)
+
+**Next →** [Scaffolding](scaffolding) to deploy Industrial Edge instances from Developer Hub · [Architecture](architecture) for diagrams · [Observability](observability) once metrics are flowing.
