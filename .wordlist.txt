@@ -516,6 +516,7 @@ kafkatopic
 kafkatopics
 kam
 kamelet
+kaoto
 kasten
 kastendr
 kata
@@ -548,6 +549,8 @@ kubelet
 kubeletconfig
 kubernetes
 kubevirt
+kserve
+kuadrant
 kust
 kustomization
 kustomize
@@ -587,6 +590,7 @@ machineconfigs
 machineset
 macos
 macosx
+mailpit
 mailto
 maistra
 makefile
@@ -911,6 +915,7 @@ sigstore
 siteadmin
 skipdryrunonmissingresource
 skopeo
+skupper
 sla
 slas
 sme
@@ -1113,6 +1118,7 @@ yml
 yourcluster
 ypuzljq
 zefrgjryxxxxxxxxx
+ztunnel
 zh
 zj
 zja
