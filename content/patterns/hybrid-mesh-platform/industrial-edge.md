@@ -48,6 +48,8 @@ Each spoke (east/west) runs the same stack independently — the hub aggregates 
 | CI/CD | Tekton pipelines (buildah + deploy) | `industrial-edge-ci` |
 | Visualization | `line-dashboard` (WebSocket consumer) | `industrial-edge-tst-all` |
 
+[![OpenShift AI — KServe inference on spoke](/images/hybrid-mesh-platform/openshift-ia.png)](/images/hybrid-mesh-platform/openshift-ia.png)
+
 End-to-end on a spoke: sensor → MQTT → Camel K → Kafka → optional ML → dashboard; MirrorMaker streams toward centralized storage for model training (see [Architecture](architecture#follow-the-request--one-temperature-reading-end-to-end)).
 
 ## Camel K integrations

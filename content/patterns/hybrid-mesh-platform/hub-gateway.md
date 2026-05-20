@@ -8,11 +8,35 @@ aliases: /hybrid-mesh-platform/hub-gateway/
 
 The hub gateway provides centralized HTTP ingress on the hub cluster with behaviors similar to an F5 BIG-IP ADC: VIP-style routing, TLS termination at the edge, and weighted traffic splits across backend services or spoke-derived routes.
 
-Implementation chart: `components/hub-gateway`.
+Implementation chart: `components/hub-gateway`. Connectivity Link operator: `components/rhcl-operator`.
 
-[![Hub gateway](/images/hybrid-mesh-platform/connectivity-link-hub-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-hub-gateway.png)
+## Connectivity Link topology
 
-[![Spoke gateway](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)
+Connectivity Link (Kuadrant) brings multi-cluster ingress and policy using Kubernetes Gateway API — DNS, TLS, rate limiting, and auth patterns layered on `Gateway` and `HTTPRoute` resources. In this platform, Gateway API objects align with hub gateway routing (including weighted splits similar to hardware ADC behavior). Policies may be disabled initially; enable Kuadrant `AuthPolicy`, `RateLimitPolicy`, and DNS/TLS strategies as you harden environments.
+
+[![Gateway API policy topology — hub HTTPRoute and route rules](/images/hybrid-mesh-platform/connectivity-link-hub.png)](/images/hybrid-mesh-platform/connectivity-link-hub.png)
+
+_Gateway API policy topology — hub-gateway, HTTPRoute, and route rules in the OpenShift Console._
+
+### Hub cluster
+
+Hub cluster Gateway API resources and HTTPRoute attachment to `hub-gateway-system`:
+
+[![Hub cluster Gateway API and HTTPRoute](/images/hybrid-mesh-platform/connectivity-link-hub-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-hub-gateway.png)
+
+### Spoke clusters
+
+Spoke cluster Gateway API and backend services exposed through the mesh:
+
+[![Spoke cluster Gateway API and backends](/images/hybrid-mesh-platform/connectivity-link-spoke.png)](/images/hybrid-mesh-platform/connectivity-link-spoke.png)
+
+Spoke gateway aggregating Industrial Edge services for cross-cluster exposure (single Skupper Connector target per spoke):
+
+[![Spoke gateway aggregating Industrial Edge services](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)
+
+[![Spoke gateway architecture — Gateway API aggregation](/images/hybrid-mesh-platform/arch-spoke-gateway.png)](/images/hybrid-mesh-platform/arch-spoke-gateway.png)
+
+Verify Connectivity Link reconciliation by inspecting `Gateway` status conditions and `HTTPRoute` `spec.parentRefs` — not only Pod labels. Chart path: `components/rhcl-operator`.
 
 ## Gateway API theory
 
@@ -100,9 +124,9 @@ gateway:
 
 Set `enabled: false` to disable circuit breaking entirely.
 
-## Relationship to Connectivity Link
+## Relationship to Connectivity Link and Service Mesh
 
-Connectivity Link (Kuadrant) layers DNS automation, TLS policies, and advanced controls atop Gateway API. Start with plain HTTPRoutes for incremental adoption; enable Kuadrant policies when teams require DNS/TLS/rate-limit governance at scale.
+Connectivity Link layers DNS automation, TLS policies, and advanced controls atop the Gateway API topology shown above. Service Mesh ambient (ztunnel/waypoints) carries east-west traffic between gateway hops and workloads. Start with plain HTTPRoutes for incremental adoption; enable Kuadrant policies when teams require DNS/TLS/rate-limit governance at scale.
 
 ## IoT Dashboard integration
 

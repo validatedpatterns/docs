@@ -123,6 +123,18 @@ Red Hat Service Interconnect creates a **Virtual Application Network (VAN)** tha
 
 [![Service Interconnect console topology](/images/hybrid-mesh-platform/service-interconnect-console-topology.png)](/images/hybrid-mesh-platform/service-interconnect-console-topology.png)
 
+### Skupper Network Observer (console views)
+
+The Skupper Network Observer visualizes the Virtual Application Network — sites, listeners, connectors, and process-level traffic across hub, east, and west:
+
+[![Skupper Network Observer — sites and links](/images/hybrid-mesh-platform/service-interconnect-console.png)](/images/hybrid-mesh-platform/service-interconnect-console.png)
+
+[![Skupper console — components, listeners, and connectors](/images/hybrid-mesh-platform/service-interconnect-console-topology-process.png)](/images/hybrid-mesh-platform/service-interconnect-console-topology-process.png)
+
+[![Skupper console — process-level topology](/images/hybrid-mesh-platform/service-interconnect-console-process.png)](/images/hybrid-mesh-platform/service-interconnect-console-process.png)
+
+[![Skupper console — built-in metrics (TCP bytes, latency, connections)](/images/hybrid-mesh-platform/service-interconnect-console-metrics.png)](/images/hybrid-mesh-platform/service-interconnect-console-metrics.png)
+
 ### Hub listeners (namespace `service-interconnect`)
 
 | Listener | Port | Purpose |
@@ -155,6 +167,12 @@ Charts: `components/service-interconnect` (hub), `components/spoke-interconnect`
 ## Spoke gateway aggregation
 
 Each spoke runs a Gateway API gateway (`components/spoke-gateway`) that fronts all Industrial Edge services. Skupper exposes **one** gateway per spoke instead of every microservice individually.
+
+[![Spoke gateway aggregation diagram](/images/hybrid-mesh-platform/arch-spoke-gateway.png)](/images/hybrid-mesh-platform/arch-spoke-gateway.png)
+
+[![Spoke Gateway API — Connectivity Link view](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)
+
+Hub-side Gateway API and HTTPRoute policy topology: see [Hub Gateway — Connectivity Link topology](hub-gateway#connectivity-link-topology).
 
 ## Multi-cluster observability pipeline
 

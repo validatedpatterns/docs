@@ -18,6 +18,26 @@ Grafana panels, Kiali graphs, and Kafka Console views help you confirm that fact
 
 [![Observability pipeline](/images/hybrid-mesh-platform/arch-observability-pipeline.png)](/images/hybrid-mesh-platform/arch-observability-pipeline.png)
 
+## Grafana dashboard views
+
+Multi-cluster fleet dashboards on the hub (east/west traffic, Service Mesh L4/L7, Kafka health):
+
+[![Grafana — east-west traffic and Service Mesh](/images/hybrid-mesh-platform/product-grafana-observability-2.png)](/images/hybrid-mesh-platform/product-grafana-observability-2.png)
+
+[![Grafana — multi-cluster Istio metrics (ztunnel L4)](/images/hybrid-mesh-platform/product-grafana-observability-3.png)](/images/hybrid-mesh-platform/product-grafana-observability-3.png)
+
+[![Grafana — extended fleet KPI panels](/images/hybrid-mesh-platform/product-grafana-observability-4.png)](/images/hybrid-mesh-platform/product-grafana-observability-4.png)
+
+## Kiali and mesh topology views
+
+[![Kiali — service mesh traffic graph](/images/hybrid-mesh-platform/product-kiali-service-mesh-2.png)](/images/hybrid-mesh-platform/product-kiali-service-mesh-2.png)
+
+## Kafka Console views
+
+[![Kafka Console — multi-cluster clusters and topics](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-2.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-2.png)
+
+[![Kafka Console — broker and topic detail over Skupper](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-3.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-3.png)
+
 ## Observability architecture
 
 | Layer | Technology | Role |

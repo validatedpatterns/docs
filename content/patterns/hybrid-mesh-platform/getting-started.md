@@ -25,6 +25,16 @@ After a successful hub deploy and spoke registration, expect:
 
 Then continue with [Scaffolding](scaffolding) to deploy a new edge instance on east or west.
 
+## Platform operators (reference)
+
+The hub chart deploys ACM, GitOps, ACS, and related operators before application workloads. Console views after sync:
+
+[![Advanced Cluster Management — fleet view](/images/hybrid-mesh-platform/ACM.png)](/images/hybrid-mesh-platform/ACM.png)
+
+[![OpenShift GitOps — Argo CD Applications](/images/hybrid-mesh-platform/product-argocd-openshift-gitops.png)](/images/hybrid-mesh-platform/product-argocd-openshift-gitops.png)
+
+[![Advanced Cluster Security — central console](/images/hybrid-mesh-platform/ACS.png)](/images/hybrid-mesh-platform/ACS.png)
+
 ## Prerequisites
 
 - Red Hat OpenShift Container Platform **4.20** (reference version; 4.14+ supported per cluster)

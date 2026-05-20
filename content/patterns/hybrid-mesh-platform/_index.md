@@ -69,7 +69,7 @@ Architecture diagrams in this documentation illustrate Git, ACM, Skupper VAN, an
 | --- | --- |
 | Architecture deep dive | [Architecture](architecture) |
 | Install flow | [Getting Started](getting-started) |
-| Hub Gateway | [Hub Gateway](hub-gateway) |
+| Hub Gateway and Connectivity Link | [Hub Gateway](hub-gateway) |
 | Observability | [Observability](observability) |
 | Industrial Edge (multi-cluster) | [Industrial Edge](industrial-edge) |
 | Scaffolding | [Scaffolding](scaffolding) |
