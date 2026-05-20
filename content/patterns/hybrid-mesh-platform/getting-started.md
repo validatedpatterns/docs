@@ -27,13 +27,43 @@ Then continue with [Scaffolding](scaffolding) to deploy a new edge instance on e
 
 ## Platform operators (reference)
 
-The hub chart deploys ACM, GitOps, ACS, and related operators before application workloads. Console views after sync:
+The hub chart deploys **ACM**, **OpenShift GitOps**, **ACS**, Service Mesh, Skupper, and related operators before application workloads.
 
-[![Advanced Cluster Management — fleet view](/images/hybrid-mesh-platform/ACM.png)](/images/hybrid-mesh-platform/ACM.png)
+[![OpenShift GitOps — Argo CD Applications on the hub](/images/hybrid-mesh-platform/product-argocd-openshift-gitops.png)](/images/hybrid-mesh-platform/product-argocd-openshift-gitops.png)
 
-[![OpenShift GitOps — Argo CD Applications](/images/hybrid-mesh-platform/product-argocd-openshift-gitops.png)](/images/hybrid-mesh-platform/product-argocd-openshift-gitops.png)
+### Advanced Cluster Management (ACM)
 
-[![Advanced Cluster Security — central console](/images/hybrid-mesh-platform/ACS.png)](/images/hybrid-mesh-platform/ACS.png)
+ACM must show **`east`** and **`west`** as **Available** managed clusters before the ApplicationSet can push spoke charts.
+
+[![ACM fleet management — east and west registered on the hub](/images/hybrid-mesh-platform/ACM.png)](/images/hybrid-mesh-platform/ACM.png)
+
+Verify:
+
+```bash
+oc get managedcluster
+oc get multiclusterhub -n open-cluster-management
+```
+
+Spoke names must match repository folders (`east`, `west`). Placement labels drive ApplicationSet targeting — see [Step 4](#step-4-import-managed-clusters-in-acm) and [Deploy with ACM and GitOps](#deploy-with-acm-and-gitops).
+
+### Advanced Cluster Security (ACS)
+
+ACS Central runs on the hub; **SecuredCluster** agents install on hub and both spokes. All three clusters appear in the Central UI when init bundles are applied.
+
+[![ACS Central — hub, east, and west clusters](/images/hybrid-mesh-platform/ACS.png)](/images/hybrid-mesh-platform/ACS.png)
+
+[![ACS Central — policies and vulnerability views](/images/hybrid-mesh-platform/ACS-2.png)](/images/hybrid-mesh-platform/ACS-2.png)
+
+#### Generating SecuredCluster init bundles
+
+Generate one init bundle per cluster from Central (do not commit secrets to Git):
+
+```bash
+roxctl -e central.stackrox:443 --password "$ROX_ADMIN_PASSWORD" --insecure-skip-tls-verify \
+  central init-bundles generate <cluster-name> --output-secrets - | oc apply -n stackrox -f -
+```
+
+Use cluster names **`hub`**, **`east`**, and **`west`**. Namespace **`stackrox`** must stay **off** Service Mesh ambient — see [Architecture — ACS](architecture#advanced-cluster-security-acs).
 
 ## Prerequisites
 

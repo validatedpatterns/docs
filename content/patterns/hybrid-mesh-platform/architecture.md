@@ -81,6 +81,59 @@ In parallel:
 
 Industrial Edge components exist **only** in spoke charts. The hub chart never includes factory workloads.
 
+## Advanced Cluster Management (ACM)
+
+Red Hat Advanced Cluster Management for Kubernetes (ACM) provides fleet-wide visibility and lifecycle for OpenShift clusters. In Hybrid Mesh Platform it anchors hub-spoke registration, policy placement, and integration with OpenShift GitOps via `GitOpsCluster` and related APIs.
+
+[![ACM fleet management — east and west managed clusters on the hub](/images/hybrid-mesh-platform/ACM.png)](/images/hybrid-mesh-platform/ACM.png)
+
+### Role in this solution
+
+- Inventory managed clusters (`hub`, `east`, `west`) and apply governance policies consistently.
+- Drive which spokes receive Industrial Edge and platform components through **Placement** rules (`region=east`, `region=west`).
+- Coordinate klusterlet agents, `ManagedClusterSet` membership, and secrets required for spoke import.
+- Publish **PlacementDecision** objects consumed by the Argo CD ApplicationSet (`clusterDecisionResource` generator).
+
+### Notable APIs / CRDs
+
+| Resource | Purpose |
+| --- | --- |
+| `MultiClusterHub` | Hub installation health |
+| `ManagedCluster`, `ManagedClusterSet` | Fleet membership and RBAC grouping |
+| `Placement`, `PlacementDecision` | Dynamic cluster selection for GitOps |
+| `GitOpsCluster` | Binds placement results to Argo CD cluster secrets |
+
+Charts: `components/acm-operator`, `components/acm-hub-spoke`. Verify with `oc get managedcluster` and PlacementDecision in `openshift-gitops`.
+
+## Advanced Cluster Security (ACS)
+
+Red Hat Advanced Cluster Security for Kubernetes (ACS) centralizes build-time image scanning, deployment-time policy, and runtime detection across the fleet.
+
+[![ACS Central — hub, east, and west registered](/images/hybrid-mesh-platform/ACS.png)](/images/hybrid-mesh-platform/ACS.png)
+
+[![ACS Central — policies, vulnerabilities, and runtime visibility](/images/hybrid-mesh-platform/ACS-2.png)](/images/hybrid-mesh-platform/ACS-2.png)
+
+### Hub-spoke topology
+
+| Component | Location | Role |
+| --- | --- | --- |
+| **Central** | Hub | Policy console, vulnerability database, admission coordination |
+| **SecuredCluster** | Hub + spokes | Sensor, collector, and admission control per cluster |
+
+Cluster names in Central: **`hub`**, **`east`**, **`west`**. Init bundles (TLS secrets in namespace `stackrox`) register each SecuredCluster with Central.
+
+### Service mesh exception
+
+Namespace `stackrox` is listed in `$noMeshNamespaces` (`components/namespaces`) — **do not** label it `istio.io/dataplane-mode: ambient`. Ambient ztunnel breaks Central ↔ PostgreSQL TLS and Central becomes unreachable.
+
+### Capabilities used
+
+- CVE scanning for Industrial Edge and platform images (Quay/internal registry).
+- Risk prioritization across namespaces and clusters.
+- Optional network and process baselines for regulated factory environments.
+
+Charts: `components/acs-operator` (hub Central), `components/acs-secured-cluster` (hub + spokes). See [Getting Started](getting-started#advanced-cluster-security-acs) for init bundle generation.
+
 ## GitOps application delivery flow
 
 1. Hub Argo CD syncs the root Application (operators, ACM, gateway, observability).

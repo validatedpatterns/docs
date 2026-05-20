@@ -61,7 +61,7 @@ This repository models a **GitOps-first platform** where:
 
 _Hub cluster aggregates observability and Developer Hub; east and west spokes run Industrial Edge workloads connected via Service Interconnect (Skupper). Click the image to open the full diagram._
 
-Architecture diagrams in this documentation illustrate Git, ACM, Skupper VAN, and Industrial Edge placement on east/west — use them as the visual companion to the install chapters.
+Architecture diagrams illustrate Git, **ACM fleet management**, **ACS Central**, Skupper VAN, Connectivity Link, and Industrial Edge on east/west — use them as the visual companion to the install chapters (see [Architecture](architecture) for ACM and ACS console views).
 
 ## Quick links
 
