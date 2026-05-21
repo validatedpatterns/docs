@@ -2,7 +2,7 @@
 <div class="pf-c-select pf-m-expanded">
   <div class="pf-c-select__menu">
     <div class="pf-c-nav pf-m-light">
-      <ul class="pf-c-nav__list">
+      <ul class="pf-c-nav__list ci-sidebar-nav">
           <li class="pf-c-nav__item">
             <a href="{{ .RelPermalink }}" class="pf-c-nav__link">
               Overview
@@ -21,6 +21,11 @@
           <li class="pf-c-nav__item">
             <a href="{{ .RelPermalink }}?date=all" class="pf-c-nav__link">
               History
+            </a>
+          </li>
+          <li class="pf-c-nav__item">
+            <a href="{{ .RelPermalink }}?view=classic" class="pf-c-nav__link">
+              Classic
             </a>
           </li>
       </ul>
