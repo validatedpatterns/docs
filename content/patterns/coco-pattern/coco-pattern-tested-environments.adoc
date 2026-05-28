@@ -1,14 +1,15 @@
 ---
 title: CoCo pattern tested environments
-weight: 10
+weight: 30
 aliases: /coco-pattern/coco-pattern-tested-environments/
 ---
 
+:toc:
 
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
 
-:imagesdir: ../../../images
+:imagesdir: /images
 
 = Tested environments
 
@@ -19,17 +20,17 @@ Version 5 introduces Kyverno-based `cc_init_data` injection, bare metal support 
 === Supported components
 - OpenShift Sandboxed Containers Operator 1.12
 - Red Hat Build of Trustee 1.1
-- OpenShift Container Platform 4.19.28+
+- {ocp} 4.19.28+
 - Kyverno 3.7.*
 - cert-manager operator (stable-v1 channel)
-- Red Hat Advanced Cluster Management (for multi-cluster topology)
-- HashiCorp Vault (secrets management)
+- {rh-rhacm-first} (for multi-cluster topology)
+- {hashicorp-vault} (secrets management)
 - Node Feature Discovery Operator (for bare metal)
 - Intel Device Plugins Operator (for Intel TDX)
 - NVIDIA GPU Operator v26.3.0+ (for GPU topology)
 
 === Azure single cluster
-Tested on Azure with the `simple` clusterGroup using self-managed OpenShift 4.19.28+ provisioned via `openshift-install`. In this topology all components — Trustee, Vault, ACM, sandboxed containers operator, Kyverno, and sample workloads — are deployed on a single cluster.
+Tested on Azure with the `simple` clusterGroup using self-managed OpenShift 4.19.28+ provisioned by using `openshift-install`. In this topology all components, including Trustee, Vault, ACM, sandboxed containers operator, Kyverno, and sample workloads, are deployed on a single cluster.
 
 Worker nodes use `Standard_D8s_v5` or larger. Peer-pod VMs for confidential containers default to `Standard_DC2as_v5` from the Azure confidential computing VM family, but other Azure https://learn.microsoft.com/en-us/azure/confidential-computing/virtual-machine-options[confidential VM families] can be configured in `values-global.yaml`. Azure DNS is required for the cluster's hosted zone.
 
@@ -41,7 +42,7 @@ Tested with `trusted-hub` + `spoke` clusterGroups on Azure, both using self-mana
 - `trusted-hub`: Vault, ACM, Trustee (KBS + attestation service), cert-manager, Kyverno. This cluster acts as the trust anchor and ACM hub.
 - `spoke`: Sandboxed containers operator, Kyverno, peer-pod infrastructure, and sample workloads (hello-openshift, kbs-access). Imported into ACM with the `clusterGroup=spoke` label.
 
-The spoke cluster connects back to the hub's Trustee instance for attestation and secret retrieval. Secrets are synchronised from the hub's Vault to the spoke via the External Secrets operator.
+The spoke cluster connects back to the hub Trustee instance for attestation and secret retrieval. Secrets are synchronized from the hub Vault to the spoke through the External Secrets operator.
 
 === Bare metal single cluster (Intel TDX)
 Tested on Single Node OpenShift (SNO) with Intel TDX hardware using the `baremetal` clusterGroup. All components run on a single node.
