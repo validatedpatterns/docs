@@ -1249,6 +1249,29 @@ h6 .anchor::before {
   font-weight: 600;
 }
 
+.ci-dashboard-filters {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.ci-dashboard-filters-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+.ci-dashboard-filters .ci-toolbar {
+  margin-bottom: 0;
+}
+
+.ci-dashboard-filters .ci-toolbar-range,
+.ci-dashboard-filters .ci-toolbar-sort {
+  justify-content: flex-end;
+}
+
 .ci-toolbar {
   display: flex;
   justify-content: flex-end;
@@ -1343,6 +1366,34 @@ h6 .anchor::before {
 
 .ci-status-text.red {
   color: var(--pf-global--danger-color--100, #c9190b);
+}
+
+.ci-status-dot.unavailable {
+  background-color: var(--pf-global--BorderColor--100, #d2d2d2);
+}
+
+.ci-status-text.unavailable {
+  color: var(--pf-global--Color--200, #6a6e73);
+}
+
+a.ci-status-unavailable-link {
+  color: var(--pf-global--primary-color--100, #06c);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+a.ci-status-unavailable-link:hover {
+  color: var(--pf-global--primary-color--200, #004080);
+}
+
+.ci-label-load-error {
+  font-size: 0.85rem;
+  color: var(--pf-global--primary-color--100, #06c);
+  text-decoration: underline;
+}
+
+.ci-label-load-error:hover {
+  color: var(--pf-global--primary-color--200, #004080);
 }
 
 .ci-pattern-name {
@@ -1514,6 +1565,26 @@ h6 .anchor::before {
   transition: width 0.4s ease;
 }
 
+.ci-overview-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.ci-overview-toolbar .ci-overview-legend {
+  flex: 1 1 220px;
+  margin-bottom: 0;
+  min-width: 0;
+}
+
+.ci-overview-toolbar .ci-toolbar-range {
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+
 .ci-overview-legend {
   font-size: 0.82rem;
   color: var(--pf-global--Color--200, #6a6e73);
@@ -1659,6 +1730,10 @@ h6 .anchor::before {
   background-color: var(--pf-global--danger-color--100, #c9190b);
 }
 
+.ci-card-platform-dot.unavailable {
+  background-color: var(--pf-global--BorderColor--100, #d2d2d2);
+}
+
 .ci-card-platform-label {
   white-space: nowrap;
 }
@@ -1691,6 +1766,10 @@ h6 .anchor::before {
 
 .ci-card-block.red {
   background-color: var(--pf-global--danger-color--100, #c9190b);
+}
+
+.ci-card-block.unavailable {
+  background-color: var(--pf-global--BorderColor--100, #d2d2d2);
 }
 
 .ci-card-footer {
