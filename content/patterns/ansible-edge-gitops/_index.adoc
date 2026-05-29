@@ -11,6 +11,10 @@ rh_products:
 - Red Hat OpenShift Data Foundation
 industries:
 - Chemical
+focus_areas:
+- Edge
+- Virtualization
+- DevSecOps
 aliases: /ansible-edge-gitops/
 pattern_logo: ansible-edge.png
 links:

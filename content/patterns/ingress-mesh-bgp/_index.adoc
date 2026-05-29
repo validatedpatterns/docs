@@ -10,6 +10,10 @@ rh_products:
 industries:
 - General
 - Telecommunications
+focus_areas:
+- Edge
+- Observability
+- Resilience
 aliases: /ingress-mesh-bgp/
 # pattern_logo: ingress-mesh-bgp.png  # TODO: Create pattern logo
 links:

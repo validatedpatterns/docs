@@ -12,6 +12,10 @@ rh_products:
 - Red Hat OpenShift Data Foundation DR Hub Operator
 - Red Hat Advanced Cluster Management
 industries: []
+focus_areas:
+- Resilience
+- Data
+- Virtualization
 aliases: /ramendr-starter-kit/
 pattern_logo: ansible-edge.png
 links:

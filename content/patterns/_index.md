@@ -9,4 +9,4 @@ outputs:
   - json
 ---
 
-Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by type, industry, and product.
+Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by tier, focus area, industry, and product.

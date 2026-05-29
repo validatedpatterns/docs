@@ -9,6 +9,9 @@ rh_products:
 - Red Hat AMQ
 industries:
 - Retail
+focus_areas:
+- Data
+- Edge
 aliases: /retail/
 # uncomment once this exists
 # pattern_logo: retail.png

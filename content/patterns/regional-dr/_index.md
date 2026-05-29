@@ -6,6 +6,9 @@ summary: This variant of the Validated Patterns framework deploys a Regional Dis
 rh_products:
 - Red Hat OpenShift Container Platform
 industries:
+focus_areas:
+- Resilience
+- Data
 pattern_logo: regional-dr.png
 links:
   github: https://github.com/validatedpatterns/regional-resiliency-pattern

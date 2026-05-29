@@ -11,6 +11,10 @@ rh_products:
 - Red Hat OpenShift Data Foundation (ODF) (Optional)
 industries:
 - Telecommunications
+focus_areas:
+- Edge
+- Resilience
+- Observability
 aliases: /telco-hub/
 # uncomment once this exists
 # pattern_logo: telco-hub.png

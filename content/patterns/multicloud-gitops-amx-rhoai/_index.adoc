@@ -12,6 +12,10 @@ partners:
 - Intel
 industries:
 - General
+focus_areas:
+- AI
+- DevSecOps
+- Data
 aliases: /multicloud-gitops-amx-rhoai/
 variant_of: multicloud-gitops
 # uncomment once this exists

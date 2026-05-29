@@ -6,6 +6,9 @@ summary: Layered Zero Trust demonstrates how to operationalize Zero Trust securi
 rh_products:
 - Red Hat OpenShift Container Platform
 industries:
+focus_areas:
+- Security
+- DevSecOps
 aliases: /layered-zero-trust/
 links:
   github: https://github.com/validatedpatterns/layered-zero-trust/

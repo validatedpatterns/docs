@@ -11,6 +11,9 @@ rh_products:
 - Red Hat OpenShift Virtualization
 industries:
 - General
+focus_areas:
+- Resilience
+- Data
 aliases: /netapp-dr-starter-kit/
 links:
   github: https://github.com/validatedpatterns-sandbox/netapp-dr-starter-kit

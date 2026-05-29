@@ -12,6 +12,9 @@ partners:
 - Intel
 industries:
 - medical
+focus_areas:
+- AI
+- Data
 aliases: /medical-diagnosis-amx/
 variant_of: medical-diagnosis
 pattern_logo: medical-diagnosis.png

@@ -14,6 +14,9 @@ partners:
 - Intel
 industries:
 - General
+focus_areas:
+- AI
+- Data
 aliases: /gaudi-rag-chat-qna/
 #pattern_logo: gaudi-rag-chat-qna.png
 links:

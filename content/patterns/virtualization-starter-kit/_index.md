@@ -10,6 +10,9 @@ rh_products:
 - Red Hat OpenShift Data Foundation
 industries:
 - Any
+focus_areas:
+- Virtualization
+- Resilience
 aliases: /virtualization-starter-kit/
 pattern_logo: ansible-edge.png
 links:

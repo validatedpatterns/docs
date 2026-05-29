@@ -35,6 +35,15 @@
   {{- $industries_filter_types := slice "AND" "OR" }}
   {{- $industries_dict := dict "filter_list" $industries_list "filter_types" $industries_filter_types }}
 
+  {{/* Focus areas */}}
+  {{- $focus_areas := .Site.Taxonomies.focus_areas }}
+  {{- $focus_areas_list := slice }}
+  {{- range $index, $focus_area :=  $focus_areas.Alphabetical }}
+    {{- $focus_areas_list = $focus_areas_list | append (dict "Name" $focus_area.Name "LinkTitle" $focus_area.Page.LinkTitle) }}
+  {{- end }}
+  {{- $focus_areas_filter_types := slice "AND" "OR" }}
+  {{- $focus_areas_dict := dict "filter_list" $focus_areas_list "filter_types" $focus_areas_filter_types }}
+
   {{/* Tiers */}}
   {{- $tiers_list := slice -}}
   {{- $tiers_list = $tiers_list | append (dict "Name" "maintained" "LinkTitle" "Maintained" "color" "green") }}
@@ -43,6 +52,6 @@
   {{- $tiers_filter_types := slice "OR" }}
   {{- $tiers_dict := dict "filter_list" $tiers_list "filter_types" $tiers_filter_types }}
 
-  {{- $filter_categories := dict "rh_products" $rh_products_dict "partners" $partners_dict "industries" $industries_dict "tier" $tiers_dict -}}
+  {{- $filter_categories := dict "rh_products" $rh_products_dict "partners" $partners_dict "industries" $industries_dict "focus_areas" $focus_areas_dict "tier" $tiers_dict -}}
   {{- dict "patterns" $pattern_list "filter_categories" $filter_categories | jsonify }}
 {{- end }}

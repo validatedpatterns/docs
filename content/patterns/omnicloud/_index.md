@@ -9,6 +9,10 @@ rh_products:
   - Red Hat Quay
 industries:
   - General
+focus_areas:
+  - DevSecOps
+  - Resilience
+  - Data
 aliases: /omnicloud/
 # uncomment once this exists
 # pattern_logo: devsecops.png

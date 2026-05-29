@@ -7,6 +7,9 @@ rh_products:
 - Red Hat OpenShift Container Platform
 industries:
 - storage services
+focus_areas:
+- Data
+- Resilience
 aliases: /gpfs-tester/
 pattern_logo: mlops-fraud-detection.png
 links:

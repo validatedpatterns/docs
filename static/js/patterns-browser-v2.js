@@ -131,6 +131,8 @@ function getParams() {
   enabledParams.categories.tier = urlParams.getAll("tier");
   // Tier is always "and" since each pattern can only have one tier
   enabledParams.filters.tier = "and";
+  enabledParams.categories.focus_areas = urlParams.getAll("focus_areas");
+  enabledParams.filters.focus_areas = urlParams.get("focus_areas_filter");
   enabledParams.categories.industries = urlParams.getAll("industries");
   enabledParams.filters.industries = urlParams.get("industries_filter");
   enabledParams.categories.rh_products = urlParams.getAll("rh_products");
@@ -330,6 +332,80 @@ function renderFilter(elementId, filterType, filterData, enabledParams, enabledF
   element.innerHTML += renderFilterButtons(filterData.filter_types, filterType, enabledFilters);
 }
 
+function renderFocusAreaChips(focusAreas) {
+  // Render focus area chips as quick single-select filters.
+  const container = document.getElementById("focus-area-chips");
+  if (!container || !focusAreas || focusAreas.filter_list.length === 0) {
+    if (container) {
+      container.innerHTML = "";
+    }
+    return;
+  }
+
+  let chipsHtml = '<div class="pf-u-display-flex pf-u-flex-wrap pf-u-justify-content-center">';
+  for (item = 0; item < focusAreas.filter_list.length; item++) {
+    const focusArea = focusAreas.filter_list[item].Name;
+    chipsHtml += (`<button class="pf-c-button pf-m-secondary pf-m-small pf-u-mr-sm pf-u-mb-sm focus-area-chip" type="button" id="focus-chip:${cleanString(focusArea)}" onclick="selectFocusAreaChip('${focusArea}')">${focusAreas.filter_list[item].LinkTitle}</button>`);
+  }
+  chipsHtml += "</div>";
+  container.innerHTML = chipsHtml;
+  syncFocusAreaChipsState();
+}
+
+function syncFocusAreaChipsState() {
+  // Highlight the chip only when exactly one focus area is selected.
+  const chipElements = document.getElementsByClassName("focus-area-chip");
+  for (item = 0; item < chipElements.length; item++) {
+    chipElements[item].classList.remove("pf-m-primary");
+    chipElements[item].classList.add("pf-m-secondary");
+  }
+
+  const focusAreaItems = document.getElementById("FocusAreasItems");
+  if (!focusAreaItems) {
+    return;
+  }
+
+  const selectedFocusAreas = focusAreaItems.querySelectorAll('input[type="checkbox"]:checked');
+  if (selectedFocusAreas.length === 1) {
+    const selectedChipId = "focus-chip:" + selectedFocusAreas[0].id.split(":")[1];
+    const selectedChip = document.getElementById(selectedChipId);
+    if (selectedChip) {
+      selectedChip.classList.remove("pf-m-secondary");
+      selectedChip.classList.add("pf-m-primary");
+    }
+  }
+}
+
+function selectFocusAreaChip(focusAreaName) {
+  // Chip click replaces current focus area selection with one value.
+  const focusAreaItems = document.getElementById("FocusAreasItems");
+  if (!focusAreaItems) {
+    return;
+  }
+
+  const checkboxes = focusAreaItems.querySelectorAll('input[type="checkbox"]');
+  for (item = 0; item < checkboxes.length; item++) {
+    checkboxes[item].checked = false;
+  }
+
+  const targetCheckbox = document.getElementById("focus_areas:" + cleanString(focusAreaName));
+  if (targetCheckbox) {
+    targetCheckbox.checked = true;
+  }
+
+  // Keep single-chip selection URL behavior deterministic.
+  const focusAreaOrButton = document.getElementById("focus_areas_button:or");
+  const focusAreaAndButton = document.getElementById("focus_areas_button:and");
+  if (focusAreaAndButton) {
+    focusAreaAndButton.classList.remove("pf-m-selected");
+  }
+  if (focusAreaOrButton) {
+    focusAreaOrButton.classList.add("pf-m-selected");
+  }
+
+  filterSelection();
+}
+
 function renderLabel(tier, tier_categories) {
   // HTML to render the pattern tier label
   if (tier != undefined) {
@@ -407,9 +483,12 @@ function renderFilteredCards(patterns, filter_categories) {
 }
 
 function updateFilterCounters() {
-  const elementIds = ["TiersItems", "IndustriesItems", "RhProductsItems", "PartnersItems"]
+  const elementIds = ["TiersItems", "FocusAreasItems", "IndustriesItems", "RhProductsItems", "PartnersItems"]
   for (const elementId of elementIds) {
     const element = document.getElementById(elementId);
+    if (!element) {
+      continue;
+    }
     const elementCounter = document.getElementById(elementId + "Counter");
     var count = element.querySelectorAll('input[type="checkbox"]:checked').length;
     if (count > 0) {
@@ -418,6 +497,7 @@ function updateFilterCounters() {
       elementCounter.innerHTML = "";
     }
   }
+  syncFocusAreaChipsState();
 }
 
 function filterSelection(filter) {
@@ -498,8 +578,10 @@ const patternsData = getData();
 const enabledParams = getParams();
 patternsData.then(output => {
   renderFilter("TiersItems", "tier", output.filter_categories.tier, enabledParams.categories.tier, enabledParams.filters.tier);
+  renderFilter("FocusAreasItems", "focus_areas", output.filter_categories.focus_areas, enabledParams.categories.focus_areas, enabledParams.filters.focus_areas);
   renderFilter("IndustriesItems", "industries", output.filter_categories.industries, enabledParams.categories.industries, enabledParams.filters.industries);
   renderFilter("RhProductsItems", "rh_products", output.filter_categories.rh_products, enabledParams.categories.rh_products, enabledParams.filters.rh_products);
   renderFilter("PartnersItems", "partners", output.filter_categories.partners, enabledParams.categories.partners, enabledParams.filters.partners);
+  renderFocusAreaChips(output.filter_categories.focus_areas);
   renderFilteredCards(output.patterns, output.filter_categories)
 });
