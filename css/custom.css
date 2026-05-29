@@ -604,6 +604,7 @@ main.pf-c-page__main {
 
 body .pf-c-content {
   position: relative;
+  min-width: 0; /* Allows flex item to shrink below content size, enabling overflow-wrap to work */
 }
 
 /* This fixes scrollspy problem when scrolling up manually */
