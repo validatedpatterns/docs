@@ -25,6 +25,8 @@
     <div class="pf-c-content" >
       {{ $patterns := where $.Pages "Section" "patterns"}}
       <div class="pf-l-stack pf-m-gutter">
+        <div class="pf-l-stack__item pattern-count-style pf-u-text-align-center" id="focus-area-chips">
+        </div>
         <div class="pf-l-stack__item pf-u-text-align-right pattern-count-style">
           <label class="pf-c-form__label" for="form-vertical-name">
             <span class="pf-c-form__label-text">Sort:</span>
@@ -36,9 +38,9 @@
             aria-label="Selector for pattern sort"
             onchange="filterSelection()"
           >
-            <option value="atoz" selected>A to Z</option>
+            <option value="atoz">A to Z</option>
             <option value="ztoa">Z to A</option>
-            <option value="newest">Newest</option>
+            <option value="newest" selected>Newest</option>
             <option value="oldest">Oldest</option>
           </select>
         </div>

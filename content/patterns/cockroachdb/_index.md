@@ -11,6 +11,9 @@ links:
   install: https://github.com/validatedpatterns/cockroachdb-pattern?tab=readme-ov-file#how-to-deploy
   bugs: https://github.com/validatedpatterns/cockroachdb-pattern/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+focus_areas:
+- Data
+- Resilience
 ---
 
 # Cockroach

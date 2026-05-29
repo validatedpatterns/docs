@@ -14,6 +14,9 @@ rh_products:
 partners:
 - Portworx by Everpure
 industries: []
+focus_areas:
+- Resilience
+- Data
 aliases: /portworx-dr/
 pattern_logo: ansible-edge.png
 links:

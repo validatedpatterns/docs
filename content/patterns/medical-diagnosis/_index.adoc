@@ -11,6 +11,9 @@ partners:
   - IBM Fusion
 industries:
 - medical
+focus_areas:
+- AI
+- Data
 aliases: /medical-diagnosis/
 pattern_logo: medical-diagnosis.png
 links:

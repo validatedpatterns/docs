@@ -35,6 +35,7 @@ taxonomies:
   industry: 'industries'
   rh_product: 'rh_products'
   partners: 'partners'
+  focus_area: 'focus_areas'
   blog_tag: 'blog_tags'
 
 mediaTypes:

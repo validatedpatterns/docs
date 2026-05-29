@@ -11,6 +11,10 @@ links:
   install: https://github.com/validatedpatterns/connected-vehicle-architecture?tab=readme-ov-file#bobby-car
   bugs: https://github.com/validatedpatterns/connected-vehicle-architecture/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+focus_areas:
+- Edge
+- Data
+- Observability
 ---
 
 # Connected Vehicle Architecture

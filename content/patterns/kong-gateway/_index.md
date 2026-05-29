@@ -10,6 +10,9 @@ links:
   install: https://github.com/validatedpatterns/kong-gateway?tab=readme-ov-file#start-here
   bugs: https://github.com/validatedpatterns-sandbox/kong-gateway/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+focus_areas:
+- Security
+- Observability
 ---
 
 # About the Kong pattern

@@ -11,6 +11,9 @@ partners:
   - Trilio
 industries:
   - General
+focus_areas:
+  - Resilience
+  - Data
 aliases: /trilio-cr/
 links:
   github: https://github.com/trilio-demo/trilio-continuous-restore

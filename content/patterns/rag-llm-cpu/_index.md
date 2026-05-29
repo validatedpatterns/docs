@@ -12,6 +12,9 @@ partners:
   - IBM Fusion
 industries:
   - General
+focus_areas:
+  - AI
+  - Data
 aliases: /rag-llm-cpu/
 links:
   github: https://github.com/validatedpatterns-sandbox/rag-llm-cpu

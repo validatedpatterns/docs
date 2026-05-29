@@ -10,6 +10,9 @@ rh_products:
 - Red Hat Build of Trustee
 industries:
 - General
+focus_areas:
+- Security
+- Virtualization
 aliases: /coco-pattern/
 pattern_logo: coco-logo.png
 links:

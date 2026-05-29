@@ -8,6 +8,10 @@ rh_products:
 - Red Hat Advanced Cluster Management
 industries:
 - General
+focus_areas:
+- DevSecOps
+- Resilience
+- Security
 aliases: /multicloud-gitops/
 pattern_logo: multicloud-gitops.png
 links:

@@ -7,9 +7,13 @@ rh_products:
 - Red Hat OpenShift Container Platform
 - Red Hat Advanced Cluster Management
 partners:
-- Portworx Enterprise
+- Portworx by Everpure
 industries:
 - General
+focus_areas:
+- DevSecOps
+- Resilience
+- Data
 aliases: /multicloud-gitops-Portworx/
 variant_of: multicloud-gitops
 pattern_logo: multicloud-gitops-Portworx.png

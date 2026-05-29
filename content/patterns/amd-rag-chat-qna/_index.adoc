@@ -14,6 +14,10 @@ partners:
 - AMD
 industries:
 - General
+focus_areas:
+- AI
+- Data
+- Observability
 aliases: /amd-rag-chat-qna/
 #pattern_logo: amd-rag-chat-qna.png
 links:

@@ -10,6 +10,9 @@ partners:
 - AWS Controller for Kubernetes
 industries:
 - Infrastructure
+focus_areas:
+- Edge
+- Resilience
 aliases: /hypershift/
 pattern_logo: medical-diagnosis.png
 links:

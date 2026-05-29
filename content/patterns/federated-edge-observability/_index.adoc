@@ -11,6 +11,10 @@ rh_products:
 - Red Hat Enterprise Linux
 - Red Hat OpenShift Data Foundation
 industries:
+focus_areas:
+- Edge
+- Observability
+- Virtualization
 aliases: /federated-edge-observability
 links:
   github: https://github.com/validatedpatterns-sandbox/federated-edge-observability

@@ -12,6 +12,10 @@ partners:
   - Elastic
 industries:
   - General
+focus_areas:
+  - AI
+  - Data
+  - DevSecOps
 aliases: /ai/
 # uncomment once this exists
 # pattern_logo: retail.png

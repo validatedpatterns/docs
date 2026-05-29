@@ -11,6 +11,10 @@ partners:
 - Microsoft
 industries:
 - General
+focus_areas:
+- AI
+- Data
+- DevSecOps
 aliases: /azure-rag-llm-gitops/
 #pattern_logo:
 links:

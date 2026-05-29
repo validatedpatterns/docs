@@ -11,6 +11,10 @@ rh_products:
 - Red Hat ElasticSearch
 industries:
 - General
+focus_areas:
+- Security
+- Observability
+- DevSecOps
 aliases: /travelops/
 links:
   github: https://github.com/validatedpatterns/travelops

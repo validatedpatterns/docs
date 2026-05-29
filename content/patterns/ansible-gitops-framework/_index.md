@@ -7,6 +7,9 @@ rh_products:
 - Red Hat Ansible Automation Platform
 - Red Hat Enterprise Linux
 industries:
+focus_areas:
+- DevSecOps
+- Security
 aliases: /agof/
 pattern_logo: ansible-edge.png
 links:

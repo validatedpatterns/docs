@@ -10,6 +10,10 @@ rh_products:
 - Red Hat AMQ Streams
 industries:
 - medical
+focus_areas:
+- AI
+- Data
+- Observability
 aliases: /emerging-disease-detection/
 // pattern_logo: emerging-disease-detection.png
 links:

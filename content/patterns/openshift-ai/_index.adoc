@@ -9,6 +9,9 @@ rh_products:
 - Red Hat Pipelines
 industries:
 - General
+focus_areas:
+- AI
+- Data
 aliases: /rhoai/
 links:
   github: https://github.com/validatedpatterns-sandbox/openshift-ai

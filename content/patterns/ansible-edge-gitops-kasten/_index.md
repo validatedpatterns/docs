@@ -13,6 +13,10 @@ partners:
 - Veeam Kasten
 industries:
 - Chemical
+focus_areas:
+- Edge
+- Virtualization
+- Resilience
 aliases: /ansible-edge-gitops-kasten/
 pattern_logo: veeam-kasten.png
 links:

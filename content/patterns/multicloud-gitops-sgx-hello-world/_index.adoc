@@ -11,6 +11,9 @@ partners:
 - Intel
 industries:
 - General
+focus_areas:
+- Security
+- DevSecOps
 aliases: /multicloud-gitops-sgx-hello-world/
 variant_of: multicloud-gitops
 # uncomment once this exists

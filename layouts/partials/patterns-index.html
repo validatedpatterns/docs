@@ -3,6 +3,41 @@
     {{ partial "menu-patterns.html" . }}
   </div>
 </div>
+<style>
+  .pattern-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--pf-global--spacer--md);
+    gap: var(--pf-global--spacer--md);
+  }
+
+  .pattern-header-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-right: var(--pf-global--spacer--md);
+  }
+
+  .pattern-header-logo {
+    flex: 0 0 auto;
+    text-align: right;
+  }
+
+  .pf-c-panel__main-body {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  @media (max-width: 768px) {
+    .pattern-header-row {
+      align-items: flex-start;
+    }
+
+    .pattern-header-logo {
+      display: none;
+    }
+  }
+</style>
 <main class="pf-c-page__main" tabindex="0">
   <section class="pf-c-page__main-section">
     {{ partial "toc-mobile.html" . }}
@@ -10,70 +45,67 @@
     <div class="pf-u-display-flex">
       {{ partial "toc.html" . }}
       <div class="pf-c-content">
-        <div class="pf-c-panel pf-m-raised">
+        <div class="pf-c-panel">
           <div class="pf-c-panel__main">
             <div class="pf-c-panel__main-body">
-              <div class="pf-l-grid pf-m-gutter">
-                <div class="pf-l-grid__item pf-m-10-col">
-                  <h1 class="pf-c-title pf-m-4xl">{{ .Title }}</h1>
-                </div>
-                <div class="pf-l-grid__item pf-m-2-col">
-                  {{ if (isset .Params "pattern_logo") }}
-                  <div class="pf-c-panel">
-                    <div class="pf-c-panel__main">
-                      <div class="pf-c-panel__main-body pf-u-text-align-right">
-                        <img src="/images/logos/{{ .Params.pattern_logo }}" class="pattern_logo" alt="Points">
-                      </div>
-                    </div>
+              <p class="pf-u-font-size-sm pf-u-color-200 pf-u-font-weight-bold pf-u-text-transform-uppercase pf-u-mb-sm">Pattern</p>
+              <div class="pattern-header-row">
+                <div class="pattern-header-title">
+                  <h1 class="pf-c-title pf-m-4xl pf-u-mt-0">{{ .Title }}</h1>
+                  {{ if or (isset .Params "authors") (isset .Params "company") }}
+                  <div class="pf-u-mt-sm pf-u-color-200">
+                    {{ if (isset .Params "authors") }}
+                      {{ partial "authors.html" . }}
+                    {{ end }}
+                    {{ if and (isset .Params "authors") (isset .Params "company") }}
+                      <span class="pf-u-mx-sm">|</span>
+                    {{ end }}
+                    {{ if (isset .Params "company") }}
+                      {{ .Params.company }}
+                    {{ end }}
                   </div>
                   {{ end }}
                 </div>
-                {{ if (isset .Params "authors") }}
-                <div class="pf-l-grid__item pf-m-3-col">
-                  Author{{if (gt .Params.authors 1)}}s{{ end }}:
-                </div>
-                <div class="pf-l-grid__item pf-m-9-col">
-                  {{ partial "authors.html" . }}
-                </div>
-                {{ end }}
-                {{ if (isset .Params "company") }}
-                <div class="pf-l-grid__item pf-m-3-col">
-                  Company:
-                </div>
-                <div class="pf-l-grid__item pf-m-9-col">
-                  {{ .Params.company }}
-                </div>
-                {{ end }}
-                <div class="pf-l-grid__item pf-m-3-col">
-                  Validation status:
-                </div>
-                <div class="pf-l-grid__item pf-m-9-col">
-                  {{ $validated := .Param "tier" }}
-                  {{ if (eq $validated "maintained" ) }}
-                    {{ partial "label-maintained.html" . }}
-                  {{ else if (eq $validated "tested" ) }}
-                    {{ partial "label-tested.html" . }}
+                <div class="pattern-header-logo">
+                  {{ if (isset .Params "pattern_logo") }}
+                    <img src="/images/logos/{{ .Params.pattern_logo }}" class="pattern_logo" alt="{{ .Title }} logo" style="max-height:56px; max-width:240px; width:auto; height:auto; object-fit:contain; object-position:right center;">
                   {{ else }}
-                    {{ partial "label-sandbox.html" . }}
+                    <img src="/images/logos/ansible-edge.png" alt="Ansible Edge logo" style="max-height:56px; max-width:240px; width:auto; height:auto; object-fit:contain; object-position:right center;">
                   {{ end }}
                 </div>
-                {{ if (isset .Params "ci") }}
-                <div class="pf-l-grid__item pf-m-3-col">
-                  CI status:
-                </div>
-                <div class="pf-l-grid__item pf-m-9-col">
-                  {{ partial "ci.html" . }}
-                </div>
-                {{ end }}
-                {{ if (isset .Params "links") }}
-                <div class="pf-l-grid__item pf-m-3-col">
-                  Links:
-                </div>
-                <div class="pf-l-grid__item pf-m-9-col">
-                  {{ partial "links.html" . }}
-                </div>
+              </div>
+
+              <div class="pf-u-mb-md">
+                <span class="pf-u-font-size-xs pf-u-color-200 pf-u-font-weight-bold pf-u-text-transform-uppercase pf-u-mr-md">Status</span>
+                {{ $validated := .Param "tier" }}
+                {{ if (eq $validated "maintained" ) }}
+                  {{ partial "label-maintained.html" . }}
+                {{ else if (eq $validated "tested" ) }}
+                  {{ partial "label-tested.html" . }}
+                {{ else }}
+                  {{ partial "label-sandbox.html" . }}
                 {{ end }}
               </div>
+
+              {{ if (isset .Params "ci") }}
+              <div class="pf-u-mb-md">
+                {{ partial "ci.html" . }}
+              </div>
+              {{ end }}
+
+              {{ if (isset .Params "links") }}
+              <div class="pf-u-pt-md pf-u-mb-sm">
+                <p class="pf-u-font-size-xs pf-u-color-200 pf-u-font-weight-bold pf-u-text-transform-uppercase pf-u-mb-sm">Resources</p>
+                {{ partial "links.html" . }}
+              </div>
+              {{ end }}
+
+              {{ if (isset .Params "partners") }}
+              <p class="pf-u-color-200 pf-u-font-size-sm pf-u-mt-md pf-u-mb-0">
+                {{ delimit .Params.partners ", " }} and related names, logos, and product names are trademarks or registered trademarks of their respective owners. This pattern is contributed as community content and is not an official product endorsement.
+              </p>
+              {{ end }}
+              <div class="pf-u-pt-md pf-u-mt-md" style="border-top: 1px solid var(--pf-global--BorderColor--100);"></div>
             </div>
           </div>
         </div>

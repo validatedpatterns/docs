@@ -10,6 +10,10 @@ partners:
 - IBM Fusion
 industries:
 - financial services
+focus_areas:
+- AI
+- Data
+- Observability
 aliases: /mlops-fraud-detection/
 pattern_logo: mlops-fraud-detection.png
 links:

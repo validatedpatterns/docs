@@ -12,6 +12,10 @@ rh_products:
 industries:
 - Industrial
 - Manufacturing
+focus_areas:
+- Edge
+- Observability
+- Security
 aliases: /industrial-edge/
 pattern_logo: industrial-edge.png
 links:

@@ -11,6 +11,10 @@ rh_products:
 - Red Hat Advanced Cluster Security
 industries:
 - General
+focus_areas:
+- DevSecOps
+- Security
+- Observability
 aliases: /devsecops/
 # uncomment once this exists
 # pattern_logo: devsecops.png
