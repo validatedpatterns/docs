@@ -63,7 +63,7 @@
     </div>
   </section>
 
-  {{ partial "footer.html" . }}
+  {{ partialCached "footer.html" . }}
 </main>
 <link rel="stylesheet" href="{{ "css/demos.css" | relURL }}">
 <script src="{{ "js/demos.js" | relURL }}" defer></script>

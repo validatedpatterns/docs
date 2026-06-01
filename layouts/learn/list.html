@@ -30,6 +30,6 @@
       {{ partial "paginator.html" . }}
     </div>
   </section>
-  {{ partial "footer.html" . }}
+  {{ partialCached "footer.html" . }}
 </main>
 {{ end }}
