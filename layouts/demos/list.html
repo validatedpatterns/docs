@@ -1,0 +1,70 @@
+{{ define "main" }}
+{{ $demos := .Params.demos }}
+{{ $heroMain := index $demos 0 }}
+<main class="pf-c-page__main" tabindex="0">
+  <section class="pf-c-page__main-section pf-m-light pf-u-background-color-dark-300">
+    <div class="pf-l-grid">
+      <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-10-col-on-md pf-m-offset-1-col-on-md pf-m-10-col-on-lg pf-m-offset-1-col-on-lg pf-u-py-xl">
+        <div class="pf-c-content">
+          <h1 class="pf-c-title pf-m-3xl pf-u-color-light-100">{{ .Title }}</h1>
+          {{ with .Description }}
+          <p class="pf-u-font-size-lg pf-u-color-light-200">{{ . }}</p>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pf-c-page__main-section demos-page">
+    <div class="pf-l-grid">
+      <div class="pf-l-grid__item pf-m-12-col-on-sm pf-m-12-col-on-md pf-m-offset-0-col-on-md pf-m-12-col-on-lg pf-m-offset-0-col-on-lg pf-u-px-lg-on-lg pf-u-py-2xl">
+        {{ if $demos }}
+        <div class="demos-hero" data-demos-hero>
+          <div class="demos-player" data-demos-player>
+            {{ partial "arcade-embed.html" (dict "id" $heroMain.id "title" $heroMain.title "eager" true) }}
+          </div>
+
+          <aside class="demos-hero__sidebar" aria-label="Demo playlist">
+            <div class="demos-sidebar__scroll" data-demos-sidebar-scroll tabindex="0">
+              {{ range $i, $demo := $demos }}
+              <div class="demos-sidebar-item">
+                {{ partial "demo-select-card.html" (dict "demo" $demo "variant" "sidebar" "active" (eq $i 0)) }}
+                <p class="demos-sidebar-item__title">{{ $demo.title }}</p>
+              </div>
+              {{ end }}
+            </div>
+          </aside>
+
+          <div class="demos-hero__meta-main">
+            <h2 class="demos-hero__title" data-demos-main-title>{{ $heroMain.title }}</h2>
+            <p class="demos-hero__desc" data-demos-main-desc>{{ $heroMain.description }}</p>
+            {{ if $heroMain.pattern_link }}
+            <p class="demos-hero__pattern" data-demos-main-pattern>
+              For more information, see: <a href="{{ $heroMain.pattern_link }}">{{ $heroMain.pattern_label | default "View pattern" }}</a>
+            </p>
+            {{ else }}
+            <p class="demos-hero__pattern" data-demos-main-pattern hidden></p>
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
+
+        {{ with .Params.next_steps }}
+        <div class="demos-next-steps pf-c-content">
+          <h2>Next steps</h2>
+          <ul>
+            {{ range . }}
+            <li><a href="{{ .url }}">{{ .label }}</a> — {{ .text }}</li>
+            {{ end }}
+          </ul>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+  {{ partial "footer.html" . }}
+</main>
+<link rel="stylesheet" href="{{ "css/demos.css" | relURL }}">
+<script src="{{ "js/demos.js" | relURL }}" defer></script>
+{{ end }}

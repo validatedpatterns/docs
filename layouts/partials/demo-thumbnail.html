@@ -1,0 +1,13 @@
+{{- /*
+  Thumbnail for a demo card. Pass dict: title, thumbnail (required image path).
+*/ -}}
+{{- $title := .title | default "Demo" -}}
+{{- $src := .thumbnail -}}
+<img
+  class="demos-thumb__img"
+  src="{{ $src }}"
+  alt="{{ $title }}"
+  loading="lazy"
+  decoding="async"
+  onerror="this.onerror=null;this.src='/images/demos/placeholder.svg';"
+/>

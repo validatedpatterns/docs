@@ -20,6 +20,7 @@ links:
   arch: https://www.redhat.com/architect/portfolio/detail/8-hybrid-multicloud-management-with-gitops
   bugs: https://github.com/validatedpatterns/multicloud-gitops/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+  demo: U3ztnJKzMjsNM05f0ff5
 ci: mcgitops
 ---
 :toc:

@@ -41,4 +41,59 @@
   <a href="{{ .Params.links.feedback }}" class="">Share Feedback</a>
 </li>
 {{ end }}
+{{ if (isset .Params.links "demo") }}
+{{ $demoId := .Params.links.demo }}
+<li class="pf-c-list__item">
+  <span class="pf-c-list__item-icon">
+    <i class="fa-solid fa-circle-play"></i>
+  </span>
+  <a href="javascript:void(0)" onclick="openArcadeModal('{{ $demoId }}', '{{ .Title }}')">View demo</a>
+</li>
+<script>
+  (function () {
+    if (window._arcadeModalReady) return;
+    window._arcadeModalReady = true;
+
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999999;background:rgba(0,0,0,0.88);';
+
+    var closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '&times;';
+    closeBtn.setAttribute('aria-label', 'Close demo');
+    closeBtn.style.cssText = 'position:absolute;top:12px;right:16px;background:none;border:none;color:#fff;font-size:2.5rem;line-height:1;cursor:pointer;padding:4px 10px;z-index:1;';
+    closeBtn.onclick = closeModal;
+
+    var iframeEl = document.createElement('iframe');
+    iframeEl.setAttribute('frameborder', '0');
+    iframeEl.setAttribute('allowfullscreen', '');
+    iframeEl.setAttribute('allow', 'clipboard-write');
+    iframeEl.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:0;color-scheme:light;';
+
+    overlay.appendChild(closeBtn);
+    overlay.appendChild(iframeEl);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    function closeModal() {
+      overlay.style.display = 'none';
+      iframeEl.src = '';
+      document.body.style.overflow = '';
+    }
+
+    window.closeArcadeModal = closeModal;
+    window.openArcadeModal = function (id, title) {
+      iframeEl.src = 'https://demo.arcade.software/' + id + '?embed&embed_mobile=tab&embed_desktop=inline&squared=true&show_copy_link=true';
+      iframeEl.title = title ? title + ' demo' : 'Interactive demo';
+      overlay.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    };
+  })();
+</script>
+{{ end }}
 </ul>
