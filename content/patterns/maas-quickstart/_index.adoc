@@ -1,0 +1,36 @@
+---
+title: MaaS Code Assistant AI Quickstart
+date: 2026-06-03
+tier: sandbox
+summary: This pattern deploys a multi-tenant AI code assistant with NVIDIA Nemotron models, tiered rate limiting, and IDE integration on OpenShift.
+rh_products:
+  - Red Hat OpenShift Container Platform
+  - Red Hat OpenShift AI
+  - Red Hat OpenShift DevSpaces
+  - Red Hat Connectivity Link
+industries:
+  - General
+focus_areas:
+  - AI
+  - Code
+  - AI Quickstart
+aliases: /maas-quickstart/
+links:
+  github: https://github.com/validatedpatterns-sandbox/ai-quickstart-maas-code-assistant
+  install: getting-started
+  bugs: https://github.com/validatedpatterns-sandbox/ai-quickstart-maas-code-assistant/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/maas-quickstart-about.adoc[leveloffset=+1]
+
+include::modules/maas-quickstart-architecture.adoc[leveloffset=+1]
+
+[id="next-steps-maas-quickstart"]
+== Next steps
+
+* link:getting-started[Install this pattern.]

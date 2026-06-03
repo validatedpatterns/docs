@@ -1,0 +1,143 @@
+---
+title: Customizing this pattern
+weight: 20
+aliases: /maas-quickstart/customizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="customizing-maas-quickstart"]
+== Customizing the MaaS Code Assistant AI Quickstart pattern
+
+This pattern deploys an AI code assistant with tiered user access, rate limiting, and NVIDIA Nemotron model serving. You can customize the models, rate limit policies, user tiers, and IDE configuration.
+
+[id="changing-models-maas"]
+=== Changing models
+
+The pattern serves two models by default:
+
+* `nemotron-3-nano-30b-a3b-fp8` -- Available to premium and enterprise tier users.
+* `gpt-oss-20b` -- Available to all user tiers.
+
+To change or add models, edit the `models` list in `overrides/maas-quickstart.yaml`. Models are pulled from OCI registries and do not require a HuggingFace API token.
+
+The model definitions specify the model URI, resource requirements, GPU tolerations, and vLLM arguments. For example:
+
+[source,yaml]
+----
+models:
+  - name: gpt-oss-20b
+    displayName: OpenAI gpt-oss-20b
+    uri: oci://registry.redhat.io/rhelai1/modelcar-gpt-oss-20b:1.5
+    resources:
+      limits:
+        cpu: "4"
+        memory: 24Gi
+        nvidia.com/gpu: "1"
+      requests:
+        cpu: "2"
+        memory: 16Gi
+        nvidia.com/gpu: "1"
+    extraArgs:
+      - --enable-force-include-usage
+    tolerations:
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Exists
+----
+
+[NOTE]
+====
+Each model requires a GPU with at least 48 GB of VRAM. Adding models beyond the default two requires additional GPU nodes.
+====
+
+[id="adjusting-rate-limits-maas"]
+=== Adjusting rate limits and user tiers
+
+The pattern uses Kuadrant (Red Hat Connectivity Link) to enforce per-tier rate limits on inference requests. The default tiers and limits are:
+
+[cols="1,1,2",options="header"]
+|===
+| Tier | Rate Limit | Description
+
+| Free
+| 5 requests per 2 minutes
+| Basic access for evaluation
+
+| Premium
+| 20 requests per 2 minutes
+| Standard production usage
+
+| Enterprise
+| 50 requests per 2 minutes
+| High-throughput workloads
+|===
+
+To adjust rate limits, modify the `tiers` section in `overrides/maas-quickstart.yaml`. For example, to increase the premium tier request limit to 40 and the token limit to 20000:
+
+[source,yaml]
+----
+tiers:
+  premium:
+    users:
+      - premium-user
+    requestRates:
+      - limit: 40
+        window: 2m
+    tokenRates:
+      - limit: 20000
+        window: 1m
+----
+
+Push your changes to your forked repository so the GitOps framework applies the updated configuration.
+
+[id="managing-users-maas"]
+=== Managing users
+
+User authentication is handled by htpasswd with OpenShift OAuth. The default users are:
+
+* `admin` -- Full administrative access (enterprise tier)
+* `free-user` -- Free tier access
+* `premium-user` -- Premium tier access
+* `enterprise-user` -- Enterprise tier access
+
+User passwords are stored in the `values-secret.yaml` file and managed through HashiCorp Vault and the External Secrets Operator (ESO). To change a user password after initial deployment, update the secret value in your `values-secret.yaml` file and redeploy the pattern.
+
+To assign users to different tiers, modify the `tiers` section in `overrides/maas-quickstart.yaml`:
+
+[source,yaml]
+----
+tiers:
+  free:
+    users:
+      - free-user
+  premium:
+    users:
+      - premium-user
+      - user1
+  enterprise:
+    users:
+      - admin
+      - enterprise-user
+----
+
+[id="configuring-devspaces-maas"]
+=== Configuring OpenShift DevSpaces
+
+The pattern integrates the Continue AI extension in OpenShift DevSpaces to provide code assistance directly in the IDE. DevSpaces is preconfigured to clone the AI Quickstart repository and connect to the vLLM inference endpoints.
+
+To customize the DevSpaces configuration, you can adjust:
+
+* Default IDE settings and extensions
+* Resource limits for developer workspaces
+* The inference endpoint URL used by the Continue extension
+
+[id="gpu-node-provisioning-maas"]
+=== GPU node provisioning
+
+This pattern requires at least 2 NVIDIA GPU nodes with 48 GB or more of VRAM each. On AWS, the pattern automatically provisions `g6e.2xlarge` GPU machine sets with NVIDIA L40S GPUs.
+
+If your cluster does not have GPU nodes, you must add them before deploying the pattern. The pattern installs all required operators, including the NVIDIA GPU Operator, automatically during deployment.
