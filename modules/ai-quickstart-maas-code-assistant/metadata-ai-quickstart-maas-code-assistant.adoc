@@ -1,0 +1,22 @@
+// This file defines cluster sizing attributes for the MaaS Code Assistant AI Quickstart pattern.
+// The pattern-metadata.yaml has an empty requirements field, so these values are defined manually
+// based on tested configurations.
+:metadata_version: 1.0
+:name: ai-quickstart-maas-code-assistant
+:pattern_version: 1.0
+:description: Deploy a multi-tenant AI code assistant with NVIDIA Nemotron models, tiered rate limiting, and IDE integration.
+:display_name: MaaS Code Assistant AI Quickstart
+:repo_url: https://github.com/validatedpatterns-sandbox/ai-quickstart-maas-code-assistant
+:docs_repo_url: https://github.com/validatedpatterns/docs
+:issues_url: https://github.com/validatedpatterns-sandbox/ai-quickstart-maas-code-assistant/issues
+:docs_url: https://validatedpatterns.io/patterns/maas-quickstart/
+:ci_url: https://validatedpatterns.io/ci/?pattern=maas-quickstart
+:tier: sandbox
+:owners: dminnear-rh
+:requirements_hub_controlPlane_platform_aws_replicas: 3
+:requirements_hub_controlPlane_platform_aws_type: m5.xlarge
+:requirements_hub_compute_platform_aws_replicas: 3
+:requirements_hub_compute_platform_aws_type: m5.2xlarge
+:extra_features_hypershift_support: false
+:extra_features_spoke_support: false
+:external_requirements:

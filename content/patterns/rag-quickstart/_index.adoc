@@ -9,6 +9,10 @@ rh_products:
   - Red Hat OpenShift AI
 industries:
   - General
+focus_areas:
+  - AI
+  - Data
+  - AI Quickstart
 aliases: /rag-quickstart/
 links:
   github: https://github.com/validatedpatterns-sandbox/ai-quickstart-rag

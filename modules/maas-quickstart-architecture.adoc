@@ -1,0 +1,135 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+include::comm-attributes.adoc[]
+
+[id="maas-quickstart-architecture"]
+= MaaS Code Assistant AI Quickstart architecture
+
+The following figure provides a high-level overview of the MaaS Code Assistant architecture.
+
+.MaaS Code Assistant system architecture
+image::maas-quickstart/code-assist-diagram.png[MaaS Code Assistant Architecture,link="/images/maas-quickstart/code-assist-diagram.png"]
+
+The architecture consists of three main layers:
+
+* *Inference Layer* -- Serves NVIDIA Nemotron models through vLLM and llm-d with GPU acceleration for code completion and generation.
+* *Governance Layer* -- Manages user authentication through htpasswd with OpenShift OAuth and enforces per-tier rate limits through Kuadrant.
+* *Developer Experience Layer* -- Provides an integrated IDE through OpenShift DevSpaces with the Continue AI extension connected to the inference endpoints.
+
+[id="maas-quickstart-inference-layer"]
+== Inference layer
+
+The inference layer serves language models and processes code completion requests:
+
+vLLM Model Servers::
+Serve NVIDIA Nemotron models with GPU acceleration. Each model runs as a vLLM instance managed by {rhoai}, optimized for high-throughput inference with features like continuous batching and PagedAttention.
+
+llm-d::
+Provides Kubernetes-native distributed inference orchestration. llm-d manages model placement, scaling, and request routing across GPU nodes using the LeaderWorkerSet (LWS) operator.
+
+NVIDIA GPU Operator::
+Manages NVIDIA GPU drivers, device plugins, and monitoring on worker nodes. Ensures GPUs are properly configured and available for model serving workloads.
+
+[id="maas-quickstart-governance-layer"]
+== Governance layer
+
+The governance layer controls access and enforces usage policies:
+
+OpenShift OAuth with htpasswd::
+Provides identity and access management using OpenShift's built-in OAuth server with htpasswd credentials. Users are assigned to tiers (Free, Premium, Enterprise) that determine their rate limits and model access.
+
+Kuadrant (Red Hat Connectivity Link)::
+Enforces rate limit policies on inference API requests. Each user tier has a configured request quota (Free: 5/2min, Premium: 20/2min, Enterprise: 50/2min) to manage capacity and enable usage-based chargeback.
+
+HashiCorp Vault + External Secrets Operator::
+Manages sensitive credentials including htpasswd user passwords. The {solution-name-upstream} framework provisions Vault and ESO to securely synchronize secrets to the cluster.
+
+[id="maas-quickstart-developer-experience"]
+== Developer experience layer
+
+The developer experience layer provides the end-user interface:
+
+OpenShift DevSpaces::
+Delivers browser-based developer workspaces with preconfigured IDE environments. Developers access DevSpaces to write code with AI assistance without local setup.
+
+Continue AI Extension::
+An open source AI code assistant extension integrated into DevSpaces. Continue connects to the vLLM inference endpoints to provide inline code suggestions, completions, and chat-based code assistance.
+
+[id="maas-quickstart-deployment"]
+== Deployment architecture
+
+The following table describes the pod structure when deployed on OpenShift:
+
+[cols="1,2,3",options="header"]
+|===
+| Pod | Purpose | Key characteristics
+
+| vLLM Model Server (nemotron-3-nano-30b)
+| Code generation inference
+| GPU-accelerated, serves premium and enterprise tier users, managed by llm-d and {rhoai}
+
+| vLLM Model Server (gpt-oss-20b)
+| Code generation inference
+| GPU-accelerated, serves all user tiers, managed by llm-d and {rhoai}
+
+| Kuadrant / Limitador
+| API rate limiting
+| Enforces per-tier rate limits on inference endpoints, provides usage metrics
+
+| DevSpaces
+| Developer IDE
+| Browser-based workspaces with Continue AI extension, connects to inference endpoints
+
+| Grafana
+| Monitoring dashboards
+| Visualizes inference metrics, request rates, and per-tier usage
+
+| Prometheus
+| Metrics collection
+| Collects inference latency, throughput, GPU utilization, and rate limiting metrics
+
+| Vault
+| Secrets management
+| Stores htpasswd credentials and other sensitive configuration, synced by ESO
+|===
+
+[id="maas-quickstart-technologies"]
+== Implementation technologies
+
+[cols="1,2",options="header"]
+|===
+| Component | Technology
+
+| Inference Engine
+| vLLM with llm-d
+
+| Language Models
+| NVIDIA Nemotron (nemotron-3-nano-30b-a3b-fp8, gpt-oss-20b)
+
+| Container Orchestration
+| {rh-ocp} + {rhoai}
+
+| IDE Platform
+| Red Hat OpenShift DevSpaces + Continue
+
+| API Gateway / Rate Limiting
+| Red Hat Connectivity Link (Kuadrant)
+
+| Identity Management
+| OpenShift OAuth with htpasswd
+
+| GPU Management
+| NVIDIA GPU Operator
+
+| Monitoring
+| Grafana + Prometheus
+
+| Certificate Management
+| cert-manager
+
+| Secrets Management
+| HashiCorp Vault + External Secrets Operator
+
+| Inference Orchestration
+| LeaderWorkerSet (LWS) Operator
+|===

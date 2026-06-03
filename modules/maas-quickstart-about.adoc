@@ -1,0 +1,79 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+include::comm-attributes.adoc[]
+
+[id="about-maas-quickstart"]
+= About the MaaS Code Assistant AI Quickstart pattern
+
+Deploy a governed, multi-tenant AI code assistant on OpenShift with tiered access control, rate limiting, and integrated IDE support.
+
+Use case::
+
+* Deploy an AI-powered code assistant that provides intelligent code suggestions through an integrated development environment.
+* Implement Model-as-a-Service (MaaS) governance with tiered user access, rate limiting, and chargeback capabilities.
+* Use a GitOps approach to provision AI inference infrastructure including GPU-accelerated model serving, identity management, and API rate limiting.
++
+[NOTE]
+====
+Based on the requirements of a specific implementation, certain details might differ. However, all Validated Patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
+====
+
+Background::
+
+This pattern is scaffolding around the link:https://github.com/rh-ai-quickstart/maas-code-assistant[MaaS Code Assistant AI Quickstart]. It provisions the OpenShift cluster with link:https://www.redhat.com/en/products/ai/openshift-ai[{rhoai}] configured for GPU-accelerated inference using vLLM and llm-d. It deploys the NVIDIA GPU Operator for model serving on GPU nodes and manages secrets through the {solution-name-upstream} framework using HashiCorp Vault and the External Secrets Operator.
+
+The MaaS Code Assistant enables organizations to offer AI code assistance as an internal service with differentiated access tiers. It demonstrates a production-ready approach to:
+
+- Serving multiple NVIDIA Nemotron language models optimized for code completion and generation
+- Enforcing per-user rate limits through Kuadrant (Red Hat Connectivity Link) to manage capacity and enable chargeback
+- Authenticating users through htpasswd with OpenShift OAuth for tiered access (Free, Premium, Enterprise)
+- Providing an integrated development experience through OpenShift DevSpaces with the Continue AI extension
+- Monitoring usage and performance through Grafana dashboards and Prometheus metrics
+
+[id="about-maas-quickstart-solution"]
+== About the solution
+
+This pattern deploys a complete MaaS code assistance platform on a single OpenShift cluster by using a GitOps approach. The {solution-name-upstream} framework handles infrastructure provisioning, including GPU operators, AI platform configuration, and secrets management. The MaaS Code Assistant AI Quickstart delivers the application layer: model serving, rate limiting, user authentication, and IDE integration.
+
+The solution uses vLLM with llm-d for high-performance inference of NVIDIA Nemotron models. Kuadrant enforces rate limit policies per user tier, while htpasswd with OpenShift OAuth manages authentication and tier assignment. OpenShift DevSpaces provides a browser-based IDE with the Continue AI extension preconfigured to connect to the inference endpoints.
+
+[id="about-maas-quickstart-technology"]
+== About the technology
+
+The following technologies are used in this solution:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-ocp}]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-gitops}]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai[{rhoai}]::
+A flexible, scalable MLOps platform with tools to build, deploy, and manage AI-enabled applications. This pattern uses {rhoai} to manage GPU-accelerated model serving with vLLM.
+
+https://developers.redhat.com/products/openshift-dev-spaces/overview[Red{nbsp}Hat OpenShift DevSpaces]::
+A cloud-based developer workspace platform that provides preconfigured, containerized development environments. This pattern uses DevSpaces to deliver an integrated IDE with AI code assistance.
+
+https://docs.redhat.com/en/documentation/red_hat_connectivity_link[Red{nbsp}Hat Connectivity Link (Kuadrant)]::
+An API management and connectivity solution that provides rate limiting, authentication, and traffic policies. This pattern uses Kuadrant to enforce per-tier rate limits on inference requests.
+
+https://docs.vllm.ai/[vLLM]::
+A high-throughput, memory-efficient inference engine for large language models. vLLM serves the Nemotron models with optimized GPU utilization.
+
+https://github.com/llm-d/llm-d[llm-d]::
+A Kubernetes-native distributed inference framework for LLMs that works with vLLM to provide scalable model serving.
+
+https://developer.nvidia.com/nemotron[NVIDIA Nemotron]::
+A family of language models optimized for code generation and completion tasks. The pattern serves `nemotron-3-nano-30b-a3b-fp8` and `gpt-oss-20b`.
+
+https://grafana.com/[Grafana]::
+An open source analytics and monitoring platform. This pattern uses Grafana dashboards to visualize inference metrics and usage per tier.
+
+https://prometheus.io/[Prometheus]::
+An open source monitoring and alerting toolkit. This pattern uses Prometheus to collect inference and rate limiting metrics.
+
+https://cert-manager.io/[cert-manager]::
+A Kubernetes-native certificate management controller. This pattern uses cert-manager to provision and manage TLS certificates.
+
+https://github.com/continuedev/continue[Continue]::
+An open source AI code assistant extension for IDEs. This pattern integrates Continue in OpenShift DevSpaces to provide code suggestions powered by the served models.

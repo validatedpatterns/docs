@@ -1,0 +1,29 @@
+---
+title: Cluster sizing
+weight: 30
+aliases: /maas-quickstart/cluster-sizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+include::modules/ai-quickstart-maas-code-assistant/metadata-ai-quickstart-maas-code-assistant.adoc[]
+
+include::modules/cluster-sizing-template.adoc[]
+
+[id="maas-quickstart-gpu-node-requirements"]
+== GPU node requirements
+
+In addition to the worker nodes listed above, this pattern requires at least 2 GPU-equipped nodes for model inference. On AWS, the pattern automatically provisions `g6e.2xlarge` instances with NVIDIA L40S GPUs. On other providers and bare metal, GPU nodes must already be part of the cluster before deploying the pattern.
+
+.GPU node minimum requirements
+[cols="<,^,<,<"]
+|===
+| Cloud Provider | Node Type | Number of nodes | Instance Type
+
+| Amazon Web Services
+| GPU Worker
+| 2
+| g6e.2xlarge
+|===
