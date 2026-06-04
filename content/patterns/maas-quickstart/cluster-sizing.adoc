@@ -20,7 +20,7 @@ In addition to the worker nodes listed above, this pattern requires at least 2 G
 .GPU node minimum requirements
 [cols="<,^,<,<"]
 |===
-| Cloud Provider | Node Type | Number of nodes | Instance Type
+| Cloud provider | Node type | Number of nodes | Instance type
 
 | Amazon Web Services
 | GPU Worker

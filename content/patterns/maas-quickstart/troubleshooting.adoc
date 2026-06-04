@@ -1,0 +1,264 @@
+---
+title: Troubleshooting
+weight: 40
+aliases: /maas-quickstart/troubleshooting/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="troubleshooting-maas-quickstart"]
+== Troubleshooting the MaaS Code Assistant AI Quickstart pattern
+
+Use this page to diagnose and resolve common issues when deploying or operating this pattern.
+
+[id="troubleshooting-prereqs-maas"]
+== Prerequisite and tooling issues
+
+[id="troubleshooting-podman-version"]
+=== Podman version not supported
+
+The `pattern.sh` script requires Podman 4.3.0 or later. Earlier versions do not support the `--userns=keep-id` flag required for correct UID/GID mapping inside the container.
+
+.Symptom
+
+The script exits with an error referencing the Podman version or `keep-id`.
+
+.Resolution
+
+. Check your Podman version:
++
+[source,terminal]
+----
+$ podman --version
+----
+
+. If the version is earlier than 4.3.0, upgrade Podman. For instructions, see the link:https://podman.io/docs/installation[Podman installation documentation].
+
+[id="troubleshooting-kubeconfig"]
+=== KUBECONFIG path is outside the HOME directory
+
+The `pattern.sh` script runs inside a container and mounts your `$HOME` directory. If your `KUBECONFIG` file is located outside `$HOME`, the container cannot access it.
+
+.Symptom
+
+The script fails to connect to the cluster or reports that the kubeconfig file cannot be found.
+
+.Resolution
+
+Move your kubeconfig file to a path inside your home directory and export the updated path:
+
+[source,terminal]
+----
+$ cp <current-kubeconfig-path> ~/kubeconfig
+$ export KUBECONFIG=~/kubeconfig
+----
+
+[id="troubleshooting-deployment-maas"]
+== Deployment issues
+
+[id="troubleshooting-argocd-sync"]
+=== ArgoCD applications are not syncing or are unhealthy
+
+After running `./pattern.sh make install`, ArgoCD applications can take 15–30 minutes to reach a healthy state. Model downloads and GPU operator initialization take additional time.
+
+.Symptom
+
+Running `./pattern.sh make argo-healthcheck` reports applications in `Progressing` or `Degraded` state.
+
+.Resolution
+
+. Check which applications are not healthy:
++
+[source,terminal]
+----
+$ oc get applications -n openshift-gitops
+----
+
+. Inspect the failing application for error details:
++
+[source,terminal]
+----
+$ oc describe application <application-name> -n openshift-gitops
+----
+
+. Check the logs of the ArgoCD application controller:
++
+[source,terminal]
+----
+$ oc logs -n openshift-gitops deployment/openshift-gitops-application-controller
+----
+
+. If applications are stuck in `Progressing`, wait an additional 10 minutes and re-run the health check. Model downloads from OCI registries can take significant time depending on network conditions.
+
+[id="troubleshooting-schema-validation"]
+=== Values file schema validation fails
+
+The pattern validates `values-*.yaml` files against a schema before deployment.
+
+.Symptom
+
+Running `./pattern.sh make install` fails with a schema validation error.
+
+.Resolution
+
+. Run the validation step independently to see the full error output:
++
+[source,terminal]
+----
+$ ./pattern.sh make validate-schema
+----
+
+. Review the error message to identify the malformed field and correct the value in your `values-secret.yaml` or `overrides/maas-quickstart.yaml` file.
+
+[id="troubleshooting-gpu-maas"]
+== GPU and inference issues
+
+[id="troubleshooting-gpu-nodes"]
+=== GPU nodes are not ready
+
+The NVIDIA GPU Operator must successfully initialize on each GPU node before model serving can start.
+
+.Symptom
+
+Inference service pods remain in `Pending` state, or `oc get inferenceservice -A` shows services not ready.
+
+.Resolution
+
+. Check the status of GPU nodes:
++
+[source,terminal]
+----
+$ oc get nodes -l nvidia.com/gpu.present=true
+----
+
+. Check the NVIDIA GPU Operator pods:
++
+[source,terminal]
+----
+$ oc get pods -n nvidia-gpu-operator
+----
+
+. Check for driver initialization errors:
++
+[source,terminal]
+----
+$ oc logs -n nvidia-gpu-operator -l app=nvidia-driver-daemonset
+----
+
+. If you are using a provider other than AWS, confirm that GPU nodes were present in the cluster before you deployed the pattern. The pattern does not provision GPU nodes on providers other than AWS.
+
+[id="troubleshooting-inference-endpoints"]
+=== Inference endpoints are not serving
+
+.Symptom
+
+`oc get inferenceservice -A` shows inference services in a non-ready state, or the Continue AI extension in DevSpaces returns connection errors.
+
+.Resolution
+
+. Check the status of inference services:
++
+[source,terminal]
+----
+$ oc get inferenceservice -A
+----
+
+. Check the vLLM model server pod logs for a specific model:
++
+[source,terminal]
+----
+$ oc logs -n redhat-ods-applications -l serving.kserve.io/inferenceservice=<model-name>
+----
+
+. Confirm that the GPU nodes have sufficient available VRAM. Each model requires a GPU with at least 48 GB of VRAM. If both models are scheduled on the same node, the node requires at least 96 GB of VRAM or you must use two separate GPU nodes.
+
+[id="troubleshooting-rate-limiting-maas"]
+== Rate limiting and authentication issues
+
+[id="troubleshooting-rate-limits"]
+=== Rate limiting is not enforced
+
+.Symptom
+
+Requests from all users succeed regardless of the configured rate limits, or requests are blocked for all users.
+
+.Resolution
+
+. Check the status of the Kuadrant operator and Limitador pod:
++
+[source,terminal]
+----
+$ oc get pods -n kuadrant-system
+----
+
+. Check the Limitador logs for policy errors:
++
+[source,terminal]
+----
+$ oc logs -n kuadrant-system deployment/limitador
+----
+
+. Confirm that rate limit policies are applied correctly:
++
+[source,terminal]
+----
+$ oc get ratelimitpolicy -A
+----
+
+[id="troubleshooting-auth-maas"]
+=== Users cannot authenticate
+
+.Symptom
+
+Users receive authentication errors when accessing the inference API or DevSpaces.
+
+.Resolution
+
+. Confirm that the htpasswd secret was correctly provisioned by the External Secrets Operator:
++
+[source,terminal]
+----
+$ oc get externalsecret -A
+$ oc get secret htpasswd-secret -n openshift-config
+----
+
+. If the secret is missing or incorrect, verify that your `values-secret.yaml` file contains the correct passwords for all four users (`admin`, `free-user`, `premium-user`, `enterprise-user`) and redeploy the pattern.
+
+[id="troubleshooting-devspaces-maas"]
+== OpenShift DevSpaces issues
+
+[id="troubleshooting-devspaces-connection"]
+=== Continue AI extension cannot connect to inference endpoints
+
+.Symptom
+
+Code suggestions are not returned in DevSpaces, or the Continue extension reports a connection error.
+
+.Resolution
+
+. Confirm that the inference services are healthy:
++
+[source,terminal]
+----
+$ oc get inferenceservice -A
+----
+
+. Navigate to *Networking -> Routes* in the namespace where the inference services are running and confirm the routes are accessible.
+
+. In DevSpaces, open the Continue extension settings and verify that the endpoint URL matches the route URL for the vLLM service.
+
+[id="troubleshooting-get-help-maas"]
+== Getting help
+
+If you cannot resolve an issue using this guide:
+
+* Check the link:https://github.com/validatedpatterns-sandbox/ai-quickstart-maas-code-assistant/issues[GitHub issues] for known problems and workarounds.
+* Open a new issue with the output of the following command to help diagnose the problem:
++
+[source,terminal]
+----
+$ oc get pods -A | grep -v Running | grep -v Completed
+----

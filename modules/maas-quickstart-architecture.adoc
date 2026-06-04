@@ -5,7 +5,7 @@ include::comm-attributes.adoc[]
 [id="maas-quickstart-architecture"]
 = MaaS Code Assistant AI Quickstart architecture
 
-The following figure provides a high-level overview of the MaaS Code Assistant architecture.
+The following figure shows the MaaS Code Assistant architecture.
 
 .MaaS Code Assistant system architecture
 image::maas-quickstart/code-assist-diagram.png[MaaS Code Assistant Architecture,link="/images/maas-quickstart/code-assist-diagram.png"]
@@ -28,7 +28,7 @@ llm-d::
 Provides Kubernetes-native distributed inference orchestration. llm-d manages model placement, scaling, and request routing across GPU nodes using the LeaderWorkerSet (LWS) operator.
 
 NVIDIA GPU Operator::
-Manages NVIDIA GPU drivers, device plugins, and monitoring on worker nodes. Ensures GPUs are properly configured and available for model serving workloads.
+Manages NVIDIA GPU drivers, device plugins, and monitoring on worker nodes. Ensures GPUs are configured and available for model serving workloads.
 
 [id="maas-quickstart-governance-layer"]
 == Governance layer
@@ -36,13 +36,13 @@ Manages NVIDIA GPU drivers, device plugins, and monitoring on worker nodes. Ensu
 The governance layer controls access and enforces usage policies:
 
 OpenShift OAuth with htpasswd::
-Provides identity and access management using OpenShift's built-in OAuth server with htpasswd credentials. Users are assigned to tiers (Free, Premium, Enterprise) that determine their rate limits and model access.
+Provides identity and access management using the built-in OAuth server in OpenShift with htpasswd credentials. The solution assigns users to tiers (Free, Premium, Enterprise) that determine their rate limits and model access.
 
 Kuadrant (Red Hat Connectivity Link)::
 Enforces rate limit policies on inference API requests. Each user tier has a configured request quota (Free: 5/2min, Premium: 20/2min, Enterprise: 50/2min) to manage capacity and enable usage-based chargeback.
 
-HashiCorp Vault + External Secrets Operator::
-Manages sensitive credentials including htpasswd user passwords. The {solution-name-upstream} framework provisions Vault and ESO to securely synchronize secrets to the cluster.
+{hashicorp-vault} and External Secrets Operator::
+Manages sensitive credentials including htpasswd user passwords. The {solution-name-upstream} framework provisions {hashicorp-vault-short} and ESO to securely synchronize secrets to the cluster.
 
 [id="maas-quickstart-developer-experience"]
 == Developer experience layer
@@ -52,17 +52,17 @@ The developer experience layer provides the end-user interface:
 OpenShift DevSpaces::
 Delivers browser-based developer workspaces with preconfigured IDE environments. Developers access DevSpaces to write code with AI assistance without local setup.
 
-Continue AI Extension::
+Continue AI extension::
 An open source AI code assistant extension integrated into DevSpaces. Continue connects to the vLLM inference endpoints to provide inline code suggestions, completions, and chat-based code assistance.
 
 [id="maas-quickstart-deployment"]
 == Deployment architecture
 
-The following table describes the pod structure when deployed on OpenShift:
+The following table describes the pod structure when you deploy on OpenShift:
 
 [cols="1,2,3",options="header"]
 |===
-| Pod | Purpose | Key characteristics
+| Pod | Purpose | Characteristics
 
 | vLLM Model Server (nemotron-3-nano-30b)
 | Code generation inference
