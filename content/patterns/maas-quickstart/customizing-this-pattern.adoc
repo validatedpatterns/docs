@@ -22,7 +22,7 @@ The pattern serves two models by default:
 * `nemotron-3-nano-30b-a3b-fp8` -- Available to premium and enterprise tier users.
 * `gpt-oss-20b` -- Available to all user tiers.
 
-To change or add models, edit the `models` list in `overrides/maas-quickstart.yaml`. Models are pulled from OCI registries and do not require a HuggingFace API token.
+To change or add models, edit the `models` list in `overrides/maas-quickstart.yaml`. The pattern pulls models from OCI registries and does not require a HuggingFace API token.
 
 The model definitions specify the model URI, resource requirements, GPU tolerations, and vLLM arguments. For example:
 
@@ -61,7 +61,7 @@ The pattern uses Kuadrant (Red Hat Connectivity Link) to enforce per-tier rate l
 
 [cols="1,1,2",options="header"]
 |===
-| Tier | Rate Limit | Description
+| Tier | Rate limit | Description
 
 | Free
 | 5 requests per 2 minutes
@@ -76,7 +76,7 @@ The pattern uses Kuadrant (Red Hat Connectivity Link) to enforce per-tier rate l
 | High-throughput workloads
 |===
 
-To adjust rate limits, modify the `tiers` section in `overrides/maas-quickstart.yaml`. For example, to increase the premium tier request limit to 40 and the token limit to 20000:
+To adjust rate limits, modify the `tiers` section in `overrides/maas-quickstart.yaml`. The following example increases the premium tier request limit to 40 and the token limit to 20000:
 
 [source,yaml]
 ----
@@ -97,14 +97,14 @@ Push your changes to your forked repository so the GitOps framework applies the 
 [id="managing-users-maas"]
 === Managing users
 
-User authentication is handled by htpasswd with OpenShift OAuth. The default users are:
+htpasswd with OpenShift OAuth handles user authentication. The default users are:
 
 * `admin` -- Full administrative access (enterprise tier)
 * `free-user` -- Free tier access
 * `premium-user` -- Premium tier access
 * `enterprise-user` -- Enterprise tier access
 
-User passwords are stored in the `values-secret.yaml` file and managed through HashiCorp Vault and the External Secrets Operator (ESO). To change a user password after initial deployment, update the secret value in your `values-secret.yaml` file and redeploy the pattern.
+{hashicorp-vault} and the {eso-op} store and manage user passwords in the `values-secret.yaml` file. To change a user password after initial deployment, update the secret value in your `values-secret.yaml` file and redeploy the pattern.
 
 To assign users to different tiers, modify the `tiers` section in `overrides/maas-quickstart.yaml`:
 
@@ -136,8 +136,8 @@ To customize the DevSpaces configuration, you can adjust:
 * The inference endpoint URL used by the Continue extension
 
 [id="gpu-node-provisioning-maas"]
-=== GPU node provisioning
+=== Provisioning GPU nodes
 
 This pattern requires at least 2 NVIDIA GPU nodes with 48 GB or more of VRAM each. On AWS, the pattern automatically provisions `g6e.2xlarge` GPU machine sets with NVIDIA L40S GPUs.
 
-If your cluster does not have GPU nodes, you must add them before deploying the pattern. The pattern installs all required operators, including the NVIDIA GPU Operator, automatically during deployment.
+If your cluster does not have GPU nodes, you must add them before you deploy the pattern. The pattern installs all required operators, including the NVIDIA GPU Operator, automatically during deployment.

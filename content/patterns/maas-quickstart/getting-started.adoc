@@ -15,8 +15,8 @@ include::modules/comm-attributes.adoc[]
 .Prerequisites
 
 * An OpenShift cluster (version 4.20 or later). This pattern requires at least 2 NVIDIA GPU nodes with 48 GB or more of VRAM each.
- ** *AWS*: The pattern automatically provisions 2 `g6e.2xlarge` GPU worker nodes (NVIDIA L40S) during installation. No GPU nodes need to be present before deploying.
- ** *Other providers and bare metal*: GPU nodes must already be part of the OpenShift cluster before deploying this pattern. The pattern installs all required operators automatically.
+ ** *AWS*: The pattern automatically provisions 2 `g6e.2xlarge` GPU worker nodes (NVIDIA L40S) during installation. No GPU nodes need to be present before you deploy.
+ ** *Other providers and bare metal*: GPU nodes must already be part of the OpenShift cluster before you deploy this pattern. The pattern installs all required operators automatically.
  ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
  ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
 * The Helm binary. For instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm].
@@ -71,7 +71,7 @@ upstream	git@github.com:validatedpatterns-sandbox/ai-quickstart-maas-code-assist
 +
 [WARNING]
 ====
-Do not add, commit, or push this file to your repository. Doing so may expose personal credentials to GitHub.
+Do not add, commit, or push this file to your repository. Doing so might expose personal credentials to GitHub.
 ====
 +
 Run the following command:
@@ -184,3 +184,10 @@ $ oc get inferenceservice -A
 ----
 
 . Access the OpenShift DevSpaces dashboard to confirm the IDE environment is available. Navigate to *Networking -> Routes* in the DevSpaces namespace and open the route URL.
+
+[id="next-steps-getting-started-maas"]
+== Next steps
+
+* link:customizing-this-pattern[Customizing this pattern]
+* link:cluster-sizing[Cluster sizing]
+* link:troubleshooting[Troubleshooting]

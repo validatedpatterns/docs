@@ -12,17 +12,12 @@ Use case::
 * Deploy an AI-powered code assistant that provides intelligent code suggestions through an integrated development environment.
 * Implement Model-as-a-Service (MaaS) governance with tiered user access, rate limiting, and chargeback capabilities.
 * Use a GitOps approach to provision AI inference infrastructure including GPU-accelerated model serving, identity management, and API rate limiting.
-+
-[NOTE]
-====
-Based on the requirements of a specific implementation, certain details might differ. However, all Validated Patterns that are based on a portfolio architecture, generalize one or more successful deployments of a use case.
-====
 
 Background::
 
-This pattern is scaffolding around the link:https://github.com/rh-ai-quickstart/maas-code-assistant[MaaS Code Assistant AI Quickstart]. It provisions the OpenShift cluster with link:https://www.redhat.com/en/products/ai/openshift-ai[{rhoai}] configured for GPU-accelerated inference using vLLM and llm-d. It deploys the NVIDIA GPU Operator for model serving on GPU nodes and manages secrets through the {solution-name-upstream} framework using HashiCorp Vault and the External Secrets Operator.
+This pattern builds on the link:https://github.com/rh-ai-quickstart/maas-code-assistant[MaaS Code Assistant AI Quickstart]. It provisions the OpenShift cluster with link:https://www.redhat.com/en/products/ai/openshift-ai[{rhoai}] configured for GPU-accelerated inference using vLLM and llm-d. It deploys the NVIDIA GPU Operator for model serving on GPU nodes and manages secrets through the {solution-name-upstream} framework using HashiCorp Vault and the External Secrets Operator. This pattern generalizes one or more successful deployments of this use case. Implementation details might vary depending on your specific environment and requirements.
 
-The MaaS Code Assistant enables organizations to offer AI code assistance as an internal service with differentiated access tiers. It demonstrates a production-ready approach to:
+Organizations can use the MaaS Code Assistant to offer AI code assistance as an internal service with differentiated access tiers. It demonstrates a production-ready approach to:
 
 - Serving multiple NVIDIA Nemotron language models optimized for code completion and generation
 - Enforcing per-user rate limits through Kuadrant (Red Hat Connectivity Link) to manage capacity and enable chargeback
@@ -40,7 +35,7 @@ The solution uses vLLM with llm-d for high-performance inference of NVIDIA Nemot
 [id="about-maas-quickstart-technology"]
 == About the technology
 
-The following technologies are used in this solution:
+This solution uses the following technologies:
 
 https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-ocp}]::
 An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments.

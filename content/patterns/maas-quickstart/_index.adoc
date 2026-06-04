@@ -33,4 +33,7 @@ include::modules/maas-quickstart-architecture.adoc[leveloffset=+1]
 [id="next-steps-maas-quickstart"]
 == Next steps
 
-* link:getting-started[Install this pattern.]
+* link:getting-started[Install this pattern]
+* link:cluster-sizing[Cluster sizing]
+* link:customizing-this-pattern[Customizing this pattern]
+* link:troubleshooting[Troubleshooting]
