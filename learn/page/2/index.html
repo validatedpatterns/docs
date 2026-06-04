@@ -484,7 +484,47 @@ In the values-secret.yaml file, define the kubeconfig secret by providing the lo
 - name: kubeconfig-spoke vaultPrefixes: - hub fields: - name: content path: ~/.kube/kubeconfig-ztvp-spoke In the values-hub.yaml file, add a new entry in the clusterGroup.managedClusterGroups key.
 managedClusterGroups: exampleRegion: name: group-one acmlabels: - name: clusterGroup value: group-one helmOverrides: - name: clusterGroup.isHubCluster value: false Also in the values-hub.yaml file, add your cluster definition in the acmManagedClusters.clusters key.
 acmManagedClusters: clusters: - name: ztvp-spoke-1 clusterGroup: group-one labels: cloud: auto-detect vendor: auto-detect kubeconfigVaultPath: secret/data/hub/kubeconfig-spoke Deploy the pattern.
-`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-getting-started/",breadcrumb:"/patterns/layered-zero-trust/lzt-getting-started/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-getting-started/":{title:"Getting started",tags:[],content:` Deploying the MLOps Fraud Detection pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-getting-started/",breadcrumb:"/patterns/layered-zero-trust/lzt-getting-started/"},"https://validatedpatterns.io/patterns/maas-quickstart/getting-started/":{title:"Getting started",tags:[],content:` Deploying the MaaS Code Assistant AI Quickstart pattern Prerequisites An OpenShift cluster (version 4.20 or later). This pattern requires at least 2 NVIDIA GPU nodes with 48 GB or more of VRAM each.
+AWS: The pattern automatically provisions 2 g6e.2xlarge GPU worker nodes (NVIDIA L40S) during installation. No GPU nodes need to be present before you deploy.
+Other providers and bare metal: GPU nodes must already be part of the OpenShift cluster before you deploy this pattern. The pattern installs all required operators automatically.
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select OpenShift -&gt; Red Hat OpenShift Container Platform -&gt; Create cluster.
+The Helm binary. For instructions, see Installing Helm.
+The oc CLI tool. For instructions, see Getting started with the OpenShift CLI.
+Additional installation tool dependencies. For details, see Patterns quick start.
+Preparing for deployment Procedure Fork the ai-quickstart-maas-code-assistant repository on GitHub. You must fork the repository to customize this pattern.
+Clone the forked copy of this repository.
+$ git clone git@github.com:your-username/ai-quickstart-maas-code-assistant.git Go to the root directory of your Git repository:
+$ cd ai-quickstart-maas-code-assistant Run the following command to set the upstream repository:
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/ai-quickstart-maas-code-assistant.git Verify the setup of your remote repositories by running the following command:
+$ git remote -v Example output origin	git@github.com:your-username/ai-quickstart-maas-code-assistant.git (fetch) origin	git@github.com:your-username/ai-quickstart-maas-code-assistant.git (push) upstream	git@github.com:validatedpatterns-sandbox/ai-quickstart-maas-code-assistant.git (fetch) upstream	git@github.com:validatedpatterns-sandbox/ai-quickstart-maas-code-assistant.git (push) Make a local copy of the secrets template outside of your repository to hold credentials for the pattern.
+Do not add, commit, or push this file to your repository. Doing so might expose personal credentials to GitHub.
+Run the following command:
+$ cp values-secret.yaml.template ~/values-secret-ai-quickstart-maas-code-assistant.yaml Populate this file with the user passwords needed for the pattern:
+$ vim ~/values-secret-ai-quickstart-maas-code-assistant.yaml Edit the htpasswd section to set passwords for each user tier:
+- name: htpasswd fields: - name: admin value: &lt;admin-password&gt; - name: free-user value: &lt;free-user-password&gt; - name: premium-user value: &lt;premium-user-password&gt; - name: enterprise-user value: &lt;enterprise-user-password&gt; Optional: To customize the deployment, create and switch to a new branch by running the following command:
+$ git checkout -b my-branch Make your changes, then stage and commit them:
+$ git add &lt;changed-files&gt; $ git commit -m &#34;Customize deployment&#34; Push the changes to your forked repository:
+$ git push origin my-branch Deploying the pattern by using the pattern.sh file To deploy the pattern by using the pattern.sh file, complete the following steps:
+Log in to your cluster by following this procedure:
+Obtain an API token by visiting https://oauth-openshift.apps.&lt;your_cluster&gt;.&lt;domain&gt;/oauth/token/request.
+Log in to the cluster by running the following command:
+$ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your_cluster&gt;.&lt;domain&gt;:6443 Or log in by running the following command:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
+$ ./pattern.sh make install Verification To verify a successful installation, check the health of the ArgoCD applications:
+Run the following command:
+$ ./pattern.sh make argo-healthcheck It might take several minutes for all applications to synchronize and reach a healthy state. This includes downloading the NVIDIA Nemotron models and configuring the inference endpoints.
+Verify that the Operators are installed by navigating to Operators → Installed Operators in the OpenShift Container Platform web console. Confirm the following Operators are present:
+NVIDIA GPU Operator
+Red Hat OpenShift AI
+Red Hat OpenShift DevSpaces
+Red Hat Connectivity Link
+After all applications are healthy, verify the inference endpoints are serving by running:
+$ oc get inferenceservice -A Access the OpenShift DevSpaces dashboard to confirm the IDE environment is available. Navigate to Networking → Routes in the DevSpaces namespace and open the route URL.
+Next steps Customizing this pattern
+Cluster sizing
+Troubleshooting
+`,url:"https://validatedpatterns.io/patterns/maas-quickstart/getting-started/",breadcrumb:"/patterns/maas-quickstart/getting-started/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-getting-started/":{title:"Getting started",tags:[],content:` Deploying the MLOps Fraud Detection pattern Prerequisites An OpenShift cluster (Go to the OpenShift console). Cluster must have a dynamic StorageClass to provision PersistentVolumes.
 A GitHub account (and a token for it with repositories permissions, to read from and write to your forks)
 For installation tooling dependencies, see Patterns quick start.
 If you do not have a running Red Hat OpenShift cluster you can start one on a public or private cloud by using Red Hat’s cloud service.
@@ -2341,7 +2381,40 @@ dbProvidersSecret: vault: - key: mssql field: sapassword - key: pgvector # &lt;-
 In your local branch of the rag-llm-gitops git repository change to the ansible/playbooks/templates directory.
 Edit the file gpu-machine-sets.j2 changing the instanceType to for example g5.4xlarge. Save and exit.
 Push the changes to the origin remote repository by running the following command:
-$ git push origin my-test-branch `,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/gpu_provisioning/",breadcrumb:"/patterns/rag-llm-gitops/gpu_provisioning/"},"https://validatedpatterns.io/patterns/rag-quickstart/customizing-this-pattern/":{title:"Customizing this pattern",tags:[],content:` Customizing the RAG AI Quickstart pattern Without any changes, this pattern runs a CPU-backed LLM and does not require a GPU. This can be limiting in terms of usable models as well as speed, so you might want to use a GPU instead.
+$ git push origin my-test-branch `,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/gpu_provisioning/",breadcrumb:"/patterns/rag-llm-gitops/gpu_provisioning/"},"https://validatedpatterns.io/patterns/maas-quickstart/customizing-this-pattern/":{title:"Customizing this pattern",tags:[],content:` Customizing the MaaS Code Assistant AI Quickstart pattern This pattern deploys an AI code assistant with tiered user access, rate limiting, and NVIDIA Nemotron model serving. You can customize the models, rate limit policies, user tiers, and IDE configuration.
+Changing models The pattern serves two models by default:
+nemotron-3-nano-30b-a3b-fp8 — Available to premium and enterprise tier users.
+gpt-oss-20b — Available to all user tiers.
+To change or add models, edit the models list in overrides/maas-quickstart.yaml. The pattern pulls models from OCI registries and does not require a HuggingFace API token.
+The model definitions specify the model URI, resource requirements, GPU tolerations, and vLLM arguments. For example:
+models: - name: gpt-oss-20b displayName: OpenAI gpt-oss-20b uri: oci://registry.redhat.io/rhelai1/modelcar-gpt-oss-20b:1.5 resources: limits: cpu: &#34;4&#34; memory: 24Gi nvidia.com/gpu: &#34;1&#34; requests: cpu: &#34;2&#34; memory: 16Gi nvidia.com/gpu: &#34;1&#34; extraArgs: - --enable-force-include-usage tolerations: - effect: NoSchedule key: nvidia.com/gpu operator: Exists Each model requires a GPU with at least 48 GB of VRAM. Adding models beyond the default two requires additional GPU nodes.
+Adjusting rate limits and user tiers The pattern uses Kuadrant (Red Hat Connectivity Link) to enforce per-tier rate limits on inference requests. The default tiers and limits are:
+Tier Rate limit Description Free
+5 requests per 2 minutes
+Basic access for evaluation
+Premium
+20 requests per 2 minutes
+Standard production usage
+Enterprise
+50 requests per 2 minutes
+High-throughput workloads
+To adjust rate limits, modify the tiers section in overrides/maas-quickstart.yaml. The following example increases the premium tier request limit to 40 and the token limit to 20000:
+tiers: premium: users: - premium-user requestRates: - limit: 40 window: 2m tokenRates: - limit: 20000 window: 1m Push your changes to your forked repository so the GitOps framework applies the updated configuration.
+Managing users htpasswd with OpenShift OAuth handles user authentication. The default users are:
+admin — Full administrative access (enterprise tier)
+free-user — Free tier access
+premium-user — Premium tier access
+enterprise-user — Enterprise tier access
+HashiCorp Vault and the External Secrets Operator store and manage user passwords in the values-secret.yaml file. To change a user password after initial deployment, update the secret value in your values-secret.yaml file and redeploy the pattern.
+To assign users to different tiers, modify the tiers section in overrides/maas-quickstart.yaml:
+tiers: free: users: - free-user premium: users: - premium-user - user1 enterprise: users: - admin - enterprise-user Configuring OpenShift DevSpaces The pattern integrates the Continue AI extension in OpenShift DevSpaces to provide code assistance directly in the IDE. DevSpaces is preconfigured to clone the AI Quickstart repository and connect to the vLLM inference endpoints.
+To customize the DevSpaces configuration, you can adjust:
+Default IDE settings and extensions
+Resource limits for developer workspaces
+The inference endpoint URL used by the Continue extension
+Provisioning GPU nodes This pattern requires at least 2 NVIDIA GPU nodes with 48 GB or more of VRAM each. On AWS, the pattern automatically provisions g6e.2xlarge GPU machine sets with NVIDIA L40S GPUs.
+If your cluster does not have GPU nodes, you must add them before you deploy the pattern. The pattern installs all required operators, including the NVIDIA GPU Operator, automatically during deployment.
+`,url:"https://validatedpatterns.io/patterns/maas-quickstart/customizing-this-pattern/",breadcrumb:"/patterns/maas-quickstart/customizing-this-pattern/"},"https://validatedpatterns.io/patterns/rag-quickstart/customizing-this-pattern/":{title:"Customizing this pattern",tags:[],content:` Customizing the RAG AI Quickstart pattern Without any changes, this pattern runs a CPU-backed LLM and does not require a GPU. This can be limiting in terms of usable models as well as speed, so you might want to use a GPU instead.
 Enabling GPU support To enable GPU support, set global.device to gpu in values-global.yaml and push your changes to GitHub. This adds NFD and the NVIDIA GPU Operator to the pattern installation and enables the models to run using an NVIDIA accelerator.
 If you are running this pattern on an OpenShift cluster on AWS, setting global.device to gpu automatically creates a GPU (g6.2xlarge) machine and add it as a worker node to your cluster.
 Changing models To update the models, edit overrides/values-cpu.yaml (if global.device is set to cpu) or overrides/values-gpu.yaml (if set to gpu).
@@ -3395,7 +3468,22 @@ To submit the pipeline, select Run Pipeline (&ldquo;play&rdquo; icon in the top 
 We&rsquo;re now back in the OpenShift AI dashboard and can monitor the progress of our model CI/CD pipeline in real-time. You can select individual tasks to look up details such as pipeline logs, which helps to troubleshoot the pipeline code.
 Once the pipeline has finished running, step over to Gitea and look up the industrial-edge repository (select rhdp-deploy branch if you&rsquo;ve provisioned the pattern through RHDP). Notice the new commit indicating a model update in the test environment.
 (to be continued&hellip;)
-`,url:"https://validatedpatterns.io/patterns/industrial-edge/application/",breadcrumb:"/patterns/industrial-edge/application/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Intel AMX accelerated Multicloud GitOps pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
+`,url:"https://validatedpatterns.io/patterns/industrial-edge/application/",breadcrumb:"/patterns/industrial-edge/application/"},"https://validatedpatterns.io/patterns/maas-quickstart/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` MaaS Code Assistant AI Quickstart pattern hub/datacenter cluster size The MaaS Code Assistant AI Quickstart pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
+The datacenter hub OpenShift cluster uses the following the deployment configuration:
+Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type Amazon Web Services
+Control Plane
+3
+m5.xlarge
+Amazon Web Services
+Worker
+3
+m5.2xlarge
+GPU node requirements In addition to the worker nodes listed above, this pattern requires at least 2 GPU-equipped nodes for model inference. On AWS, the pattern automatically provisions g6e.2xlarge instances with NVIDIA L40S GPUs. On other providers and bare metal, GPU nodes must already be part of the cluster before deploying the pattern.
+Table 2. GPU node minimum requirements Cloud provider Node type Number of nodes Instance type Amazon Web Services
+GPU Worker
+2
+g6e.2xlarge
+`,url:"https://validatedpatterns.io/patterns/maas-quickstart/cluster-sizing/",breadcrumb:"/patterns/maas-quickstart/cluster-sizing/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx/mcg-amx-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Intel AMX accelerated Multicloud GitOps pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
 For AWS, see Installing OpenShift Container Platform on AWS.
 For bare-metal, see Installing OpenShift Container Platform on bare metal.
 To understand cluster sizing requirements for the Intel AMX accelerated Multicloud GitOps pattern, consider the following components that the Intel AMX accelerated Multicloud GitOps pattern deploys on the datacenter or the hub OpenShift cluster:
@@ -4648,7 +4736,49 @@ Resolution: Delete the unused PVC
 ArgoCD not syncing Symptom: ArgoCD shows an error and &ldquo;Unknown&rdquo; sync status Cause: A change has been made in the repository that renders invalid YAML
 Resolution: Fix the issue as identified by the error message, and commit and push the fix OR revert the last one.
 Certain changes might invalidate objects in ArgoCD, and this will prevent ArgoCD from deploying the change related to that commit. The error message for that situation might look like this (this particular change removed the Image details from the kustomization.yaml file, and we resolved it by re-adding the image entries:
-rpc error: code = Unknown desc = Manifest generation error (cached): \`/bin/bash -c helm template . --name-template \${ARGOCD_APP_NAME:0:52} -f https://github.com/claudiol/industrial-edge/raw/deployment/values-global.yaml -f https://github.com/claudiol/industrial-edge/raw/deployment/values-datacenter.yaml --set global.repoURL=$ARGOCD_APP_SOURCE_REPO_URL --set global.targetRevision=$ARGOCD_APP_SOURCE_TARGET_REVISION --set global.namespace=$ARGOCD_APP_NAMESPACE --set global.pattern=industrial-edge --set global.valuesDirectoryURL=https://github.com/claudiol/industrial-edge/raw/deployment --post-renderer ./kustomize\` failed exit status 1: Error: error while running post render on files: error while running command /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst/kustomize. error output: ++ dirname /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst/kustomize + BASE=/tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst + &#39;[&#39; /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst = /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst &#39;]&#39; + BASE=./ + cat + echo / /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst / /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst + ls -al total 44 drwxr-xr-x. 3 default root 166 Oct 6 20:59 . drwxr-xr-x. 7 default root 98 Oct 6 20:28 .. -rw-r--r--. 1 default root 1105 Oct 6 20:28 Chart.yaml -rw-r--r--. 1 default root 22393 Oct 6 20:59 helm.yaml -rw-r--r--. 1 default root 98 Oct 6 20:59 kustomization.yaml -rwxr-xr-x. 1 default root 316 Oct 6 20:28 kustomize -rw-r--r--. 1 default root 348 Oct 6 20:28 system-image-builder-role-binding.yaml drwxr-xr-x. 7 default root 115 Oct 6 20:28 templates -rw-r--r--. 1 default root 585 Oct 6 20:28 values.yaml + kubectl kustomize ./ Error: json: cannot unmarshal object into Go struct field Kustomization.images of type []image.Image : exit status 1 Use --debug flag to render out invalid YAML `,url:"https://validatedpatterns.io/patterns/industrial-edge/troubleshooting/",breadcrumb:"/patterns/industrial-edge/troubleshooting/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/troubleshooting/":{title:"Troubleshooting",tags:[],content:` Understanding the Makefile The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn’t required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a make upgrade which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
+rpc error: code = Unknown desc = Manifest generation error (cached): \`/bin/bash -c helm template . --name-template \${ARGOCD_APP_NAME:0:52} -f https://github.com/claudiol/industrial-edge/raw/deployment/values-global.yaml -f https://github.com/claudiol/industrial-edge/raw/deployment/values-datacenter.yaml --set global.repoURL=$ARGOCD_APP_SOURCE_REPO_URL --set global.targetRevision=$ARGOCD_APP_SOURCE_TARGET_REVISION --set global.namespace=$ARGOCD_APP_NAMESPACE --set global.pattern=industrial-edge --set global.valuesDirectoryURL=https://github.com/claudiol/industrial-edge/raw/deployment --post-renderer ./kustomize\` failed exit status 1: Error: error while running post render on files: error while running command /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst/kustomize. error output: ++ dirname /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst/kustomize + BASE=/tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst + &#39;[&#39; /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst = /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst &#39;]&#39; + BASE=./ + cat + echo / /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst / /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst + ls -al total 44 drwxr-xr-x. 3 default root 166 Oct 6 20:59 . drwxr-xr-x. 7 default root 98 Oct 6 20:28 .. -rw-r--r--. 1 default root 1105 Oct 6 20:28 Chart.yaml -rw-r--r--. 1 default root 22393 Oct 6 20:59 helm.yaml -rw-r--r--. 1 default root 98 Oct 6 20:59 kustomization.yaml -rwxr-xr-x. 1 default root 316 Oct 6 20:28 kustomize -rw-r--r--. 1 default root 348 Oct 6 20:28 system-image-builder-role-binding.yaml drwxr-xr-x. 7 default root 115 Oct 6 20:28 templates -rw-r--r--. 1 default root 585 Oct 6 20:28 values.yaml + kubectl kustomize ./ Error: json: cannot unmarshal object into Go struct field Kustomization.images of type []image.Image : exit status 1 Use --debug flag to render out invalid YAML `,url:"https://validatedpatterns.io/patterns/industrial-edge/troubleshooting/",breadcrumb:"/patterns/industrial-edge/troubleshooting/"},"https://validatedpatterns.io/patterns/maas-quickstart/troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting the MaaS Code Assistant AI Quickstart pattern Use this page to diagnose and resolve common issues when deploying or operating this pattern.
+Prerequisite and tooling issues Podman version not supported The pattern.sh script requires Podman 4.3.0 or later. Earlier versions do not support the --userns=keep-id flag required for correct UID/GID mapping inside the container.
+Symptom The script exits with an error referencing the Podman version or keep-id.
+Resolution Check your Podman version:
+$ podman --version If the version is earlier than 4.3.0, upgrade Podman. For instructions, see the Podman installation documentation.
+KUBECONFIG path is outside the HOME directory The pattern.sh script runs inside a container and mounts your $HOME directory. If your KUBECONFIG file is located outside $HOME, the container cannot access it.
+Symptom The script fails to connect to the cluster or reports that the kubeconfig file cannot be found.
+Resolution Move your kubeconfig file to a path inside your home directory and export the updated path:
+$ cp &lt;current-kubeconfig-path&gt; ~/kubeconfig $ export KUBECONFIG=~/kubeconfig Deployment issues ArgoCD applications are not syncing or are unhealthy After running ./pattern.sh make install, ArgoCD applications can take 15–30 minutes to reach a healthy state. Model downloads and GPU operator initialization take additional time.
+Symptom Running ./pattern.sh make argo-healthcheck reports applications in Progressing or Degraded state.
+Resolution Check which applications are not healthy:
+$ oc get applications -n openshift-gitops Inspect the failing application for error details:
+$ oc describe application &lt;application-name&gt; -n openshift-gitops Check the logs of the ArgoCD application controller:
+$ oc logs -n openshift-gitops deployment/openshift-gitops-application-controller If applications are stuck in Progressing, wait an additional 10 minutes and re-run the health check. Model downloads from OCI registries can take significant time depending on network conditions.
+Values file schema validation fails The pattern validates values-*.yaml files against a schema before deployment.
+Symptom Running ./pattern.sh make install fails with a schema validation error.
+Resolution Run the validation step independently to see the full error output:
+$ ./pattern.sh make validate-schema Review the error message to identify the malformed field and correct the value in your values-secret.yaml or overrides/maas-quickstart.yaml file.
+GPU and inference issues GPU nodes are not ready The NVIDIA GPU Operator must successfully initialize on each GPU node before model serving can start.
+Symptom Inference service pods remain in Pending state, or oc get inferenceservice -A shows services not ready.
+Resolution Check the status of GPU nodes:
+$ oc get nodes -l nvidia.com/gpu.present=true Check the NVIDIA GPU Operator pods:
+$ oc get pods -n nvidia-gpu-operator Check for driver initialization errors:
+$ oc logs -n nvidia-gpu-operator -l app=nvidia-driver-daemonset If you are using a provider other than AWS, confirm that GPU nodes were present in the cluster before you deployed the pattern. The pattern does not provision GPU nodes on providers other than AWS.
+Inference endpoints are not serving Symptom oc get inferenceservice -A shows inference services in a non-ready state, or the Continue AI extension in DevSpaces returns connection errors.
+Resolution Check the status of inference services:
+$ oc get inferenceservice -A Check the vLLM model server pod logs for a specific model:
+$ oc logs -n redhat-ods-applications -l serving.kserve.io/inferenceservice=&lt;model-name&gt; Confirm that the GPU nodes have sufficient available VRAM. Each model requires a GPU with at least 48 GB of VRAM. If both models are scheduled on the same node, the node requires at least 96 GB of VRAM or you must use two separate GPU nodes.
+Rate limiting and authentication issues Rate limiting is not enforced Symptom Requests from all users succeed regardless of the configured rate limits, or requests are blocked for all users.
+Resolution Check the status of the Kuadrant operator and Limitador pod:
+$ oc get pods -n kuadrant-system Check the Limitador logs for policy errors:
+$ oc logs -n kuadrant-system deployment/limitador Confirm that rate limit policies are applied correctly:
+$ oc get ratelimitpolicy -A Users cannot authenticate Symptom Users receive authentication errors when accessing the inference API or DevSpaces.
+Resolution Confirm that the htpasswd secret was correctly provisioned by the External Secrets Operator:
+$ oc get externalsecret -A $ oc get secret htpasswd-secret -n openshift-config If the secret is missing or incorrect, verify that your values-secret.yaml file contains the correct passwords for all four users (admin, free-user, premium-user, enterprise-user) and redeploy the pattern.
+OpenShift DevSpaces issues Continue AI extension cannot connect to inference endpoints Symptom Code suggestions are not returned in DevSpaces, or the Continue extension reports a connection error.
+Resolution Confirm that the inference services are healthy:
+$ oc get inferenceservice -A Navigate to Networking → Routes in the namespace where the inference services are running and confirm the routes are accessible.
+In DevSpaces, open the Continue extension settings and verify that the endpoint URL matches the route URL for the vLLM service.
+Getting help If you cannot resolve an issue using this guide:
+Check the GitHub issues for known problems and workarounds.
+Open a new issue with the output of the following command to help diagnose the problem:
+$ oc get pods -A | grep -v Running | grep -v Completed `,url:"https://validatedpatterns.io/patterns/maas-quickstart/troubleshooting/",breadcrumb:"/patterns/maas-quickstart/troubleshooting/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/troubleshooting/":{title:"Troubleshooting",tags:[],content:` Understanding the Makefile The Makefile is the entrypoint for the pattern. We use the Makefile to bootstrap the pattern to the cluster. After the initial bootstrapping of the pattern, the Makefile isn’t required for ongoing operations but can often be useful when needing to make a change to a config within the pattern by running a make upgrade which allows us to refresh the bootstrap resources without having to tear down the pattern or cluster.
 About the make install and make deploy commands Running make install within the pattern application triggers a make deploy from &lt;pattern_directory&gt;/common directory. This initializes the common components of the pattern framework and install a helm chart in the default namespace. At this point, cluster services, such as Red Hat Advanced Cluster Management (RHACM) and Red Hat OpenShift GitOps are deployed.
 After components from the common directory are installed, the remaining tasks within the make install target run.
 About the make vault-init and make load-secrets commands The Medical Diagnosis pattern is integrated with HashiCorp Vault and External Secrets Operator services for secrets management within the cluster. These targets install vault from a Helm chart and load the secret (values-secret.yaml) that you created during Getting Started.
@@ -5772,8 +5902,100 @@ Who is behind this? Today, a team of Red Hat engineers including Andrew Beekhof 
 Excited or intrigued by what you see here? We’d love to hear your thoughts and ideas! Try the patterns contained here and see below for links to our repositories and issue trackers.
 How can I get involved? Try out what we’ve done and submit issues to our issue trackers.
 We will review pull requests to our pattern repositories.
-`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by tier, focus area, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/rag-quickstart/":{title:"RAG AI Quickstart",tags:[],content:` About the RAG Quickstart pattern Use retrieval-augmented generation (RAG) to enhance large language models with specialized data sources for more accurate and context-aware responses.
+`,url:"https://validatedpatterns.io/learn/faq/",breadcrumb:"/learn/faq/"},"https://validatedpatterns.io/patterns/maas-quickstart/":{title:"MaaS Code Assistant AI Quickstart",tags:[],content:` About the MaaS Code Assistant AI Quickstart pattern Deploy a governed, multi-tenant AI code assistant on OpenShift with tiered access control, rate limiting, and integrated IDE support.
+Use case Deploy an AI-powered code assistant that provides intelligent code suggestions through an integrated development environment.
+Implement Model-as-a-Service (MaaS) governance with tiered user access, rate limiting, and chargeback capabilities.
+Use a GitOps approach to provision AI inference infrastructure including GPU-accelerated model serving, identity management, and API rate limiting.
+Background This pattern builds on the MaaS Code Assistant AI Quickstart. It provisions the OpenShift cluster with Red Hat OpenShift AI configured for GPU-accelerated inference using vLLM and llm-d. It deploys the NVIDIA GPU Operator for model serving on GPU nodes and manages secrets through the Validated Patterns framework using HashiCorp Vault and the External Secrets Operator. This pattern generalizes one or more successful deployments of this use case. Implementation details might vary depending on your specific environment and requirements.
+Organizations can use the MaaS Code Assistant to offer AI code assistance as an internal service with differentiated access tiers. It demonstrates a production-ready approach to:
+Serving multiple NVIDIA Nemotron language models optimized for code completion and generation
+Enforcing per-user rate limits through Kuadrant (Red Hat Connectivity Link) to manage capacity and enable chargeback
+Authenticating users through htpasswd with OpenShift OAuth for tiered access (Free, Premium, Enterprise)
+Providing an integrated development experience through OpenShift DevSpaces with the Continue AI extension
+Monitoring usage and performance through Grafana dashboards and Prometheus metrics
+About the solution This pattern deploys a complete MaaS code assistance platform on a single OpenShift cluster by using a GitOps approach. The Validated Patterns framework handles infrastructure provisioning, including GPU operators, AI platform configuration, and secrets management. The MaaS Code Assistant AI Quickstart delivers the application layer: model serving, rate limiting, user authentication, and IDE integration.
+The solution uses vLLM with llm-d for high-performance inference of NVIDIA Nemotron models. Kuadrant enforces rate limit policies per user tier, while htpasswd with OpenShift OAuth manages authentication and tier assignment. OpenShift DevSpaces provides a browser-based IDE with the Continue AI extension preconfigured to connect to the inference endpoints.
+About the technology This solution uses the following technologies:
+Red Hat OpenShift Container Platform An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments.
+Red Hat OpenShift GitOps A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git.
+Red Hat OpenShift AI A flexible, scalable MLOps platform with tools to build, deploy, and manage AI-enabled applications. This pattern uses Red Hat OpenShift AI to manage GPU-accelerated model serving with vLLM.
+Red Hat OpenShift DevSpaces A cloud-based developer workspace platform that provides preconfigured, containerized development environments. This pattern uses DevSpaces to deliver an integrated IDE with AI code assistance.
+Red Hat Connectivity Link (Kuadrant) An API management and connectivity solution that provides rate limiting, authentication, and traffic policies. This pattern uses Kuadrant to enforce per-tier rate limits on inference requests.
+vLLM A high-throughput, memory-efficient inference engine for large language models. vLLM serves the Nemotron models with optimized GPU utilization.
+llm-d A Kubernetes-native distributed inference framework for LLMs that works with vLLM to provide scalable model serving.
+NVIDIA Nemotron A family of language models optimized for code generation and completion tasks. The pattern serves nemotron-3-nano-30b-a3b-fp8 and gpt-oss-20b.
+Grafana An open source analytics and monitoring platform. This pattern uses Grafana dashboards to visualize inference metrics and usage per tier.
+Prometheus An open source monitoring and alerting toolkit. This pattern uses Prometheus to collect inference and rate limiting metrics.
+cert-manager A Kubernetes-native certificate management controller. This pattern uses cert-manager to provision and manage TLS certificates.
+Continue An open source AI code assistant extension for IDEs. This pattern integrates Continue in OpenShift DevSpaces to provide code suggestions powered by the served models.
+MaaS Code Assistant AI Quickstart architecture The following figure shows the MaaS Code Assistant architecture.
+Figure 1. MaaS Code Assistant system architecture The architecture consists of three main layers:
+Inference Layer — Serves NVIDIA Nemotron models through vLLM and llm-d with GPU acceleration for code completion and generation.
+Governance Layer — Manages user authentication through htpasswd with OpenShift OAuth and enforces per-tier rate limits through Kuadrant.
+Developer Experience Layer — Provides an integrated IDE through OpenShift DevSpaces with the Continue AI extension connected to the inference endpoints.
+Inference layer The inference layer serves language models and processes code completion requests:
+vLLM Model Servers Serve NVIDIA Nemotron models with GPU acceleration. Each model runs as a vLLM instance managed by Red Hat OpenShift AI, optimized for high-throughput inference with features like continuous batching and PagedAttention.
+llm-d Provides Kubernetes-native distributed inference orchestration. llm-d manages model placement, scaling, and request routing across GPU nodes using the LeaderWorkerSet (LWS) operator.
+NVIDIA GPU Operator Manages NVIDIA GPU drivers, device plugins, and monitoring on worker nodes. Ensures GPUs are configured and available for model serving workloads.
+Governance layer The governance layer controls access and enforces usage policies:
+OpenShift OAuth with htpasswd Provides identity and access management using the built-in OAuth server in OpenShift with htpasswd credentials. The solution assigns users to tiers (Free, Premium, Enterprise) that determine their rate limits and model access.
+Kuadrant (Red Hat Connectivity Link) Enforces rate limit policies on inference API requests. Each user tier has a configured request quota (Free: 5/2min, Premium: 20/2min, Enterprise: 50/2min) to manage capacity and enable usage-based chargeback.
+HashiCorp Vault and External Secrets Operator Manages sensitive credentials including htpasswd user passwords. The Validated Patterns framework provisions Vault and ESO to securely synchronize secrets to the cluster.
+Developer experience layer The developer experience layer provides the end-user interface:
+OpenShift DevSpaces Delivers browser-based developer workspaces with preconfigured IDE environments. Developers access DevSpaces to write code with AI assistance without local setup.
+Continue AI extension An open source AI code assistant extension integrated into DevSpaces. Continue connects to the vLLM inference endpoints to provide inline code suggestions, completions, and chat-based code assistance.
+Deployment architecture The following table describes the pod structure when you deploy on OpenShift:
+Pod Purpose Characteristics vLLM Model Server (nemotron-3-nano-30b)
+Code generation inference
+GPU-accelerated, serves premium and enterprise tier users, managed by llm-d and Red Hat OpenShift AI
+vLLM Model Server (gpt-oss-20b)
+Code generation inference
+GPU-accelerated, serves all user tiers, managed by llm-d and Red Hat OpenShift AI
+Kuadrant / Limitador
+API rate limiting
+Enforces per-tier rate limits on inference endpoints, provides usage metrics
+DevSpaces
+Developer IDE
+Browser-based workspaces with Continue AI extension, connects to inference endpoints
+Grafana
+Monitoring dashboards
+Visualizes inference metrics, request rates, and per-tier usage
+Prometheus
+Metrics collection
+Collects inference latency, throughput, GPU utilization, and rate limiting metrics
+Vault
+Secrets management
+Stores htpasswd credentials and other sensitive configuration, synced by ESO
+Implementation technologies Component Technology Inference Engine
+vLLM with llm-d
+Language Models
+NVIDIA Nemotron (nemotron-3-nano-30b-a3b-fp8, gpt-oss-20b)
+Container Orchestration
+Red Hat OpenShift Container Platform + Red Hat OpenShift AI
+IDE Platform
+Red Hat OpenShift DevSpaces + Continue
+API Gateway / Rate Limiting
+Red Hat Connectivity Link (Kuadrant)
+Identity Management
+OpenShift OAuth with htpasswd
+GPU Management
+NVIDIA GPU Operator
+Monitoring
+Grafana + Prometheus
+Certificate Management
+cert-manager
+Secrets Management
+HashiCorp Vault + External Secrets Operator
+Inference Orchestration
+LeaderWorkerSet (LWS) Operator
+Next steps Install this pattern
+Cluster sizing
+Customizing this pattern
+Troubleshooting
+`,url:"https://validatedpatterns.io/patterns/maas-quickstart/",breadcrumb:"/patterns/maas-quickstart/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by tier, focus area, industry, and product.
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/rag-quickstart/":{title:"RAG AI Quickstart",tags:[],content:` About the RAG Quickstart pattern Use retrieval-augmented generation (RAG) to enhance large language models with specialized data sources for more accurate and context-aware responses.
 Use case Deploy a RAG-powered chatbot that connects users to internal documentation through a single chat interface.
 Explore retrieval-augmented generation capabilities including document ingestion, custom system prompts, and agent-based RAG.
 Use a GitOps approach to provision AI infrastructure including LLM serving, vector storage, and safety guardrails.
@@ -5858,9 +6080,7 @@ MinIO (S3-compatible)
 Frontend
 Streamlit
 Next steps Install this pattern.
-`,url:"https://validatedpatterns.io/patterns/rag-quickstart/",breadcrumb:"/patterns/rag-quickstart/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
-Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
+`,url:"https://validatedpatterns.io/patterns/rag-quickstart/",breadcrumb:"/patterns/rag-quickstart/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
 `,url:"https://validatedpatterns.io/blog/",breadcrumb:"/blog/"},"https://validatedpatterns.io/blog/2026-05-12-introducing-bootstrap-secrets/":{title:'Introducing "Bootstrap" Secrets',tags:[],content:` Preamble We have recognized secrets as one of the challenges of GitOps since the beginning of the Validated Patterns initiative. As a consequence, we have put thought and effort into making the secrets management process with Validated Patterns as easy as we can, while still modeling good security practices.
 One challenge that we have not fully addressed, though, is the occasional need to inject secrets into a cluster in order to enable basic cluster functionality. One example of when this might happen is when a cluster is attached to an enterprise storage array which requires secrets to be present to access the storage. Another good example is when the pattern itself is in a credential-protected repository, such that ArgoCD, the OpenShift GitOps Operator, needs credentials to be able to render the pattern. Previously, users had to use their own mechanisms to inject secrets into the cluster, and the Validated Patterns framework did not help with this.
 With this blog post, we are happy to announce that the Validated Patterns framework now has a mechanism to help with this problem, which requires minimal effort to use and offers some convenience mechanisms, including all of the convenience functions (like path and ini_file parsing) that the Patterns secret loading system already uses. Additionally, it works within the existing Validated Patterns workflow.
