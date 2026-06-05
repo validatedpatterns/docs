@@ -214,12 +214,12 @@ To know the cluster group name for the patterns that you want to deploy, check t
 +
 [NOTE]
 ====
-A pop-up error with the message "Oh no! Something went wrong." might appear during the process. This error can be safely disregarded as it does not impact the installation of the Multicloud GitOps pattern. Use the Hub ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD instances, which will display states such as progressing, healthy, and so on, for each managed application. The Cluster ArgoCD provides detailed status on each application, as defined in the clustergroup values file.
+A pop-up error with the message "Oh no! Something went wrong." might appear during the process. This error can be safely disregarded as it does not impact the installation of the Multicloud GitOps pattern. Use the ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD applications, which displays states such as progressing, healthy, and so on, for each managed application.
 ====
 
 The {rh-gitops} Operator displays in list of *Installed Operators*. The {rh-gitops} Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as {rh-rhacm-first}, ensure that you switch to *Project:All Projects*.
 
-Wait some time for everything to deploy. You can track the progress through the `Hub ArgoCD` UI from the nines menu. The `config-demo` project  appears stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console.
+Wait some time for everything to deploy. You can track the progress through the ArgoCD UI from the nines menu. The `config-demo` project  appears stuck in a `Degraded` state. This is the expected behavior when installing using the OpenShift Container Platform console.
 
 * To resolve this you need to run the following to load the secrets into the vault:
 +
