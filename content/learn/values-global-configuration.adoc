@@ -35,6 +35,22 @@ global:
 
 Do not change this value unless you are creating a new pattern.
 
+[id="global-singleargocd"]
+=== `global.singleArgoCD`
+
+Controls whether the pattern uses a single Argo CD instance for all managed objects. By default, the framework deploys two Argo CD instances: a clusterwide instance for privileged resources such as namespaces and subscriptions, and a namespaced instance for pattern applications. Setting this flag to `true` consolidates everything into the single clusterwide instance.
+
+[source,yaml]
+----
+global:
+  singleArgoCD: true
+----
+
+[IMPORTANT]
+====
+Use this flag only for new installs. Setting `singleArgoCD` to `true` on an existing deployment that already has two Argo CD instances is unlikely to work.
+====
+
 [id="global-options"]
 === `global.options`
 
@@ -129,6 +145,7 @@ The following example shows a typical `values-global.yaml` file for the Multiclo
 ---
 global:
   pattern: multicloud-gitops
+  singleArgoCD: true
 
   options:
     useCSV: false
@@ -142,7 +159,7 @@ main:
     enabled: true
 ----
 
-For most patterns, the default values provide a working configuration. Customize specific fields only when your environment requires different behavior, such as pinning operator versions or deploying in a disconnected environment.
+For most patterns, the default values provide a working configuration. Customize specific fields only when your environment requires different behavior, such as pinning operator versions, using a single Argo CD instance, or deploying in a disconnected environment.
 
 [id="additional-resources"]
 == Additional resources
