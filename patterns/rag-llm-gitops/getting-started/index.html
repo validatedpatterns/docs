@@ -1030,9 +1030,9 @@ Leave In Cluster Git Server unchanged.
 Change the Target Repo URL to your forked repository URL. For example, change https://github.com/validatedpatterns/&lt;pattern_name&gt; to https://github.com/&lt;your-git-username&gt;/&lt;pattern-name&gt;
 Optional: You might need to change the Target Revision field. The default value is HEAD. However, you can also provide a value for a branch, tag, or commit that you want to deploy. For example, v2.1, main, or a branch that you created, my-branch.
 Click Create.
-A pop-up error with the message &#34;Oh no! Something went wrong.&#34; might appear during the process. This error can be safely disregarded as it does not impact the installation of the Multicloud GitOps pattern. Use the Hub ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD instances, which will display states such as progressing, healthy, and so on, for each managed application. The Cluster ArgoCD provides detailed status on each application, as defined in the clustergroup values file.
+A pop-up error with the message &#34;Oh no! Something went wrong.&#34; might appear during the process. This error can be safely disregarded as it does not impact the installation of the Multicloud GitOps pattern. Use the ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD applications, which displays states such as progressing, healthy, and so on, for each managed application.
 The Red Hat OpenShift GitOps Operator displays in list of Installed Operators. The Red Hat OpenShift GitOps Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as Red Hat Advanced Cluster Management (RHACM), ensure that you switch to Project:All Projects.
-Wait some time for everything to deploy. You can track the progress through the Hub ArgoCD UI from the nines menu. The config-demo project appears stuck in a Degraded state. This is the expected behavior when installing using the OpenShift Container Platform console.
+Wait some time for everything to deploy. You can track the progress through the ArgoCD UI from the nines menu. The config-demo project appears stuck in a Degraded state. This is the expected behavior when installing using the OpenShift Container Platform console.
 To resolve this you need to run the following to load the secrets into the vault:
 $ ./pattern.sh make load-secrets You must have created a local copy of the secret values file by running the following command:
 $ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml The deployment will not take long but it should deploy successfully.
@@ -2698,9 +2698,9 @@ Leave In Cluster Git Server unchanged.
 Change the Target Repo URL to your forked repository URL. For example, change https://github.com/validatedpatterns/&lt;pattern_name&gt; to https://github.com/&lt;your-git-username&gt;/&lt;pattern-name&gt;
 Optional: You might need to change the Target Revision field. The default value is HEAD. However, you can also provide a value for a branch, tag, or commit that you want to deploy. For example, v2.1, main, or a branch that you created, my-branch.
 Click Create.
-A pop-up error with the message &#34;Oh no! Something went wrong.&#34; might appear during the process. This error can be safely disregarded as it does not impact the installation of the Multicloud GitOps pattern. Use the Hub ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD instances, which will display states such as progressing, healthy, and so on, for each managed application. The Cluster ArgoCD provides detailed status on each application, as defined in the clustergroup values file.
+A pop-up error with the message &#34;Oh no! Something went wrong.&#34; might appear during the process. This error can be safely disregarded as it does not impact the installation of the Multicloud GitOps pattern. Use the ArgoCD UI, accessible through the nines menu, to check the status of ArgoCD applications, which displays states such as progressing, healthy, and so on, for each managed application.
 The Red Hat OpenShift GitOps Operator displays in list of Installed Operators. The Red Hat OpenShift GitOps Operator installs the remaining assets and artifacts for this pattern. To view the installation of these assets and artifacts, such as Red Hat Advanced Cluster Management (RHACM), ensure that you switch to Project:All Projects.
-Wait some time for everything to deploy. You can track the progress through the Hub ArgoCD UI from the nines menu. The config-demo project appears stuck in a Degraded state. This is the expected behavior when installing using the OpenShift Container Platform console.
+Wait some time for everything to deploy. You can track the progress through the ArgoCD UI from the nines menu. The config-demo project appears stuck in a Degraded state. This is the expected behavior when installing using the OpenShift Container Platform console.
 To resolve this you need to run the following to load the secrets into the vault:
 $ ./pattern.sh make load-secrets You must have created a local copy of the secret values file by running the following command:
 $ cp values-secret.yaml.template ~/values-secret-multicloud-gitops.yaml The deployment will not take long but it should deploy successfully.
@@ -5553,6 +5553,8 @@ A tested pattern meeting additional criteria can be nominated for promotion to t
 global section The global section contains settings that Helm distributes to all sub-charts in the pattern.
 global.pattern Specifies the name of the validated pattern. The framework uses this value internally to identify the pattern.
 global: pattern: multicloud-gitops Do not change this value unless you are creating a new pattern.
+global.singleArgoCD Controls whether the pattern uses a single Argo CD instance for all managed objects. By default, the framework deploys two Argo CD instances: a clusterwide instance for privileged resources such as namespaces and subscriptions, and a namespaced instance for pattern applications. Setting this flag to true consolidates everything into the single clusterwide instance.
+global: singleArgoCD: true Use this flag only for new installs. Setting singleArgoCD to true on an existing deployment that already has two Argo CD instances is unlikely to work.
 global.options The options block sets default behaviors for operator management and ArgoCD synchronization across all clusters.
 global: options: useCSV: false syncPolicy: Automatic installPlanApproval: Automatic Table 1. Options fields Field Default Description syncPolicy
 Automatic
@@ -5579,7 +5581,7 @@ helmRepoUrl
 Overrides the Helm chart repository URL. Use this for disconnected or air-gapped environments where charts are hosted on an internal registry.
 For more information about disconnected environments, see Disconnected installation.
 Example values-global.yaml The following example shows a typical values-global.yaml file for the Multicloud GitOps pattern:
---- global: pattern: multicloud-gitops options: useCSV: false syncPolicy: Automatic installPlanApproval: Automatic main: clusterGroupName: hub multiSourceConfig: enabled: true For most patterns, the default values provide a working configuration. Customize specific fields only when your environment requires different behavior, such as pinning operator versions or deploying in a disconnected environment.
+--- global: pattern: multicloud-gitops singleArgoCD: true options: useCSV: false syncPolicy: Automatic installPlanApproval: Automatic main: clusterGroupName: hub multiSourceConfig: enabled: true For most patterns, the default values provide a working configuration. Customize specific fields only when your environment requires different behavior, such as pinning operator versions, using a single Argo CD instance, or deploying in a disconnected environment.
 Additional resources Exploring values files
 ClusterGroup in values files
 Disconnected installation
