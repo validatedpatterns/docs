@@ -1,0 +1,28 @@
+{{- /*
+  Clickable demo thumbnail (loads in main player via demos.js).
+  dict: demo, variant (sidebar|grid), active (bool)
+*/ -}}
+{{- $d := .demo -}}
+{{- $variant := .variant | default "sidebar" -}}
+{{- $active := .active | default false -}}
+<div
+  class="demos-select{{ if eq $variant "grid" }} demos-select--grid{{ end }}{{ if $active }} demos-select--active{{ end }}"
+  role="button"
+  tabindex="0"
+  data-demo-select
+  data-demo-id="{{ $d.id }}"
+  data-demo-title="{{ $d.title }}"
+  data-demo-desc="{{ $d.description }}"
+  {{- with $d.pattern_link }} data-demo-pattern-link="{{ . }}"{{ end }}
+  {{- with $d.pattern_label }} data-demo-pattern-label="{{ . }}"{{ end }}
+  aria-label="Play {{ $d.title }} in the main player"
+>
+  <span class="demos-select__media">
+    {{ partial "demo-thumbnail.html" (dict "id" $d.id "title" $d.title "thumbnail" $d.thumbnail) }}
+    <span class="demos-select__now-playing" data-demo-now-playing{{ if not $active }} hidden{{ end }}>Now playing</span>
+    <span class="demos-select__play" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span>
+  </span>
+  {{ if eq $variant "grid" }}
+  <h3 class="demos-select__title">{{ $d.title }}</h3>
+  {{ end }}
+</div>

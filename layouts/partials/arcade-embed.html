@@ -1,0 +1,21 @@
+{{- /*
+  Arcade iframe with skeleton placeholder.
+  Params: id (required), title, eager (bool), compact (bool)
+*/ -}}
+{{- $id := .id -}}
+{{- $title := .title | default "Interactive demo" -}}
+{{- $eager := .eager | default false -}}
+{{- $compact := .compact | default false -}}
+{{- $src := printf "https://demo.arcade.software/%s?embed&embed_mobile=tab&embed_desktop=inline&squared=true&show_copy_link=true" $id -}}
+<div class="arcade-embed{{ if $compact }} arcade-embed--compact{{ end }}" data-arcade-embed>
+  <div class="arcade-embed__skeleton" aria-hidden="true"></div>
+  <iframe
+    class="arcade-embed__iframe"
+    {{- if $eager }}src="{{ $src }}"{{ else }}data-src="{{ $src }}"{{ end }}
+    title="{{ $title }}"
+    frameborder="0"
+    loading="{{ if $eager }}eager{{ else }}lazy{{ end }}"
+    allow="clipboard-write"
+    allowfullscreen
+  ></iframe>
+</div>

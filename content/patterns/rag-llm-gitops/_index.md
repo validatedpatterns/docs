@@ -24,6 +24,7 @@ links:
   install: getting-started
   bugs: https://github.com/validatedpatterns/rag-llm-gitops/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+  demo: drMY04qRCqQuq2BkZWpn
 ci: ragllm
 ---
 

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="Demo thumbnail">
+  <rect width="640" height="360" fill="#1f1f1f"/>
+  <circle cx="320" cy="180" r="48" fill="none" stroke="#fff" stroke-width="4" opacity="0.9"/>
+  <polygon points="300,155 300,205 355,180" fill="#fff" opacity="0.9"/>
+</svg>
