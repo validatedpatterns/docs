@@ -1,0 +1,59 @@
+---
+menu: workshop
+title: Self-Contained Patterns
+weight: 70
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+:imagesdir: /images/workshop
+
+= Self Contained Patterns
+
+== Topic Objectives
+
+[#objectives]
+In this topic we will discuss:
+
+* What it means to be a "Self Contained" pattern
+
+[#contained]
+
+image::complete-pattern.png[]
+
+Every Pattern has resources that make it unique:
+
+* Container Images
+* Containerfiles (aka: Dockerfiles)
+* Helm Charts
+* Kustomize Manifests
+* Kubernetes Manifests
+* Ansible Codes
+* Shell/Other programming language scripts
+
+Where or would I add them to the pattern?
+
+|===
+|**Resource Type**|**Placement**
+| `kubernetes manifests (.yaml)`
+| They can either be converted to a Helm chart, or the raw manifests can be placed in a directory under `charts/`
+|`kustomize manifests`
+| Kustomize manifests can be placed in a directory under `charts/` or another path (e.g. `kustomize`) could be used
+|`Ansible`
+| Ansible roles and playbooks can be deployed through the imperative framework, or via kubernetes job resources in a Helm chart
+|'Scripts'
+| Shell scripts and other programs that are required for applications can be converted to a configMap and mounted as a volume in a pod (job)
+
+|===
+
+
+IMPORTANT: The pattern should be able to deploy all the resources needed to run your applications.
+
+[#thoughts]
+=== Thoughts on Self-Contained Patterns
+
+* Reusability / Repurposing becomes a serious problem when these resources are behind paywalls, private github repositories and registries.
+
+* Patterns designed and delivered for public consumption should have all of its resources available in a public repository and container registry
+
+* Self-contained patterns is letting the cluster build and deploy the container image used by applications (where it makes sense).

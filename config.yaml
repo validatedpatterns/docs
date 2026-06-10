@@ -48,10 +48,7 @@ outputFormats:
     mediatype: application/json
 
 menus:
-  main:
-    - name: Workshop
-      url: https://play.validatedpatterns.io
-      weight: 25
+  main: []
 sitemap:
   changeFreq: monthly
   priority: 0.5

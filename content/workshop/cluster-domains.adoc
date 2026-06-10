@@ -1,0 +1,50 @@
+---
+menu:
+  workshop:
+    parent: Additional Resources
+title: Cluster Domains
+weight: 102
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+
+= Cluster Domains
+
+== Topic Objectives
+
+[#objectives]
+In this topic we will discuss:
+
+* ArgoCD Limitations
+* How the framework collects and uses cluster information
+
+[#limitations]
+=== Limitations
+
+By default ArgoCD does not expose any means to know the cluster's name/FQDN (Fully Qualified Domain Name)
+
+To make up for this the framework collects some cluster information in order to provide reusable parameters for cluster specific values.
+
+[#variables]
+=== Domain variables set by the pattern
+
+|===
+|**Variable**|**Purpose**|**Example (if applicable)**
+| `global.clusterDomain`
+| Domain of the cluster the application is running on without the `.apps` subdomain
+|`mcg-hub.aws.validatedpatterns.io`
+|`global.hubClusterDomain`
+| The domain of the hub cluster **with the apps** subdomain - same as `localClusterDomain` on the hub.
+| `apps.mcg-hub.aws.validatedpatterns.io`
+| `global.localClusterDomain`
+| The domain of the cluster the application is running on - **with the apps** subdomain
+| `apps.mcg-hub.aws.validatedpatterns.io`
+| `global.clusterPlatform`
+| Name of the platform
+| `aws`, `azure`, `gcp`
+| `global.clusterVersion`
+| OpenShift Cluster Version
+| `4.16`
+
+|===

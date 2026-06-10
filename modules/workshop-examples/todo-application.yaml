@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: todo-app
+spec:
+  destination:
+    namespace: user$USERNUM-todo
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: documentation/modules/ROOT/examples/todo
+    repoURL: https://github.com/openshiftdemos/openshift-gitops-workshop
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false

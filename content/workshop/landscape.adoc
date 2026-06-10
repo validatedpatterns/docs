@@ -1,0 +1,45 @@
+---
+menu: workshop
+title: Pattern Landscape
+weight: 30
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+:imagesdir: /images/workshop
+
+= Pattern Landscape
+
+== Topic Objectives
+
+[#objectives]
+In this topic we will discuss:
+
+* What Validated Patterns are available
+** What business problems are being addressed?
+** Whether VPs are only applicable for the vertical industry the demo was created to show
+** How are they presented to customers
+* Working with Partners
+
+== Available Validated Patterns
+
+[#patterns]
+
+The number of available Patterns has significantly increased with more involvement from the field and our partners. Take a look at the following graphic - at the beginning of 2024 we had a few Patterns delivered by our Partners and few more from the Patterns team and field.
+
+image::landscape-early24.png[]
+
+As of July 2024 we can see that there has been a significant uptick in activity.
+
+image::landscape-july24.png[]
+
+== Validated Patterns WebSite
+The easiest and fastest way to find out what Validated Patterns are available and their availability is to check out the Validated Patterns website.
+
+[#website]
+
+Validated Patterns are an Open Source effort. Information about the Validated Patterns can be found on the link:https://validatedpatterns.io[Patterns Website].
+
+[#github]
+
+The Patterns are also hosted in link:https://github.com/validatedpatterns/repositories[GitHub]

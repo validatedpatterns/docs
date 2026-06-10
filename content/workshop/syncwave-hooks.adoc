@@ -1,0 +1,244 @@
+---
+menu:
+  workshop:
+    parent: GitOps Rough Edges
+title: Sync Waves and Hooks
+weight: 81
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+:imagesdir: /images/workshop
+
+= Sync Waves and Hooks
+
+https://argoproj.github.io/argo-cd/user-guide/sync-waves/[Sync waves,window='_blank']
+are used in Argo CD to order how manifests are applied to the cluster.
+
+https://argoproj.github.io/argo-cd/user-guide/resource_hooks/[Resource
+hooks,window='_blank'] break up the delivery of these manifests into different
+phases.
+
+Using a combination of sync waves and resource hooks, you can control how your
+application rolls out.
+
+This example will take you through the following steps:
+
+* Using sync waves to order deployment
+* Exploring resource hooks
+* Using sync waves and hooks together
+
+The sample application that we will deploy is a TODO application with a database
+and, apart from deployment files, sync waves and resource hooks are used:
+
+image::todo-app.png[]
+
+[#using_syncwaves]
+== Using Sync Waves
+
+A sync wave is a way to order how Argo CD applies the manifests that are stored
+in git. All manifests have a wave of zero by default, but you can set these by
+using the `argocd.argoproj.io/sync-wave` annotation.
+
+Example:
+
+[source,yaml]
+----
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+----
+
+The wave can also be negative as well.
+
+[source,yaml]
+----
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+----
+
+When Argo CD starts a sync action, the manifests get placed in the following
+order:
+
+* The Phase that they're in (we'll cover phases in the next section)
+* The wave the resource is annotated in (starting from the lowest value to the
+  highest)
+* By kind (Namespaces first, then services, then deployments, etc ...)
+* By name (ascending order)
+
+Read more about sync waves on the
+https://argoproj.github.io/argo-cd/user-guide/sync-waves/#how-do-i-configure-waves[official
+documentation site,window='_blank'].
+
+[#exploring_the_manifests_waves]
+=== Exploring Sync Wave Manifests
+
+The sample application that you will deploy has several waves.
+
+First, *PostgreSQL* with sync wave *0*. It has a Deployment:
+
+[source,yaml]
+----
+include::modules/workshop-examples/todo/postgres-deployment.yaml[]
+----
+
+The *PostgreSQL Service* with sync wave *0*:
+
+[source,yaml]
+----
+include::modules/workshop-examples/todo/postgres-service.yaml[]
+----
+
+Second, *Database table creation* with sync wave *1*:
+
+[source,yaml]
+----
+include::modules/workshop-examples/todo/postgres-create-table.yaml[]
+----
+
+The *TODO application deployment* with sync wave *2*:
+
+[source,yaml]
+----
+include::modules/workshop-examples/todo/todo-deployment.yaml[]
+----
+
+The *TODO Service* with sync wave *2*:
+
+[source,yaml]
+----
+include::modules/workshop-examples/todo/todo-service.yaml[]
+----
+
+The *TODO Route* with sync wave *3*:
+
+[source,yaml]
+----
+include::modules/workshop-examples/todo/todo-route.yaml[]
+----
+
+First, the PostgreSQL Deployment will be applied. After that reports healthy,
+Argo CD will continue with the rest of resources.
+
+NOTE: Argo CD won't apply the next manifest in a wave until the previous reports "healthy".
+
+[#using_resource_hooks]
+== Using Resource Hooks
+
+Now that you're familiar with sync waves, we can begin exploring applying
+manifests in phases using `resource hooks`.
+
+Controlling your sync operation can be further refined by using
+hooks. These hooks can run before, during, and after a sync
+operation. These hooks are:
+
+* **PreSync** - Runs before the sync operation. This can be something like a
+  database backup before a schema change
+* **Sync** - Runs after `PreSync` has successfully ran. This will run alongside
+  your normal manifests.
+* **PostSync** - Runs after `Sync` has ran successfully. This can be something
+  like a Slack message or an email notification.
+* **SyncFail** - Runs if the `Sync` operation has failed. This is also used to
+  send notifications or do other evasive actions.
+
+To enable a sync, annotate the specific object manifest with
+`argocd.argoproj.io/hook` with the type of sync you want to use for that
+resource. For example, if you wanted to use the `PreSync` hook:
+
+[source,yaml]
+----
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+----
+
+You can also have the hooks be deleted after a successful/unsuccessful run.
+
+* **HookSucceeded** - The resource will be deleted after it has succeeded.
+* **HookFailed** - The resource will be deleted if it has failed.
+* **BeforeHookCreation** - The resource will be deleted before a new one is
+  created (when a new sync is triggered).
+
+You can apply these with the `argocd.argoproj.io/hook-delete-policy`
+annotation. For example:
+
+[source,yaml]
+----
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+----
+
+IMPORTANT: Since a sync can fail in any phase, you can come to a situation where the application never reports healthy!
+
+Although hooks can be any resource, they are usually Pods and/or Jobs.
+
+To read more about resource hooks, consult the
+https://argoproj.github.io/argo-cd/user-guide/resource_hooks[official
+documentation]
+
+[#exploring_the_manifests_hooks]
+=== Exploring Resource Hook Manifests
+
+Take a look at this `PostSync` manifest which sends an HTTP request to insert a
+new TODO item:
+
+[source,yaml]
+----
+include::modules/workshop-examples/todo/todo-insert-data.yaml[]
+----
+
+The execution order can be seen in the following diagram:
+
+image::presyncpost.png[]
+
+[#deploying_the_application]
+== Deploying The Application
+
+Taking a look at this manifest file: `todo-application.yaml`:
+
+[source,yaml]
+----
+include::modules/workshop-examples/todo-application.yaml[]
+----
+
+On the Argo CD WebUI, you should see another application appear.
+
+image::todo-card.png[TODO Card]
+
+Clicking on this "card" should take you over to the tree view.
+
+image::todo-argocd.png[TODO Tree]
+
+Observe the sync process. You will see the order that the resource has been applied, first the namespace creation and last the creation of Route to access the application.
+
+Once the application is fully synced. Take a look at the pods and jobs in
+the namespace:
+
+[source,bash]
+----
+oc get pods -n todo
+----
+
+You should see that the Job is finished, but still there.
+
+[source,bash]
+----
+NAME                           READY   STATUS      RESTARTS   AGE
+postgresql-599467fd86-cgj9v    1/1     Running     0          32s
+todo-gitops-679d88f6f4-v4djp   1/1     Running     0          19s
+todo-table-xhddk               0/1     Completed   0          27s
+----
+
+Your application should look like this:
+
+image::todo-app-screenshot.png[TODO]
+
+The `todo-insert` Job is not shown as it was configured to be deleted if succeeded:
+
+[source, yaml]
+----
+argocd.argoproj.io/hook-delete-policy: HookSucceeded
+----

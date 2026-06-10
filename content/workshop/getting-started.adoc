@@ -1,0 +1,51 @@
+---
+menu: workshop
+title: Getting Started
+weight: 10
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+
+= Getting Started
+
+== Prerequisites
+
+The following CLI tools are required for running the exercises in this workshop. Please have them installed and configured prior to beginning any of the workshop chapters.
+
+[cols="4*^,4*.",options="header,+attributes"]
+|===
+|**Tool**|**macOS**|**Fedora**|**windows**
+
+|`Git`
+| https://git-scm.com/download/mac[Download]
+| https://git-scm.com/download/linux[Download]
+| https://git-scm.com/download/win[Download]
+
+|`Podman`
+| https://podman.io/docs/installation#macos[Download]
+| `dnf install podman`
+| https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md[Install]
+
+|===
+
+[#openshift]
+== Setup OpenShift
+
+To run OpenShift4, you need to have one provisioned using https://try.openshift.com[try.openshift.com] or can use any existing OpenShift4 cluster.
+Once you have your cluster, you can download the latest OpenShift client(oc) from https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/[here] and add to your path.
+
+You can check the OpenShift version using:
+
+[source,bash]
+----
+oc version
+----
+
+The output should show oc version >=4.14:
+
+[source,bash]
+----
+Client Version: 4.14.1
+Kubernetes Version: v1.29.6+aba1e8d
+----

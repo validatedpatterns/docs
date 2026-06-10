@@ -1,0 +1,92 @@
+---
+menu:
+  workshop:
+    parent: Validated Patterns
+title: Patterns Wrapper Script
+weight: 54
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+
+= Using the pattern.sh script
+
+[#about]
+
+[source,bash]
+----
+$ ./pattern.sh
+
+       1          Welcome to the Validate Pattern utility container
+      111         It contains all the needed components to install a pattern.
+     1   1
+    111 111       Please run the following for more information:
+   1       1
+  111     111       ./pattern.sh make help
+ 1   1   1   1
+111 111 111 111
+
+----
+
+* Used to deploy the pattern from the command-line
+* Deploys the operator with a repository and branch from the local clone of the repo
+* Provides a way to invoke the container which has all of the pre-requisites software installed (e.g. python, ansible, make)
+* Improved User Experience when deploying Patterns from the command line
+* When installing a pattern use:
+
+[source,bash]
+----
+./pattern.sh make install
+----
+* When loading secrets into your deployment
+[source,bash]
+----
+./pattern.sh make load-secrets
+----
+
+IMPORTANT: pattern.sh uses your origin remote and current branch. To change the branch after a deployment, run `make install` in the new branch
+
+[#help]
+== Help Menu
+
+`pattern.sh` comes with a help menu, to use it:
+
+[source,bash]
+----
+$ ./pattern.sh make help
+
+Usage:
+  make <target>
+
+Pattern tasks
+  install                              installs the pattern and loads the secrets
+  post-install                         Post-install tasks
+
+Pattern Common Tasks
+  help                                 This help message
+  show                                 show the starting template without installing it
+  operator-deploy operator-upgrade     runs helm install
+  uninstall                            runs helm uninstall
+  load-secrets                         loads the secrets into the backend determined by values-global setting
+  legacy-load-secrets                  loads the secrets into vault (only)
+  secrets-backend-vault                Edits values files to use default Vault+ESO secrets config
+  secrets-backend-kubernetes           Edits values file to use Kubernetes+ESO secrets config
+  secrets-backend-none                 Edits values files to remove secrets manager + ESO
+  load-iib                             CI target to install Index Image Bundles
+
+Validation Tasks
+  validate-origin                      verify the git origin is available
+  validate-cluster                     Do some cluster validations before installing
+  validate-schema                      validates values files against schema in common/clustergroup
+  validate-prereq                      verify pre-requisites
+  argo-healthcheck                     Checks if all argo applications are synced
+
+Test and Linters Tasks
+  test                                 run helm tests
+  helmlint                             run helm lint
+  kubeconform                          run helm kubeconform
+  super-linter                         Runs super linter locally
+  ansible-lint                         run ansible lint on ansible/ folder
+  ansible-unittest                     run ansible unit test
+
+----

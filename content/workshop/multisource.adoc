@@ -1,0 +1,155 @@
+---
+menu:
+  workshop:
+    parent: Additional Resources
+title: Multisource Patterns
+weight: 103
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+:imagesdir: /images/workshop
+
+= MultiSource
+
+== Topic Objectives
+
+[#objectives]
+In this topic we will discuss:
+
+* What does multisource mean?
+* MultiSource status
+* User Experience
+* Next Steps
+
+[#meaning]
+
+Using multiple-sources in our ArgoCD applications gives the Patterns framework a lot of flexibility in how applications are deployed. In the code snippet below we can see that we have a chart called `acm` where we have our normal values getting assigned, but also using values from another repository - in this case `https://github.com/f00/multicloud-gitops`
+
+[source,yaml]
+----
+# MULTISOURCE
+sources:
+- ref: patternref
+  repoURL: https://github.com/foo/multicloud-gitops
+  targetRevision: test2
+- chart: acm
+  repoURL: https://charts.validatedpatterns.io/ # default
+  targetRevision: 0.1.*
+  helm:
+    ignoreMissingValueFiles: true
+    valueFiles:
+    - $patternref/values-global.yaml
+    - $patternref/values-hub.yaml
+    - $patternref/values-AWS.yaml
+    - $patternref/values-AWS-4.13.yaml
+    - $patternref/values-AWS-hub.yaml
+    - $patternref/values-4.13-hub.yaml
+    parameters:
+    ...
+----
+
+With a single source we can only apply values files from within the repository, or declare them within the `applications` key. The primary issue with this approach is readability and reusability. The values file grows to a point where it is hard to follow the changes being made.
+
+[source,yaml]
+----
+# SINGLE SOURCE
+source:
+  repoURL: https://github.com/foo/multicloud-gitops
+  path: common/acm
+  targetRevision: test2
+  helm:
+    valueFiles:
+    - /values-global.yaml
+    - /values-hub.yaml
+    - /values-AWS.yaml
+    - /values-AWS-4.13.yaml
+    - /values-AWS-hub.yaml
+    - /values-4.13-hub.yaml
+    parameters:
+    ...
+----
+
+[#how]
+
+=== How it works
+
+IMPORTANT: Multi-source needs to be enabled for the clusterGroup helm chart via: `main.multiSourceConfig.enabled`
+
+Other applications stay `as-is` (e.g. single source like they have always been)
+
+Switching an application to use the Patterns chart and multisource capability requires a small tweak in the `values-*.yaml`
+
+NOTE: Yes, you can change the default VP repository
+
+Here's what it would look like:
+
+**Original Configuration:**
+[source,yaml]
+----
+acm:
+  name: acm
+  path: common/acm
+----
+
+**Updated Configuration:**
+[source,yaml]
+----
+acm:
+  name: acm
+  chart: acm
+  chartVersion: 0.0.*
+  # Tweak the default below to point to an alternative chart repo (OCI registries are
+  # also supported)
+  # repoURL: https://charts.validatedpatterns.io
+----
+
+[#status]
+=== Status
+
+* link:https://github.com/validatedpatterns/patterns-operator/pull/85[Pattern Operator PRs merged]
+* link:https://github.com/validatedpatterns/common/pull/350[Common repository PRs merged]
+* link:https://charts.validatedpatterns.io[VP Helm Chart Repository] set up and populated
+* Industrial Edge has all VP charts as multisource (clusterGroup, ACM, ESO, Vault)
+* MultiCloud GitOps has the clusterGroup chart as multisource enabled
+
+[#ux]
+
+=== User Experience
+
+image::multisource-config.png[]
+
+[#helmRepo]
+=== Helm Chart Repository
+
+[.INFORMATION]
+.How does it work?
+====
+* `common/` now has a github workflow which is triggered at every commit to main **chart-branches.yaml**
+* If any commit changes one of the charts (except `operator-install`) the corresponding branch in common for that chart will be updated (`git subtree split`)
+* This makes it so that the **link:https://github.com/validatedpatterns/common/tree/hashicorp-vault-main-single-chart[hashicorp-vault-main-single-chart]** branch only contains the code for the hashicorp-vault chart
+* Then it takes that hashicorp-vault-main-single-chart branch and pushes it out to the `validatedpatterns/hashicorp-vault` git repository
+====
+
+=== TL;DR
+
+**validatedpatterns/{acm,clustergroup,hashicorp-vault...}** repos are automatically kept up to date every time we push to common
+
+[#chart-release]
+
+=== Creating a chart release
+
+1. Change the version in `common/(chart}/Chart.yaml` (e.g. acm ver 0.0.2)
+2. Make sure the version propagated correctly in the vp/acm-chart repository
+3. From within the acm-chart repository, tag and push the new version `v0.0.2`
+4. In `validatedpatterns/helm-charts`, a github workflow is triggered that will:
+** build the helm chart
+** upload it in the assets of the helm-charts repository
+** update index.yaml
+
+[#next]
+=== Next Steps
+
+* Continue to monitor for any issues in Argo
+* Expand the usage in other patterns
+* Create a simple way to test charts without pushing them to the main repo (dev/qa workflow)

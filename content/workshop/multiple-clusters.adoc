@@ -1,0 +1,77 @@
+---
+menu: workshop
+title: Multiple Clusters
+weight: 90
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+:imagesdir: /images/workshop
+
+= Working with Multiple Clusters
+
+== Topic Objectives
+
+[#objectives]
+In this topic we will discuss:
+
+* Why manage multiple clusters
+* {rhacm} Basics
+* Managed Cluster Groups
+* Other Considerations
+
+[#why]
+=== Why manage multiple clusters
+
+=== Kubernetes adoption leads to multicluster
+[.INFORMATION]
+====
+"As Kubernetes gains adoption across the industry, scenarios are arising in which I&O teams are finding they must deploy and manage multiple clusters, either in a single region on-premises or in the cloud, or across multiple regions....for a number of reasons, including multi-tenancy, disaster recovery, and with hybrid, multicloud, or edge deployments."
+====
+
+[#challenges]
+=== Multi-Cluster Challenges
+
+image::multicluster-challenges.png[]
+
+* This increase of clusters presents challenges to organizations responsible for managing these clusters.
+* The infrastructure/operations teams that are responsible for ensuring the deployment, configuration and management of these clusters will need the proper tools.
+* The DevOps teams will need clusters to develop their applications and will have increasing requests for more resources and consistency across clusters.
+* The Organization as a whole will need to have multiple target environments in which to deploy clusters.
+* In high volume scenarios the clusters might need to be created in cloud providers depending on cost and resource availability.
+* This presents a challenge where a central management tool is needed to ensure that operators can deploy, maintain and manage resources.
+
+
+[#options]
+=== Multi-Cluster Management Options
+
+* You can do it manually using custom scripts
+** This presents many challenges  as scripts are homegrown and maintainability can become an issue.
+* You can use ArgoCD to a degree
+** ArgoCD's forte is to declaratively deploy applications onto a Kubernetes cluster not manage clusters.
+* Use {rhacm} which is built to manage multiple clusters
+
+[#rhacm]
+=== What is {rhacm}
+
+Red Hat Advanced Cluster Management for Kubernetes controls clusters and applications from a single console, with built-in security policies. Extend the value of Red Hat OpenShift by deploying apps, managing multiple clusters, and enforcing policies across multiple clusters at scale. Red Hat's solution ensures compliance, monitors usage, and maintains consistency.
+
+For more information visit: link:https://www.redhat.com/en/technologies/management/advanced-cluster-management[Advanced Cluster Management]
+
+image::multicluster-rhacm-value.png[]
+
+* Multi-Cluster Lifecycle Environment:
+** You can centrally create, update and delete Kubernetes clusters across multiple private and public clouds
+** Search, find and modify any kubernetes resource across the entire domain.
+** Quickly troubleshoot and resolve issues across your federated domain
+
+* Policy Driven Governance
+** Centrally set & enforce policies for security, applications, & infrastructure
+** Quickly visualize detailed auditing on configuration of apps and clusters
+** Built-in CIS compliance policies and audit checks
+** Immediate visibility into your compliance posture based on your defined standards
+
+* Advanced Application Lifecycle
+** Easily Deploy Applications at Scale
+** Deploy Applications from Multiple Sources
+** Quickly visualize application relationships across clusters and those that span clusters
