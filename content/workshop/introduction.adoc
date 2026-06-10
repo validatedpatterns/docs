@@ -1,0 +1,90 @@
+---
+menu: workshop
+title: Introduction
+weight: 20
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+:imagesdir: /images/workshop
+
+= Introduction
+
+== Topic Objectives
+
+[#objectives]
+In this topic we will discuss:
+
+* What is a Validated Pattern?
+** Explain high level benefits provided by Validated Patterns
+** Discuss what is included in the patterns initiative
+** Detail the difference between a community and validated patterns
+* Who are Validated Patterns for?
+** Explain the high level benefit for each persona
+** Clarify the requirements to become validated
+* Where can you keep up to date or point people to find more information?
+
+[#what]
+
+== What are Validated Patterns?
+
+Validated Patterns are an evolution of reference architectures. Each pattern is given a lifecycle when it is added to Red Hat's continuous integration (CI) system because we're testing against the latest version of operators, OpenShift releases and across multiple public cloud environments.
+
+image::Linux-Penguin-Evolution-1.png[evolution]
+
+[#goals]
+
+== Business Goals
+
+Every organization is facing the need to transform itself into a digital business. It's part of an evolution to help **accelerate innovation** by making application development faster - fueled with data insights, and enabled through technologies like containers, kubernetes and artificial intelligence/machine learning.
+
+In order to be successful, they know they must also look at how to be more **operationally agile** and **efficient** in order to quickly meet business needs. Hybrid-Cloud computing coupled with these new technologies is helping create new opportunities to achieve these goals.
+
+Validated Patterns are focused on customer solutions and Proof-Of-Concepts (POC's).
+
+image::introduction-goals.png[]
+
+[#benefits]
+
+== Benefits
+
+Red Hat's validated patterns are a collection of repositories that show a customers use case in the form of Kubernetes Resources (helm charts, kustomize, primitive objects) that describe an hybrid cloud stack declaratively and comprehensively; from its services down to the supporting infrastructure. Validated Patterns facilitate complex, highly reproducible deployments and are ideal for operating these deployments at scale using GitOps operational practices.
+
+image::introduction-pattern-benefits.png[]
+
+* Use a GitOps model to deliver the use case as code
+* Use as a POC, modified to fit a particular need that you can evolve into a real deployment.
+* Highly reproducible - great for operating at scale
+* Open for collaboration, so anyone can suggest improvements, contribute to them or use them as the Git Repositories are all upstream
+* Can be modified for customers needs.  If you would like to swap out a component, use Ceph Storage instead of S3, it is as easy as commenting out sections and including other repos.
+* Tested.  Once made a validated pattern, the use case is included into Red Hat's CI and continues to be tested across product versions while the pattern remains active.
+
+[#batteries]
+
+== Batteries Included
+
+Validated Patterns are a "batteries included" solution. This means that wherever you start with the patterns framework a core and configurable set of components are delivered out of the box.
+
+Take a look at the following graphic - each Validated Pattern (use-case dependent) consumes these technologies. The modularity of the framework allows us to add/remove resources to meet the requirements of the use-case. If a pattern only deploys on a single cluster, there is no need to deploy {rhacm}, therefore we can remove the declarations for {rhacm} in the `values-hub.yaml`.
+
+image::introduction-techSlide.png[]
+
+IMPORTANT: Reusability is a major theme that will be seen throughout this workshop.
+
+When we dive into these core technologies we start to see the low-level technology being used throughout the framework
+
+image::introduction-batteriesIncluded.png[]
+
+[#whotheyfor]
+
+== Who are patterns for?
+
+Value provided by Validated Patterns is unique to each individual or organization. Generally speaking Patterns provide value to our:
+
+image::introduction-pattern-values.png[]
+
+* Customers - get going faster, reduce risk, time to value
+* Sales - don't spend time architecting, they have a tested use case for a base deployment. Though messaged for a specific vertical in some cases, they can be used across other verticals.
+* Partners - free use of a defined architecture that you can build a solution on top of. All the value to accelerate sales/deployments.
+** Can also be used as a way to promote your product (HashiCorp)
+* GSIs or Consulting Services - predefined architectures, ready to deploy with minimal modifications. They can trust in the use-case as it is maintained across production version updates.

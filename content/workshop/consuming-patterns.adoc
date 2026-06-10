@@ -1,0 +1,76 @@
+---
+menu: workshop
+title: Validated Patterns
+weight: 50
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+:imagesdir: /images/workshop
+
+= Consuming Validated Patterns
+
+== Topic Objectives
+
+[#objectives]
+In this topic we will discuss:
+
+* Validated Pattern Deployment workflow
+* Describing a pattern
+* Using the patterns operator
+** And the patterns.sh script
+* Preparing your environment
+* Understand our base pattern
+* To fork or not to fork
+
+== Validated Pattern workflow
+[#workflow]
+
+Let's dive into what happens when we deploy a pattern! Take a look at the following graphic to see what is deployed on the `hub` clusterGroup cluster.
+
+image::consuming-vpWorkflow-hub.png[Hub Cluster]
+
+1. The patterns operator deploys an instance of {rh-gitops} and creates the initial application
+2. ArgoCD then deploys the operators, namespaces, projects and applications defined in the values files
+3. If deploying across multiple clusters, the framework uses {rhacm} policies to create the instance of {rh-gitops} on the remote cluster
+
+NOTE: `values-hub.yaml` is the primary values file for the `hub` cluster
+
+image::consuming-vpWorkflow-managedCluster.png[Managed Cluster]
+
+1. When a managed cluster is joined to {rhacm} it needs to have a clusterGroup label applied to it for the correct policies and applications to be deployed.
+2. {rhacm} will confirm the cluster is managed then deploy a rhacm agent
+3. A placement policy is then deployed to the managed cluster which installs an instances of {rh-gitops}
+4. The managed cluster's instance of ArgoCD will then deploy the resources declared in `values-clustergroup.yaml`
+
+IMPORTANT: Deploying the pattern through the OpenShift Console or via `pattern.sh` will deploy the patterns operator.
+
+=== Element Layering
+[#layering]
+
+The base component of every Validated Pattern is `common` - which is a link:https://github.com/validatedpatterns/common[Github Repo]
+
+image::consuming-common.png[common]
+
+Without further configuration, common is actually quite boring. So let's add another layer!
+
+Your specific industry or use-case is layered into the framework and utilizes the underlying common. In this example the solution includes a bespoke application, cloud-native cluster storage, {rhacs}, and an enterprise container registry. The framework will deploy and configure these components through Helm charts, kustomize manifests or Ansible if necessary.
+
+image::consuming-common-solution-layering.png[]
+
+What if we wanted to swap these products out with a similar or like-in-kind solution? The workflow remains the same:
+
+- remove the undesired application declaration
+- declare the new application in your values file
+- declare where the helm charts reside (path, repo)
+
+The following graphic illustrates swapping components in the framework:
+
+image::consuming-common-solution-layering-modular.png[]
+
+[#multiArgos]
+== Multiple ArgoCDs
+
+You may be asking yourself ...
+
+image::consuming-multipleArgos.png[]

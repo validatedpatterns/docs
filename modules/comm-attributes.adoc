@@ -193,3 +193,13 @@
 :cgu-operator-first: Topology Aware Lifecycle Manager (TALM)
 :cgu-operator-full: Topology Aware Lifecycle Manager
 :cgu-operator: TALM
+//Workshop
+:cli: oc
+:branch: main
+:vp-gh-repo: https://github.com/validatedpatterns
+:rhacm: Red{nbsp}Hat Advanced Cluster Management for Kubernetes
+:rhacs: Red{nbsp}Hat Advanced Cluster Security for Kubernetes
+:rhocp: Red{nbsp}Hat OpenShift Container Platform
+:rhodf: Red{nbsp}Hat OpenShift Data Foundations
+:eso: External Secrets Operator
+:vault: HashiCorp Vault

@@ -1,0 +1,28 @@
+---
+menu:
+  workshop:
+    parent: Validated Patterns
+title: Patterns Operator
+weight: 53
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+:imagesdir: /images/workshop
+
+= Validated Patterns Operator
+
+[#features]
+== Validated Operator Features
+
+* Available as a community operator in Operator Hub
+* Interrogates the cluster and uses information to personalize the pattern with argo/helm values
+* Allows you to pick a repository for the pattern and to select a branch version (e.g. `stable`)
+* Deploys OpenShift GitOps with the correct `values-hub`
+* Regardless of how you deploy the pattern, the operator is still in use
+
+IMPORTANT: `make load-secrets` is required when deploying the operator via OpenShift Console.
+
+image::vp-operator-community.png[Community Operator]
+
+image::olm-vp-operator.png[OLM]

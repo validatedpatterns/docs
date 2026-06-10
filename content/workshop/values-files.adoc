@@ -1,0 +1,76 @@
+---
+menu:
+  workshop:
+    parent: Validated Patterns
+title: Values Files
+weight: 51
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+:imagesdir: /images/workshop
+
+= Values Files
+
+[#values]
+== Values Files
+
+A variety of values files are used in the Patterns framework - but the three most common you will come across will be:
+
+|===
+|**Values File Name**|**Purpose**
+| `values-<clustergroup>`
+| This is where the bill of materials for the pattern resides. Applications and Products deployed by the pattern are driven from this values file.
+|`values-global`
+| Used for setting values across all clusters and resources in the pattern. The values are used by Helm charts.
+|`values-secret`
+| Stored locally and `NOT` in git, this template allows you declare secrets to be distributed to the cluster
+
+|===
+
+In addition to the most common values files, we have also implemented the ability to use specialized values files so the same charts can be used to support multiple cloud providers, OpenShift versions and different environments.
+
+image::consuming-valuesSpecializedTypes.png[]
+
+When it comes to values and especially values in Helm - order matters. We have to take care when defining values that we don't accidentally overwrite or remove a value that we need.
+
+image::consuming-patternValuesFiles.png[]
+
+If we review the `values-hub.yaml` we can see where and how resources are declared:
+
+[source,yaml,subs="+macros,attributes+"]
+----
+clusterGroup:
+  name: hub
+
+namespaces:
+  - open-cluster-management
+  - vault
+  - golang-external-secrets
+  - quay-enterprise
+
+subscriptions:
+  - name: advanced-cluster-management
+    namespace: open-cluster-management
+
+applications:
+  - name: quay-registry
+    namespace: quay-enterprise
+    project: opp
+    path: charts/hub/quay
+----
+
+|===
+|**Key**|**Purpose**
+| `namespaces`
+| List (or map) of namespaces expected to be created
+|`subscriptions`
+| List of operators to be deployed on the cluster. If necessary, we can override default values for namespace, source, channel..etc
+|`applications`
+| Resource consumed by ArgoCD to define an application to be deployed
+|`projects`
+| Resource consumed by ArgoCD to group resources and configurations together
+
+|===
+
+NOTE: Sometimes we may need to override a default - an example of this is needing to create an OperatorGroup that doesn't monitor namespaces - check out link:https://validatedpatterns.io/blog/2023-12-15-understanding-namespaces/[this blog] to learn how!

@@ -1,0 +1,9 @@
+---
+menu: workshop
+title: Additional Resources
+weight: 100
+---
+
+include::modules/comm-attributes.adoc[]
+
+= Appendix - Additional Resources

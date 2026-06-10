@@ -1,0 +1,274 @@
+---
+menu:
+  workshop:
+    parent: Validated Patterns
+title: Creating Patterns
+weight: 52
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+:imagesdir: /images/workshop
+
+= Creating Validated Patterns
+
+== Topic Objectives
+
+[#objectives]
+In this topic we will discuss:
+
+* Understanding `common`
+* Pattern Requirements
+* Creation Process
+
+[IMPORTANT]
+.Core Concepts
+====
+* **Creating is Extending** We never really create a new pattern from zero. Instead we extend our basic pattern using artifacts that we have developed along the way
+* **Artifacts** Artifacts can include Helm Charts, Kustomize manifests, or plain Kubernetes manifests
+* **Moving Artifacts into the Validated Patterns framework** Many artifacts require conversion to Helm chart templates and parameterizing certain values
+* **Helm** Helm is a kubernetes package manager that allows you to define, install and manage kubernetes applications as reusable packages called charts
+====
+
+[#common]
+== Understanding common
+
+What's the role of the **common** repository?
+
+* The core components that make up the Validated Patterns framework are contained in the common repository
+* Including:
+** OpenShift GitOps configurations
+** RHACM configuration and Global Policies
+*** Support for **clusterGroup** and **GitOps** policies
+** Validated Pattern build scripts and Makefiles
+** Secrets Management (Hashicorp Vault)
+** Operator CRDs and other assets
+** Various utility scripts
+
+What's in common?
+
+NOTE: The common repository is where all the common manifests for the Validated Patterns framework live
+
+* **acm** - contains the helm charts, which contains policies and is used to configure the deployment of the {rhacm}
+* **clusterGroup** - contains the helm charts used to create namespaces, subscriptions, Argo Project and Applications described in values files. This is the seed for all the patterns.
+* **operator-install** - contains the helm chart used by the Validated Patterns operator to create the openshift-gitops component, creating the initial ArgoCD applications for Validated Patterns.
+
+[source,bash]
+----
+common
+├── acm
+├── ansible
+├── Changes.md
+├── clustergroup
+├── common -> .
+├── examples
+├── golang-external-secrets
+├── hashicorp-vault
+├── LICENSE
+├── Makefile
+├── letsencrypt
+├── operator-install
+├── README.md
+├── reference-output.yaml
+├── scripts
+├── super-linter.log
+├── tests
+└── values-global.yaml
+----
+
+* **ansible** - this directory contains the ansible roles and modules that support the secrets management for a pattern
+* **hashicorp-vault** - contains the helm chart for {vault}
+* **scripts** - contains utility scripts used by the Validated Patterns Framework
+* **golang-external-secrets** - Helm chart for the {eso}
+
+=== What's next for common?
+
+* We are in the very early stages of moving the helm charts in common into a public Helm repository
+* Deploying our patterns with multi-source enabled which allows us to use multiple sources for values, which will help reduce the need to have all the charts in the repo
+* Continue to maintain Makefiles, Ansible scripts and other tools in this repo in support of deploying patterns
+
+You may be wondering - **why**?
+
+We want to maximize modularity in the framework. This will reduce our reliance on the common repository as it is today and will decrease the footprint and complexity of the patterns.
+
+[#creation]
+== Creation Process
+
+image::create-where2start.png[]
+
+One of the first things we should do before embarking on creating a pattern is to identify a problem to solve.
+This can come from an existing customer problem or an idea on how we can showcase some of our Red Hat products working together.
+You can use one of our simplest validated patterns, multicloud gitops, as a starting point by using the template to create a new Git repository in your local GitHub account.
+You might already have an existing demo that you can use and convert it to use the Validated Pattern framework.
+
+The next step is to identify the technology components that you will need.
+In the case of an existing demo you might already know which components are part of the pattern.
+
+The final step is to ensure that the configuration of those components, and the integration points, are handled in the pattern.
+
+
+== Setting up naming
+
+There are two names that exist a pattern: The `pattern` name  and the `clusterGroup` name.
+Best practice is to align `pattern` with the repository title as it drives file naming for secrets file: `values-secrets-{pattern}.yaml`
+
+clusterGroup is most relevant when you have multiple clusters. Otherwise you can rely on the default `hub` group.
+
+[source,yaml]
+----
+  global:
+    pattern: multicloud-gitops
+    options:
+      useCSV: false
+      syncPolicy: Automatic
+      installPlanApproval: Automatic
+  main:
+    clusterGroupName: hub
+----
+
+== Adding to the Bill of materials
+
+There are three major resources you can add: Operators, Applications (helm charts) and ansible (imperative) scripts.
+
+
+== Introducing new operators
+
+Operators can be simply added to the clusterGroup as subscriptions
+
+[source,yaml]
+----
+  subscriptions:
+    acm:
+      name: advanced-cluster-management
+      namespace: open-cluster-management
+      channel: release-2.9
+    s3:
+      name: ack-s3-controller
+      namespace: ack-system
+      channel: alpha
+      source: community-operators
+    cte:
+      name: cte-k8s-operator
+      namespace: openshift-operators
+      channel: stable
+      source: certified-operators
+----
+
+To find the *correct* names the easiest way to do this is to jump into the console, find the operator, get to the install screen
+
+image::operator-install.png[]
+
+The URL at this point can be used to pull out the name (pkg), catalog, channel etc.
+
+
+== Introducing new helm charts
+
+The easiest way to start with new helm charts is to copy and paste from the example charts in multicloud-gitops.
+Each helm chart gets added as an argoCD application:
+
+[source,yaml]
+----
+  applications:
+    golang-external-secrets:
+      name: golang-external-secrets
+      namespace: golang-external-secrets
+      project: hub
+      path: common/golang-external-secrets
+
+    cnv: # arbitrary
+      name: cnv # name of argoCD applcation
+      namespace: openshift-cnv
+      project: cnv # argoCD project
+      path: charts/all/cnv # relative path to the chart
+----
+
+Convention puts the helm charts for the validated-pattern under `charts/`.
+
+== Chaining configuration into the charts.
+
+One key element of validated patterns is a structured set of variable overrides.
+These overrides are key to allowing the template to be kept as 'DRY' as possible when configuring.
+For this context it's important to understand the evaluation order:
+
+1. The default values defined in the chart (or sub charts).
+2. `values-global.yaml` file
+3. Values within clusterGroup files (e.g. `values-hub.yaml)
+4. Values override files with precedence for the (top/bottom) of the valid list
+5. Values overrides shown in individual application definitions
+
+
+
+*Default files installed in a chart*
+
+All helm charts *MUST* contain a `values.yaml` file.
+Values that are defined here should be considered the 'base' consideration.
+While it's possible to not define a value here, yet use it in the chart, it is strongly recommended sensible defaults are included.
+
+
+*`values-global.yaml` file*
+
+Values here are applied to every argocd application as it is picked up directly by the validated patterns operator.
+The values here are also usable in the `clusterGroup` files
+
+
+*ClusterGroup* files overrides
+
+Values can directly be used within the context of files such as `values-hub.yaml`
+
+[source,yaml]
+----
+  letsencrypt:
+    region: ''
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # staging URL
+    # server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: chris@thebutlers.me
+  clusterGroup:
+    name: hub
+    isHubCluster: true
+
+----
+
+
+*Values override files*
+
+`clusterGroup`s define an override file list which is evaluated in order.
+The cluster overrides files can take of the variables defined in `values-global.yaml` as well as metadata assembled by the operator, OpenShift and {rhacm}.
+
+These dynamic variables allow abstraction from variability between OpenShift installation. `storageClasses` varying across `clusterPlatform` is a clear example.
+
+The order of operations can be changed based on uses requirements easily with the list.
+
+[source,yaml]
+----
+  overrides:
+    - '/overrides/values-{{ $.Values.global.clusterPlatform }}.yaml'
+    - '/overrides/values-{{ $.Values.global.clusterPlatform }}-{{ $.Values.global.clusterVersion }}.yaml'
+    - '/overrides/values-{{ $.Values.global.clusterPlatform }}-{{ $.Values.clusterGroup.name }}.yaml'
+    - '/overrides/values-{{ $.Values.global.clusterVersion }}-{{ $.Values.clusterGroup.name }}.yaml"
+----
+
+*Discovery activity*: Logging into console for the `cluster` OpenShift gitops.
+Examine the root application to discover what variables have been provided to ArgoCD.
+
+
+*Individual application overrides*
+
+Individual applications should be reserved for use-cases where there is risk of conflict across multiple charts in the same application group.
+They should be viewed as absolutely hard coded into the pattern.
+
+
+[source,yaml]
+----
+  applications:
+    coffeeshop-test:
+      name: quarkuscoffeeshop-demo
+      namespace: quarkuscoffeeshop-demo
+      project: quarkuscoffeeshop-demo
+      path: charts/store/quarkuscoffeeshop-charts
+      overrides:
+      - name: ocp_auth.bind_dn
+        value: "uid=ldap_admin\\,cn=users\\,cn=accounts\\,dc=redhatlabs\\,dc=dev"
+      - name: ocp_auth.bind_password
+        value: "supersecret"
+----

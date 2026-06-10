@@ -1,0 +1,38 @@
+---
+menu:
+  workshop:
+    parent: Pattern Landscape
+title: Partners
+weight: 31
+---
+
+:toc:
+include::modules/comm-attributes.adoc[]
+:imagesdir: /images/workshop
+
+= Working with Partners
+
+Partners have taken notice of what Validated Patterns can bring to their organizations. In turn, they have had focused development cycles to deploy their product/features using the Validated Patterns framework. In the following sections we will discuss how a few of our partners have taken advantage of the Validated Patterns framework.
+
+== Intel
+[#intel]
+
+=== AMX Accelerated Hardware
+
+[#intel-mcgo]
+image::landscape-partner-intel-mcgo.png[Intel AMX Multi-Cloud GitOps]
+
+[#intel-md]
+image::landscape-partner-intel-mcgo.png[Intel AMX Medical Diagnosis]
+
+== Portworx
+[#pwx-mcgo]
+image::landscape-partner-portworx.png[Portworx Multi-Cloud GitOps]
+
+== Cisco with Portworx
+[#cisco-pwx-mcgo]
+image::landscape-partner-cisco-portworx.png[Cisco with Portworx Multi-Cloud GitOps]
+
+== Veeam Kasten
+[#veeam-mcgo]
+image::landscape-partner-veeam.png[Veeam Multi-Cloud GitOps]
