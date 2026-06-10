@@ -189,6 +189,20 @@ Re-sync `kafka-console` after Skupper listeners are healthy. Confirm `listNodes`
 | `multi-cluster-istio` | Hub | Hub, Prometheus-East, Prometheus-West |
 | `local-metrics` | Each spoke | Local Prometheus (UWM/Thanos) |
 
+## AI-assisted operations (Kairos)
+
+The platform integrates AI-driven operational intelligence through event correlation, anomaly detection, and human-in-the-loop workflows:
+
+[![Kairos — event correlation and alerting](/images/hybrid-mesh-platform/kairos-events.png)](/images/hybrid-mesh-platform/kairos-events.png)
+
+[![Kairos — historical analysis and trends](/images/hybrid-mesh-platform/kairos-history.png)](/images/hybrid-mesh-platform/kairos-history.png)
+
+[![Kairos — human-in-the-loop decision workflows](/images/hybrid-mesh-platform/kairos-human-in-the-loop.png)](/images/hybrid-mesh-platform/kairos-human-in-the-loop.png)
+
+[![Kairos — AI agents for autonomous remediation](/images/hybrid-mesh-platform/kairos-ia-agents.png)](/images/hybrid-mesh-platform/kairos-ia-agents.png)
+
+[![Kairos — observability-driven insights](/images/hybrid-mesh-platform/kairos-observability.png)](/images/hybrid-mesh-platform/kairos-observability.png)
+
 ## References
 
 - [OpenShift Observability](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/monitoring/)

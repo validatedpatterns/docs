@@ -514,6 +514,7 @@ kafdrop
 kafkasource
 kafkatopic
 kafkatopics
+kairos
 kam
 kamelet
 kaoto

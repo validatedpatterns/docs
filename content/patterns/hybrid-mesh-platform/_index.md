@@ -25,6 +25,10 @@ links:
   install: getting-started
   bugs: https://github.com/maximilianopizarro/platform-hub-spoke-config/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+tested_on:
+  platform: AWS
+  ocp_version: "4.20"
+  topology: "3 clusters (hub + east spoke + west spoke)"
 contributor:
   name: Maximiliano Pizarro
   contact: mailto:maximilianopizarro5@gmail.com
@@ -39,7 +43,9 @@ contributor:
 
 **Hybrid Mesh Platform** is a multi-cluster GitOps platform using Red Hat products. It implements a hub-spoke topology that centralizes governance with Red Hat Advanced Cluster Management (ACM), delivers [Industrial Edge](/patterns/industrial-edge/) workloads on regional spokes, uses OpenShift Service Mesh in ambient mode for east-west connectivity, layers Connectivity Link (Kuadrant) for API-aware ingress policy, exposes Grafana dashboards for cross-cluster visibility, and integrates Advanced Cluster Security (ACS) for vulnerability and runtime protection.
 
-**Supported on:** Red Hat OpenShift Container Platform 4.20 (4.14 or newer per cluster).
+**Tested on:** Red Hat OpenShift Container Platform **4.20** on **AWS** (hub + east spoke + west spoke, multinode 3 workers each). Compatible with 4.14+ per cluster.
+
+**Current release:** [ocp-420-v5](https://github.com/maximilianoPizarro/platform-hub-spoke-config/releases/tag/ocp-420-v5) — Camel Dashboard on east/west spokes, Skupper token sync, Kafka Console broker DNS fixes.
 
 Read **concept → mechanics → operations**: start with [Architecture](architecture), install via [Getting Started](getting-started), scaffold workloads via [Scaffolding](scaffolding), then use platform chapters (**Hub Gateway**, **Observability**, **Industrial Edge**) before drilling into the [pattern repository](https://github.com/maximilianopizarro/platform-hub-spoke-config).
 

@@ -79,6 +79,22 @@ Use cluster names **`hub`**, **`east`**, and **`west`**. Namespace **`stackrox`*
 1. Access to public container registries (or mirrored equivalents)
 2. Access to your Git repository (fork of `platform-hub-spoke-config`)
 
+### Cluster sizing (AWS — OpenShift 4.20)
+
+Tested on **demo.redhat.com** with the following provisioning parameters:
+
+| Cluster | Workers | vCPU/worker | Memory/worker | Total capacity |
+| --- | --- | --- | --- | --- |
+| **Hub** | 3 | 8 | 32 GiB | 24 vCPU / 96 GiB |
+| **East spoke** | 3 | 4 | 16 GiB | 12 vCPU / 48 GiB |
+| **West spoke** | 3 | 4 | 16 GiB | 12 vCPU / 48 GiB |
+
+Hub estimated workload: ~12.5 CPU / ~29 GiB (ACM, ACS Central, Developer Hub, data lake Kafka 3-replica, Service Mesh, OpenShift AI, hub gateway).
+
+Spoke estimated workload: ~5.5 CPU / ~11 GiB (Industrial Edge, factory Kafka, ACS SecuredCluster, Service Mesh ambient).
+
+For constrained environments, use `values-lite.yaml` on the hub to disable heavy components (OpenShift AI, ACS, Grafana dashboards, hub gateway).
+
 ## Repository layout
 
 ```
