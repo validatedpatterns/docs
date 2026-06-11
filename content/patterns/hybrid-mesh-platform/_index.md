@@ -41,7 +41,16 @@ contributor:
 
 > **Your journey:** This platform deploys in one `helm upgrade`, connects three OpenShift clusters (hub + east + west), and shows IoT sensor data across Grafana and Developer Hub within about 30 minutes. The pages below follow one continuous story — concept, install, operate, scaffold — so you can read straight through or jump to any chapter.
 
-**Hybrid Mesh Platform** is a multi-cluster GitOps platform using Red Hat products. It implements a hub-spoke topology that centralizes governance with Red Hat Advanced Cluster Management (ACM), delivers [Industrial Edge](/patterns/industrial-edge/) workloads on regional spokes, uses OpenShift Service Mesh in ambient mode for east-west connectivity, layers Connectivity Link (Kuadrant) for API-aware ingress policy, exposes Grafana dashboards for cross-cluster visibility, and integrates Advanced Cluster Security (ACS) for vulnerability and runtime protection.
+## What is Hybrid Mesh Platform?
+
+**Hybrid Mesh Platform** is a production-grade, multi-cluster GitOps reference architecture that mirrors how Red Hat customers run hybrid cloud on OpenShift. It implements a **hub-spoke topology** where:
+
+- A **hub cluster** (OpenShift on AWS) centralizes fleet governance with **ACM**, deploys via **OpenShift GitOps** (Argo CD), hosts the **Developer Hub** internal portal, runs **ACS Central** for security, aggregates observability in **Grafana**, and exposes cross-cluster services through a **Gateway API** hub gateway with circuit breaking.
+- Two **spoke clusters** (east and west) execute **Industrial Edge** factory workloads — MQTT sensors, Kafka pipelines, ML inference, and dashboards — connected to the hub via a **Skupper Virtual Application Network** (no VPN or firewall changes).
+- **OpenShift Service Mesh 3** in **ambient mode** (no sidecars) provides ztunnel-based L4 encryption and optional waypoint L7 policy across all clusters.
+- **Connectivity Link (Kuadrant)** layers API-aware ingress policies — rate limiting, auth, DNS/TLS automation — on top of Gateway API.
+
+The result is a reference design you can adopt, extend, or customize for factory IoT, fleet management, or any workload that requires centralized governance with distributed execution.
 
 **Tested on:** Red Hat OpenShift Container Platform **4.20** on **AWS** (hub + east spoke + west spoke, multinode 3 workers each). Compatible with 4.14+ per cluster.
 
@@ -49,23 +58,33 @@ contributor:
 
 Read **concept → mechanics → operations**: start with [Architecture](architecture), install via [Getting Started](getting-started), scaffold workloads via [Scaffolding](scaffolding), then use platform chapters (**Hub Gateway**, **Observability**, **Industrial Edge**) before drilling into the [pattern repository](https://github.com/maximilianopizarro/platform-hub-spoke-config).
 
-## Overview
-
-This repository models a **GitOps-first platform** where:
-
-- **Hub cluster** runs ACM, OpenShift GitOps (Argo CD), observability aggregation, Developer Hub, ACS Central, Mailpit for notifications, and gateway-style HTTP routing with **circuit breaking** for shared services.
-- **Spoke clusters** (east/west regions) host **Industrial Edge** patterns: sensor and MQTT-style ingestion, Kafka pipelines, optional ML scoring, and dashboards fed by Prometheus-compatible metrics.
-- **Service Mesh 3 ambient** reduces sidecar overhead while retaining ztunnel-based L4 and waypoint-based L7 policy where needed.
-- **Hub Gateway** splits traffic into **front** and **API** services per spoke, with per-service **circuit breaking** via `DestinationRule`.
-- **Service Interconnect (Skupper)** bridges spoke services and metrics to the hub via a Virtual Application Network (VAN), without VPN or firewall changes.
-- **Spoke Gateways** aggregate Industrial Edge services per spoke for simplified cross-cluster exposure.
-- **Kiali + OSSM Console** provides service mesh topology visualization on every cluster via the OpenShift Console plugin.
-- **Grafana dashboards** roll up cluster and application signals from all clusters.
-- **ACS** provides centralized policy, CVE visibility, and SecuredCluster agents on spokes.
-
 [![Hybrid Mesh Platform — hub-spoke architecture](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)
 
 _Hub cluster aggregates observability and Developer Hub; east and west spokes run Industrial Edge workloads connected via Service Interconnect (Skupper). Click the image to open the full diagram._
+
+## Hub-spoke architecture at a glance
+
+The platform simulates a production hybrid mesh:
+
+- **Hub** runs: ACM, OpenShift GitOps (Argo CD), Developer Hub, OpenShift AI, Service Mesh control plane, Skupper, Kuadrant, ACS Central, Grafana, Kafka Console, and Kubecost.
+- **East spoke** runs: Industrial Edge workloads, DevSpaces (Kaoto + Continue AI), Kairos SmartScaling, and spoke-local Argo CD.
+- **West spoke** runs: Industrial Edge replicas demonstrating cross-cluster traffic, MirrorMaker replication, and Skupper connectivity.
+
+## Service mesh and traffic flow
+
+The platform uses OpenShift Service Mesh 3 in **ambient mode** (no sidecars). Traffic between hub and spokes crosses a Skupper tunnel exposed via Gateway API:
+
+- `HTTPRoute` resources on the hub split traffic to east/west backends (frontend 50/50, API pinned for Socket.IO session affinity)
+- `DestinationRule` circuit breaking ejects unhealthy endpoints
+- `AuthorizationPolicy` (zero-trust) restricts which service accounts can reach backends
+
+## OpenShift AI — Model as a Service
+
+The AI layer provides a shared LLM endpoint (MaaS) deployed on the hub via the OpenShift AI operator (`DataScienceCluster`). Any application that speaks the OpenAI REST API can consume MaaS without code changes — just point `OPENAI_API_BASE` to the in-cluster service.
+
+## Kuadrant API gateway
+
+Kuadrant manages API rate limiting and auth policies across the hub gateway. Per-user API keys scoped to plans enable controlled access to AI endpoints and workshop APIs via `APIProduct`, `AuthPolicy`, and `TokenRateLimitPolicy`.
 
 [![Platform architecture overview](/images/hybrid-mesh-platform/arch-overview.png)](/images/hybrid-mesh-platform/arch-overview.png)
 
@@ -96,9 +115,16 @@ Screenshots and architecture diagrams in the pattern repository support full-scr
 
 **Next →** [Architecture](architecture) — understand how Git, ACM, and Skupper wire the three clusters together.
 
-## Workshop
+## Workshop — Hybrid Mesh AI
 
-A hands-on **Hybrid Mesh AI Workshop** (dual-track: executive strategy + hands-on lab) is available for this platform. It covers ACM fleet management, ambient mesh, Developer Hub scaffolding, OpenShift AI, Kuadrant API gateway, and FinOps — all on a live RHDP hub-spoke fleet. See the [workshop site](https://maximilianopizarro.github.io/platform-hub-spoke-config/workshop/) for agenda and registration.
+A dual-track **Hybrid Mesh AI Workshop** is available for this platform:
+
+- **Part A (modules 01–05)** — Executive-oriented: hybrid cloud strategy, ROSA architecture, security at scale, AWS AI integration, and real customer cases.
+- **Part B (modules 10–28)** — Fully hands-on on a live RHDP hub-spoke fleet: ACM fleet management, ambient mesh, Developer Hub scaffolding, Industrial Edge deployment, Kairos SmartScaling, observability, GitOps, Service Mesh, scalability (HPA + Kafka), network policies, ACS + Connectivity Link, FinOps (Kubecost), OpenShift AI, AI Gateway (MaaS + Kuadrant), and LLM/RAG patterns.
+
+Each module targets a specific product area and includes a `verify` step to confirm work. The lab uses the same three-cluster topology documented here (hub + east + west on AWS).
+
+See the [workshop site](https://maximilianopizarro.github.io/platform-hub-spoke-config/workshop/) for agenda, registration, and YAML snippets.
 
 ## Red Hat products used
 
