@@ -10,6 +10,8 @@ Observability ties together metrics, logs, traces, and mesh visualization so ope
 
 Grafana panels, Kiali graphs, and Kafka Console views help you confirm that factory telemetry and mesh traffic match the architecture diagrams after install.
 
+[![Observability overview](/images/hybrid-mesh-platform/workshop-observability.png)](/images/hybrid-mesh-platform/workshop-observability.png)
+
 [![Grafana multi-cluster dashboards](/images/hybrid-mesh-platform/product-grafana-observability.png)](/images/hybrid-mesh-platform/product-grafana-observability.png)
 
 [![Kiali service mesh](/images/hybrid-mesh-platform/product-kiali-service-mesh.png)](/images/hybrid-mesh-platform/product-kiali-service-mesh.png)
@@ -192,6 +194,8 @@ Re-sync `kafka-console` after Skupper listeners are healthy. Confirm `listNodes`
 ## AI-assisted operations (Kairos)
 
 The platform integrates AI-driven operational intelligence through event correlation, anomaly detection, and human-in-the-loop workflows:
+
+[![Kairos — worker scaling and SmartScalingPolicy](/images/hybrid-mesh-platform/workshop-kairos-scaling.png)](/images/hybrid-mesh-platform/workshop-kairos-scaling.png)
 
 [![Kairos — event correlation and alerting](/images/hybrid-mesh-platform/kairos-events.png)](/images/hybrid-mesh-platform/kairos-events.png)
 

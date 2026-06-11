@@ -14,6 +14,8 @@ Implementation chart: `components/hub-gateway`. Connectivity Link operator: `com
 
 Connectivity Link (Kuadrant) brings multi-cluster ingress and policy using Kubernetes Gateway API — DNS, TLS, rate limiting, and auth patterns layered on `Gateway` and `HTTPRoute` resources. In this platform, Gateway API objects align with hub gateway routing (including weighted splits similar to hardware ADC behavior). Policies may be disabled initially; enable Kuadrant `AuthPolicy`, `RateLimitPolicy`, and DNS/TLS strategies as you harden environments.
 
+[![ACS and Connectivity Link — security and gateway policy](/images/hybrid-mesh-platform/workshop-acs-kuadrant.png)](/images/hybrid-mesh-platform/workshop-acs-kuadrant.png)
+
 [![Gateway API policy topology — hub HTTPRoute and route rules](/images/hybrid-mesh-platform/connectivity-link-hub.png)](/images/hybrid-mesh-platform/connectivity-link-hub.png)
 
 _Gateway API policy topology — hub-gateway, HTTPRoute, and route rules in the OpenShift Console._

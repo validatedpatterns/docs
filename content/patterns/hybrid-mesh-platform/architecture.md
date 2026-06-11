@@ -31,6 +31,8 @@ The pattern repository uses a **single `main` branch** with cluster-specific dir
 - Spoke charts at `east/` and `west/`
 - Shared Helm charts under `components/` referenced by hub and spoke Application CRs
 
+[![Hybrid Mesh Platform architecture](/images/hybrid-mesh-platform/workshop-hybrid-mesh-arch.png)](/images/hybrid-mesh-platform/workshop-hybrid-mesh-arch.png)
+
 [![Platform architecture overview](/images/hybrid-mesh-platform/arch-overview.png)](/images/hybrid-mesh-platform/arch-overview.png)
 
 [![Hub-spoke GitOps flow](/images/hybrid-mesh-platform/arch-hub-spoke-flow.png)](/images/hybrid-mesh-platform/arch-hub-spoke-flow.png)

@@ -35,7 +35,9 @@ The hub chart deploys **ACM**, **OpenShift GitOps**, **ACS**, Service Mesh, Skup
 
 ACM must show **`east`** and **`west`** as **Available** managed clusters before the ApplicationSet can push spoke charts.
 
-[![ACM fleet management — east and west registered on the hub](/images/hybrid-mesh-platform/ACM.png)](/images/hybrid-mesh-platform/ACM.png)
+[![ACM multicluster fleet management](/images/hybrid-mesh-platform/workshop-acm-multicluster.png)](/images/hybrid-mesh-platform/workshop-acm-multicluster.png)
+
+[![ACM fleet view — east and west registered on the hub](/images/hybrid-mesh-platform/ACM.png)](/images/hybrid-mesh-platform/ACM.png)
 
 Verify:
 

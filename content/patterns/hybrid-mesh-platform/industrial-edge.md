@@ -10,7 +10,9 @@ The [Industrial Edge](/patterns/industrial-edge/) validated pattern is a **maint
 
 **Hybrid Mesh Platform** does not replace that pattern. It **extends** it by deploying the Industrial Edge stack independently on **east** and **west** spoke clusters while the hub aggregates observability, gateway access, and GitOps control.
 
-[![Industrial Edge on spoke](/images/hybrid-mesh-platform/industrial-edge.png)](/images/hybrid-mesh-platform/industrial-edge.png)
+[![Industrial Edge deployment overview](/images/hybrid-mesh-platform/workshop-industrial-edge.png)](/images/hybrid-mesh-platform/workshop-industrial-edge.png)
+
+[![Industrial Edge on spoke — console view](/images/hybrid-mesh-platform/industrial-edge.png)](/images/hybrid-mesh-platform/industrial-edge.png)
 
 For solution overview, northbound/southbound data flows, demo scenario (MANUela), and maintained-pattern diagrams, see [Industrial Edge](/patterns/industrial-edge/).
 
@@ -47,6 +49,8 @@ Each spoke (east/west) runs the same stack independently — the hub aggregates 
 | Processing | OpenShift AI (KServe InferenceService) | `industrial-edge-tst-all` |
 | CI/CD | Tekton pipelines (buildah + deploy) | `industrial-edge-ci` |
 | Visualization | `line-dashboard` (WebSocket consumer) | `industrial-edge-tst-all` |
+
+[![OpenShift AI — model serving and inference](/images/hybrid-mesh-platform/workshop-openshift-ai.png)](/images/hybrid-mesh-platform/workshop-openshift-ai.png)
 
 [![OpenShift AI — KServe inference on spoke](/images/hybrid-mesh-platform/openshift-ia.png)](/images/hybrid-mesh-platform/openshift-ia.png)
 

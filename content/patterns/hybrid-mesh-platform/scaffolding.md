@@ -8,7 +8,9 @@ aliases: /hybrid-mesh-platform/scaffolding/
 
 Developer Hub **Create** templates deploy new Industrial Edge instances to east or west spokes. This chapter is the operational follow-up to [Architecture](architecture) and [Getting Started](getting-started) — turn a running platform into additional factory instances without hand-editing GitOps repos.
 
-[![Developer Hub](/images/hybrid-mesh-platform/product-developer-hub.png)](/images/hybrid-mesh-platform/product-developer-hub.png)
+[![Software Templates overview](/images/hybrid-mesh-platform/workshop-software-templates.png)](/images/hybrid-mesh-platform/workshop-software-templates.png)
+
+[![Developer Hub — catalog and topology](/images/hybrid-mesh-platform/product-developer-hub.png)](/images/hybrid-mesh-platform/product-developer-hub.png)
 
 ## What you need before scaffolding
 

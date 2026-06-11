@@ -63,9 +63,11 @@ This repository models a **GitOps-first platform** where:
 - **Grafana dashboards** roll up cluster and application signals from all clusters.
 - **ACS** provides centralized policy, CVE visibility, and SecuredCluster agents on spokes.
 
-[![Platform hub-spoke overview](/images/hybrid-mesh-platform/arch-overview.png)](/images/hybrid-mesh-platform/arch-overview.png)
+[![Hybrid Mesh Platform — hub-spoke architecture](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)
 
 _Hub cluster aggregates observability and Developer Hub; east and west spokes run Industrial Edge workloads connected via Service Interconnect (Skupper). Click the image to open the full diagram._
+
+[![Platform architecture overview](/images/hybrid-mesh-platform/arch-overview.png)](/images/hybrid-mesh-platform/arch-overview.png)
 
 Architecture diagrams illustrate Git, **ACM fleet management**, **ACS Central**, Skupper VAN, Connectivity Link, and Industrial Edge on east/west — use them as the visual companion to the install chapters (see [Architecture](architecture) for ACM and ACS console views).
 
