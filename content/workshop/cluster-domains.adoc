@@ -9,25 +9,15 @@ weight: 102
 :toc:
 include::modules/comm-attributes.adoc[]
 
-= Cluster Domains
-
-== Topic Objectives
-
-[#objectives]
-In this topic we will discuss:
-
-* ArgoCD Limitations
-* How the framework collects and uses cluster information
-
 [#limitations]
-=== Limitations
+== Limitations
 
 By default ArgoCD does not expose any means to know the cluster's name/FQDN (Fully Qualified Domain Name)
 
 To make up for this the framework collects some cluster information in order to provide reusable parameters for cluster specific values.
 
 [#variables]
-=== Domain variables set by the pattern
+== Domain variables set by the pattern
 
 |===
 |**Variable**|**Purpose**|**Example (if applicable)**

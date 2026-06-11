@@ -10,8 +10,6 @@ weight: 81
 include::modules/comm-attributes.adoc[]
 :imagesdir: /images/workshop
 
-= Sync Waves and Hooks
-
 https://argoproj.github.io/argo-cd/user-guide/sync-waves/[Sync waves,window='_blank']
 are used in Argo CD to order how manifests are applied to the cluster.
 

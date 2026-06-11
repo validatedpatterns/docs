@@ -8,15 +8,6 @@ weight: 80
 include::modules/comm-attributes.adoc[]
 :imagesdir: /images/workshop
 
-= GitOps Rough Edges
-
-== Topic Objectives
-
-[#objectives]
-In this topic we will discuss:
-
-* Declarative Synchronization
-* Describe different ways of implementing flow control using Validated Patterns and GitOps built-in tools
 
 [#declarativeSync]
 == Declarative Synchronization

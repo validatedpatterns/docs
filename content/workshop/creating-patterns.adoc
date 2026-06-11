@@ -10,86 +10,13 @@ weight: 52
 include::modules/comm-attributes.adoc[]
 :imagesdir: /images/workshop
 
-= Creating Validated Patterns
-
-== Topic Objectives
-
-[#objectives]
-In this topic we will discuss:
-
-* Understanding `common`
-* Pattern Requirements
-* Creation Process
-
 [IMPORTANT]
 .Core Concepts
 ====
-* **Creating is Extending** We never really create a new pattern from zero. Instead we extend our basic pattern using artifacts that we have developed along the way
 * **Artifacts** Artifacts can include Helm Charts, Kustomize manifests, or plain Kubernetes manifests
 * **Moving Artifacts into the Validated Patterns framework** Many artifacts require conversion to Helm chart templates and parameterizing certain values
 * **Helm** Helm is a kubernetes package manager that allows you to define, install and manage kubernetes applications as reusable packages called charts
 ====
-
-[#common]
-== Understanding common
-
-What's the role of the **common** repository?
-
-* The core components that make up the Validated Patterns framework are contained in the common repository
-* Including:
-** OpenShift GitOps configurations
-** RHACM configuration and Global Policies
-*** Support for **clusterGroup** and **GitOps** policies
-** Validated Pattern build scripts and Makefiles
-** Secrets Management (Hashicorp Vault)
-** Operator CRDs and other assets
-** Various utility scripts
-
-What's in common?
-
-NOTE: The common repository is where all the common manifests for the Validated Patterns framework live
-
-* **acm** - contains the helm charts, which contains policies and is used to configure the deployment of the {rhacm}
-* **clusterGroup** - contains the helm charts used to create namespaces, subscriptions, Argo Project and Applications described in values files. This is the seed for all the patterns.
-* **operator-install** - contains the helm chart used by the Validated Patterns operator to create the openshift-gitops component, creating the initial ArgoCD applications for Validated Patterns.
-
-[source,bash]
-----
-common
-├── acm
-├── ansible
-├── Changes.md
-├── clustergroup
-├── common -> .
-├── examples
-├── golang-external-secrets
-├── hashicorp-vault
-├── LICENSE
-├── Makefile
-├── letsencrypt
-├── operator-install
-├── README.md
-├── reference-output.yaml
-├── scripts
-├── super-linter.log
-├── tests
-└── values-global.yaml
-----
-
-* **ansible** - this directory contains the ansible roles and modules that support the secrets management for a pattern
-* **hashicorp-vault** - contains the helm chart for {vault}
-* **scripts** - contains utility scripts used by the Validated Patterns Framework
-* **golang-external-secrets** - Helm chart for the {eso}
-
-=== What's next for common?
-
-* We are in the very early stages of moving the helm charts in common into a public Helm repository
-* Deploying our patterns with multi-source enabled which allows us to use multiple sources for values, which will help reduce the need to have all the charts in the repo
-* Continue to maintain Makefiles, Ansible scripts and other tools in this repo in support of deploying patterns
-
-You may be wondering - **why**?
-
-We want to maximize modularity in the framework. This will reduce our reliance on the common repository as it is today and will decrease the footprint and complexity of the patterns.
 
 [#creation]
 == Creation Process
@@ -272,3 +199,99 @@ They should be viewed as absolutely hard coded into the pattern.
       - name: ocp_auth.bind_password
         value: "supersecret"
 ----
+
+== Using Patternizer to create new patterns
+
+When creating new patterns you have two options: you can either fork an existing pattern and modify it to suit your purpose or start a new pattern from scratch.
+
+link:https://github.com/validatedpatterns/patternizer[The patternizer tool] exists to expedite starting a pattern from scratch.
+
+To create a new pattern you merely need to run `podman run --pull=newer -v "$PWD:$PWD:z" -w "$PWD" quay.io/validatedpatterns/patternizer init --with-secrets` (you can omit the `--with-secrets` if you don't need to use the secrets framework.)
+
+On an empty directory, named `workshop-pattern`, this currently produces the following files:
+
+[source,bash]
+----
+workshop-pattern
+├── ansible.cfg                 # the default ansible configuration
+├── Makefile                    # a stub Makefile which includes Makefile-common
+├── Makefile-common             # where all the common commands (install, load-secrets, etc) live
+├── pattern.sh                  # the convenvience utility container (has oc, helm, makefile, etc)
+├── values-global.yaml          # names the pattern based on the directory and sets common defaults
+├── values-prod.yaml            # contains the components for using the secrets framework
+└── values-secret.yaml.template # a stub for the secrets file
+----
+
+The `values-global.yaml` contains
+
+[source,yaml]
+----
+global:
+  pattern: workshop-pattern
+  singleArgoCD: true
+  secretLoader:
+    disabled: false
+main:
+  clusterGroupName: prod
+  multiSourceConfig:
+    enabled: true
+    clusterGroupChartVersion: 0.9.*
+----
+
+and the `values-prod.yaml` contains
+
+[source,yaml]
+----
+clusterGroup:
+  name: prod
+  namespaces:
+    - workshop-pattern
+    - vault
+    - external-secrets-operator:
+        operatorGroup: true
+        targetNamespaces: []
+    - external-secrets
+  subscriptions:
+    eso:
+      name: openshift-external-secrets-operator
+      namespace: external-secrets-operator
+      channel: stable-v1
+  applications:
+    openshift-external-secrets:
+      name: openshift-external-secrets
+      namespace: external-secrets
+      chart: openshift-external-secrets
+      chartVersion: 0.0.*
+    vault:
+      name: vault
+      namespace: vault
+      chart: hashicorp-vault
+      chartVersion: 0.1.*
+----
+
+[TIP]
+.Shell Function
+====
+You can add a simple shell function to your shell config file (ex `~/.zshrc`) to enable easier use of the tool.
+
+[source,bash]
+----
+pattern() {
+  podman run --pull=newer \
+    -v "$PWD:$PWD:z" \
+    -w "$PWD" \
+    quay.io/validatedpatterns/patternizer "$@"
+}
+----
+
+Now you can more simply run `pattern init`.
+====
+
+[NOTE]
+.Idempotency
+====
+The `pattern init` command is idempotent and can be used several times during pattern creation to update the patterns values files.
+You can go from just using `pattern init` to `pattern init --with-secrets` to add the secret framework to your pattern.
+If you use `helm create` (or `./pattern.sh helm create`) to create helm charts and then run `pattern init` again, the helm charts
+will be automatically added to your `values-prod.yaml`.
+====

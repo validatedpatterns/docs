@@ -10,8 +10,6 @@ weight: 53
 include::modules/comm-attributes.adoc[]
 :imagesdir: /images/workshop
 
-= Validated Patterns Operator
-
 [#features]
 == Validated Operator Features
 
@@ -21,7 +19,11 @@ include::modules/comm-attributes.adoc[]
 * Deploys OpenShift GitOps with the correct `values-hub`
 * Regardless of how you deploy the pattern, the operator is still in use
 
-IMPORTANT: `make load-secrets` is required when deploying the operator via OpenShift Console.
+[IMPORTANT]
+.Loading Secrets
+====
+`make load-secrets` is required when you create a Pattern CR directly in the OpenShift console _unless_ you use the Patterns Catalog UI.
+====
 
 image::vp-operator-community.png[Community Operator]
 

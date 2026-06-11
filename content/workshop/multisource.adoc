@@ -10,19 +10,8 @@ weight: 103
 include::modules/comm-attributes.adoc[]
 :imagesdir: /images/workshop
 
-= MultiSource
-
-== Topic Objectives
-
-[#objectives]
-In this topic we will discuss:
-
-* What does multisource mean?
-* MultiSource status
-* User Experience
-* Next Steps
-
 [#meaning]
+== What is MultiSource?
 
 Using multiple-sources in our ArgoCD applications gives the Patterns framework a lot of flexibility in how applications are deployed. In the code snippet below we can see that we have a chart called `acm` where we have our normal values getting assigned, but also using values from another repository - in this case `https://github.com/f00/multicloud-gitops`
 
@@ -72,7 +61,7 @@ source:
 
 [#how]
 
-=== How it works
+== How it works
 
 IMPORTANT: Multi-source needs to be enabled for the clusterGroup helm chart via: `main.multiSourceConfig.enabled`
 
@@ -105,7 +94,7 @@ acm:
 ----
 
 [#status]
-=== Status
+== Status
 
 * link:https://github.com/validatedpatterns/patterns-operator/pull/85[Pattern Operator PRs merged]
 * link:https://github.com/validatedpatterns/common/pull/350[Common repository PRs merged]
@@ -115,12 +104,12 @@ acm:
 
 [#ux]
 
-=== User Experience
+== User Experience
 
 image::multisource-config.png[]
 
 [#helmRepo]
-=== Helm Chart Repository
+== Helm Chart Repository
 
 [.INFORMATION]
 .How does it work?
@@ -131,13 +120,13 @@ image::multisource-config.png[]
 * Then it takes that hashicorp-vault-main-single-chart branch and pushes it out to the `validatedpatterns/hashicorp-vault` git repository
 ====
 
-=== TL;DR
+== TL;DR
 
 **validatedpatterns/{acm,clustergroup,hashicorp-vault...}** repos are automatically kept up to date every time we push to common
 
 [#chart-release]
 
-=== Creating a chart release
+== Creating a chart release
 
 1. Change the version in `common/(chart}/Chart.yaml` (e.g. acm ver 0.0.2)
 2. Make sure the version propagated correctly in the vp/acm-chart repository
@@ -148,7 +137,7 @@ image::multisource-config.png[]
 ** update index.yaml
 
 [#next]
-=== Next Steps
+== Next Steps
 
 * Continue to monitor for any issues in Argo
 * Expand the usage in other patterns
