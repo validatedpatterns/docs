@@ -64,29 +64,47 @@ _Hub cluster aggregates observability and Developer Hub; east and west spokes ru
 
 ## Hub-spoke architecture at a glance
 
-The platform simulates a production hybrid mesh:
+The platform simulates a production hybrid mesh with three clusters on AWS:
 
-- **Hub** runs: ACM, OpenShift GitOps (Argo CD), Developer Hub, OpenShift AI, Service Mesh control plane, Skupper, Kuadrant, ACS Central, Grafana, Kafka Console, and Kubecost.
-- **East spoke** runs: Industrial Edge workloads, DevSpaces (Kaoto + Continue AI), Kairos SmartScaling, and spoke-local Argo CD.
-- **West spoke** runs: Industrial Edge replicas demonstrating cross-cluster traffic, MirrorMaker replication, and Skupper connectivity.
+| Cluster | Role | Key components |
+| --- | --- | --- |
+| **Hub** | Fleet governance and centralized services | ACM, OpenShift GitOps (Argo CD), Developer Hub, OpenShift AI, Service Mesh control plane, Skupper listeners, Kuadrant, ACS Central, Grafana, Kafka Console, Kubecost |
+| **East spoke** | Factory workloads and developer tools | Industrial Edge (sensors, Kafka, Camel, ML), DevSpaces (Kaoto + Continue AI), Kairos SmartScaling, spoke-local Argo CD |
+| **West spoke** | Workload replicas and cross-cluster validation | Industrial Edge replicas, MirrorMaker replication to hub, Skupper connectors for cross-cluster traffic |
+
+Industrial Edge components exist **only** on spokes. The hub never hosts factory sensor workloads — it aggregates their metrics and provides gateway access.
 
 ## Service mesh and traffic flow
 
-The platform uses OpenShift Service Mesh 3 in **ambient mode** (no sidecars). Traffic between hub and spokes crosses a Skupper tunnel exposed via Gateway API:
+The platform uses OpenShift Service Mesh 3 in **ambient mode** — no sidecars injected into application pods. Per-node ztunnels handle L4 mTLS encryption transparently; optional waypoint proxies provide L7 policy where needed.
 
-- `HTTPRoute` resources on the hub split traffic to east/west backends (frontend 50/50, API pinned for Socket.IO session affinity)
-- `DestinationRule` circuit breaking ejects unhealthy endpoints
-- `AuthorizationPolicy` (zero-trust) restricts which service accounts can reach backends
+Traffic between hub and spokes crosses a **Skupper mTLS tunnel** exposed via Gateway API:
+
+- **`HTTPRoute`** resources on the hub split traffic to east/west backends (frontend 50/50 weighted, API pinned to a single spoke for Socket.IO session affinity)
+- **`DestinationRule`** circuit breaking (outlier detection) ejects unhealthy endpoints after consecutive 5xx errors
+- **`AuthorizationPolicy`** (zero-trust) restricts which service accounts can reach backends — only the hub gateway SA is authorized
+
+This means external clients hit the hub OpenShift router → Istio gateway → waypoint (circuit breaker) → Skupper tunnel → spoke backend, all with mTLS end-to-end.
+
+[![Platform architecture overview](/images/hybrid-mesh-platform/arch-overview.png)](/images/hybrid-mesh-platform/arch-overview.png)
+
+_Detailed architecture showing Git repo structure, ACM placement, Skupper VAN, and sync-wave delivery to east/west spokes._
 
 ## OpenShift AI — Model as a Service
 
-The AI layer provides a shared LLM endpoint (MaaS) deployed on the hub via the OpenShift AI operator (`DataScienceCluster`). Any application that speaks the OpenAI REST API can consume MaaS without code changes — just point `OPENAI_API_BASE` to the in-cluster service.
+The AI layer provides a shared LLM endpoint (**MaaS**) deployed on the hub via the OpenShift AI operator (`DataScienceCluster`). Components include dashboard, workbenches, model mesh, data science pipelines, and KServe.
+
+Any application that speaks the OpenAI REST API can consume MaaS without code changes — point `OPENAI_API_BASE` to the in-cluster service. Spoke workloads reach MaaS through Skupper connectors, enabling inference from factory pipelines without direct network routes to the hub.
 
 ## Kuadrant API gateway
 
-Kuadrant manages API rate limiting and auth policies across the hub gateway. Per-user API keys scoped to plans enable controlled access to AI endpoints and workshop APIs via `APIProduct`, `AuthPolicy`, and `TokenRateLimitPolicy`.
+Kuadrant manages API rate limiting and auth policies across the hub gateway. Per-user API keys scoped to plans enable controlled access to AI endpoints and platform APIs:
 
-[![Platform architecture overview](/images/hybrid-mesh-platform/arch-overview.png)](/images/hybrid-mesh-platform/arch-overview.png)
+- **`APIProduct`** — exposes endpoints under a single managed product with host-based routing
+- **`AuthPolicy`** — identity verification via API keys or OAuth tokens
+- **`TokenRateLimitPolicy`** — per-key rate limits (for example 100 req/min per user)
+
+This enables self-service API consumption for developers and workshop participants while protecting backend services from overload.
 
 Architecture diagrams illustrate Git, **ACM fleet management**, **ACS Central**, Skupper VAN, Connectivity Link, and Industrial Edge on east/west — use them as the visual companion to the install chapters (see [Architecture](architecture) for ACM and ACS console views).
 
