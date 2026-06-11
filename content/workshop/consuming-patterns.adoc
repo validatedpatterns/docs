@@ -8,22 +8,7 @@ weight: 50
 include::modules/comm-attributes.adoc[]
 :imagesdir: /images/workshop
 
-= Consuming Validated Patterns
-
-== Topic Objectives
-
-[#objectives]
-In this topic we will discuss:
-
-* Validated Pattern Deployment workflow
-* Describing a pattern
-* Using the patterns operator
-** And the patterns.sh script
-* Preparing your environment
-* Understand our base pattern
-* To fork or not to fork
-
-== Validated Pattern workflow
+== Consuming Validated Patterns
 [#workflow]
 
 Let's dive into what happens when we deploy a pattern! Take a look at the following graphic to see what is deployed on the `hub` clusterGroup cluster.
@@ -45,16 +30,14 @@ image::consuming-vpWorkflow-managedCluster.png[Managed Cluster]
 
 IMPORTANT: Deploying the pattern through the OpenShift Console or via `pattern.sh` will deploy the patterns operator.
 
-=== Element Layering
+== Element Layering
 [#layering]
 
-The base component of every Validated Pattern is `common` - which is a link:https://github.com/validatedpatterns/common[Github Repo]
+Architecturally, Patterns share a very similar base structure, as seen below.
 
 image::consuming-common.png[common]
 
-Without further configuration, common is actually quite boring. So let's add another layer!
-
-Your specific industry or use-case is layered into the framework and utilizes the underlying common. In this example the solution includes a bespoke application, cloud-native cluster storage, {rhacs}, and an enterprise container registry. The framework will deploy and configure these components through Helm charts, kustomize manifests or Ansible if necessary.
+Your specific industry or use-case is layered into the framework and utilizes the underlying base structure. In this example, the solution includes a bespoke application, cloud-native cluster storage, {rhacs}, and an enterprise container registry. The framework will deploy and configure these components through Helm charts, Kustomize manifests or Ansible if necessary.
 
 image::consuming-common-solution-layering.png[]
 
@@ -68,9 +51,70 @@ The following graphic illustrates swapping components in the framework:
 
 image::consuming-common-solution-layering-modular.png[]
 
-[#multiArgos]
-== Multiple ArgoCDs
+== The Base Architecture
+[#skeleton]
 
-You may be asking yourself ...
+So where exactly are these different architectural components defined?
 
-image::consuming-multipleArgos.png[]
+=== GitOps
+
+link:https://github.com/validatedpatterns/patterns-operator[The {validated-patterns-op}] automatically deploys an instance of {rh-gitops-short} when a Pattern CR is installed on the cluster.
+
+Check out an example Pattern CR for an {mcg-pattern} installation:
+
+[source,yaml]
+----
+apiVersion: gitops.hybrid-cloud-patterns.io/v1alpha1
+kind: Pattern
+metadata:
+  name: multicloud-gitops
+  namespace: openshift-operators
+spec:
+  clusterGroupName: hub
+  gitSpec:
+    targetRepo: https://github.com/validatedpatterns/multicloud-gitops.git
+    targetRevision: main
+----
+
+When the {validated-patterns-op} reconciles this CR, it creates an Argo Application using link:https://github.com/validatedpatterns/clustergroup-chart[the Validated Patterns Clustergroup Chart] and link:https://github.com/validatedpatterns/multicloud-gitops/blob/main/values-hub.yaml[the values-`<.spec.clusterGroupName>`.yaml values] from the CR above.
+
+=== Secrets Management
+
+The default secrets backend uses link:https://charts.validatedpatterns.io/charts/hashicorp-vault[Vault] and link:https://charts.validatedpatterns.io/charts/openshift-external-secrets[ESO].
+
+As you can see in our link:https://github.com/validatedpatterns/multicloud-gitops/blob/main/values-hub.yaml[values-hub.yaml], we provide a namespace, subscription and an application for both of these components.
+
+When we run `./pattern.sh make install` it ultimately calls link:https://github.com/validatedpatterns/rhvp.cluster_utils/blob/main/playbooks/load_secrets.yml[the rhvp.cluster_utils.load_secrets playbook] and loads a secrets file from our home directory into Vault as part of the pattern installation process.
+
+=== ACM
+
+Similar to the secrets management, link:https://charts.validatedpatterns.io/charts/acm[ACM] is provided in `values-hub.yaml` as a namespace, subscription and an application. By providing a `managedClusterGroups` block in our `values-hub.yaml` we are able to provision spoke clusters with the Validated Patterns framework as well.
+
+[source,yaml]
+----
+clusterGroup:
+  managedClusterGroups:
+    exampleRegion:
+      name: group-one
+      acmlabels:
+        - name: clusterGroup
+          value: group-one
+----
+
+Any cluster that ACM sees labeled with `clusterGroup=group-one` will be provisioned with our link:https://github.com/validatedpatterns/clustergroup-chart[Clustergroup chart] and linkhttps://github.com/validatedpatterns/multicloud-gitops/blob/main/values-group-one.yaml[values-group-one.yaml].
+
+=== Imperative Jobs
+
+The example imperative job in the {mcg-pattern} is
+
+[source,yaml]
+----
+clusterGroup:
+  imperative:
+    jobs:
+      - name: hello-world
+        playbook: rhvp.cluster_utils.hello_world
+        timeout: 234
+----
+
+This gets transformed by link:https://github.com/validatedpatterns/clustergroup-chart/tree/main/templates/imperative[the Clustergroup chart] into several resources. This process is a bit complex and we will cover it in more detail later.

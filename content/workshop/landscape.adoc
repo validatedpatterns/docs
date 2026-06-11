@@ -8,38 +8,23 @@ weight: 30
 include::modules/comm-attributes.adoc[]
 :imagesdir: /images/workshop
 
-= Pattern Landscape
-
-== Topic Objectives
-
-[#objectives]
-In this topic we will discuss:
-
-* What Validated Patterns are available
-** What business problems are being addressed?
-** Whether VPs are only applicable for the vertical industry the demo was created to show
-** How are they presented to customers
-* Working with Partners
-
 == Available Validated Patterns
 
 [#patterns]
 
-The number of available Patterns has significantly increased with more involvement from the field and our partners. Take a look at the following graphic - at the beginning of 2024 we had a few Patterns delivered by our Partners and few more from the Patterns team and field.
+The number of available Patterns has significantly increased with more involvement from the field and our partners. Take a look at the following graphic - at the beginning of 2024, we had a few Patterns delivered by our Partners and few more from the Patterns team and field.
 
 image::landscape-early24.png[]
 
-As of July 2024 we can see that there has been a significant uptick in activity.
+As of June 2026, we can see how far the project has come!
 
-image::landscape-july24.png[]
+image::landscape-q2cy26.png[width=960]
 
-== Validated Patterns WebSite
-The easiest and fastest way to find out what Validated Patterns are available and their availability is to check out the Validated Patterns website.
+== Patterns Library Links
 
-[#website]
-
-Validated Patterns are an Open Source effort. Information about the Validated Patterns can be found on the link:https://validatedpatterns.io[Patterns Website].
+The easiest and fastest way to find out what Validated Patterns are available is to check out the link:/patterns[Patterns tab on this site.]
 
 [#github]
 
-The Patterns are also hosted in link:https://github.com/validatedpatterns/repositories[GitHub]
+Each pattern will have a link to its source code but you can also browse our link:https://github.com/orgs/validatedpatterns/repositories[Github org] directly.
+Additional patterns may be available in the link:https://github.com/orgs/validatedpatterns-sandbox/repositories[sandbox org].

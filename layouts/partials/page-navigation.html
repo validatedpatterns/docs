@@ -3,10 +3,11 @@
 {{ $nextPage := false }}
 {{ $prevPage := false }}
 
-{{ if eq .Section "learn" }}
-  {{/* For learn section, use the menu system to get the correct order */}}
+{{ if or (eq .Section "learn") (eq .Section "workshop") }}
+  {{/* For learn/workshop sections, use the menu system to get the correct order */}}
+  {{ $menuName := .Section }}
   {{ $allMenuItems := slice }}
-  {{ range .Site.Menus.learn }}
+  {{ range index .Site.Menus $menuName }}
     {{ if .HasChildren }}
       {{/* Add parent */}}
       {{ $allMenuItems = $allMenuItems | append . }}
@@ -21,21 +22,29 @@
   {{ end }}
 
   {{/* Find current page index in menu items */}}
-  {{ $currentIndex := 0 }}
+  {{ $currentIndex := -1 }}
   {{ range $index, $item := $allMenuItems }}
     {{ if eq $item.URL $currentPage.RelPermalink }}
       {{ $currentIndex = $index }}
     {{ end }}
   {{ end }}
 
-  {{/* Get previous and next pages */}}
-  {{ if gt $currentIndex 0 }}
-    {{ $prevItem := index $allMenuItems (sub $currentIndex 1) }}
-    {{ $prevPage = .Site.GetPage $prevItem.URL }}
-  {{ end }}
-  {{ if lt $currentIndex (sub (len $allMenuItems) 1) }}
-    {{ $nextItem := index $allMenuItems (add $currentIndex 1) }}
-    {{ $nextPage = .Site.GetPage $nextItem.URL }}
+  {{ if eq $currentIndex -1 }}
+    {{/* Section landing page (not in menu) — next is the first menu item */}}
+    {{ if gt (len $allMenuItems) 0 }}
+      {{ $nextItem := index $allMenuItems 0 }}
+      {{ $nextPage = .Site.GetPage $nextItem.URL }}
+    {{ end }}
+  {{ else }}
+    {{/* Get previous and next pages */}}
+    {{ if gt $currentIndex 0 }}
+      {{ $prevItem := index $allMenuItems (sub $currentIndex 1) }}
+      {{ $prevPage = .Site.GetPage $prevItem.URL }}
+    {{ end }}
+    {{ if lt $currentIndex (sub (len $allMenuItems) 1) }}
+      {{ $nextItem := index $allMenuItems (add $currentIndex 1) }}
+      {{ $nextPage = .Site.GetPage $nextItem.URL }}
+    {{ end }}
   {{ end }}
 
 {{ else }}

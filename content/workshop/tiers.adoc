@@ -7,61 +7,34 @@ weight: 40
 :toc:
 include::modules/comm-attributes.adoc[]
 
-= Pattern Tiers
-
-== Topic Objectives
-
-[#objectives]
-In this topic we will discuss:
-
-* What are the Validated Pattern Maintenance Tiers?
-** What's the difference between the tiers?
-* Additional information on maintenance tiers and the pattern support policy
-
 == Tiers
 [#about]
 The different tiers of Validated Patterns are designed to facilitate ongoing maintenance, support, and testing effort for a pattern. To contribute to a pattern that suits your solution or to learn about onboarding your own pattern, understand the following pattern tiers.
 
-There are three (3) tiers:
-
-* Sandbox
-* Tested
-* Maintained
-
-Ultimately, the Validated Patterns team don't want to be the gatekeepers of all the Patterns that get developed. The emphasis of the tiers is on what the requirements are, not who does the work to meet them.
-
-=== Maintenance Tiers Explained
 |===
 |**Tier**|**Description**|**More Information**
 
-|`Sandbox`
+|**Sandbox**
 a| * entrypoint for onboarding your Pattern
   * able to deploy onto a freshly install OpenShift cluster without modifications or tuning
   * must include a top-level README
-| https://validatedpatterns.io/contribute/sandbox/
+| link:/contribute/sandbox/[Details]
 
-|`Tested`
+|**Tested**
 a| * must include a standardized architecture diagram using (or conforming to) the standard Validated Patterns tooling
   * must ensure the test plan passes at least once per quarter
   * must include a written guide for others to follow when demonstrating the platform
-| https://validatedpatterns.io/contribute/tested/
+| link:/contribute/tested/[Details]
 
-|`Maintained`
+|**Maintained**
 a| * functional on all currently supported/extended update support (EUS) versions of OpenShift
   * must fix breakage in a timely manner
   * must document their support policy
-| https://validatedpatterns.io/contribute/maintained/
+| link:/contribute/maintained/[Details]
 
 |===
 
 == Additional Resources
 [#resources]
 
-|===
-|**Resource**|**Location**
-| `Validated Pattern Tier Types`
-| https://validatedpatterns.io/learn/about-pattern-tiers-types/
-|`Implementation Requirements`
-| https://validatedpatterns.io/learn/implementation
-
-|===
+For more details, see the link:/learn/about-pattern-tiers-types/[Pattern Tier Types] page and the link:/learn/implementation[Implementation Requirements] guide.

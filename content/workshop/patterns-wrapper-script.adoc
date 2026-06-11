@@ -9,7 +9,7 @@ weight: 54
 :toc:
 include::modules/comm-attributes.adoc[]
 
-= Using the pattern.sh script
+== Using the pattern.sh script
 
 [#about]
 
@@ -55,38 +55,26 @@ IMPORTANT: pattern.sh uses your origin remote and current branch. To change the 
 ----
 $ ./pattern.sh make help
 
+For a complete guide to these targets and the available overrides, please visit https://validatedpatterns.io/blog/2025-08-29-new-common-makefile-structure/
+
 Usage:
   make <target>
+  help                                 Print this help message
 
-Pattern tasks
-  install                              installs the pattern and loads the secrets
-  post-install                         Post-install tasks
-
-Pattern Common Tasks
-  help                                 This help message
-  show                                 show the starting template without installing it
-  operator-deploy operator-upgrade     runs helm install
-  uninstall                            runs helm uninstall
-  load-secrets                         loads the secrets into the backend determined by values-global setting
-  legacy-load-secrets                  loads the secrets into vault (only)
-  secrets-backend-vault                Edits values files to use default Vault+ESO secrets config
-  secrets-backend-kubernetes           Edits values file to use Kubernetes+ESO secrets config
-  secrets-backend-none                 Edits values files to remove secrets manager + ESO
-  load-iib                             CI target to install Index Image Bundles
+Pattern Install Tasks
+  show                                 Shows the template that would be applied by the `make install` target
+  operator-deploy operator-upgrade     Installs/updates the pattern on a cluster (DOES NOT load secrets)
+  install                              Installs the pattern onto a cluster (Loads secrets as well if configured)
+  uninstall                            (EXPERIMENTAL) See https://validatedpatterns.io/blog/2026-02-16-pattern-uninstall/.
+  load-secrets                         Loads secrets onto the cluster (unless explicitly disabled in values-global.yaml)
 
 Validation Tasks
+  validate-prereq                      verify pre-requisites
   validate-origin                      verify the git origin is available
   validate-cluster                     Do some cluster validations before installing
   validate-schema                      validates values files against schema in common/clustergroup
-  validate-prereq                      verify pre-requisites
   argo-healthcheck                     Checks if all argo applications are synced
-
-Test and Linters Tasks
-  test                                 run helm tests
-  helmlint                             run helm lint
-  kubeconform                          run helm kubeconform
-  super-linter                         Runs super linter locally
-  ansible-lint                         run ansible lint on ansible/ folder
-  ansible-unittest                     run ansible unit test
-
 ----
+
+The link:https://validatedpatterns.io/blog/2025-08-29-new-common-makefile-structure/#_using_makefile_common[link in the help text] describes the available arguments and how to use them for each of
+the common Makefile targets.

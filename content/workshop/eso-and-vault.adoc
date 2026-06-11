@@ -10,8 +10,6 @@ weight: 61
 include::modules/comm-attributes.adoc[]
 :imagesdir: /images/workshop
 
-= Secrets Management in Validated Patterns
-
 [#esoVault]
 == ESO and Vault
 

@@ -10,7 +10,7 @@ weight: 31
 include::modules/comm-attributes.adoc[]
 :imagesdir: /images/workshop
 
-= Working with Partners
+== Working with Partners
 
 Partners have taken notice of what Validated Patterns can bring to their organizations. In turn, they have had focused development cycles to deploy their product/features using the Validated Patterns framework. In the following sections we will discuss how a few of our partners have taken advantage of the Validated Patterns framework.
 

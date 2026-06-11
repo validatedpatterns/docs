@@ -8,20 +8,8 @@ weight: 90
 include::modules/comm-attributes.adoc[]
 :imagesdir: /images/workshop
 
-= Working with Multiple Clusters
-
-== Topic Objectives
-
-[#objectives]
-In this topic we will discuss:
-
-* Why manage multiple clusters
-* {rhacm} Basics
-* Managed Cluster Groups
-* Other Considerations
-
 [#why]
-=== Why manage multiple clusters
+== Why manage multiple clusters?
 
 === Kubernetes adoption leads to multicluster
 [.INFORMATION]
@@ -30,7 +18,7 @@ In this topic we will discuss:
 ====
 
 [#challenges]
-=== Multi-Cluster Challenges
+== Multi-Cluster Challenges
 
 image::multicluster-challenges.png[]
 
@@ -43,7 +31,7 @@ image::multicluster-challenges.png[]
 
 
 [#options]
-=== Multi-Cluster Management Options
+== Multi-Cluster Management Options
 
 * You can do it manually using custom scripts
 ** This presents many challenges  as scripts are homegrown and maintainability can become an issue.

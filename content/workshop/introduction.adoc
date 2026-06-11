@@ -8,22 +8,6 @@ weight: 20
 include::modules/comm-attributes.adoc[]
 :imagesdir: /images/workshop
 
-= Introduction
-
-== Topic Objectives
-
-[#objectives]
-In this topic we will discuss:
-
-* What is a Validated Pattern?
-** Explain high level benefits provided by Validated Patterns
-** Discuss what is included in the patterns initiative
-** Detail the difference between a community and validated patterns
-* Who are Validated Patterns for?
-** Explain the high level benefit for each persona
-** Clarify the requirements to become validated
-* Where can you keep up to date or point people to find more information?
-
 [#what]
 
 == What are Validated Patterns?

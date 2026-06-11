@@ -9,18 +9,8 @@ weight: 101
 :toc:
 include::modules/comm-attributes.adoc[]
 
-= Imperative Framework
-
-== Topic Objectives
-
-[#objectives]
-In this topic we will discuss:
-
-* Imperative vs. Declarative
-* Why we need the imperative framework
-
 [#versus]
-=== Imperative vs. Declarative Actions
+== Imperative vs. Declarative Actions
 
 What's the difference between Imperative and Declarative actions?
 
@@ -39,7 +29,7 @@ Some examples of when this is necessary:
 
 
 [#declaring]
-=== Defining an imperative action
+== Defining an imperative action
 
 NOTE: The following code snippet is from the `values-hub.yaml` in the multicloud-gitops pattern
 
