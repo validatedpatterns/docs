@@ -14,47 +14,67 @@ Grafana panels, Kiali graphs, and Kafka Console views help you confirm that fact
 
 _Observability stack overview: Grafana for multi-cluster dashboards, Kiali for mesh topology, Kafka Console for streaming health, and OpenTelemetry for distributed traces._
 
-[![Grafana multi-cluster dashboards](/images/hybrid-mesh-platform/product-grafana-observability.png)](/images/hybrid-mesh-platform/product-grafana-observability.png)
+## How cross-cluster metrics flow
 
-_Hub Grafana — fleet dashboards with datasources from hub Prometheus plus east/west via Skupper auth proxy._
-
-[![Kiali service mesh](/images/hybrid-mesh-platform/product-kiali-service-mesh.png)](/images/hybrid-mesh-platform/product-kiali-service-mesh.png)
-
-_Kiali traffic graph — Service Mesh topology showing L4 ztunnel connections and L7 waypoint traffic between hub gateway and spoke services._
-
-[![Kafka Console](/images/hybrid-mesh-platform/product-kafka-console-amq-streams.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams.png)
-
-_Kafka Console — multi-cluster view of hub `prod-cluster` and spoke `dev-cluster` / `factory-cluster` topics over Skupper bootstrap._
+Spoke clusters scrape their own Prometheus metrics (Kafka JMX, ztunnel L4, workload RED signals). An **nginx auth proxy** in front of Thanos Querier injects a bearer token, and a **Skupper Connector** exposes it on port 9091. On the hub, Skupper **Listeners** `prometheus-east` and `prometheus-west` materialize as ClusterIP services that Grafana queries as plain HTTP datasources — no spoke tokens are stored on the hub.
 
 [![Observability pipeline](/images/hybrid-mesh-platform/arch-observability-pipeline.png)](/images/hybrid-mesh-platform/arch-observability-pipeline.png)
 
-_Architecture diagram: spoke Prometheus → nginx auth proxy → Skupper connector → hub listener → Grafana datasource. No bearer tokens stored on the hub._
+_Architecture: spoke Prometheus → nginx auth proxy → Skupper connector → hub listener → Grafana datasource._
 
-## Grafana dashboard views
+## Grafana — multi-cluster dashboards
 
-Multi-cluster fleet dashboards on the hub (east/west traffic, Service Mesh L4/L7, Kafka health):
+Hub Grafana aggregates three datasources: local hub Thanos plus `prometheus-east` and `prometheus-west` via Skupper. Dashboards are deployed by the `components/grafana-dashboards` chart.
+
+[![Grafana multi-cluster dashboards](/images/hybrid-mesh-platform/product-grafana-observability.png)](/images/hybrid-mesh-platform/product-grafana-observability.png)
+
+_Hub Grafana landing — fleet dashboards organized by cluster and workload type._
+
+The **east-west-traffic** dashboard shows Kafka broker health (gauges), leader/partition distribution (pie), and API request rates (bargauge) across both spokes:
 
 [![Grafana — east-west traffic and Service Mesh](/images/hybrid-mesh-platform/product-grafana-observability-2.png)](/images/hybrid-mesh-platform/product-grafana-observability-2.png)
 
-_East-west traffic dashboard: Kafka broker state gauges, leader/partition distribution pie charts, and API request bargauges per cluster._
+_East-west traffic: broker state gauges, leader distribution, and API request bargauges per cluster._
+
+The **multi-cluster-istio** dashboard plots L4 ztunnel TCP connections, bytes timeseries, and cross-cluster error rates:
 
 [![Grafana — multi-cluster Istio metrics (ztunnel L4)](/images/hybrid-mesh-platform/product-grafana-observability-3.png)](/images/hybrid-mesh-platform/product-grafana-observability-3.png)
 
-_Multi-cluster Istio dashboard: L4 ztunnel TCP connections, bytes sent/received timeseries, and cross-cluster error rates._
+_Multi-cluster Istio: ztunnel TCP connections, bytes sent/received, error rate per cluster._
+
+Extended KPI panels combine Kafka and mesh signals for a single operational health view:
 
 [![Grafana — extended fleet KPI panels](/images/hybrid-mesh-platform/product-grafana-observability-4.png)](/images/hybrid-mesh-platform/product-grafana-observability-4.png)
 
-_Extended fleet KPI panels: combined Kafka and mesh signals for operational health across all clusters._
+_Fleet KPI: combined Kafka + mesh health across all clusters._
 
-## Kiali and mesh topology views
+## Kiali — mesh topology visualization
+
+Each cluster runs Kiali with an OSSMConsole CR (OpenShift Console plugin). On the hub, Kiali shows multi-cluster topology using remote secrets — without requiring Istio multi-cluster trust federation. With ztunnel active, the graph shows L4 connections; L7 detail appears for paths routed through waypoints.
+
+[![Kiali service mesh](/images/hybrid-mesh-platform/product-kiali-service-mesh.png)](/images/hybrid-mesh-platform/product-kiali-service-mesh.png)
+
+_Kiali traffic graph: L4 ztunnel connections between hub gateway and spoke services._
 
 [![Kiali — service mesh traffic graph](/images/hybrid-mesh-platform/product-kiali-service-mesh-2.png)](/images/hybrid-mesh-platform/product-kiali-service-mesh-2.png)
 
-## Kafka Console views
+_Kiali detail view: per-service traffic rates, error percentages, and response time distributions._
+
+## Kafka Console — streaming health across clusters
+
+The Streams for Apache Kafka Console on the hub registers hub `prod-cluster` (full metrics) plus spoke `dev-cluster` and `factory-cluster` via Skupper bootstrap listeners. Operators can view topics, consumer groups, partitions, and broker status from a single UI.
+
+[![Kafka Console](/images/hybrid-mesh-platform/product-kafka-console-amq-streams.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams.png)
+
+_Kafka Console landing: five registered clusters (hub + east/west × dev/factory)._
 
 [![Kafka Console — multi-cluster clusters and topics](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-2.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-2.png)
 
+_Cluster detail: topics, partitions, and replicas per spoke Kafka cluster over Skupper._
+
 [![Kafka Console — broker and topic detail over Skupper](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-3.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-3.png)
+
+_Broker and topic metrics: producer/consumer rates, lag, and partition leadership distribution._
 
 ## Observability architecture
 
