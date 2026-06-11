@@ -160,13 +160,28 @@ Components deploy in strict order via Argo CD sync waves. Lower waves complete b
 
 [![Sync wave ordering](/images/hybrid-mesh-platform/arch-sync-waves.png)](/images/hybrid-mesh-platform/arch-sync-waves.png)
 
-Sync waves prevent operators from racing workloads — mesh and namespaces land before Industrial Edge and gateways. Typical progression:
+Sync waves prevent operators from racing workloads — mesh and namespaces land before Industrial Edge and gateways.
+
+### Hub sync-wave progression
 
 1. Namespaces and RBAC
 2. Operator subscriptions (ACM, GitOps, Service Mesh, Skupper, and others)
 3. Platform services (Developer Hub, ACS, interconnect sites)
-4. Observability stack
-5. Industrial Edge and gateway workloads
+4. Observability stack (Grafana, Kiali, OpenTelemetry)
+5. Industrial Edge data lake and gateway workloads
+
+### Spoke sync-wave reference
+
+| Wave | What deploys | Why this order |
+| --- | --- | --- |
+| 1 | Namespaces (no ambient label yet) | Names must exist before operators and workloads |
+| 2 | OLM Subscriptions | CRDs and operators installed |
+| 3 | Service Mesh 3 (Istio + ztunnel + ambient labels) | Mesh dataplane before application pods |
+| 4 | Observability, ACS SecuredCluster | Scraping and security after mesh |
+| 5 | Industrial Edge (Kafka, sensors, dashboard) | Pods enroll in ambient with HBONE ready |
+| 6 | Spoke gateway + Skupper interconnect | Routing after backends exist |
+
+Hub ApplicationSet for spokes runs at hub wave 5 after ACM placement is healthy.
 
 ## Service Interconnect (Skupper) topology
 

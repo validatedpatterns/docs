@@ -94,6 +94,10 @@ Screenshots and architecture diagrams in the pattern repository support full-scr
 
 **Next →** [Architecture](architecture) — understand how Git, ACM, and Skupper wire the three clusters together.
 
+## Workshop
+
+A hands-on **Hybrid Mesh AI Workshop** (dual-track: executive strategy + hands-on lab) is available for this platform. It covers ACM fleet management, ambient mesh, Developer Hub scaffolding, OpenShift AI, Kuadrant API gateway, and FinOps — all on a live RHDP hub-spoke fleet. See the [workshop site](https://maximilianopizarro.github.io/platform-hub-spoke-config/workshop/) for agenda and registration.
+
 ## Red Hat products used
 
 - Red Hat OpenShift Container Platform
@@ -107,6 +111,11 @@ Screenshots and architecture diagrams in the pattern repository support full-scr
 - Red Hat build of Apache Camel / Camel K
 - Red Hat OpenShift Pipelines (Tekton)
 - Red Hat Developer Hub (Backstage)
+- Red Hat OpenShift Dev Spaces (Kaoto, Continue AI)
+- Red Hat OpenShift Virtualization (KubeVirt)
+- Red Hat Quay (container registry on hub)
 - Red Hat Service Interconnect (Skupper)
+- Streams for Apache Kafka Console (hub fleet UI)
+- Gitea (in-cluster Git for scaffolder repos)
 - Mailpit (SMTP testing for notifications)
 - Observability stack (Prometheus-compatible metrics, Grafana, OpenTelemetry, Kiali)
