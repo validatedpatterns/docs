@@ -12,13 +12,23 @@ Grafana panels, Kiali graphs, and Kafka Console views help you confirm that fact
 
 [![Observability overview](/images/hybrid-mesh-platform/workshop-observability.png)](/images/hybrid-mesh-platform/workshop-observability.png)
 
+_Observability stack overview: Grafana for multi-cluster dashboards, Kiali for mesh topology, Kafka Console for streaming health, and OpenTelemetry for distributed traces._
+
 [![Grafana multi-cluster dashboards](/images/hybrid-mesh-platform/product-grafana-observability.png)](/images/hybrid-mesh-platform/product-grafana-observability.png)
+
+_Hub Grafana — fleet dashboards with datasources from hub Prometheus plus east/west via Skupper auth proxy._
 
 [![Kiali service mesh](/images/hybrid-mesh-platform/product-kiali-service-mesh.png)](/images/hybrid-mesh-platform/product-kiali-service-mesh.png)
 
+_Kiali traffic graph — Service Mesh topology showing L4 ztunnel connections and L7 waypoint traffic between hub gateway and spoke services._
+
 [![Kafka Console](/images/hybrid-mesh-platform/product-kafka-console-amq-streams.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams.png)
 
+_Kafka Console — multi-cluster view of hub `prod-cluster` and spoke `dev-cluster` / `factory-cluster` topics over Skupper bootstrap._
+
 [![Observability pipeline](/images/hybrid-mesh-platform/arch-observability-pipeline.png)](/images/hybrid-mesh-platform/arch-observability-pipeline.png)
+
+_Architecture diagram: spoke Prometheus → nginx auth proxy → Skupper connector → hub listener → Grafana datasource. No bearer tokens stored on the hub._
 
 ## Grafana dashboard views
 
@@ -26,9 +36,15 @@ Multi-cluster fleet dashboards on the hub (east/west traffic, Service Mesh L4/L7
 
 [![Grafana — east-west traffic and Service Mesh](/images/hybrid-mesh-platform/product-grafana-observability-2.png)](/images/hybrid-mesh-platform/product-grafana-observability-2.png)
 
+_East-west traffic dashboard: Kafka broker state gauges, leader/partition distribution pie charts, and API request bargauges per cluster._
+
 [![Grafana — multi-cluster Istio metrics (ztunnel L4)](/images/hybrid-mesh-platform/product-grafana-observability-3.png)](/images/hybrid-mesh-platform/product-grafana-observability-3.png)
 
+_Multi-cluster Istio dashboard: L4 ztunnel TCP connections, bytes sent/received timeseries, and cross-cluster error rates._
+
 [![Grafana — extended fleet KPI panels](/images/hybrid-mesh-platform/product-grafana-observability-4.png)](/images/hybrid-mesh-platform/product-grafana-observability-4.png)
+
+_Extended fleet KPI panels: combined Kafka and mesh signals for operational health across all clusters._
 
 ## Kiali and mesh topology views
 
@@ -197,15 +213,27 @@ The platform integrates AI-driven operational intelligence through event correla
 
 [![Kairos — worker scaling and SmartScalingPolicy](/images/hybrid-mesh-platform/workshop-kairos-scaling.png)](/images/hybrid-mesh-platform/workshop-kairos-scaling.png)
 
+_Kairos SmartScalingPolicy: AI-driven recommendations for scaling Industrial Edge sensor workers based on Kafka lag and CPU pressure._
+
 [![Kairos — event correlation and alerting](/images/hybrid-mesh-platform/kairos-events.png)](/images/hybrid-mesh-platform/kairos-events.png)
+
+_Event correlation: Kairos aggregates Kubernetes events, Prometheus alerts, and mesh signals to surface actionable incidents._
 
 [![Kairos — historical analysis and trends](/images/hybrid-mesh-platform/kairos-history.png)](/images/hybrid-mesh-platform/kairos-history.png)
 
+_Historical analysis: trend detection across factory shifts, identifying degradation patterns before hard failures._
+
 [![Kairos — human-in-the-loop decision workflows](/images/hybrid-mesh-platform/kairos-human-in-the-loop.png)](/images/hybrid-mesh-platform/kairos-human-in-the-loop.png)
+
+_Human-in-the-loop: Kairos proposes actions (scale, restart, reroute) that require operator approval before execution._
 
 [![Kairos — AI agents for autonomous remediation](/images/hybrid-mesh-platform/kairos-ia-agents.png)](/images/hybrid-mesh-platform/kairos-ia-agents.png)
 
+_AI agents: autonomous remediation for pre-approved scenarios (auto-scale on Kafka consumer lag threshold)._
+
 [![Kairos — observability-driven insights](/images/hybrid-mesh-platform/kairos-observability.png)](/images/hybrid-mesh-platform/kairos-observability.png)
+
+_Observability-driven insights: Kairos correlates Grafana metrics with mesh topology to pinpoint root cause across clusters._
 
 ## References
 

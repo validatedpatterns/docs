@@ -12,7 +12,11 @@ The [Industrial Edge](/patterns/industrial-edge/) validated pattern is a **maint
 
 [![Industrial Edge deployment overview](/images/hybrid-mesh-platform/workshop-industrial-edge.png)](/images/hybrid-mesh-platform/workshop-industrial-edge.png)
 
+_Industrial Edge multi-cluster deployment: sensors, Kafka, Camel K, and ML scoring deployed identically on east and west spokes via ApplicationSet._
+
 [![Industrial Edge on spoke — console view](/images/hybrid-mesh-platform/industrial-edge.png)](/images/hybrid-mesh-platform/industrial-edge.png)
+
+_OpenShift Console view of Industrial Edge components running on a spoke cluster (namespaces, deployments, routes)._
 
 For solution overview, northbound/southbound data flows, demo scenario (MANUela), and maintained-pattern diagrams, see [Industrial Edge](/patterns/industrial-edge/).
 
@@ -52,7 +56,11 @@ Each spoke (east/west) runs the same stack independently — the hub aggregates 
 
 [![OpenShift AI — model serving and inference](/images/hybrid-mesh-platform/workshop-openshift-ai.png)](/images/hybrid-mesh-platform/workshop-openshift-ai.png)
 
+_OpenShift AI on the hub: DataScienceCluster provides model serving (KServe), notebooks, and ML pipelines. Spoke workloads call inference endpoints via Skupper._
+
 [![OpenShift AI — KServe inference on spoke](/images/hybrid-mesh-platform/openshift-ia.png)](/images/hybrid-mesh-platform/openshift-ia.png)
+
+_KServe InferenceService on spoke: anomaly detection model scores temperature and vibration data from factory sensors in real time._
 
 End-to-end on a spoke: sensor → MQTT → Camel K → Kafka → optional ML → dashboard; MirrorMaker streams toward centralized storage for model training (see [Architecture](architecture#follow-the-request--one-temperature-reading-end-to-end)).
 

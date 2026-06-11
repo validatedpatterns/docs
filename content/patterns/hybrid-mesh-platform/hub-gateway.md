@@ -16,7 +16,11 @@ Connectivity Link (Kuadrant) brings multi-cluster ingress and policy using Kuber
 
 [![ACS and Connectivity Link — security and gateway policy](/images/hybrid-mesh-platform/workshop-acs-kuadrant.png)](/images/hybrid-mesh-platform/workshop-acs-kuadrant.png)
 
+_Connectivity Link and ACS integration: Gateway API provides ingress policy while ACS enforces runtime security on backends. Kuadrant adds rate limiting and auth._
+
 [![Gateway API policy topology — hub HTTPRoute and route rules](/images/hybrid-mesh-platform/connectivity-link-hub.png)](/images/hybrid-mesh-platform/connectivity-link-hub.png)
+
+_OpenShift Console — Gateway API resources on the hub: Gateway, HTTPRoute rules, and backend service references._
 
 _Gateway API policy topology — hub-gateway, HTTPRoute, and route rules in the OpenShift Console._
 
@@ -32,11 +36,17 @@ Spoke cluster Gateway API and backend services exposed through the mesh:
 
 [![Spoke cluster Gateway API and backends](/images/hybrid-mesh-platform/connectivity-link-spoke.png)](/images/hybrid-mesh-platform/connectivity-link-spoke.png)
 
+_Spoke cluster — Gateway API and backend services registered in the mesh. Services are exposed to the hub through a single spoke-gateway entry point._
+
 Spoke gateway aggregating Industrial Edge services for cross-cluster exposure (single Skupper Connector target per spoke):
 
 [![Spoke gateway aggregating Industrial Edge services](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)
 
+_Spoke-gateway HTTPRoute configuration — routes `/api`, `/dashboard`, and catch-all paths to internal Industrial Edge services._
+
 [![Spoke gateway architecture — Gateway API aggregation](/images/hybrid-mesh-platform/arch-spoke-gateway.png)](/images/hybrid-mesh-platform/arch-spoke-gateway.png)
+
+_Architecture diagram: one Istio Gateway per spoke fronts all services; Skupper exposes only this gateway to the hub instead of each microservice individually._
 
 Verify Connectivity Link reconciliation by inspecting `Gateway` status conditions and `HTTPRoute` `spec.parentRefs` — not only Pod labels. Chart path: `components/rhcl-operator`.
 

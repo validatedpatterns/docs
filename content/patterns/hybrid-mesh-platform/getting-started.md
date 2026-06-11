@@ -37,7 +37,11 @@ ACM must show **`east`** and **`west`** as **Available** managed clusters before
 
 [![ACM multicluster fleet management](/images/hybrid-mesh-platform/workshop-acm-multicluster.png)](/images/hybrid-mesh-platform/workshop-acm-multicluster.png)
 
+_ACM fleet overview: ManagedCluster registration, placement rules, and GitOpsCluster binding for hub-spoke delivery._
+
 [![ACM fleet view — east and west registered on the hub](/images/hybrid-mesh-platform/ACM.png)](/images/hybrid-mesh-platform/ACM.png)
+
+_OpenShift Console — ACM All Clusters view showing east and west as Available managed clusters._
 
 Verify:
 
@@ -54,7 +58,11 @@ ACS Central runs on the hub; **SecuredCluster** agents install on hub and both s
 
 [![ACS Central — hub, east, and west clusters](/images/hybrid-mesh-platform/ACS.png)](/images/hybrid-mesh-platform/ACS.png)
 
+_ACS Central showing all three clusters registered. SecuredCluster agents report compliance and runtime events._
+
 [![ACS Central — policies and vulnerability views](/images/hybrid-mesh-platform/ACS-2.png)](/images/hybrid-mesh-platform/ACS-2.png)
+
+_ACS vulnerability management and policy enforcement across Industrial Edge container images._
 
 #### Generating SecuredCluster init bundles
 

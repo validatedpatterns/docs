@@ -10,7 +10,11 @@ Developer Hub **Create** templates deploy new Industrial Edge instances to east 
 
 [![Software Templates overview](/images/hybrid-mesh-platform/workshop-software-templates.png)](/images/hybrid-mesh-platform/workshop-software-templates.png)
 
+_Developer Hub software templates: golden paths for Industrial Edge, Camel routes, and OpenShift AI workspaces — scaffolded to east or west spokes with one click._
+
 [![Developer Hub — catalog and topology](/images/hybrid-mesh-platform/product-developer-hub.png)](/images/hybrid-mesh-platform/product-developer-hub.png)
+
+_Developer Hub catalog view with multi-cluster Topology plugin showing spoke deployments and their health status._
 
 ## What you need before scaffolding
 

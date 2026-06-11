@@ -33,9 +33,15 @@ The pattern repository uses a **single `main` branch** with cluster-specific dir
 
 [![Hybrid Mesh Platform architecture](/images/hybrid-mesh-platform/workshop-hybrid-mesh-arch.png)](/images/hybrid-mesh-platform/workshop-hybrid-mesh-arch.png)
 
+_High-level view: hub cluster (data center / cloud) connected to east and west spoke clusters (Industrial Edge sites) via Skupper mTLS tunnels. Gateway API on the hub routes external clients to spoke services._
+
 [![Platform architecture overview](/images/hybrid-mesh-platform/arch-overview.png)](/images/hybrid-mesh-platform/arch-overview.png)
 
+_Detailed architecture: Git repository layout, ACM ApplicationSet fan-out, sync-wave ordering, and observability pipeline from spokes to hub Grafana._
+
 [![Hub-spoke GitOps flow](/images/hybrid-mesh-platform/arch-hub-spoke-flow.png)](/images/hybrid-mesh-platform/arch-hub-spoke-flow.png)
+
+_GitOps delivery flow: hub Argo CD pushes `east/` and `west/` charts to remote clusters via ACM PlacementDecision._
 
 ## Follow the request — one temperature reading end to end
 
@@ -113,7 +119,11 @@ Red Hat Advanced Cluster Security for Kubernetes (ACS) centralizes build-time im
 
 [![ACS Central — hub, east, and west registered](/images/hybrid-mesh-platform/ACS.png)](/images/hybrid-mesh-platform/ACS.png)
 
+_ACS Central dashboard showing all three clusters registered (hub, east, west) with their compliance status._
+
 [![ACS Central — policies, vulnerabilities, and runtime visibility](/images/hybrid-mesh-platform/ACS-2.png)](/images/hybrid-mesh-platform/ACS-2.png)
+
+_ACS policy and vulnerability management — CVE scanning results across Industrial Edge and platform images._
 
 ### Hub-spoke topology
 
@@ -193,17 +203,27 @@ Red Hat Service Interconnect creates a **Virtual Application Network (VAN)** tha
 
 [![Service Interconnect console topology](/images/hybrid-mesh-platform/service-interconnect-console-topology.png)](/images/hybrid-mesh-platform/service-interconnect-console-topology.png)
 
+_Skupper console showing the three sites (hub, east, west) linked in the Virtual Application Network._
+
 ### Skupper Network Observer (console views)
 
-The Skupper Network Observer visualizes the Virtual Application Network — sites, listeners, connectors, and process-level traffic across hub, east, and west:
+The Skupper Network Observer visualizes the VAN — sites, listeners, connectors, and process-level traffic across all clusters:
 
 [![Skupper Network Observer — sites and links](/images/hybrid-mesh-platform/service-interconnect-console.png)](/images/hybrid-mesh-platform/service-interconnect-console.png)
 
+_Sites view: hub, east, and west clusters with their active inter-router links and connection state._
+
 [![Skupper console — components, listeners, and connectors](/images/hybrid-mesh-platform/service-interconnect-console-topology-process.png)](/images/hybrid-mesh-platform/service-interconnect-console-topology-process.png)
+
+_Components view: listeners on the hub (ie-gateway, prometheus, kafka) matched to connectors on spokes._
 
 [![Skupper console — process-level topology](/images/hybrid-mesh-platform/service-interconnect-console-process.png)](/images/hybrid-mesh-platform/service-interconnect-console-process.png)
 
+_Process-level topology: individual workloads and their cross-cluster connections (spoke-gateway, auth-proxy, Kafka bootstrap)._
+
 [![Skupper console — built-in metrics (TCP bytes, latency, connections)](/images/hybrid-mesh-platform/service-interconnect-console-metrics.png)](/images/hybrid-mesh-platform/service-interconnect-console-metrics.png)
+
+_Built-in metrics: TCP bytes sent/received, connection latency, and active connection counts per listener._
 
 ### Hub listeners (namespace `service-interconnect`)
 
@@ -240,7 +260,11 @@ Each spoke runs a Gateway API gateway (`components/spoke-gateway`) that fronts a
 
 [![Spoke gateway aggregation diagram](/images/hybrid-mesh-platform/arch-spoke-gateway.png)](/images/hybrid-mesh-platform/arch-spoke-gateway.png)
 
+_Spoke gateway architecture: a single Istio Gateway fronts all Industrial Edge services. Skupper exposes this one gateway rather than every microservice._
+
 [![Spoke Gateway API — Connectivity Link view](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)
+
+_OpenShift Console view of spoke Gateway API resources and HTTPRoute attachment._
 
 Hub-side Gateway API and HTTPRoute policy topology: see [Hub Gateway — Connectivity Link topology](hub-gateway#connectivity-link-topology).
 
