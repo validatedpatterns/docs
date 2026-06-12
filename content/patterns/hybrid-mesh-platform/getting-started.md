@@ -6,7 +6,7 @@ aliases: /hybrid-mesh-platform/getting-started/
 
 # Getting Started
 
-Follow these steps to bootstrap the Hybrid Mesh Platform hub-spoke GitOps environment from the [platform-hub-spoke-config](https://github.com/maximilianopizarro/platform-hub-spoke-config) repository.
+Follow these steps to bootstrap the Hybrid Mesh Platform hub-spoke GitOps environment from the [hybrid-mesh-platform](https://github.com/maximilianoPizarro/hybrid-mesh-platform) Validated Patterns repository (fork of [multicloud-gitops](https://github.com/validatedpatterns/multicloud-gitops)).
 
 ## You'll have when finished
 
@@ -15,7 +15,7 @@ After a successful hub deploy and spoke registration, expect:
 | Component | Verification |
 | --- | --- |
 | ACM | `east` and `west` in `ManagedCluster` **Available** |
-| Argo CD | Root Application **Synced**; ApplicationSet pushing `east/` and `west/` |
+| Argo CD | Hub `clustergroup` **Synced**; east/west spokes pull their clusterGroup from Git via ACM |
 | Industrial Edge | Sensors, MQTT, Kafka, `line-dashboard` on each spoke |
 | Skupper | Hub `sitesInNetwork: 3`; listeners **Ready** in `service-interconnect` |
 | Grafana | Hub dashboards with `prometheus-east` / `prometheus-west` datasources |
@@ -87,7 +87,7 @@ Use cluster names **`hub`**, **`east`**, and **`west`**. Namespace **`stackrox`*
 ### Network requirements (connected environments)
 
 1. Access to public container registries (or mirrored equivalents)
-2. Access to your Git repository (fork of `platform-hub-spoke-config`)
+2. Access to your Git repository (fork of `hybrid-mesh-platform`)
 
 ### Cluster sizing (AWS — OpenShift 4.20)
 
@@ -108,60 +108,42 @@ For constrained environments, use `values-lite.yaml` on the hub to disable heavy
 ## Repository layout
 
 ```
-.              → hub cluster (path: .)
-east/          → east spoke cluster (path: east)
-west/          → west spoke cluster (path: west)
-components/    → shared component charts referenced by all clusters
+charts/all/           → component Helm charts (hub and spoke apps)
+values-global.yaml    → pattern name and shared Git URL
+values-hub.yaml       → hub clusterGroup (namespaces, subscriptions, applications, managedClusterGroups)
+values-east.yaml      → east spoke clusterGroup
+values-west.yaml      → west spoke clusterGroup
+values-secret.yaml    → secrets (from values-secret.yaml.template; Vault + ESO)
+pattern.sh            → Validated Patterns install wrapper
 ```
 
-Each cluster path is a self-contained Helm chart with its own `Chart.yaml`, `values.yaml`, and `templates/`.
+Spokes **pull** their `clusterGroup` from Git via ACM labels (`clusterGroup=east` / `clusterGroup=west`) — no hub-push ApplicationSet to spoke Argo CD.
 
 ## Step 1: Fork the repository
 
-Fork [platform-hub-spoke-config](https://github.com/maximilianopizarro/platform-hub-spoke-config) so you can customize domains, secrets references, and Git URLs without coupling to upstream history.
+Fork [hybrid-mesh-platform](https://github.com/maximilianoPizarro/hybrid-mesh-platform) so you can customize domains, secrets, and Git URLs.
 
-Update `gitops.repoUrl` in:
+Update `main.gitops.repoURL` in `values-global.yaml` and cluster domains in `overrides/values-aws-{hub,east,west}.yaml` (or your cloud-specific overrides).
 
-- `values.yaml` (hub)
-- `east/values.yaml`
-- `west/values.yaml`
+## Step 2: Configure secrets and cluster domains
 
-## Step 2: Configure cluster domains
-
-Set DNS names for each cluster before install.
-
-**Hub** (`values.yaml`):
-
-- `deployer.domain` — hub apps domain (Grafana, Developer Hub, gateway)
-- `clusters.hub.domain`, `clusters.east.domain`, `clusters.west.domain`
-
-**East** (`east/values.yaml`):
-
-- `deployer.domain` — east spoke apps domain
-- `clusters.hub.domain` — hub domain for cross-cluster links
-
-**West** (`west/values.yaml`):
-
-- `deployer.domain` — west spoke apps domain
-- `clusters.hub.domain` — hub domain for cross-cluster links
-
-Validate Helm rendering before apply:
+Copy and edit secrets:
 
 ```bash
-helm template test-hub . -f values.yaml --set deployer.domain=apps.hub.example.com
-helm template test-east east/ -f east/values.yaml
-helm template test-west west/ -f west/values.yaml
+cp values-secret.yaml.template values-secret.yaml
 ```
 
-## Step 3: Install on the hub
+Set hub and spoke cluster domains in override files before install. See [MIGRATION.md](https://github.com/maximilianoPizarro/hybrid-mesh-platform/blob/main/MIGRATION.md) for the mapping from legacy RHDP-injected secrets.
 
-The hub uses the repository root path (`.`):
+## Step 3: Install with Validated Patterns
+
+From the hub cluster (logged in with `oc`):
 
 ```bash
-helm install hybrid-mesh-platform . -f values.yaml --set deployer.domain=apps.hub.example.com
+./pattern.sh install
 ```
 
-For production GitOps, create an Argo CD `Application` pointing at your fork on branch `main` (matching `gitops.revision`). Supply values via Helm parameters or a values ConfigMap pattern your organization prefers.
+The Pattern operator (or utility container) deploys the root `clustergroup` Application on the hub. ACM `managedClusterGroups` in `values-hub.yaml` register east and west spokes once they join the fleet.
 
 ## Step 4: Import managed clusters in ACM
 

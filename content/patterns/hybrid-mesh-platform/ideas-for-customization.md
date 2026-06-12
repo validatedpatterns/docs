@@ -86,4 +86,4 @@ Disables heavy subscriptions while preserving GitOps bootstrap and ApplicationSe
 - [Multicloud GitOps](/patterns/multicloud-gitops) — fleet GitOps and ACM placement patterns
 - [Industrial Edge](/patterns/industrial-edge/) — underlying factory/OT workload pattern (maintained tier)
 
-**Pattern repository:** [platform-hub-spoke-config](https://github.com/maximilianopizarro/platform-hub-spoke-config)
+**Pattern repository:** [hybrid-mesh-platform](https://github.com/maximilianoPizarro/hybrid-mesh-platform) (Validated Patterns). Legacy App-of-Apps: [platform-hub-spoke-config](https://github.com/maximilianoPizarro/platform-hub-spoke-config).

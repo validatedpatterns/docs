@@ -115,4 +115,4 @@ Deploy new edge instances on east or west via [Scaffolding](scaffolding). Verify
 
 - [Industrial Edge Validated Pattern](/patterns/industrial-edge/)
 - [Multicloud GitOps](/patterns/multicloud-gitops) — fleet GitOps foundation
-- [Pattern repository](https://github.com/maximilianopizarro/platform-hub-spoke-config) — charts `industrial-edge-tst`, `industrial-edge-stormshift`, `industrial-edge-pipelines`, data lake charts
+- [Pattern repository](https://github.com/maximilianoPizarro/hybrid-mesh-platform) — charts under `charts/all/` (`industrial-edge-tst`, `industrial-edge-stormshift`, `industrial-edge-pipelines`, data lake charts)

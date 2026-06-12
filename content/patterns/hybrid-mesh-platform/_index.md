@@ -21,9 +21,9 @@ industries:
   - Industrial
 aliases: /hybrid-mesh-platform/
 links:
-  github: https://github.com/maximilianopizarro/platform-hub-spoke-config
+  github: https://github.com/maximilianoPizarro/hybrid-mesh-platform
   install: getting-started
-  bugs: https://github.com/maximilianopizarro/platform-hub-spoke-config/issues
+  bugs: https://github.com/maximilianoPizarro/hybrid-mesh-platform/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 tested_on:
   platform: AWS
@@ -39,7 +39,7 @@ contributor:
 
 **Maintainer:** Maximiliano Pizarro, Specialist Solution Architect at Red Hat
 
-> **Your journey:** This platform deploys in one `helm upgrade`, connects three OpenShift clusters (hub + east + west), and shows IoT sensor data across Grafana and Developer Hub within about 30 minutes. The pages below follow one continuous story — concept, install, operate, scaffold — so you can read straight through or jump to any chapter.
+> **Your journey:** This platform installs via the Validated Patterns framework (`./pattern.sh install`), connects three OpenShift clusters (hub + east + west) through ACM managedClusterGroups, and shows IoT sensor data across Grafana and Developer Hub within about 30 minutes. The pages below follow one continuous story — concept, install, operate, scaffold — so you can read straight through or jump to any chapter.
 
 ## What is Hybrid Mesh Platform?
 
@@ -54,9 +54,9 @@ The result is a reference design you can adopt, extend, or customize for factory
 
 **Tested on:** Red Hat OpenShift Container Platform **4.20** on **AWS** (hub + east spoke + west spoke, multinode 3 workers each). Compatible with 4.14+ per cluster.
 
-**Current release:** [ocp-420-v5](https://github.com/maximilianoPizarro/platform-hub-spoke-config/releases/tag/ocp-420-v5) — Camel Dashboard on east/west spokes, Skupper token sync, Kafka Console broker DNS fixes.
+**Implementation repo:** [hybrid-mesh-platform](https://github.com/maximilianoPizarro/hybrid-mesh-platform) — Validated Patterns layout (`clustergroup`, Vault + External Secrets, ACM managedClusterGroups). The legacy [platform-hub-spoke-config](https://github.com/maximilianoPizarro/platform-hub-spoke-config) App-of-Apps repo remains frozen for live workshop deployments until cutover.
 
-Read **concept → mechanics → operations**: start with [Architecture](architecture), install via [Getting Started](getting-started), scaffold workloads via [Scaffolding](scaffolding), then use platform chapters (**Hub Gateway**, **Observability**, **Industrial Edge**) before drilling into the [pattern repository](https://github.com/maximilianopizarro/platform-hub-spoke-config).
+Read **concept → mechanics → operations**: start with [Architecture](architecture), install via [Getting Started](getting-started), scaffold workloads via [Scaffolding](scaffolding), then use platform chapters (**Hub Gateway**, **Observability**, **Industrial Edge**) before drilling into the [pattern repository](https://github.com/maximilianoPizarro/hybrid-mesh-platform).
 
 [![Hybrid Mesh Platform — hub-spoke architecture](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)
 
