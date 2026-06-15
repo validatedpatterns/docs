@@ -39,10 +39,10 @@ anattama
 anonymized
 anonymizer
 ansible
-api's
 apicast
 apicurito
 apis
+api's
 apiversion
 appdev
 applicati
@@ -75,11 +75,11 @@ awsregion
 awx
 azs
 backend
-backend's
 backends
+backend's
 baldessari
-baremetal
 baremetal integrations
+baremetal
 baseos
 baz
 bcb
@@ -540,8 +540,10 @@ kno
 koppa
 koqh
 kqhdzjvisxrurtnwackiemb
+kserve
 kservice
 kstreams
+kuadrant
 kube
 kubeadmin
 kubeconfig
@@ -550,8 +552,6 @@ kubelet
 kubeletconfig
 kubernetes
 kubevirt
-kserve
-kuadrant
 kust
 kustomization
 kustomize
@@ -713,8 +713,8 @@ opendatahub
 openid
 openjdk
 openshift
-openshift's
 openshiftpullsecret
+openshift's
 openshiftsdn
 openshiftversion
 openssl
@@ -836,9 +836,9 @@ renderers
 replicaset
 replicasets
 repo
-repo's
 repolist
 repos
+repo's
 repourl
 reranked
 reranking
@@ -1043,8 +1043,8 @@ unsealvault
 untrusted
 updatingconfig
 updatingversion
-upstream's
 upstreaming
+upstream's
 ure
 uri
 usecsv
@@ -1119,9 +1119,9 @@ yml
 yourcluster
 ypuzljq
 zefrgjryxxxxxxxxx
-ztunnel
 zh
 zj
 zja
 zk
+ztunnel
 zwkq
