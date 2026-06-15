@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <style>.bg{fill:#1a1a1a;}.accent{fill:#e00;}.mesh{fill:none;stroke:#fff;stroke-width:1.5;stroke-linecap:round;}</style>
+  </defs>
+  <!-- Background -->
+  <rect class="bg" width="32" height="32" rx="6"/>
+  <!-- Red Hat accent -->
+  <circle class="accent" cx="16" cy="10" r="4"/>
+  <!-- Mesh network nodes -->
+  <circle fill="#fff" cx="8" cy="22" r="2.5"/>
+  <circle fill="#fff" cx="16" cy="26" r="2.5"/>
+  <circle fill="#fff" cx="24" cy="22" r="2.5"/>
+  <!-- Mesh connections -->
+  <line class="mesh" x1="16" y1="14" x2="8" y2="22"/>
+  <line class="mesh" x1="16" y1="14" x2="24" y2="22"/>
+  <line class="mesh" x1="16" y1="14" x2="16" y2="26"/>
+  <line class="mesh" x1="8" y1="22" x2="16" y2="26"/>
+  <line class="mesh" x1="24" y1="22" x2="16" y2="26"/>
+  <line class="mesh" x1="8" y1="22" x2="24" y2="22"/>
+</svg>

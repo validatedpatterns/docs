@@ -105,6 +105,8 @@ Spoke estimated workload: ~5.5 CPU / ~11 GiB (Industrial Edge, factory Kafka, AC
 
 For constrained environments, use `values-lite.yaml` on the hub to disable heavy components (OpenShift AI, ACS, Grafana dashboards, hub gateway).
 
+See [Cluster sizing](cluster-sizing) for metadata-driven minimum and recommended sizes across cloud providers.
+
 ## Repository layout
 
 ```
@@ -327,6 +329,7 @@ Never commit registry passwords to Git. Generate dockerconfig and pass via Helm 
 
 - [ACM documentation](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/about/welcome-to-red-hat-advanced-cluster-management-for-kubernetes)
 - [Multicloud GitOps Validated Pattern](/patterns/multicloud-gitops)
+- [RHDP install playbook and extended docs](https://maximilianopizarro.github.io/hybrid-mesh-platform/validatedpatterns-docs/)
 - [ApplicationSet Generators](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators/)
 
 **Next →** [Scaffolding](scaffolding) to deploy Industrial Edge instances from Developer Hub · [Architecture](architecture) for diagrams · [Observability](observability) once metrics are flowing.

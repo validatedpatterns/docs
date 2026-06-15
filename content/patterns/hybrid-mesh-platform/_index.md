@@ -1,8 +1,8 @@
 ---
 title: Hybrid Mesh Platform
-date: 2026-05-20
+date: 2026-06-15
 tier: sandbox
-summary: Multi-cluster GitOps platform using a hub-spoke topology with ACM, OpenShift Service Mesh, ACS, and Industrial Edge workloads on OpenShift 4.20.
+summary: Hub-spoke multi-cluster GitOps on OpenShift with ACM, ambient Service Mesh, Skupper, Industrial Edge, and centralized observability.
 rh_products:
   - Red Hat OpenShift Container Platform
   - Red Hat Advanced Cluster Management
@@ -19,6 +19,11 @@ rh_products:
 industries:
   - General
   - Industrial
+focus_areas:
+  - Edge
+  - DevSecOps
+  - AI
+  - Observability
 aliases: /hybrid-mesh-platform/
 links:
   github: https://github.com/maximilianoPizarro/hybrid-mesh-platform
@@ -27,7 +32,7 @@ links:
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 tested_on:
   platform: AWS
-  ocp_version: "4.20"
+  ocp_version: "4.17+"
   topology: "3 clusters (hub + east spoke + west spoke)"
 contributor:
   name: Maximiliano Pizarro
@@ -39,74 +44,40 @@ contributor:
 
 **Maintainer:** Maximiliano Pizarro, Specialist Solution Architect at Red Hat
 
-> **Your journey:** This platform installs via the Validated Patterns framework (`./pattern.sh install`), connects three OpenShift clusters (hub + east + west) through ACM managedClusterGroups, and shows IoT sensor data across Grafana and Developer Hub within about 30 minutes. The pages below follow one continuous story — concept, install, operate, scaffold — so you can read straight through or jump to any chapter.
+> **Your journey:** Install via the Validated Patterns framework (`./pattern.sh install`), connect three OpenShift clusters (hub + east + west) through ACM managedClusterGroups, and observe IoT sensor data across Grafana and Developer Hub. The pages below follow one continuous story — concept, install, operate, scaffold — so you can read straight through or jump to any chapter.
 
 ## What is Hybrid Mesh Platform?
 
 **Hybrid Mesh Platform** is a production-grade, multi-cluster GitOps reference architecture that mirrors how Red Hat customers run hybrid cloud on OpenShift. It implements a **hub-spoke topology** where:
 
-- A **hub cluster** (OpenShift on AWS) centralizes fleet governance with **ACM**, deploys via **OpenShift GitOps** (Argo CD), hosts the **Developer Hub** internal portal, runs **ACS Central** for security, aggregates observability in **Grafana**, and exposes cross-cluster services through a **Gateway API** hub gateway with circuit breaking.
+- A **hub cluster** centralizes fleet governance with **ACM**, deploys via **OpenShift GitOps** (Argo CD), hosts **Developer Hub**, runs **ACS Central**, aggregates observability in **Grafana**, and exposes cross-cluster services through a **Gateway API** hub gateway.
 - Two **spoke clusters** (east and west) execute **Industrial Edge** factory workloads — MQTT sensors, Kafka pipelines, ML inference, and dashboards — connected to the hub via a **Skupper Virtual Application Network** (no VPN or firewall changes).
-- **OpenShift Service Mesh 3** in **ambient mode** (no sidecars) provides ztunnel-based L4 encryption and optional waypoint L7 policy across all clusters.
+- **OpenShift Service Mesh 3** in **ambient mode** provides ztunnel-based L4 encryption and optional waypoint L7 policy across all clusters.
 - **Connectivity Link (Kuadrant)** layers API-aware ingress policies — rate limiting, auth, DNS/TLS automation — on top of Gateway API.
 
-The result is a reference design you can adopt, extend, or customize for factory IoT, fleet management, or any workload that requires centralized governance with distributed execution.
+**Tested on:** Red Hat OpenShift Container Platform **4.17+** on **AWS** (hub + east spoke + west spoke). See [Cluster sizing](cluster-sizing) for recommended instance types.
 
-**Tested on:** Red Hat OpenShift Container Platform **4.20** on **AWS** (hub + east spoke + west spoke, multinode 3 workers each). Compatible with 4.14+ per cluster.
+**Implementation repo:** [hybrid-mesh-platform](https://github.com/maximilianoPizarro/hybrid-mesh-platform) — Validated Patterns layout (`clustergroup`, Vault + External Secrets, ACM managedClusterGroups).
 
-**Implementation repo:** [hybrid-mesh-platform](https://github.com/maximilianoPizarro/hybrid-mesh-platform) — Validated Patterns layout (`clustergroup`, Vault + External Secrets, ACM managedClusterGroups). The legacy [platform-hub-spoke-config](https://github.com/maximilianoPizarro/platform-hub-spoke-config) App-of-Apps repo remains frozen for live workshop deployments until cutover.
-
-Read **concept → mechanics → operations**: start with [Architecture](architecture), install via [Getting Started](getting-started), scaffold workloads via [Scaffolding](scaffolding), then use platform chapters (**Hub Gateway**, **Observability**, **Industrial Edge**) before drilling into the [pattern repository](https://github.com/maximilianoPizarro/hybrid-mesh-platform).
+Read **concept → mechanics → operations**: start with [Architecture](architecture), install via [Getting Started](getting-started), explore the [Demo scenario](demo-scenario), scaffold workloads via [Scaffolding](scaffolding), then use platform chapters (**Hub Gateway**, **Observability**, **Industrial Edge**).
 
 [![Hybrid Mesh Platform — hub-spoke architecture](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)
 
-_Hub cluster aggregates observability and Developer Hub; east and west spokes run Industrial Edge workloads connected via Service Interconnect (Skupper). Click the image to open the full diagram._
+_Hub cluster aggregates observability and Developer Hub; east and west spokes run Industrial Edge workloads connected via Service Interconnect (Skupper)._
 
 ## Hub-spoke architecture at a glance
 
-The platform simulates a production hybrid mesh with three clusters on AWS:
-
 | Cluster | Role | Key components |
 | --- | --- | --- |
-| **Hub** | Fleet governance and centralized services | ACM, OpenShift GitOps (Argo CD), Developer Hub, OpenShift AI, Service Mesh control plane, Skupper listeners, Kuadrant, ACS Central, Grafana, Kafka Console, Kubecost |
-| **East spoke** | Factory workloads and developer tools | Industrial Edge (sensors, Kafka, Camel, ML), DevSpaces (Kaoto + Continue AI), Kairos SmartScaling, spoke-local Argo CD |
-| **West spoke** | Workload replicas and cross-cluster validation | Industrial Edge replicas, MirrorMaker replication to hub, Skupper connectors for cross-cluster traffic |
+| **Hub** | Fleet governance and centralized services | ACM, OpenShift GitOps, Developer Hub, OpenShift AI, Service Mesh control plane, Skupper listeners, Kuadrant, ACS Central, Grafana, Kafka Console, Kubecost |
+| **East spoke** | Factory workloads and developer tools | Industrial Edge, DevSpaces, Kairos SmartScaling, spoke-local GitOps |
+| **West spoke** | Workload replicas and cross-cluster validation | Industrial Edge replicas, MirrorMaker replication to hub, Skupper connectors |
 
-Industrial Edge components exist **only** on spokes. The hub never hosts factory sensor workloads — it aggregates their metrics and provides gateway access.
-
-## Service mesh and traffic flow
-
-The platform uses OpenShift Service Mesh 3 in **ambient mode** — no sidecars injected into application pods. Per-node ztunnels handle L4 mTLS encryption transparently; optional waypoint proxies provide L7 policy where needed.
-
-Traffic between hub and spokes crosses a **Skupper mTLS tunnel** exposed via Gateway API:
-
-- **`HTTPRoute`** resources on the hub split traffic to east/west backends (frontend 50/50 weighted, API pinned to a single spoke for Socket.IO session affinity)
-- **`DestinationRule`** circuit breaking (outlier detection) ejects unhealthy endpoints after consecutive 5xx errors
-- **`AuthorizationPolicy`** (zero-trust) restricts which service accounts can reach backends — only the hub gateway SA is authorized
-
-This means external clients hit the hub OpenShift router → Istio gateway → waypoint (circuit breaker) → Skupper tunnel → spoke backend, all with mTLS end-to-end.
+Industrial Edge components exist **only** on spokes. The hub aggregates metrics and provides gateway access — it does not host factory sensor workloads.
 
 [![Platform architecture overview](/images/hybrid-mesh-platform/arch-overview.png)](/images/hybrid-mesh-platform/arch-overview.png)
 
 _Detailed architecture showing Git repo structure, ACM placement, Skupper VAN, and sync-wave delivery to east/west spokes._
-
-## OpenShift AI — Model as a Service
-
-The AI layer provides a shared LLM endpoint (**MaaS**) deployed on the hub via the OpenShift AI operator (`DataScienceCluster`). Components include dashboard, workbenches, model mesh, data science pipelines, and KServe.
-
-Any application that speaks the OpenAI REST API can consume MaaS without code changes — point `OPENAI_API_BASE` to the in-cluster service. Spoke workloads reach MaaS through Skupper connectors, enabling inference from factory pipelines without direct network routes to the hub.
-
-## Kuadrant API gateway
-
-Kuadrant manages API rate limiting and auth policies across the hub gateway. Per-user API keys scoped to plans enable controlled access to AI endpoints and platform APIs:
-
-- **`APIProduct`** — exposes endpoints under a single managed product with host-based routing
-- **`AuthPolicy`** — identity verification via API keys or OAuth tokens
-- **`TokenRateLimitPolicy`** — per-key rate limits (for example 100 req/min per user)
-
-This enables self-service API consumption for developers and workshop participants while protecting backend services from overload.
-
-Architecture diagrams illustrate Git, **ACM fleet management**, **ACS Central**, Skupper VAN, Connectivity Link, and Industrial Edge on east/west — use them as the visual companion to the install chapters (see [Architecture](architecture) for ACM and ACS console views).
 
 ## Quick links
 
@@ -114,35 +85,42 @@ Architecture diagrams illustrate Git, **ACM fleet management**, **ACS Central**,
 | --- | --- |
 | Architecture deep dive | [Architecture](architecture) |
 | Install flow | [Getting Started](getting-started) |
+| Cluster sizing | [Cluster sizing](cluster-sizing) |
+| Demo scenario and showroom | [Demo scenario](demo-scenario) |
 | Hub Gateway and Connectivity Link | [Hub Gateway](hub-gateway) |
 | Observability | [Observability](observability) |
 | Industrial Edge (multi-cluster) | [Industrial Edge](industrial-edge) |
 | Scaffolding | [Scaffolding](scaffolding) |
-| Branch strategy and customization | [Ideas for customization](ideas-for-customization) |
+| Customization ideas | [Ideas for customization](ideas-for-customization) |
 
 ## Recommended reading order
 
 1. [Architecture](architecture) — mental model of hub, spokes, GitOps, Skupper, and observability
-2. [Getting Started](getting-started) — bring clusters under GitOps (includes ACM + ApplicationSet detail)
-3. [Scaffolding](scaffolding) — deploy Industrial Edge instances on east/west from Developer Hub
-4. [Hub Gateway](hub-gateway) — weighted ingress and circuit breaking across spokes
-5. [Observability](observability) — Grafana, Kiali, Kafka Console
-6. [Industrial Edge](industrial-edge) — factory data pipeline: sensors, Kafka, Camel, ML on multiple spokes
+2. [Getting Started](getting-started) — bring clusters under GitOps (ACM + ApplicationSet)
+3. [Cluster sizing](cluster-sizing) — hub and spoke minimum requirements
+4. [Demo scenario](demo-scenario) — what the workshop showroom demonstrates
+5. [Scaffolding](scaffolding) — deploy Industrial Edge instances from Developer Hub
+6. [Hub Gateway](hub-gateway) — weighted ingress and circuit breaking across spokes
+7. [Observability](observability) — Grafana, Kiali, Kafka Console
+8. [Industrial Edge](industrial-edge) — factory data pipeline on multiple spokes
 
-Screenshots and architecture diagrams in the pattern repository support full-screen review — handy after deploying dashboards and verifying cross-cluster traffic.
+**Next →** [Architecture](architecture)
 
-**Next →** [Architecture](architecture) — understand how Git, ACM, and Skupper wire the three clusters together.
+## Workshop Showroom
 
-## Workshop — Hybrid Mesh AI
+A **Hybrid Mesh AI Workshop Showroom** provides an explanatory, navigable view of the same product surfaces after deployment — hub-spoke diagrams, ACM fleet, mesh, Industrial Edge, observability, ACS, and OpenShift AI.
 
-A dual-track **Hybrid Mesh AI Workshop** is available for this platform:
+| Resource | Link |
+| --- | --- |
+| What the demo shows (on this site) | [Demo scenario](demo-scenario) |
+| Showroom content repository | [showroom-hybrid-mesh-ai](https://github.com/maximilianoPizarro/showroom-hybrid-mesh-ai) |
+| Extended pattern docs (RHDP, GitOps chain, troubleshooting) | [GitHub Pages documentation](https://maximilianopizarro.github.io/hybrid-mesh-platform/) |
 
-- **Part A (modules 01–05)** — Executive-oriented: hybrid cloud strategy, ROSA architecture, security at scale, AWS AI integration, and real customer cases.
-- **Part B (modules 10–28)** — Fully hands-on on a live RHDP hub-spoke fleet: ACM fleet management, ambient mesh, Developer Hub scaffolding, Industrial Edge deployment, Kairos SmartScaling, observability, GitOps, Service Mesh, scalability (HPA + Kafka), network policies, ACS + Connectivity Link, FinOps (Kubecost), OpenShift AI, AI Gateway (MaaS + Kuadrant), and LLM/RAG patterns.
+Hands-on lab modules and registration flows remain in the showroom repository and deployed workshop environment — not duplicated here.
 
-Each module targets a specific product area and includes a `verify` step to confirm work. The lab uses the same three-cluster topology documented here (hub + east + west on AWS).
+## Support
 
-See the [workshop site](https://maximilianopizarro.github.io/platform-hub-spoke-config/workshop/) for agenda, registration, and YAML snippets.
+This is a **Sandbox tier** Validated Pattern with community best-effort support. See [SUPPORT.md](https://github.com/maximilianoPizarro/hybrid-mesh-platform/blob/main/SUPPORT.md) in the pattern repository.
 
 ## Red Hat products used
 
@@ -157,11 +135,4 @@ See the [workshop site](https://maximilianopizarro.github.io/platform-hub-spoke-
 - Red Hat build of Apache Camel / Camel K
 - Red Hat OpenShift Pipelines (Tekton)
 - Red Hat Developer Hub (Backstage)
-- Red Hat OpenShift Dev Spaces (Kaoto, Continue AI)
-- Red Hat OpenShift Virtualization (KubeVirt)
-- Red Hat Quay (container registry on hub)
 - Red Hat Service Interconnect (Skupper)
-- Streams for Apache Kafka Console (hub fleet UI)
-- Gitea (in-cluster Git for scaffolder repos)
-- Mailpit (SMTP testing for notifications)
-- Observability stack (Prometheus-compatible metrics, Grafana, OpenTelemetry, Kiali)

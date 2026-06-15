@@ -1,6 +1,6 @@
 ---
 title: Ideas for customization
-weight: 70
+weight: 90
 aliases: /hybrid-mesh-platform/ideas-for-customization/
 ---
 

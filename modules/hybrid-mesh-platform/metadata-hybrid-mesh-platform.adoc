@@ -1,0 +1,56 @@
+// This file has been generated automatically from the pattern-metadata.yaml file
+// Do not edit manually!
+:metadata_version: 1.0
+:name: hybrid-mesh-platform
+:description: Hub-spoke multi-cluster GitOps on OpenShift with ACM, ambient Service Mesh, Service Interconnect (Skupper), Red Hat Connectivity Link (RHCL/Kuadrant), Industrial Edge, OpenShift AI, ACS, and observability — Validated Patterns layout.
+:pattern_version: 1.4.0
+:display_name: Hybrid Mesh Platform
+:repo_url: https://github.com/maximilianoPizarro/hybrid-mesh-platform
+:docs_repo_url: https://github.com/validatedpatterns/docs
+:issues_url: https://github.com/maximilianoPizarro/hybrid-mesh-platform/issues
+:docs_url: https://maximilianopizarro.github.io/hybrid-mesh-platform/
+:tier: sandbox
+:owners: maximilianoPizarro
+:requirements_hub_minimum_workers: 3
+:requirements_hub_minimum_vcpu: 4
+:requirements_hub_minimum_memory_gib: 16
+:requirements_hub_minimum_openshift: 4.17
+:requirements_hub_recommended_workers: 3
+:requirements_hub_recommended_vcpu: 8
+:requirements_hub_recommended_memory_gib: 32
+:requirements_hub_recommended_openshift: 4.17+
+:requirements_hub_compute_platform_aws_replicas: 3
+:requirements_hub_compute_platform_aws_type: m5.2xlarge
+:requirements_hub_compute_platform_azure_replicas: 3
+:requirements_hub_compute_platform_azure_type: Standard_D8s_v3
+:requirements_hub_compute_platform_gcp_replicas: 3
+:requirements_hub_compute_platform_gcp_type: n1-standard-8
+:requirements_hub_controlPlane_platform_aws_replicas: 3
+:requirements_hub_controlPlane_platform_aws_type: m5.xlarge
+:requirements_hub_controlPlane_platform_azure_replicas: 3
+:requirements_hub_controlPlane_platform_azure_type: Standard_D4s_v3
+:requirements_hub_controlPlane_platform_gcp_replicas: 3
+:requirements_hub_controlPlane_platform_gcp_type: n1-standard-4
+:requirements_spoke_minimum_workers: 3
+:requirements_spoke_minimum_vcpu: 4
+:requirements_spoke_minimum_memory_gib: 16
+:requirements_spoke_minimum_openshift: 4.17
+:requirements_spoke_recommended_workers: 3
+:requirements_spoke_recommended_vcpu: 4
+:requirements_spoke_recommended_memory_gib: 16
+:requirements_spoke_recommended_openshift: 4.17+
+:requirements_spoke_compute_platform_aws_replicas: 3
+:requirements_spoke_compute_platform_aws_type: m5.xlarge
+:requirements_spoke_compute_platform_azure_replicas: 3
+:requirements_spoke_compute_platform_azure_type: Standard_D4s_v3
+:requirements_spoke_compute_platform_gcp_replicas: 3
+:requirements_spoke_compute_platform_gcp_type: n1-standard-4
+:requirements_spoke_controlPlane_platform_aws_replicas: 3
+:requirements_spoke_controlPlane_platform_aws_type: m5.xlarge
+:requirements_spoke_controlPlane_platform_azure_replicas: 3
+:requirements_spoke_controlPlane_platform_azure_type: Standard_D4s_v3
+:requirements_spoke_controlPlane_platform_gcp_replicas: 3
+:requirements_spoke_controlPlane_platform_gcp_type: n1-standard-4
+:extra_features_hypershift_support: False
+:extra_features_spoke_support: True
+:external_requirements: ['MaaS endpoint or OpenShift AI on hub for Kairos/Lightspeed optional features', 'Workshop Showroom content remains in showroom-hybrid-mesh-ai (separate repo)']

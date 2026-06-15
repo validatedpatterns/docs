@@ -1,129 +1,101 @@
 ---
 title: Hub Gateway
-weight: 30
+weight: 40
 aliases: /hybrid-mesh-platform/hub-gateway/
 ---
 
 # Hub Gateway
 
-The hub gateway provides centralized HTTP ingress on the hub cluster with behaviors similar to an F5 BIG-IP ADC: VIP-style routing, TLS termination at the edge, and weighted traffic splits across backend services or spoke-derived routes.
-
-Implementation chart: `components/hub-gateway`. Connectivity Link operator: `components/rhcl-operator`.
-
-## Connectivity Link topology
-
-Connectivity Link (Kuadrant) brings multi-cluster ingress and policy using Kubernetes Gateway API — DNS, TLS, rate limiting, and auth patterns layered on `Gateway` and `HTTPRoute` resources. In this platform, Gateway API objects align with hub gateway routing (including weighted splits similar to hardware ADC behavior). Policies may be disabled initially; enable Kuadrant `AuthPolicy`, `RateLimitPolicy`, and DNS/TLS strategies as you harden environments.
-
-[![ACS and Connectivity Link — security and gateway policy](/images/hybrid-mesh-platform/workshop-acs-kuadrant.png)](/images/hybrid-mesh-platform/workshop-acs-kuadrant.png)
-
-_Connectivity Link and ACS integration: Gateway API provides ingress policy while ACS enforces runtime security on backends. Kuadrant adds rate limiting and auth._
-
-[![Gateway API policy topology — hub HTTPRoute and route rules](/images/hybrid-mesh-platform/connectivity-link-hub.png)](/images/hybrid-mesh-platform/connectivity-link-hub.png)
-
-_OpenShift Console — Gateway API resources on the hub: Gateway, HTTPRoute rules, and backend service references._
-
-_Gateway API policy topology — hub-gateway, HTTPRoute, and route rules in the OpenShift Console._
-
-### Hub cluster
-
-Hub cluster Gateway API resources and HTTPRoute attachment to `hub-gateway-system`:
-
-[![Hub cluster Gateway API and HTTPRoute](/images/hybrid-mesh-platform/connectivity-link-hub-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-hub-gateway.png)
-
-### Spoke clusters
-
-Spoke cluster Gateway API and backend services exposed through the mesh:
-
-[![Spoke cluster Gateway API and backends](/images/hybrid-mesh-platform/connectivity-link-spoke.png)](/images/hybrid-mesh-platform/connectivity-link-spoke.png)
-
-_Spoke cluster — Gateway API and backend services registered in the mesh. Services are exposed to the hub through a single spoke-gateway entry point._
-
-Spoke gateway aggregating Industrial Edge services for cross-cluster exposure (single Skupper Connector target per spoke):
-
-[![Spoke gateway aggregating Industrial Edge services](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)
-
-_Spoke-gateway HTTPRoute configuration — routes `/api`, `/dashboard`, and catch-all paths to internal Industrial Edge services._
-
-[![Spoke gateway architecture — Gateway API aggregation](/images/hybrid-mesh-platform/arch-spoke-gateway.png)](/images/hybrid-mesh-platform/arch-spoke-gateway.png)
-
-_Architecture diagram: one Istio Gateway per spoke fronts all services; Skupper exposes only this gateway to the hub instead of each microservice individually._
-
-Verify Connectivity Link reconciliation by inspecting `Gateway` status conditions and `HTTPRoute` `spec.parentRefs` — not only Pod labels. Chart path: `components/rhcl-operator`.
+The **hub gateway** pattern provides centralized HTTP ingress on the hub cluster with behaviors similar to an **F5 BIG-IP ADC**: VIP-style routing, TLS termination at the edge, and **weighted traffic splits** across backend services or spoke-derived routes.
 
 ## Gateway API theory
 
-Kubernetes Gateway API separates concerns:
+Kubernetes **Gateway API** separates concerns:
 
-| Resource | Role |
-| --- | --- |
-| `Gateway` | Listens on addresses and ports; attaches TLS and listener policies |
-| `HTTPRoute` | Attaches to a `Gateway`; selects backend `Service` resources with matches, filters, and weighted backends |
+- **`Gateway`** — listens on addresses and ports; attaches TLS and listener policies.
+- **`HTTPRoute`** — attaches to a `Gateway` and selects backend `Service` resources with matches, filters, and weighted backends.
 
-Weighted rules enable canary or active-active distributions between service versions or regions when paired with mesh or multi-cluster DNS strategies.
+Weighted rules enable **canary** or **active-active** distributions between service versions or regions when paired with mesh or multi-cluster DNS strategies.
 
 ## Cross-cluster routing architecture
 
-The hub gateway routes traffic to spoke OpenShift Routes via `ExternalName` services:
+The hub gateway routes traffic to spoke cluster OpenShift Routes via `ExternalName` services:
 
-```
-Browser
-  → Hub OpenShift Router (HTTPS)
-  → Istio Gateway (port 8080)
-  → Waypoint Proxy (circuit breaking)
-  → ExternalName Service (east or west)
-  → Spoke OpenShift Router (HTTP:80)
-  → Backend Pod
+```mermaid
+flowchart LR
+  Browser["Browser"] --> Router["Hub OpenShift<br/>Router (HTTPS)"]
+  Router --> IGW["Istio Gateway<br/>(port 8080)"]
+  IGW --> WP["Waypoint Proxy<br/>(circuit breaking)"]
+  WP --> EXT_E["ExternalName<br/>Service (east)"]
+  WP --> EXT_W["ExternalName<br/>Service (west)"]
+  EXT_E --> SPOKE_E["East OpenShift<br/>Router (HTTP:80)"]
+  EXT_W --> SPOKE_W["West OpenShift<br/>Router (HTTP:80)"]
+  SPOKE_E --> POD_E["Backend Pod"]
+  SPOKE_W --> POD_W["Backend Pod"]
 ```
 
 ### Front / API split
 
-Traffic uses separate `Service` objects per cluster and traffic type so Kiali and Grafana see distinct destinations:
+Traffic is split into separate `Service` objects per cluster and traffic type to give Kiali and Grafana finer-grained visibility:
 
 | Service | Purpose |
-| --- | --- |
+| ------- | ------- |
 | `industrial-edge-east-front` | Static frontend assets for east spoke |
 | `industrial-edge-east-api` | Socket.IO / API backend for east spoke |
 | `industrial-edge-west-front` | Static frontend assets for west spoke |
 | `industrial-edge-west-api` | Socket.IO / API backend for west spoke |
 
-All four services use `ExternalName` pointing at the spoke Route hostname. Istio still tracks them as separate destination nodes in the traffic graph.
+All four services use `ExternalName` pointing to the same spoke Route hostname, but Istio tracks them as distinct destinations. In Kiali's traffic graph, each appears as a separate node.
 
-### HTTPRoute rules
+The `HTTPRoute` uses two rules:
 
-1. **`/api/*`** → `*-api` services (default **east 100%**, **west 0%** for Socket.IO session affinity)
-2. **Catch-all `/*`** → `*-front` services (split by `gateway.weights.east` / `gateway.weights.west`)
+```mermaid
+flowchart TB
+  REQ["Incoming Request"] --> MATCH{Path?}
+  MATCH -->|"/api/*"| API["API rule<br/>(session affinity)"]
+  MATCH -->|"/*"| FRONT["Frontend rule<br/>(weighted split)"]
+  API --> API_E["east-api<br/>weight: 100"]
+  API --> API_W["west-api<br/>weight: 0"]
+  FRONT --> FRONT_E["east-front<br/>weight: 50"]
+  FRONT --> FRONT_W["west-front<br/>weight: 50"]
+```
 
-Override API weights with `gateway.apiWeights` when your application supports cross-cluster API load balancing.
+1. **`/api` prefix** → routed to `*-api` services (defaults to east 100%, west 0% for Socket.IO session affinity).
+2. **Catch-all** → routed to `*-front` services (split by `gateway.weights.east` / `west`).
+
+Override API weights with `gateway.apiWeights` in values when your application supports cross-cluster API load balancing.
 
 ### Key requirements
 
-| Requirement | Reason |
-| --- | --- |
-| HTTP port **80** to spokes | Ambient gateways do not apply `DestinationRule` TLS to ExternalName backends; HTTPS causes `CERTIFICATE_VERIFY_FAILED` |
-| `insecureEdgeTerminationPolicy: Allow` on spoke Routes | Permits HTTP from hub Envoy to spoke router |
-| `ServiceEntry` per external host | Without it, Envoy has no cluster definition → HTTP 500 |
-| Per-backend **Host** header rewrite | Spoke router routes by `Host` |
-| Session affinity on `/api` | Socket.IO polling and WebSocket upgrade must hit the same backend |
+1. **HTTP port 80, not HTTPS** — Istio ambient mode gateways do not apply `DestinationRule` TLS settings. Using HTTPS causes `CERTIFICATE_VERIFY_FAILED` errors. Spoke Routes must set `insecureEdgeTerminationPolicy: Allow`.
+
+2. **ServiceEntry for each external host** — without a `ServiceEntry`, Envoy has no cluster definition for the external hostname and returns HTTP 500.
+
+3. **Per-backend Host header rewrite** — the spoke OpenShift router routes by `Host` header. Use `RequestHeaderModifier` filters on each `backendRef` in the HTTPRoute.
+
+4. **Session affinity for Socket.IO** — when load-balancing across multiple backends, Socket.IO polling and WebSocket upgrade must reach the same backend. The `/api` rule pins to a single spoke by default.
 
 ## Circuit breaking
 
-Each `ExternalName` service gets a `DestinationRule` with `outlierDetection` and `connectionPool`, enforced by `hub-gateway-system-waypoint` (Istio ambient L7).
+Each `ExternalName` service gets a `DestinationRule` with `outlierDetection` and `connectionPool` settings, enforced by the `hub-gateway-system-waypoint` proxy (Istio ambient L7).
 
-### Default configuration (demo profile)
+### Default configuration (aggressive / demo)
 
 | Parameter | Default | Purpose |
-| --- | --- | --- |
+| --------- | ------- | ------- |
 | `connectionPool.tcp.maxConnections` | 100 | Max concurrent TCP connections |
 | `connectionPool.http.h2UpgradePolicy` | `DO_NOT_UPGRADE` | Spokes expect HTTP/1.1 |
 | `connectionPool.http.maxRequestsPerConnection` | 10 | Force connection recycling |
 | `outlierDetection.consecutive5xxErrors` | 3 | Eject after 3 consecutive 5xx |
 | `outlierDetection.interval` | 10s | Health check interval |
 | `outlierDetection.baseEjectionTime` | 30s | Minimum ejection duration |
-| `outlierDetection.maxEjectionPercent` | 100 | Required when only one endpoint exists |
+| `outlierDetection.maxEjectionPercent` | 100 | Allow ejecting the only endpoint |
 
-`maxEjectionPercent: 100` is required because each ExternalName resolves to a single endpoint; otherwise Istio refuses to eject the last host.
+`maxEjectionPercent: 100` is required because each ExternalName service resolves to a single endpoint; without it, Istio refuses to eject the last remaining host.
 
-### Override circuit breaker values
+### Overriding circuit breaker values
+
+Set `gateway.circuitBreaking.*` in the hub-gateway values:
 
 ```yaml
 gateway:
@@ -136,25 +108,28 @@ gateway:
 
 Set `enabled: false` to disable circuit breaking entirely.
 
-## Relationship to Connectivity Link and Service Mesh
+## Relationship to Connectivity Link
 
-Connectivity Link layers DNS automation, TLS policies, and advanced controls atop the Gateway API topology shown above. Service Mesh ambient (ztunnel/waypoints) carries east-west traffic between gateway hops and workloads. Start with plain HTTPRoutes for incremental adoption; enable Kuadrant policies when teams require DNS/TLS/rate-limit governance at scale.
+Connectivity Link (Kuadrant) layers DNS automation, TLS policies, and advanced controls atop Gateway API. Start with plain HTTPRoutes if you need incremental adoption; enable Kuadrant policies when teams are ready.
 
 ## IoT Dashboard integration
 
-The Industrial Edge `line-dashboard` (`iot-frontend`) requires an `iot-consumer` sidecar:
+The Industrial Edge `line-dashboard` (iot-frontend) requires an `iot-consumer` sidecar to display sensor data:
 
-- Bridges MQTT to WebSocket via Socket.IO
-- ConfigMap `config.json` with `websocketHost: ""` (empty = same origin)
-- Spoke Route `/api` → port 3000 (`iot-consumer`)
-- Hub gateway proxies `/api` to the correct spoke backend where Socket.IO terminates
+- **iot-consumer** bridges MQTT to WebSocket via Socket.IO
+- Mount a ConfigMap `config.json` with `websocketHost: ""` (empty = same origin)
+- Path-based Route `/api` to port 3000 (iot-consumer)
+- The hub gateway proxies `/api` requests to the correct spoke backend where iot-consumer handles the Socket.IO connection
 
 ## Operational notes
 
-- Align hostnames with `deployer.domain` and corporate DNS wildcard records
-- Combine with Service Mesh ambient when east-west encryption between gateway hops and workloads matters
-- Monitor gateway Envoy metrics at port 15020 `/stats/prometheus`
-- Generate traffic through `hub-gateway-istio` or waypoints before expecting L7 panels in Grafana
+- Keep **hostnames aligned** with `deployer.domain` and corporate DNS wildcard records.
+- Combine with **Service Mesh ambient** when east-west encryption between gateway hops and workloads matters.
+- Monitor the gateway Envoy proxy metrics at port 15020 `/stats/prometheus`.
+
+---
+
+**Next:** attach HTTPRoutes per Connectivity Link policies when Kuadrant enforcement tightens, then verify backends inside Service Mesh ambient namespaces. See the [pattern documentation](https://maximilianopizarro.github.io/hybrid-mesh-platform/validatedpatterns-docs/hub-gateway.html) for extended RHCL detail.
 
 ## References
 
@@ -162,4 +137,8 @@ The Industrial Edge `line-dashboard` (`iot-frontend`) requires an `iot-consumer`
 - [Connectivity Link documentation](https://docs.redhat.com/en/documentation/red_hat_connectivity_link/)
 - [Istio DestinationRule](https://istio.io/latest/docs/reference/config/networking/destination-rule/)
 
-**Next →** [Observability](observability) for Grafana and Kiali across clusters.
+Implementation chart: `charts/all/hub-gateway`.
+
+---
+
+**Next →** [Observability](observability) for Grafana dashboards, Kiali traffic graphs, and Kafka Console across clusters.
