@@ -23,32 +23,15 @@ Spokes remain the execution venues for application namespaces, data-plane compon
 
 ## Multi-cluster topology: three required clusters
 
-This pattern requires **three OpenShift clusters** — not a single-cluster deployment. The topology follows the Validated Patterns hub-spoke model:
+This pattern requires **three OpenShift clusters** — not a single-cluster deployment. The topology follows the Validated Patterns hub-spoke model: one **hub** for fleet governance and two **spokes** for factory workloads. Hub and spokes communicate over a **Skupper Virtual Application Network** (outbound-only mTLS — no inbound firewall rule changes needed). The hub's `ApplicationSet` pushes spoke charts; each spoke's local Argo CD pulls its `clusterGroup` from Git autonomously.
 
-```
-              ┌──────────────────────────────────────┐
-              │  Hub cluster (OpenShift on AWS)       │
-              │  ACM · Argo CD · Developer Hub · RHOAI│
-              │  ACS Central · Grafana · Skupper ·    │
-              │  Kuadrant · OpenShift Lightspeed · MCP│
-              └──────┬─────────────────┬──────────────┘
-          ACM push   │                 │  ACM push
-           GitOps    │                 │  GitOps
-              ┌──────▼───────┐  ┌──────▼───────┐
-              │ East spoke   │  │ West spoke   │
-              │ Industrial   │  │ Industrial   │
-              │ Edge · Kafka │  │ Edge · Kafka │
-              │ Camel K · ML │  │ MirrorMaker  │
-              │ DevSpaces    │  │ Skupper      │
-              └──────────────┘  └──────────────┘
-       ◄────────── Skupper VAN (mTLS, outbound-only) ──────────►
-```
+[![Hybrid Mesh Platform — hub-spoke component map](/images/hybrid-mesh-platform/workshop-hybrid-mesh-arch.png)](/images/hybrid-mesh-platform/workshop-hybrid-mesh-arch.png)
 
-Hub and spokes communicate over a **Skupper Virtual Application Network** — outbound-only mTLS tunnels, no inbound firewall rule changes needed. The hub's `ApplicationSet` pushes spoke charts; each spoke's local Argo CD pulls its `clusterGroup` from Git autonomously.
+_Platform component map: hub hosts fleet governance and AI services; east and west spokes host Industrial Edge workloads. Skupper VAN bridges cross-cluster service traffic without VPN._
 
 ## Platform architecture overview
 
-![Hub-spoke platform — Git paths, ApplicationSet, Skupper VAN, and per-cluster components](/images/hybrid-mesh-platform/arch-hub-spoke-flow.png)
+[![Hub-spoke platform — Git paths, ApplicationSet, Skupper VAN, and per-cluster components](/images/hybrid-mesh-platform/arch-hub-spoke-flow.png)](/images/hybrid-mesh-platform/arch-hub-spoke-flow.png)
 
 *Single `main` branch: hub at `charts/region/hub`, spokes at `charts/region/east` and `charts/region/west`, shared charts under `charts/all/`.*
 
@@ -129,11 +112,34 @@ Each spoke runs a **Gateway API gateway** that fronts all Industrial Edge servic
 
 ![Industrial Edge data flow — sensors through MQTT, Camel, Kafka to Grafana and data lake](/images/hybrid-mesh-platform/arch-data-flow.png)
 *Telemetry path on each spoke; MirrorMaker replicates to the hub-centralized MinIO data lake.*
-## Comparison with Red Hat Validated Patterns
+## Relationship to Red Hat Validated Patterns
 
-The **[Multicloud GitOps](https://validatedpatterns.io/patterns/multicloud-gitops)** validated pattern demonstrates fleet GitOps with OpenShift GitOps and ACM patterns that resemble this repository's hub-push model: a declarative root Application, cluster grouping, and progressive rollout.
+The **[Multicloud GitOps](https://validatedpatterns.io/patterns/multicloud-gitops)** validated pattern demonstrates fleet GitOps with OpenShift GitOps and ACM — a declarative root Application, cluster grouping, and progressive rollout. Hybrid Mesh Platform forks that foundation and extends it with:
 
-This platform extends that idea with **Industrial Edge** workloads, **Service Mesh ambient**, **Connectivity Link**, optional **OpenShift AI**, **ACS** depth, and **Service Interconnect** for cross-cluster service exposure -- tuned for factory-style telemetry and east-west observability rather than only infrastructure provisioning.
+- **Industrial Edge** factory telemetry (MQTT → Kafka → ML → dashboards) on east/west spokes
+- **Service Mesh 3 ambient mode** — L4 encryption without sidecars
+- **Service Interconnect (Skupper)** — cross-cluster service exposure without VPN
+- **Connectivity Link (Kuadrant)** — API-aware Gateway API ingress with rate limits and API keys
+- **OpenShift AI (RHOAI)** — hub-resident MaaS inference (Qwen3 / Granite via vLLM) for factory AI pipelines
+- **OpenShift Lightspeed + MCP Gateway** — natural-language platform operations via `OLSConfig` and a dual MCP server (Quarkus 19 tools + Go SDK 21 tools), enabling operators to query and act on cluster state without raw YAML
+
+## Red Hat Device Edge extension path
+
+The current spokes run **full OpenShift clusters** (3 workers, cloud or bare-metal). For physically constrained factory devices — industrial controllers, single-board computers, ruggedized appliances — the natural extension is **Red Hat Device Edge** with **MicroShift**.
+
+[**Red Hat Device Edge**](https://www.redhat.com/en/technologies/device-edge) combines **Red Hat Enterprise Linux** with **MicroShift**, a minimal OpenShift-compatible Kubernetes runtime optimized for edge hardware with as little as 2 CPU cores and 2 GiB RAM. MicroShift exposes the same Kubernetes API surface as OpenShift, so ACM can manage it as a `ManagedCluster` alongside full OpenShift spokes.
+
+In a Hybrid Mesh Platform extension:
+
+| Layer | Current spokes | Far-edge extension |
+| --- | --- | --- |
+| Runtime | OpenShift 4.17+ (3 workers) | MicroShift on RHEL (single node) |
+| Management | ACM ManagedCluster | ACM ManagedCluster (same placement rules) |
+| Workloads | Industrial Edge — Kafka, Camel K, ML | Lightweight sensors, MQTT bridge, edge inference |
+| Connectivity | Skupper VAN (full) | Skupper VAN (single-pod footprint) |
+| GitOps | clusterGroup PULL via ACM | clusterGroup PULL via ACM |
+
+This extension path is not deployed in the current sandbox tier implementation, but the ACM placement model and Skupper VAN are designed to accommodate MicroShift spokes with no hub-side changes.
 
 ---
 
@@ -142,6 +148,8 @@ This platform extends that idea with **Industrial Edge** workloads, **Service Me
 ## Official documentation
 
 - [ACM Architecture](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/about/welcome-to-red-hat-advanced-cluster-management-for-kubernetes)
+- [Red Hat Device Edge](https://www.redhat.com/en/technologies/device-edge)
+- [MicroShift documentation](https://docs.redhat.com/en/documentation/red_hat_build_of_microshift)
 - [Multicloud GitOps Pattern](https://validatedpatterns.io/patterns/multicloud-gitops)
 - [Red Hat Service Interconnect](https://docs.redhat.com/en/documentation/red_hat_service_interconnect/2.1)
 - [Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/)

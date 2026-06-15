@@ -81,6 +81,22 @@ Disables heavy subscriptions while preserving GitOps bootstrap and ApplicationSe
 | OpenShift version | Validate on 4.20+; align operator channels per release |
 | Developer Hub | Extend software templates under `docs/assets/backstage/software-templates/` |
 
+## Red Hat Device Edge with MicroShift
+
+The current spokes require full OpenShift clusters (3 workers, cloud or bare-metal). For physically constrained factory locations — industrial controllers, single-board computers, ruggedized appliances — the pattern extends to **Red Hat Device Edge** with **MicroShift**.
+
+[**Red Hat Device Edge**](https://www.redhat.com/en/technologies/device-edge) bundles RHEL with **MicroShift**, a minimal OpenShift-compatible runtime that runs on hardware with as little as 2 CPU cores and 2 GiB RAM. Because MicroShift exposes the Kubernetes API, ACM manages it as a `ManagedCluster` with the same placement rules used for full OpenShift spokes — no hub changes required.
+
+### Extending the pattern for MicroShift spokes
+
+1. Provision a RHEL device with MicroShift installed (`rpm-ostree install microshift`).
+2. Import the device into ACM as a `ManagedCluster` with labels `region=far-edge`.
+3. Add a new folder (for example `far-edge/`) in the pattern repo with a lightweight values profile — omit Kafka 3-replica and DevSpaces; keep MQTT bridge, Camel K lite, and Skupper.
+4. Register a Skupper `AccessToken` on the device (same outbound-only mTLS as cloud spokes).
+5. Hub Grafana aggregates metrics from the far-edge site the same way it does from east/west.
+
+This extension is documented as a future topology in [Architecture — Red Hat Device Edge extension path](architecture#red-hat-device-edge-extension-path). It is not deployed in the current sandbox tier.
+
 ## Related patterns
 
 - [Multicloud GitOps](/patterns/multicloud-gitops) — fleet GitOps and ACM placement patterns

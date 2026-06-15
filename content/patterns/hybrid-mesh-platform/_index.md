@@ -2,7 +2,7 @@
 title: Hybrid Mesh Platform
 date: 2026-06-15
 tier: sandbox
-summary: Hub-spoke multi-cluster GitOps on OpenShift with ACM, ambient Service Mesh, Skupper, Industrial Edge, and centralized observability.
+summary: Hub-spoke multi-cluster GitOps on OpenShift combining Service Mesh, AI-assisted operations (OpenShift Lightspeed + MCP), Industrial Edge, and a Red Hat Device Edge extension path via MicroShift.
 rh_products:
   - Red Hat OpenShift Container Platform
   - Red Hat Advanced Cluster Management
@@ -54,7 +54,7 @@ Operating a multi-cluster OpenShift fleet creates three compounding challenges t
 | **Fleet governance drift** | Each cluster managed independently; configurations diverge over time | Single `main` branch drives hub + east + west via ACM + dual GitOps (PUSH ApplicationSet + PULL clustergroup) |
 | **AI-assisted operations** | Operators react to incidents by parsing dashboards and YAML | OpenShift Lightspeed + MCP Gateway let operators act on platform state in natural language, reducing MTTA on infrastructure incidents |
 
-**Goal:** This pattern combines Red Hat Service Mesh for secure inter-service connectivity with OpenShift AI (MaaS + vLLM) and OpenShift Lightspeed + MCP for natural-language platform operations — giving teams centralized GitOps governance, secure cross-cluster communication, and AI-assisted incident response in a single deployable reference architecture.
+**Goal:** This pattern combines Red Hat Service Mesh for secure inter-service connectivity with OpenShift AI (MaaS + vLLM) and OpenShift Lightspeed + MCP for natural-language platform operations — giving teams centralized GitOps governance, secure cross-cluster communication, and AI-assisted incident response in a single deployable reference architecture. For physically constrained factory devices, the architecture extends naturally to **Red Hat Device Edge** with **MicroShift**, managed by the same ACM placement rules without hub-side changes.
 
 > **Your journey:** Install via the Validated Patterns framework (`./pattern.sh install`), connect three OpenShift clusters (hub + east + west) through ACM `managedClusterGroups`, and observe IoT sensor data across Grafana and Developer Hub. The pages below follow one continuous story — concept, install, operate, scaffold.
 
