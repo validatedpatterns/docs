@@ -8,14 +8,79 @@ aliases: /hybrid-mesh-platform/observability/
 
 Observability ties together **metrics**, **logs**, **traces**, and **mesh visualization** so operators can compare east and west Industrial Edge clusters from the hub. It sits mid-flight between **[architecture](architecture)** (why telemetry crosses Skupper) and **[Industrial Edge](industrial-edge)** (what applications emit). **Screenshots** below open full-screen when clicked — useful for reading dense Grafana legends.
 
-![Grafana – East-West Traffic Dashboard](/images/hybrid-mesh-platform/product-grafana-observability.png)
-*Grafana East-West Traffic & Service Mesh dashboard with multi-cluster datasources.*
-![Grafana – Multi-Cluster Istio Metrics](/images/hybrid-mesh-platform/product-grafana-observability-2.png)
-*Multi-Cluster Istio Metrics — L4 ztunnel throughput and cross-cluster error rates via Service Interconnect.*
-![Grafana – Fleet KPI panels](/images/hybrid-mesh-platform/product-grafana-observability-3.png)
-*Additional Grafana fleet KPI panels — Kafka and mesh signals aggregated across clusters.*
-![Grafana – Extended dashboards](/images/hybrid-mesh-platform/product-grafana-observability-4.png)
-*Extended observability dashboard views — drill-down metrics aligned with hub Grafana dashboards.*
+[![Observability overview](/images/hybrid-mesh-platform/workshop-observability.png)](/images/hybrid-mesh-platform/workshop-observability.png)
+
+_Observability stack overview: Grafana for multi-cluster dashboards, Kiali for mesh topology, Kafka Console for streaming health, and OpenTelemetry for distributed traces._
+
+## Grafana — multi-cluster dashboards
+
+[![Grafana multi-cluster dashboards](/images/hybrid-mesh-platform/product-grafana-observability.png)](/images/hybrid-mesh-platform/product-grafana-observability.png)
+
+_Hub Grafana landing — fleet dashboards organized by cluster and workload type._
+
+[![Grafana — east-west traffic and Service Mesh](/images/hybrid-mesh-platform/product-grafana-observability-2.png)](/images/hybrid-mesh-platform/product-grafana-observability-2.png)
+
+_East-west traffic: broker state gauges, leader distribution, and API request bargauges per cluster._
+
+[![Grafana — multi-cluster Istio metrics (ztunnel L4)](/images/hybrid-mesh-platform/product-grafana-observability-3.png)](/images/hybrid-mesh-platform/product-grafana-observability-3.png)
+
+_Multi-cluster Istio: ztunnel TCP connections, bytes sent/received, error rate per cluster._
+
+[![Grafana — extended fleet KPI panels](/images/hybrid-mesh-platform/product-grafana-observability-4.png)](/images/hybrid-mesh-platform/product-grafana-observability-4.png)
+
+_Fleet KPI: combined Kafka + mesh health across all clusters._
+
+## Kiali — mesh topology visualization
+
+[![Kiali service mesh](/images/hybrid-mesh-platform/product-kiali-service-mesh.png)](/images/hybrid-mesh-platform/product-kiali-service-mesh.png)
+
+_Kiali traffic graph: L4 ztunnel connections between hub gateway and spoke services._
+
+[![Kiali — service mesh traffic graph](/images/hybrid-mesh-platform/product-kiali-service-mesh-2.png)](/images/hybrid-mesh-platform/product-kiali-service-mesh-2.png)
+
+_Kiali detail view: per-service traffic rates, error percentages, and response time distributions._
+
+## Kafka Console — streaming health
+
+[![Kafka Console](/images/hybrid-mesh-platform/product-kafka-console-amq-streams.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams.png)
+
+_Kafka Console landing: five registered clusters (hub + east/west × dev/factory)._
+
+[![Kafka Console — multi-cluster clusters and topics](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-2.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-2.png)
+
+_Cluster detail: topics, partitions, and replicas per spoke Kafka cluster over Skupper._
+
+[![Kafka Console — broker and topic detail over Skupper](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-3.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-3.png)
+
+_Broker and topic metrics: producer/consumer rates, lag, and partition leadership distribution._
+
+## AI-assisted operations (Kairos)
+
+Kairos integrates AI-driven operational intelligence through event correlation, anomaly detection, and human-in-the-loop workflows:
+
+[![Kairos — worker scaling and SmartScalingPolicy](/images/hybrid-mesh-platform/workshop-kairos-scaling.png)](/images/hybrid-mesh-platform/workshop-kairos-scaling.png)
+
+_Kairos SmartScalingPolicy: AI-driven recommendations for scaling Industrial Edge sensor workers based on Kafka lag and CPU pressure._
+
+[![Kairos — event correlation and alerting](/images/hybrid-mesh-platform/kairos-events.png)](/images/hybrid-mesh-platform/kairos-events.png)
+
+_Event correlation: Kairos aggregates Kubernetes events, Prometheus alerts, and mesh signals to surface actionable incidents._
+
+[![Kairos — historical analysis and trends](/images/hybrid-mesh-platform/kairos-history.png)](/images/hybrid-mesh-platform/kairos-history.png)
+
+_Historical analysis: trend detection across factory shifts, identifying degradation patterns before hard failures._
+
+[![Kairos — human-in-the-loop decision workflows](/images/hybrid-mesh-platform/kairos-human-in-the-loop.png)](/images/hybrid-mesh-platform/kairos-human-in-the-loop.png)
+
+_Human-in-the-loop: Kairos proposes actions (scale, restart, reroute) that require operator approval before execution._
+
+[![Kairos — AI agents for autonomous remediation](/images/hybrid-mesh-platform/kairos-ia-agents.png)](/images/hybrid-mesh-platform/kairos-ia-agents.png)
+
+_AI agents: autonomous remediation for pre-approved scenarios (auto-scale on Kafka consumer lag threshold)._
+
+[![Kairos — observability-driven insights](/images/hybrid-mesh-platform/kairos-observability.png)](/images/hybrid-mesh-platform/kairos-observability.png)
+
+_Observability-driven insights: Kairos correlates Grafana metrics with mesh topology to pinpoint root cause across clusters._
 ## Observability architecture
 
 ```mermaid

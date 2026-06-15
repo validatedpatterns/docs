@@ -19,6 +19,26 @@ Weighted rules enable **canary** or **active-active** distributions between serv
 
 ## Cross-cluster routing architecture
 
+[![ACS and Connectivity Link — security and gateway policy](/images/hybrid-mesh-platform/workshop-acs-kuadrant.png)](/images/hybrid-mesh-platform/workshop-acs-kuadrant.png)
+
+_ACS and Connectivity Link: security policies and API gateway management across hub and spokes._
+
+[![Gateway API policy topology — hub HTTPRoute and route rules](/images/hybrid-mesh-platform/connectivity-link-hub.png)](/images/hybrid-mesh-platform/connectivity-link-hub.png)
+
+_OpenShift Console — Gateway API resources on the hub: Gateway, HTTPRoute rules, and backend service references._
+
+[![Hub cluster Gateway API and HTTPRoute](/images/hybrid-mesh-platform/connectivity-link-hub-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-hub-gateway.png)
+
+_Hub Gateway — HTTPRoute with weighted backends to east and west spoke ExternalName services._
+
+[![Spoke cluster Gateway API and backends](/images/hybrid-mesh-platform/connectivity-link-spoke.png)](/images/hybrid-mesh-platform/connectivity-link-spoke.png)
+
+_Spoke cluster — Gateway API and backend services registered in the mesh._
+
+[![Spoke gateway aggregating Industrial Edge services](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)
+
+_Spoke-gateway HTTPRoute: routes `/api`, `/dashboard`, and catch-all paths to Industrial Edge services._
+
 The hub gateway routes traffic to spoke cluster OpenShift Routes via `ExternalName` services:
 
 ```mermaid

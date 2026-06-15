@@ -6,7 +6,7 @@ aliases: /hybrid-mesh-platform/demo-scenario/
 
 # Demo scenario — Hybrid Mesh AI Workshop Showroom
 
-This page describes what the **Hybrid Mesh AI Workshop Showroom** demonstrates on a live hub-spoke fleet. It is explanatory content for architects and facilitators — not a hands-on lab guide. For step-by-step modules and registration, use the external workshop resources linked below.
+> **Note:** This page describes what the workshop showroom demonstrates and which product surfaces it exercises. It is explanatory content for architects and facilitators — not a hands-on lab guide. For step-by-step lab modules, user registration, and the embedded terminal, see the [showroom-hybrid-mesh-ai](https://github.com/maximilianoPizarro/showroom-hybrid-mesh-ai) repository and the deployed showroom environment.
 
 ## What the showroom shows
 
