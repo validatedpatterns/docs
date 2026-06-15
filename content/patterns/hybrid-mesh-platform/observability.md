@@ -162,6 +162,36 @@ Use **`stable-3.2`** for the Service Mesh operator. Tech Preview (`candidates` /
 
 **Prerequisite for L4 mesh metrics:** `IstioCNI` CR must include `profile: ambient` (not namespace-only). Without it, ztunnel never becomes Ready and `istio_tcp_*` are absent. See [Service Mesh 3 — troubleshooting](products/service-mesh.md#troubleshooting-ztunnel-ztunnelnothealthy).
 
+## Skupper Network Observer
+
+**Skupper Network Observer** provides a real-time web UI of the Virtual Application Network — sites, connected services, process topology, and traffic metrics — deployed on the hub via `charts/all/skupper-network-observer`.
+
+[![Skupper Network Observer — VAN overview](/images/hybrid-mesh-platform/service-interconnect-console.png)](/images/hybrid-mesh-platform/service-interconnect-console.png)
+
+_Skupper Network Observer main view: three sites (hub, east, west) connected in the VAN, with site status and listener/connector counts._
+
+[![Skupper Network Observer — service topology](/images/hybrid-mesh-platform/service-interconnect-console-topology.png)](/images/hybrid-mesh-platform/service-interconnect-console-topology.png)
+
+_Topology view: services exposed via Skupper across hub and spoke sites — Kafka brokers, Prometheus auth proxies, and Industrial Edge gateways._
+
+[![Skupper Network Observer — topology with processes](/images/hybrid-mesh-platform/service-interconnect-console-topology-process.png)](/images/hybrid-mesh-platform/service-interconnect-console-topology-process.png)
+
+_Topology with processes overlay: shows pod-level endpoints backing each Skupper connector and listener._
+
+[![Skupper Network Observer — process detail](/images/hybrid-mesh-platform/service-interconnect-console-process.png)](/images/hybrid-mesh-platform/service-interconnect-console-process.png)
+
+_Process view: per-process byte throughput and connection counts across the VAN. Useful to verify that Grafana datasources (`prometheus-east`, `prometheus-west`) are actively receiving metrics._
+
+[![Skupper Network Observer — traffic metrics](/images/hybrid-mesh-platform/service-interconnect-console-metrics.png)](/images/hybrid-mesh-platform/service-interconnect-console-metrics.png)
+
+_Metrics view: application-level traffic rates per service. Validate that Kafka Console is reaching spoke bootstrap services and that Industrial Edge gateway traffic flows through the VAN._
+
+Access the Network Observer at `https://skupper-network-observer-service-interconnect.apps.<hub-domain>/`. Verify the route exists after `service-interconnect` Argo CD app syncs:
+
+```bash
+oc get route -n service-interconnect skupper-network-observer
+```
+
 ## Kiali and OSSM Console plugin
 
 Each cluster (hub and spokes) runs **Kiali** with an **OSSMConsole** CR. The dynamic plugin adds **Service Mesh** to the OpenShift Console.
