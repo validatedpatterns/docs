@@ -91,7 +91,7 @@ Use cluster names **`hub`**, **`east`**, and **`west`**. Namespace **`stackrox`*
 | Operator / feature | Requirement |
 | --- | --- |
 | **OpenShift AI (RHOAI)** | Required for MaaS / vLLM inference. Needs Node Feature Discovery and GPU operator **only** if you enable GPU-accelerated models. CPU-based inference (Qwen3 / Granite on CPU) works without GPU. |
-| **GPU (optional)** | NVIDIA or AMD GPU node for accelerated vLLM. Without GPU, enable `modelServing.cpuOnly: true` in `values-hub.yaml`. |
+| **GPU (optional)** | NVIDIA or AMD GPU node for accelerated vLLM. Without GPU, enable `modelServing.cpuOnly: true` in `charts/region/hub/values.yaml`. |
 | **OpenShift Lightspeed** | Requires `OLSConfig` CRD and an OpenAI-compatible endpoint (MaaS on hub or external). |
 | **Vault** | HashiCorp Vault is deployed by the pattern operator as the secrets backend. |
 
@@ -127,16 +127,19 @@ See [Cluster sizing](cluster-sizing) for metadata-driven minimum and recommended
 ## Repository layout
 
 ```
-charts/all/           → component Helm charts (hub and spoke apps)
-values-global.yaml    → pattern name and shared Git URL
-values-hub.yaml       → hub clusterGroup (namespaces, subscriptions, applications, managedClusterGroups)
-values-east.yaml      → east spoke clusterGroup
-values-west.yaml      → west spoke clusterGroup
-values-secret.yaml    → secrets (from values-secret.yaml.template; Vault + ESO)
-pattern.sh            → Validated Patterns install wrapper
+charts/all/                   → shared component Helm charts (50+ charts)
+charts/region/hub/            → hub bootstrap + hub clusterGroup values
+charts/region/east/           → east spoke bootstrap + clusterGroup values
+charts/region/west/           → west spoke bootstrap + clusterGroup values
+values-global.yaml            → pattern name and shared Git URL
+values.yaml                   → root chart values (clustergroup subscription)
+values-secret.yaml            → secrets (from values-secret.yaml.template; Vault + ESO)
+pattern.sh                    → Validated Patterns install wrapper
 ```
 
-Spokes **pull** their `clusterGroup` from Git via ACM labels (`clusterGroup=east` / `clusterGroup=west`) — no hub-push ApplicationSet to spoke Argo CD.
+The pattern uses a **dual GitOps strategy**:
+- **PUSH** — hub `ApplicationSet` (`fleet-spoke-push`) deploys `charts/all/spoke-meta-push` to each spoke cluster via ACM placement
+- **PULL** — each spoke's local Argo CD syncs its own `charts/region/east/` or `charts/region/west/` from Git autonomously
 
 ## Step 1: Fork the repository
 
@@ -186,7 +189,7 @@ From the hub cluster (logged in with `oc`):
 ./pattern.sh install
 ```
 
-The Pattern operator (or utility container) deploys the root `clustergroup` Application on the hub. ACM `managedClusterGroups` in `values-hub.yaml` register east and west spokes once they join the fleet.
+The Pattern operator (or utility container) deploys the root `clustergroup` Application on the hub. ACM `managedClusterGroups` in `charts/region/hub/values.yaml` register east and west spokes once they join the fleet.
 
 ## Step 4: Import managed clusters in ACM
 
@@ -271,12 +274,13 @@ Associates Argo CD (`openshift-gitops`) with clusters chosen by placement — br
 
 ### ApplicationSet with clusterDecisionResource
 
-For each cluster in the PlacementDecision, the ApplicationSet creates an Application that:
+For each cluster in the PlacementDecision, the hub ApplicationSet (`fleet-spoke-push`) creates an Application that:
 
-- Uses repository path `east/` or `west/` (from `{{name}}`)
+- Uses repository path `charts/all/spoke-meta-push` (the PUSH meta chart) deployed to the spoke cluster
+- The spoke's local Argo CD then pulls its own `charts/region/east/` or `charts/region/west/` from Git autonomously
 - Deploys to remote cluster `{{name}}` via hub-stored cluster credentials
 
-Adding a spoke with correct labels and a new folder (for example `south/`) automatically generates a new Application when the Placement matches.
+Adding a spoke with correct labels and a new `charts/region/south/` folder automatically generates a new Application when the Placement matches.
 
 ### Troubleshooting: no spoke Applications
 
@@ -288,7 +292,7 @@ Adding a spoke with correct labels and a new folder (for example `south/`) autom
 | PlacementDecision | Decisions list `east`, `west` |
 | GitOpsCluster | `hub-spoke-gitops` reconciled; clusters visible in Argo CD UI |
 | RBAC | Role `applicationset-placementdecisions` for ApplicationSet controller |
-| Spoke charts | `east/` and `west/` valid Helm charts with `Chart.yaml` |
+| Spoke charts | `charts/region/east/` and `charts/region/west/` valid Helm charts with `Chart.yaml` |
 
 ## Step 7: Kiali multi-cluster (hub)
 

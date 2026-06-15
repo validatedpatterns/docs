@@ -15,44 +15,46 @@ All configuration lives on branch **`main`**. Cluster-specific settings use dire
 ### Repository layout
 
 ```
-.              → Hub cluster (root Helm chart)
-east/          → East spoke cluster (self-contained Helm chart)
-west/          → West spoke cluster (self-contained Helm chart)
-components/    → Shared component charts referenced by all clusters
+charts/region/hub/   → Hub bootstrap + hub clusterGroup values
+charts/region/east/  → East spoke bootstrap + clusterGroup values
+charts/region/west/  → West spoke bootstrap + clusterGroup values
+charts/all/          → Shared component charts (50+ charts)
+values-global.yaml   → Pattern name and shared Git URL
+values.yaml          → Root chart values (clustergroup subscription)
 ```
 
-Each directory (`east/`, `west/`) is an independent Helm chart with its own `Chart.yaml`, `values.yaml`, and `templates/`. The hub uses the repository root (`.`) as its chart.
+Each `charts/region/<role>/` directory is an independent Helm chart with its own `Chart.yaml` and `values.yaml`. Component charts under `charts/all/` are referenced by hub and spoke clusterGroup Applications.
 
 ### How values and ApplicationSet interact
 
 | Path / File | Purpose |
 | --- | --- |
-| `values.yaml` | Hub — operators, observability, gateway, hub-only components |
-| `east/values.yaml` | East spoke — subscriptions, domains, spoke Applications |
-| `west/values.yaml` | West spoke — subscriptions, domains, spoke Applications |
-| `values-lite.yaml` | Minimal hub profile for demos (fewer operators) |
-| `components/` | Shared charts referenced by hub and spoke Application CRs |
+| `values-global.yaml` | Pattern name and shared Git URL |
+| `charts/region/hub/values.yaml` | Hub clusterGroup — operators, observability, gateway, managedClusterGroups |
+| `charts/region/east/values.yaml` | East spoke clusterGroup — subscriptions, domains, Applications |
+| `charts/region/west/values.yaml` | West spoke clusterGroup — subscriptions, domains, Applications |
+| `charts/all/` | Shared component charts referenced by all clusters |
 
-The ACM ApplicationSet (`components/acm-hub-spoke`) uses a **`clusterDecisionResource`** generator:
+The pattern uses **dual GitOps**. The hub ApplicationSet (`charts/all/acm-hub-spoke`) uses a `clusterDecisionResource` generator for the PUSH leg:
 
 ```yaml
-# Conceptual — see pattern repo for full template
+# Hub ApplicationSet (fleet-spoke-push) — actual path in the pattern repo
 source:
-  path: '{{name}}'          # east/ or west/
+  path: charts/all/spoke-meta-push   # PUSH: meta chart deploys to spoke cluster
 destination:
-  name: '{{name}}'          # remote cluster via Argo CD secret
+  name: '{{name}}'                   # east or west, via hub Argo CD cluster secret
 ```
 
-Each spoke chart generates **child Application CRs** that the spoke's own Argo CD syncs locally — the hub does not apply spoke workloads directly.
+The spoke's local Argo CD then autonomously **PULL**s from `charts/region/east/` or `charts/region/west/` — the hub does not apply spoke workloads directly.
 
 ## Adding a new spoke cluster
 
 1. Provision OpenShift and import the cluster into ACM.
 2. Label `ManagedCluster`: `region=<name>`, `cluster.open-cluster-management.io/clusterset=global`.
-3. Copy `east/` to a new folder (for example `south/`) and update `clusterName`, `deployer.domain`, `clusters.hub.domain`.
-4. Add `clusters.south.domain` (or equivalent) to hub `values.yaml`.
-5. Register the spoke as an Argo CD cluster secret on the hub (name must match folder name).
-6. Validate: `helm lint south/` and `helm template south/`.
+3. Copy `charts/region/east/` to `charts/region/south/` and update `clusterName`, `deployer.domain`, `clusters.hub.domain` inside the new chart.
+4. Add `clusters.south.domain` (or equivalent) to `charts/region/hub/values.yaml`.
+5. Register the spoke as an Argo CD cluster secret on the hub (name must match the folder name: `south`).
+6. Validate: `helm lint charts/region/south/` and `helm template charts/region/south/`.
 7. Confirm Placement selects the cluster and ApplicationSet creates `south-spoke-components`.
 
 ## Minimal profiles
@@ -69,7 +71,7 @@ Disables heavy subscriptions while preserving GitOps bootstrap and ApplicationSe
 
 | Area | Customization |
 | --- | --- |
-| Regions | Add spokes beyond east/west — new folder + ACM labels + hub gateway weights |
+| Regions | Add spokes beyond east/west — new `charts/region/<name>/` folder + ACM labels + hub gateway weights |
 | Gateway weights | `gateway.weights.east` / `west` for canary or active-active front traffic |
 | API affinity | `gateway.apiWeights` when Socket.IO can span spokes |
 | Circuit breaking | Tune `gateway.circuitBreaking` per environment (see [Hub Gateway](hub-gateway)) |
@@ -91,7 +93,7 @@ The current spokes require full OpenShift clusters (3 workers, cloud or bare-met
 
 1. Provision a RHEL device with MicroShift installed (`rpm-ostree install microshift`).
 2. Import the device into ACM as a `ManagedCluster` with labels `region=far-edge`.
-3. Add a new folder (for example `far-edge/`) in the pattern repo with a lightweight values profile — omit Kafka 3-replica and DevSpaces; keep MQTT bridge, Camel K lite, and Skupper.
+3. Add `charts/region/far-edge/` in the pattern repo with a lightweight values profile — omit Kafka 3-replica and DevSpaces; keep MQTT bridge, Camel K lite, and Skupper.
 4. Register a Skupper `AccessToken` on the device (same outbound-only mTLS as cloud spokes).
 5. Hub Grafana aggregates metrics from the far-edge site the same way it does from east/west.
 
