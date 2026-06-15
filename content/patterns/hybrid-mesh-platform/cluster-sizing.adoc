@@ -10,6 +10,11 @@ aliases: /hybrid-mesh-platform/cluster-sizing/
 include::modules/comm-attributes.adoc[]
 include::modules/hybrid-mesh-platform/metadata-hybrid-mesh-platform.adoc[]
 
+[NOTE]
+====
+The values in this page are generated from link:https://github.com/maximilianoPizarro/hybrid-mesh-platform/blob/main/pattern-metadata.yaml[pattern-metadata.yaml] in the implementation repository using `utils/flatten_yaml.rb`. To verify consistency, compare `modules/hybrid-mesh-platform/metadata-hybrid-mesh-platform.adoc` in this PR with the source file.
+====
+
 include::modules/cluster-sizing-template.adoc[]
 
 [id="hybrid-mesh-platform-additional-requirements"]
@@ -17,6 +22,6 @@ include::modules/cluster-sizing-template.adoc[]
 
 The Hybrid Mesh Platform pattern deploys a **hub** cluster plus **two spoke** clusters (east and west). Plan for three OpenShift clusters at the recommended sizes above.
 
-Optional features such as OpenShift AI workbenches and MaaS-backed inference require additional hub capacity. Workshop Showroom content is maintained in a [separate repository](https://github.com/maximilianoPizarro/showroom-hybrid-mesh-ai) and does not change minimum cluster sizing for the core pattern.
+Optional features such as OpenShift AI workbenches and MaaS-backed inference require additional hub capacity. Workshop Showroom content is maintained in a link:https://github.com/maximilianoPizarro/showroom-hybrid-mesh-ai[separate repository] and does not change minimum cluster sizing for the core pattern.
 
-For RHDP catalog provisioning details and validation steps, see the [pattern documentation site](https://maximilianopizarro.github.io/hybrid-mesh-platform/).
+For RHDP catalog provisioning details and validation steps, see the link:https://maximilianopizarro.github.io/hybrid-mesh-platform/[pattern documentation site].
