@@ -21,10 +21,37 @@ Spokes remain the execution venues for application namespaces, data-plane compon
 | **Observability** | Aggregated metrics, logging, and tracing strategies start at the hub and uniform dashboards span spokes. |
 | **GitOps consistency** | A single Git revision (`main`) with region paths drives spoke drift correction. |
 
+## Multi-cluster topology: three required clusters
+
+This pattern requires **three OpenShift clusters** — not a single-cluster deployment. The topology follows the Validated Patterns hub-spoke model:
+
+```
+              ┌──────────────────────────────────────┐
+              │  Hub cluster (OpenShift on AWS)       │
+              │  ACM · Argo CD · Developer Hub · RHOAI│
+              │  ACS Central · Grafana · Skupper ·    │
+              │  Kuadrant · OpenShift Lightspeed · MCP│
+              └──────┬─────────────────┬──────────────┘
+          ACM push   │                 │  ACM push
+           GitOps    │                 │  GitOps
+              ┌──────▼───────┐  ┌──────▼───────┐
+              │ East spoke   │  │ West spoke   │
+              │ Industrial   │  │ Industrial   │
+              │ Edge · Kafka │  │ Edge · Kafka │
+              │ Camel K · ML │  │ MirrorMaker  │
+              │ DevSpaces    │  │ Skupper      │
+              └──────────────┘  └──────────────┘
+       ◄────────── Skupper VAN (mTLS, outbound-only) ──────────►
+```
+
+Hub and spokes communicate over a **Skupper Virtual Application Network** — outbound-only mTLS tunnels, no inbound firewall rule changes needed. The hub's `ApplicationSet` pushes spoke charts; each spoke's local Argo CD pulls its `clusterGroup` from Git autonomously.
+
 ## Platform architecture overview
 
 ![Hub-spoke platform — Git paths, ApplicationSet, Skupper VAN, and per-cluster components](/images/hybrid-mesh-platform/arch-hub-spoke-flow.png)
+
 *Single `main` branch: hub at `charts/region/hub`, spokes at `charts/region/east` and `charts/region/west`, shared charts under `charts/all/`.*
+
 ## Follow the request — one temperature reading end to end
 
 When a machine sensor on the **east** spoke publishes a temperature sample, the path is: **MQTT** (`messaging` broker) → **Camel K** (`mqtt-to-kafka` integration) → **Kafka** (`dev-cluster` topic) → optional **ML scoring** (KServe) → **line-dashboard** WebSocket consumer. In parallel, **Thanos Querier** on east scrapes Istio and Kafka metrics; a **Skupper Connector** (`prometheus-east`) tunnels HTTP to the hub, where **Grafana** datasource `prometheus-east` plots the series. The **Hub Gateway** can route browser traffic to the east line-dashboard via **spoke-gateway** and Skupper listener `ie-gateway-east`. Developer Hub **Topology** shows the same pods when the catalog entity carries `backstage.io/kubernetes-cluster: east` and spoke API tokens are synced.

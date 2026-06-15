@@ -44,7 +44,19 @@ contributor:
 
 **Maintainer:** Maximiliano Pizarro, Specialist Solution Architect at Red Hat
 
-> **Your journey:** Install via the Validated Patterns framework (`./pattern.sh install`), connect three OpenShift clusters (hub + east + west) through ACM managedClusterGroups, and observe IoT sensor data across Grafana and Developer Hub. The pages below follow one continuous story — concept, install, operate, scaffold — so you can read straight through or jump to any chapter.
+## The problem this pattern solves
+
+Operating a multi-cluster OpenShift fleet creates three compounding challenges that a Service Mesh alone cannot address:
+
+| Challenge | Without this pattern | With Hybrid Mesh Platform |
+| --- | --- | --- |
+| **Cross-cluster connectivity** | Site-to-site VPNs, manual firewall rules per pair of clusters | Skupper Virtual Application Network — outbound-only mTLS, no inbound firewall changes |
+| **Fleet governance drift** | Each cluster managed independently; configurations diverge over time | Single `main` branch drives hub + east + west via ACM + dual GitOps (PUSH ApplicationSet + PULL clustergroup) |
+| **AI-assisted operations** | Operators react to incidents by parsing dashboards and YAML | OpenShift Lightspeed + MCP Gateway let operators act on platform state in natural language, reducing MTTA on infrastructure incidents |
+
+**Goal:** This pattern combines Red Hat Service Mesh for secure inter-service connectivity with OpenShift AI (MaaS + vLLM) and OpenShift Lightspeed + MCP for natural-language platform operations — giving teams centralized GitOps governance, secure cross-cluster communication, and AI-assisted incident response in a single deployable reference architecture.
+
+> **Your journey:** Install via the Validated Patterns framework (`./pattern.sh install`), connect three OpenShift clusters (hub + east + west) through ACM `managedClusterGroups`, and observe IoT sensor data across Grafana and Developer Hub. The pages below follow one continuous story — concept, install, operate, scaffold.
 
 ## What is Hybrid Mesh Platform?
 
@@ -55,7 +67,9 @@ contributor:
 - **OpenShift Service Mesh 3** in **ambient mode** provides ztunnel-based L4 encryption and optional waypoint L7 policy across all clusters.
 - **Connectivity Link (Kuadrant)** layers API-aware ingress policies — rate limiting, auth, DNS/TLS automation — on top of Gateway API.
 
-**Tested on:** Red Hat OpenShift Container Platform **4.17+** on **AWS** (hub + east spoke + west spoke). See [Cluster sizing](cluster-sizing) for recommended instance types.
+**Tested on:** Red Hat OpenShift Container Platform **4.17+** on **AWS** (hub + east spoke + west spoke, 3 workers each).
+
+**Multi-cluster topology:** this is a **hub + two spokes** pattern (not single-cluster). All three clusters are required; standalone single-cluster deployment is not supported by default. See [Cluster sizing](cluster-sizing) for minimum instance types per role.
 
 **Implementation repo:** [hybrid-mesh-platform](https://github.com/maximilianoPizarro/hybrid-mesh-platform) — Validated Patterns layout (`clustergroup`, Vault + External Secrets, ACM managedClusterGroups).
 
