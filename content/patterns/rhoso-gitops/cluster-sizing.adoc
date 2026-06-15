@@ -1,0 +1,33 @@
+---
+title: Cluster sizing
+weight: 20
+aliases: /rhoso-gitops/cluster-sizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+include::modules/rhoso-gitops/metadata-rhoso-gitops.adoc[]
+
+include::modules/cluster-sizing-template.adoc[]
+
+[id="rhoso-gitops-dataplane-hosts"]
+== Data plane host requirements
+
+The hub cluster sizing tables above cover the {rh-ocp} nodes that host the
+{rh-rhoso-short} control plane. A full {rh-rhoso-short} deployment also
+requires separate {rhel-short} hosts for the data plane (compute nodes running
+dataplane elements).
+
+Plan additional {rhel-short} capacity beyond the OpenShift worker sizing in
+`pattern-metadata.yaml`. Operator stages, sync order, and version pins are
+documented in the pattern repository
+link:https://github.com/cjeanner/pattern-rhoso-gitops/blob/main/VERSIONS.md[VERSIONS.md]
+file.
+
+[id="next-steps_rhoso-gitops-cluster-sizing"]
+== Next steps
+
+* link:../getting-started/[Deploy the pattern]
+* link:../configuration/[Configure upstream pins and overrides]

@@ -1,0 +1,74 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="about-rhoso-gitops-pattern"]
+= About the {rhoso-gitops-pattern}
+
+Deploying {rh-rhoso} spans operators, networking, and control-plane and data-plane
+resources. Teams that rely on imperative scripts or manual cluster changes face
+slow rollouts, configuration drift, and weak audit trails when the stack must be
+upgraded or reproduced.
+
+The {rhoso-gitops-pattern} addresses that by driving {rh-rhoso-short} from public
+Git through Argo CD: manifests stay declarative and version-controlled, and the
+cluster is reconciled to match what is declared in the repository.
+
+[id="rhoso-gitops-pattern-goals"]
+== Pattern goals
+
+The {rhoso-gitops-pattern} aims to:
+
+* Install the *rhoso-gitops* meta-chart through the Validated Patterns
+  clustergroup and {gitops-title} operator
+* Create child Argo CD Applications that sync {rh-rhoso-short} stages from upstream
+  link:https://github.com/openstack-k8s-operators/gitops[openstack-k8s-operators/gitops]
+  (`example/*` Kustomize overlays)
+* Target one {rh-ocp} cluster only; no managed-cluster spokes are in scope
+* Keep day-two changes reviewable in Git instead of one-off `oc` or Ansible runs
+
+[id="rhoso-gitops-red-hat-technologies"]
+== Red Hat technologies
+
+* {rh-ocp}
+* {gitops-title}
+* {rh-rhoso}
+
+[id="rhoso-gitops-cluster-scope"]
+== Cluster scope
+
+Validated Patterns distinguish between the *initial cluster* (where the pattern
+is installed) and *managed clusters* (additional {rh-ocp} clusters or hosts
+managed from that hub, for example through {rh-rhacm}).
+
+The {rhoso-gitops-pattern} is *single-cluster only*. It does not provide
+multi-cluster support, spoke provisioning, or hub-to-spoke {gitops-shortname}
+fan-out.
+
+.Cluster scope
+[cols="1,1,3",options="header"]
+|===
+| Scope | Supported | What applies
+
+| Initial cluster
+| Yes
+| Validated Patterns clustergroup (`values-standalone.yaml`), *rhoso-gitops*
+  meta-chart, and child {rh-rhoso-short} Applications in `openshift-gitops`
+
+| Managed clusters
+| None
+| Not in scope (`spoke_support: false` in `pattern-metadata.yaml`). No spoke
+  sizing, policies, {rh-rhacm} placement, or remote Argo CD instances are
+  defined or deployed
+|===
+
+Sizing guidance under `requirements.hub` in the pattern repository applies to
+the single target cluster. Managed-cluster requirements (for example eventual
+consistency across spokes) do not apply to this pattern.
+
+[id="rhoso-gitops-support"]
+== Support
+
+This is a *sandbox tier* Validated Pattern. Support is provided by the community
+on a best-effort basis. For details, see the
+link:https://github.com/cjeanner/pattern-rhoso-gitops/blob/main/SUPPORT.md[support policy]
+in the pattern repository.

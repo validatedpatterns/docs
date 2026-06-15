@@ -1,0 +1,37 @@
+---
+title: RHOSO GitOps
+date: 2026-06-15
+tier: sandbox
+summary: Deploy Red Hat OpenStack Services on OpenShift using GitOps via the rhoso-gitops meta-chart.
+rh_products:
+  - Red Hat OpenShift Container Platform
+  - Red Hat OpenShift GitOps
+  - Red Hat OpenStack Services on OpenShift
+industries:
+  - General
+focus_areas:
+  - DevSecOps
+aliases: /rhoso-gitops/
+# TODO(repo-move): update github and bugs URLs to validatedpatterns-sandbox/rhoso-gitops
+links:
+  github: https://github.com/cjeanner/pattern-rhoso-gitops
+  install: getting-started
+  bugs: https://github.com/cjeanner/pattern-rhoso-gitops/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/rhoso-gitops/rhoso-gitops-about.adoc[leveloffset=+1]
+
+include::modules/rhoso-gitops/rhoso-gitops-architecture.adoc[leveloffset=+1]
+
+[id="next-steps_rhoso-gitops-index"]
+== Next steps
+
+* link:getting-started[Deploy the pattern]
+* link:cluster-sizing[Review cluster sizing requirements]
+* link:configuration[Configure upstream pins and overrides]
