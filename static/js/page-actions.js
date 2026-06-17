@@ -88,11 +88,20 @@
   }
 
   function copyPageContent(triggerEl) {
-    var content = document.querySelector(".pf-c-content");
-    if (!content) return;
-
-    var text = content.innerText || content.textContent;
-    copyToClipboard(text, triggerEl);
+    var mdUrl = window.location.href.replace(/\/?$/, "/") + "index.md";
+    fetch(mdUrl)
+      .then(function (res) {
+        if (!res.ok) throw new Error("not found");
+        return res.text();
+      })
+      .then(function (text) {
+        copyToClipboard(text, triggerEl);
+      })
+      .catch(function () {
+        var content = document.querySelector(".pf-c-content");
+        if (!content) return;
+        copyToClipboard(content.innerText || content.textContent, triggerEl);
+      });
   }
 
   function copyToClipboard(text, triggerEl) {

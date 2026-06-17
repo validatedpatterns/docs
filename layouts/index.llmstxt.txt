@@ -1,0 +1,28 @@
+# {{ .Site.Title }}
+
+> {{ .Site.Params.description }}
+
+Important notes:
+
+- Validated Patterns are built on OpenShift Container Platform (Kubernetes) and leverage GitOps principles using ArgoCD, Red Hat Advanced Cluster Management (RHACM), and Tekton
+- They are designed for IT architects, advanced developers, and system administrators familiar with Kubernetes and OpenShift
+- Patterns can be deployed using either the OpenShift-based Validated Patterns framework or the Ansible GitOps Framework (AGOF)
+- All patterns require an available OpenShift 4.12+ cluster with cluster-admin privileges, at least 8 CPU cores, 16GB RAM, and dynamic storage provisioning
+- Each pattern includes values files (values-global.yaml, values-hub.yaml) for customization and secrets management without committing sensitive data to git repositories
+- Markdown versions of all pages are available by appending index.md to any page URL. For example: https://validatedpatterns.io/learn/quickstart/index.md
+- Full documentation in a single file: https://validatedpatterns.io/llms-full.txt
+
+## Learn
+{{ range where .Site.RegularPages "Section" "learn" }}
+- [{{ .Title }}]({{ .Permalink }}): {{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 150 }}{{ end }}
+{{- end }}
+
+## Patterns
+{{ range .Site.Sections }}{{ if eq .Section "patterns" }}{{ range .Sections }}
+- [{{ .Title }}]({{ .Permalink }}): {{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 150 }}{{ end }}
+{{- end }}{{ end }}{{ end }}
+
+## Contributing
+{{ range where .Site.RegularPages "Section" "contribute" }}
+- [{{ .Title }}]({{ .Permalink }}): {{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 150 }}{{ end }}
+{{- end }}

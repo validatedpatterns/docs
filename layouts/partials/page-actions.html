@@ -1,15 +1,4 @@
-{{- $repo := .Site.Params.github_repo | default "validatedpatterns/docs" -}}
-{{- $branch := .Site.Params.github_branch | default "main" -}}
-{{- $filePath := "" -}}
-{{- $rawUrl := "" -}}
-{{- $sourceLabel := "View source" -}}
-{{- if .File -}}
-  {{- $filePath = .File.Path -}}
-  {{- $rawUrl = printf "https://raw.githubusercontent.com/%s/%s/content/%s" $repo $branch $filePath -}}
-  {{- if strings.HasSuffix $filePath ".md" -}}
-    {{- $sourceLabel = "View as Markdown" -}}
-  {{- end -}}
-{{- end -}}
+{{- $mdUrl := printf "%sindex.md" .Permalink -}}
 
 <div class="page-actions" data-permalink="{{ .Permalink }}">
   <button type="button" class="page-actions__button" data-action="copy-page" aria-label="Copy page content">
@@ -25,21 +14,19 @@
         <i class="fas fa-link" aria-hidden="true"></i> Copy link
       </button>
     </li>
-    {{- if $rawUrl }}
     <li role="menuitem">
-      <a href="{{ $rawUrl }}" target="_blank" rel="noopener">
-        <i class="fab fa-markdown" aria-hidden="true"></i> {{ $sourceLabel }}
+      <a href="{{ $mdUrl }}" target="_blank" rel="noopener">
+        <i class="fab fa-markdown" aria-hidden="true"></i> View as Markdown
       </a>
     </li>
-    {{- end }}
     <li class="page-actions__divider" role="separator"></li>
     <li role="menuitem">
-      <a href="https://claude.ai/new?q={{ printf "Read and summarize this documentation page: %s" .Permalink | urlquery }}" target="_blank" rel="noopener">
+      <a href="https://claude.ai/new?q={{ printf "Read this page from the Validated Patterns docs: %sindex.md and answer questions about the content." .Permalink | urlquery }}" target="_blank" rel="noopener">
         <i class="fas fa-robot" aria-hidden="true"></i> Open in Claude
       </a>
     </li>
     <li role="menuitem">
-      <a href="https://chatgpt.com/?q={{ printf "Read and summarize this documentation page: %s" .Permalink | urlquery }}" target="_blank" rel="noopener">
+      <a href="https://chatgpt.com/?q={{ printf "Read this page from the Validated Patterns docs: %sindex.md and answer questions about the content." .Permalink | urlquery }}" target="_blank" rel="noopener">
         <i class="fas fa-comment-dots" aria-hidden="true"></i> Open in ChatGPT
       </a>
     </li>
