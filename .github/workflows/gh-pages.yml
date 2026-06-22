@@ -26,18 +26,9 @@ jobs:
           hugo-version: '0.133.1'
           extended: true
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-
-      - name: Install markdown generator dependencies
-        run: npm install asciidoctor @asciidoctor/reducer downdoc
-
       - name: Build
         run: |
           hugo --minify
-          node utils/generate-md.js
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
