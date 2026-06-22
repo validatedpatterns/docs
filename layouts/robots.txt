@@ -1,0 +1,33 @@
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+Sitemap: {{ "sitemap.xml" | absURL }}
+
+Content-Signal: ai-train=no, search=yes, ai-input=yes

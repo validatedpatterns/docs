@@ -5,7 +5,7 @@ UNAME=$(shell uname -s)
 # Also because of the proxy 127.0.0.1 doesn't work as a bind address.
 ifeq ($(UNAME), Darwin)
 	PODMAN_OPTS ?= -it --security-opt label=disable --pull=newer -p 4000:4000
-	HUGO_SERVER_OPTS = --bind 0.0.0.0 
+	HUGO_SERVER_OPTS = --bind 0.0.0.0
 else
 	PODMAN_OPTS ?= -it --security-opt label=disable --pull=newer --net=host
 endif
@@ -35,12 +35,17 @@ test: htmltest ## Runs tests
 
 .PHONY: build
 build: ## Build the website locally in the public/ folder
-	podman run $(PODMAN_OPTS) -v $(PWD):/site:$(ATTRS) --entrypoint hugo $(HOMEPAGE_CONTAINER)
+	podman run $(PODMAN_OPTS) -v $(PWD):/site:$(ATTRS) $(HOMEPAGE_CONTAINER) -c "hugo && node utils/generate-md.js"
+
+.PHONY: generate-md
+generate-md: ## Generate Markdown versions of all pages in public/
+	node utils/generate-md.js
 
 .PHONY: serve
 serve: ## Build the website locally from a container and serve it
 	@echo "Serving via container. Browse to http://localhost:4000"
-	podman run $(PODMAN_OPTS) -v $(PWD):/site:$(ATTRS) --entrypoint hugo $(HOMEPAGE_CONTAINER) server -p 4000 $(HUGO_SERVER_OPTS)
+	podman run $(PODMAN_OPTS) -v $(PWD):/site:$(ATTRS) $(HOMEPAGE_CONTAINER) -c "hugo && node utils/generate-md.js && hugo server -p 4000 $(HUGO_SERVER_OPTS)"
+
 
 .PHONY: htmltest
 htmltest: build ## Runs htmltest against the site to find broken links

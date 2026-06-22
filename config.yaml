@@ -46,6 +46,11 @@ mediaTypes:
 outputFormats:
   patterns:
     mediatype: application/json
+  llmstxt:
+    mediatype: text/plain
+    baseName: llms
+    isPlainText: true
+    notAlternative: true
 
 menus:
   main:
@@ -57,3 +62,7 @@ sitemap:
   priority: 0.5
   filename: sitemap.xml
 enableRobotsTXT: true
+outputs:
+  home:
+    - html
+    - llmstxt
