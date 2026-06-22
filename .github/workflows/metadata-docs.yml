@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: Checkout pattern repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: ${{ env.PATTERN_DIR }}
 
@@ -102,7 +102,7 @@ jobs:
           fi
 
       - name: Checkout docs repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: ${{ env.DOCS_DIR }}
           repository: ${{ env.DOCS_REPO }}
