@@ -1,0 +1,60 @@
+# Validated Patterns
+
+> Validated Patterns are GitOps-driven, automated, and rigorously tested application stacks for hybrid cloud deployments on Red Hat OpenShift. They go beyond traditional reference architectures by providing deployable, testable software artifacts with automated deployment that enhance speed, reliability, and consistency across environments.
+
+Important notes:
+
+- Validated Patterns are built on OpenShift Container Platform (Kubernetes) and leverage GitOps principles using ArgoCD, Red Hat Advanced Cluster Management (RHACM), and Tekton
+- They are designed for IT architects, advanced developers, and system administrators familiar with Kubernetes and OpenShift
+- Patterns can be deployed using either the OpenShift-based Validated Patterns framework or the Ansible GitOps Framework (AGOF)
+- All patterns require an available OpenShift 4.12+ cluster with cluster-admin privileges, at least 8 CPU cores, 16GB RAM, and dynamic storage provisioning
+- Each pattern includes values files (values-global.yaml, values-hub.yaml) for customization and secrets management without committing sensitive data to git repositories
+
+## Getting Started
+
+- [Patterns quick start](https://validatedpatterns.io/learn/quickstart/): Streamlined guide to deploying your first validated pattern with step-by-step instructions
+- [About Validated Patterns](https://validatedpatterns.io/learn/about-validated-patterns/): Overview of what Validated Patterns are, why they exist, and their advantages over traditional reference architectures
+- [Key concepts](https://validatedpatterns.io/learn/keyconcepts/): Core concepts and terminology used throughout the Validated Patterns framework
+- [Workflow](https://validatedpatterns.io/learn/workflow/): Understanding the deployment workflow and GitOps processes
+
+## Core Documentation
+
+- [Validated Patterns frameworks](https://validatedpatterns.io/learn/validated_patterns_frameworks/): Overview of the OpenShift and Ansible-based frameworks
+- [Using the Validated Pattern Operator](https://validatedpatterns.io/learn/using-validated-pattern-operator/): How to install and use the operator for pattern deployment
+- [Values files](https://validatedpatterns.io/learn/values-files/): Understanding and customizing values files for pattern configuration
+- [Secrets management](https://validatedpatterns.io/learn/secrets-management-in-the-Validated-Patterns-framework/): How secrets are managed securely in the framework
+- [ClusterGroup in values files](https://validatedpatterns.io/learn/clustergroup-in-values-files/): Understanding ClusterGroup configuration for multi-cluster deployments
+- [Importing a cluster](https://validatedpatterns.io/learn/importing-a-cluster/): How to import edge or managed clusters into the hub cluster
+
+## Pattern Examples
+
+- [Multicloud GitOps](https://validatedpatterns.io/patterns/multicloud-gitops/): Foundational pattern demonstrating GitOps across multiple clusters - recommended starting point
+- [Industrial Edge](https://validatedpatterns.io/patterns/industrial-edge/): Edge computing pattern for manufacturing and industrial use cases
+- [Medical Diagnosis](https://validatedpatterns.io/patterns/medical-diagnosis/): AI/ML pattern for medical imaging and diagnosis with Intel optimizations
+- [Retail](https://validatedpatterns.io/patterns/retail/): Retail industry pattern with edge deployments for store locations
+- [Ansible Edge GitOps](https://validatedpatterns.io/patterns/ansible-edge-gitops/): Pattern combining Ansible Automation Platform with GitOps at the edge
+- [DevSecOps](https://validatedpatterns.io/patterns/devsecops/): Secure software supply chain and development pipeline pattern
+- [RAG LLM GitOps](https://validatedpatterns.io/patterns/rag-llm-gitops/): Retrieval-Augmented Generation pattern for Large Language Models
+- [OpenShift AI](https://validatedpatterns.io/patterns/openshift-ai/): Pattern for deploying and managing AI/ML workloads on OpenShift
+
+## Advanced Topics
+
+- [Pattern structure](https://validatedpatterns.io/learn/vp_structure_vp_pattern/): Deep dive into the structure and components of a validated pattern
+- [Ansible GitOps Framework (AGOF)](https://validatedpatterns.io/learn/vp_agof/): Using Ansible for GitOps-based deployments
+- [OpenShift framework](https://validatedpatterns.io/learn/vp_openshift_framework/): Details on the OpenShift-based framework
+- [Infrastructure](https://validatedpatterns.io/learn/infrastructure/): Infrastructure considerations for pattern deployments
+- [Cluster sizing](https://validatedpatterns.io/learn/ocp-cluster-general-sizing/): General guidance on OpenShift cluster sizing for patterns
+
+## Contributing
+
+- [Contribute to Validated Patterns](https://validatedpatterns.io/contribute/): How to contribute to the project
+- [Documentation guidelines](https://validatedpatterns.io/contribute/documentation-guidelines/): Guidelines for contributing to documentation
+- [Preview documentation locally](https://validatedpatterns.io/contribute/contribute-to-docs/): How to build and preview the documentation site
+
+## Optional
+
+- [FAQ](https://validatedpatterns.io/learn/faq/): Frequently asked questions about Validated Patterns
+- [About pattern tiers and types](https://validatedpatterns.io/learn/about-pattern-tiers-types/): Understanding different pattern maturity levels and classifications
+- [HashiCorp Vault](https://validatedpatterns.io/learn/vault/): Using Vault for secrets management in patterns
+- [All available patterns](https://validatedpatterns.io/patterns/): Browse all 30+ patterns by industry, product, and use case
+
