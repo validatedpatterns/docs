@@ -22,6 +22,53 @@ include::modules/cluster-sizing-template.adoc[]
 
 The Hybrid Mesh Platform pattern deploys a **hub** cluster plus **two spoke** clusters (east and west). Plan for three OpenShift clusters at the recommended sizes above.
 
+=== Hub (CPU-only)
+
+* **Recommended (workshop 30–50):** 4 workers, 16 vCPU/worker, 64 GiB/worker (Total: 64 vCPU / 256 GiB). Full stack: GitLab, Developer Hub, OpenShift AI 3.4, Kubecost, Quay, CNV, Kuadrant, Lightspeed, ACS.
+* **Minimum demo (1–5 users):** 3 workers, 8 vCPU/worker, 32 GiB/worker (Total: 24 vCPU / 96 GiB). Tight; disable Kubecost/CNV or expect Evicted pods under load.
+
+[NOTE]
+====
+On RHDP, control-plane nodes are schedulable and carry ~50% of memory (kube-apiserver, etcd, monitoring). GitLab alone uses ~20 GiB steady state. Kubecost adds ~14 GiB — disable on minimum-demo tiers.
+====
+
+=== Spokes — CPU-only (default)
+
+All inference on CPU: OVMS `openvino_ir` face-detection, KServe YOLO PPE `best.pt`.
+
+* **Recommended (AI CV + DevSpaces):** 3 workers, 8 vCPU/worker, 32 GiB/worker (Total: 24 vCPU / 96 GiB). NeuroFace + OVMS ModelMesh + YOLO PPE + DevSpaces + Kafka + Skupper.
+* **Minimum demo (AI CV only):** 2 workers, 4 vCPU/worker, 16 GiB/worker (Total: 8 vCPU / 32 GiB). NeuroFace + OVMS only; no DevSpaces; tight on KServe cold starts.
+
+=== Spokes — GPU-accelerated (optional)
+
+For faster OVMS/YOLO throughput or self-hosted LLM (vLLM). Requires **NFD** + **NVIDIA GPU Operator** on the spoke (not in pattern by default).
+
+* **Recommended (inference + DevSpaces):** 3 workers, 8 vCPU/worker, 32 GiB/worker, 1x T4 / A10G GPU/worker (Total: 3 GPUs). OVMS GPU, YOLO GPU, local vLLM 7B, DevSpaces.
+* **Production-like (multi-model):** 3 workers, 16 vCPU/worker, 64 GiB/worker, 1x A100 / A10G (24+ GB VRAM) GPU/worker (Total: 3 GPUs). Multiple InferenceServices, self-hosted LLM 14–70B.
+
+Set `resources.limits.nvidia.com/gpu: "1"` on InferenceService predictors when GPU nodes are available.
+
+==== GPU operators (install before AI workloads on GPU nodes)
+
+[cols="<,<,<,<"]
+|===
+| Operator | Channel | Catalog | Install on
+
+| **Node Feature Discovery (NFD)**
+| stable
+| redhat-operators
+| Spokes (or hub) with GPU nodes
+
+| **NVIDIA GPU Operator**
+| stable
+| certified-operators
+| Spokes with GPU nodes
+|===
+
+Optional: **NVIDIA Network Operator** (distributed training), **OpenShift Serverless** (Knative KServe scale-to-zero), **NVIDIA NIM Operator** (enterprise LLM).
+
+**Cloud examples:** AWS `g4dn.xlarge` (T4), `g5.2xlarge` (A10G + vLLM 7B); Azure `Standard_NC4as_T4_v3`; GCP `a2-highgpu-1g` (A100).
+
 Optional features such as OpenShift AI workbenches and MaaS-backed inference require additional hub capacity. Workshop Showroom content is maintained in a link:https://github.com/maximilianoPizarro/showroom-hybrid-mesh-ai[separate repository] and does not change minimum cluster sizing for the core pattern.
 
 For RHDP catalog provisioning details and validation steps, see the link:https://maximilianopizarro.github.io/hybrid-mesh-platform/[pattern documentation site].
