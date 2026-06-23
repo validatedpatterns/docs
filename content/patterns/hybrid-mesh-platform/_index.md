@@ -2,7 +2,7 @@
 title: Hybrid Mesh Platform
 date: 2026-06-15
 tier: sandbox
-summary: Hub-spoke multi-cluster GitOps on OpenShift combining Service Mesh, AI-assisted operations (OpenShift Lightspeed + MCP), Industrial Edge, and a Red Hat Device Edge extension path via MicroShift.
+summary: Hub-spoke multi-cluster GitOps on OpenShift combining Service Mesh, AI Computer Vision at the Edge, AI-assisted operations (OpenShift Lightspeed + MCP), and a Red Hat Device Edge extension path.
 rh_products:
   - Red Hat OpenShift Container Platform
   - Red Hat Advanced Cluster Management
@@ -63,7 +63,8 @@ Operating a multi-cluster OpenShift fleet creates three compounding challenges t
 **Hybrid Mesh Platform** is a production-grade, multi-cluster GitOps reference architecture that mirrors how Red Hat customers run hybrid cloud on OpenShift. It implements a **hub-spoke topology** where:
 
 - A **hub cluster** centralizes fleet governance with **ACM**, deploys via **OpenShift GitOps** (Argo CD), hosts **Developer Hub**, runs **ACS Central**, aggregates observability in **Grafana**, and exposes cross-cluster services through a **Gateway API** hub gateway.
-- Two **spoke clusters** (east and west) execute **Industrial Edge** factory workloads — MQTT sensors, Kafka pipelines, ML inference, and dashboards — connected to the hub via a **Skupper Virtual Application Network** (no VPN or firewall changes).
+- Two **spoke clusters** (east and west) execute **AI Computer Vision at the Edge** (NeuroFace full stack, face detection via OVMS ModelMesh, PPE safety via YOLO/KServe, Kafka events) — connected to the hub via a **Skupper Virtual Application Network** (no VPN or firewall changes).
+- **Industrial Edge** factory telemetry (MQTT → Kafka → ML → dashboards) is included but **optional and disabled by default**.
 - **OpenShift Service Mesh 3** in **ambient mode** provides ztunnel-based L4 encryption and optional waypoint L7 policy across all clusters.
 - **Connectivity Link (Kuadrant)** layers API-aware ingress policies — rate limiting, auth, DNS/TLS automation — on top of Gateway API.
 
@@ -75,19 +76,35 @@ Operating a multi-cluster OpenShift fleet creates three compounding challenges t
 
 Read **concept → mechanics → operations**: start with [Architecture](architecture), install via [Getting Started](getting-started), explore the [Demo scenario](demo-scenario), scaffold workloads via [Scaffolding](scaffolding), then use platform chapters (**Hub Gateway**, **Observability**, **Industrial Edge**).
 
+## AI Computer Vision at the Edge (primary demo)
+
+The primary demo (v2.2+) is **NeuroFace** — a full-stack AI Computer Vision application on east/west spokes with face detection (OVMS ModelMesh), PPE safety (YOLO/KServe), Kafka events, and Grafana dashboards, federated 50/50 from the hub via Gateway API.
+
+| Surface | URL | Description |
+| --- | --- | --- |
+| NeuroFace app | `https://neuroface.<hub-domain>/` | Full UI — 50/50 east/west via hub Gateway |
+| NeuroFace CV | `https://neuroface-cv.<hub-domain>/` | PPE gateway (YOLO on spokes) |
+| Developer Hub | `https://developer-hub.<hub-domain>/create` | **AI Computer Vision at the Edge** template |
+| Grafana | `https://grafana.<hub-domain>/` | NeuroFace east/west + hub gateway metrics |
+| AI Gateway | `https://ai-gateway.<hub-domain>/` | MaaS LLM with Kuadrant API keys |
+
+[![NeuroFace — AI Computer Vision Architecture](/images/hybrid-mesh-platform/neuroface-architecture.png)](/images/hybrid-mesh-platform/neuroface-architecture.png)
+
+_NeuroFace architecture: face detection (OVMS), PPE safety (YOLO/KServe), LLM chat (MaaS), Kafka events, and OpenTelemetry tracing — deployed on east/west spokes, federated 50/50 from the hub._
+
 [![Hybrid Mesh Platform — hub-spoke architecture](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)
 
-_Hub cluster aggregates observability and Developer Hub; east and west spokes run Industrial Edge workloads connected via Service Interconnect (Skupper)._
+_Hub cluster aggregates observability and Developer Hub; east and west spokes run AI Computer Vision workloads connected via Service Interconnect (Skupper)._
 
 ## Hub-spoke architecture at a glance
 
 | Cluster | Role | Key components |
 | --- | --- | --- |
 | **Hub** | Fleet governance and centralized services | ACM, OpenShift GitOps, Developer Hub, OpenShift AI, Service Mesh control plane, Skupper listeners, Kuadrant, ACS Central, Grafana, Kafka Console, Kubecost |
-| **East spoke** | Factory workloads and developer tools | Industrial Edge, DevSpaces, Kairos SmartScaling, spoke-local GitOps |
-| **West spoke** | Workload replicas and cross-cluster validation | Industrial Edge replicas, MirrorMaker replication to hub, Skupper connectors |
+| **East spoke** | Edge AI workloads and developer tools | AI Computer Vision (NeuroFace, YOLO, OVMS), DevSpaces, Kairos SmartScaling, spoke-local GitOps |
+| **West spoke** | Workload replicas and cross-cluster validation | AI Computer Vision replicas, MirrorMaker replication to hub, Skupper connectors |
 
-Industrial Edge components exist **only** on spokes. The hub aggregates metrics and provides gateway access — it does not host factory sensor workloads.
+Edge AI components exist **only** on spokes. The hub aggregates metrics and provides gateway access — it does not host edge inference workloads.
 
 [![Platform architecture overview](/images/hybrid-mesh-platform/arch-overview.png)](/images/hybrid-mesh-platform/arch-overview.png)
 
@@ -113,10 +130,10 @@ _Detailed architecture showing Git repo structure, ACM placement, Skupper VAN, a
 2. [Getting Started](getting-started) — bring clusters under GitOps (ACM + ApplicationSet)
 3. [Cluster sizing](cluster-sizing) — hub and spoke minimum requirements
 4. [Demo scenario](demo-scenario) — what the workshop showroom demonstrates
-5. [Scaffolding](scaffolding) — deploy Industrial Edge instances from Developer Hub
+5. [Scaffolding](scaffolding) — deploy AI Computer Vision instances from Developer Hub
 6. [Hub Gateway](hub-gateway) — weighted ingress and circuit breaking across spokes
 7. [Observability](observability) — Grafana, Kiali, Kafka Console
-8. [Industrial Edge](industrial-edge) — factory data pipeline on multiple spokes
+8. [Industrial Edge](industrial-edge) — optional factory data pipeline on multiple spokes
 
 **Next →** [Architecture](architecture)
 

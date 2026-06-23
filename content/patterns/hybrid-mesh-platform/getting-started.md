@@ -16,14 +16,14 @@ After a successful hub deploy and spoke registration, expect:
 | --- | --- |
 | ACM | `east` and `west` in `ManagedCluster` **Available** |
 | Argo CD | Hub `clustergroup` **Synced**; east/west spokes pull their clusterGroup from Git via ACM |
-| Industrial Edge | Sensors, MQTT, Kafka, `line-dashboard` on each spoke |
+| AI Computer Vision | NeuroFace UI, YOLO PPE inference, Kafka on each spoke |
 | Skupper | Hub `sitesInNetwork: 3`; listeners **Ready** in `service-interconnect` |
 | Grafana | Hub dashboards with `prometheus-east` / `prometheus-west` datasources |
-| Developer Hub | Industrial Edge catalog + software templates under **Create** |
+| Developer Hub | AI Computer Vision catalog + software templates under **Create** |
 | Gitea | Route `gitea-gitea.<domain>`; orgs `ws-platformadmin`, `app-of-apps` |
 | Quay | Route `quay-registry.<domain>` (optional image catalog) |
 
-Then continue with [Scaffolding](scaffolding) to deploy a new edge instance on east or west.
+Then continue with [Scaffolding](scaffolding) to deploy a new AI Computer Vision instance on east or west.
 
 ## Platform operators (reference)
 
@@ -62,7 +62,7 @@ _ACS Central showing all three clusters registered. SecuredCluster agents report
 
 [![ACS Central — policies and vulnerability views](/images/hybrid-mesh-platform/ACS-2.png)](/images/hybrid-mesh-platform/ACS-2.png)
 
-_ACS vulnerability management and policy enforcement across Industrial Edge container images._
+_ACS vulnerability management and policy enforcement across AI Computer Vision container images._
 
 #### Generating SecuredCluster init bundles
 
@@ -118,7 +118,7 @@ Tested on **demo.redhat.com** with the following provisioning parameters:
 
 Hub estimated workload: ~12.5 CPU / ~29 GiB (ACM, ACS Central, Developer Hub, data lake Kafka 3-replica, Service Mesh, OpenShift AI, hub gateway).
 
-Spoke estimated workload: ~5.5 CPU / ~11 GiB (Industrial Edge, factory Kafka, ACS SecuredCluster, Service Mesh ambient).
+Spoke estimated workload: ~5.5 CPU / ~11 GiB (AI Computer Vision, factory Kafka, ACS SecuredCluster, Service Mesh ambient).
 
 For constrained environments, use `values-lite.yaml` on the hub to disable heavy components (OpenShift AI, ACS, Grafana dashboards, hub gateway).
 
@@ -229,7 +229,7 @@ Confirm the ACM → GitOps chain:
 2. `PlacementDecision` lists those clusters in `openshift-gitops`
 3. `GitOpsCluster` `hub-spoke-gitops` registers clusters in Argo CD
 4. ApplicationSet creates `east-spoke-components` and `west-spoke-components`
-5. Each spoke Argo CD syncs child Applications (namespaces, operators, Industrial Edge, and others)
+5. Each spoke Argo CD syncs child Applications (namespaces, operators, AI Computer Vision, and others)
 
 **Hub:**
 
@@ -252,7 +252,7 @@ oc get placementdecisions.cluster.open-cluster-management.io -n openshift-gitops
   -l cluster.open-cluster-management.io/placement=hub-spoke-placement -o yaml
 ```
 
-Healthy sync waves progress: **namespaces → operators → platform → observability → Industrial Edge workloads**.
+Healthy sync waves progress: **namespaces → operators → platform → observability → AI Computer Vision workloads**.
 
 ## Deploy with ACM and GitOps
 
@@ -352,7 +352,7 @@ oc create secret generic continue-ai-config -n devspaces \
   --dry-run=client -o yaml | oc apply -f -
 ```
 
-Industrial Edge catalog loads from an in-cluster ConfigMap. Software templates ship as static assets in the pattern repository under `docs/assets/backstage/software-templates/`.
+AI Computer Vision catalog loads from an in-cluster ConfigMap. Software templates ship as static assets in the pattern repository under `docs/assets/backstage/software-templates/`.
 
 ### Developer Hub multi-cluster Topology
 
@@ -424,18 +424,18 @@ oc get pods -n rhods-model-mesh-serving 2>/dev/null || \
 oc get pods -n modelmesh-serving 2>/dev/null
 ```
 
-### Industrial Edge (run on each spoke)
+### AI Computer Vision / NeuroFace (run on each spoke)
 
 ```bash
 # Switch to east or west context
 oc config use-context east   # adjust to your kubeconfig context name
 
-# Sensors, Kafka, and Camel K running
-oc get pods -n industrial-edge-tst
-oc get kafka dev-cluster -n industrial-edge-tst -o jsonpath='{.status.conditions[0].type}{"\n"}'
+# NeuroFace UI, Kafka, and ModelMesh running
+oc get pods -n neuroface
+oc get kafka neuroface-cluster -n neuroface -o jsonpath='{.status.conditions[0].type}{"\n"}'
 
-# Line dashboard accessible
-oc get route line-dashboard -n industrial-edge-tst
+# NeuroFace accessible locally on the spoke
+oc get route neuroface -n neuroface
 ```
 
 ### Console links (hub — 19 expected)
@@ -459,4 +459,4 @@ If any check fails, see the [extended troubleshooting guide](https://maximiliano
 - [RHDP install playbook and extended docs](https://maximilianopizarro.github.io/hybrid-mesh-platform/validatedpatterns-docs/)
 - [ApplicationSet Generators](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators/)
 
-**Next →** [Scaffolding](scaffolding) to deploy Industrial Edge instances from Developer Hub · [Architecture](architecture) for diagrams · [Observability](observability) once metrics are flowing.
+**Next →** [Scaffolding](scaffolding) to deploy AI Computer Vision instances from Developer Hub · [Architecture](architecture) for diagrams · [Observability](observability) once metrics are flowing.

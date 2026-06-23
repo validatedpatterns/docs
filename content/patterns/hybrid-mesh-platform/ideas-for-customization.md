@@ -75,7 +75,7 @@ Disables heavy subscriptions while preserving GitOps bootstrap and ApplicationSe
 | Gateway weights | `gateway.weights.east` / `west` for canary or active-active front traffic |
 | API affinity | `gateway.apiWeights` when Socket.IO can span spokes |
 | Circuit breaking | Tune `gateway.circuitBreaking` per environment (see [Hub Gateway](hub-gateway)) |
-| Industrial Edge | Scaffold additional factory instances per spoke via [Scaffolding](scaffolding) |
+| AI Computer Vision | Scaffold additional edge AI instances per spoke via [Scaffolding](scaffolding) |
 | Observability | Custom Grafana dashboards; additional Prometheus federation |
 | Mesh | Waypoints for L7 policy on selected namespaces; keep data-lake off ambient if using MinIO |
 | Skupper | Additional listeners/connectors for new spoke services |

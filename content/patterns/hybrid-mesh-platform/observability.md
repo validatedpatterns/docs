@@ -6,7 +6,7 @@ aliases: /hybrid-mesh-platform/observability/
 
 # Observability
 
-Observability ties together **metrics**, **logs**, **traces**, and **mesh visualization** so operators can compare east and west Industrial Edge clusters from the hub. It sits mid-flight between **[architecture](architecture)** (why telemetry crosses Skupper) and **[Industrial Edge](industrial-edge)** (what applications emit). **Screenshots** below open full-screen when clicked — useful for reading dense Grafana legends.
+Observability ties together **metrics**, **logs**, **traces**, and **mesh visualization** so operators can compare east and west AI Computer Vision clusters from the hub. It sits mid-flight between **[architecture](architecture)** (why telemetry crosses Skupper) and **[Industrial Edge (optional)](industrial-edge)** (what applications emit). **Screenshots** below open full-screen when clicked — useful for reading dense Grafana legends.
 
 [![Observability overview](/images/hybrid-mesh-platform/workshop-observability.png)](/images/hybrid-mesh-platform/workshop-observability.png)
 
@@ -44,7 +44,7 @@ _Kiali detail view: per-service traffic rates, error percentages, and response t
 
 [![Kafka Console](/images/hybrid-mesh-platform/product-kafka-console-amq-streams.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams.png)
 
-_Kafka Console landing: five registered clusters (hub + east/west × dev/factory)._
+_Kafka Console landing: five registered clusters (hub + east/west × neuroface/factory)._
 
 [![Kafka Console — multi-cluster clusters and topics](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-2.png)](/images/hybrid-mesh-platform/product-kafka-console-amq-streams-2.png)
 
@@ -60,7 +60,7 @@ Kairos integrates AI-driven operational intelligence through event correlation, 
 
 [![Kairos — worker scaling and SmartScalingPolicy](/images/hybrid-mesh-platform/workshop-kairos-scaling.png)](/images/hybrid-mesh-platform/workshop-kairos-scaling.png)
 
-_Kairos SmartScalingPolicy: AI-driven recommendations for scaling Industrial Edge sensor workers based on Kafka lag and CPU pressure._
+_Kairos SmartScalingPolicy: AI-driven recommendations for scaling edge workers based on Kafka lag and CPU pressure._
 
 [![Kairos — event correlation and alerting](/images/hybrid-mesh-platform/kairos-events.png)](/images/hybrid-mesh-platform/kairos-events.png)
 
@@ -158,7 +158,7 @@ Use **`stable-3.2`** for the Service Mesh operator. Tech Preview (`candidates` /
 | `kafka_network_requestmetrics_requestspersec_total` | Strimzi JMX | API activity; use in **bargauge** panels |
 | `kafka_server_replicamanager_leadercount` / `partitioncount` | Strimzi JMX | **piechart** / **bargauge** on hub fleet view |
 
-`charts/all/istio-monitoring` scrapes istiod, gateways/waypoints, ztunnel, and Kafka. Grant UWM RoleBindings in `istio-system`, `ztunnel`, `hub-gateway-system`, and Industrial Edge namespaces.
+`charts/all/istio-monitoring` scrapes istiod, gateways/waypoints, ztunnel, and Kafka. Grant UWM RoleBindings in `istio-system`, `ztunnel`, `hub-gateway-system`, and NeuroFace/Industrial Edge namespaces.
 
 **Prerequisite for L4 mesh metrics:** `IstioCNI` CR must include `profile: ambient` (not namespace-only). Without it, ztunnel never becomes Ready and `istio_tcp_*` are absent. See [Service Mesh 3 — troubleshooting](products/service-mesh.md#troubleshooting-ztunnel-ztunnelnothealthy).
 
@@ -172,7 +172,7 @@ _Skupper Network Observer main view: three sites (hub, east, west) connected in 
 
 [![Skupper Network Observer — service topology](/images/hybrid-mesh-platform/service-interconnect-console-topology.png)](/images/hybrid-mesh-platform/service-interconnect-console-topology.png)
 
-_Topology view: services exposed via Skupper across hub and spoke sites — Kafka brokers, Prometheus auth proxies, and Industrial Edge gateways._
+_Topology view: services exposed via Skupper across hub and spoke sites — Kafka brokers, Prometheus auth proxies, and spoke gateways._
 
 [![Skupper Network Observer — topology with processes](/images/hybrid-mesh-platform/service-interconnect-console-topology-process.png)](/images/hybrid-mesh-platform/service-interconnect-console-topology-process.png)
 
@@ -184,7 +184,7 @@ _Process view: per-process byte throughput and connection counts across the VAN.
 
 [![Skupper Network Observer — traffic metrics](/images/hybrid-mesh-platform/service-interconnect-console-metrics.png)](/images/hybrid-mesh-platform/service-interconnect-console-metrics.png)
 
-_Metrics view: application-level traffic rates per service. Validate that Kafka Console is reaching spoke bootstrap services and that Industrial Edge gateway traffic flows through the VAN._
+_Metrics view: application-level traffic rates per service. Validate that Kafka Console is reaching spoke bootstrap services and that spoke gateway traffic flows through the VAN._
 
 Access the Network Observer at `https://skupper-network-observer-service-interconnect.apps.<hub-domain>/`. Verify the route exists after `service-interconnect` Argo CD app syncs:
 
@@ -303,7 +303,7 @@ Legacy doc names `east-west-traffic` / `multi-cluster-istio` are consolidated in
 2. Hub listeners `prometheus-east`, `prometheus-west` **Ready**
 3. Spoke Connectors + `prometheus-auth-proxy` Running (`spoke-interconnect`)
 4. GrafanaDatasource CRs present on hub
-5. Generate traffic (Industrial Edge / hub-gateway) for mesh panels
+5. Generate traffic (NeuroFace / hub-gateway) for mesh panels
 
 ## References
 

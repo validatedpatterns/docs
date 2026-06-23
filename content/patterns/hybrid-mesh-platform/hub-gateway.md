@@ -19,10 +19,6 @@ Weighted rules enable **canary** or **active-active** distributions between serv
 
 ## Cross-cluster routing architecture
 
-[![ACS and Connectivity Link — security and gateway policy](/images/hybrid-mesh-platform/workshop-acs-kuadrant.png)](/images/hybrid-mesh-platform/workshop-acs-kuadrant.png)
-
-_ACS and Connectivity Link: security policies and API gateway management across hub and spokes._
-
 [![Gateway API policy topology — hub HTTPRoute and route rules](/images/hybrid-mesh-platform/connectivity-link-hub.png)](/images/hybrid-mesh-platform/connectivity-link-hub.png)
 
 _OpenShift Console — Gateway API resources on the hub: Gateway, HTTPRoute rules, and backend service references._
@@ -35,9 +31,9 @@ _Hub Gateway — HTTPRoute with weighted backends to east and west spoke Externa
 
 _Spoke cluster — Gateway API and backend services registered in the mesh._
 
-[![Spoke gateway aggregating Industrial Edge services](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)
+[![Spoke gateway aggregating AI Computer Vision services](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)](/images/hybrid-mesh-platform/connectivity-link-spoke-gateway.png)
 
-_Spoke-gateway HTTPRoute: routes `/api`, `/dashboard`, and catch-all paths to Industrial Edge services._
+_Spoke-gateway HTTPRoute: routes `/api`, `/dashboard`, and catch-all paths to AI Computer Vision (NeuroFace) services._
 
 The hub gateway routes traffic to spoke cluster OpenShift Routes via `ExternalName` services:
 
@@ -60,10 +56,10 @@ Traffic is split into separate `Service` objects per cluster and traffic type to
 
 | Service | Purpose |
 | ------- | ------- |
-| `industrial-edge-east-front` | Static frontend assets for east spoke |
-| `industrial-edge-east-api` | Socket.IO / API backend for east spoke |
-| `industrial-edge-west-front` | Static frontend assets for west spoke |
-| `industrial-edge-west-api` | Socket.IO / API backend for west spoke |
+| `neuroface-east-front` | Static frontend assets for east spoke |
+| `neuroface-east-api` | Socket.IO / API backend for east spoke |
+| `neuroface-west-front` | Static frontend assets for west spoke |
+| `neuroface-west-api` | Socket.IO / API backend for west spoke |
 
 All four services use `ExternalName` pointing to the same spoke Route hostname, but Istio tracks them as distinct destinations. In Kiali's traffic graph, each appears as a separate node.
 
@@ -128,18 +124,66 @@ gateway:
 
 Set `enabled: false` to disable circuit breaking entirely.
 
+## AI Gateway — MaaS + Kuadrant
+
+[![AI Gateway — MaaS LLM with Kuadrant rate limiting](/images/hybrid-mesh-platform/23-ai-gateway.png)](/images/hybrid-mesh-platform/23-ai-gateway.png)
+
+_AI Gateway: Kuadrant-managed API gateway for MaaS LLM endpoints with per-user rate limits and API key plans._
+
+The platform exposes **two dedicated gateways** managed by Kuadrant, each with its own `APIProduct` published in Developer Hub:
+
+| Gateway | Host | APIs protected |
+| --- | --- | --- |
+| **workshop-apis** | `https://workshop-apis.<hub-domain>` | `/httpbin/**`, `/countries/**`, `/mcp` |
+| **ai-gateway** | `https://ai-gateway.<hub-domain>` | `/v1/chat/completions` (MaaS LLM) |
+
+Authentication uses header `Authorization: APIKEY <key>` (not Bearer). Plan tiers: **bronze / silver / gold** on workshop-apis; **free / gold** on ai-gateway LLM routes.
+
+### APIProduct for MaaS LLM
+
+```yaml
+apiVersion: devportal.kuadrant.io/v1alpha1
+kind: APIProduct
+metadata:
+  name: workshop-llm-tokens
+  namespace: ai-gateway-system
+spec:
+  displayName: AI Gateway — MaaS LLM (TokenRateLimit)
+  documentation:
+    openAPISpecURL: https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml
+  targetRef:
+    kind: HTTPRoute
+    name: ai-maas
+```
+
+### Consuming the AI Gateway
+
+Applications that speak the OpenAI REST API can consume the AI Gateway without code changes. NeuroFace can switch between direct MaaS and the AI Gateway:
+
+| Path | Endpoint | When to use |
+| --- | --- | --- |
+| **Direct MaaS** (default) | `https://maas-rhdp.apps.maas.redhatworkshops.io/v1` | Simplicity; key from Vault/ESO |
+| **AI Gateway** (Kuadrant) | `https://ai-gateway.<hub-domain>/v1` | Demo API management — rate limits, API keys via Developer Hub |
+
+```bash
+# Test AI Gateway directly
+curl -sk "https://ai-gateway.<hub-domain>/v1/chat/completions" \
+  -H "Authorization: APIKEY <kuadrant-api-key>" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"granite-3-2-8b-instruct","messages":[{"role":"user","content":"hello"}]}'
+```
+
+## MCP Gateway + OpenShift Lightspeed
+
+[![MCP Gateway + Lightspeed](/images/hybrid-mesh-platform/24-mcp-gateway.png)](/images/hybrid-mesh-platform/24-mcp-gateway.png)
+
+_MCP Gateway: dual-server (Quarkus 19 tools + Go SDK 21 tools) integrated with OpenShift Lightspeed for natural-language platform operations._
+
+The MCP Gateway runs on the hub and exposes OpenShift cluster state through natural language. It integrates with `OLSConfig` so operators can query and act on platform state without raw YAML.
+
 ## Relationship to Connectivity Link
 
 Connectivity Link (Kuadrant) layers DNS automation, TLS policies, and advanced controls atop Gateway API. Start with plain HTTPRoutes if you need incremental adoption; enable Kuadrant policies when teams are ready.
-
-## IoT Dashboard integration
-
-The Industrial Edge `line-dashboard` (iot-frontend) requires an `iot-consumer` sidecar to display sensor data:
-
-- **iot-consumer** bridges MQTT to WebSocket via Socket.IO
-- Mount a ConfigMap `config.json` with `websocketHost: ""` (empty = same origin)
-- Path-based Route `/api` to port 3000 (iot-consumer)
-- The hub gateway proxies `/api` requests to the correct spoke backend where iot-consumer handles the Socket.IO connection
 
 ## Operational notes
 
@@ -149,7 +193,7 @@ The Industrial Edge `line-dashboard` (iot-frontend) requires an `iot-consumer` s
 
 ---
 
-**Next:** attach HTTPRoutes per Connectivity Link policies when Kuadrant enforcement tightens, then verify backends inside Service Mesh ambient namespaces. See the [pattern documentation](https://maximilianopizarro.github.io/hybrid-mesh-platform/validatedpatterns-docs/hub-gateway.html) for extended RHCL detail.
+**Next:** See the [pattern documentation](https://maximilianopizarro.github.io/hybrid-mesh-platform/validatedpatterns-docs/hub-gateway.html) for extended RHCL and Kuadrant detail.
 
 ## References
 

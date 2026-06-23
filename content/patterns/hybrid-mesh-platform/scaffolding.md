@@ -4,9 +4,9 @@ weight: 70
 aliases: /hybrid-mesh-platform/scaffolding/
 ---
 
-# Scaffolding Industrial Edge on East and West
+# Scaffolding AI Computer Vision on East and West
 
-Developer Hub **Create** templates deploy new Industrial Edge instances to **east** or **west** spokes. This chapter is the operational follow-up to [Architecture](architecture) and [Getting Started](getting-started).
+Developer Hub **Create** templates deploy new AI Computer Vision instances to **east** or **west** spokes. This chapter is the operational follow-up to [Architecture](architecture) and [Getting Started](getting-started).
 
 ## What you need before scaffolding
 
@@ -31,16 +31,17 @@ https://maximilianopizarro.github.io/hybrid-mesh-platform/assets/backstage/softw
 
 | Template | Target | Result |
 | -------- | ------ | ------ |
-| **Industrial Edge** | east or west | IoT namespace, sensors, Kafka, deployment, Tekton pipeline |
+| **AI Computer Vision (NeuroFace)** | east or west | NeuroFace UI, YOLO PPE, OVMS ModelMesh, Kafka, Tekton pipeline |
+| **Industrial Edge (optional)** | east or west | IoT namespace, sensors, Kafka, deployment, Tekton pipeline |
 | **Camel Kaoto** | east or west | Camel routes, DevSpaces devfile, Continue AI config |
 | **Camel CDC (Kaoto + Continue AI)** | east or west | Standalone CDC route; DevSpaces on **spoke** (`spokeAppsDomain`) |
-| **Industrial Edge Delete** | east or west | Removes ArgoCD Application + Gitea repo + notification |
+| **AI Computer Vision Delete** | east or west | Removes ArgoCD Application + Gitea repo + notification |
 | **CNV VM Workshop** | hub | Virtual machine manifests in Gitea |
 
 ## Step-by-step — deploy on east
 
 1. Open Developer Hub → **Create**.
-2. Choose **Industrial Edge: IoT Manufacturing (Multi-Cluster)**.
+2. Choose **AI Computer Vision at the Edge**.
 3. Set **Instance Name** (e.g. `edge-factory-1`), **Owner** `platformadmin`, **Target Cluster** `east`.
 4. Set **Hub cluster apps domain** (e.g. `apps.cluster-xqg4c.dynamic2.redhatworkshops.io`).
 5. Run the template.
@@ -99,7 +100,7 @@ Continue AI credentials are synced into `{username}-devspaces` by PostSync job `
 
 ## Delete an instance
 
-1. **Create** → **Industrial Edge — Delete Instance**.
+1. **Create** → **AI Computer Vision Delete**.
 2. Enter the same name, owner, and target cluster.
 3. Template deletes the ArgoCD Application and Gitea repo; unregister the catalog entity manually if it still appears.
 

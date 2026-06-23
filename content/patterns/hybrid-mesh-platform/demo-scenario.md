@@ -10,15 +10,15 @@ aliases: /hybrid-mesh-platform/demo-scenario/
 
 ## What the showroom shows
 
-The showroom mirrors how Red Hat customers run hybrid cloud on OpenShift: a **hub cluster** managing **east** and **west** spokes through ACM, with ambient service mesh, GitOps, Industrial Edge factory telemetry, and an AI inference layer on OpenShift AI.
+The showroom mirrors how Red Hat customers run hybrid cloud on OpenShift: a **hub cluster** managing **east** and **west** spokes through ACM, with ambient service mesh, GitOps, AI Computer Vision at the edge, and an AI inference layer on OpenShift AI.
 
 [![Hybrid Mesh Platform — hub-spoke architecture](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)](/images/hybrid-mesh-platform/workshop-hybrid-mesh.png)
 
-_Hub cluster aggregates observability and Developer Hub; east and west spokes run Industrial Edge workloads connected via Service Interconnect (Skupper)._
+_Hub cluster aggregates observability and Developer Hub; east and west spokes run AI Computer Vision workloads connected via Service Interconnect (Skupper)._
 
 [![Platform component map — hub vs spokes](/images/hybrid-mesh-platform/workshop-hybrid-mesh-arch.png)](/images/hybrid-mesh-platform/workshop-hybrid-mesh-arch.png)
 
-_Component placement across hub and spoke clusters — fleet governance centralized, factory workloads at the edge._
+_Component placement across hub and spoke clusters — fleet governance centralized, AI Computer Vision workloads at the edge._
 
 ## Dual-track experience
 
@@ -27,7 +27,7 @@ The workshop content is organized in two tracks:
 | Track | Audience | Focus |
 | --- | --- | --- |
 | **Part A (modules 01–05)** | Executives and architects | Hybrid cloud strategy, ROSA architecture, security at scale, cloud AI services, customer cases |
-| **Part B (modules 10–28)** | Practitioners | ACM fleet, mesh, GitOps, Industrial Edge, observability, ACS, Connectivity Link, OpenShift AI, Kuadrant API gateway |
+| **Part B (modules 10–28)** | Practitioners | ACM fleet, mesh, GitOps, AI Computer Vision, observability, ACS, Connectivity Link, OpenShift AI, Kuadrant API gateway |
 
 On validatedpatterns.io we document the **platform architecture and VP install path**. The showroom provides a rich, navigable view of the same product surfaces after deployment.
 
@@ -40,27 +40,56 @@ The showroom hero images and module structure align with the pattern chapters on
 | ACM multicluster fleet | ![ACM fleet](/images/hybrid-mesh-platform/workshop-acm-multicluster.png) | [Getting Started](getting-started) |
 | Ambient Service Mesh | ![Service Mesh](/images/hybrid-mesh-platform/workshop-service-mesh.png) | [Architecture](architecture) |
 | Developer Hub templates | ![Software templates](/images/hybrid-mesh-platform/workshop-software-templates.png) | [Scaffolding](scaffolding) |
-| Industrial Edge factory | ![Industrial Edge](/images/hybrid-mesh-platform/workshop-industrial-edge.png) | [Industrial Edge](industrial-edge) |
+| NeuroFace — AI CV at the Edge | ![NeuroFace](/images/hybrid-mesh-platform/27-neuroface.png) | [Architecture](architecture) |
+| AI Gateway (MaaS + Kuadrant) | ![AI Gateway](/images/hybrid-mesh-platform/23-ai-gateway.png) | [Hub Gateway](hub-gateway) |
+| MCP Gateway + Lightspeed | ![MCP Gateway](/images/hybrid-mesh-platform/24-mcp-gateway.png) | [Hub Gateway](hub-gateway) |
 | Observability stack | ![Observability](/images/hybrid-mesh-platform/workshop-observability.png) | [Observability](observability) |
-| ACS and Connectivity Link | ![ACS and Kuadrant](/images/hybrid-mesh-platform/workshop-acs-kuadrant.png) | [Hub Gateway](hub-gateway) |
-| OpenShift AI / MaaS | ![OpenShift AI](/images/hybrid-mesh-platform/workshop-openshift-ai.png) | [_index](.) |
+| Connectivity Link (Kuadrant) | ![Connectivity Link hub](/images/hybrid-mesh-platform/connectivity-link-hub.png) | [Hub Gateway](hub-gateway) |
+| OpenShift AI / MaaS | ![OpenShift AI](/images/hybrid-mesh-platform/workshop-openshift-ai.png) | [Architecture](architecture) |
 | Kairos SmartScaling | ![Kairos scaling](/images/hybrid-mesh-platform/workshop-kairos-scaling.png) | [Observability](observability) |
+| Industrial Edge (optional) | ![Industrial Edge](/images/hybrid-mesh-platform/workshop-industrial-edge.png) | [Industrial Edge](industrial-edge) |
 
 ## Hub-spoke topology in the demo
 
 The demo fleet uses the same three-cluster layout documented in [Architecture](architecture):
 
 - **Hub:** ACM, Argo CD, Developer Hub, OpenShift AI, Service Mesh control plane, Skupper listeners, Kuadrant, ACS Central, Grafana, Kubecost
-- **East spoke:** Industrial Edge workloads, DevSpaces, Kairos, spoke-local GitOps
+- **East spoke:** AI Computer Vision workloads, DevSpaces, Kairos, spoke-local GitOps
 - **West spoke:** Workload replicas, cross-cluster traffic via Skupper
 
 Traffic crosses **OpenShift Service Mesh 3 ambient mode** (ztunnels, optional waypoints) and **Skupper** tunnels exposed through **Gateway API** ingress on the hub.
 
-## OpenShift AI and API gateway (conceptual)
+## NeuroFace — AI Computer Vision at the Edge
 
-The showroom illustrates a shared **Model as a Service (MaaS)** endpoint on the hub. Applications that speak the OpenAI REST API can consume inference without code changes by pointing to the in-cluster service. Spoke factory pipelines reach MaaS through Skupper connectors.
+The primary demo (v2.2+) is **NeuroFace** — a full-stack AI Computer Vision application deployed on east/west spokes:
 
-**Red Hat Connectivity Link (RHCL)** with **Kuadrant** exposes managed API products — for example HTTP utilities, REST catalog APIs, and LLM chat completion routes — with rate limits and API key plans. See [Hub Gateway](hub-gateway) for the platform ingress design.
+- **Face detection** via OVMS ModelMesh (`openvino_ir`)
+- **PPE safety detection** via YOLO/KServe (`best.pt` — hardhat, safety vest, goggles)
+- **80-class object detection** via YOLOv4-tiny
+- **MaaS LLM chat** via OpenShift AI (`granite-3-2-8b-instruct` / `llama-scout-17b`)
+- **Kafka events** for CV detections (`cv.ppe.detections` topic)
+- **Grafana dashboards** for NeuroFace east/west metrics
+
+The hub routes browser traffic 50/50 to east/west NeuroFace UIs via Gateway API + Skupper.
+
+[![NeuroFace PPE detection flow](/images/hybrid-mesh-platform/neuroface-ppe-sequence.png)](/images/hybrid-mesh-platform/neuroface-ppe-sequence.png)
+
+_PPE detection flow: browser → Route → frontend nginx → backend `/api/ppe/detect` → YOLO InferenceService → Kafka → Camel K → Mailpit alert._
+
+## AI Gateway — MaaS + Kuadrant
+
+The AI Gateway uses **Kuadrant** to manage LLM access with per-user API keys and rate limits. Two dedicated gateways run on the hub:
+
+| Gateway | APIs protected | Plans |
+| --- | --- | --- |
+| **workshop-apis** | httpbin, REST Countries, MCP | bronze / silver / gold |
+| **ai-gateway** | MaaS LLM `/v1/chat/completions` | free / gold |
+
+NeuroFace can consume MaaS either directly or through the AI Gateway — the switch is a single environment variable. See [Hub Gateway — AI Gateway](hub-gateway) for the full `APIProduct` and `HTTPRoute` configuration.
+
+## MCP Gateway + OpenShift Lightspeed
+
+The MCP Gateway runs a **dual server** (Quarkus 19 tools + Go SDK 21 tools) on the hub, integrated with OpenShift Lightspeed (`OLSConfig`). Operators can query cluster state, inspect Argo CD applications, and act on infrastructure events using natural language — reducing MTTA on infrastructure incidents.
 
 ## External resources
 

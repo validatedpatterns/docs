@@ -4,7 +4,9 @@ weight: 60
 aliases: /hybrid-mesh-platform/industrial-edge/
 ---
 
-# Industrial Edge
+# Industrial Edge (Optional)
+
+> **Note:** In v2.2+, the primary demo is **AI Computer Vision at the Edge** (NeuroFace). The Industrial Edge factory telemetry stack described below is **optional and disabled by default**. To enable it, uncomment the `industrial-edge` applications in your `charts/region/*/values.yaml` files.
 
 ## What problem does it solve?
 

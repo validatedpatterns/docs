@@ -6,6 +6,8 @@ aliases: /hybrid-mesh-platform/architecture/
 
 # Architecture
 
+> **v2.2+ default deploy:** **AI Computer Vision at the Edge** — `spoke-neuroface` + `spoke-neuroface-cv` on east/west, hub `neuroface-gateway` (50/50). **Industrial Edge** (MQTT, line-dashboard, sensors) is **optional and disabled by default**; enable by uncommenting IE apps in region values.
+
 ## Hub-spoke theory in multi-cluster Kubernetes
 
 In multi-cluster Kubernetes, a **hub-spoke** model designates one administrative cluster (the **hub**) and one or more workload clusters (**spokes**). The hub owns fleet APIs: cluster inventory, policy placement, credentials for spoke registration, and often centralized GitOps controllers that fan out desired state.
@@ -27,7 +29,7 @@ This pattern requires **three OpenShift clusters** — not a single-cluster depl
 
 [![Hybrid Mesh Platform — hub-spoke component map](/images/hybrid-mesh-platform/workshop-hybrid-mesh-arch.png)](/images/hybrid-mesh-platform/workshop-hybrid-mesh-arch.png)
 
-_Platform component map: hub hosts fleet governance and AI services; east and west spokes host Industrial Edge workloads. Skupper VAN bridges cross-cluster service traffic without VPN._
+_Platform component map: hub hosts fleet governance and AI services; east and west spokes host AI Computer Vision workloads. Skupper VAN bridges cross-cluster service traffic without VPN._
 
 ## Platform architecture overview
 
@@ -35,9 +37,9 @@ _Platform component map: hub hosts fleet governance and AI services; east and we
 
 *Single `main` branch: hub at `charts/region/hub`, spokes at `charts/region/east` and `charts/region/west`, shared charts under `charts/all/`.*
 
-## Follow the request — one temperature reading end to end
+## Follow the request — AI Computer Vision at the Edge
 
-When a machine sensor on the **east** spoke publishes a temperature sample, the path is: **MQTT** (`messaging` broker) → **Camel K** (`mqtt-to-kafka` integration) → **Kafka** (`dev-cluster` topic) → optional **ML scoring** (KServe) → **line-dashboard** WebSocket consumer. In parallel, **Thanos Querier** on east scrapes Istio and Kafka metrics; a **Skupper Connector** (`prometheus-east`) tunnels HTTP to the hub, where **Grafana** datasource `prometheus-east` plots the series. The **Hub Gateway** can route browser traffic to the east line-dashboard via **spoke-gateway** and Skupper listener `ie-gateway-east`. Developer Hub **Topology** shows the same pods when the catalog entity carries `backstage.io/kubernetes-cluster: east` and spoke API tokens are synced.
+When a video stream is processed on the **east** spoke, the path is: **OVMS ModelMesh** (face detection) + **YOLO/KServe** (PPE safety) → **Kafka** (`neuroface-events` topic) → **Grafana** (local metrics). In parallel, **Thanos Querier** on east scrapes Istio and Kafka metrics; a **Skupper Connector** (`prometheus-east`) tunnels HTTP to the hub, where **Grafana** datasource `prometheus-east` plots the series. The **Hub Gateway** routes browser traffic 50/50 to the east/west NeuroFace UI via **spoke-gateway** and Skupper listener `neuroface-gateway-east`. Developer Hub **Topology** shows the same pods when the catalog entity carries `backstage.io/kubernetes-cluster: east` and spoke API tokens are synced.
 
 ## Components on the hub vs spokes
 
@@ -51,7 +53,8 @@ When a machine sensor on the **east** spoke publishes a temperature sample, the 
 | Developer Hub | yes | | `charts/region/hub/values.yaml` |
 | Hub Gateway (Gateway API) | yes | | `charts/region/hub/values.yaml` |
 | Spoke Gateway (Gateway API) | | yes | `charts/region/east|west/values.yaml` |
-| Industrial Edge workloads | | yes | `charts/region/east|west/values.yaml` |
+| AI Computer Vision (NeuroFace) | | yes | `charts/region/east|west/values.yaml` |
+| Industrial Edge workloads (optional) | | yes | `charts/region/east|west/values.yaml` |
 | Kafka brokers (regional) | | yes | `charts/region/east|west/values.yaml` |
 | Service Mesh ambient / ztunnel | yes | yes | both |
 | Istio CNI (`profile: ambient`) | yes | yes | both |
@@ -76,7 +79,7 @@ See **[GitOps deployment chain](https://maximilianopizarro.github.io/hybrid-mesh
 Components deploy in strict order via ArgoCD sync waves:
 
 ![Argo CD sync wave ordering from bootstrap through dashboards](/images/hybrid-mesh-platform/arch-sync-waves.png)
-*Sync waves prevent operators from racing workloads — mesh and namespaces land before Industrial Edge and gateways.*
+*Sync waves prevent operators from racing workloads — mesh and namespaces land before AI Computer Vision and gateways.*
 ### Spoke sync-wave reference
 
 Matches ebook Ch.4 ordering (`charts/region/east/values.yaml`, `charts/region/west/values.yaml`):
@@ -87,7 +90,7 @@ Matches ebook Ch.4 ordering (`charts/region/east/values.yaml`, `charts/region/we
 | 2 | OLM Subscriptions | CRDs and operators installed |
 | 3 | Service Mesh 3 (Istio + ZTunnel + ambient labels wave 2 inside chart) | Mesh dataplane before application pods |
 | 4 | Observability, ACS secured cluster | Scraping and security after mesh |
-| 5 | Industrial Edge (Kafka, sensors, dashboard) | Pods enroll in ambient with HBONE ready |
+| 5 | AI Computer Vision (NeuroFace, Kafka, YOLO) | Pods enroll in ambient with HBONE ready |
 | 6 | Spoke gateway + Skupper interconnect | Routing after backends exist |
 
 Hub chart uses a similar pattern; ApplicationSet for spokes runs at hub wave **5** after ACM placement is healthy.
@@ -100,9 +103,9 @@ Red Hat Service Interconnect creates a Virtual Application Network (VAN) that br
 *Connectors expose spoke-gateway and prometheus-auth-proxy; Listeners materialize ClusterIP services on the hub.*
 ## Spoke gateway aggregation
 
-Each spoke runs a **Gateway API gateway** that fronts all Industrial Edge services, providing a single entry point for Skupper to expose to the hub.
+Each spoke runs a **Gateway API gateway** that fronts all AI Computer Vision services, providing a single entry point for Skupper to expose to the hub.
 
-![Spoke gateway aggregates Industrial Edge HTTP routes for Skupper](/images/hybrid-mesh-platform/arch-spoke-gateway.png)
+![Spoke gateway aggregates AI Computer Vision HTTP routes for Skupper](/images/hybrid-mesh-platform/arch-spoke-gateway.png)
 *One Connector per spoke exposes the gateway instead of every microservice individually.*
 ## Multi-cluster observability pipeline
 
@@ -135,7 +138,7 @@ In a Hybrid Mesh Platform extension:
 | --- | --- | --- |
 | Runtime | OpenShift 4.17+ (3 workers) | MicroShift on RHEL (single node) |
 | Management | ACM ManagedCluster | ACM ManagedCluster (same placement rules) |
-| Workloads | Industrial Edge — Kafka, Camel K, ML | Lightweight sensors, MQTT bridge, edge inference |
+| Workloads | AI Computer Vision — Kafka, YOLO, ML | Lightweight sensors, MQTT bridge, edge inference |
 | Connectivity | Skupper VAN (full) | Skupper VAN (single-pod footprint) |
 | GitOps | clusterGroup PULL via ACM | clusterGroup PULL via ACM |
 
