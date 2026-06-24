@@ -12,11 +12,10 @@ industries:
 focus_areas:
   - DevSecOps
 aliases: /rhoso-gitops/
-# TODO(repo-move): update github and bugs URLs to validatedpatterns-sandbox/rhoso-gitops
 links:
-  github: https://github.com/cjeanner/pattern-rhoso-gitops
+  github: https://github.com/validatedpatterns-sandbox/rhoso-gitops
   install: getting-started
-  bugs: https://github.com/cjeanner/pattern-rhoso-gitops/issues
+  bugs: https://github.com/validatedpatterns-sandbox/rhoso-gitops/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ---
 

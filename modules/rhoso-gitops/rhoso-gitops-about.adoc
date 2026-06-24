@@ -70,5 +70,5 @@ consistency across spokes) do not apply to this pattern.
 
 This is a *sandbox tier* Validated Pattern. Support is provided by the community
 on a best-effort basis. For details, see the
-link:https://github.com/cjeanner/pattern-rhoso-gitops/blob/main/SUPPORT.md[support policy]
+link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/blob/main/SUPPORT.md[support policy]
 in the pattern repository.

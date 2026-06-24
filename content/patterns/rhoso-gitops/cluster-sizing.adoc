@@ -23,7 +23,7 @@ dataplane elements).
 Plan additional {rhel-short} capacity beyond the OpenShift worker sizing in
 `pattern-metadata.yaml`. Operator stages, sync order, and version pins are
 documented in the pattern repository
-link:https://github.com/cjeanner/pattern-rhoso-gitops/blob/main/VERSIONS.md[VERSIONS.md]
+link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/blob/main/VERSIONS.md[VERSIONS.md]
 file.
 
 [id="next-steps_rhoso-gitops-cluster-sizing"]

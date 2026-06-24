@@ -88,7 +88,7 @@ at the revision pinned in `overrides/values-rhoso-gitops.yaml`.
 
 Product, framework, upstream Git, and operator versions are listed in the pattern
 repository
-link:https://github.com/cjeanner/pattern-rhoso-gitops/blob/main/VERSIONS.md[VERSIONS.md]
+link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/blob/main/VERSIONS.md[VERSIONS.md]
 file.
 
 [id="rhoso-gitops-pin-revision"]

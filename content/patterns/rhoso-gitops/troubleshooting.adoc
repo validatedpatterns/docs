@@ -79,7 +79,7 @@ $ oc logs -n <namespace> <pod-name>
   later sync waves run.
 
 For community support, open an issue in the
-link:https://github.com/cjeanner/pattern-rhoso-gitops/issues[pattern repository].
+link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/issues[pattern repository].
 
 [id="next-steps_rhoso-gitops-troubleshooting"]
 == Next steps

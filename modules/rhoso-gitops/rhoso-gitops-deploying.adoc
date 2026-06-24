@@ -22,17 +22,16 @@ Before you deploy the pattern, ensure that you have the following:
 
 .Procedure
 
-// TODO(repo-move): replace cjeanner/pattern-rhoso-gitops with validatedpatterns-sandbox/rhoso-gitops
 . Fork the
-  link:https://github.com/cjeanner/pattern-rhoso-gitops[pattern-rhoso-gitops]
+  link:https://github.com/validatedpatterns-sandbox/rhoso-gitops[rhoso-gitops]
   repository on GitHub.
 
 . Clone your fork:
 +
 [source,terminal]
 ----
-$ git clone git@github.com:<your-organization>/pattern-rhoso-gitops.git
-$ cd pattern-rhoso-gitops
+$ git clone git@github.com:<your-organization>/rhoso-gitops.git
+$ cd rhoso-gitops
 ----
 
 . Optional: if you plan to use Vault integration later, copy the secrets template:
