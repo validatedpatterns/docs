@@ -1,0 +1,158 @@
+---
+title: Getting started
+weight: 10
+aliases: /lemonade-stand-quickstart/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="deploying-lemonade-stand-quickstart-pattern"]
+== Deploying the Lemonade Stand AI Quickstart pattern
+
+.Prerequisites
+
+* An OpenShift cluster (version 4.18 or later). This pattern requires at least 1 NVIDIA GPU node for LLM inference.
+ ** *AWS*: The pattern automatically provisions 1 `g5.2xlarge` GPU worker node (NVIDIA A10G) during installation. No GPU nodes need to be present before you deploy.
+ ** *Other providers and bare metal*: A GPU node must already be part of the OpenShift cluster before you deploy this pattern. The pattern installs all required operators automatically.
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
+* The Helm binary. For instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm].
+* The `oc` CLI tool. For instructions, see link:https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/getting-started-cli.html[Getting started with the OpenShift CLI].
+* Additional installation tool dependencies. For details, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
+
+[id="preparing-for-deployment-lemonade-stand"]
+== Preparing for deployment
+.Procedure
+
+. Fork the link:https://github.com/validatedpatterns-sandbox/ai-quickstart-lemonade-stand[ai-quickstart-lemonade-stand] repository on GitHub. You must fork the repository to customize this pattern.
+
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+$ git clone git@github.com:your-username/ai-quickstart-lemonade-stand.git
+----
+
+. Go to the root directory of your Git repository:
++
+[source,terminal]
+----
+$ cd ai-quickstart-lemonade-stand
+----
+
+. Run the following command to set the upstream repository:
++
+[source,terminal]
+----
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/ai-quickstart-lemonade-stand.git
+----
+
+. Verify the setup of your remote repositories by running the following command:
++
+[source,terminal]
+----
+$ git remote -v
+----
++
+.Example output
++
+[source,terminal]
+----
+origin	git@github.com:your-username/ai-quickstart-lemonade-stand.git (fetch)
+origin	git@github.com:your-username/ai-quickstart-lemonade-stand.git (push)
+upstream	git@github.com:validatedpatterns-sandbox/ai-quickstart-lemonade-stand.git (fetch)
+upstream	git@github.com:validatedpatterns-sandbox/ai-quickstart-lemonade-stand.git (push)
+----
+
+. Optional: To customize the deployment, create and switch to a new branch by running the following command:
++
+[source,terminal]
+----
+$ git checkout -b my-branch
+----
++
+Make your changes, then stage and commit them:
++
+[source,terminal]
+----
+$ git add <changed-files>
+$ git commit -m "Customize deployment"
+----
++
+Push the changes to your forked repository:
++
+[source,terminal]
+----
+$ git push origin my-branch
+----
+
+[id="deploying-cluster-using-patternsh-file-lemonade-stand"]
+== Deploying the pattern by using the pattern.sh file
+
+To deploy the pattern by using the `pattern.sh` file, complete the following steps:
+
+. Log in to your cluster by following this procedure:
+
+.. Obtain an API token by visiting link:https://oauth-openshift.apps.<your_cluster>.<domain>/oauth/token/request[https://oauth-openshift.apps.<your_cluster>.<domain>/oauth/token/request].
+
+.. Log in to the cluster by running the following command:
++
+[source,terminal]
+----
+$ oc login --token=<retrieved-token> --server=https://api.<your_cluster>.<domain>:6443
+----
++
+Or log in by running the following command:
++
+[source,terminal]
+----
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern to your cluster. Run the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
+
+.Verification
+
+To verify a successful installation, check the health of the ArgoCD applications:
+
+. Run the following command:
++
+[source,terminal]
+----
+$ ./pattern.sh make argo-healthcheck
+----
++
+It might take several minutes for all applications to synchronize and reach a healthy state. This includes downloading detector models, initializing the GPU operator, and starting the vLLM inference service.
+
+. Verify that the Operators are installed by navigating to *Operators -> Installed Operators* in the {ocp} web console. Confirm the following Operators are present:
++
+* NVIDIA GPU Operator
+* {rhoai}
+* Node Feature Discovery Operator
+* External Secrets Operator
+
+. After all applications are healthy, verify the inference service is serving by running:
++
+[source,terminal]
+----
+$ oc get inferenceservice -A
+----
+
+. Access the Lemonade Stand chatbot UI. Navigate to *Networking -> Routes* in the `lemonade-stand` namespace and open the route URL for the `lemonade-stand` service.
+
+. Access the R Shiny monitoring dashboard. Navigate to *Networking -> Routes* in the `lemonade-stand` namespace and open the route URL for the `shiny-dashboard` service.
+
+[id="next-steps-getting-started-lemonade-stand"]
+== Next steps
+
+* link:customizing-this-pattern[Customizing this pattern]
+* link:cluster-sizing[Cluster sizing]
+* link:troubleshooting[Troubleshooting]
