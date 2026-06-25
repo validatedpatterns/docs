@@ -14,24 +14,19 @@ include::modules/comm-attributes.adoc[]
 
 == Getting Started with Multicloud GitOps
 
-Multicloud GitOps is a foundational pattern that demonstrates GitOps principles for managing applications across multiple clusters. It provides:
+Multicloud GitOps is a foundational pattern that demonstrates the core concepts of Validated Patterns in action. Deploying it is a great way to explore how the framework works before creating your own pattern with link:/learn/creating-patterns-with-patternizer/[patternizer]. It provides:
 
 * A GitOps framework using `ArgoCD`
 * Infrastructure-as-Code practices
 * Multi-cluster management capabilities
-* Template for secure secret management
+* Secure secret management with HashiCorp Vault
 
-Red Hat recommend the Multicloud GitOps pattern as your base pattern because:
+Deploying Multicloud GitOps gives you hands-on experience with:
 
-. It establishes core GitOps practices
-. Provides a minimal but complete implementation
-. Serves as a foundation for other patterns
-. Demonstrates key validated patterns concepts
-
-[NOTE]
-====
-Other patterns build upon these concepts, making this an ideal starting point for your validated patterns journey.
-====
+. How operators and applications are defined in values files
+. How ArgoCD manages application lifecycle
+. How secrets are loaded and managed
+. How the pattern framework ties everything together
 
 == Deploying the Multicloud GitOps pattern
 

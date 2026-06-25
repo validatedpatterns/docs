@@ -2,7 +2,7 @@
 layout: default
 title: Patterns quick start
 menu: learn
-weight: 20
+weight: 18
 ---
 
 :toc:
@@ -11,17 +11,19 @@ include::modules/comm-attributes.adoc[]
 
 == Patterns quick start overview
 
-This validated pattern quickstart offers a streamlined guide to deploying predefined, reliable configurations and applications, ensuring they meet established standards. It provides step-by-step instructions on setup, prerequisites, and configuration, enabling administrators to deploy tested, supportable patterns quickly. These patterns simplify complex deployments by applying reusable configurations suited to various infrastructure and application needs, allowing users to efficiently deploy, manage, and scale applications with GitOps. This approach also reduces the risks and time associated with custom configurations.
+This quickstart helps you get up and running with Validated Patterns -- whether you are creating a new pattern or deploying an existing one.
 
-Validated patterns can be deployed using either the OpenShift-based Validated Patterns framework or the Ansible GitOps Framework (AGOF). The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat. 
+* **link:/learn/creating-patterns-with-patternizer/[Create a new pattern]** -- Use patternizer to bootstrap a Git repository into a ready-to-use Validated Pattern with all required scaffolding.
+* **link:/learn/getting-started-multi-cloud-gitops/[Deploy an existing pattern]** -- Deploy the Multicloud GitOps pattern to explore how the framework works in practice.
+
+Validated Patterns can be deployed using either the OpenShift-based Validated Patterns framework or the Ansible GitOps Framework (AGOF). The OpenShift-based Validated Patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat.
 
 == Getting Started with Validated Patterns
 
-This guide steps you through the process of deploying your first validated pattern on an OpenShift cluster. By the end of this guide, you'll have a working instance of the Multicloud GitOps pattern, which serves as an excellent foundation for exploring other patterns.
-
 === What You'll Learn
 
-. Setting up prerequisites for validated patterns
+. Setting up prerequisites for Validated Patterns
+. Creating a new pattern with patternizer
 . Installing and configuring the Validated Patterns Operator
 . Deploying the Multicloud GitOps pattern
 . Managing secrets and configurations
@@ -52,8 +54,7 @@ Before beginning, ensure you have the following:
 .For disconnected environments:
 
 * One or more openshift clusters deployed in a disconnected network
-* An OCI-compliant registry that is accessible from the disconnected network 
+* An OCI-compliant registry that is accessible from the disconnected network
 * A Git Repository that is accessible from the disconnected network
 
 For more information on disconnected installation, see link:/learn/disconnected-installation/[Deploying in a disconnected network].
-
