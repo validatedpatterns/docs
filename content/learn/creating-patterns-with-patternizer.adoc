@@ -1,0 +1,165 @@
+---
+menu:
+  learn:
+    parent: Patterns quick start
+title: Creating a pattern with patternizer
+weight: 19
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== Creating a new pattern with patternizer
+
+link:https://github.com/validatedpatterns/patternizer[Patternizer] is a command-line tool that bootstraps a Git repository into a ready-to-use Validated Pattern. It generates all required scaffolding -- values files, Makefile, `pattern.sh`, and Ansible configuration -- so you can focus on defining your applications rather than wiring up framework boilerplate.
+
+=== Prerequisites
+
+* A container runtime (Podman or Docker)
+* Git
+
+[TIP]
+.Shell Function
+====
+You can add a simple shell function to your shell configuration file (for example `~/.zshrc` or `~/.bashrc`) to enable easier use of the tool.
+
+[source,bash]
+----
+pattern() {
+  podman run --pull=newer \
+    -v "$PWD:$PWD:z" \
+    -w "$PWD" \
+    quay.io/validatedpatterns/patternizer "$@"
+}
+----
+
+With this function, you can run `pattern init` directly instead of the full `podman run` command. The examples below assume this function is in place.
+====
+
+=== Step 1: Create your pattern repository
+
+Create or clone an empty Git repository named after your pattern. The directory name becomes the pattern name in `values-global.yaml`.
+
+[source,terminal]
+----
+$ mkdir my-pattern && cd my-pattern
+$ git init
+----
+
+=== Step 2: Initialize the pattern
+
+To create a pattern without the secrets framework:
+
+[source,terminal]
+----
+$ pattern init
+----
+
+To create a pattern with HashiCorp Vault and External Secrets Operator scaffolding:
+
+[source,terminal]
+----
+$ pattern init --with-secrets
+----
+
+==== What patternizer generates
+
+Running `pattern init --with-secrets` on an empty directory named `my-pattern` produces the following files:
+
+[source,bash]
+----
+my-pattern
+├── ansible.cfg                 # default Ansible configuration
+├── Makefile                    # stub Makefile which includes Makefile-common
+├── Makefile-common             # common commands (install, load-secrets, etc.)
+├── pattern.sh                  # convenience utility container (has oc, helm, make, etc.)
+├── values-global.yaml          # names the pattern based on the directory and sets common defaults
+├── values-prod.yaml            # contains the components for the secrets framework
+└── values-secret.yaml.template # stub for the secrets file
+----
+
+The generated `values-global.yaml` contains:
+
+[source,yaml]
+----
+global:
+  pattern: my-pattern
+  singleArgoCD: true
+  secretLoader:
+    disabled: false
+main:
+  clusterGroupName: prod
+  multiSourceConfig:
+    enabled: true
+    clusterGroupChartVersion: 0.9.*
+----
+
+The generated `values-prod.yaml` contains:
+
+[source,yaml]
+----
+clusterGroup:
+  name: prod
+  namespaces:
+    my-pattern:
+    vault:
+    external-secrets-operator:
+      operatorGroup: true
+      targetNamespaces: []
+    external-secrets:
+  subscriptions:
+    eso:
+      name: openshift-external-secrets-operator
+      namespace: external-secrets-operator
+      channel: stable-v1
+  applications:
+    openshift-external-secrets:
+      name: openshift-external-secrets
+      namespace: external-secrets
+      chart: openshift-external-secrets
+      chartVersion: 0.0.*
+    vault:
+      name: vault
+      namespace: vault
+      chart: hashicorp-vault
+      chartVersion: 0.1.*
+----
+
+If you omit `--with-secrets`, the generated files will not include the Vault and External Secrets Operator configuration, and `secretLoader.disabled` will be set to `true` in `values-global.yaml`.
+
+=== Step 3: Define your pattern content
+
+After initialization, you need to add your operators, applications, and Helm charts to the pattern. There are two approaches:
+
+==== Using the pattern-author AI coding skill
+
+Patternizer installs an AI coding skill to `.claude/skills/pattern-author/` and `.cursor/skills/pattern-author/` during initialization. This skill teaches AI coding assistants such as Claude Code and Cursor how to author Validated Patterns -- defining namespaces, operators, applications, secrets, hub/spoke clusters, and more.
+
+Open the initialized repository in your AI-assisted editor and the skill will be available automatically. You can ask the assistant to add operators, wire in Helm charts, configure secrets, or set up multi-cluster deployments.
+
+==== Manually editing values files
+
+You can directly edit the generated values files to define your pattern:
+
+* Add operator subscriptions and namespaces to `values-prod.yaml`
+* Add Helm chart applications to `values-prod.yaml`
+* Configure global settings in `values-global.yaml`
+* Define secrets in `values-secret.yaml.template`
+
+For detailed guidance on structuring your pattern, see link:/learn/vp_structure_vp_pattern/[Structuring a validated pattern]. For adding operators, see link:/learn/vp_add_ops_to_pattern/[Adding operators to the framework].
+
+[NOTE]
+.Idempotency
+====
+The `pattern init` command is idempotent and can be run multiple times during pattern creation to update the pattern values files. You can go from `pattern init` to `pattern init --with-secrets` to add the secrets framework to your pattern. If you use `helm create` (or `./pattern.sh helm create`) to create Helm charts and then run `pattern init` again, the Helm charts will be automatically added to your `values-prod.yaml`.
+====
+
+=== Next steps
+
+* Deploy an existing pattern like link:/learn/getting-started-multi-cloud-gitops/[Multicloud GitOps] to explore how the framework works in practice
+* Learn about link:/learn/vp_structure_vp_pattern/[structuring a validated pattern] and best practices
+* Add operators to your pattern with link:/learn/vp_add_ops_to_pattern/[Adding operators to the framework]
+* Configure secrets with link:/learn/getting-started-secret-management/[Configuring secrets]
+* Visit the link:https://github.com/validatedpatterns/patternizer[patternizer repository on GitHub] for the latest documentation

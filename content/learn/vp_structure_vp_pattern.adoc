@@ -16,17 +16,17 @@ include::modules/comm-attributes.adoc[]
 
 The high level steps to create a validated pattern are as follows: 
 
-1. Identify the business case you want to address.  
-2. Use the Multicloud GitOps as a starting point by using the template to create a new Git repository in your local GitHub account.  
-3. Identify the technology components that you need.   
+1. Identify the business case you want to address.
+2. Use link:/learn/creating-patterns-with-patternizer/[patternizer] to bootstrap a new pattern repository with all required scaffolding, or fork an existing pattern such as link:/patterns/multicloud-gitops[Multicloud GitOps] to start from a working example.
+3. Identify the technology components that you need.
 4. Ensure that the configuration of those components, and the integration points are handled in the pattern.  
 
 == Best Practices for creating Validated Patterns
 
 Following these best practices, to create robust, scalable, and maintainable validated patterns that are easy to deploy and manage across various environments.
 
-1.  **Start with OpenShift Multicloud GitOps**
-    - When creating a validated pattern, begin with OpenShift Multicloud GitOps as your foundation. This is the most fundamental pattern and should serve as your base.
+1.  **Bootstrap your pattern with patternizer**
+    - When creating a new validated pattern, use link:/learn/creating-patterns-with-patternizer/[patternizer] to generate the required scaffolding. This is the fastest way to get started. Alternatively, you can fork the link:/patterns/multicloud-gitops[Multicloud GitOps] pattern as your foundation if you prefer to work from a fully working example.
 
 2. **Centralize all manifests in a Git Repository**
    - Ensure that all pattern manifests, configuration files, and desired state definitions are stored in a Git repository. This provides a single source of truth and facilitates the use of GitOps for deployment. 
