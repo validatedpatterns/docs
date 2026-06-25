@@ -1,0 +1,138 @@
+---
+title: Customizing this pattern
+weight: 20
+aliases: /lemonade-stand-quickstart/customizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="customizing-lemonade-stand-quickstart"]
+== Customizing the Lemonade Stand AI Quickstart pattern
+
+This pattern deploys an AI chatbot with a multi-layered guardrails pipeline that includes model-based detectors, a rule-based language detector, and regular expression-based competitor filtering. You can customize the LLM model, detector configuration, and monitoring settings.
+
+[id="changing-model-lemonade-stand"]
+=== Changing the LLM model
+
+The pattern serves Llama 3.2 3B Instruct (FP8-quantized) by default through vLLM on KServe. The model is defined in the lemonade-stand-assistant Helm chart's `values.yaml`.
+
+To change the locally served model, update the model configuration in the Helm chart values. The model must be compatible with vLLM and fit within the available GPU VRAM on the provisioned node (NVIDIA A10G with 24 GB VRAM on `g5.2xlarge`).
+
+[id="using-external-model-lemonade-stand"]
+=== Using an external model endpoint (BYOM)
+
+Instead of serving a model locally on GPU, you can configure the pattern to use an external Model-as-a-Service endpoint. This eliminates the GPU node requirement for inference.
+
+. Make a local copy of the secrets template outside of your repository:
++
+[WARNING]
+====
+Do not add, commit, or push this file to your repository. Doing so might expose personal credentials to GitHub.
+====
++
+[source,terminal]
+----
+$ cp values-secret.yaml.template ~/values-secret-ai-quickstart-lemonade-stand.yaml
+----
+
+. Edit the secrets file and set the API key for your external model endpoint:
++
+[source,terminal]
+----
+$ vim ~/values-secret-ai-quickstart-lemonade-stand.yaml
+----
++
+[source,yaml]
+----
+  - name: lemonade-stand
+    vaultPrefixes:
+    - global
+    fields:
+    - name: vllm-api-key
+      value: <your-external-api-key>
+----
+
+. Set the `model` section in the Helm chart values to point to your external endpoint:
++
+[source,yaml]
+----
+model:
+  name: my-model
+  endpoint: my-maas-instance
+  port: 443
+----
+
+When using an external model endpoint, the vLLM InferenceService is not deployed and the GPU node is not required for LLM inference. The guardrails pipeline continues to function normally with the external model.
+
+[id="enabling-gpu-detectors-lemonade-stand"]
+=== Enabling GPU for detector models
+
+By default, the HAP and prompt injection detector models run on CPU. You can enable GPU acceleration for these models to reduce inference latency, but this requires additional GPU resources.
+
+To enable GPU for the detector models, set the `useGpu` flag in the Helm chart values:
+
+[source,yaml]
+----
+detectors:
+  hap:
+    useGpu: true
+  promptInjection:
+    useGpu: true
+----
+
+[NOTE]
+====
+Enabling GPU for both detectors requires 2 additional GPUs beyond the 1 GPU used for the LLM, for a total of 3 GPUs. You must provision additional GPU nodes before enabling this option.
+====
+
+[id="configuring-detector-thresholds-lemonade-stand"]
+=== Configuring detector thresholds
+
+The guardrails pipeline uses three detector models, each with a configurable detection threshold. Lower thresholds increase sensitivity (block more content) while higher thresholds reduce false positives.
+
+The default thresholds are:
+
+[cols="1,1,2",options="header"]
+|===
+| Detector | Default threshold | Description
+
+| IBM Granite Guardian HAP
+| 0.5
+| Hate speech, abuse, and profanity detection
+
+| DeBERTa v3 Prompt Injection
+| 0.5
+| Prompt injection and jailbreak detection
+
+| Lingua Language
+| 0.88
+| English language confidence threshold
+|===
+
+To adjust detector thresholds, modify the Guardrails Orchestrator configuration in the `fms-orchestr8-config-nlp` ConfigMap within the lemonade-stand-assistant Helm chart.
+
+[id="configuring-regex-detector-lemonade-stand"]
+=== Configuring the regex detector
+
+The FastAPI application includes a regular expression-based detector that blocks mentions of competitor fruit names (oranges, apples, bananas, and others) across 13+ languages. This detector runs locally in the application before the request reaches the Guardrails Orchestrator.
+
+To modify the blocked terms or supported languages, edit the regular expression patterns in the `app_fastapi.py` file in the lemonade-stand-assistant repository.
+
+[id="configuring-shiny-dashboard-lemonade-stand"]
+=== Adjusting the monitoring dashboard
+
+The R Shiny dashboard polls the FastAPI application's `/metrics` endpoint to display guardrail activation statistics in real time. The default polling interval is 1 second.
+
+To adjust the refresh interval, modify the `shinyDashboard.metrics.refreshInterval` value in the Helm chart values:
+
+[source,yaml]
+----
+shinyDashboard:
+  metrics:
+    refreshInterval: 5
+----
+
+Push your changes to your forked repository so the GitOps framework applies the updated configuration.

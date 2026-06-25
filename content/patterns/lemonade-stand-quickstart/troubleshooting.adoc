@@ -1,0 +1,282 @@
+---
+title: Troubleshooting
+weight: 40
+aliases: /lemonade-stand-quickstart/troubleshooting/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="troubleshooting-lemonade-stand-quickstart"]
+== Troubleshooting the Lemonade Stand AI Quickstart pattern
+
+[id="troubleshooting-prereqs-lemonade-stand"]
+=== Prerequisite and tooling issues
+
+[id="troubleshooting-podman-version-lemonade-stand"]
+==== Podman version not supported
+
+The `pattern.sh` script requires Podman 4.3.0 or later. Earlier versions do not support the `--userns=keep-id` flag required for correct UID/GID mapping inside the container.
+
+.Symptom
+
+The script exits with an error referencing the Podman version or `keep-id`.
+
+.Resolution
+
+. Check your Podman version:
++
+[source,terminal]
+----
+$ podman --version
+----
+
+. If the version is earlier than 4.3.0, upgrade Podman. For instructions, see the link:https://podman.io/docs/installation[Podman installation documentation].
+
+[id="troubleshooting-kubeconfig-lemonade-stand"]
+==== KUBECONFIG path is outside the HOME directory
+
+The `pattern.sh` script runs inside a container and mounts your `$HOME` directory. If your `KUBECONFIG` file is located outside `$HOME`, the container cannot access it.
+
+.Symptom
+
+The script fails to connect to the cluster or reports that the kubeconfig file cannot be found.
+
+.Resolution
+
+Move your kubeconfig file to a path inside your home directory and export the updated path:
+
+[source,terminal]
+----
+$ cp <current-kubeconfig-path> ~/kubeconfig
+$ export KUBECONFIG=~/kubeconfig
+----
+
+[id="troubleshooting-deployment-lemonade-stand"]
+=== Deployment issues
+
+[id="troubleshooting-argocd-sync-lemonade-stand"]
+==== ArgoCD applications are not syncing or are unhealthy
+
+After running `./pattern.sh make install`, ArgoCD applications can take 15–30 minutes to reach a healthy state. Model downloads and GPU operator initialization take additional time.
+
+.Symptom
+
+Running `./pattern.sh make argo-healthcheck` reports applications in `Progressing` or `Degraded` state.
+
+.Resolution
+
+. Check which applications are not healthy:
++
+[source,terminal]
+----
+$ oc get applications -n openshift-gitops
+----
+
+. Inspect the failing application for error details:
++
+[source,terminal]
+----
+$ oc describe application <application-name> -n openshift-gitops
+----
+
+. Check the logs of the ArgoCD application controller:
++
+[source,terminal]
+----
+$ oc logs -n openshift-gitops deployment/openshift-gitops-application-controller
+----
+
+. If applications are stuck in `Progressing`, wait an additional 10 minutes and re-run the health check. Detector model downloads from Hugging Face through MinIO and GPU operator initialization can take significant time.
+
+[id="troubleshooting-gpu-lemonade-stand"]
+=== GPU and inference issues
+
+[id="troubleshooting-gpu-nodes-lemonade-stand"]
+==== GPU nodes are not ready
+
+The NVIDIA GPU Operator must successfully initialize on the GPU node before model serving can start.
+
+.Symptom
+
+The vLLM inference service pod remains in `Pending` state, or `oc get inferenceservice -A` shows the service not ready.
+
+.Resolution
+
+. Check the status of GPU nodes:
++
+[source,terminal]
+----
+$ oc get nodes -l nvidia.com/gpu.present=true
+----
+
+. Check the NVIDIA GPU Operator pods:
++
+[source,terminal]
+----
+$ oc get pods -n nvidia-gpu-operator
+----
+
+. Check for driver initialization errors:
++
+[source,terminal]
+----
+$ oc logs -n nvidia-gpu-operator -l app=nvidia-driver-daemonset
+----
+
+. If you are using a provider other than AWS, confirm that a GPU node was present in the cluster before you deployed the pattern. The pattern does not provision GPU nodes on providers other than AWS.
+
+[id="troubleshooting-inference-lemonade-stand"]
+==== Inference endpoint is not serving
+
+.Symptom
+
+`oc get inferenceservice -A` shows the inference service in a non-ready state, or the chatbot returns connection errors.
+
+.Resolution
+
+. Check the status of the inference service:
++
+[source,terminal]
+----
+$ oc get inferenceservice -A
+----
+
+. Check the vLLM model server pod logs:
++
+[source,terminal]
+----
+$ oc logs -n lemonade-stand -l serving.kserve.io/inferenceservice=llm-service
+----
+
+. Confirm that the GPU node has sufficient available VRAM. The Llama 3.2 3B Instruct model requires a GPU with at least 24 GB of VRAM.
+
+[id="troubleshooting-guardrails-lemonade-stand"]
+=== Guardrails orchestrator issues
+
+[id="troubleshooting-orchestrator-not-ready"]
+==== Guardrails Orchestrator pod is not ready
+
+All detector models must be available and healthy before the Guardrails Orchestrator can serve requests.
+
+.Symptom
+
+The orchestrator pod is in `CrashLoopBackOff` or `Error` state, or the chatbot returns 503 errors.
+
+.Resolution
+
+. Check the status of all pods in the lemonade-stand namespace:
++
+[source,terminal]
+----
+$ oc get pods -n lemonade-stand
+----
+
+. Check the orchestrator pod logs for detector connection errors:
++
+[source,terminal]
+----
+$ oc logs -n lemonade-stand -l app=guardrails-orchestrator
+----
+
+. Verify that all detector services are running:
++
+[source,terminal]
+----
+$ oc get inferenceservice -n lemonade-stand
+----
+
+. If detector models are not ready, check that MinIO has successfully downloaded the model artifacts from Hugging Face:
++
+[source,terminal]
+----
+$ oc logs -n lemonade-stand -l app=minio
+----
+
+[id="troubleshooting-all-blocked"]
+==== Guardrails are blocking all requests
+
+.Symptom
+
+Every user query is blocked by the guardrails, even when the content appears safe and in English.
+
+.Resolution
+
+. Check the R Shiny dashboard to identify which detector is triggering. Navigate to *Networking -> Routes* in the `lemonade-stand` namespace and open the dashboard route.
+
+. If the Lingua detector is blocking English text, the language confidence threshold may be too high. Review the Lingua threshold in the `fms-orchestr8-config-nlp` ConfigMap.
+
+. If the HAP or prompt injection detector is triggering on safe content, their detection thresholds may be too aggressive. See link:customizing-this-pattern#configuring-detector-thresholds-lemonade-stand[Configuring detector thresholds].
+
+[id="troubleshooting-application-lemonade-stand"]
+=== Application issues
+
+[id="troubleshooting-chatbot-ui"]
+==== Lemonade Stand chatbot UI is not accessible
+
+.Symptom
+
+The chatbot UI route returns a 503 or connection error.
+
+.Resolution
+
+. Check that the lemonade-stand pod is running:
++
+[source,terminal]
+----
+$ oc get pods -n lemonade-stand -l app=lemonade-stand
+----
+
+. Check the application logs for startup errors:
++
+[source,terminal]
+----
+$ oc logs -n lemonade-stand -l app=lemonade-stand
+----
+
+. Verify the route is correctly configured:
++
+[source,terminal]
+----
+$ oc get routes -n lemonade-stand
+----
+
+[id="troubleshooting-shiny-dashboard"]
+==== R Shiny dashboard shows no data
+
+.Symptom
+
+The dashboard loads but shows zero values for all metrics, or displays errors.
+
+.Resolution
+
+. Confirm that the lemonade-stand application is running and the `/metrics` endpoint is accessible:
++
+[source,terminal]
+----
+$ oc exec -n lemonade-stand deployment/shiny-dashboard -- curl -s http://lemonade-stand:8080/metrics
+----
+
+. Check the Shiny dashboard pod logs:
++
+[source,terminal]
+----
+$ oc logs -n lemonade-stand -l app=shiny-dashboard
+----
+
+. Verify that the `shinyDashboard.metrics.url` in the Helm chart values points to the correct metrics endpoint.
+
+[id="troubleshooting-get-help-lemonade-stand"]
+=== Getting help
+
+If you cannot resolve an issue using this guide:
+
+* Check the link:https://github.com/validatedpatterns-sandbox/ai-quickstart-lemonade-stand/issues[GitHub issues] for known problems and workarounds.
+* Open a new issue with the output of the following command to help diagnose the problem:
++
+[source,terminal]
+----
+$ oc get pods -A | grep -v Running | grep -v Completed
+----
