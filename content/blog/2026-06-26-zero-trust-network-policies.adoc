@@ -1,0 +1,57 @@
+---
+ date: 2026-06-26
+ title: "Can't Patch Fast Enough? Zero Trust as a Last Line of Defense"
+ summary: Network policies in the Layered Zero Trust Validated Pattern provide containment when vulnerabilities are discovered faster than patches can be applied. This post introduces the approach and links to the full Red Hat blog article.
+ author: Przemyslaw Roguski
+ blog_tags:
+ - patterns
+ - zero-trust
+ - security
+ - network-policies
+ - openshift
+ - spiffe
+---
+:toc:
+:imagesdir: /images
+
+== The challenge
+
+In 2025, over 40,000 new CVEs were published — more than 100 every single day. AI-powered exploit generation is accelerating the time from disclosure to active exploitation. For enterprise environments running hundreds of containerized workloads across OpenShift clusters, the patching math simply doesn't add up.
+
+So what do you do in the gap between vulnerability disclosure and patch deployment?
+
+== Zero Trust network segmentation
+
+The https://validatedpatterns.io/patterns/layered-zero-trust/[Layered Zero Trust Validated Pattern] implements network policies following https://csrc.nist.gov/pubs/sp/800/207/final[NIST SP 800-207 (Zero Trust Architecture)] principles. The approach is built on two layers:
+
+* **Default-deny** — a namespace-wide NetworkPolicy that blocks all ingress and egress for every pod unless an explicit allow rule exists. This transforms the security posture from "everything is open unless blocked" to "everything is blocked unless explicitly allowed."
+
+* **Per-pod allow rules** — each pod type gets its own NetworkPolicy specifying exactly which connections it needs. Only explicitly required traffic flows are permitted — DNS, database connections, API access, and inter-component communication are all individually justified and documented.
+
+This means that even if a vulnerability is exploited in one component, the attacker cannot move laterally across namespaces, exfiltrate data to external servers, or reach sensitive infrastructure like Vault or the Kubernetes API — because the network layer blocks those connections before any application-level security is evaluated.
+
+== What the pattern covers
+
+The ZTVP currently implements network policies for:
+
+* **Vault** — secrets infrastructure with per-pod ingress/egress rules
+* **Keycloak (RHBK)** — identity provider with operator-managed ingress and custom egress rules
+* **ZTWIM (SPIRE/SPIFFE)** — workload identity infrastructure with special handling for hostNetwork agents
+* **qtodo** — sample application demonstrating the default-deny + allow pattern
+
+Each namespace follows the same proven approach: default-deny foundation, per-pod allow rules with documented justifications, and dry-run verification on a live cluster before deployment.
+
+== Read the full article
+
+For a deep dive into why network policies are your last line of defense, how they align with NIST SP 800-207, and practical examples from the ZTVP, read the full article on the Red Hat Developer blog:
+
+**https://developers.redhat.com/articles/2026/06/26/cant-patch-fast-enough-zero-trust-last-line-defense[Can't Patch Fast Enough? Zero Trust as a Last Line of Defense]**
+
+== Get started
+
+The Layered Zero Trust Validated Pattern is open source:
+
+* https://validatedpatterns.io/patterns/layered-zero-trust/[Pattern documentation]
+* https://github.com/validatedpatterns/layered-zero-trust[Source repository]
+
+This is the first in a planned series of articles covering the security layers in the ZTVP — workload identity (SPIFFE/SPIRE), Vault integration, supply chain security, and ACS runtime monitoring.
