@@ -1,0 +1,79 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+include::comm-attributes.adoc[]
+
+[id="about-lemonade-stand-quickstart"]
+= About the Lemonade Stand AI Quickstart pattern
+
+Deploy an AI chatbot with multi-layered safety guardrails on OpenShift to demonstrate content filtering, prompt injection defense, language enforcement, and real-time guardrail monitoring.
+
+Use case::
+
+* Deploy a guardrailed AI chatbot that filters harmful content, detects prompt injection attempts, enforces language constraints, and blocks competitor mentions through multiple safety layers.
+* Explore multi-layered AI safety techniques including model-based detectors (HAP, prompt injection), rule-based detectors (language enforcement), and regex-based filtering.
+* Use a GitOps approach to provision AI guardrails infrastructure including GPU-accelerated model serving, TrustyAI orchestration, and monitoring.
+
+Background::
+
+This pattern builds on the link:https://github.com/rh-ai-quickstart/lemonade-stand-assistant[Lemonade Stand Assistant AI Quickstart]. It provisions the OpenShift cluster with link:https://www.redhat.com/en/products/ai/openshift-ai[{rhoai}] configured for GPU-accelerated inference using vLLM. It deploys the NVIDIA GPU Operator for model serving on GPU nodes and manages secrets through the {solution-name-upstream} framework using HashiCorp Vault and the External Secrets Operator. This pattern generalizes one or more successful deployments of this use case. Implementation details might vary depending on your specific environment and requirements.
+
+Organizations can use the Lemonade Stand AI Quickstart to learn how to implement AI safety guardrails as a multi-layered pipeline. It demonstrates a production-ready approach to:
+
+- Serving a language model (Llama 3.2 3B Instruct) with GPU-accelerated inference through vLLM on KServe
+- Orchestrating multiple safety detectors through TrustyAI Guardrails Orchestrator (FMS Orchestr8) to validate both input and output
+- Detecting hate speech, abuse, and profanity with the IBM Granite Guardian HAP 125M model
+- Identifying prompt injection and jailbreak attempts with the DeBERTa v3 Base model
+- Enforcing language constraints with the Lingua rule-based detector
+- Blocking competitor product mentions with regex-based pre-filtering in 13+ languages
+- Monitoring guardrail activation rates in real time through an R Shiny dashboard
+
+[id="about-lemonade-stand-quickstart-solution"]
+== About the solution
+
+This pattern deploys a complete guardrailed chatbot on a single OpenShift cluster by using a GitOps approach. You use the {solution-name-upstream} framework to provision infrastructure, including GPU operators, AI platform configuration, and secrets management. The Lemonade Stand Assistant AI Quickstart delivers the application layer: model serving, guardrails orchestration, safety detectors, and monitoring.
+
+User queries flow through a multi-stage safety pipeline. The FastAPI application first applies a regular expression pre-filter to block competitor fruit names across 13 languages. The application forwards queries that pass to the TrustyAI Guardrails Orchestrator, which chains three detector models in sequence: Lingua (language enforcement), IBM Granite Guardian HAP 125M (content safety), and DeBERTa v3 Base (prompt injection detection). Only validated queries reach the LLM. The same detectors validate model output before streaming it back to the user. An R Shiny dashboard provides real-time visibility into guardrail activation rates by polling Prometheus metrics from the FastAPI application.
+
+[id="about-lemonade-stand-quickstart-technology"]
+== About the technology
+
+This solution uses the following technologies:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-ocp}]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-gitops}]::
+A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai[{rhoai}]::
+A flexible, scalable MLOps platform with tools to build, deploy, and manage AI-enabled applications. This pattern uses {rhoai} to manage GPU-accelerated model serving with vLLM via KServe.
+
+https://www.redhat.com/en/blog/trustyai-openshift-ai[TrustyAI / FMS Guardrails Orchestrator]::
+A guardrails orchestration framework that chains multiple safety detectors to validate both input and output of LLM interactions. This pattern uses the FMS Orchestr8 configuration to pipeline Lingua, HAP, and prompt injection detectors.
+
+https://docs.vllm.ai/[vLLM]::
+A high-throughput, memory-efficient inference engine for large language models. vLLM serves the Llama 3.2 model with optimized GPU use.
+
+https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct[Llama 3.2 3B Instruct]::
+A compact instruction-tuned language model from Meta. This pattern serves the FP8-quantized variant for efficient GPU inference as the chatbot's conversational backend.
+
+https://huggingface.co/ibm-granite/granite-guardian-hap-125m[IBM Granite Guardian HAP 125M]::
+A lightweight hate, abuse, and profanity detection model from IBM. This pattern uses it to filter harmful content in both user queries and model responses.
+
+https://huggingface.co/protectai/deberta-v3-base-prompt-injection-v2[DeBERTa v3 Base Prompt Injection]::
+A fine-tuned DeBERTa model for detecting prompt injection and jailbreak attempts. This pattern uses it to identify attempts to override the chatbot's system instructions.
+
+https://github.com/pemistahl/lingua-py[Lingua]::
+A rule-based natural language detection library. This pattern uses Lingua to enforce English-only communication with the chatbot.
+
+https://github.com/foundation-model-stack/fms-guardrails-orchestrator[FMS Chunkers]::
+A sentence-level text chunking service that segments user input and model output for individual detector evaluation.
+
+https://min.io/[MinIO]::
+An S3-compatible object storage service. This pattern uses MinIO to store detector model artifacts that are downloaded from Hugging Face during initialization.
+
+https://shiny.posit.co/[R Shiny]::
+A web application framework for R. This pattern uses an R Shiny dashboard to visualize guardrail activation metrics in real time, displaying request counts, blocked inputs and outputs, and per-detector activation rates.
+
+https://prometheus.io/[Prometheus]::
+An open source monitoring and alerting toolkit. This pattern uses Prometheus-format metrics exposed by the FastAPI application to track guardrail activations.

@@ -1,0 +1,29 @@
+---
+title: Cluster sizing
+weight: 30
+aliases: /lemonade-stand-quickstart/cluster-sizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+include::modules/ai-quickstart-lemonade-stand/metadata-ai-quickstart-lemonade-stand.adoc[]
+
+include::modules/cluster-sizing-template.adoc[]
+
+[id="lemonade-stand-quickstart-gpu-node-requirements"]
+== GPU node requirements
+
+In addition to the worker nodes listed above, this pattern requires at least 1 GPU-equipped node for LLM inference. On AWS, the pattern automatically provisions a `g5.2xlarge` instance with an NVIDIA A10G GPU. On other providers and bare metal, ensure a GPU node is part of the cluster before you deploy the pattern.
+
+.GPU node minimum requirements
+[cols="<,^,<,<"]
+|===
+| Cloud provider | Node type | Number of nodes | Instance type
+
+| Amazon Web Services
+| GPU Worker
+| 1
+| g5.2xlarge
+|===
