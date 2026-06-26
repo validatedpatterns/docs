@@ -1,0 +1,21 @@
+// This file defines cluster sizing attributes for the Lemonade Stand AI Quickstart pattern.
+// These values are defined manually based on tested configurations.
+:metadata_version: 1.0
+:name: ai-quickstart-lemonade-stand
+:pattern_version: 1.0
+:description: Deploy an AI chatbot with multi-layered safety guardrails, TrustyAI orchestration, and real-time monitoring.
+:display_name: Lemonade Stand AI Quickstart
+:repo_url: https://github.com/validatedpatterns-sandbox/ai-quickstart-lemonade-stand
+:docs_repo_url: https://github.com/validatedpatterns/docs
+:issues_url: https://github.com/validatedpatterns-sandbox/ai-quickstart-lemonade-stand/issues
+:docs_url: https://validatedpatterns.io/patterns/lemonade-stand-quickstart/
+:ci_url: https://validatedpatterns.io/ci/?pattern=lemonade-stand-quickstart
+:tier: sandbox
+:owners: dminnear-rh
+:requirements_hub_controlPlane_platform_aws_replicas: 3
+:requirements_hub_controlPlane_platform_aws_type: m5.xlarge
+:requirements_hub_compute_platform_aws_replicas: 3
+:requirements_hub_compute_platform_aws_type: m5.4xlarge
+:extra_features_hypershift_support: false
+:extra_features_spoke_support: false
+:external_requirements:

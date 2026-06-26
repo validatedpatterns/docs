@@ -1,0 +1,37 @@
+---
+title: Lemonade Stand AI Quickstart
+date: 2026-06-25
+tier: sandbox
+summary: This pattern deploys an AI guardrails demonstration with a multi-layered safety pipeline, interactive chatbot, and real-time monitoring on OpenShift.
+rh_products:
+  - Red Hat OpenShift Container Platform
+  - Red Hat OpenShift AI
+industries:
+  - General
+focus_areas:
+  - AI
+  - Safety
+  - AI Quickstart
+aliases: /lemonade-stand-quickstart/
+links:
+  github: https://github.com/validatedpatterns-sandbox/ai-quickstart-lemonade-stand
+  install: getting-started
+  bugs: https://github.com/validatedpatterns-sandbox/ai-quickstart-lemonade-stand/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/lemonade-stand-quickstart-about.adoc[leveloffset=+1]
+
+include::modules/lemonade-stand-quickstart-architecture.adoc[leveloffset=+1]
+
+[id="next-steps-lemonade-stand-quickstart"]
+== Next steps
+
+* link:getting-started[Install this pattern]
+* link:cluster-sizing[Cluster sizing]
+* link:customizing-this-pattern[Customizing this pattern]
+* link:troubleshooting[Troubleshooting]

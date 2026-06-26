@@ -1,0 +1,174 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+include::comm-attributes.adoc[]
+
+[id="lemonade-stand-quickstart-architecture"]
+= Lemonade Stand AI Quickstart architecture
+
+The following figure shows the Lemonade Stand AI Quickstart architecture.
+
+.Lemonade Stand AI Quickstart system architecture
+image::lemonade-stand-quickstart/lemonade-stand-architecture.png[Lemonade Stand AI Quickstart Architecture,link="/images/lemonade-stand-quickstart/lemonade-stand-architecture.png"]
+
+The architecture consists of three main layers:
+
+* *Guardrails Layer* -- Chains multiple safety detectors through the TrustyAI Guardrails Orchestrator to filter both input and output for content safety, prompt injection, and language compliance.
+* *Inference Layer* -- Serves the Llama 3.2 3B Instruct model through vLLM with GPU acceleration on KServe.
+* *Application Layer* -- Provides the chatbot UI with regex-based pre-filtering, Prometheus metrics, and a real-time R Shiny monitoring dashboard.
+
+[id="lemonade-stand-quickstart-guardrails-layer"]
+== Guardrails layer
+
+The guardrails layer validates both user input and model output through a chain of safety detectors:
+
+TrustyAI Guardrails Orchestrator (FMS Orchestr8)::
+Orchestrates multiple detector models in a configurable pipeline. Each detector evaluates the input or output independently, and the orchestrator aggregates results to determine whether to allow or block the content.
+
+IBM Granite Guardian HAP 125M::
+A lightweight model that detects hate speech, abuse, and profanity. Runs on CPU by default with optional GPU acceleration. Threshold: 0.5.
+
+DeBERTa v3 Base Prompt Injection Detector::
+A fine-tuned DeBERTa model that identifies prompt injection and jailbreak attempts. Runs on CPU by default with optional GPU acceleration. Threshold: 0.5.
+
+Lingua Language Detector::
+A rule-based language detection service that enforces English-only communication. Deployed as a Kubernetes Deployment (not KServe). Threshold: 0.88.
+
+FMS Chunkers::
+A gRPC-based text chunking service that segments input and output into sentences for individual detector evaluation.
+
+[id="lemonade-stand-quickstart-inference-layer"]
+== Inference layer
+
+The inference layer serves the language model and processes chat requests:
+
+vLLM Model Server::
+Serves the Llama 3.2 3B Instruct model (FP8-quantized) with GPU acceleration. Managed by {rhoai} as a KServe InferenceService with optimized settings including chunked prefill and 95% GPU memory utilization.
+
+NVIDIA GPU Operator::
+Manages NVIDIA GPU drivers, device plugins, and monitoring on worker nodes. Ensures GPUs are configured and available for model serving workloads.
+
+[id="lemonade-stand-quickstart-application-layer"]
+== Application layer
+
+The application layer provides the user interface, pre-filtering, and monitoring:
+
+Lemonade Stand FastAPI Application::
+A Python FastAPI application that serves the chatbot UI on port 8080. It implements a local regex-based detector that blocks competitor fruit names across 13+ languages before forwarding queries to the Guardrails Orchestrator. It also exposes a `/metrics` endpoint with Prometheus-format guardrail activation metrics and streams LLM responses to the browser via Server-Sent Events (SSE).
+
+R Shiny Monitoring Dashboard::
+A real-time monitoring dashboard that visualizes guardrail activation metrics. It polls the FastAPI `/metrics` endpoint and displays total request counts, blocked input and output counts, approved requests, and per-detector activation breakdowns.
+
+MinIO::
+An S3-compatible object storage service that stores detector model artifacts. Models are downloaded from Hugging Face during initialization and served to the KServe detector runtimes.
+
+[id="lemonade-stand-quickstart-data-flow"]
+== Data flow
+
+The following describes the request flow through the guardrails pipeline:
+
+. The user sends a message through the chatbot UI.
+. The FastAPI application applies the regex pre-filter to check for competitor fruit names in 13+ languages. If detected, the request is blocked immediately.
+. The application forwards the query to the TrustyAI Guardrails Orchestrator over HTTPS.
+. The Guardrails Orchestrator chains the detectors in sequence:
+.. *Lingua* checks that the input is in English.
+.. *IBM Granite Guardian HAP* checks for hate speech, abuse, and profanity.
+.. *DeBERTa v3 Prompt Injection* checks for jailbreak attempts.
+. If all detectors pass, the query is forwarded to the vLLM model server.
+. The LLM generates a response, which is validated by the same detector chain (output guardrails).
+. The validated response is streamed back to the user via SSE.
+. The FastAPI application records Prometheus metrics for each detector activation.
+. The R Shiny dashboard polls the `/metrics` endpoint to display real-time guardrail statistics.
+
+[id="lemonade-stand-quickstart-deployment"]
+== Deployment architecture
+
+The following table describes the pod structure when you deploy on OpenShift:
+
+[cols="1,2,3",options="header"]
+|===
+| Pod | Purpose | Characteristics
+
+| Lemonade Stand App
+| Chatbot UI and API
+| FastAPI on port 8080, regex pre-filter for competitor fruits, Prometheus metrics endpoint, SSE response streaming
+
+| Guardrails Orchestrator
+| Safety pipeline orchestration
+| TrustyAI / FMS Orchestr8 on port 8032, chains detector models in sequence for input and output validation
+
+| vLLM Model Server
+| LLM inference
+| Llama 3.2 3B Instruct (FP8), GPU-accelerated, KServe InferenceService managed by {rhoai}
+
+| HAP Detector
+| Content safety
+| IBM Granite Guardian HAP 125M, CPU or optional GPU, detects hate speech, abuse, and profanity
+
+| Prompt Injection Detector
+| Jailbreak defense
+| DeBERTa v3 Base, CPU or optional GPU, detects prompt injection and manipulation attempts
+
+| Lingua Detector
+| Language enforcement
+| Rule-based English-only detection, lightweight CPU deployment
+
+| Chunker Service
+| Text segmentation
+| FMS Chunkers, gRPC on port 8085, sentence-level splitting for detector input
+
+| MinIO
+| Model storage
+| S3-compatible object storage, stores detector model artifacts downloaded from Hugging Face
+
+| R Shiny Dashboard
+| Monitoring
+| Real-time guardrail activation visualization, polls Prometheus metrics from the FastAPI app
+
+| Vault
+| Secrets management
+| Stores vLLM API key and other credentials, synced to the cluster by the External Secrets Operator
+|===
+
+[id="lemonade-stand-quickstart-technologies"]
+== Implementation technologies
+
+[cols="1,2",options="header"]
+|===
+| Component | Technology
+
+| Application Framework
+| FastAPI (Python)
+
+| LLM Service
+| vLLM with meta-llama/Llama-3.2-3B-Instruct
+
+| Guardrails Orchestration
+| TrustyAI / FMS Orchestr8
+
+| Content Safety
+| IBM Granite Guardian HAP 125M
+
+| Prompt Injection Detection
+| DeBERTa v3 Base
+
+| Language Detection
+| Lingua
+
+| Text Chunking
+| FMS Chunkers
+
+| Container Orchestration
+| {rh-ocp} + {rhoai}
+
+| GPU Management
+| NVIDIA GPU Operator
+
+| Object Storage
+| MinIO (S3-compatible)
+
+| Monitoring
+| R Shiny + Prometheus
+
+| Secrets Management
+| HashiCorp Vault + External Secrets Operator
+|===
