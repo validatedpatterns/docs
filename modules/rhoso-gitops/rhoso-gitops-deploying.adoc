@@ -1,0 +1,85 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../images
+
+[id="deploying-rhoso-gitops-pattern"]
+= Deploying the {rhoso-gitops-pattern}
+
+[id="rhoso-gitops-prerequisites"]
+== Prerequisites
+
+Before you deploy the pattern, ensure that you have the following:
+
+* An {rh-ocp} 4.14 or later cluster with sufficient compute and storage for
+  {rh-rhoso-short}. For sizing guidance, see link:../cluster-sizing/[Cluster sizing].
+* Cluster administrator privileges and a working `kubeconfig`
+* link:https://podman.io/[podman] 4.3 or later for `./pattern.sh`
+* {gitops-title} available on the cluster (installed by the pattern framework or
+  pre-installed)
+* link:https://validatedpatterns.io/learn/quickstart/[Install the tooling dependencies]
+
+[id="rhoso-gitops-preparing-deployment"]
+== Preparing for deployment
+
+.Procedure
+
+. Fork the
+  link:https://github.com/validatedpatterns-sandbox/rhoso-gitops[rhoso-gitops]
+  repository on GitHub.
+
+. Clone your fork:
++
+[source,terminal]
+----
+$ git clone git@github.com:<your-organization>/rhoso-gitops.git
+$ cd rhoso-gitops
+----
+
+. Optional: if you plan to use Vault integration later, copy the secrets template:
++
+[source,terminal]
+----
+$ cp values-secret.yaml.template values-secret.yaml
+----
+
+[id="rhoso-gitops-installing-pattern"]
+== Installing the pattern
+
+. Validate prerequisites without applying changes:
++
+[source,terminal]
+----
+$ ./pattern.sh make validate-prereq
+$ ./pattern.sh make show
+----
+
+. Install the pattern:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
+
+[id="rhoso-gitops-verifying-deployment"]
+== Verifying the deployment
+
+. Watch Argo CD applications in both GitOps namespaces:
++
+[source,terminal]
+----
+$ oc get applications -n vp-gitops
+$ oc get applications -n openshift-gitops
+----
+
+. After install, run the pattern health check:
++
+[source,terminal]
+----
+$ ./pattern.sh make argo-healthcheck
+----
+
+. Validate the pattern schema:
++
+[source,terminal]
+----
+$ ./pattern.sh make validate-schema
+----
