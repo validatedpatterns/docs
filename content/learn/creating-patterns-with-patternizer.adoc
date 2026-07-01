@@ -127,7 +127,7 @@ clusterGroup:
       chartVersion: 0.1.*
 ----
 
-If you omit `--with-secrets`, the generated files will not include the Vault and External Secrets Operator configuration, and `secretLoader.disabled` will be set to `true` in `values-global.yaml`.
+If you omit `--with-secrets`, the generated files do not include the Vault and External Secrets Operator configuration, and patternizer sets `secretLoader.disabled` to `true` in `values-global.yaml`.
 
 === Step 3: Define your pattern content
 
@@ -135,9 +135,9 @@ After initialization, you need to add your operators, applications, and Helm cha
 
 ==== Using the pattern-author AI coding skill
 
-Patternizer installs an AI coding skill to `.claude/skills/pattern-author/` and `.cursor/skills/pattern-author/` during initialization. This skill teaches AI coding assistants such as Claude Code and Cursor how to author Validated Patterns -- defining namespaces, operators, applications, secrets, hub/spoke clusters, and more.
+Patternizer installs an AI coding skill to `.claude/skills/pattern-author/` and `.cursor/skills/pattern-author/` during initialization. This skill provides guidance for AI coding assistants such as Claude Code and Cursor to author Validated Patterns -- defining namespaces, operators, applications, secrets, hub/spoke clusters, and more.
 
-Open the initialized repository in your AI-assisted editor and the skill will be available automatically. You can ask the assistant to add operators, wire in Helm charts, configure secrets, or set up multi-cluster deployments.
+Open the initialized repository in your AI-assisted editor and the skill is available automatically. You can ask the assistant to add operators, wire in Helm charts, configure secrets, or set up multi-cluster deployments.
 
 ==== Manually editing values files
 
@@ -153,7 +153,7 @@ For detailed guidance on structuring your pattern, see link:/learn/vp_structure_
 [NOTE]
 .Idempotency
 ====
-The `pattern init` command is idempotent and can be run multiple times during pattern creation to update the pattern values files. You can go from `pattern init` to `pattern init --with-secrets` to add the secrets framework to your pattern. If you use `helm create` (or `./pattern.sh helm create`) to create Helm charts and then run `pattern init` again, the Helm charts will be automatically added to your `values-prod.yaml`.
+The `pattern init` command is idempotent and can be run multiple times during pattern creation to update the pattern values files. You can go from `pattern init` to `pattern init --with-secrets` to add the secrets framework to your pattern. If you use `helm create` (or `./pattern.sh helm create`) to create Helm charts and then run `pattern init` again, patternizer automatically adds the Helm charts to your `values-prod.yaml`.
 ====
 
 === Next steps

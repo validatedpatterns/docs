@@ -20,7 +20,7 @@ Validated Patterns can be deployed using either the OpenShift-based Validated Pa
 
 == Getting Started with Validated Patterns
 
-=== What You'll Learn
+=== What you will learn
 
 . Setting up prerequisites for Validated Patterns
 . Creating a new pattern with patternizer

@@ -23,10 +23,10 @@ Multicloud GitOps is a foundational pattern that demonstrates the core concepts 
 
 Deploying Multicloud GitOps gives you hands-on experience with:
 
-. How operators and applications are defined in values files
-. How ArgoCD manages application lifecycle
-. How secrets are loaded and managed
-. How the pattern framework ties everything together
+* How operators and applications are defined in values files
+* How ArgoCD manages application lifecycle
+* How secrets are loaded and managed
+* How the pattern framework ties everything together
 
 == Deploying the Multicloud GitOps pattern
 
