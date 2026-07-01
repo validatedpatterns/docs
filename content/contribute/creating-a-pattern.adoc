@@ -32,7 +32,7 @@ Therefore the question really is: How do I move my successful architecture solut
 
 == Requirements for creating a new pattern
 
-* The recommended way to create a new pattern is to use link:/learn/creating-patterns-with-patternizer/[patternizer], which generates all required scaffolding automatically. Alternatively, fork the link:/patterns/multicloud-gitops[multicloud-gitops pattern] as a starting point.
+* The recommended way to create a new pattern is to use link:/learn/creating-patterns-with-patternizer/[patternizer], which generates all required scaffolding automatically. Alternatively, fork the link:/patterns/multicloud-gitops[{mcg-pattern}] as a starting point.
 * The patterns framework requires OpenShift GitOps (ArgoCD) to provide the GitOps automation. Patternizer sets this up for you; if starting from a fork, ensure OpenShift GitOps is included.
 * Create a new branch on your new pattern to perform the initial changes.
 * Deploy the initial new pattern to the cluster.

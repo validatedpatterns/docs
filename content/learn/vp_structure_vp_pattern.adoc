@@ -14,7 +14,7 @@ include::modules/comm-attributes.adoc[]
 
 == Creating a validated pattern
 
-The high level steps to create a validated pattern are as follows: 
+The high level steps to create a validated pattern are as follows:
 
 1. Identify the business case you want to address.
 2. Use link:/learn/creating-patterns-with-patternizer/[patternizer] to bootstrap a new pattern repository with all required scaffolding, or fork an existing pattern such as link:/patterns/multicloud-gitops[Multicloud GitOps] to start from a working example.
