@@ -467,7 +467,43 @@ In the values-secret.yaml file, define the kubeconfig secret by providing the lo
 - name: kubeconfig-spoke vaultPrefixes: - hub fields: - name: content path: ~/.kube/kubeconfig-ztvp-spoke In the values-hub.yaml file, add a new entry in the clusterGroup.managedClusterGroups key.
 managedClusterGroups: exampleRegion: name: group-one acmlabels: - name: clusterGroup value: group-one helmOverrides: - name: clusterGroup.isHubCluster value: false Also in the values-hub.yaml file, add your cluster definition in the acmManagedClusters.clusters key.
 acmManagedClusters: clusters: - name: ztvp-spoke-1 clusterGroup: group-one labels: cloud: auto-detect vendor: auto-detect kubeconfigVaultPath: secret/data/hub/kubeconfig-spoke Deploy the pattern.
-`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-getting-started/",breadcrumb:"/patterns/layered-zero-trust/lzt-getting-started/"},"https://validatedpatterns.io/patterns/maas-quickstart/getting-started/":{title:"Getting started",tags:[],content:` Deploying the MaaS Code Assistant AI Quickstart pattern Prerequisites An OpenShift cluster (version 4.20 or later). This pattern requires at least 2 NVIDIA GPU nodes with 48 GB or more of VRAM each.
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-getting-started/",breadcrumb:"/patterns/layered-zero-trust/lzt-getting-started/"},"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/getting-started/":{title:"Getting started",tags:[],content:` Deploying the Lemonade Stand AI Quickstart pattern Prerequisites An OpenShift cluster (version 4.18 or later). This pattern requires at least 1 NVIDIA GPU node for LLM inference.
+AWS: The pattern automatically provisions 1 g5.2xlarge GPU worker node (NVIDIA A10G) during installation. No GPU nodes need to be present before you deploy.
+Other providers and bare metal: A GPU node must already be part of the OpenShift cluster before you deploy this pattern. The pattern installs all required operators automatically.
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select OpenShift -&gt; Red Hat OpenShift Container Platform -&gt; Create cluster.
+The Helm binary. For instructions, see Installing Helm.
+The oc CLI tool. For instructions, see Getting started with the OpenShift CLI.
+Additional installation tool dependencies. For details, see Patterns quick start.
+Preparing for deployment Procedure Fork the ai-quickstart-lemonade-stand repository on GitHub. You must fork the repository to customize this pattern.
+Clone the forked copy of this repository.
+$ git clone git@github.com:your-username/ai-quickstart-lemonade-stand.git Go to the root directory of your Git repository:
+$ cd ai-quickstart-lemonade-stand Run the following command to set the upstream repository:
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/ai-quickstart-lemonade-stand.git Verify the setup of your remote repositories by running the following command:
+$ git remote -v Example output origin	git@github.com:your-username/ai-quickstart-lemonade-stand.git (fetch) origin	git@github.com:your-username/ai-quickstart-lemonade-stand.git (push) upstream	git@github.com:validatedpatterns-sandbox/ai-quickstart-lemonade-stand.git (fetch) upstream	git@github.com:validatedpatterns-sandbox/ai-quickstart-lemonade-stand.git (push) Optional: To customize the deployment, create and switch to a new branch by running the following command:
+$ git checkout -b my-branch Make your changes, then stage and commit them:
+$ git add &lt;changed-files&gt; $ git commit -m &#34;Customize deployment&#34; Push the changes to your forked repository:
+$ git push origin my-branch Deploying the pattern by using the pattern.sh file To deploy the pattern by using the pattern.sh file, complete the following steps:
+Log in to your cluster by following this procedure:
+Obtain an API token by visiting the OAuth token request page.
+Log in to the cluster by running the following command:
+$ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your_cluster&gt;.&lt;domain&gt;:6443 Or log in by running the following command:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
+$ ./pattern.sh make install Verification To verify a successful installation, check the health of the ArgoCD applications:
+Run the following command:
+$ ./pattern.sh make argo-healthcheck It might take several minutes for all applications to synchronize and reach a healthy state. This includes downloading detector models, initializing the GPU operator, and starting the vLLM inference service.
+Verify the Operator installation by navigating to Operators → Installed Operators in the OpenShift Container Platform web console. Confirm the following Operators are present:
+NVIDIA GPU Operator
+Red Hat OpenShift AI
+Node Feature Discovery Operator
+External Secrets Operator
+After all applications are healthy, verify the inference service is serving by running:
+$ oc get inferenceservice -A Access the Lemonade Stand chatbot UI. Navigate to Networking → Routes in the lemonade-stand namespace and open the route URL for the lemonade-stand service.
+Access the R Shiny monitoring dashboard. Navigate to Networking → Routes in the lemonade-stand namespace and open the route URL for the shiny-dashboard service.
+Next steps Customizing this pattern
+Cluster sizing
+Troubleshooting
+`,url:"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/getting-started/",breadcrumb:"/patterns/lemonade-stand-quickstart/getting-started/"},"https://validatedpatterns.io/patterns/maas-quickstart/getting-started/":{title:"Getting started",tags:[],content:` Deploying the MaaS Code Assistant AI Quickstart pattern Prerequisites An OpenShift cluster (version 4.20 or later). This pattern requires at least 2 NVIDIA GPU nodes with 48 GB or more of VRAM each.
 AWS: The pattern automatically provisions 2 g6e.2xlarge GPU worker nodes (NVIDIA L40S) during installation. No GPU nodes need to be present before you deploy.
 Other providers and bare metal: GPU nodes must already be part of the OpenShift cluster before you deploy this pattern. The pattern installs all required operators automatically.
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
@@ -2425,7 +2461,36 @@ dbProvidersSecret: vault: - key: mssql field: sapassword - key: pgvector # &lt;-
 In your local branch of the rag-llm-gitops git repository change to the ansible/playbooks/templates directory.
 Edit the file gpu-machine-sets.j2 changing the instanceType to for example g5.4xlarge. Save and exit.
 Push the changes to the origin remote repository by running the following command:
-$ git push origin my-test-branch `,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/gpu_provisioning/",breadcrumb:"/patterns/rag-llm-gitops/gpu_provisioning/"},"https://validatedpatterns.io/patterns/maas-quickstart/customizing-this-pattern/":{title:"Customizing this pattern",tags:[],content:` Customizing the MaaS Code Assistant AI Quickstart pattern This pattern deploys an AI code assistant with tiered user access, rate limiting, and NVIDIA Nemotron model serving. You can customize the models, rate limit policies, user tiers, and IDE configuration.
+$ git push origin my-test-branch `,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/gpu_provisioning/",breadcrumb:"/patterns/rag-llm-gitops/gpu_provisioning/"},"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/customizing-this-pattern/":{title:"Customizing this pattern",tags:[],content:` Customizing the Lemonade Stand AI Quickstart pattern This pattern deploys an AI chatbot with a multi-layered guardrails pipeline that includes model-based detectors, a rule-based language detector, and regular expression-based competitor filtering. You can customize the LLM model, detector configuration, and monitoring settings.
+Changing the LLM model The pattern serves Llama 3.2 3B Instruct (FP8-quantized) by default through vLLM on KServe. The model is defined in the lemonade-stand-assistant Helm chart’s values.yaml.
+To change the locally served model, update the model configuration in the Helm chart values. The model must be compatible with vLLM and fit within the available GPU VRAM on the provisioned node (NVIDIA A10G with 24 GB VRAM on g5.2xlarge).
+Using an external model endpoint (BYOM) Instead of serving a model locally on GPU, you can configure the pattern to use an external Model-as-a-Service endpoint. This eliminates the GPU node requirement for inference.
+Make a local copy of the secrets template outside of your repository:
+Do not add, commit, or push this file to your repository. Doing so might expose personal credentials to GitHub.
+$ cp values-secret.yaml.template ~/values-secret-ai-quickstart-lemonade-stand.yaml Edit the secrets file and set the API key for your external model endpoint:
+$ vim ~/values-secret-ai-quickstart-lemonade-stand.yaml - name: lemonade-stand vaultPrefixes: - global fields: - name: vllm-api-key value: &lt;your-external-api-key&gt; Set the model section in the Helm chart values to point to your external endpoint:
+model: name: my-model endpoint: my-maas-instance port: 443 When using an external model endpoint, the vLLM InferenceService is not deployed and the GPU node is not required for LLM inference. The guardrails pipeline continues to function normally with the external model.
+Enabling GPU for detector models By default, the HAP and prompt injection detector models run on CPU. You can enable GPU acceleration for these models to reduce inference latency, but this requires additional GPU resources.
+To enable GPU for the detector models, set the useGpu flag in the Helm chart values:
+detectors: hap: useGpu: true promptInjection: useGpu: true Enabling GPU for both detectors requires 2 additional GPUs beyond the 1 GPU used for the LLM, for a total of 3 GPUs. You must provision additional GPU nodes before enabling this option.
+Configuring detector thresholds The guardrails pipeline uses three detector models, each with a configurable detection threshold. Lower thresholds increase sensitivity (block more content) while higher thresholds reduce false positives.
+The default thresholds are:
+Detector Default threshold Description IBM Granite Guardian HAP
+0.5
+Hate speech, abuse, and profanity detection
+DeBERTa v3 Prompt Injection
+0.5
+Prompt injection and jailbreak detection
+Lingua Language
+0.88
+English language confidence threshold
+To adjust detector thresholds, modify the Guardrails Orchestrator configuration in the fms-orchestr8-config-nlp ConfigMap within the lemonade-stand-assistant Helm chart.
+Configuring the regex detector The FastAPI application includes a regular expression-based detector that blocks mentions of competitor fruit names (oranges, apples, bananas, and others) across 13+ languages. This detector runs locally in the application before the request reaches the Guardrails Orchestrator.
+To modify the blocked terms or supported languages, edit the regular expression patterns in the app_fastapi.py file in the lemonade-stand-assistant repository.
+Adjusting the monitoring dashboard The R Shiny dashboard polls the FastAPI application’s /metrics endpoint to display guardrail activation statistics in real time. The default polling interval is 1 second.
+To adjust the refresh interval, modify the shinyDashboard.metrics.refreshInterval value in the Helm chart values:
+shinyDashboard: metrics: refreshInterval: 5 Push your changes to your forked repository so the GitOps framework applies the updated configuration.
+`,url:"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/customizing-this-pattern/",breadcrumb:"/patterns/lemonade-stand-quickstart/customizing-this-pattern/"},"https://validatedpatterns.io/patterns/maas-quickstart/customizing-this-pattern/":{title:"Customizing this pattern",tags:[],content:` Customizing the MaaS Code Assistant AI Quickstart pattern This pattern deploys an AI code assistant with tiered user access, rate limiting, and NVIDIA Nemotron model serving. You can customize the models, rate limit policies, user tiers, and IDE configuration.
 Changing models The pattern serves two models by default:
 nemotron-3-nano-30b-a3b-fp8 — Available to premium and enterprise tier users.
 gpt-oss-20b — Available to all user tiers.
@@ -3512,7 +3577,22 @@ To submit the pipeline, select Run Pipeline (&ldquo;play&rdquo; icon in the top 
 We&rsquo;re now back in the OpenShift AI dashboard and can monitor the progress of our model CI/CD pipeline in real-time. You can select individual tasks to look up details such as pipeline logs, which helps to troubleshoot the pipeline code.
 Once the pipeline has finished running, step over to Gitea and look up the industrial-edge repository (select rhdp-deploy branch if you&rsquo;ve provisioned the pattern through RHDP). Notice the new commit indicating a model update in the test environment.
 (to be continued&hellip;)
-`,url:"https://validatedpatterns.io/patterns/industrial-edge/application/",breadcrumb:"/patterns/industrial-edge/application/"},"https://validatedpatterns.io/patterns/maas-quickstart/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` MaaS Code Assistant AI Quickstart pattern hub/datacenter cluster size The MaaS Code Assistant AI Quickstart pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
+`,url:"https://validatedpatterns.io/patterns/industrial-edge/application/",breadcrumb:"/patterns/industrial-edge/application/"},"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` Lemonade Stand AI Quickstart pattern hub/datacenter cluster size The Lemonade Stand AI Quickstart pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
+The datacenter hub OpenShift cluster uses the following the deployment configuration:
+Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type Amazon Web Services
+Control Plane
+3
+m5.xlarge
+Amazon Web Services
+Worker
+3
+m5.4xlarge
+GPU node requirements In addition to the worker nodes listed above, this pattern requires at least 1 GPU-equipped node for LLM inference. On AWS, the pattern automatically provisions a g5.2xlarge instance with an NVIDIA A10G GPU. On other providers and bare metal, ensure a GPU node is part of the cluster before you deploy the pattern.
+Table 2. GPU node minimum requirements Cloud provider Node type Number of nodes Instance type Amazon Web Services
+GPU Worker
+1
+g5.2xlarge
+`,url:"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/cluster-sizing/",breadcrumb:"/patterns/lemonade-stand-quickstart/cluster-sizing/"},"https://validatedpatterns.io/patterns/maas-quickstart/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` MaaS Code Assistant AI Quickstart pattern hub/datacenter cluster size The MaaS Code Assistant AI Quickstart pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
 The datacenter hub OpenShift cluster uses the following the deployment configuration:
 Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type Amazon Web Services
 Control Plane
@@ -4803,7 +4883,51 @@ Resolution: Delete the unused PVC
 ArgoCD not syncing Symptom: ArgoCD shows an error and &ldquo;Unknown&rdquo; sync status Cause: A change has been made in the repository that renders invalid YAML
 Resolution: Fix the issue as identified by the error message, and commit and push the fix OR revert the last one.
 Certain changes might invalidate objects in ArgoCD, and this will prevent ArgoCD from deploying the change related to that commit. The error message for that situation might look like this (this particular change removed the Image details from the kustomization.yaml file, and we resolved it by re-adding the image entries:
-rpc error: code = Unknown desc = Manifest generation error (cached): \`/bin/bash -c helm template . --name-template \${ARGOCD_APP_NAME:0:52} -f https://github.com/claudiol/industrial-edge/raw/deployment/values-global.yaml -f https://github.com/claudiol/industrial-edge/raw/deployment/values-datacenter.yaml --set global.repoURL=$ARGOCD_APP_SOURCE_REPO_URL --set global.targetRevision=$ARGOCD_APP_SOURCE_TARGET_REVISION --set global.namespace=$ARGOCD_APP_NAMESPACE --set global.pattern=industrial-edge --set global.valuesDirectoryURL=https://github.com/claudiol/industrial-edge/raw/deployment --post-renderer ./kustomize\` failed exit status 1: Error: error while running post render on files: error while running command /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst/kustomize. error output: ++ dirname /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst/kustomize + BASE=/tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst + &#39;[&#39; /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst = /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst &#39;]&#39; + BASE=./ + cat + echo / /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst / /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst + ls -al total 44 drwxr-xr-x. 3 default root 166 Oct 6 20:59 . drwxr-xr-x. 7 default root 98 Oct 6 20:28 .. -rw-r--r--. 1 default root 1105 Oct 6 20:28 Chart.yaml -rw-r--r--. 1 default root 22393 Oct 6 20:59 helm.yaml -rw-r--r--. 1 default root 98 Oct 6 20:59 kustomization.yaml -rwxr-xr-x. 1 default root 316 Oct 6 20:28 kustomize -rw-r--r--. 1 default root 348 Oct 6 20:28 system-image-builder-role-binding.yaml drwxr-xr-x. 7 default root 115 Oct 6 20:28 templates -rw-r--r--. 1 default root 585 Oct 6 20:28 values.yaml + kubectl kustomize ./ Error: json: cannot unmarshal object into Go struct field Kustomization.images of type []image.Image : exit status 1 Use --debug flag to render out invalid YAML `,url:"https://validatedpatterns.io/patterns/industrial-edge/troubleshooting/",breadcrumb:"/patterns/industrial-edge/troubleshooting/"},"https://validatedpatterns.io/patterns/maas-quickstart/troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting the MaaS Code Assistant AI Quickstart pattern Use this page to diagnose and resolve common issues when deploying or operating this pattern.
+rpc error: code = Unknown desc = Manifest generation error (cached): \`/bin/bash -c helm template . --name-template \${ARGOCD_APP_NAME:0:52} -f https://github.com/claudiol/industrial-edge/raw/deployment/values-global.yaml -f https://github.com/claudiol/industrial-edge/raw/deployment/values-datacenter.yaml --set global.repoURL=$ARGOCD_APP_SOURCE_REPO_URL --set global.targetRevision=$ARGOCD_APP_SOURCE_TARGET_REVISION --set global.namespace=$ARGOCD_APP_NAMESPACE --set global.pattern=industrial-edge --set global.valuesDirectoryURL=https://github.com/claudiol/industrial-edge/raw/deployment --post-renderer ./kustomize\` failed exit status 1: Error: error while running post render on files: error while running command /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst/kustomize. error output: ++ dirname /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst/kustomize + BASE=/tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst + &#39;[&#39; /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst = /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst &#39;]&#39; + BASE=./ + cat + echo / /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst / /tmp/https:__github.com_claudiol_industrial-edge/charts/datacenter/manuela-tst + ls -al total 44 drwxr-xr-x. 3 default root 166 Oct 6 20:59 . drwxr-xr-x. 7 default root 98 Oct 6 20:28 .. -rw-r--r--. 1 default root 1105 Oct 6 20:28 Chart.yaml -rw-r--r--. 1 default root 22393 Oct 6 20:59 helm.yaml -rw-r--r--. 1 default root 98 Oct 6 20:59 kustomization.yaml -rwxr-xr-x. 1 default root 316 Oct 6 20:28 kustomize -rw-r--r--. 1 default root 348 Oct 6 20:28 system-image-builder-role-binding.yaml drwxr-xr-x. 7 default root 115 Oct 6 20:28 templates -rw-r--r--. 1 default root 585 Oct 6 20:28 values.yaml + kubectl kustomize ./ Error: json: cannot unmarshal object into Go struct field Kustomization.images of type []image.Image : exit status 1 Use --debug flag to render out invalid YAML `,url:"https://validatedpatterns.io/patterns/industrial-edge/troubleshooting/",breadcrumb:"/patterns/industrial-edge/troubleshooting/"},"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting the Lemonade Stand AI Quickstart pattern Prerequisite and tooling issues Podman version not supported The pattern.sh script requires Podman 4.3.0 or later. Earlier versions do not support the --userns=keep-id flag required for correct UID/GID mapping inside the container.
+Symptom The script exits with an error referencing the Podman version or keep-id.
+Resolution Check your Podman version:
+$ podman --version If the version is earlier than 4.3.0, upgrade Podman. For instructions, see the Podman installation documentation.
+KUBECONFIG path is outside the HOME directory The pattern.sh script runs inside a container and mounts your $HOME directory. If your KUBECONFIG file is located outside $HOME, the container cannot access it.
+Symptom The script fails to connect to the cluster or reports that the kubeconfig file cannot be found.
+Resolution Move your kubeconfig file to a path inside your home directory and export the updated path:
+$ cp &lt;current-kubeconfig-path&gt; ~/kubeconfig $ export KUBECONFIG=~/kubeconfig Deployment issues ArgoCD applications are not syncing or are unhealthy After running ./pattern.sh make install, ArgoCD applications can take 15–30 minutes to reach a healthy state. Model downloads and GPU operator initialization take additional time.
+Symptom Running ./pattern.sh make argo-healthcheck reports applications in Progressing or Degraded state.
+Resolution Check which applications are not healthy:
+$ oc get applications -n openshift-gitops Inspect the failing application for error details:
+$ oc describe application &lt;application-name&gt; -n openshift-gitops Check the logs of the ArgoCD application controller:
+$ oc logs -n openshift-gitops deployment/openshift-gitops-application-controller If applications are stuck in Progressing, wait an additional 10 minutes and re-run the health check. Detector model downloads from Hugging Face through MinIO and GPU operator initialization can take significant time.
+GPU and inference issues GPU nodes are not ready The NVIDIA GPU Operator must successfully initialize on the GPU node before model serving can start.
+Symptom The vLLM inference service pod remains in Pending state, or oc get inferenceservice -A shows the service not ready.
+Resolution Check the status of GPU nodes:
+$ oc get nodes -l nvidia.com/gpu.present=true Check the NVIDIA GPU Operator pods:
+$ oc get pods -n nvidia-gpu-operator Check for driver initialization errors:
+$ oc logs -n nvidia-gpu-operator -l app=nvidia-driver-daemonset If you are using a provider other than AWS, confirm that a GPU node was present in the cluster before you deployed the pattern. The pattern does not provision GPU nodes on providers other than AWS.
+Inference endpoint is not serving Symptom oc get inferenceservice -A shows the inference service in a non-ready state, or the chatbot returns connection errors.
+Resolution Check the status of the inference service:
+$ oc get inferenceservice -A Check the vLLM model server pod logs:
+$ oc logs -n lemonade-stand -l serving.kserve.io/inferenceservice=llm-service Confirm that the GPU node has sufficient available VRAM. The Llama 3.2 3B Instruct model requires a GPU with at least 24 GB of VRAM.
+Guardrails orchestrator issues Guardrails Orchestrator pod is not ready All detector models must be available and healthy before the Guardrails Orchestrator can serve requests.
+Symptom The orchestrator pod is in CrashLoopBackOff or Error state, or the chatbot returns 503 errors.
+Resolution Check the status of all pods in the lemonade-stand namespace:
+$ oc get pods -n lemonade-stand Check the orchestrator pod logs for detector connection errors:
+$ oc logs -n lemonade-stand -l app=guardrails-orchestrator Verify that all detector services are running:
+$ oc get inferenceservice -n lemonade-stand If detector models are not ready, check that MinIO has successfully downloaded the model artifacts from Hugging Face:
+$ oc logs -n lemonade-stand -l app=minio Guardrails are blocking all requests Symptom Every user query is blocked by the guardrails, even when the content appears safe and in English.
+Resolution Check the R Shiny dashboard to identify which detector is triggering. Navigate to Networking → Routes in the lemonade-stand namespace and open the dashboard route.
+If the Lingua detector is blocking English text, the language confidence threshold may be too high. Review the Lingua threshold in the fms-orchestr8-config-nlp ConfigMap.
+If the HAP or prompt injection detector is triggering on safe content, their detection thresholds may be too aggressive. See Configuring detector thresholds.
+Application issues Lemonade Stand chatbot UI is not accessible Symptom The chatbot UI route returns a 503 or connection error.
+Resolution Check that the lemonade-stand pod is running:
+$ oc get pods -n lemonade-stand -l app=lemonade-stand Check the application logs for startup errors:
+$ oc logs -n lemonade-stand -l app=lemonade-stand Verify the route is correctly configured:
+$ oc get routes -n lemonade-stand R Shiny dashboard shows no data Symptom The dashboard loads but shows zero values for all metrics, or displays errors.
+Resolution Confirm that the lemonade-stand application is running and the /metrics endpoint is accessible:
+$ oc exec -n lemonade-stand deployment/shiny-dashboard -- curl -s http://lemonade-stand:8080/metrics Check the Shiny dashboard pod logs:
+$ oc logs -n lemonade-stand -l app=shiny-dashboard Verify that the shinyDashboard.metrics.url in the Helm chart values points to the correct metrics endpoint.
+Getting help If you cannot resolve an issue using this guide:
+Check the GitHub issues for known problems and workarounds.
+Open a new issue with the output of the following command to help diagnose the problem:
+$ oc get pods -A | grep -v Running | grep -v Completed `,url:"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/troubleshooting/",breadcrumb:"/patterns/lemonade-stand-quickstart/troubleshooting/"},"https://validatedpatterns.io/patterns/maas-quickstart/troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting the MaaS Code Assistant AI Quickstart pattern Use this page to diagnose and resolve common issues when deploying or operating this pattern.
 Prerequisite and tooling issues Podman version not supported The pattern.sh script requires Podman 4.3.0 or later. Earlier versions do not support the --userns=keep-id flag required for correct UID/GID mapping inside the container.
 Symptom The script exits with an error referencing the Podman version or keep-id.
 Resolution Check your Podman version:
@@ -6359,7 +6483,127 @@ Source repository
 This is the first in a planned series of articles covering the security layers in the ZTVP — workload identity (SPIFFE/SPIRE), Vault integration, supply chain security, and ACS runtime monitoring.
 `,url:"https://validatedpatterns.io/blog/2026-06-29-zero-trust-network-policies/",breadcrumb:"/blog/2026-06-29-zero-trust-network-policies/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
 Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/2026-06-04-single-argocd-option/":{title:"New option to use a single ArgoCD instance",tags:[],content:` Preamble Historically, the VP framework had two Argo CD instances: a clusterwide one used for more privileged parts like namespaces, subscriptions, etc. where the &#34;App-of-Apps&#34; Argo application lived and another namespaced Argo CD instance where all the other Argo Applications lived.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/":{title:"Lemonade Stand AI Quickstart",tags:[],content:` About the Lemonade Stand AI Quickstart pattern Deploy an AI chatbot with multi-layered safety guardrails on OpenShift to demonstrate content filtering, prompt injection defense, language enforcement, and real-time guardrail monitoring.
+Use case Deploy a guardrailed AI chatbot that filters harmful content, detects prompt injection attempts, enforces language constraints, and blocks competitor mentions through multiple safety layers.
+Explore multi-layered AI safety techniques including model-based detectors (HAP, prompt injection), rule-based detectors (language enforcement), and regex-based filtering.
+Use a GitOps approach to provision AI guardrails infrastructure including GPU-accelerated model serving, TrustyAI orchestration, and monitoring.
+Background This pattern builds on the Lemonade Stand Assistant AI Quickstart. It provisions the OpenShift cluster with Red Hat OpenShift AI configured for GPU-accelerated inference using vLLM. It deploys the NVIDIA GPU Operator for model serving on GPU nodes and manages secrets through the Validated Patterns framework using HashiCorp Vault and the External Secrets Operator. This pattern generalizes one or more successful deployments of this use case. Implementation details might vary depending on your specific environment and requirements.
+Organizations can use the Lemonade Stand AI Quickstart to learn how to implement AI safety guardrails as a multi-layered pipeline. It demonstrates a production-ready approach to:
+Serving a language model (Llama 3.2 3B Instruct) with GPU-accelerated inference through vLLM on KServe
+Orchestrating multiple safety detectors through TrustyAI Guardrails Orchestrator (FMS Orchestr8) to validate both input and output
+Detecting hate speech, abuse, and profanity with the IBM Granite Guardian HAP 125M model
+Identifying prompt injection and jailbreak attempts with the DeBERTa v3 Base model
+Enforcing language constraints with the Lingua rule-based detector
+Blocking competitor product mentions with regex-based pre-filtering in 13+ languages
+Monitoring guardrail activation rates in real time through an R Shiny dashboard
+About the solution This pattern deploys a complete guardrailed chatbot on a single OpenShift cluster by using a GitOps approach. You use the Validated Patterns framework to provision infrastructure, including GPU operators, AI platform configuration, and secrets management. The Lemonade Stand Assistant AI Quickstart delivers the application layer: model serving, guardrails orchestration, safety detectors, and monitoring.
+User queries flow through a multi-stage safety pipeline. The FastAPI application first applies a regular expression pre-filter to block competitor fruit names across 13 languages. The application forwards queries that pass to the TrustyAI Guardrails Orchestrator, which chains three detector models in sequence: Lingua (language enforcement), IBM Granite Guardian HAP 125M (content safety), and DeBERTa v3 Base (prompt injection detection). Only validated queries reach the LLM. The same detectors validate model output before streaming it back to the user. An R Shiny dashboard provides real-time visibility into guardrail activation rates by polling Prometheus metrics from the FastAPI application.
+About the technology This solution uses the following technologies:
+Red Hat OpenShift Container Platform An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments.
+Red Hat OpenShift GitOps A declarative application continuous delivery tool for Kubernetes based on the ArgoCD project. Application definitions, configurations, and environments are declarative and version controlled in Git.
+Red Hat OpenShift AI A flexible, scalable MLOps platform with tools to build, deploy, and manage AI-enabled applications. This pattern uses Red Hat OpenShift AI to manage GPU-accelerated model serving with vLLM via KServe.
+TrustyAI / FMS Guardrails Orchestrator A guardrails orchestration framework that chains multiple safety detectors to validate both input and output of LLM interactions. This pattern uses the FMS Orchestr8 configuration to pipeline Lingua, HAP, and prompt injection detectors.
+vLLM A high-throughput, memory-efficient inference engine for large language models. vLLM serves the Llama 3.2 model with optimized GPU use.
+Llama 3.2 3B Instruct A compact instruction-tuned language model from Meta. This pattern serves the FP8-quantized variant for efficient GPU inference as the chatbot’s conversational backend.
+IBM Granite Guardian HAP 125M A lightweight hate, abuse, and profanity detection model from IBM. This pattern uses it to filter harmful content in both user queries and model responses.
+DeBERTa v3 Base Prompt Injection A fine-tuned DeBERTa model for detecting prompt injection and jailbreak attempts. This pattern uses it to identify attempts to override the chatbot’s system instructions.
+Lingua A rule-based natural language detection library. This pattern uses Lingua to enforce English-only communication with the chatbot.
+FMS Chunkers A sentence-level text chunking service that segments user input and model output for individual detector evaluation.
+MinIO An S3-compatible object storage service. This pattern uses MinIO to store detector model artifacts that are downloaded from Hugging Face during initialization.
+R Shiny A web application framework for R. This pattern uses an R Shiny dashboard to visualize guardrail activation metrics in real time, displaying request counts, blocked inputs and outputs, and per-detector activation rates.
+Prometheus An open source monitoring and alerting toolkit. This pattern uses Prometheus-format metrics exposed by the FastAPI application to track guardrail activations.
+Lemonade Stand AI Quickstart architecture The following figure shows the Lemonade Stand AI Quickstart architecture.
+Figure 1. Lemonade Stand AI Quickstart system architecture The architecture consists of three main layers:
+Guardrails Layer — Chains multiple safety detectors through the TrustyAI Guardrails Orchestrator to filter both input and output for content safety, prompt injection, and language compliance.
+Inference Layer — Serves the Llama 3.2 3B Instruct model through vLLM with GPU acceleration on KServe.
+Application Layer — Provides the chatbot UI with regex-based pre-filtering, Prometheus metrics, and a real-time R Shiny monitoring dashboard.
+Guardrails layer The guardrails layer validates both user input and model output through a chain of safety detectors:
+TrustyAI Guardrails Orchestrator (FMS Orchestr8) Orchestrates multiple detector models in a configurable pipeline. Each detector evaluates the input or output independently, and the orchestrator aggregates results to determine whether to allow or block the content.
+IBM Granite Guardian HAP 125M A lightweight model that detects hate speech, abuse, and profanity. Runs on CPU by default with optional GPU acceleration. Threshold: 0.5.
+DeBERTa v3 Base Prompt Injection Detector A fine-tuned DeBERTa model that identifies prompt injection and jailbreak attempts. Runs on CPU by default with optional GPU acceleration. Threshold: 0.5.
+Lingua Language Detector A rule-based language detection service that enforces English-only communication. Deployed as a Kubernetes Deployment (not KServe). Threshold: 0.88.
+FMS Chunkers A gRPC-based text chunking service that segments input and output into sentences for individual detector evaluation.
+Inference layer The inference layer serves the language model and processes chat requests:
+vLLM Model Server Serves the Llama 3.2 3B Instruct model (FP8-quantized) with GPU acceleration. Managed by Red Hat OpenShift AI as a KServe InferenceService with optimized settings including chunked prefill and 95% GPU memory utilization.
+NVIDIA GPU Operator Manages NVIDIA GPU drivers, device plugins, and monitoring on worker nodes. Ensures GPUs are configured and available for model serving workloads.
+Application layer The application layer provides the user interface, pre-filtering, and monitoring:
+Lemonade Stand FastAPI Application A Python FastAPI application that serves the chatbot UI on port 8080. It implements a local regular expression-based detector that blocks competitor fruit names across 13+ languages before forwarding queries to the Guardrails Orchestrator. It also exposes a /metrics endpoint with Prometheus-format guardrail activation metrics and streams LLM responses to the browser through Server-Sent Events (SSE).
+R Shiny Monitoring Dashboard A real-time monitoring dashboard that visualizes guardrail activation metrics. It polls the FastAPI /metrics endpoint and displays total request counts, blocked input and output counts, approved requests, and per-detector activation breakdowns.
+MinIO An S3-compatible object storage service that stores detector model artifacts. Models are downloaded from Hugging Face during initialization and served to the KServe detector runtimes.
+Data flow The following describes the request flow through the guardrails pipeline:
+The user sends a message through the chatbot UI.
+The FastAPI application applies the regular expression pre-filter to check for competitor fruit names in 13+ languages. If detected, the request is blocked immediately.
+The application forwards the query to the TrustyAI Guardrails Orchestrator over HTTPS.
+The Guardrails Orchestrator chains the detectors in sequence:
+Lingua checks that the input is in English.
+IBM Granite Guardian HAP checks for hate speech, abuse, and profanity.
+DeBERTa v3 Prompt Injection checks for jailbreak attempts.
+If all detectors pass, the orchestrator forwards the query to the vLLM model server.
+The LLM generates a response. The same detector chain validates the output (output guardrails).
+The validated response streams back to the user through SSE.
+The FastAPI application records Prometheus metrics for each detector activation.
+The R Shiny dashboard polls the /metrics endpoint to display real-time guardrail statistics.
+Deployment architecture The following table describes the pod structure when you deploy on OpenShift:
+Pod Purpose Characteristics Lemonade Stand App
+Chatbot UI and API
+FastAPI on port 8080, regex pre-filter for competitor fruits, Prometheus metrics endpoint, SSE response streaming
+Guardrails Orchestrator
+Safety pipeline orchestration
+TrustyAI / FMS Orchestr8 on port 8032, chains detector models in sequence for input and output validation
+vLLM Model Server
+LLM inference
+Llama 3.2 3B Instruct (FP8), GPU-accelerated, KServe InferenceService managed by Red Hat OpenShift AI
+HAP Detector
+Content safety
+IBM Granite Guardian HAP 125M, CPU or optional GPU, detects hate speech, abuse, and profanity
+Prompt Injection Detector
+Jailbreak defense
+DeBERTa v3 Base, CPU or optional GPU, detects prompt injection and manipulation attempts
+Lingua Detector
+Language enforcement
+Rule-based English-only detection, lightweight CPU deployment
+Chunker Service
+Text segmentation
+FMS Chunkers, gRPC on port 8085, sentence-level splitting for detector input
+MinIO
+Model storage
+S3-compatible object storage, stores detector model artifacts downloaded from Hugging Face
+R Shiny Dashboard
+Monitoring
+Real-time guardrail activation visualization, polls Prometheus metrics from the FastAPI app
+Vault
+Secrets management
+Stores vLLM API key and other credentials, synced to the cluster by the External Secrets Operator
+Implementation technologies Component Technology Application Framework
+FastAPI (Python)
+LLM Service
+vLLM with meta-llama/Llama-3.2-3B-Instruct
+Guardrails Orchestration
+TrustyAI / FMS Orchestr8
+Content Safety
+IBM Granite Guardian HAP 125M
+Prompt Injection Detection
+DeBERTa v3 Base
+Language Detection
+Lingua
+Text Chunking
+FMS Chunkers
+Container Orchestration
+Red Hat OpenShift Container Platform + Red Hat OpenShift AI
+GPU Management
+NVIDIA GPU Operator
+Object Storage
+MinIO (S3-compatible)
+Monitoring
+R Shiny + Prometheus
+Secrets Management
+HashiCorp Vault + External Secrets Operator
+Next steps Install this pattern
+Cluster sizing
+Customizing this pattern
+Troubleshooting
+`,url:"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/",breadcrumb:"/patterns/lemonade-stand-quickstart/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by tier, focus area, industry, and product.
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/blog/2026-06-04-single-argocd-option/":{title:"New option to use a single ArgoCD instance",tags:[],content:` Preamble Historically, the VP framework had two Argo CD instances: a clusterwide one used for more privileged parts like namespaces, subscriptions, etc. where the &#34;App-of-Apps&#34; Argo application lived and another namespaced Argo CD instance where all the other Argo Applications lived.
 While this separation provided useful security boundaries, it brought additional resource usage and complexity. Running a single instance reduces the overall footprint on the cluster and simplifies troubleshooting by having all Argo Applications in one place.
 How to have a single Argo CD instance It is now possible to use a single Argo CD instance for all objects managed by the Validated Patterns framework.
 Set .Values.global.singleArgoCD to true in your pattern’s values-global.yaml file:
@@ -6455,8 +6699,7 @@ Next steps Install this pattern
 Cluster sizing
 Customizing this pattern
 Troubleshooting
-`,url:"https://validatedpatterns.io/patterns/maas-quickstart/",breadcrumb:"/patterns/maas-quickstart/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by tier, focus area, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/rag-quickstart/":{title:"RAG AI Quickstart",tags:[],content:` About the RAG Quickstart pattern Use retrieval-augmented generation (RAG) to enhance large language models with specialized data sources for more accurate and context-aware responses.
+`,url:"https://validatedpatterns.io/patterns/maas-quickstart/",breadcrumb:"/patterns/maas-quickstart/"},"https://validatedpatterns.io/patterns/rag-quickstart/":{title:"RAG AI Quickstart",tags:[],content:` About the RAG Quickstart pattern Use retrieval-augmented generation (RAG) to enhance large language models with specialized data sources for more accurate and context-aware responses.
 Use case Deploy a RAG-powered chatbot that connects users to internal documentation through a single chat interface.
 Explore retrieval-augmented generation capabilities including document ingestion, custom system prompts, and agent-based RAG.
 Use a GitOps approach to provision AI infrastructure including LLM serving, vector storage, and safety guardrails.
