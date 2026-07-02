@@ -13,6 +13,9 @@
         {{ partial "toc.html" . }}
         <div class="pf-c-content">
           {{ .Content }}
+
+          <!-- Page Navigation -->
+          {{ partial "page-navigation.html" . }}
         </div>
       </div>
     </section>
