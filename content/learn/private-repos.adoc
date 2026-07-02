@@ -60,7 +60,7 @@ bootstrap_secrets:
       - name: type
         value: git
       - name: sshPrivateKey
-        path: |
+        value: |
           -----BEGIN OPENSSH PRIVATE KEY-----
           a3...
           ...
