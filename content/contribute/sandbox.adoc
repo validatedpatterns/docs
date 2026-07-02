@@ -50,6 +50,7 @@ A {sandbox} pattern must continue to meet the following criteria to remain in th
 . A {sandbox} pattern must conform to the common technical link:/contribute/implementation/[implementation requirements].
 . A {sandbox} pattern must be able to be deployed onto a freshly deployed OpenShift cluster without prior modification or tuning.
 . A {sandbox} pattern must include a top-level README file that highlights the business problem and how the pattern solves it.
+. A {sandbox} pattern must include a `pattern-metadata.yaml` file at the repository root with pattern identity, tier, and hub cluster sizing (where applicable). For more information, see link:/contribute/pattern-metadata/[Pattern metadata].
 . A {sandbox} pattern must include an architecture drawing. The specific tool or format is flexible as long as the meaning is clear.
 . A {sandbox} pattern must undergo an informal technical review by a community leader to ensure that it meets basic reuse standards.
 . A {sandbox} pattern must undergo an informal architecture review by a community leader to ensure that the solution has the right components, and they are generally being used as intended. For example, not using a database as a message bus.

@@ -1,0 +1,164 @@
+---
+menu:
+  contribute:
+    parent: Pattern metadata
+title: Example metadata files
+weight: 46
+aliases: /pattern-metadata-examples/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="pattern-metadata-examples"]
+= Example metadata files
+
+These examples show `pattern-metadata.yaml` as you author it in a pattern repository (source format).
+For field definitions, see link:/contribute/pattern-metadata-schema-reference/[Schema and field reference].
+
+[id="example-minimal-metadata"]
+== Minimal example (single-cloud hub)
+
+The smallest useful source file for a single-cloud pattern without spoke clusters:
+
+[source,yaml]
+----
+metadata_version: "1.0"
+name: my-pattern
+pattern_version: "1.0"
+display_name: My Pattern
+description: A short description of what this pattern deploys.
+repo_url: https://github.com/validatedpatterns-sandbox/my-pattern
+docs_repo_url: https://github.com/validatedpatterns/docs
+issues_url: https://github.com/validatedpatterns-sandbox/my-pattern/issues
+docs_url: https://validatedpatterns.io/patterns/my-pattern/
+ci_url: https://validatedpatterns.io/ci/?pattern=mypattern
+tier: sandbox
+owners: my-github-user
+requirements:
+  hub:
+    compute:
+      platform:
+        aws:
+          replicas: 3
+          type: m5.2xlarge
+    controlPlane:
+      platform:
+        aws:
+          replicas: 3
+          type: m5.xlarge
+extra_features:
+  hypershift_support: false
+  spoke_support: false
+external_requirements:
+----
+
+[id="example-external-requirements"]
+== Example with external requirements
+
+Based on link:https://github.com/validatedpatterns/rag-llm-gitops[`rag-llm-gitops`] with a GPU sizing note:
+
+[source,yaml]
+----
+metadata_version: "1.0"
+name: rag-llm-gitops
+pattern_version: "1.0"
+display_name: AI Generation with LLM and RAG
+description: Deploy a RAG chatbot that augments LLM responses with enterprise documentation.
+repo_url: https://github.com/validatedpatterns/rag-llm-gitops
+docs_repo_url: https://github.com/validatedpatterns/docs
+issues_url: https://github.com/validatedpatterns/rag-llm-gitops/issues
+docs_url: https://validatedpatterns.io/patterns/rag-llm-gitops/
+ci_url: https://validatedpatterns.io/ci/?pattern=ragllm
+tier: tested
+owners: day0hero, sauagarwa
+requirements:
+  hub:
+    compute:
+      platform:
+        aws:
+          replicas: 3
+          type: m5.2xlarge
+    controlPlane:
+      platform:
+        aws:
+          replicas: 1
+          type: m5.2xlarge
+extra_features:
+  hypershift_support: false
+  spoke_support: false
+external_requirements:
+  cluster_sizing_note: >
+    This pattern requires nodes with GPUs which are only supported in
+    certain regions. Create GPU nodes with `make create-gpu-machineset`
+    after the initial cluster is provisioned.
+----
+
+[id="example-multicloud-metadata"]
+== Full example (multi-cloud hub and spoke)
+
+Based on link:https://github.com/validatedpatterns/multicloud-gitops[`multicloud-gitops`] with hub/spoke sizing, variants, and multi-cloud requirements:
+
+[source,yaml]
+----
+metadata_version: "1.0"
+name: multicloud-gitops
+pattern_version: "1.0"
+display_name: Multicloud Gitops
+description: A multi-cloud pattern which uses GitOps, Hashicorp Vault and ACM to manage applications and secrets across clusters.
+repo_url: https://github.com/validatedpatterns/multicloud-gitops
+docs_repo_url: https://github.com/validatedpatterns/docs
+issues_url: https://github.com/validatedpatterns/multicloud-gitops/issues
+docs_url: https://validatedpatterns.io/patterns/multicloud-gitops/
+ci_url: https://validatedpatterns.io/ci/?pattern=mcgitops
+logo: https://validatedpatterns.io/images/logos/multicloud-gitops.png
+tier: maintained
+owners: mbaldessari, darkdoc
+requirements:
+  hub:
+    compute:
+      platform:
+        aws:
+          replicas: 3
+          type: m5.2xlarge
+        azure:
+          replicas: 3
+          type: Standard_D8s_v3
+        gcp:
+          replicas: 3
+          type: n1-standard-8
+    controlPlane:
+      platform:
+        aws:
+          replicas: 3
+          type: m5.xlarge
+        azure:
+          replicas: 3
+          type: Standard_D4s_v3
+        gcp:
+          replicas: 3
+          type: n1-standard-4
+  spoke:
+    compute:
+      platform:
+        aws:
+          replicas: 0
+          type: m5.2xlarge
+    controlPlane:
+      platform:
+        aws:
+          replicas: 3
+          type: m5.2xlarge
+extra_features:
+  hypershift_support: true
+  spoke_support: true
+external_requirements:
+variants:
+  - name: hub
+    default: true
+    description: Default multicluster hub/spoke Multicloud Gitops variant
+  - name: standalone
+    description: Single cluster Multicloud Gitops (no ACM) variant
+----

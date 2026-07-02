@@ -80,6 +80,11 @@ my-pattern
 └── values-secret.yaml.template # stub for the secrets file
 ----
 
+Patternizer does not currently generate `pattern-metadata.yaml`.
+Add this file manually at the repository root after initialization, or copy it from an existing pattern such as link:https://github.com/validatedpatterns/multicloud-gitops/blob/main/pattern-metadata.yaml[multicloud-gitops].
+For more information about metadata fields, see link:/contribute/pattern-metadata-schema-reference/[Schema and field reference].
+For the documentation sync workflow, see link:/contribute/pattern-metadata-documentation-sync/[Metadata and documentation].
+
 The generated `values-global.yaml` contains:
 
 [source,yaml]
@@ -162,4 +167,5 @@ The `pattern init` command is idempotent and can be run multiple times during pa
 * Learn about link:/learn/vp_structure_vp_pattern/[structuring a validated pattern] and best practices
 * Add operators to your pattern with link:/learn/vp_add_ops_to_pattern/[Adding operators to the framework]
 * Configure secrets with link:/learn/getting-started-secret-management/[Configuring secrets]
+* Add link:/contribute/pattern-metadata/[Pattern metadata] so cluster sizing and CI information stay in sync with the documentation site
 * Visit the link:https://github.com/validatedpatterns/patternizer[patternizer repository on GitHub] for the latest documentation

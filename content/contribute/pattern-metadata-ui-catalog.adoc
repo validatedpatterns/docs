@@ -1,0 +1,129 @@
+---
+menu:
+  contribute:
+    parent: Pattern metadata
+title: Metadata and the UI catalog
+weight: 43
+aliases: /pattern-metadata-ui-catalog/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="pattern-metadata-ui-catalog"]
+= Metadata and the UI catalog
+
+The {validated-patterns-op} console plugin displays patterns from a catalog served on-cluster.
+This page describes how `pattern-metadata.yaml` becomes catalog data and what the Pattern Catalog page renders.
+
+[id="source-format-vs-catalog-format"]
+== Source format and catalog format
+
+Pattern repositories store `pattern-metadata.yaml` in a **source format** that existing patterns use today.
+The link:https://github.com/validatedpatterns/pattern-ui-catalog[`pattern-ui-catalog`] repository converts that file into a **catalog format** before the UI consumes it.
+
+The catalog generator (`generate-catalog.sh`) applies these normalizations:
+
+[cols="1,2,2",options="header"]
+|===
+| Change | Source format (`pattern-metadata.yaml`) | Catalog format (`catalog/<name>/pattern.yaml`)
+
+| Cloud provider nesting
+| `requirements.hub.compute.platform.aws`
+| `requirements.hub.compute.aws` (the `platform` wrapper is removed)
+
+| Pattern owners
+| Comma-separated string (`owners: user1, user2`) or YAML array
+| YAML array of usernames
+
+| GitHub organization
+| Not present in the source file
+| `org` field added from the repository GitHub organization
+
+| Default cluster group
+| Not present in the source file
+| `clustergroupname` added from `values-global.yaml` → `main.clusterGroupName` when available
+
+| Optional fields
+| May be omitted
+| `external_requirements`, `extra_features`, `docs_repo_url`, `ci_url`, and `spoke` default to `null` when absent
+|===
+
+The authoritative schema for catalog files is link:https://github.com/validatedpatterns/pattern-ui-catalog/blob/main/pattern.schema.json[`pattern.schema.json`].
+For field definitions and required keys, see link:/contribute/pattern-metadata-schema-reference/[Schema and field reference].
+For validation commands, see link:/contribute/pattern-metadata-validation/[Validation and troubleshooting].
+
+[id="catalog-discovery"]
+== Catalog discovery and publication
+
+. The `pattern-ui-catalog` project runs `generate-catalog.sh`, which queries GitHub for public repositories tagged with `ui-catalog-enabled` in the `validatedpatterns` and `validatedpatterns-sandbox` organizations.
+. For each repository, the script fetches `pattern-metadata.yaml` from the default branch.
+. If the file is missing or cannot be parsed, the repository is skipped.
+. The script normalizes the metadata and writes:
++
+* `catalog/catalog.yaml` — index listing all discovered pattern names
+* `catalog/<pattern-name>/pattern.yaml` — normalized metadata for one pattern
+* `catalog/<pattern-name>/values-secret.yaml.template` — optional secret template copy
++
+. The catalog directory is built into a container image (`quay.io/validatedpatterns/pattern-ui-catalog`) and deployed by the operator.
+
+To include a pattern in the UI catalog, tag the GitHub repository with the `ui-catalog-enabled` topic and ensure `pattern-metadata.yaml` is present and parseable.
+
+[id="on-cluster-catalog-access"]
+== On-cluster catalog access
+
+The console plugin fetches catalog data through a proxy path:
+
+[source,text]
+----
+/api/proxy/plugin/patterns-operator-console-plugin/pattern-ui-catalog/catalog.yaml
+/api/proxy/plugin/patterns-operator-console-plugin/pattern-ui-catalog/<pattern>/pattern.yaml
+----
+
+The plugin loads `catalog.yaml`, then fetches each listed `pattern.yaml`.
+You can override the catalog image by patching the `patterns-operator-config` ConfigMap `catalog.image` key.
+For more information about custom catalogs, see the link:https://github.com/validatedpatterns/pattern-ui-catalog#creating-a-custom-catalog[pattern-ui-catalog README].
+
+[id="fields-the-ui-renders"]
+== Fields the UI renders
+
+The Pattern Catalog page in the {hybrid-console-first} uses these metadata fields:
+
+[cols="1,3",options="header"]
+|===
+| Field | UI usage
+
+| `display_name`
+| Pattern card title
+
+| `description`
+| Card body text
+
+| `tier`
+| Tier label with color coding (`maintained`, `tested`, `sandbox`) and filter control
+
+| `logo`
+| Pattern logo on the card (absolute URL, or path relative to the catalog entry)
+
+| `org`
+| Tooltip on the card title
+
+| `requirements`
+| Cloud provider labels and hub/spoke sizing summary with detailed tooltip per cloud (`aws`, `gcp`, `azure`)
+
+| `external_requirements.cluster_sizing_note`
+| "Additional requirements" info icon and tooltip
+
+| `docs_url`, `repo_url`
+| External link buttons on the card
+
+| `name`, `catalogKey`
+| Install, uninstall, and secrets management navigation
+|===
+
+The UI does not currently render `variants`, `ci_url`, `issues_url`, `owners`, or `extra_features` on the catalog cards.
+Install flows use additional fields such as `clustergroupname` and `repo_url` when creating a `Pattern` custom resource.
+
+For more information about installing patterns through the operator, see link:/learn/using-validated-pattern-operator/[Using the Validated Patterns Operator].

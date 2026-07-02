@@ -1,0 +1,79 @@
+---
+menu: contribute
+title: Pattern metadata
+weight: 42
+aliases: /pattern-metadata/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="pattern-metadata-overview"]
+= Pattern metadata
+
+Every {solution-name-upstream} pattern repository includes a `pattern-metadata.yaml` file at the repository root.
+This file is the source of truth for pattern identity, cluster sizing, tier information, and links.
+
+Downstream systems read this file to discover patterns, validate metadata, and render information in the {hybrid-console-first}, on validatedpatterns.io, and in quality engineering (QE) workflows.
+If you are contributing a new pattern or updating an existing one, maintain this file in your pattern repository.
+Do not edit the generated metadata modules in the `validatedpatterns/docs` repository by hand.
+
+[id="where-the-file-lives"]
+== Where the file lives
+
+Place `pattern-metadata.yaml` in the top-level directory of your pattern Git repository, alongside files such as `values-global.yaml`, `Makefile`, and `pattern.sh`.
+
+A typical pattern repository includes the metadata file in this layout:
+
+[source,text]
+----
+my-pattern/
+├── charts/
+├── common/
+├── pattern-metadata.yaml
+├── pattern.sh
+├── values-global.yaml
+└── values-prod.yaml
+----
+
+For more information about repository layout, see link:/learn/vp_openshift_framework/[Validated pattern structure].
+
+[id="metadata-consumers"]
+== Who consumes pattern metadata
+
+Three systems consume `pattern-metadata.yaml`, each with different expectations:
+
+[cols="1,3",options="header"]
+|===
+| Consumer | Purpose
+
+| link:https://github.com/validatedpatterns/pattern-ui-catalog[pattern-ui-catalog]
+| Fetches metadata from pattern repositories, normalizes it, validates it against a JSON schema, and publishes a static catalog image for the {validated-patterns-op} console plugin.
+
+| validatedpatterns.io documentation
+| Syncs metadata into cluster sizing pages through GitHub Actions and `utils/flatten_yaml.rb`.
+
+| QE and CI tooling
+| Uses links, tier, and sizing data for test planning and CI dashboard integration.
+|===
+
+The {hybrid-console-first} does not read `pattern-metadata.yaml` from your Git repository directly.
+The console plugin reads normalized `pattern.yaml` files from the catalog image that the operator deploys on-cluster.
+
+[id="pattern-metadata-pages"]
+== In this section
+
+* link:/contribute/pattern-metadata-ui-catalog/[Metadata and the UI catalog] — Source and catalog formats, catalog discovery, and fields the console renders.
+* link:/contribute/pattern-metadata-documentation-sync/[Metadata and documentation] — Docs site sync, Hugo frontmatter alignment, and the metadata GitHub Actions workflow.
+* link:/contribute/pattern-metadata-schema-reference/[Schema and field reference] — JSON schema, required and optional fields, and per-field descriptions.
+* link:/contribute/pattern-metadata-examples/[Example metadata files] — Minimal, GPU, and multi-cloud hub/spoke examples.
+* link:/contribute/pattern-metadata-validation/[Validation and troubleshooting] — Schema validation, inclusion rules, and common errors.
+
+[id="next-steps-pattern-metadata"]
+== Next steps
+
+* Create or extend a pattern with link:/contribute/creating-a-pattern/[Creating a pattern] or link:/learn/creating-patterns-with-patternizer/[Creating a pattern with patternizer].
+* Install patterns through the UI with link:/learn/using-validated-pattern-operator/[Using the Validated Patterns Operator].
+* Learn about pattern tiers in link:/contribute/sandbox/[Sandbox tier requirements] and link:/contribute/tested/[Tested tier requirements].

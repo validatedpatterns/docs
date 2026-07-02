@@ -1,0 +1,316 @@
+---
+menu:
+  contribute:
+    parent: Pattern metadata
+title: Schema and field reference
+weight: 45
+aliases: /pattern-metadata-schema-reference/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="pattern-metadata-schema"]
+= Schema and field reference
+
+This page documents the JSON schema for normalized catalog files and the fields you author in `pattern-metadata.yaml` at the repository root.
+
+[id="json-schema-overview"]
+== JSON schema overview
+
+The formal schema lives in link:https://github.com/validatedpatterns/pattern-ui-catalog/blob/main/pattern.schema.json[`pattern.schema.json`].
+It applies to **normalized catalog** files (`catalog/<pattern>/pattern.yaml`), not necessarily to every field you author in a pattern repository source file.
+
+For how source files are normalized before validation, see link:/contribute/pattern-metadata-ui-catalog/#source-format-vs-catalog-format[Source format and catalog format].
+
+[id="required-fields-catalog"]
+== Required fields (catalog format)
+
+After normalization, these top-level fields are required:
+
+[cols="1,1,2",options="header"]
+|===
+| Field | Type | Notes
+
+| `metadata_version`
+| string
+| Format `major.minor` (for example, `"1.0"`). Pattern: `^[0-9]+\.[0-9]+$`
+
+| `name`
+| string
+| Lowercase identifier. Pattern: `^[a-z][a-z0-9-]*$`. Must match the repository name.
+
+| `pattern_version`
+| string
+| Pattern implementation version. Format: `^[0-9]+\.[0-9]+$`
+
+| `display_name`
+| string
+| Human-readable name shown in the UI and documentation.
+
+| `repo_url`
+| string (URI)
+| Canonical GitHub URL for the pattern repository.
+
+| `docs_repo_url`
+| string (URI)
+| Documentation repository URL.
+
+| `issues_url`
+| string (URI)
+| Issue tracker URL.
+
+| `docs_url`
+| string (URI)
+| Public documentation URL.
+
+| `ci_url`
+| string (URI)
+| CI dashboard URL for the pattern.
+
+| `tier`
+| string
+| One of: `maintained`, `tested`, `sandbox`
+
+| `owners`
+| array of strings
+| At least one GitHub username. Source files may use a comma-separated string; the catalog converts it to an array.
+
+| `requirements`
+| object
+| Must include `hub`. May include `spoke`. See <<cluster-sizing-fields>>.
+
+| `extra_features`
+| object
+| Must include `hypershift_support` and `spoke_support` (both boolean).
+
+| `org`
+| string
+| GitHub organization name. Added by the catalog generator; do not add manually to source files.
+|===
+
+[id="optional-fields-catalog"]
+== Optional fields (catalog format)
+
+[cols="1,1,2",options="header"]
+|===
+| Field | Type | Notes
+
+| `description`
+| string
+| Short pattern summary. Recommended for UI catalog cards.
+
+| `logo`
+| string (URI)
+| Pattern logo URL.
+
+| `external_requirements`
+| object or null
+| External infrastructure notes. See <<external-requirements-fields>>.
+
+| `clustergroupname`
+| string
+| Default cluster group for install flows. Added from `values-global.yaml` by the catalog generator.
+
+| `variants`
+| array
+| Deployment variants. Each entry requires `name`; `default` and `description` are optional.
+
+| `spoke`
+| null
+| Reserved for future use. Catalog sets this to `null`.
+|===
+
+The schema sets `additionalProperties: false` at the top level and on most nested objects.
+Do not add undeclared fields to catalog files.
+
+[id="identity-fields"]
+== Identity fields (source file)
+
+[cols="1,1,3",options="header"]
+|===
+| Field | Required in source | Description
+
+| `metadata_version`
+| Recommended
+| Schema version for the metadata file (for example, `"1.0"` or `"2.0"`).
+
+| `name`
+| Yes
+| Pattern directory and repository name. Use lowercase letters and dashes (for example, `multicloud-gitops`). Must match `values-global.yaml` → `global.pattern`.
+
+| `display_name`
+| Yes
+| Human-readable pattern name (for example, `Multicloud Gitops`).
+
+| `description`
+| Recommended
+| Short description of the pattern purpose. Displayed in the UI catalog.
+
+| `pattern_version`
+| Yes
+| Version of the pattern implementation (for example, `"1.0"`).
+|===
+
+[id="link-governance-fields"]
+== Link and governance fields (source file)
+
+[cols="1,1,3",options="header"]
+|===
+| Field | Required in source | Description
+
+| `repo_url`
+| Yes
+| Canonical GitHub URL (for example, `https://github.com/validatedpatterns/multicloud-gitops`). The docs sync workflow verifies this matches the repository running the workflow.
+
+| `docs_repo_url`
+| Yes
+| GitHub URL for the documentation repository, typically `https://github.com/validatedpatterns/docs`.
+
+| `issues_url`
+| Yes
+| GitHub issues URL for the pattern repository.
+
+| `docs_url`
+| Yes
+| Public URL on validatedpatterns.io (for example, `https://validatedpatterns.io/patterns/multicloud-gitops/`).
+
+| `ci_url`
+| Yes
+| CI dashboard URL (for example, `https://validatedpatterns.io/ci/?pattern=mcgitops`).
+
+| `logo`
+| Optional
+| Logo URL for the UI catalog and website.
+
+| `tier`
+| Yes
+| One of `sandbox`, `tested`, or `maintained`. For definitions, see link:/learn/about-pattern-tiers-types/[About pattern tiers].
+
+| `owners`
+| Yes
+| GitHub usernames responsible for the pattern. Use a comma-separated string (`user1, user2`) or a YAML list. The catalog normalizes strings to arrays.
+|===
+
+[id="cluster-sizing-fields"]
+== Cluster sizing fields
+
+The `requirements` section defines tested {rh-ocp} cluster configurations.
+
+=== Source format nesting
+
+In pattern repositories, cloud providers are typically nested under a `platform` key:
+
+[source,yaml]
+----
+requirements:
+  hub:
+    compute:
+      platform:
+        aws:
+          replicas: 3
+          type: m5.2xlarge
+    controlPlane:
+      platform:
+        aws:
+          replicas: 3
+          type: m5.xlarge
+----
+
+=== Catalog format nesting
+
+After normalization, cloud providers appear directly under `compute` and `controlPlane`:
+
+[source,yaml]
+----
+requirements:
+  hub:
+    compute:
+      aws:
+        replicas: 3
+        type: m5.2xlarge
+    controlPlane:
+      aws:
+        replicas: 3
+        type: m5.xlarge
+----
+
+=== Cluster roles and node pools
+
+* `hub` — Required. Primary cluster (hub or datacenter).
+* `spoke` — Optional. Managed or edge clusters imported through {rh-rhacm-first}.
+
+Under each cluster role:
+
+* `compute` — Worker node requirements.
+* `controlPlane` — Control plane node requirements.
+
+Under each node pool, define one or more cloud keys (`aws`, `azure`, `gcp`).
+Each cloud entry requires:
+
+* `replicas` — Integer ≥ 0.
+* `type` — Cloud instance type string (for example, `m5.2xlarge`).
+
+Set worker `replicas` to `0` when a cluster role uses control plane nodes only.
+
+=== Extra features
+
+The `extra_features` object requires both keys when present:
+
+[cols="1,1,3",options="header"]
+|===
+| Field | Type | Description
+
+| `hypershift_support`
+| boolean
+| Whether the pattern supports {rh-ocp} hosted control planes (HyperShift).
+
+| `spoke_support`
+| boolean
+| When `true`, documentation cluster sizing templates include a spoke section.
+|===
+
+[id="external-requirements-fields"]
+== External requirements fields
+
+Use `external_requirements` for infrastructure outside the cluster that affects deployment or sizing.
+
+[cols="1,1,3",options="header"]
+|===
+| Field | Type | Description
+
+| `cluster_sizing_note`
+| string
+| Free-text note displayed in documentation and as an "Additional requirements" tooltip in the UI catalog.
+|===
+
+Set `external_requirements:` to null or leave it empty when you have no external requirements.
+
+[id="variants-field"]
+== Variants field
+
+The optional `variants` list describes named deployment topologies (for example, `hub` and `standalone`).
+
+[cols="1,1,3",options="header"]
+|===
+| Field | Required | Description
+
+| `name`
+| Yes
+| Short variant identifier.
+
+| `description`
+| Optional
+| What the variant deploys.
+
+| `default`
+| Optional
+| Boolean. Set to `true` for the default variant.
+|===
+
+Variants are stored for tooling and QE use.
+The UI catalog and documentation sync workflow do not render variant lists today.
+
+For complete YAML examples, see link:/contribute/pattern-metadata-examples/[Example metadata files].
