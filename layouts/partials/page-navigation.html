@@ -3,7 +3,7 @@
 {{ $nextPage := false }}
 {{ $prevPage := false }}
 
-{{ if or (eq .Section "learn") (eq .Section "workshop") }}
+{{ if in (slice "learn" "workshop" "contribute") .Section }}
   {{/* For learn/workshop sections, use the menu system to get the correct order */}}
   {{ $menuName := .Section }}
   {{ $allMenuItems := slice }}
