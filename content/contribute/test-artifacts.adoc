@@ -17,6 +17,10 @@ include::modules/comm-attributes.adoc[]
 
 To be represented in the CI dashboard, testers can create a publicly available JSON file (for example, in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and {rh-ocp} version.
 
+Keep `patternRepo` in the testing artifact JSON aligned with `repo_url` in the `pattern-metadata.yaml` file for the pattern repository.
+The `ci_url` field in the metadata file must point to the same pattern entry on the CI dashboard.
+For more information about metadata fields, see link:/contribute/pattern-metadata/[Pattern metadata].
+
 [id="file-naming-convention"]
 == File naming convention
 `{pattern}-{platform}-{openshift version}-stable-badge.json`

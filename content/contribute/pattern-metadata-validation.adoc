@@ -1,0 +1,108 @@
+---
+menu:
+  contribute:
+    parent: Pattern metadata
+title: Validation and troubleshooting
+weight: 47
+aliases: /pattern-metadata-validation/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="pattern-metadata-validation"]
+= Validation and troubleshooting
+
+This page describes how to validate `pattern-metadata.yaml` and resolve common errors in the UI catalog and documentation sync workflows.
+
+[id="catalog-schema-validation"]
+== Catalog schema validation
+
+The `pattern-ui-catalog` repository validates normalized catalog files:
+
+[source,terminal]
+----
+git clone https://github.com/validatedpatterns/pattern-ui-catalog.git
+cd pattern-ui-catalog
+make generate-catalog    # requires gh, yq, jq, and GitHub authentication
+make schema-validate     # requires check-jsonschema (pip install check-jsonschema)
+----
+
+`make schema-validate` checks:
+
+* `catalog/catalog.yaml` against `catalog.schema.json`
+* Each `catalog/*/pattern.yaml` against `pattern.schema.json`
+
+The pattern-ui-catalog CI pipeline also runs `yamllint` on generated catalog files.
+
+[id="documentation-sync-validation"]
+== Documentation sync validation
+
+The docs metadata workflow (`.github/workflows/metadata-docs.yml`) validates:
+
+* `repo_url` in `pattern-metadata.yaml` matches `https://github.com/<org>/<repo>` for the repository running the workflow
+* The YAML file parses successfully (via `yq` and `flatten_yaml.rb`)
+
+If validation fails, the workflow exits with an error and no pull request is opened.
+For workflow setup, see link:/contribute/pattern-metadata-documentation-sync/#enabling-automatic-sync[Enabling automatic sync to the documentation repository].
+
+[id="catalog-inclusion-rules"]
+== Catalog inclusion rules
+
+A pattern repository is included in the UI catalog only when:
+
+* The repository is public and tagged with `ui-catalog-enabled`
+* `pattern-metadata.yaml` exists on the default branch
+* The file parses and normalizes without error
+
+Repositories missing metadata or with invalid YAML are skipped silently during catalog generation.
+
+[id="alignment-checks"]
+== Alignment checks for contributors
+
+Keep these values consistent across systems:
+
+* `name` matches the Git repository name and `global.pattern` in `values-global.yaml`
+* `repo_url` matches the actual GitHub repository URL
+* `tier`, `docs_url`, and `ci_url` align with Hugo frontmatter and CI badge JSON (see link:/contribute/test-artifacts/[Testing artifacts])
+* `requirements` hub sizing reflects configurations you have actually tested
+
+[id="pattern-missing-from-ui-catalog"]
+== Pattern missing from the UI catalog
+
+Verify the following items:
+
+* The GitHub repository has the `ui-catalog-enabled` topic.
+* `pattern-metadata.yaml` exists on the default branch.
+* The YAML parses correctly (run `yq '.' pattern-metadata.yaml` locally).
+* The catalog has been regenerated and the catalog image redeployed after your change.
+
+[id="metadata-sync-workflow-fails-on-repo-url"]
+== Metadata sync workflow fails on repo URL
+
+The sync workflow compares `repo_url` with the GitHub URL of the repository running the workflow.
+Verify that `repo_url` uses the form `https://github.com/<org>/<repo>`.
+
+[id="schema-validation-fails"]
+== Schema validation fails in pattern-ui-catalog
+
+Common causes:
+
+* Missing required field after normalization (for example, `extra_features` or `requirements.hub`)
+* Invalid `tier` value (must be `maintained`, `tested`, or `sandbox`)
+* `name` contains uppercase letters or underscores
+* `owners` is empty after normalization
+* Undeclared extra fields at the top level
+
+Run `make generate-catalog` and `make schema-validate` locally to reproduce errors before publishing.
+For required fields, see link:/contribute/pattern-metadata-schema-reference/#required-fields-catalog[Required fields (catalog format)].
+
+[id="empty-requirements-section"]
+== Empty requirements section
+
+If `requirements` is empty, the catalog schema validation fails and the documentation cluster sizing template renders incomplete tables.
+Define at least `requirements.hub` with `compute` and `controlPlane` entries for one cloud provider.
+
+For sizing field structure, see link:/contribute/pattern-metadata-schema-reference/#cluster-sizing-fields[Cluster sizing fields].

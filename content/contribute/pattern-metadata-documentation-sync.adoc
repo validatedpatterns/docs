@@ -1,0 +1,125 @@
+---
+menu:
+  contribute:
+    parent: Pattern metadata
+title: Metadata and documentation
+weight: 44
+aliases: /pattern-metadata-documentation-sync/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="pattern-metadata-documentation"]
+= Metadata and documentation
+
+This page describes how `pattern-metadata.yaml` feeds validatedpatterns.io cluster sizing pages and how it relates to Hugo frontmatter on pattern landing pages.
+
+[id="how-the-docs-site-uses-metadata"]
+== How the documentation site uses metadata
+
+When `pattern-metadata.yaml` changes in a pattern repository, an automated workflow can sync those values into this documentation repository.
+
+. A GitHub Actions workflow in the pattern repository runs when `pattern-metadata.yaml` is updated on the `main` branch.
+. The workflow calls the reusable `metadata-docs.yml` workflow from the link:https://github.com/validatedpatterns/docs[`validatedpatterns/docs` repository].
+. The `utils/flatten_yaml.rb` script flattens the YAML structure into AsciiDoc attributes (preserving the source nesting, including `platform`).
+. The workflow opens a pull request against `validatedpatterns/docs` that updates `modules/<pattern-name>/metadata-<pattern-name>.adoc`.
+. Pattern cluster sizing pages include that generated module and the shared `modules/cluster-sizing-template.adoc` template to render sizing tables.
+
+[NOTE]
+====
+Adding or updating `pattern-metadata.yaml` does not create documentation pages by itself.
+You still need pattern content under `content/patterns/<pattern-name>/` in the docs repository, including a cluster sizing page that includes the generated metadata module.
+For more information about creating pattern documentation, see link:/contribute/contribute-to-docs/[Contribute to Validated Patterns documentation].
+====
+
+[id="relationship-to-hugo-frontmatter"]
+== Relationship to Hugo frontmatter
+
+Pattern pages on validatedpatterns.io also use YAML frontmatter in `content/patterns/<pattern-name>/_index.adoc` (or `_index.md`).
+That frontmatter drives the patterns browser, tier badges, and pattern landing pages on the public website.
+It is separate from the catalog the {validated-patterns-op} UI consumes.
+
+Keep both metadata sources aligned:
+
+[cols="1,2,2",options="header"]
+|===
+| Field | `pattern-metadata.yaml` | Hugo `_index` frontmatter
+
+| Pattern name
+| `name`, `display_name`
+| Directory name, `title`
+
+| Tier
+| `tier`
+| `tier`
+
+| Summary
+| `description`
+| `summary`
+
+| GitHub repository
+| `repo_url`, `issues_url`
+| `links.github`, `links.bugs`
+
+| Documentation URL
+| `docs_url`
+| Derived from pattern path
+
+| CI dashboard
+| `ci_url`
+| `links.ci` or `ci`
+
+| Cluster sizing
+| `requirements`, `extra_features`
+| Not stored in frontmatter; rendered from synced metadata module
+|===
+
+[id="enabling-automatic-sync"]
+== Enabling automatic sync to the documentation repository
+
+To push metadata changes from your pattern repository into the docs repository, add a workflow that calls the shared metadata sync workflow.
+
+.Prerequisites
+
+* Your pattern repository is hosted under the `validatedpatterns`, `validatedpatterns-sandbox`, or `validatedpatterns-demos` GitHub organization.
+* The {solution-name-upstream} team has configured authentication for the docs repository (a `DOCS_TOKEN` secret or the Validated Patterns Metadata Sync GitHub App).
+* `repo_url` in `pattern-metadata.yaml` matches the GitHub URL of the pattern repository where the workflow runs.
+
+.Procedure
+
+. Create `.github/workflows/update-metadata.yml` in your pattern repository.
++
+[source,yaml]
+----
+name: Update docs pattern metadata
+on:
+  push:
+    paths:
+      - "pattern-metadata.yaml"
+      - ".github/workflows/update-metadata.yml"
+    branches:
+      - main
+
+jobs:
+  update-metadata:
+    uses: validatedpatterns/docs/.github/workflows/metadata-docs.yml@main
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    secrets:
+      DOCS_TOKEN: ${{ secrets.DOCS_TOKEN }}
+----
+
+. Commit and push `pattern-metadata.yaml` to the `main` branch.
++
+The workflow validates `repo_url`, flattens the metadata, and opens a pull request in the docs repository.
+
+. Review and merge the resulting pull request in `validatedpatterns/docs`.
+
+Contact mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com] if you need help configuring repository secrets for metadata sync.
+
+For sync failures, see link:/contribute/pattern-metadata-validation/#metadata-sync-workflow-fails-on-repo-url[Metadata sync workflow fails on repo URL] in Validation and troubleshooting.
