@@ -11,6 +11,16 @@ include::modules/comm-attributes.adoc[]
 
 //Use the Contributor's guide to learn about ways to contribute to the Validated Patterns, to understand the prerequisites and toolchain required for contribution, and to follow some basic documentation style and structure guidelines.
 
+[id="pattern-metadata-in-docs"]
+== Pattern metadata in the docs repository
+
+When a pattern maintainer updates `pattern-metadata.yaml`, a GitHub Actions workflow opens a pull request in this repository.
+The workflow updates generated modules under `modules/<pattern-name>/metadata-<pattern-name>.adoc`.
+Do not edit these files by hand unless documented as a manual exception (for example, when a pattern has empty sizing requirements).
+
+Cluster sizing pages include the generated module and `modules/cluster-sizing-template.adoc` to render sizing tables.
+For more information about the metadata schema and sync workflow, see link:/contribute/pattern-metadata/[Pattern metadata] and link:/contribute/pattern-metadata-documentation-sync/[Metadata and documentation].
+
 include::modules/contributing.adoc[leveloffset=+1]
 include::modules/tools-and-setup.adoc[leveloffset=+1]
 include::modules/doc-guidelines.adoc[leveloffset=+1]

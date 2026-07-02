@@ -72,6 +72,9 @@ The Multicloud GitOps approach enables centralized management of multiple cloud 
 ----
 
 First we notice some subdirectories: charts and common, along with `values-` yaml files.
+The `pattern-metadata.yaml` file at the repository root defines pattern identity, tier, links, and cluster sizing.
+The documentation site syncs this file into cluster sizing pages automatically.
+For more information about metadata fields, see link:/contribute/pattern-metadata/[Pattern metadata].
 
 ===  Industrial edge
 
@@ -123,7 +126,8 @@ First we notice some subdirectories: charts and common, along with `values-` yam
 15 directories, 26 files
 ----
 
-We see the same or similar files in the both patterns directories. 
+We see the same or similar files in the both patterns directories.
+Both examples include `pattern-metadata.yaml` at the repository root.
 
 == The `common` directory
 
