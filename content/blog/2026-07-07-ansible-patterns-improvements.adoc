@@ -24,11 +24,13 @@ It is worth pointing out that nearly all of the enhancements were the direct res
 
 The https://validatedpatterns.io/patterns/ansible-edge-gitops[Ansible Edge GitOps Pattern] is releasing version
 2.1 to highlight these new features. The 2.1 release moves the default version of Ansible Automation Platform
-it includes to version 2.7. In addition, the bundled hmi configuration collection can now configure kiosks on
-RHEL 9 and RHEL 10 in addition to RHEL 8. The Inductive Automation Ignition workload is now managed via systemd's
-quadlet feature. Behind the scenes, AEG now uses the productized External Secrets Operator to manage secret material.
+it includes to version 2.7. In addition, the bundled configuration collection can now configure kiosks on
+RHEL 9 and RHEL 10 in addition to RHEL 8. The pattern has been updated to deploy one kiosk each of RHEL 8, RHEL 9,
+and RHEL 10 to demonstrate how this works. The Inductive Automation Ignition workload is now managed via systemd's
+quadlet feature. Behind the scenes, Ansible Edge GitOps now uses the productized External Secrets Operator to
+manage secret material.
 
-== AGOF v3 Update
+== Ansible GitOps Framework (AGOF) v3 Update
 
 https://github.com/validatedpatterns/agof[AGOF] is releasing a v3 branch. The main new feature is that AGOF in
 AWS now supports Ansible Automation Platform 2.7, and defaults to RHEL10 as the VM to run it on. The AGOF v3
