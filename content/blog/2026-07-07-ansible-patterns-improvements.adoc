@@ -1,0 +1,71 @@
+---
+ date: 2026-07-07
+ title: Ansible Patterns Improvements
+ summary: Validated Patterns now supports the latest version of Ansible Automation Platform, and brings several functionality improvements
+ author: Martin Jackson
+ blog_tags:
+ - patterns
+ - gitops
+ - ansible
+ - secrets
+---
+:toc:
+:imagesdir: /images
+
+== Preamble
+
+Since very early in the Validated Patterns initiative, we have prioritized the use of Ansible as a first-class
+citizen in the GitOps world. With the recent release of Ansible Automation Platform 2.7, we wanted to take this
+opportunity to announce a number of updates in Ansible-related Validated Patterns components to support the
+new AAP release, as well as introduce new features and make it easier to develop Patterns with Ansible elements.
+It is worth pointing out that nearly all of the enhancements were the direct result of user feedback.
+
+== Ansible Edge GitOps Update
+
+The https://validatedpatterns.io/patterns/ansible-edge-gitops[Ansible Edge GitOps Pattern] is releasing version
+2.1 to highlight these new features. The 2.1 release moves the default version of Ansible Automation Platform
+it includes to version 2.7. In addition, the bundled hmi configuration collection can now configure kiosks on
+RHEL 9 and RHEL 10 in addition to RHEL 8. The Inductive Automation Ignition workload is now managed via systemd's
+quadlet feature. Behind the scenes, AEG now uses the productized External Secrets Operator to manage secret material.
+
+== AGOF v3 Update
+
+https://github.com/validatedpatterns/agof[AGOF] is releasing a v3 branch. The main new feature is that AGOF in
+AWS now supports Ansible Automation Platform 2.7, and defaults to RHEL10 as the VM to run it on. The AGOF v3
+branch also includes support for authenticated repositories as the initial config-as-code repository. AGOF in
+AWS now supports authenticated repositories as initial config-as-code repositories. AGOF v3 for AWS can install
+and manage AAP 2.5, 2.6 and 2.7 on RHEL9 and RHEL 10, and on OpenShift (for which we provide the aap-config
+chart; see below).
+
+* **AGOF v3 Deprecations** Historically, the config-as-code repository was referred to as `agof_iac_repo`
+at `agof_iac_revision`. This was potentially confusing - so now it prefers the variable names `agof_cac_repo`
+and `agof_cac_revision`. Thus, the `agof_iac_*` variable names are  deprecated and may be removed in a
+future release. Please migrate to the `agof_cac_*` variable names.
+* **AGOF v3 Removals** AGOF v3 removes the imagebuilder code. The imagebuilder functionality was an implementation
+detail of getting to run the containerized installer, and added 30 minutes or so to a standard pattern
+installation when no AMI was provided. Now, AGOF will search for a suitable public RHEL AMI, register it, and
+install pre-requisite packages. AGOF v1 and v2 contained some legacy code that came over from the
+ansible-workshops project for provisioning other kinds of resources in AWS, such as switches and load balancers.
+These use cases were never fully supported in AGOF, so this code has been removed. It is still possible to install
+additional AWS EC2 instances alongside the AAP VM.
+
+== aap-config-chart 0.2.* Update
+
+The https://charts.validatedpatterns.io/charts/aap-config[aap-config-chart] internally uses AGOF v3 by default,
+which includes the ability to use authenticated repositories as config-as-code repositories. The aap-config-chart
+0.2.* release series also makes the agof-vault-file secret optional; the agof-vault-file is usually not needed
+when running under OpenShift anyway.
+
+== New AGOF config-as-code repository template
+
+There is now a public
+https://github.com/validatedpatterns-demos/agof_config_as_code_template[AGOF config-as-code repository template]
+that explains some Ansible config-as-code conventions, and explains the implicit ways that AGOF and the
+aap-config-chart use config-as-code. This includes explaining how the to use the (optional) Hashicorp Vault
+integration, and providing a few meta-variables to make the template a bit more adaptable.
+
+== Summary
+
+Validated Patterns strives to make it easy and repeatable to include Ansible components in GitOps patterns. The
+enhancements and updates listed here carry on that tradition. We are eager to continue developing features and
+enhancements to keep making it easier to do more with the Validated Patterns frameworks.
