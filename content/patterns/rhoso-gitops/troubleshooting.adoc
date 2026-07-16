@@ -1,0 +1,88 @@
+---
+title: Troubleshooting
+weight: 40
+aliases: /rhoso-gitops/troubleshooting/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="troubleshooting-rhoso-gitops"]
+= Troubleshooting the {rhoso-gitops-pattern}
+
+[id="rhoso-gitops-validate-pattern"]
+== Validating the pattern
+
+Run pattern validation commands from the pattern repository root:
+
+[source,terminal]
+----
+$ ./pattern.sh make validate-prereq
+$ ./pattern.sh make validate-schema
+$ ./pattern.sh make argo-healthcheck
+----
+
+[id="rhoso-gitops-check-argocd"]
+== Checking Argo CD application status
+
+The pattern uses two Argo CD namespaces. List applications in each:
+
+[source,terminal]
+----
+$ oc get applications -n vp-gitops
+$ oc get applications -n openshift-gitops
+----
+
+Inspect a child application that is out of sync or unhealthy:
+
+[source,terminal]
+----
+$ oc describe application <application-name> -n openshift-gitops
+----
+
+Use the Argo CD UI in the `openshift-gitops` namespace to review sync waves,
+resource health, and diff details for upstream overlays.
+
+[id="rhoso-gitops-check-pods"]
+== Checking pod status
+
+To verify that workloads deployed successfully, list pods that are not Running or
+Completed:
+
+[source,terminal]
+----
+$ oc get pods -A | grep -v Running | grep -v Completed
+----
+
+Review logs for a specific pod:
+
+[source,terminal]
+----
+$ oc logs -n <namespace> <pod-name>
+----
+
+[id="rhoso-gitops-known-issues"]
+== Known issues
+
+* *`openstack-secrets` disabled* — The default pattern leaves
+  `openstack-secrets` disabled because no Git path is configured (`path: TODO`).
+  Enable it only after you configure secret wiring and a bootstrap credential
+  out of band. See link:../configuration/#rhoso-gitops-secret-zero[Secret zero
+  (bootstrap credential)].
+* *Upstream sync failures* — Confirm `targetRevision` and paths in
+  `overrides/values-rhoso-gitops.yaml` match a tag or branch that exists in
+  link:https://github.com/openstack-k8s-operators/gitops[openstack-k8s-operators/gitops].
+* *Operator install delays* — Infrastructure operators in `operator-dependencies`
+  subscribe from the cluster catalog; allow time for OLM to resolve CSVs before
+  later sync waves run.
+
+For community support, open an issue in the
+link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/issues[pattern repository].
+
+[id="next-steps_rhoso-gitops-troubleshooting"]
+== Next steps
+
+* link:../getting-started/[Getting started]
+* link:../configuration/[Configuration]

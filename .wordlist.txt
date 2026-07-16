@@ -39,9 +39,9 @@ anattama
 anonymized
 anonymizer
 ansible
-api's
 apicast
 apicurito
+api's
 apis
 apiversion
 appdev
@@ -109,6 +109,7 @@ cacert
 cakephp
 canarypausestep
 cas
+ccvdr
 cdd
 cdh
 cdn
@@ -128,6 +129,7 @@ chown
 chroot
 cicd
 cj
+cjeanner
 ckollujlir
 claudiol
 cli
@@ -193,6 +195,7 @@ cryptographic
 csi
 csr
 csv
+csvs
 ctdim
 ctrl
 cuda
@@ -209,6 +212,7 @@ dasv
 datacenter
 dataflow
 datagrid
+dataplane
 dataset
 datasets
 datasheet
@@ -315,6 +319,7 @@ externalurl
 extraconfig
 facto
 fadc
+faipqlsci
 fc
 fcb
 fcea
@@ -340,6 +345,7 @@ fs
 fssl
 fsv
 fsync
+fu
 fvsm
 fx
 gapped
@@ -393,6 +399,7 @@ hc
 hcl
 hcp
 hdsr
+healthcheck
 helloworld
 helmoverrides
 helmrepourl
@@ -510,6 +517,8 @@ jtf
 jumpstart
 jupyter
 jws
+jyerthqlkjdugwqbg
+jyerthqlkjdugwqbg7vcg
 kafdrop
 kafkasource
 kafkatopic
@@ -708,11 +717,12 @@ opendatahub
 openid
 openjdk
 openshift
-openshift's
 openshiftpullsecret
+openshift's
 openshiftsdn
 openshiftversion
 openssl
+openstack
 openvino
 openvinotoolkit
 operatorchannel
@@ -776,6 +786,7 @@ predeploy
 prem
 preplay
 preprocess
+prereq
 prereqs
 prerequisitesrequirements
 privatekey
@@ -831,8 +842,8 @@ renderers
 replicaset
 replicasets
 repo
-repo's
 repolist
+repo's
 repos
 repourl
 reranked
@@ -852,6 +863,7 @@ rhoai
 rhocp
 rhodf
 rhods
+rhoso
 rhpam
 rhpds
 rhsm
@@ -961,6 +973,7 @@ svg
 synapseai
 synched
 syncpolicy
+syncwave
 sys
 syscall
 targetbucket
@@ -1037,8 +1050,8 @@ unsealvault
 untrusted
 updatingconfig
 updatingversion
-upstream's
 upstreaming
+upstream's
 ure
 uri
 usecsv
@@ -1056,6 +1069,7 @@ vaultkeys
 vaultpolicy
 vaultprefixes
 vaultproject
+vcg
 vcpu
 vcpus
 vdjtkgams
@@ -1065,6 +1079,7 @@ vectorized
 veeam
 vfio
 vhjpkievife
+viewform
 virtualmachine
 virtualmachines
 vm
@@ -1091,6 +1106,7 @@ wip
 wjalrxutnfemi/k7mdeng/bpxrficyexamplekey
 wnklrcd
 wtjq
+wypu
 wyr
 xeon
 xeons

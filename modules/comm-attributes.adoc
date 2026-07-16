@@ -115,6 +115,9 @@
 :kebab: image:kebab.png[title="Options menu"]
 :rh-openstack-first: Red{nbsp}Hat OpenStack Platform (RHOSP)
 :openstack-short: RHOSP
+:rh-rhoso: Red{nbsp}Hat OpenStack Services on OpenShift
+:rh-rhoso-short: RHOSO
+:rhoso-gitops-pattern: RHOSO GitOps pattern
 //Assisted Installer
 :ai-full: Assisted Installer
 :ai-version: 2.3

@@ -1,0 +1,98 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+
+[id="rhoso-gitops-architecture"]
+= {rhoso-gitops-pattern} architecture
+
+[id="rhoso-gitops-gitops-delivery"]
+== GitOps delivery flow
+
+The pattern uses the Validated Patterns framework to install the *rhoso-gitops*
+Helm meta-chart. That chart creates Argo CD `Application` resources that sync
+{rh-rhoso-short} stages from the upstream
+link:https://github.com/openstack-k8s-operators/gitops[openstack-k8s-operators/gitops]
+repository (`example/*` Kustomize overlays).
+
+The delivery path is:
+
+. Validated Patterns operator reconciles the pattern clustergroup
+. Parent *rhoso-gitops* Application runs in `vp-gitops` (Validated Patterns GitOps)
+. Meta-chart renders child Applications in `openshift-gitops` ({gitops-title})
+. Child apps sync upstream `example/*` overlays in order (operators, networks,
+  control plane, dataplane)
+
+.GitOps application delivery and sync-wave ordering
+image::rhoso-gitops/rhoso-gitops-applications.svg[{rhoso-gitops-pattern} GitOps application delivery,700]
+
+The diagram shows the parent Application in `vp-gitops`, child Applications in
+`openshift-gitops`, and the upstream Kustomize overlays they sync. Sync-wave
+annotations order deployment from infrastructure operators through the data
+plane.
+
+[id="rhoso-gitops-dual-argocd"]
+== Dual Argo CD namespaces
+
+* The pattern operator deploys the parent *rhoso-gitops* Application into
+  *`vp-gitops`* (Validated Patterns GitOps).
+* Child {rh-rhoso-short} Applications are created in *`openshift-gitops`*
+  ({gitops-title} operator), per the meta-chart defaults.
+
+[id="rhoso-gitops-infrastructure-topology"]
+== Infrastructure topology
+
+An {rh-ocp} cluster hosts the {rh-rhoso-short} control plane (OpenStack operators
+and `OpenStackControlPlane` services on control-plane nodes). Separate {rhel-short}
+hosts run the {rh-rhoso-short} data plane (dataplane elements on compute nodes).
+
+The GitOps flow above describes *how* configuration is delivered. The diagram
+and list below describe *what* gets deployed:
+
+.RHOSO infrastructure topology
+image::rhoso-gitops/rhoso-gitops-infrastructure.svg[{rhoso-gitops-pattern} infrastructure topology,700]
+
+* *OpenShift cluster* — control-plane nodes run OpenStack operators and
+  `OpenStackControlPlane` services
+* *Data plane hosts* — one or more {rhel-short} compute nodes run {rh-rhoso-short}
+  dataplane elements, connected to the control plane
+
+[id="rhoso-gitops-sync-waves"]
+== Application sync order
+
+Child Applications deploy in sync-wave order when Argo CD reconciles the parent
+*rhoso-gitops* Application:
+
+[cols="2,3,1",options="header"]
+|===
+| Application | Purpose | Sync wave
+
+| `operator-dependencies`
+| Infrastructure operators (cert-manager, MetalLB, nmstate, observability)
+| `-20`
+
+| `openstack-operator`
+| OpenStack operator subscription
+| `-20`
+
+| `openstack-operator-cr`
+| Main `OpenStack` custom resource
+| `-15`
+
+| `openstack-secrets`
+| Secure-backend sync (disabled by default)
+| `-10`
+
+| `openstack-networks`
+| Network configuration
+| `0`
+
+| `openstack-controlplane`
+| `OpenStackControlPlane`
+| `10`
+
+| `openstack-dataplane`
+| Data plane
+| `20`
+|===
+
+After changing overrides, confirm child apps in the Argo CD UI or with
+`oc get applications -n openshift-gitops`.

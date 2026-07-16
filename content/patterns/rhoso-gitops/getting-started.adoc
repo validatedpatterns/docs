@@ -1,0 +1,19 @@
+---
+title: Getting started
+weight: 10
+aliases: /rhoso-gitops/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/rhoso-gitops/rhoso-gitops-deploying.adoc[leveloffset=+1]
+
+[id="next-steps_rhoso-gitops-getting-started"]
+== Next steps
+
+* link:../configuration/[Configure the pattern]
+* link:../cluster-sizing/[Review cluster sizing]
+* link:../troubleshooting/[Troubleshooting]
