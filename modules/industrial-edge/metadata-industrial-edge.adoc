@@ -9,7 +9,7 @@
 :issues_url: https://github.com/validatedpatterns/industrial-edge/issues
 :docs_url: https://validatedpatterns.io/patterns/industrial-edge/
 :ci_url: https://validatedpatterns.io/ci/?pattern=industrialedge
-:tier: tested
+:tier: sandbox
 :owners: mbaldessari, darkdoc
 :requirements_hub_compute_platform_gcp_replicas: 5
 :requirements_hub_compute_platform_gcp_type: n1-standard-16
