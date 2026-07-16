@@ -83,6 +83,7 @@ Following are some examples of the patterns in the sandbox tier:
 * link:/amd-rag-chat-qna[OPEA Chat QnA accelerated with AMD Instinct]
 * link:/virtualization-starter-kit[Virtualization Starter Kit]
 * link:/federated-edge-observability[Federated Edge Observability]
+* link:/industrial-edge[Industrial Edge]
 
 [role="_additional-resources"]
 .Additional resources
@@ -137,7 +138,6 @@ Following are some examples of the patterns in the maintained tier:
 
 * link:/ansible-edge-gitops[Ansible Edge GitOps]
 * link:/multicloud-gitops[Multicloud GitOps]
-* link:/industrial-edge[Industrial Edge]
 * link:/medical-diagnosis[Medical Diagnosis]
 
 [id="feature-breakdown-by-tiers"]
