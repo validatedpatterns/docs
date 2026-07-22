@@ -16,4 +16,4 @@ include::modules/rhoso-gitops/rhoso-gitops-deploying.adoc[leveloffset=+1]
 
 * link:../configuration/[Configure the pattern]
 * link:../cluster-sizing/[Review cluster sizing]
-* link:../troubleshooting/[Troubleshooting]
+* link:../troubleshooting/[Troubleshoot the pattern]

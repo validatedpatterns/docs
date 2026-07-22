@@ -4,22 +4,19 @@
 [id="about-rhoso-gitops-pattern"]
 = About the {rhoso-gitops-pattern}
 
-Deploying {rh-rhoso} spans operators, networking, and control-plane and data-plane
-resources. Teams that rely on imperative scripts or manual cluster changes face
-slow rollouts, configuration drift, and weak audit trails when the stack must be
-upgraded or reproduced.
+Deploying {rh-rhoso} spans Operators, networking, and control-plane and data-plane resources.
+Teams that rely on imperative scripts or manual cluster changes face
+slow rollouts, configuration drift, and weak audit trails when you upgrade or
+reproduce the stack.
 
-The {rhoso-gitops-pattern} addresses that by driving {rh-rhoso-short} from public
-Git through Argo CD: manifests stay declarative and version-controlled, and the
-cluster is reconciled to match what is declared in the repository.
+The {rhoso-gitops-pattern} addresses that by driving {rh-rhoso-short} from public Git through Argo CD: manifests stay declarative and version-controlled, and Argo CD reconciles the cluster to match what the repository declares.
 
 [id="rhoso-gitops-pattern-goals"]
 == Pattern goals
 
 The {rhoso-gitops-pattern} aims to:
 
-* Install the *rhoso-gitops* meta-chart through the Validated Patterns
-  clustergroup and {gitops-title} operator
+* Install the *rhoso-gitops* meta-chart through the {solution-name-upstream} clustergroup and {gitops-title} Operator
 * Create child Argo CD Applications that sync {rh-rhoso-short} stages from upstream
   link:https://github.com/openstack-k8s-operators/gitops[openstack-k8s-operators/gitops]
   (`example/*` Kustomize overlays)
@@ -29,6 +26,8 @@ The {rhoso-gitops-pattern} aims to:
 [id="rhoso-gitops-red-hat-technologies"]
 == Red Hat technologies
 
+The {rhoso-gitops-pattern} uses the following Red Hat products:
+
 * {rh-ocp}
 * {gitops-title}
 * {rh-rhoso}
@@ -36,11 +35,11 @@ The {rhoso-gitops-pattern} aims to:
 [id="rhoso-gitops-cluster-scope"]
 == Cluster scope
 
-Validated Patterns distinguish between the *initial cluster* (where the pattern
-is installed) and *managed clusters* (additional {rh-ocp} clusters or hosts
-managed from that hub, for example through {rh-rhacm}).
+{solution-name-upstream} distinguishes between the *initial cluster* (where you
+install the pattern) and *managed clusters* (additional {rh-ocp} clusters or
+hosts managed from that hub, for example through {rh-rhacm}).
 
-The {rhoso-gitops-pattern} is *single-cluster only*. It does not provide
+The {rhoso-gitops-pattern} is *single-cluster only*. It does not include
 multi-cluster support, spoke provisioning, or hub-to-spoke {gitops-shortname}
 fan-out.
 
@@ -51,14 +50,15 @@ fan-out.
 
 | Initial cluster
 | Yes
-| Validated Patterns clustergroup (`values-standalone.yaml`), *rhoso-gitops*
-  meta-chart, and child {rh-rhoso-short} Applications in `openshift-gitops`
+| {solution-name-upstream} clustergroup (`values-standalone.yaml`),
+  *rhoso-gitops* meta-chart, and child {rh-rhoso-short} Applications in
+  `openshift-gitops`
 
 | Managed clusters
 | None
-| Not in scope (`spoke_support: false` in `pattern-metadata.yaml`). No spoke
-  sizing, policies, {rh-rhacm} placement, or remote Argo CD instances are
-  defined or deployed
+| Not in scope (`spoke_support: false` in `pattern-metadata.yaml`). The pattern
+  does not define or deploy spoke sizing, policies, {rh-rhacm} placement, or
+  remote Argo CD instances
 |===
 
 Sizing guidance under `requirements.hub` in the pattern repository applies to
@@ -68,7 +68,7 @@ consistency across spokes) do not apply to this pattern.
 [id="rhoso-gitops-support"]
 == Support
 
-This is a *sandbox tier* Validated Pattern. Support is provided by the community
-on a best-effort basis. For details, see the
+This is a *sandbox tier* pattern. The community provides support on a
+best-effort basis. For details, see the
 link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/blob/main/SUPPORT.md[support policy]
 in the pattern repository.
