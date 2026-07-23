@@ -52,7 +52,7 @@ fan-out.
 | Yes
 | {solution-name-upstream} clustergroup (`values-standalone.yaml`),
   *rhoso-gitops* meta-chart, and child {rh-rhoso-short} Applications in
-  `openshift-gitops`
+  `rhoso-gitops-standalone`
 
 | Managed clusters
 | None

@@ -53,21 +53,21 @@ The pattern uses two Argo CD namespaces. List applications in each namespace:
 $ oc get applications -n vp-gitops
 ----
 
-. List applications in `openshift-gitops`:
+. List applications in `rhoso-gitops-standalone`:
 +
 [source,terminal]
 ----
-$ oc get applications -n openshift-gitops
+$ oc get applications -n rhoso-gitops-standalone
 ----
 
 . Inspect a child application that is out of sync or unhealthy:
 +
 [source,terminal]
 ----
-$ oc describe application <application_name> -n openshift-gitops
+$ oc describe application <application_name> -n rhoso-gitops-standalone
 ----
 
-Use the Argo CD UI in the `openshift-gitops` namespace to review sync waves,
+Use the Argo CD UI in the `rhoso-gitops-standalone` namespace to review sync waves,
 resource health, and diff details for upstream overlays.
 
 [id="rhoso-gitops-check-pods"]

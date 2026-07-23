@@ -53,38 +53,48 @@ link:https://github.com/openstack-k8s-operators/gitops[openstack-k8s-operators/g
 at the revision pinned in `overrides/values-rhoso-gitops.yaml`.
 
 .Default upstream applications
-[cols="2,2,1",options="header"]
+[cols="2,2,1,1",options="header"]
 |===
-| Argo CD application | Upstream path | Enabled
+| Argo CD application | Upstream path | Enabled | Sync
 
 | `operator-dependencies`
 | `example/dependencies`
 | Yes
+| Automated
 
 | `openstack-operator`
 | `example/openstack-operator`
 | Yes
+| Automated
 
 | `openstack-operator-cr`
 | `example/openstack-operator-cr`
 | Yes
+| Automated
 
 | `openstack-secrets`
 | not configured (`path: TODO`)
 | No
+| Automated
 
 | `openstack-networks`
 | `example/openstack-networks`
 | Yes
+| Automated
 
 | `openstack-controlplane`
 | `example/openstack-controlplane`
 | Yes
+| Automated
 
 | `openstack-dataplane`
 | `example/openstack-dataplane`
 | Yes
+| Automated
 |===
+
+All applications include a default retry policy to handle transient failures
+during deployment convergence.
 
 For product, framework, upstream Git, and Operator versions, see the pattern
 repository
@@ -94,6 +104,16 @@ file.
 [id="rhoso-gitops-pin-revision"]
 == Pinning a different upstream revision
 
+Child applications use *automated sync* by default: Argo CD reconciles them
+whenever the upstream Git repository changes. If `targetRevision` points to a
+branch name like `main` or `HEAD`, any push to that branch triggers an automatic
+deployment, which can cause unexpected changes in production.
+
+[IMPORTANT]
+====
+Always pin `targetRevision` to a *tag* or *commit hash* for stability.
+====
+
 In `overrides/values-rhoso-gitops.yaml`, set `targetRevision` for each
 application that you want to pin:
 
@@ -101,13 +121,28 @@ application that you want to pin:
 ----
 applications:
   openstack-operator:
-    targetRevision: "v0.2.0"
+    targetRevision: "v0.2.0"                # tag — recommended
   openstack-controlplane:
-    targetRevision: "v0.2.0"
+    targetRevision: "abc123def456"           # commit hash — also safe
 ----
 
 Apply the same key under every application you want on that revision, or only
 the entries that you want to change; unspecified keys keep chart defaults.
+
+[id="rhoso-gitops-disable-automated-sync"]
+== Disabling automated sync for an application
+
+To switch a specific application to manual sync, override its `syncPolicy`
+without the `automated` key:
+
+[source,yaml]
+----
+applications:
+  openstack-dataplane:
+    syncPolicy:
+      syncOptions:
+        - Prune=true
+----
 
 [id="rhoso-gitops-disable-stage"]
 == Disabling a deployment stage
@@ -120,6 +155,31 @@ applications:
   openstack-dataplane:
     enabled: false
 ----
+
+[id="rhoso-gitops-custom-retry"]
+== Setting a custom retry policy
+
+To override the default retry policy for an application:
+
+[source,yaml]
+----
+applications:
+  openstack-controlplane:
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      retry:
+        limit: 20
+        backoff:
+          duration: "10s"
+          factor: 2
+          maxDuration: "5m"
+----
+
+Refer to the Argo CD
+link:https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/#automatic-sync-semantics[automatic sync documentation]
+for available retry options.
 
 [id="rhoso-gitops-repoint-overlay"]
 == Pointing an application to your Git overlay
