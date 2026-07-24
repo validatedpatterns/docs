@@ -67,8 +67,8 @@ $ oc get applications -n rhoso-gitops-standalone
 $ oc describe application <application_name> -n rhoso-gitops-standalone
 ----
 
-Use the Argo CD UI in the `rhoso-gitops-standalone` namespace to review sync waves,
-resource health, and diff details for upstream overlays.
+Use the Argo CD UI in the `rhoso-gitops-standalone` namespace to review
+application status, resource health, and diff details for upstream overlays.
 
 [id="rhoso-gitops-check-pods"]
 == Checking pod status
@@ -103,7 +103,8 @@ The following known issues can affect pattern deployment:
   link:https://github.com/openstack-k8s-operators/gitops[openstack-k8s-operators/gitops].
 * *Operator install delays*: Infrastructure Operators in `operator-dependencies`
   subscribe from the cluster catalog; allow time for OLM to resolve
-  `ClusterServiceVersions` (CSVs) before later sync waves run.
+  `ClusterServiceVersions` (CSVs). Other applications retry automatically
+  until their dependencies are satisfied.
 
 For community support, open an issue in the
 link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/issues[pattern repository].

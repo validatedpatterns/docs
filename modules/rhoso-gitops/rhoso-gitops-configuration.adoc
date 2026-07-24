@@ -107,7 +107,7 @@ file.
 Child applications use *automated sync* by default: Argo CD reconciles them
 whenever the upstream Git repository changes. If `targetRevision` points to a
 branch name like `main` or `HEAD`, any push to that branch triggers an automatic
-deployment, which can cause unexpected changes in production.
+deployment. This can cause unexpected changes in production.
 
 [IMPORTANT]
 ====
@@ -219,7 +219,7 @@ README.
 == Secret zero (bootstrap credential)
 
 {rh-rhoso-short} GitOps often uses a secure store (for example
-{hashicorp-vault-short}). The bootstrap credential must not live in Git. Complete
+{hashicorp-vault-short}). Do not store the bootstrap credential in Git. Complete
 the following steps:
 
 . Create the `openstack` namespace (or the namespace your overlay specifies).
