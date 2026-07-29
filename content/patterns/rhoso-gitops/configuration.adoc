@@ -15,4 +15,4 @@ include::modules/rhoso-gitops/rhoso-gitops-configuration.adoc[leveloffset=+1]
 == Next steps
 
 * link:../getting-started/[Deploy the pattern]
-* link:../troubleshooting/[Troubleshooting]
+* link:../troubleshooting/[Troubleshoot the pattern]

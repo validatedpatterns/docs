@@ -2,18 +2,18 @@
 :imagesdir: ../../images
 
 [id="rhoso-gitops-configuration"]
-= Configuring the {rhoso-gitops-pattern}
+= {rhoso-gitops-pattern} configuration
 
 The *rhoso-gitops* meta-chart renders Argo CD `Application` resources. It does
 not deploy {rh-rhoso-short} workloads directly; Kustomize overlays in the
-upstream gitops repository remain the source of truth.
+upstream GitOps repository remain the source of truth.
 
 [id="rhoso-gitops-values-layers"]
 == Values file layers
 
 The clustergroup application in `values-standalone.yaml` points Argo CD at
 `charts/all/rhoso-gitops` and layers pattern overrides from
-`overrides/values-rhoso-gitops.yaml` via `extraValueFiles`.
+`overrides/values-rhoso-gitops.yaml` through `extraValueFiles`.
 
 .Values file layers
 [cols="1,2,3",options="header"]
@@ -59,34 +59,34 @@ at the revision pinned in `overrides/values-rhoso-gitops.yaml`.
 
 | `operator-dependencies`
 | `example/dependencies`
-| yes
+| Yes
 
 | `openstack-operator`
 | `example/openstack-operator`
-| yes
+| Yes
 
 | `openstack-operator-cr`
 | `example/openstack-operator-cr`
-| yes
+| Yes
 
 | `openstack-secrets`
 | not configured (`path: TODO`)
-| no
+| No
 
 | `openstack-networks`
 | `example/openstack-networks`
-| yes
+| Yes
 
 | `openstack-controlplane`
 | `example/openstack-controlplane`
-| yes
+| Yes
 
 | `openstack-dataplane`
 | `example/openstack-dataplane`
-| yes
+| Yes
 |===
 
-Product, framework, upstream Git, and operator versions are listed in the pattern
+For product, framework, upstream Git, and Operator versions, see the pattern
 repository
 link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/blob/main/VERSIONS.md[VERSIONS.md]
 file.
@@ -94,7 +94,8 @@ file.
 [id="rhoso-gitops-pin-revision"]
 == Pinning a different upstream revision
 
-In `overrides/values-rhoso-gitops.yaml`:
+In `overrides/values-rhoso-gitops.yaml`, set `targetRevision` for each
+application that you want to pin:
 
 [source,yaml]
 ----
@@ -106,10 +107,12 @@ applications:
 ----
 
 Apply the same key under every application you want on that revision, or only
-the entries you need to change; unspecified keys keep chart defaults.
+the entries that you want to change; unspecified keys keep chart defaults.
 
 [id="rhoso-gitops-disable-stage"]
 == Disabling a deployment stage
+
+To disable a deployment stage, set `enabled` to `false` for that application:
 
 [source,yaml]
 ----
@@ -119,7 +122,10 @@ applications:
 ----
 
 [id="rhoso-gitops-repoint-overlay"]
-== Repointing an application to your Git overlay
+== Pointing an application to your Git overlay
+
+To point an application at your own Git overlay, set `repoURL`, `path`, and
+`targetRevision`:
 
 [source,yaml]
 ----
@@ -133,7 +139,7 @@ applications:
 [id="rhoso-gitops-kustomize-components"]
 == Adding Kustomize components
 
-For example, to add a secrets operator component via `operator-dependencies`:
+For example, add a secrets Operator component through `operator-dependencies`:
 
 [source,yaml]
 ----
@@ -144,16 +150,17 @@ applications:
         - "https://github.com/openstack-k8s-operators/gitops/components/secrets/vault-secrets-operator?ref=v0.2.0"
 ----
 
-Component URLs for Vault Secrets Operator and External Secrets Operator are
-documented in the upstream
+For Vault Secrets Operator and External Secrets Operator component URLs, see the
+upstream
 link:https://github.com/openstack-k8s-operators/gitops/tree/main/components/secrets[components/secrets]
-readme.
+README.
 
 [id="rhoso-gitops-secret-zero"]
 == Secret zero (bootstrap credential)
 
-{rh-rhoso-short} GitOps often uses a secure store (for example Vault). The
-bootstrap credential must not live in Git. Typical steps:
+{rh-rhoso-short} GitOps often uses a secure store (for example
+{hashicorp-vault-short}). The bootstrap credential must not live in Git. Complete
+the following steps:
 
 . Create the `openstack` namespace (or the namespace your overlay specifies).
 . Create the Kubernetes `Secret` out of band (`oc create secret generic ...`).
@@ -162,7 +169,7 @@ bootstrap credential must not live in Git. Typical steps:
 . Enable and configure `applications.openstack-secrets` in
   `overrides/values-rhoso-gitops.yaml` (`enabled: true`, `repoURL`, `path`,
   `targetRevision`, optional `kustomize` patches).
-. Install the secrets operator via `operator-dependencies` using
+. Install the secrets Operator through `operator-dependencies` by using
   `kustomize.components` URLs from the upstream secrets components.
 
 For standalone Helm usage and advanced chart examples, see the upstream
