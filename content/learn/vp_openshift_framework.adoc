@@ -73,6 +73,42 @@ The Multicloud GitOps approach enables centralized management of multiple cloud 
 
 First we notice some subdirectories: charts and common, along with `values-` yaml files.
 
+The directory tree above shows the older flat layout, where all `values-<clusterGroupName>.yaml` files sit at the repository root and `values-global.yaml` uses `main.clusterGroupName` to select the primary cluster group.
+
+Starting with patterns-operator 0.0.78, clustergroup chart v0.9.57, and acm-chart v0.2.10, patterns can use a newer variant-based layout. In this layout, the per-cluster values files move into a `variants/` directory, organized by variant name, and `values-global.yaml` uses `main.variant` instead of `main.clusterGroupName`:
+This new directory layout will automatically be used if the pattern's git repository detects a top-level `variants/` sub-folder.
+
+[source,text]
+----
+.
+├── charts
+│   ├── all
+│   └── region
+├── overrides
+│   ├── values-AWS.yaml
+│   └── values-IBMCloud.yaml
+├── pattern-metadata.yaml
+├── pattern.sh
+├── values-global.yaml
+├── values-secret.yaml.template
+└── variants
+    ├── hub
+    │   ├── values-group-one.yaml
+    │   └── values-hub.yaml
+    └── standalone
+        └── values-standalone.yaml
+----
+
+With this layout, `values-global.yaml` specifies the default variant to deploy:
+
+[source,yaml]
+----
+main:
+  variant: hub
+----
+
+Running `./pattern.sh make install` deploys the variant specified in `main.variant`. Both `main.variant` and `main.clusterGroupName` are supported; if both are set, `variant` takes precedence. For a detailed description of these fields, see link:/learn/values-global-configuration/#main-variant[Global configuration reference].
+
 ===  Industrial edge
 
 [source,text]
