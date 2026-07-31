@@ -9,7 +9,9 @@ Teams that rely on imperative scripts or manual cluster changes face
 slow rollouts, configuration drift, and weak audit trails when you upgrade or
 reproduce the stack.
 
-The {rhoso-gitops-pattern} addresses that by driving {rh-rhoso-short} from public Git through Argo CD: manifests stay declarative and version-controlled, and Argo CD reconciles the cluster to match what the repository declares.
+The {rhoso-gitops-pattern} addresses that by driving {rh-rhoso-short} from public
+Git through Argo CD. Manifests stay declarative and version-controlled, and
+Argo CD reconciles the cluster to match what the repository declares.
 
 [id="rhoso-gitops-pattern-goals"]
 == Pattern goals

@@ -10,9 +10,3 @@ aliases: /rhoso-gitops/configuration/
 include::modules/comm-attributes.adoc[]
 
 include::modules/rhoso-gitops/rhoso-gitops-configuration.adoc[leveloffset=+1]
-
-[id="next-steps_rhoso-gitops-configuration"]
-== Next steps
-
-* link:../getting-started/[Deploy the pattern]
-* link:../troubleshooting/[Troubleshoot the pattern]

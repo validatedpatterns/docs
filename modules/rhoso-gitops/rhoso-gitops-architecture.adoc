@@ -5,9 +5,9 @@
 = {rhoso-gitops-pattern} architecture
 
 The {rhoso-gitops-pattern} delivers {rh-rhoso-short} configuration through Argo CD
-Applications that the *rhoso-gitops* meta-chart creates. Use this overview to
-understand GitOps delivery, the dual Argo CD namespaces, infrastructure topology,
-and deployment convergence before you deploy or customize the pattern.
+Applications that the *rhoso-gitops* meta-chart creates. The pattern uses GitOps
+delivery through dual Argo CD namespaces, manages infrastructure topology, and
+converges deployment through retry policies.
 
 [id="rhoso-gitops-gitops-delivery"]
 == GitOps delivery flow
@@ -25,14 +25,14 @@ The delivery path is:
   ({solution-name-upstream} GitOps)
 . The meta-chart renders child Applications in `rhoso-gitops-standalone`
   (dedicated Argo CD instance)
-. The child apps sync upstream `example/*` overlays (Operators,
+. The child applications sync upstream `example/*` overlays (Operators,
   networks, control plane, data plane) and converge through retry policies
 
 .GitOps application delivery
-image::rhoso-gitops/rhoso-gitops-applications.svg[{rhoso-gitops-pattern} GitOps application delivery,700]
+image::rhoso-gitops/rhoso-gitops-applications.png[{rhoso-gitops-pattern} GitOps application delivery]
 
-The diagram shows the parent Application in `vp-gitops`, child Applications in
-`rhoso-gitops-standalone`, and the upstream Kustomize overlays they sync.
+The parent Application runs in `vp-gitops`. Child Applications in
+`rhoso-gitops-standalone` sync upstream Kustomize overlays.
 All child Applications deploy at sync-wave 0 and converge eventually through
 retry policies.
 
@@ -54,11 +54,11 @@ An {rh-ocp} cluster hosts the {rh-rhoso-short} control plane (OpenStack Operator
 and `OpenStackControlPlane` services on control-plane nodes). Separate {rhel-short}
 hosts run the {rh-rhoso-short} data plane (data plane elements on compute nodes).
 
-The preceding GitOps flow describes *how* GitOps delivers configuration. The
-following diagram and list describe *what* gets deployed:
+The GitOps delivery flow defines *how* configuration reaches the cluster. The
+infrastructure topology defines *what* gets deployed:
 
 .{rh-rhoso-short} infrastructure topology
-image::rhoso-gitops/rhoso-gitops-infrastructure.svg[{rhoso-gitops-pattern} infrastructure topology,700]
+image::rhoso-gitops/rhoso-gitops-infrastructure.png[{rhoso-gitops-pattern} infrastructure topology]
 
 * *OpenShift cluster*: Control-plane nodes run OpenStack Operators and
   `OpenStackControlPlane` services.
@@ -73,31 +73,10 @@ reconciles the parent *rhoso-gitops* Application. Argo CD launches every child
 simultaneously. Each child retries (per `syncPolicy.retry`) until its upstream
 dependencies resolve and it converges eventually.
 
-[cols="2,3",options="header"]
-|===
-| Application | Purpose
+For the full list of child applications, their upstream paths, and links to the
+corresponding {rh-rhoso} product documentation, see
+xref:rhoso-gitops-configuration[Configuration] >
+xref:rhoso-gitops-upstream-applications[Upstream applications].
 
-| `operator-dependencies`
-| Infrastructure Operators (cert-manager, MetalLB, nmstate, observability)
-
-| `openstack-operator`
-| OpenStack Operator subscription
-
-| `openstack-operator-cr`
-| Main `OpenStack` custom resource
-
-| `openstack-secrets`
-| Secure-backend sync (disabled by default)
-
-| `openstack-networks`
-| Network configuration
-
-| `openstack-controlplane`
-| `OpenStackControlPlane`
-
-| `openstack-dataplane`
-| Data plane
-|===
-
-After you change overrides, confirm child apps in the Argo CD UI or with
+After you change overrides, confirm child applications in the Argo CD UI or with
 `oc get applications -n rhoso-gitops-standalone`.

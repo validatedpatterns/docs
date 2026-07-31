@@ -41,65 +41,69 @@ The clustergroup application in `values-standalone.yaml` points Argo CD at
 | Optional platform-specific overrides (placeholder)
 |===
 
-To change upstream Git content (revision, paths, enable or disable apps), edit
+To change upstream Git content (revision, paths, enable or disable applications), edit
 `overrides/values-rhoso-gitops.yaml` and sync the pattern (or let automated
 sync reconcile, per `global.options.syncPolicy` in `values-global.yaml`).
 
 [id="rhoso-gitops-upstream-applications"]
-== Upstream applications (default `v0.1.0`)
+== Upstream applications
 
 Child Argo CD Applications sync from
 link:https://github.com/openstack-k8s-operators/gitops[openstack-k8s-operators/gitops]
 at the revision pinned in `overrides/values-rhoso-gitops.yaml`.
 
+[IMPORTANT]
+====
+The `example/` overlays shipped in the upstream repository are *reference samples
+only*. They do not produce a working deployment on your infrastructure.
+To deploy {rh-rhoso-short}, point each application at your own Git overlay
+(see xref:rhoso-gitops-repoint-overlay[Pointing an application to your Git overlay]).
+====
+
 .Default upstream applications
-[cols="2,2,1,1",options="header"]
+[cols="2,3,2,3",options="header"]
 |===
-| Argo CD application | Upstream path | Enabled | Sync
+| Application | Purpose | Upstream path | {rh-rhoso} docs
 
 | `operator-dependencies`
-| `example/dependencies`
-| Yes
-| Automated
+| Infrastructure Operators (cert-manager, MetalLB, nmstate, observability)
+| link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/dependencies[`example/dependencies`]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/planning_your_deployment/assembly_infrastructure-and-system-requirements#ref_RHOCP-software-requirements_planning[RHOCP software requirements]
 
 | `openstack-operator`
-| `example/openstack-operator`
-| Yes
-| Automated
+| OpenStack Operator subscription
+| link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/openstack-operator[`example/openstack-operator`]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_installing-and-preparing-the-openstack-operator[Installing and preparing the OpenStack Operator]
 
 | `openstack-operator-cr`
-| `example/openstack-operator-cr`
-| Yes
-| Automated
+| Main `OpenStack` custom resource
+| link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/openstack-operator-cr[`example/openstack-operator-cr`]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_installing-and-preparing-the-openstack-operator[Installing and preparing the OpenStack Operator]
 
 | `openstack-secrets`
+| Secure-backend sync (disabled by default)
 | not configured (`path: TODO`)
-| No
-| Automated
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_preparing-rhocp-for-rhoso#proc_providing-secure-access-to-the-RHOSO-services_preparing[Providing secure access to the RHOSO services]
 
 | `openstack-networks`
-| `example/openstack-networks`
-| Yes
-| Automated
+| Network configuration
+| link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/openstack-networks[`example/openstack-networks`]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_preparing-rhoso-networks_preparing[Preparing RHOSO networks]
 
 | `openstack-controlplane`
-| `example/openstack-controlplane`
-| Yes
-| Automated
+| `OpenStackControlPlane`
+| link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/openstack-controlplane[`example/openstack-controlplane`]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_creating-the-control-plane[Creating the control plane]
 
 | `openstack-dataplane`
-| `example/openstack-dataplane`
-| Yes
-| Automated
+| Data plane
+| link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/openstack-dataplane[`example/openstack-dataplane`]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_creating-the-data-plane[Creating the data plane]
 |===
 
-All applications include a default retry policy to handle transient failures
+By default, the pattern enables all applications except `openstack-secrets`.
+Applications use automated sync with a retry policy to handle transient failures
 during deployment convergence.
-
-For product, framework, upstream Git, and Operator versions, see the pattern
-repository
-link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/blob/main/VERSIONS.md[VERSIONS.md]
-file.
 
 [id="rhoso-gitops-pin-revision"]
 == Pinning a different upstream revision
@@ -222,15 +226,35 @@ README.
 {hashicorp-vault-short}). Do not store the bootstrap credential in Git. Complete
 the following steps:
 
-. Create the `openstack` namespace (or the namespace your overlay specifies).
-. Create the Kubernetes `Secret` out of band (`oc create secret generic ...`).
-. Add a Kustomize overlay in *your* Git repository for secret wiring (non-sensitive
-  manifests only).
-. Enable and configure `applications.openstack-secrets` in
-  `overrides/values-rhoso-gitops.yaml` (`enabled: true`, `repoURL`, `path`,
-  `targetRevision`, optional `kustomize` patches).
-. Install the secrets Operator through `operator-dependencies` by using
-  `kustomize.components` URLs from the upstream secrets components.
+. Configure the secret wiring *before* deploying the pattern:
+.. Add a Kustomize overlay in *your* Git repository for secret wiring (non-sensitive
+   manifests only).
+.. Enable and configure `applications.openstack-secrets` in
+   `overrides/values-rhoso-gitops.yaml` (`enabled: true`, `repoURL`, `path`,
+   `targetRevision`, optional `kustomize` patches).
+.. Install the secrets Operator through `operator-dependencies` by using
+   `kustomize.components` URLs from the upstream secrets components.
+. While the pattern is deploying, *wait* for the `openstack` namespace to appear
+  (an earlier Argo CD application creates it). Then inject the bootstrap
+  `Secret` out of band in a separate terminal.
+  If you are working remotely, use `tmux` or `screen` so you can monitor the
+  deployment and inject the secret in parallel.
++
+[IMPORTANT]
+====
+Do *not* create the `openstack` namespace manually. Argo CD creates it during
+deployment, and a pre-existing namespace causes ownership conflicts.
+====
++
+Poll for the namespace and inject the secret as soon as it appears:
++
+[source,terminal,subs="+quotes"]
+----
+$ while ! oc get namespace openstack &>/dev/null; do sleep 10; done
+$ oc create secret generic __<secret_name>__ \
+    --from-literal=__<key>__=__<value>__ \
+    -n openstack --dry-run=client -o yaml | oc apply -f -
+----
 
 For standalone Helm usage and advanced chart examples, see the upstream
 link:https://github.com/openstack-k8s-operators/gitops/tree/main/charts/rhoso-apps[rhoso-apps chart].
