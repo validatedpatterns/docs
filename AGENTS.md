@@ -2,6 +2,8 @@
 
 This file helps AI agents understand the structure, tooling, and conventions of the
 Validated Patterns documentation repository so they can make correct, buildable changes.
+For creating or reviewing documentation content, use the skills under `.rulesync/skills/`
+(see [AI documentation skills](#ai-documentation-skills)).
 
 ## Project Overview
 
@@ -22,9 +24,49 @@ themes/patternfly/  Vendored PatternFly theme — do NOT edit
 static/           Static assets (CSS, JS, images, videos)
 assets/           Hugo asset pipeline (images)
 utils/            Ruby scripts (e.g. flatten_yaml.rb for pattern metadata)
+.rulesync/skills/ AI agent skills for creating and reviewing documentation (source of truth)
 config.yaml       Main Hugo configuration
 Makefile          Build, serve, and test commands
 ```
+
+## AI documentation skills
+
+This repository includes agent skills under `.rulesync/skills/`. These are the **required**
+workflows for creating and reviewing documentation. Do **not** free-form invent page
+structure, frontmatter, or style rules when these skills apply — read the skill file first
+and follow it precisely.
+
+Skills may also be synced into editor-specific locations (for example `.claude/skills/` or
+Cursor skills) via [rulesync](https://www.npmjs.com/package/rulesync). Prefer the skill when
+it is available in the agent environment; if it is not loaded, read the source files under
+`.rulesync/skills/` directly and execute the same workflow.
+
+| Skill | Path | Use when |
+|---|---|---|
+| **doc-create** | `.rulesync/skills/doc-create/SKILL.md` | Creating, drafting, scaffolding, or generating new documentation (learn pages, pattern page sets, tutorials, guides, or other new `.adoc`/`.md` site content) |
+| **doc-review** | `.rulesync/skills/doc-review/SKILL.md` | Reviewing, proofreading, linting, or auditing existing documentation for Red Hat/IBM style compliance |
+
+### Mandatory routing for documentation requests
+
+1. **Generate / create / write / scaffold / draft new docs** → Use **doc-create**.
+   - Read `.rulesync/skills/doc-create/SKILL.md` immediately.
+   - Follow its steps (resolve content type, gather inputs, use references, generate files).
+   - Load the applicable reference under `.rulesync/skills/doc-create/references/` before writing.
+   - After generation, perform the style review step described in that skill (using
+     `.rulesync/skills/doc-review/guides/` as instructed).
+
+2. **Review / check / fix style / audit docs** → Use **doc-review**.
+   - Read `.rulesync/skills/doc-review/SKILL.md` immediately.
+   - Follow its two-pass guide selection and review/fix workflow.
+   - Load only the relevant guides from `.rulesync/skills/doc-review/guides/`.
+
+3. If the user asks for both creation and review, run **doc-create** first, then
+   **doc-review** on the generated files (or complete the inline review step inside
+   doc-create, then offer a fuller doc-review pass if useful).
+
+4. Do not skip these skills just because the user did not name them. Trigger phrases
+   include “generate documentation”, “create a page”, “write docs for”, “scaffold a
+   pattern”, “review this doc”, “check style”, and similar requests.
 
 ## Building and Serving Locally
 
@@ -148,6 +190,8 @@ learn pages, contribute pages, or full pattern page sets).
 ## Writing Style Guidelines
 
 See `modules/doc-guidelines.adoc` for the full documentation style guide.
+When reviewing or fixing style in existing files, use the **doc-review** skill
+(`.rulesync/skills/doc-review/SKILL.md`) rather than applying these rules ad hoc.
 
 - Follow the [Red Hat Supplementary Style Guide](https://redhat-documentation.github.io/supplementary-style-guide/ssg.md) and [IBM Style](https://www.ibm.com/docs/en/ibm-style).
 - Use present tense, active voice, and second person ("you").
@@ -186,3 +230,5 @@ lowercase, no duplicates). Run `make lintwordlist` to normalize the file.
 - Do **not** commit `.vale.ini` or `.vale/` (gitignored, local-only config).
 - Do **not** hard-code brand or product names that are already defined as attributes in
   `modules/comm-attributes.adoc`; use the AsciiDoc attributes instead.
+- Do **not** invent documentation scaffolds or style-review workflows when
+  **doc-create** or **doc-review** applies — use those skills instead.
