@@ -1,7 +1,7 @@
 ---
 title: Industrial Edge
 date: 2021-10-12
-tier: maintained
+tier: archived
 summary: This pattern demonstrates a horizontal solution for Industrial Edge use cases.
 rh_products:
 - Red Hat OpenShift Container Platform
@@ -24,7 +24,6 @@ links:
   arch: https://www.redhat.com/architect/portfolio/detail/26-industrial-edge
   bugs: https://github.com/validatedpatterns/industrial-edge/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
-ci: industrialedge
 ---
 
 # Industrial Edge Pattern

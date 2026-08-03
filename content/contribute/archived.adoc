@@ -1,0 +1,57 @@
+---
+menu:
+  contribute:
+    parent: Contributing and managing patterns
+title: Validated Patterns - Archived tier
+weight: 56
+aliases: /contribute/archived/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="about-archived-tier"]
+= About the {archived-tier-first}
+
+A pattern in the {archived} tier is no longer under active development.
+Validated Patterns maintainers move a pattern to this tier when the pattern's source repository has been archived on GitHub.
+Archived patterns remain documented for reference, but avoid using them for new deployments.
+
+[IMPORTANT]
+====
+The {archived} tier is a terminal state.
+Patterns do not move from {archived} back to {sandbox}, {tested}, or {maintained}.
+====
+
+[id="moving-a-pattern-to-archived-tier"]
+== Moving a pattern to the {archived} tier
+
+Only Validated Patterns maintainers decide when a pattern moves to the {archived} tier.
+A pattern does not move to {archived} automatically.
+
+Typical conditions before archiving include:
+
+* The pattern repository has been archived on GitHub.
+* No further development or maintenance is planned.
+
+After a pattern is archived:
+
+* The pattern page and related documentation remain available.
+* Pattern cards use a desaturated style, and an Archived banner appears on the pattern documentation pages.
+* The Install resource link on the pattern page is disabled.
+* The pattern is hidden from the default patterns catalog view until you select the Archived filter.
+* The pattern is not included in the homepage tier accordion.
+
+[id="requirements-archived-tier"]
+== Requirements for the {archived} tier
+
+Must::
+
+[id="must-archived-tier"]
+=== Must
+
+. The pattern repository must be archived on GitHub.
+. The pattern frontmatter must set `tier: archived`.
+. Keep pattern documentation published so existing users can find historical guidance.

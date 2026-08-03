@@ -1,7 +1,7 @@
 ---
 title: Kong
 date: 2022-12-14
-tier: sandbox
+tier: archived
 Summary: A pattern for Kong Gateway Control Plane and Data Plane demo.
 rh_products:
 - Red Hat OpenShift Container Platform

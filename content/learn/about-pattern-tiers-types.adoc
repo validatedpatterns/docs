@@ -16,7 +16,7 @@ include::modules/comm-attributes.adoc[]
 = Validated Pattern tiers in-depth
 
 [role="_abstract"]
-Patterns are categorized into distinct tiers: *Sandbox*, *Tested*, and *Maintained*.
+Patterns are categorized into distinct tiers: *Sandbox*, *Tested*, *Maintained*, and *Archived*.
 
 The different tiers of Validated Patterns are designed to facilitate ongoing maintenance, support, and testing efforts for a pattern.
 The tiering system emphasizes the requirements a pattern meets, rather than focusing on who does the maintenance.
@@ -55,6 +55,15 @@ The following table describes each pattern tier and a short description of what 
 * Built upon real-world solution architectures demonstrating business value.
 * Continuously validated to ensure all integrated components work seamlessly together as good or better after upgrades.
 * Includes only supported services and components.
+
+|image:pattern-tier-archived.png[Archived tier]
+|xref:#archived-tier[{archived-tier-first}]
+|An Archived pattern is:
+
+* No longer actively developed.
+* Kept in the documentation site for reference, with an Archived notice on its pages.
+* Hidden from the default patterns catalog until you select the Archived filter.
+* Not recommended for new deployments.
 
 |===
 
@@ -138,36 +147,66 @@ Following are some examples of the patterns in the maintained tier:
 
 * link:/ansible-edge-gitops[Ansible Edge GitOps]
 * link:/multicloud-gitops[Multicloud GitOps]
+
+[id="archived-tier"]
+== Archived tier
+
+The Archived tier is for patterns that Validated Patterns maintainers have retired from active development.
+A pattern moves to this tier when its source repository has been archived on GitHub.
+Archiving is a manual decision by Validated Patterns maintainers and is a terminal state. Patterns do not move from Archived back to another tier.
+
+Documentation for archived patterns remains available for reference.
+Pattern pages show an Archived banner, Install links are inactive, and pattern cards appear desaturated in the catalog when you enable the Archived filter.
+
+Following are the main characteristics of patterns in the archived tier:
+
+* *Repository status*: The pattern repository is archived on GitHub.
+* *No active maintenance*: No further development, CI, or support expectations apply to the pattern.
+* *Reference documentation*: Existing documentation remains published for historical reference.
+* *Catalog visibility*: Archived patterns are hidden from the default patterns list until you select the Archived filter.
+
+Following are some examples of the patterns in the archived tier:
+
 * link:/medical-diagnosis[Medical Diagnosis]
+
+[role="_additional-resources"]
+.Additional resources
+
+* For more information about the Archived tier process, see link:/contribute/archived/[Archived tier].
 
 [id="feature-breakdown-by-tiers"]
 == Feature breakdown by tiers
 
-[cols="4,^1,^1,^1", options="header"]
+[cols="4,^1,^1,^1,^1", options="header"]
 |===
-| Feature | Sandbox | Tested | Maintained
+| Feature | Sandbox | Tested | Maintained | Archived
 
 | *Deploys on fresh OpenShift without modification*
 | ✓
 | ✓
 | ✓
+| -
 
 | *Useful without private/closed source apps*
 | ✓
 | ✓
 | ✓
+| -
 
 | *Open contribution and collaboration*
 | ✓
 | ✓
 | ✓
+| -
 
 | *Documented support policy*
 | ✓
 | ✓
 | ✓
+| -
 
 | *README with problem statement*
+| ✓
 | ✓
 | ✓
 | ✓
@@ -176,63 +215,82 @@ Following are some examples of the patterns in the maintained tier:
 | ✓
 | ✓
 | ✓
+| ✓
 
 | *Business use case with demo*
 | -
 | ✓
 | ✓
+| -
 
 | *Standardized architecture diagram and written guide*
 | -
 | ✓
 | ✓
+| -
 
 | *Test plan passes at least once per quarter*
 | -
 | ✓
 | ✓
+| -
 
 | *Tested on at least 1 supported OCP version*
 | -
 | ✓
 | ✓
+| -
 
 | *Publicly visible test results (JSON)*
 | -
 | ✓
 | ✓
+| -
 
 | *Implementation review*
 | -
 | ✓
 | ✓
+| -
 
 | *Automated CI pipeline (every change or weekly)*
 | -
 | -
 | ✓
+| -
 
 | *Tested on 2 latest EUS and active interim versions*
 | -
 | -
 | ✓
+| -
 
 | *Tested on pre-release bits*
 | -
 | -
 | ✓
+| -
 
 | *Timely fixes for breakage*
 | -
 | -
 | ✓
+| -
 
 | *No Tech Preview or feature-gated features*
 | -
 | -
 | ✓
+| -
 
 | *Includes only supported services and components*
+| -
+| -
+| ✓
+| -
+
+| *Repository archived; docs kept for reference*
+| -
 | -
 | -
 | ✓

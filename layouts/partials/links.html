@@ -14,7 +14,11 @@
       <i class="fa-sharp fa-regular fa-download"></i>
     </span>
   </span>
+  {{ if eq (.Param "tier") "archived" }}
+  <span class="pf-u-color-200" aria-disabled="true" title="Install is unavailable for archived patterns">Install</span>
+  {{ else }}
   <a href="{{ .Params.links.install }}" class="">Install</a>
+  {{ end }}
 </li>
 {{ end }}
 {{ if (isset .Params.links "arch") }}

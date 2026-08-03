@@ -88,6 +88,12 @@ function jira_component (pattern) {
   return pattern
 }
 
+// CI pattern keys for patterns in the Archived tier. Keep in sync with
+// content/patterns/**/_index.* where tier: archived.
+var ARCHIVED_CI_PATTERNS = {
+  medicaldiag: true
+}
+
 // First segment of badge filenames (before the first `-`) → Hugo section under /patterns/, or absolute path.
 // Sync new keys with `ci:` in content/patterns/**/_index.* (hyphenated CI IDs often appear only as a shortened prefix in keys).
 var CI_PATTERN_DOC_SLUG = {
@@ -1367,8 +1373,15 @@ function getBadges (xmlText, bucket_url, badge_set) {
   return badges
 }
 
+function excludeArchivedPatternsFromDashboard (badges) {
+  return badges.filter(function (badge) {
+    return !ARCHIVED_CI_PATTERNS[badge.pattern]
+  })
+}
+
 function processBadges (badges, options) {
   badges = excludeRetiredOcpVersionsFromDashboard(badges)
+  badges = excludeArchivedPatternsFromDashboard(badges)
   if (options.get('disable_buttons') === true) {
     processBadgesLegacy(badges, options)
     return

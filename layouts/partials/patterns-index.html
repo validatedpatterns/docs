@@ -44,7 +44,14 @@
     {{ partial "page-toolbar.html" . }}
     <div class="pf-u-display-flex">
       {{ partial "toc.html" . }}
-      <div class="pf-c-content">
+      {{ $archivedTier := "" }}
+      {{ if isset .Params "tier" }}
+        {{ $archivedTier = .Params.tier }}
+      {{ else if and .CurrentSection (isset .CurrentSection.Params "tier") }}
+        {{ $archivedTier = .CurrentSection.Params.tier }}
+      {{ end }}
+      <div class="pf-c-content{{ if eq $archivedTier "archived" }} pattern-page-archived{{ end }}">
+        {{ partial "archived-banner.html" . }}
         <div class="pf-c-panel">
           <div class="pf-c-panel__main">
             <div class="pf-c-panel__main-body">
@@ -82,12 +89,14 @@
                   {{ partial "label-maintained.html" . }}
                 {{ else if (eq $validated "tested" ) }}
                   {{ partial "label-tested.html" . }}
+                {{ else if (eq $validated "archived" ) }}
+                  {{ partial "label-archived.html" . }}
                 {{ else }}
                   {{ partial "label-sandbox.html" . }}
                 {{ end }}
               </div>
 
-              {{ if (isset .Params "ci") }}
+              {{ if and (isset .Params "ci") (ne (.Param "tier") "archived") }}
               <div class="pf-u-mb-md">
                 {{ partial "ci.html" . }}
               </div>

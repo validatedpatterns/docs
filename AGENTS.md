@@ -106,7 +106,7 @@ All content files use YAML frontmatter between `---` delimiters. Fields vary by 
 title: Pattern Name
 date: 2025-10-24
 summary: Short description of the pattern
-tier: sandbox          # sandbox | tested | maintained
+tier: sandbox          # sandbox | tested | maintained | archived
 rh_products:
   - Red Hat OpenShift Container Platform
 industries:

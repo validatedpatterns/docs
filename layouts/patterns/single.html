@@ -11,7 +11,14 @@
       {{ partial "page-toolbar.html" . }}
       <div class="pf-u-display-flex">
         {{ partial "toc.html" . }}
-        <div class="pf-c-content">
+        {{ $archivedTier := "" }}
+        {{ if isset .Params "tier" }}
+          {{ $archivedTier = .Params.tier }}
+        {{ else if and .CurrentSection (isset .CurrentSection.Params "tier") }}
+          {{ $archivedTier = .CurrentSection.Params.tier }}
+        {{ end }}
+        <div class="pf-c-content{{ if eq $archivedTier "archived" }} pattern-page-archived{{ end }}">
+          {{ partial "archived-banner.html" . }}
           {{ .Content }}
 
           <!-- Page Navigation -->

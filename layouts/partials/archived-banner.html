@@ -1,0 +1,23 @@
+{{/*
+  Banner shown on all pages belonging to an archived pattern.
+*/}}
+{{ $tier := "" }}
+{{ if isset .Params "tier" }}
+  {{ $tier = .Params.tier }}
+{{ else if and .CurrentSection (isset .CurrentSection.Params "tier") }}
+  {{ $tier = .CurrentSection.Params.tier }}
+{{ end }}
+{{ if eq $tier "archived" }}
+<div class="archived-pattern-banner" role="status">
+  <div class="archived-pattern-banner__inner">
+    <span class="pf-c-label pf-m-grey archived-pattern-banner__label">
+      <span class="pf-c-label__content">Archived</span>
+    </span>
+    <span class="archived-pattern-banner__text">
+      This pattern is archived. The source repository is no longer maintained,
+      and Validated Patterns maintainers do not recommend deploying it for new use cases.
+      Documentation remains available for reference.
+    </span>
+  </div>
+</div>
+{{ end }}
