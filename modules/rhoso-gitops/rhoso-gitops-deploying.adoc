@@ -91,11 +91,11 @@ $ ./pattern.sh make install
 $ oc get applications -n vp-gitops
 ----
 
-. List Argo CD applications in `openshift-gitops`:
+. List Argo CD applications in `rhoso-gitops-standalone`:
 +
 [source,terminal]
 ----
-$ oc get applications -n openshift-gitops
+$ oc get applications -n rhoso-gitops-standalone
 ----
 
 . After install, run the pattern health check:

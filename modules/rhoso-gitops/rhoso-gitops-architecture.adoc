@@ -7,7 +7,7 @@
 The {rhoso-gitops-pattern} delivers {rh-rhoso-short} configuration through Argo CD
 Applications that the *rhoso-gitops* meta-chart creates. Use this overview to
 understand GitOps delivery, the dual Argo CD namespaces, infrastructure topology,
-and sync-wave order before you deploy or customize the pattern.
+and deployment convergence before you deploy or customize the pattern.
 
 [id="rhoso-gitops-gitops-delivery"]
 == GitOps delivery flow
@@ -23,18 +23,18 @@ The delivery path is:
 . The {validated-patterns-op} reconciles the pattern clustergroup
 . The parent *rhoso-gitops* Application runs in `vp-gitops`
   ({solution-name-upstream} GitOps)
-. The meta-chart renders child Applications in `openshift-gitops`
-  ({gitops-title})
-. The child apps sync upstream `example/*` overlays in order (Operators,
-  networks, control plane, data plane)
+. The meta-chart renders child Applications in `rhoso-gitops-standalone`
+  (dedicated Argo CD instance)
+. The child apps sync upstream `example/*` overlays (Operators,
+  networks, control plane, data plane) and converge through retry policies
 
-.GitOps application delivery and sync-wave ordering
+.GitOps application delivery
 image::rhoso-gitops/rhoso-gitops-applications.svg[{rhoso-gitops-pattern} GitOps application delivery,700]
 
 The diagram shows the parent Application in `vp-gitops`, child Applications in
-`openshift-gitops`, and the upstream Kustomize overlays they sync. Sync-wave
-annotations order deployment from infrastructure Operators through the data
-plane.
+`rhoso-gitops-standalone`, and the upstream Kustomize overlays they sync.
+All child Applications deploy at sync-wave 0 and converge eventually through
+retry policies.
 
 [id="rhoso-gitops-dual-argocd"]
 == Dual Argo CD namespaces
@@ -43,8 +43,9 @@ The pattern uses two Argo CD namespaces:
 
 * The {validated-patterns-op} deploys the parent *rhoso-gitops* Application into
   *`vp-gitops`* ({solution-name-upstream} GitOps).
-* The meta-chart creates child {rh-rhoso-short} Applications in
-  *`openshift-gitops`* ({gitops-title} Operator), per the chart defaults.
+* The meta-chart creates child {rh-rhoso-short} Applications in *`rhoso-gitops-standalone`*,
+  a dedicated Argo CD instance managed by the pattern (see `applicationNamespace`
+  in the chart).
 
 [id="rhoso-gitops-infrastructure-topology"]
 == Infrastructure topology
@@ -64,44 +65,39 @@ image::rhoso-gitops/rhoso-gitops-infrastructure.svg[{rhoso-gitops-pattern} infra
 * *Data plane hosts*: One or more {rhel-short} compute nodes run {rh-rhoso-short}
   data plane elements and connect to the control plane.
 
-[id="rhoso-gitops-sync-waves"]
-== Application sync order
+[id="rhoso-gitops-deployment-convergence"]
+== Deployment convergence
 
-Child Applications deploy in sync-wave order when Argo CD reconciles the parent
-*rhoso-gitops* Application:
+All child Applications deploy at sync-wave `0` (the default) when Argo CD
+reconciles the parent *rhoso-gitops* Application. Argo CD launches every child
+simultaneously. Each child retries (per `syncPolicy.retry`) until its upstream
+dependencies resolve and it converges eventually.
 
-[cols="2,3,1",options="header"]
+[cols="2,3",options="header"]
 |===
-| Application | Purpose | Sync wave
+| Application | Purpose
 
 | `operator-dependencies`
 | Infrastructure Operators (cert-manager, MetalLB, nmstate, observability)
-| `-20`
 
 | `openstack-operator`
 | OpenStack Operator subscription
-| `-20`
 
 | `openstack-operator-cr`
 | Main `OpenStack` custom resource
-| `-15`
 
 | `openstack-secrets`
 | Secure-backend sync (disabled by default)
-| `-10`
 
 | `openstack-networks`
 | Network configuration
-| `0`
 
 | `openstack-controlplane`
 | `OpenStackControlPlane`
-| `10`
 
 | `openstack-dataplane`
 | Data plane
-| `20`
 |===
 
 After you change overrides, confirm child apps in the Argo CD UI or with
-`oc get applications -n openshift-gitops`.
+`oc get applications -n rhoso-gitops-standalone`.
