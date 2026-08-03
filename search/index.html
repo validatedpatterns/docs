@@ -2059,7 +2059,7 @@ Launch Grafana Dashboard by clicking the Application box icon in the header, and
 In the top right hand corner click Sign in
 Enter the Grafana admin credentials. Copy the GF_SECURITY_ADMIN_USER, GF_SECURITY_ADMIN_PASSWORD from ai-llm-grafana-admin-credentials screen in the OpenShift web console.
 Ratings are displayed for each model.
-`,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/rating-the-provider/",breadcrumb:"/patterns/rag-llm-gitops/rating-the-provider/"},"https://validatedpatterns.io/learn/about-pattern-tiers-types/":{title:"Validated Pattern tiers in depth",tags:[],content:`Validated Pattern tiers in-depth Patterns are categorized into distinct tiers: Sandbox, Tested, and Maintained.
+`,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/rating-the-provider/",breadcrumb:"/patterns/rag-llm-gitops/rating-the-provider/"},"https://validatedpatterns.io/learn/about-pattern-tiers-types/":{title:"Validated Pattern tiers in depth",tags:[],content:`Validated Pattern tiers in-depth Patterns are categorized into distinct tiers: Sandbox, Tested, Maintained, and Archived.
 The different tiers of Validated Patterns are designed to facilitate ongoing maintenance, support, and testing efforts for a pattern. The tiering system emphasizes the requirements a pattern meets, rather than focusing on who does the maintenance.
 The following table describes each pattern tier and a short description of what the tier means in practice.
 Icon Pattern tier Description Validated Patterns Sandbox tier
@@ -2081,6 +2081,12 @@ Considered a &#34;lifecycle&#34; of a reference architecture, not just a point-i
 Built upon real-world solution architectures demonstrating business value.
 Continuously validated to ensure all integrated components work seamlessly together as good or better after upgrades.
 Includes only supported services and components.
+Validated Patterns Archived tier
+An Archived pattern is:
+No longer actively developed.
+Kept in the documentation site for reference, with an Archived notice on its pages.
+Hidden from the default patterns catalog until you select the Archived filter.
+Not recommended for new deployments.
 Sandbox tier The Sandbox tier serves as the entry point for onboarding new Validated Patterns. Patterns in this tier are typically in a work-in-progress state and might have only been manually tested on a limited set of platforms. The primary goal for patterns here is to get started with the Validated Patterns framework and establish foundational documentation.
 Following are the main characteristics and requirements for patterns to be in the sandbox tier:
 Deployability: The pattern must be deployable onto a newly installed OpenShift Container Platform cluster without requiring any modification.
@@ -2120,24 +2126,38 @@ No Technology Preview features: Do not rely on Technology Preview functionality 
 Following are some examples of the patterns in the maintained tier:
 Ansible Edge GitOps
 Multicloud GitOps
+Archived tier The Archived tier is for patterns that Validated Patterns maintainers have retired from active development. A pattern moves to this tier when its source repository has been archived on GitHub. Archiving is a manual decision by Validated Patterns maintainers and is a terminal state. Patterns do not move from Archived back to another tier.
+Documentation for archived patterns remains available for reference. Pattern pages show an Archived banner, Install links are inactive, and pattern cards appear desaturated in the catalog when you enable the Archived filter.
+Following are the main characteristics of patterns in the archived tier:
+Repository status: The pattern repository is archived on GitHub.
+No active maintenance: No further development, CI, or support expectations apply to the pattern.
+Reference documentation: Existing documentation remains published for historical reference.
+Catalog visibility: Archived patterns are hidden from the default patterns list until you select the Archived filter.
+Following are some examples of the patterns in the archived tier:
 Medical Diagnosis
-Feature breakdown by tiers Feature Sandbox Tested Maintained Deploys on fresh OpenShift without modification
+Additional resources For more information about the Archived tier process, see Archived tier.
+Feature breakdown by tiers Feature Sandbox Tested Maintained Archived Deploys on fresh OpenShift without modification
 ✓
 ✓
 ✓
+-
 Useful without private/closed source apps
 ✓
 ✓
 ✓
+-
 Open contribution and collaboration
 ✓
 ✓
 ✓
+-
 Documented support policy
 ✓
 ✓
 ✓
+-
 README with problem statement
+✓
 ✓
 ✓
 ✓
@@ -2145,51 +2165,69 @@ Includes architecture diagram
 ✓
 ✓
 ✓
+✓
 Business use case with demo
 -
 ✓
 ✓
+-
 Standardized architecture diagram and written guide
 -
 ✓
 ✓
+-
 Test plan passes at least once per quarter
 -
 ✓
 ✓
+-
 Tested on at least 1 supported OCP version
 -
 ✓
 ✓
+-
 Publicly visible test results (JSON)
 -
 ✓
 ✓
+-
 Implementation review
 -
 ✓
 ✓
+-
 Automated CI pipeline (every change or weekly)
 -
 -
 ✓
+-
 Tested on 2 latest EUS and active interim versions
 -
 -
 ✓
+-
 Tested on pre-release bits
 -
 -
 ✓
+-
 Timely fixes for breakage
 -
 -
 ✓
+-
 No Tech Preview or feature-gated features
 -
 -
 ✓
+-
 Includes only supported services and components
+-
+-
+✓
+-
+Repository archived; docs kept for reference
+-
 -
 -
 ✓
@@ -4728,6 +4766,11 @@ functional on all currently supported/extended update support (EUS) versions of 
 must fix breakage in a timely manner
 must document their support policy
 Details
+Archived
+pattern repository has been archived on GitHub
+the pattern is no longer under active development or maintenance
+documentation remains available for reference
+Details
 Additional Resources For more details, see the Pattern Tier Types page and the Implementation Requirements guide.
 `,url:"https://validatedpatterns.io/workshop/tiers/",breadcrumb:"/workshop/tiers/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-automated-secure-supply-chain/":{title:"Secure supply chain - Automated approach",tags:[],content:`Use case: Automating the secure supply chain The Secure multitiered applications use case describes how to implement a secure supply chain for application development by using Red Hat Trusted Artifact Signer (RHTAS) and the Red Hat Trusted Profile Analyzer (RHTPA). This use case demonstrates automation of the secure supply chain for application development by using Red Hat OpenShift Pipelines.
 OpenShift Pipelines orchestrates the application building and certification process. The Zero Trust Validated Pattern (ZTVP) creates a pipeline in the cluster named qtodo-supply-chain.
@@ -5976,7 +6019,22 @@ Additional components in a Validated Patterns that are not supported by Red Hat
 The Validated Patterns team is will try to address any problems in the Validated Patterns Operator, and in the common Helm charts, but cannot not offer any SLAs at this time.
 The maintained patterns do not imply an obligation of support for partner or community Operators by Red Hat.
 Can If you are creating Validated Patterns, you can provide your own SLA.
-`,url:"https://validatedpatterns.io/contribute/maintained/",breadcrumb:"/contribute/maintained/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/mcg-amx-rhoai-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Intel AMX accelerated Multicloud GitOps pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
+`,url:"https://validatedpatterns.io/contribute/maintained/",breadcrumb:"/contribute/maintained/"},"https://validatedpatterns.io/contribute/archived/":{title:"Validated Patterns - Archived tier",tags:[],content:`About the Validated Patterns Archived tier A pattern in the archived tier is no longer under active development. Validated Patterns maintainers move a pattern to this tier when the pattern’s source repository has been archived on GitHub. Archived patterns remain documented for reference, but avoid using them for new deployments.
+The archived tier is a terminal state. Patterns do not move from archived back to sandbox, tested, or maintained.
+Moving a pattern to the archived tier Only Validated Patterns maintainers decide when a pattern moves to the archived tier. A pattern does not move to archived automatically.
+Typical conditions before archiving include:
+The pattern repository has been archived on GitHub.
+No further development or maintenance is planned.
+After a pattern is archived:
+The pattern page and related documentation remain available.
+Pattern cards use a desaturated style, and an Archived banner appears on the pattern documentation pages.
+The Install resource link on the pattern page is disabled.
+The pattern is hidden from the default patterns catalog view until you select the Archived filter.
+The pattern is not included in the homepage tier accordion.
+Requirements for the archived tier Must Must The pattern repository must be archived on GitHub.
+The pattern frontmatter must set tier: archived.
+Keep pattern documentation published so existing users can find historical guidance.
+`,url:"https://validatedpatterns.io/contribute/archived/",breadcrumb:"/contribute/archived/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/mcg-amx-rhoai-cluster-sizing/":{title:"Cluster sizing",tags:[],content:` About OpenShift cluster sizing for the Intel AMX accelerated Multicloud GitOps pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
 For AWS, see Installing OpenShift Container Platform on AWS.
 For bare-metal, see Installing OpenShift Container Platform on bare metal.
 To understand cluster sizing requirements for the Intel AMX accelerated Multicloud GitOps pattern with Openshift AI, consider the following components that the pattern deploys on the datacenter or the hub OpenShift cluster:
@@ -9098,6 +9156,7 @@ Demo: Application AI Model Changes with DevOps Follow the procedures here
 Troubleshooting If you run into any problems, checkout the potential/Known issues list: http://validatedpatterns.io/industrial-edge/troubleshooting/
 Summary In this demo we show you how to get started with the Industrial Edge Validated Pattern. More specifically, we:
 Show you how to get started with the Industrial Edge Pattern Make configuration changes with GitOps Make application changes with DevOps Use DevOps to make changes to an Application AI model Stream events from the edge to the datacenter `,url:"https://validatedpatterns.io/patterns/industrial-edge/demo-script/",breadcrumb:"/patterns/industrial-edge/demo-script/"},"https://validatedpatterns.io/ci/":{title:"CI Status",tags:[],content:`These are the latest results of the Validated Patterns CI test runs.
+This dashboard excludes patterns in the Archived tier because they are no longer under active development or continuous integration.
 `,url:"https://validatedpatterns.io/ci/",breadcrumb:"/ci/"},"https://validatedpatterns.io/contribute/":{title:"Contribute to Validated Patterns",tags:[],content:` Find out how you can contribute to the Validated Patterns project.
 `,url:"https://validatedpatterns.io/contribute/",breadcrumb:"/contribute/"},"https://validatedpatterns.io/ci/internal/":{title:"Internal CI Status",tags:[],content:`These are the latest results of the Validated Patterns CI test runs. The links on this page are internal Red Hat links and require a valid Red Hat login to access them.
 `,url:"https://validatedpatterns.io/ci/internal/",breadcrumb:"/ci/internal/"},"https://validatedpatterns.io/learn/":{title:"Learn about Validated Patterns",tags:[],content:` Find out more information about Validated Patterns and how they work.

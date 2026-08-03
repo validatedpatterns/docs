@@ -72,7 +72,14 @@ class FilteredPatterns {
           patternPassed = false;
         };
       };
-      if (patternPassed == true) { filteredPatterns.push(this.patterns[item]); };
+      // Hide archived patterns unless the Archived tier filter is selected.
+      var patternTier = (this.patterns[item].Params.tier || "").toLowerCase();
+      var isArchived = patternTier === "archived";
+      var tierFilters = this.patterns_filter.filter_values.tier || [];
+      var archivedSelected = tierFilters.some(t => t.toLowerCase() === "archived");
+      if (patternPassed == true && !(isArchived && !archivedSelected)) {
+        filteredPatterns.push(this.patterns[item]);
+      };
     };
 
     // This is a special filter for the variant parent. If variant_of is set,
@@ -409,7 +416,8 @@ function selectFocusAreaChip(focusAreaName) {
 function renderLabel(tier, tier_categories) {
   // HTML to render the pattern tier label
   if (tier != undefined) {
-    var color= tier_categories.filter_list.find(item => item.Name === tier);
+    var colorItem = tier_categories.filter_list.find(item => item.Name === tier);
+    var color = colorItem ? colorItem.color : "grey";
     var renderedLabelHtml = (`<span class="pf-c-label pf-m-${color}">
       <span class="pf-c-label__content">
         <img src="/images/pattern-tier-${tier}.png" alt="${capitalizeFirstLetter(tier)}" width="16" height="16" class="custom-pattern-icon"/>
@@ -425,8 +433,10 @@ function renderLabel(tier, tier_categories) {
 function renderCard(pattern, tier_categories, variant_count) {
   // HTML for each pattern card
   var pattern_id = pattern.Link.split("/").filter(n => n)[1];
+  var isArchived = (pattern.Params.tier || "").toLowerCase() === "archived";
+  var cardClass = isArchived ? "pf-c-card pattern-card-archived" : "pf-c-card";
   var renderCardHtml = (`<div class="pf-l-gallery__item" style="display: grid;">
-    <div class="pf-c-card" style="text-align: left; --pf-c-card__title--FontSize: 1rem; --pf-c-card__body--FontSize: 0.95rem;">
+    <div class="${cardClass}" style="text-align: left; --pf-c-card__title--FontSize: 1rem; --pf-c-card__body--FontSize: 0.95rem;">
       <div class="pf-c-card__title">
         <a href="${pattern.Link}">${pattern.Name}</a>
       </div>

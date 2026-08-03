@@ -3637,3 +3637,104 @@ a.ci-status-unavailable-link:hover {
     background-position: -160% 0;
   }
 }
+
+/* Archived pattern cards and page banner */
+.pattern-card-archived {
+  filter: grayscale(1);
+  opacity: 0.8;
+  background-color: var(--pf-global--BackgroundColor--200);
+}
+
+.pattern-card-archived .pf-c-card__title a {
+  color: var(--pf-global--Color--200);
+}
+
+/* Grey label for Archived tier (not present in this PatternFly build) */
+.pf-c-label.pf-m-grey {
+  --pf-c-label--BackgroundColor: var(--pf-global--palette--black-200);
+  --pf-c-label__icon--Color: var(--pf-global--Color--dark-200);
+  --pf-c-label__content--Color: var(--pf-global--Color--dark-100);
+  --pf-c-label__content--before--BorderWidth: 0;
+  --pf-c-label__content--before--BorderColor: transparent;
+}
+
+.pf-c-label.pf-m-grey .pf-c-label__content::before {
+  border: 0;
+  display: none;
+}
+
+.archived-pattern-banner {
+  position: sticky;
+  top: 0;
+  z-index: var(--pf-global--ZIndex--md);
+  margin-bottom: var(--pf-global--spacer--md);
+  background-color: var(--pf-global--palette--black-150);
+  color: var(--pf-global--Color--dark-100);
+  border-left: 4px solid var(--pf-global--palette--black-500);
+  border-radius: var(--pf-global--BorderRadius--sm);
+  box-shadow: var(--pf-global--BoxShadow--md-bottom);
+  padding: var(--pf-global--spacer--md);
+}
+
+.archived-pattern-banner__inner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--pf-global--spacer--md);
+  flex-wrap: wrap;
+}
+
+.archived-pattern-banner__label {
+  flex: 0 0 auto;
+}
+
+.archived-pattern-banner__text {
+  flex: 1 1 16rem;
+  color: var(--pf-global--Color--dark-100);
+  white-space: normal;
+  line-height: var(--pf-global--LineHeight--md);
+}
+
+/* Desaturate archived pattern page content; keep banner readable */
+.pattern-page-archived {
+  color: var(--pf-global--Color--200);
+}
+
+.pattern-page-archived h1,
+.pattern-page-archived h2,
+.pattern-page-archived h3,
+.pattern-page-archived h4,
+.pattern-page-archived h5,
+.pattern-page-archived h6,
+.pattern-page-archived .pf-c-title,
+.pattern-page-archived p,
+.pattern-page-archived li,
+.pattern-page-archived td,
+.pattern-page-archived th,
+.pattern-page-archived dt,
+.pattern-page-archived dd {
+  color: var(--pf-global--Color--200);
+}
+
+.pattern-page-archived a {
+  color: var(--pf-global--link--Color);
+  opacity: 0.75;
+}
+
+.pattern-page-archived img,
+.pattern-page-archived svg,
+.pattern-page-archived video,
+.pattern-page-archived .pattern_logo {
+  filter: grayscale(1);
+  opacity: 0.85;
+}
+
+.pattern-page-archived .archived-pattern-banner,
+.pattern-page-archived .archived-pattern-banner * {
+  color: var(--pf-global--Color--dark-100);
+  opacity: 1;
+  filter: none;
+}
+
+.pattern-page-archived .archived-pattern-banner__text {
+  color: var(--pf-global--Color--dark-100);
+}
