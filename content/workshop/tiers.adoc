@@ -32,6 +32,12 @@ a| * functional on all currently supported/extended update support (EUS) version
   * must document their support policy
 | link:/contribute/maintained/[Details]
 
+|**Archived**
+a| * pattern repository has been archived on GitHub
+  * the pattern is no longer under active development or maintenance
+  * documentation remains available for reference
+| link:/contribute/archived/[Details]
+
 |===
 
 == Additional Resources

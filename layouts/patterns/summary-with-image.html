@@ -1,5 +1,10 @@
 {{ $featured_image := partial "func/GetFeaturedImage.html" . }}
-<div class="pf-c-card" style="text-align: left; --pf-c-card__title--FontSize: 1rem; --pf-c-card__body--FontSize: 0.95rem;">
+{{ $validated := .Param "tier" }}
+{{ $cardClass := "pf-c-card" }}
+{{ if eq $validated "archived" }}
+  {{ $cardClass = "pf-c-card pattern-card-archived" }}
+{{ end }}
+<div class="{{ $cardClass }}" style="text-align: left; --pf-c-card__title--FontSize: 1rem; --pf-c-card__body--FontSize: 0.95rem;">
   <div class="pf-c-card__title">
       <a href="{{.RelPermalink}}">
         {{ .Title }}
@@ -15,11 +20,12 @@
     {{ .Summary }}
   </div>
   <div class="pf-c-card__footer">
-    {{ $validated := .Param "tier" }}
     {{ if (eq $validated "maintained" ) }}
       {{ partial "label-maintained.html" . }}
     {{ else if (eq $validated "tested" ) }}
       {{ partial "label-tested.html" . }}
+    {{ else if (eq $validated "archived" ) }}
+      {{ partial "label-archived.html" . }}
     {{ else }}
       {{ partial "label-sandbox.html" . }}
     {{ end }}

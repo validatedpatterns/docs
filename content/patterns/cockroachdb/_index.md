@@ -1,7 +1,7 @@
 ---
 title: Cockroach
 date: 2022-12-14
-tier: sandbox
+tier: archived
 Summary: A multicloud pattern using cockroachdb and submariner, deployed via RHACM.
 rh_products:
 - Red Hat OpenShift Container Platform

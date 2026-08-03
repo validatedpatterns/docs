@@ -9,7 +9,7 @@
 :issues_url: https://github.com/validatedpatterns/medical-diagnosis/issues
 :docs_url: https://validatedpatterns.io/patterns/medical-diagnosis/
 :ci_url: https://validatedpatterns.io/ci/?pattern=medicaldiag
-:tier: maintained
+:tier: archived
 :owners: day0hero
 :requirements_hub_compute_platform_gcp_replicas: 5
 :requirements_hub_compute_platform_gcp_type: n1-standard-16

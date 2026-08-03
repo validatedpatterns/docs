@@ -48,7 +48,8 @@
   {{- $tiers_list := slice -}}
   {{- $tiers_list = $tiers_list | append (dict "Name" "maintained" "LinkTitle" "Maintained" "color" "green") }}
   {{- $tiers_list = $tiers_list | append (dict "Name" "tested" "LinkTitle" "Tested" "color" "blue") }}
-  {{- $tiers_list = $tiers_list | append (dict "Name" "sandbox" "LinkTitle" "Sandbox" "color" "oragne") }}
+  {{- $tiers_list = $tiers_list | append (dict "Name" "sandbox" "LinkTitle" "Sandbox" "color" "orange") }}
+  {{- $tiers_list = $tiers_list | append (dict "Name" "archived" "LinkTitle" "Archived" "color" "grey") }}
   {{- $tiers_filter_types := slice "OR" }}
   {{- $tiers_dict := dict "filter_list" $tiers_list "filter_types" $tiers_filter_types }}
 

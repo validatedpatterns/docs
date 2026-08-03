@@ -20,8 +20,9 @@ links:
   bugs:
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
   
-# Set tier to one of sandbox, tested, or maintained. If empty, the default
-# is sandbox
+# Set tier to one of sandbox, tested, maintained, or archived. If empty, the
+# default is sandbox. Use archived only when Validated Patterns maintainers
+# have archived the pattern repository; archived is a terminal state.
 # tier: sandbox
 #
 # The following parameters are only used for maintained validated patterns.
