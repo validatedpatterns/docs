@@ -1,0 +1,112 @@
+---
+ date: 2026-08-04
+ title: Introducing the variants folder structure
+ summary: Patterns can now organize per-cluster values files under a variants/ directory, keeping the repository root clean and making multi-variant deployments easier to manage
+ author: Michele Baldessari
+ blog_tags:
+ - patterns
+ - configuration
+ - gitops
+ - clustergroup
+---
+:toc:
+:imagesdir: /images
+
+== Preamble
+
+As validated patterns grow in complexity, the repository root can become cluttered with
+numerous `values-<clusterGroupName>.yaml` files. A pattern that supports a hub, a
+standalone deployment, and several managed cluster groups might have half a dozen values
+files sitting alongside charts, overrides, scripts, and everything else.
+
+Starting with patterns-operator 0.0.78, clustergroup chart v0.9.57, and acm-chart v0.2.10,
+patterns can adopt a new *variant-based directory layout* that groups per-cluster values
+files under a `variants/` directory. This keeps the repository root focused on truly
+global concerns while making it immediately clear which files belong to which deployment
+scenario.
+
+== What changed
+
+A new `main.variant` field in `values-global.yaml` replaces (or supplements)
+`main.clusterGroupName`. The two fields are functionally equivalent, but when
+`main.variant` is set the framework looks for values files inside
+`variants/<variant>/` instead of the repository root.
+
+=== Old flat layout
+
+[source,text]
+----
+.
+├── values-global.yaml
+├── values-hub.yaml
+├── values-group-one.yaml
+├── values-standalone.yaml
+├── charts/
+└── overrides/
+----
+
+=== New variant layout
+
+[source,text]
+----
+.
+├── values-global.yaml
+├── charts/
+├── overrides/
+└── variants/
+    ├── hub/
+    │   ├── values-hub.yaml
+    │   └── values-group-one.yaml
+    └── standalone/
+        └── values-standalone.yaml
+----
+
+The framework detects the variant layout automatically when a top-level `variants/`
+directory is present in the pattern's git repository.
+
+== How to use it
+
+In `values-global.yaml`, set `main.variant` instead of `main.clusterGroupName`:
+
+[source,yaml]
+----
+main:
+  variant: hub
+----
+
+Then move your per-cluster values files into `variants/hub/` (or whichever variant
+name you chose). Running `./pattern.sh make install` deploys the variant specified in
+`main.variant`.
+
+To deploy a different variant, change the `variant` field before installing:
+
+[source,yaml]
+----
+main:
+  variant: standalone
+----
+
+If both `main.variant` and `main.clusterGroupName` are set, `variant` takes precedence.
+
+== Backward compatibility
+
+Existing patterns that use the flat layout with `main.clusterGroupName` continue to work
+without any changes. The variant layout is opt-in: you adopt it by creating a `variants/`
+directory and switching to `main.variant`. There is no migration deadline and no plan to
+remove the flat layout.
+
+Managed cluster groups also work with both layouts. The `values-{name}.yaml` file for a
+managed cluster group can live either at the repository root or under
+`variants/{variant}/`, depending on which layout the pattern uses.
+
+== Documentation updates
+
+The following documentation pages have been updated to cover the new layout:
+
+* link:/learn/values-global-configuration/#main-variant[Global configuration reference] now documents the `main.variant` field and the variant directory structure.
+* link:/learn/vp_openshift_framework/[Validated pattern structure] shows both the flat and variant directory trees side by side.
+* link:/learn/clustergroup-in-values-files/[ClusterGroup in values files] and the managed cluster groups section reference both `main.clusterGroupName` and `main.variant`.
+* link:/values-files/[Exploring values files] mentions the newer layout option.
+
+For full details on all `values-global.yaml` fields, see the
+link:/learn/values-global-configuration/[Global configuration reference].
