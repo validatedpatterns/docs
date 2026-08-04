@@ -37,6 +37,15 @@ Therefore the question really is: How do I move my successful architecture solut
 * Create a new branch on your new pattern to perform the initial changes.
 * Deploy the initial new pattern to the cluster.
 
+[id="adding-pattern-metadata"]
+== Adding pattern metadata
+
+Add `pattern-metadata.yaml` to the top-level directory of your pattern repository.
+The documentation site and quality engineering workflows use this file as the source of truth for pattern identity, tier, links, and cluster sizing.
+
+Copy an existing file from link:https://github.com/validatedpatterns/multicloud-gitops/blob/main/pattern-metadata.yaml[multicloud-gitops] as a starting point, then update the values for your pattern.
+For more information about metadata fields, the sync workflow, and troubleshooting, see link:/contribute/pattern-metadata/[Pattern metadata].
+
 == Moving to the validated patterns framework
 
 One of the first things that you should do is look at your current implementation of your workload and identify the Kubernetes manifests that are involved in order to run the workloads.

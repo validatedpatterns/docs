@@ -51,6 +51,7 @@ Following these best practices, to create robust, scalable, and maintainable val
 
 9. **Plan for cluster sizing and storage needs**
    - Before deploying a pattern, review its cluster sizing and storage requirements. For instance, patterns using Red Hat OpenShift Data Foundation (ODF) may require substantial storage resources. Consult pattern documentation for accurate sizing.
+   - Define tested cluster configurations in `pattern-metadata.yaml` at the repository root so sizing pages on validatedpatterns.io stay aligned with your pattern. For more information, see link:/contribute/pattern-metadata/[Pattern metadata].
 
 10. **Customize and fork patterns appropriately**
    - When extending a pattern or deploying it at a customer site, create a personal or organizational fork. This allows for experimentation and customization while facilitating potential contributions back to the upstream pattern repository.
@@ -63,3 +64,6 @@ Following these best practices, to create robust, scalable, and maintainable val
 
 13. **Secure secrets across deployments**
     - Utilize tools such as Hashicorp Vault to manage secrets securely across multi-cloud deployments, ensuring sensitive data is protected.
+
+14. **Maintain pattern metadata**
+    - Keep `pattern-metadata.yaml` current with the tier, links, owners, and cluster sizing requirements for your pattern. The documentation site and quality engineering workflows use this file as the source of truth. For more information, see link:/contribute/pattern-metadata/[Pattern metadata].
