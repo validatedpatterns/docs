@@ -1,0 +1,55 @@
+---
+ date: 2026-07-29
+ title: "Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security"
+ summary: When network policies trap an attacker inside a container, what happens next? The ZTVP turns Red Hat Advanced Cluster Security into an active defense engine that detects anomalous behavior and terminates compromised pods in real time.
+ author: Przemyslaw Roguski
+ blog_tags:
+ - patterns
+ - zero-trust
+ - security
+ - acs
+ - runtime-security
+ - openshift
+---
+:toc:
+:imagesdir: /images
+
+== From gates to guards
+
+In the https://validatedpatterns.io/blog/2026-06-29-zero-trust-network-policies/[first article of this series], we locked every door: default-deny network policies block lateral movement and data exfiltration even when a vulnerability is exploited faster than you can patch.
+
+But locking doors only works if someone is watching what happens inside the room. A true zero trust architecture — as defined by https://csrc.nist.gov/pubs/sp/800/207/final[NIST SP 800-207] — demands continuous runtime verification, not just static access controls.
+
+== ACS as the zero trust brain
+
+The https://validatedpatterns.io/patterns/layered-zero-trust/[Layered Zero Trust Validated Pattern] deploys Red Hat Advanced Cluster Security with four custom security policies that go far beyond the default configuration. These policies are split into two operational categories:
+
+*Deploy-time alerting* — catches missing network boundaries before they reach production:
+
+* Alerts when a deployment lacks an *ingress* NetworkPolicy
+* Alerts when a deployment lacks an *egress* NetworkPolicy
+
+*Runtime termination* — neutralizes active threats in real time:
+
+* *Privilege escalation prevention* — instantly kills any pod that attempts `sudo`, `su`, `pkexec`, `nsenter`, or `unshare`
+* *Suspicious exec termination* — immediately terminates pods running reconnaissance tools like `nmap`, `nc`, or `ncat`
+
+The result: network policies block the attacker's escape routes, and ACS eliminates the threat entirely — even if a configuration was missed.
+
+== See it in action
+
+The article includes a video demonstration of the "assume a breach" scenario. An attacker who has gained code execution inside a pod attempts to run reconnaissance commands. Within seconds, ACS detects the anomalous behavior and terminates the pod — no human intervention required.
+
+== Read the full article
+
+For the complete deep dive into how ZTVP implements the NIST 800-207 control loop with ACS as the policy decision and enforcement engine, read the full article on the Red Hat blog:
+
+**https://www.redhat.com/en/blog/lights-real-time-threat-response-red-hat-advanced-cluster-security[Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security]**
+
+== Get started
+
+The Layered Zero Trust Validated Pattern is open source:
+
+* https://validatedpatterns.io/patterns/layered-zero-trust/[Pattern documentation]
+* https://github.com/validatedpatterns/layered-zero-trust[Source repository]
+
