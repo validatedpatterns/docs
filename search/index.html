@@ -48,7 +48,9 @@ Azure configuration information must be provided in two places:
 A secret must be loaded using a ../../../learn/secrets-management-in-the-validated-patterns-framework/[values-secret] file. The values-secret.yaml.template file provides the appropriate structure. The Azure client secret (service principal password) is stored here and loaded into Vault.
 A broader set of information about the cluster is required in values-global.yaml (see below). These values are used by the sandboxed containers operator to provision peer-pod VMs in the correct Azure subscription, resource group, and virtual network.
 global: azure: clientID: &#39;&#39; # Service principal ID subscriptionID: &#39;&#39; tenantID: &#39;&#39; # Tenant ID DNSResGroup: &#39;&#39; # Resource group for the Azure DNS hosted zone hostedZoneName: &#39;&#39; # the hosted zone name clusterResGroup: &#39;&#39; # Resource group of the cluster clusterSubnet: &#39;&#39; # subnet of the cluster clusterNSG: &#39;&#39; # network security group of the worker nodes in the cluster clusterRegion: &#39;&#39; The clusterResGroup, clusterSubnet, and clusterNSG values can be found in the Azure portal after the cluster has been provisioned, or by using openshift-install metadata. The DNSResGroup and hostedZoneName correspond to the Azure DNS zone used for the cluster’s base domain.
-`,url:"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-azure-requirements/",breadcrumb:"/patterns/coco-pattern/coco-pattern-azure-requirements/"},"https://validatedpatterns.io/contribute/contribute-to-docs/":{title:"Contributor's guide",tags:[],content:` Contribute to Validated Patterns documentation Different ways to contribute There are a few different ways you can contribute to Validated Patterns documentation:
+`,url:"https://validatedpatterns.io/patterns/coco-pattern/coco-pattern-azure-requirements/",breadcrumb:"/patterns/coco-pattern/coco-pattern-azure-requirements/"},"https://validatedpatterns.io/contribute/contribute-to-docs/":{title:"Contributor's guide",tags:[],content:` Pattern metadata in the docs repository When a pattern maintainer updates pattern-metadata.yaml, a GitHub Actions workflow opens a pull request in this repository. The workflow updates generated modules under modules/&lt;pattern-name&gt;/metadata-&lt;pattern-name&gt;.adoc. Do not edit these files by hand unless documented as a manual exception (for example, when a pattern has empty sizing requirements).
+Cluster sizing pages include the generated module and modules/cluster-sizing-template.adoc to render sizing tables. For more information about the metadata schema and sync workflow, see Pattern metadata and Metadata and documentation.
+Contribute to Validated Patterns documentation Different ways to contribute There are a few different ways you can contribute to Validated Patterns documentation:
 Email the Validated Patterns team at hybrid-cloud-patterns@googlegroups.com.
 Create a GitHub or Jira issue .
 Submit a pull request (PR). To create a PR, create a local clone of your own fork of the Validated Patterns docs repository, make your changes, and submit a PR. This option is best if you have substantial changes.
@@ -2261,7 +2263,8 @@ Step 1: Create your pattern repository Create or clone an empty Git repository n
 $ mkdir my-pattern &amp;&amp; cd my-pattern $ git init Step 2: Initialize the pattern To create a pattern without the secrets framework:
 $ pattern init To create a pattern with HashiCorp Vault and External Secrets Operator scaffolding:
 $ pattern init --with-secrets What patternizer generates Running pattern init --with-secrets on an empty directory named my-pattern produces the following files:
-my-pattern ├── ansible.cfg # default Ansible configuration ├── Makefile # stub Makefile which includes Makefile-common ├── Makefile-common # common commands (install, load-secrets, etc.) ├── pattern.sh # convenience utility container (has oc, helm, make, etc.) ├── values-global.yaml # names the pattern based on the directory and sets common defaults ├── values-prod.yaml # contains the components for the secrets framework └── values-secret.yaml.template # stub for the secrets file The generated values-global.yaml contains:
+my-pattern ├── ansible.cfg # default Ansible configuration ├── Makefile # stub Makefile which includes Makefile-common ├── Makefile-common # common commands (install, load-secrets, etc.) ├── pattern.sh # convenience utility container (has oc, helm, make, etc.) ├── values-global.yaml # names the pattern based on the directory and sets common defaults ├── values-prod.yaml # contains the components for the secrets framework └── values-secret.yaml.template # stub for the secrets file Patternizer does not currently generate pattern-metadata.yaml. Add this file manually at the repository root after initialization, or copy it from an existing pattern such as multicloud-gitops. For more information about metadata fields, see Schema and field reference. For the documentation sync workflow, see Metadata and documentation.
+The generated values-global.yaml contains:
 global: pattern: my-pattern singleArgoCD: true secretLoader: disabled: false main: clusterGroupName: prod multiSourceConfig: enabled: true clusterGroupChartVersion: 0.9.* The generated values-prod.yaml contains:
 clusterGroup: name: prod namespaces: my-pattern: vault: external-secrets-operator: operatorGroup: true targetNamespaces: [] external-secrets: subscriptions: eso: name: openshift-external-secrets-operator namespace: external-secrets-operator channel: stable-v1 applications: openshift-external-secrets: name: openshift-external-secrets namespace: external-secrets chart: openshift-external-secrets chartVersion: 0.0.* vault: name: vault namespace: vault chart: hashicorp-vault chartVersion: 0.1.* If you omit --with-secrets, the generated files do not include the Vault and External Secrets Operator configuration, and patternizer sets secretLoader.disabled to true in values-global.yaml.
 Step 3: Define your pattern content After initialization, you need to add your operators, applications, and Helm charts to the pattern. There are two approaches:
@@ -2278,6 +2281,7 @@ Next steps Deploy an existing pattern like Multicloud GitOps to explore how the 
 Learn about structuring a validated pattern and best practices
 Add operators to your pattern with Adding operators to the framework
 Configure secrets with Configuring secrets
+Add Pattern metadata so cluster sizing and CI information stay in sync with the documentation site
 Visit the patternizer repository on GitHub for the latest documentation
 `,url:"https://validatedpatterns.io/learn/creating-patterns-with-patternizer/",breadcrumb:"/learn/creating-patterns-with-patternizer/"},"https://validatedpatterns.io/patterns/industrial-edge/add-managed-cluster/":{title:"Adding a managed cluster",tags:[],content:`Attach a managed cluster (factory) to the management hub By default, Red Hat Advanced Cluster Management (RHACM) manages the clusterGroup applications that are deployed on all clusters.
 Add a managedClusterGroup for each cluster or group of clusters that you want to manage by following this procedure.
@@ -3341,12 +3345,12 @@ Red Hat Advanced Cluster Management (ACM) is primarily used to automate the depl
 OpenShift Pipelines is used to automate builds and keep image repositories up to date.
 Pattern directories tour Examining any of the existing patterns reveals the important organizational part of the validated patterns framework. Let’s take a look at a couple of the existing validated patterns: Multicluster GitOps and Industrial Edge.
 Multicloud GitOps The Multicloud GitOps approach enables centralized management of multiple cloud deployments across both public and private clouds, including workloads and the secure handling of secrets across environments. This approach is built on patterns that consist of two key components: a &#34;common&#34; element, which serves as a foundational framework shared by nearly all patterns, and a pattern-specific element that builds on the common framework with tailored content. This section focuses on the standardized directory structure used in Multicloud GitOps repositories for validated patterns in multicloud setups. By following the well-structured directory layout illustrated here, teams can streamline deployment processes across clouds, reduce configuration drift, enhance automation, and maintain a single source of truth for both infrastructure and application code.
-~/g/multicloud-gitops on main ◦ tree -L 2 . ├── ansible │ └── site.yaml ├── ansible.cfg ├── charts │ ├── all │ └── region ├── common │ ├── ansible │ ├── Changes.md │ ├── LICENSE │ ├── Makefile │ ├── README.md │ ├── requirements.yml │ └── scripts ├── LICENSE ├── Makefile ├── overrides │ ├── values-AWS.yaml │ └── values-IBMCloud.yaml ├── pattern-metadata.yaml ├── pattern.sh -&gt; ./common/scripts/pattern-util.sh ├── README.md ├── tests │ └── interop ├── values-global.yaml ├── values-group-one.yaml ├── values-hub.yaml ├── values-secret-multicloud-gitops.yaml ├── values-secret.yaml.template └── values-standalone.yaml 11 directories, 20 files First we notice some subdirectories: charts and common, along with values- yaml files.
+~/g/multicloud-gitops on main ◦ tree -L 2 . ├── ansible │ └── site.yaml ├── ansible.cfg ├── charts │ ├── all │ └── region ├── common │ ├── ansible │ ├── Changes.md │ ├── LICENSE │ ├── Makefile │ ├── README.md │ ├── requirements.yml │ └── scripts ├── LICENSE ├── Makefile ├── overrides │ ├── values-AWS.yaml │ └── values-IBMCloud.yaml ├── pattern-metadata.yaml ├── pattern.sh -&gt; ./common/scripts/pattern-util.sh ├── README.md ├── tests │ └── interop ├── values-global.yaml ├── values-group-one.yaml ├── values-hub.yaml ├── values-secret-multicloud-gitops.yaml ├── values-secret.yaml.template └── values-standalone.yaml 11 directories, 20 files First we notice some subdirectories: charts and common, along with values- yaml files. The pattern-metadata.yaml file at the repository root defines pattern identity, tier, links, and cluster sizing. The documentation site syncs this file into cluster sizing pages automatically. For more information about metadata fields, see Pattern metadata.
 The directory tree above shows the older flat layout, where all values-&lt;clusterGroupName&gt;.yaml files sit at the repository root and values-global.yaml uses main.clusterGroupName to select the primary cluster group.
 Starting with patterns-operator 0.0.78, clustergroup chart v0.9.57, and acm-chart v0.2.10, patterns can use a newer variant-based layout. In this layout, the per-cluster values files move into a variants/ directory, organized by variant name, and values-global.yaml uses main.variant instead of main.clusterGroupName: This new directory layout will automatically be used if the pattern’s git repository detects a top-level variants/ sub-folder.
 . ├── charts │ ├── all │ └── region ├── overrides │ ├── values-AWS.yaml │ └── values-IBMCloud.yaml ├── pattern-metadata.yaml ├── pattern.sh ├── values-global.yaml ├── values-secret.yaml.template └── variants ├── hub │ ├── values-group-one.yaml │ └── values-hub.yaml └── standalone └── values-standalone.yaml With this layout, values-global.yaml specifies the default variant to deploy:
 main: variant: hub Running ./pattern.sh make install deploys the variant specified in main.variant. Both main.variant and main.clusterGroupName are supported; if both are set, variant takes precedence. For a detailed description of these fields, see Global configuration reference.
-Industrial edge ~/g/industrial-edge on stable-2.0 ◦ tree -L 2 . ├── ansible │ ├── files │ ├── playbooks │ └── site.yaml ├── ansible.cfg ├── Changes.md ├── charts │ ├── datacenter │ └── factory ├── common │ ├── Changes.md │ ├── LICENSE │ ├── Makefile │ ├── README.md │ ├── requirements.yml │ └── scripts ├── docs │ ├── images │ └── old-deployment-map.txt ├── LICENSE ├── Makefile ├── overrides │ ├── values-prod-imagedata.yaml │ └── values-test-imagedata.yaml ├── pattern-metadata.yaml ├── pattern.sh -&gt; ./common/scripts/pattern-util.sh ├── README.md ├── scripts │ └── check-pipeline-resources.sh ├── SUPPORT_AGREEMENT.md ├── tests │ └── interop ├── values-AWS.yaml ├── values-Azure.yaml ├── values-datacenter.yaml ├── values-factory.yaml ├── values-GCP.yaml ├── values-global.yaml ├── values-hub.yaml -&gt; values-datacenter.yaml └── values-secret.yaml.template 15 directories, 26 files We see the same or similar files in the both patterns directories.
+Industrial edge ~/g/industrial-edge on stable-2.0 ◦ tree -L 2 . ├── ansible │ ├── files │ ├── playbooks │ └── site.yaml ├── ansible.cfg ├── Changes.md ├── charts │ ├── datacenter │ └── factory ├── common │ ├── Changes.md │ ├── LICENSE │ ├── Makefile │ ├── README.md │ ├── requirements.yml │ └── scripts ├── docs │ ├── images │ └── old-deployment-map.txt ├── LICENSE ├── Makefile ├── overrides │ ├── values-prod-imagedata.yaml │ └── values-test-imagedata.yaml ├── pattern-metadata.yaml ├── pattern.sh -&gt; ./common/scripts/pattern-util.sh ├── README.md ├── scripts │ └── check-pipeline-resources.sh ├── SUPPORT_AGREEMENT.md ├── tests │ └── interop ├── values-AWS.yaml ├── values-Azure.yaml ├── values-datacenter.yaml ├── values-factory.yaml ├── values-GCP.yaml ├── values-global.yaml ├── values-hub.yaml -&gt; values-datacenter.yaml └── values-secret.yaml.template 15 directories, 26 files We see the same or similar files in the both patterns directories. Both examples include pattern-metadata.yaml at the repository root.
 The common directory Common is a collection of scripts to start the initial deployment of a pattern using the command line interface. The Makefile contains targets for deploying the pattern. The Makefile is the primary entry point for deploying a pattern. To maintain modularity, version control, and independent management, cluster management, deployment utilities, and security and certificate helm charts are stored in separate repositories under the Validated Patterns GitHub organization. Ansible automation or utilities are in the rhvp.cluster_utils.
 The charts directory This is where validated patterns keep the helm charts for a pattern. The helm charts are used to deploy and manage the various components of the applications deployed at a site. By convention, the charts are broken out by site location. You may see datacenter, hub, factory, or other site names in there.
 The site naming convention is flexible, allowing users to modify it to suit their environment.
@@ -3422,6 +3426,7 @@ Ensure comprehensive deployment capabilities
 The pattern should be capable of deploying all necessary resources to support the applications it includes. This means that once the pattern is applied, no additional manual steps should be required.
 Plan for cluster sizing and storage needs
 Before deploying a pattern, review its cluster sizing and storage requirements. For instance, patterns using Red Hat OpenShift Data Foundation (ODF) may require substantial storage resources. Consult pattern documentation for accurate sizing.
+Define tested cluster configurations in pattern-metadata.yaml at the repository root so sizing pages on validatedpatterns.io stay aligned with your pattern. For more information, see Pattern metadata.
 Customize and fork patterns appropriately
 When extending a pattern or deploying it at a customer site, create a personal or organizational fork. This allows for experimentation and customization while facilitating potential contributions back to the upstream pattern repository.
 Consider managed cloud services for deployment
@@ -3430,6 +3435,8 @@ Manage Multi-Cluster and Multi-Cloud deployments
 Use the patterns framework to centrally manage multiple clusters and workloads across public and private clouds. Incorporate tools like Red Hat Advanced Cluster Management (RHACM) and Red Hat OpenShift GitOps (ArgoCD) to streamline operations.
 Secure secrets across deployments
 Utilize tools such as Hashicorp Vault to manage secrets securely across multi-cloud deployments, ensuring sensitive data is protected.
+Maintain pattern metadata
+Keep pattern-metadata.yaml current with the tier, links, owners, and cluster sizing requirements for your pattern. The documentation site and quality engineering workflows use this file as the source of truth. For more information, see Pattern metadata.
 `,url:"https://validatedpatterns.io/learn/vp_structure_vp_pattern/",breadcrumb:"/learn/vp_structure_vp_pattern/"},"https://validatedpatterns.io/learn/vp_agof/":{title:"Ansible GitOps Framework",tags:[],content:` About the Ansible GitOps framework (AGOF) for validated patterns The Ansible GitOps Framework provides an extensible framework to do GitOps with Ansible Automation Platform (AAP). It offers useful facilities for developing patterns (community and validated) that work with AAP as the GitOps engine.
 When there is no access to OpenShift Container Platform, AGOF provides a standalone solution for deploying and managing validated patterns. This framework leverages GitOps principles without relying on OpenShift.
 Administrators can use the Ansible Automation Platform, which includes automation controller, a web-based interface to define, operate, scale, and delegate automation across their enterprise.
@@ -4627,6 +4634,8 @@ Requirements for creating a new pattern The recommended way to create a new patt
 The patterns framework requires OpenShift GitOps (ArgoCD) to provide the GitOps automation. Patternizer sets this up for you; if starting from a fork, ensure OpenShift GitOps is included.
 Create a new branch on your new pattern to perform the initial changes.
 Deploy the initial new pattern to the cluster.
+Adding pattern metadata Add pattern-metadata.yaml to the top-level directory of your pattern repository. The documentation site and quality engineering workflows use this file as the source of truth for pattern identity, tier, links, and cluster sizing.
+Copy an existing file from multicloud-gitops as a starting point, then update the values for your pattern. For more information about metadata fields, the sync workflow, and troubleshooting, see Pattern metadata.
 Moving to the validated patterns framework One of the first things that you should do is look at your current implementation of your workload and identify the Kubernetes manifests that are involved in order to run the workloads.
 When and how to use values- files There are 4 values files that make up any Validated Pattern. The values files are:
 values-&lt;main-hub&gt;.yaml (e.g. values-datacenter.yaml)
@@ -5275,7 +5284,306 @@ Recommended etcd practices For large and dense clusters, etcd can suffer from po
 Etcd writes data to disk, so its performance strongly depends on disk performance. Etcd persists proposals on disk. Slow disks and disk activity from other processes might cause long fsync latencies, causing etcd to miss heartbeats, inability to commit new proposals to the disk on time, which can cause request timeouts and temporary leader loss. It is highly recommended to run etcd on machines backed by SSD/NVMe disks with low latency and high throughput.
 Some of the key metrics to monitor on a deployed OpenShift Container Platform cluster are p99 of etcd disk write ahead log duration and the number of etcd leader changes. Use Prometheus to track these metrics. etcd_disk_wal_fsync_duration_seconds_bucket reports the etcd disk fsync duration, etcd_server_leader_changes_seen_total reports the leader changes. To rule out a slow disk and confirm that the disk is reasonably fast, 99th percentile of the etcd_disk_wal_fsync_duration_seconds_bucket should be less than 10ms.
 For more information about sizing and Red Hat standard host practices see the Official OpenShift Documentation Page for recommended host practices.
-`,url:"https://validatedpatterns.io/learn/ocp-cluster-general-sizing/",breadcrumb:"/learn/ocp-cluster-general-sizing/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` The OpenShift cluster is made of 3 Control Plane nodes and 3 Workers for the cluster; 3 workers are standard compute nodes and one is c5n.metal. For the node sizes we used the m5.4xlarge on AWS and this instance type met the minimum requirements to deploy the Ansible Edge GitOps pattern successfully on the Hub cluster.
+`,url:"https://validatedpatterns.io/learn/ocp-cluster-general-sizing/",breadcrumb:"/learn/ocp-cluster-general-sizing/"},"https://validatedpatterns.io/contribute/pattern-metadata/":{title:"Pattern metadata",tags:[],content:`Pattern metadata Every Validated Patterns pattern repository includes a pattern-metadata.yaml file at the repository root. This file is the source of truth for pattern identity, cluster sizing, tier information, and links.
+Downstream systems read this file to discover patterns, validate metadata, and render information in the Red Hat Hybrid Cloud Console, on validatedpatterns.io, and in quality engineering (QE) workflows. If you are contributing a new pattern or updating an existing one, maintain this file in your pattern repository. Do not edit the generated metadata modules in the validatedpatterns/docs repository by hand.
+Where the file lives Place pattern-metadata.yaml in the top-level directory of your pattern Git repository, alongside files such as values-global.yaml, Makefile, and pattern.sh.
+A typical pattern repository includes the metadata file in this layout:
+my-pattern/ ├── charts/ ├── common/ ├── pattern-metadata.yaml ├── pattern.sh ├── values-global.yaml └── values-prod.yaml For more information about repository layout, see Validated pattern structure.
+Who consumes pattern metadata Three systems consume pattern-metadata.yaml, each with different expectations:
+Consumer Purpose pattern-ui-catalog
+Fetches metadata from pattern repositories, normalizes it, validates it against a JSON schema, and publishes a static catalog image for the Validated Patterns Operator console plugin.
+validatedpatterns.io documentation
+Syncs metadata into cluster sizing pages through GitHub Actions and utils/flatten_yaml.rb.
+QE and CI tooling
+Uses links, tier, and sizing data for test planning and CI dashboard integration.
+The Red Hat Hybrid Cloud Console does not read pattern-metadata.yaml from your Git repository directly. The console plugin reads normalized pattern.yaml files from the catalog image that the operator deploys on-cluster.
+In this section Metadata and the UI catalog — Source and catalog formats, catalog discovery, and fields the console renders.
+Metadata and documentation — Docs site sync, Hugo frontmatter alignment, and the metadata GitHub Actions workflow.
+Schema and field reference — JSON schema, required and optional fields, and per-field descriptions.
+Example metadata files — Minimal, GPU, and multi-cloud hub/spoke examples.
+Validation and troubleshooting — Schema validation, inclusion rules, and common errors.
+Next steps Create or extend a pattern with Creating a pattern or Creating a pattern with patternizer.
+Install patterns through the UI with Using the Validated Patterns Operator.
+Learn about pattern tiers in Sandbox tier requirements and Tested tier requirements.
+`,url:"https://validatedpatterns.io/contribute/pattern-metadata/",breadcrumb:"/contribute/pattern-metadata/"},"https://validatedpatterns.io/contribute/pattern-metadata-ui-catalog/":{title:"Metadata and the UI catalog",tags:[],content:`Metadata and the UI catalog The Validated Patterns Operator console plugin displays patterns from a catalog served on-cluster. pattern-metadata.yaml in each pattern repository is normalized into that catalog so the Pattern Catalog page can render pattern cards, sizing details, and install flows. Use this information when you prepare a pattern for inclusion in the UI catalog or when you troubleshoot missing catalog entries.
+Source format and catalog format Pattern repositories store pattern-metadata.yaml in a source format that existing patterns use today. The pattern-ui-catalog repository converts that file into a catalog format before the UI consumes it.
+The catalog generator (generate-catalog.sh) applies these normalizations:
+Change Source format (pattern-metadata.yaml) Catalog format (catalog/&lt;name&gt;/pattern.yaml) Cloud provider nesting
+requirements.hub.compute.platform.aws
+requirements.hub.compute.aws (the platform wrapper is removed)
+Pattern owners
+Comma-separated string (owners: user1, user2) or YAML array
+YAML array of usernames
+GitHub organization
+Not present in the source file
+org field added from the repository GitHub organization
+Default cluster group
+Not present in the source file
+clustergroupname added from values-global.yaml → main.clusterGroupName when available
+Optional fields
+Can be omitted
+external_requirements, extra_features, docs_repo_url, ci_url, and spoke default to null when absent
+The authoritative schema for catalog files is pattern.schema.json. For field definitions and required keys, see Schema and field reference. For validation commands, see Validation and troubleshooting.
+Catalog discovery and publication The pattern-ui-catalog project runs generate-catalog.sh, which queries GitHub for public repositories tagged with ui-catalog-enabled in the validatedpatterns and validatedpatterns-sandbox organizations.
+For each repository, the script fetches pattern-metadata.yaml from the default branch.
+If the file is missing or cannot be parsed, the repository is skipped.
+The script normalizes the metadata and writes:
+catalog/catalog.yaml — index listing all discovered pattern names
+catalog/&lt;pattern-name&gt;/pattern.yaml — normalized metadata for one pattern
+catalog/&lt;pattern-name&gt;/values-secret.yaml.template — optional secret template copy
+The catalog directory is built into a container image (quay.io/validatedpatterns/pattern-ui-catalog) and deployed by the operator.
+To include a pattern in the UI catalog, tag the GitHub repository with the ui-catalog-enabled topic and ensure pattern-metadata.yaml is present and parseable.
+On-cluster catalog access The console plugin fetches catalog data through a proxy path:
+/api/proxy/plugin/patterns-operator-console-plugin/pattern-ui-catalog/catalog.yaml /api/proxy/plugin/patterns-operator-console-plugin/pattern-ui-catalog/&lt;pattern&gt;/pattern.yaml The plugin loads catalog.yaml, then fetches each listed pattern.yaml. You can override the catalog image by patching the patterns-operator-config ConfigMap catalog.image key. For more information about custom catalogs, see the pattern-ui-catalog README.
+Fields the UI renders The Pattern Catalog page in the Red Hat Hybrid Cloud Console uses these metadata fields:
+Field UI usage display_name
+Pattern card title
+description
+Card body text
+tier
+Tier label with color coding (maintained, tested, sandbox) and filter control
+logo
+Pattern logo on the card (absolute URL, or path relative to the catalog entry)
+org
+Tooltip on the card title
+requirements
+Cloud provider labels and hub/spoke sizing summary with detailed tooltip per cloud (aws, gcp, azure)
+external_requirements.cluster_sizing_note
+&#34;Additional requirements&#34; info icon and tooltip
+docs_url, repo_url
+External link buttons on the card
+name
+Install, uninstall, and secrets management navigation
+The catalog cards do not render ci_url, issues_url, owners, or extra_features. When a pattern defines variants in metadata, the operator install flow presents a variant selector so you can choose a deployment topology before installation. Install flows also use fields such as clustergroupname and repo_url when creating a Pattern custom resource.
+For more information about installing patterns through the operator, see Using the Validated Patterns Operator.
+`,url:"https://validatedpatterns.io/contribute/pattern-metadata-ui-catalog/",breadcrumb:"/contribute/pattern-metadata-ui-catalog/"},"https://validatedpatterns.io/contribute/pattern-metadata-documentation-sync/":{title:"Metadata and documentation",tags:[],content:`Metadata and documentation pattern-metadata.yaml feeds validatedpatterns.io cluster sizing pages through an automated sync workflow. Keep the metadata file aligned with Hugo frontmatter on pattern landing pages so public website content and generated sizing tables stay consistent. Use the following guidance to understand the sync process and enable automatic updates from your pattern repository.
+How the documentation site uses metadata When pattern-metadata.yaml changes in a pattern repository, an automated workflow can sync those values into this documentation repository.
+A GitHub Actions workflow in the pattern repository runs when pattern-metadata.yaml is updated on the main branch.
+The workflow calls the reusable metadata-docs.yml workflow from the validatedpatterns/docs repository.
+The utils/flatten_yaml.rb script flattens the YAML structure into AsciiDoc attributes (preserving the source nesting, including platform).
+The workflow opens a pull request against validatedpatterns/docs that updates modules/&lt;pattern-name&gt;/metadata-&lt;pattern-name&gt;.adoc.
+Pattern cluster sizing pages include that generated module and the shared modules/cluster-sizing-template.adoc template to render sizing tables.
+Adding or updating pattern-metadata.yaml does not create documentation pages by itself. You still need pattern content under content/patterns/&lt;pattern-name&gt;/ in the docs repository, including a cluster sizing page that includes the generated metadata module. For more information about creating pattern documentation, see Contribute to Validated Patterns documentation.
+Relationship to Hugo frontmatter Pattern pages on validatedpatterns.io also use YAML frontmatter in content/patterns/&lt;pattern-name&gt;/_index.adoc (or _index.md). That frontmatter drives the patterns browser, tier badges, and pattern landing pages on the public website. It is separate from the catalog the Validated Patterns Operator UI consumes.
+Keep both metadata sources aligned:
+Field pattern-metadata.yaml Hugo _index frontmatter Pattern name
+name, display_name
+Directory name, title
+Tier
+tier
+tier
+Summary
+description
+summary
+GitHub repository
+repo_url, issues_url
+links.github, links.bugs
+Documentation URL
+docs_url
+Derived from pattern path
+CI dashboard
+ci_url
+links.ci or ci
+Cluster sizing
+requirements, extra_features
+Not stored in frontmatter; rendered from synced metadata module
+Enabling automatic sync to the documentation repository To push metadata changes from your pattern repository into the docs repository, add a workflow that calls the shared metadata sync workflow.
+Prerequisites Your pattern repository is hosted under the validatedpatterns, validatedpatterns-sandbox, or validatedpatterns-demos GitHub organization.
+The Validated Patterns team has configured authentication for the docs repository (a DOCS_TOKEN secret or the Validated Patterns Metadata Sync GitHub App).
+repo_url in pattern-metadata.yaml matches the GitHub URL of the pattern repository where the workflow runs.
+Procedure Create .github/workflows/update-metadata.yml in your pattern repository.
+name: Update docs pattern metadata on: push: paths: - &#34;pattern-metadata.yaml&#34; - &#34;.github/workflows/update-metadata.yml&#34; branches: - main jobs: update-metadata: uses: validatedpatterns/docs/.github/workflows/metadata-docs.yml@main permissions: contents: read packages: write id-token: write secrets: DOCS_TOKEN: \${{ secrets.DOCS_TOKEN }} Commit and push pattern-metadata.yaml to the main branch.
+The workflow validates repo_url, flattens the metadata, and opens a pull request in the docs repository.
+Review and merge the resulting pull request in validatedpatterns/docs.
+Contact validatedpatterns@googlegroups.com if you need help configuring repository secrets for metadata sync.
+For sync failures, see Metadata sync workflow fails on repo URL in Validation and troubleshooting.
+`,url:"https://validatedpatterns.io/contribute/pattern-metadata-documentation-sync/",breadcrumb:"/contribute/pattern-metadata-documentation-sync/"},"https://validatedpatterns.io/contribute/pattern-metadata-schema-reference/":{title:"Schema and field reference",tags:[],content:`Schema and field reference Use this reference when you author pattern-metadata.yaml at the repository root or inspect normalized catalog files. The JSON schema defines required and optional fields for catalog format, and the field tables describe how to set identity, links, cluster sizing, and related values in source files. Consult the matching sections before you add or change metadata so validation and documentation sync succeed.
+JSON schema overview The formal schema lives in pattern.schema.json. It applies to normalized catalog files (catalog/&lt;pattern&gt;/pattern.yaml), not necessarily to every field you author in a pattern repository source file.
+For how source files are normalized before validation, see Source format and catalog format.
+Required fields (catalog format) After normalization, these top-level fields are required:
+Field Type Notes metadata_version
+string
+Format major.minor (for example, &#34;1.0&#34;). Pattern: ^\\.[0-9]$
+name
+string
+Lowercase identifier. Pattern: ^[a-z][a-z0-9-]*$. Must match the repository name.
+pattern_version
+string
+Pattern implementation version. Format: ^\\.[0-9]$
+display_name
+string
+Human-readable name shown in the UI and documentation.
+repo_url
+string (URI)
+Canonical GitHub URL for the pattern repository.
+docs_repo_url
+string (URI)
+Documentation repository URL.
+issues_url
+string (URI)
+Issue tracker URL.
+docs_url
+string (URI)
+Public documentation URL.
+ci_url
+string (URI)
+CI dashboard URL for the pattern.
+tier
+string
+One of: maintained, tested, sandbox
+owners
+array of strings
+At least one GitHub username. Source files can use a comma-separated string; the catalog converts it to an array.
+requirements
+object
+Must include hub. Can include spoke. See Cluster sizing fields.
+extra_features
+object
+Must include hypershift_support and spoke_support (both boolean).
+org
+string
+GitHub organization name. Added by the catalog generator; do not add manually to source files.
+Optional fields (catalog format) Field Type Notes description
+string
+Short pattern summary. Recommended for UI catalog cards.
+logo
+string (URI)
+Pattern logo URL.
+external_requirements
+object or null
+External infrastructure notes. See External requirements fields.
+clustergroupname
+string
+Default cluster group for install flows. Added from values-global.yaml by the catalog generator.
+variants
+array
+Deployment variants. Each entry requires name; default and description are optional.
+spoke
+null
+Reserved for future use. Catalog sets this to null.
+The schema sets additionalProperties: false at the top level and on most nested objects. Do not add undeclared fields to catalog files.
+Identity fields (source file) Field Required in source Description metadata_version
+Recommended
+Schema version for the metadata file (for example, &#34;1.0&#34; or &#34;2.0&#34;).
+name
+Yes
+Pattern directory and repository name. Use lowercase letters and dashes (for example, multicloud-gitops). Must match values-global.yaml → global.pattern.
+display_name
+Yes
+Human-readable pattern name (for example, Multicloud Gitops).
+description
+Recommended
+Short description of the pattern purpose. Displayed in the UI catalog.
+pattern_version
+Yes
+Version of the pattern implementation (for example, &#34;1.0&#34;).
+Link and governance fields (source file) Field Required in source Description repo_url
+Yes
+Canonical GitHub URL (for example, https://github.com/validatedpatterns/multicloud-gitops). The docs sync workflow verifies this matches the repository running the workflow.
+docs_repo_url
+Yes
+GitHub URL for the documentation repository, typically https://github.com/validatedpatterns/docs.
+issues_url
+Yes
+GitHub issues URL for the pattern repository.
+docs_url
+Yes
+Public URL on validatedpatterns.io (for example, https://validatedpatterns.io/patterns/multicloud-gitops/).
+ci_url
+Yes
+CI dashboard URL (for example, https://validatedpatterns.io/ci/?pattern=mcgitops).
+logo
+Optional
+Logo URL for the UI catalog and website.
+tier
+Yes
+One of sandbox, tested, or maintained. For definitions, see About pattern tiers.
+owners
+Yes
+GitHub usernames responsible for the pattern. Use a comma-separated string (user1, user2) or a YAML list. The catalog normalizes strings to arrays.
+Cluster sizing fields The requirements section records the Red Hat OpenShift Container Platform cluster configurations that a pattern team has tested. Set these values to match configurations you have validated in CI or reference deployments. For alignment checks, see Alignment checks for contributors.
+For operators, these values provide a reference starting point for cluster planning. They appear in generated cluster sizing documentation and in the UI catalog. They do not represent Red Hat OpenShift Container Platform platform minimums and do not guarantee successful deployment or operation in every environment. Smaller clusters might work for limited demos; larger clusters are often required for production workloads or higher user concurrency.
+Meeting the documented replica counts and instance types does not guarantee success. Your results depend on workload, scale, optional components, and platform constraints. Use external_requirements.cluster_sizing_note for pattern-specific sizing caveats. For Red Hat OpenShift Container Platform platform install requirements, see Installing OpenShift Container Platform.
+Pattern repositories and the UI catalog represent the same sizing data in two shapes. The catalog generator removes the optional platform wrapper during normalization. For more information about normalization, see Source format and catalog format.
+Source format nesting In pattern repositories, nest cloud providers under a platform key:
+requirements: hub: compute: platform: aws: replicas: 3 type: m5.2xlarge controlPlane: platform: aws: replicas: 3 type: m5.xlarge Catalog format nesting After normalization, cloud providers appear directly under compute and controlPlane. The catalog generator removes the platform key:
+Path in source file Path in catalog requirements.hub.compute.platform.aws
+requirements.hub.compute.aws
+requirements.hub.controlPlane.platform.aws
+requirements.hub.controlPlane.aws
+Cluster roles and node pools hub — Required. Primary cluster (hub or datacenter).
+spoke — Optional. Managed or edge clusters imported through Red Hat Advanced Cluster Management (RHACM).
+Under each cluster role:
+compute — Worker node requirements.
+controlPlane — Control plane node requirements.
+Under each node pool, define one or more cloud keys (aws, azure, gcp). Each cloud entry requires:
+replicas — Integer ≥ 0.
+type — Cloud instance type string (for example, m5.2xlarge).
+Set worker replicas to 0 when a cluster role uses control plane nodes only.
+Extra features The extra_features object requires both keys when present:
+Field Type Description hypershift_support
+boolean
+Whether the pattern supports Red Hat OpenShift Container Platform hosted control planes (HyperShift).
+spoke_support
+boolean
+When true, documentation cluster sizing templates include a spoke section.
+External requirements fields Use external_requirements for infrastructure outside the cluster that affects deployment or sizing.
+Field Type Description cluster_sizing_note
+string
+Free-text note displayed in documentation and as an &#34;Additional requirements&#34; tooltip in the UI catalog.
+Set external_requirements: to null or leave it empty when you have no external requirements.
+Variants field The optional variants list describes named deployment topologies (for example, hub and standalone).
+Field Required Description name
+Yes
+Short variant identifier.
+description
+Optional
+What the variant deploys.
+default
+Optional
+Boolean. Set to true for the default variant.
+When variants is defined in catalog metadata, the Validated Patterns Operator install flow displays a variant selector with each entry’s name and description. The default variant is pre-selected when default: true is set on one entry. The documentation sync workflow does not render variant lists on validatedpatterns.io. Variants remain available for QE and other tooling that reads pattern-metadata.yaml directly.
+For complete YAML examples, see Example metadata files.
+`,url:"https://validatedpatterns.io/contribute/pattern-metadata-schema-reference/",breadcrumb:"/contribute/pattern-metadata-schema-reference/"},"https://validatedpatterns.io/contribute/pattern-metadata-examples/":{title:"Example metadata files",tags:[],content:`Example metadata files These examples show pattern-metadata.yaml as you author it in a pattern repository (source format). For field definitions, see Schema and field reference.
+Minimal example (single-cloud hub) The smallest useful source file for a single-cloud pattern without spoke clusters:
+metadata_version: &#34;1.0&#34; name: my-pattern pattern_version: &#34;1.0&#34; display_name: My Pattern description: A short description of what this pattern deploys. repo_url: https://github.com/validatedpatterns-sandbox/my-pattern docs_repo_url: https://github.com/validatedpatterns/docs issues_url: https://github.com/validatedpatterns-sandbox/my-pattern/issues docs_url: https://validatedpatterns.io/patterns/my-pattern/ ci_url: https://validatedpatterns.io/ci/?pattern=mypattern tier: sandbox owners: my-github-user requirements: hub: compute: platform: aws: replicas: 3 type: m5.2xlarge controlPlane: platform: aws: replicas: 3 type: m5.xlarge extra_features: hypershift_support: false spoke_support: false external_requirements: Example with external requirements Based on rag-llm-gitops with a GPU sizing note:
+metadata_version: &#34;1.0&#34; name: rag-llm-gitops pattern_version: &#34;1.0&#34; display_name: AI Generation with LLM and RAG description: Deploy a RAG chatbot that augments LLM responses with enterprise documentation. repo_url: https://github.com/validatedpatterns/rag-llm-gitops docs_repo_url: https://github.com/validatedpatterns/docs issues_url: https://github.com/validatedpatterns/rag-llm-gitops/issues docs_url: https://validatedpatterns.io/patterns/rag-llm-gitops/ ci_url: https://validatedpatterns.io/ci/?pattern=ragllm tier: tested owners: day0hero, sauagarwa requirements: hub: compute: platform: aws: replicas: 3 type: m5.2xlarge controlPlane: platform: aws: replicas: 1 type: m5.2xlarge extra_features: hypershift_support: false spoke_support: false external_requirements: cluster_sizing_note: &gt; This pattern requires nodes with GPUs that are only supported in certain regions. Create GPU nodes with \`make create-gpu-machineset\` after the initial cluster is provisioned. Full example (multi-cloud hub and spoke) Based on multicloud-gitops with hub/spoke sizing, variants, and multi-cloud requirements:
+metadata_version: &#34;1.0&#34; name: multicloud-gitops pattern_version: &#34;1.0&#34; display_name: Multicloud Gitops description: A multi-cloud pattern that uses GitOps, HashiCorp Vault and ACM to manage applications and secrets across clusters. repo_url: https://github.com/validatedpatterns/multicloud-gitops docs_repo_url: https://github.com/validatedpatterns/docs issues_url: https://github.com/validatedpatterns/multicloud-gitops/issues docs_url: https://validatedpatterns.io/patterns/multicloud-gitops/ ci_url: https://validatedpatterns.io/ci/?pattern=mcgitops logo: https://validatedpatterns.io/images/logos/multicloud-gitops.png tier: maintained owners: mbaldessari, darkdoc requirements: hub: compute: platform: aws: replicas: 3 type: m5.2xlarge azure: replicas: 3 type: Standard_D8s_v3 gcp: replicas: 3 type: n1-standard-8 controlPlane: platform: aws: replicas: 3 type: m5.xlarge azure: replicas: 3 type: Standard_D4s_v3 gcp: replicas: 3 type: n1-standard-4 spoke: compute: platform: aws: replicas: 0 type: m5.2xlarge controlPlane: platform: aws: replicas: 3 type: m5.2xlarge extra_features: hypershift_support: true spoke_support: true external_requirements: variants: - name: hub default: true description: Default multicluster hub/spoke Multicloud Gitops variant - name: standalone description: Single cluster Multicloud Gitops (no ACM) variant `,url:"https://validatedpatterns.io/contribute/pattern-metadata-examples/",breadcrumb:"/contribute/pattern-metadata-examples/"},"https://validatedpatterns.io/contribute/pattern-metadata-validation/":{title:"Validation and troubleshooting",tags:[],content:`Validation and troubleshooting Validate pattern-metadata.yaml before you publish a pattern so the UI catalog and documentation sync workflows accept your changes. Use the schema checks, inclusion rules, and alignment checks in this topic to confirm that required fields and URLs are correct. When a pattern is missing from the catalog or a sync workflow fails, use the troubleshooting steps to identify and fix the cause.
+Catalog schema validation The pattern-ui-catalog repository validates normalized catalog files:
+git clone https://github.com/validatedpatterns/pattern-ui-catalog.git cd pattern-ui-catalog make generate-catalog # requires gh, yq, jq, and GitHub authentication make schema-validate # requires check-jsonschema (pip install check-jsonschema) The make schema-validate target checks the following files:
+catalog/catalog.yaml against catalog.schema.json
+Each catalog/*/pattern.yaml against pattern.schema.json
+The pattern-ui-catalog CI pipeline also runs yamllint on generated catalog files.
+Documentation sync validation The docs metadata workflow (.github/workflows/metadata-docs.yml) validates the following conditions:
+repo_url in pattern-metadata.yaml matches https://github.com/&lt;org&gt;/&lt;repo&gt;; for the repository running the workflow
+The YAML file parses successfully (by using yq and flatten_yaml.rb)
+If validation fails, the workflow exits with an error and no pull request is opened. For workflow setup, see Enabling automatic sync to the documentation repository.
+Catalog inclusion rules A pattern repository is included in the UI catalog only when:
+The repository is public and tagged with ui-catalog-enabled
+pattern-metadata.yaml exists on the default branch
+The file parses and normalizes without error
+Repositories missing metadata or with invalid YAML are skipped silently during catalog generation.
+Alignment checks for contributors Keep these values consistent across systems:
+name matches the Git repository name and global.pattern in values-global.yaml
+repo_url matches the actual GitHub repository URL
+tier, docs_url, and ci_url align with Hugo frontmatter and CI badge JSON (see Testing artifacts)
+requirements hub sizing reflects configurations you have actually tested
+Pattern missing from the UI catalog Verify the following items:
+The GitHub repository has the ui-catalog-enabled topic.
+pattern-metadata.yaml exists on the default branch.
+The YAML parses correctly (run yq &#39;.&#39; pattern-metadata.yaml locally).
+The catalog has been regenerated and the catalog image redeployed after your change.
+Metadata sync workflow fails on repo URL The sync workflow compares repo_url with the GitHub URL of the repository running the workflow. Verify that repo_url uses the form https://github.com/&lt;org&gt;/&lt;repo&gt;;.
+Schema validation fails in pattern-ui-catalog Common causes include the following issues:
+Missing required field after normalization (for example, extra_features or requirements.hub)
+Invalid tier value (must be maintained, tested, or sandbox)
+name contains uppercase letters or underscores
+owners is empty after normalization
+Undeclared extra fields at the top level
+Run make generate-catalog and make schema-validate locally to reproduce errors before publishing. For required fields, see Required fields (catalog format).
+Empty requirements section If requirements is empty, the catalog schema validation fails and the documentation cluster sizing template renders incomplete tables. Define at least requirements.hub with compute and controlPlane entries for one cloud provider.
+For sizing field structure, see Cluster sizing fields.
+`,url:"https://validatedpatterns.io/contribute/pattern-metadata-validation/",breadcrumb:"/contribute/pattern-metadata-validation/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` The OpenShift cluster is made of 3 Control Plane nodes and 3 Workers for the cluster; 3 workers are standard compute nodes and one is c5n.metal. For the node sizes we used the m5.4xlarge on AWS and this instance type met the minimum requirements to deploy the Ansible Edge GitOps pattern successfully on the Hub cluster.
 This pattern is currently only usable on AWS because of the integration of OpenShift Virtualization; it would be straightforward to adapt this pattern also to run on bare metal/on-prem clusters. If and when other public cloud providers support metal node provisioning in OpenShift Virtualization, we will document that here.
 Ansible Edge GitOps pattern hub/datacenter cluster size The Ansible Edge GitOps pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
 The datacenter hub OpenShift cluster uses the following the deployment configuration:
@@ -5499,6 +5807,7 @@ Integrate with Keycloak for AuthN / AuthZ
 Integrate with a real certificate authority like Let’s Encrypt
 `,url:"https://validatedpatterns.io/patterns/travelops/ideas-for-customization/",breadcrumb:"/patterns/travelops/ideas-for-customization/"},"https://validatedpatterns.io/learn/infrastructure/":{title:"Infrastructure",tags:[],content:` Background Each validated pattern has infrastructure requirements. The majority of the validated patterns will run Red Hat OpenShift while some parts will run directly on Red Hat Enterprise Linux or (RHEL), more likely, a version of RHEL called RHEL for Edge. It is expected that consumers of validated patterns already have the infrastructure in place using existing reliable and supported deployment tools. For more information and tools head over to console.redhat.com
 Sizing In this section we provide general minimum sizing requirements for such infrastructure but it is important to review specific requirements for a specific validated pattern. For example, Industrial Edge 2.0 employs AI/Ml technology that requires large machine instances to support the applications deployed on OpenShift at the datacenter.
+Per-pattern cluster sizing on validatedpatterns.io is generated from pattern-metadata.yaml in each pattern repository. Pattern maintainers define tested configurations in that file. For more information about metadata fields, see Pattern metadata.
 `,url:"https://validatedpatterns.io/learn/infrastructure/",breadcrumb:"/learn/infrastructure/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/mcg-amx-rhoai-managed-cluster/":{title:"Managed cluster sites",tags:[],content:` Attach a managed cluster (edge) to the management hub Understanding Red Hat Advanced Cluster Management requirements By default, Red Hat Advanced Cluster Management (RHACM) manages the clusterGroup applications that are deployed on all clusters. In the value-hub.yaml file, add a managedClusterCgroup for each cluster or group of clusters that you want to manage as one.
 managedClusterGroups: - name: region-one helmOverrides: - name: clusterGroup.isHubCluster value: false clusterSelector: matchLabels: clusterGroup: region-one The above YAML file segment deploys the clusterGroup applications on managed clusters with the label clusterGroup=region-one. Specific subscriptions and Operators, applications and projects for that clusterGroup are then managed in a value-region-one.yaml file. For example:
 namespaces: - config-demo projects: - config-demo applications: config-demo: name: config-demo namespace: config-demo project: config-demo path: charts/all/config-demo #Subscriptions can be added too - multicloud-gitops at present does not require subscriptions on its managed clusters #subscriptions: . # example-subscription # name: example-operator # namespace: example-namespace # channel: example-channel # csv: example-operator.v1.0.0 subscriptions: Ensure that you commit the changes and push them to GitHub so that GitOps can fetch your changes and apply them.
@@ -5728,6 +6037,7 @@ As with the SSH example above, create a secret before running the install:
 apiVersion: v1 kind: Secret metadata: name: private-repo namespace: openshift-operators labels: argocd.argoproj.io/secret-type: repository stringData: type: git url: https://gitlab.com/dminnear-rh/mcg-private.git username: oauth2 password: glpat-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Using the bootstrap_secrets feature, this can be created as follows:
 version: &#34;2.0&#34; bootstrap_secrets: - name: private-repo targetNamespaces: - openshift-operators labels: argocd.argoproj.io/secret-type: repository fields: - name: type value: git - name: url value: https://gitlab.com/dminnear-rh/mcg-private.git - name: username value: oauth2 - name: password value: glpat-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx The username must be oauth2, not your GitLab handle. Then reference the secret in the install:
 ./pattern.sh make TOKEN_SECRET=private-repo TOKEN_NAMESPACE=openshift-operators install `,url:"https://validatedpatterns.io/learn/private-repos/",breadcrumb:"/learn/private-repos/"},"https://validatedpatterns.io/contribute/test-artifacts/":{title:"Testing Artifacts",tags:[],content:`Testing artifacts To be represented in the CI dashboard, testers can create a publicly available JSON file (for example, in an AWS bucket) that records the result of the latest test for each combination of pattern, platform, and Red Hat OpenShift Container Platform version.
+Keep patternRepo in the testing artifact JSON aligned with repo_url in the pattern-metadata.yaml file for the pattern repository. The ci_url field in the metadata file must point to the same pattern entry on the CI dashboard. For more information about metadata fields, see Pattern metadata.
 File naming convention {pattern}-{platform}-{openshift version}-stable-badge.json
 Example: medicaldiag-nutanix-4.13-stable-badge.json
 Note: OpenShift version should be major.minor only
@@ -5884,6 +6194,7 @@ Must A sandbox pattern must continue to meet the following criteria to remain in
 A sandbox pattern must conform to the common technical implementation requirements.
 A sandbox pattern must be able to be deployed onto a freshly deployed OpenShift cluster without prior modification or tuning.
 A sandbox pattern must include a top-level README file that highlights the business problem and how the pattern solves it.
+A sandbox pattern must include a pattern-metadata.yaml file at the repository root with pattern identity, tier, and hub cluster sizing (where applicable). For more information, see Pattern metadata.
 A sandbox pattern must include an architecture drawing. The specific tool or format is flexible as long as the meaning is clear.
 A sandbox pattern must undergo an informal technical review by a community leader to ensure that it meets basic reuse standards.
 A sandbox pattern must undergo an informal architecture review by a community leader to ensure that the solution has the right components, and they are generally being used as intended. For example, not using a database as a message bus.
