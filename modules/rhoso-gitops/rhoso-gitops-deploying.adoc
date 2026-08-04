@@ -19,8 +19,7 @@ Before you deploy the pattern, verify that you have the following:
 * link:https://podman.io/[Podman] 4.3 or later for `./pattern.sh`.
 * {gitops-title} available on the cluster (installed by the pattern framework or
   pre-installed).
-* The link:https://validatedpatterns.io/learn/quickstart/[tool dependencies] are
-  installed.
+* The required link:https://validatedpatterns.io/learn/quickstart/[tool dependencies] are installed.
 
 [id="rhoso-gitops-preparing-deployment"]
 == Preparing for deployment
@@ -33,9 +32,9 @@ Before you deploy the pattern, verify that you have the following:
 
 . Clone your fork:
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
-$ git clone git@github.com:<your_organization>/rhoso-gitops.git
+$ git clone git@github.com:__<your_organization>__/rhoso-gitops.git
 ----
 
 . Change to the repository directory:

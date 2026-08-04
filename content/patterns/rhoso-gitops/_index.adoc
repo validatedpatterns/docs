@@ -27,10 +27,3 @@ include::modules/comm-attributes.adoc[]
 include::modules/rhoso-gitops/rhoso-gitops-about.adoc[leveloffset=+1]
 
 include::modules/rhoso-gitops/rhoso-gitops-architecture.adoc[leveloffset=+1]
-
-[id="next-steps_rhoso-gitops-index"]
-== Next steps
-
-* link:getting-started[Deploy the pattern]
-* link:cluster-sizing[Review cluster sizing requirements]
-* link:configuration[Configure upstream pins and overrides]
