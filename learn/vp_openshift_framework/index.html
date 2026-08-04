@@ -55,7 +55,25 @@
 └── values-standalone.yaml
 
 
-11 directories, 20 files</code></pre></div></div><div class=paragraph><p>First we notice some subdirectories: charts and common, along with <code>values-</code> yaml files.</p></div></div><div class=sect2><h3 id=_industrial_edge><a class=anchor href=#_industrial_edge></a>Industrial edge</h3><div class=listingblock><div class=content><pre class="rouge highlight"><code data-lang=text>~/g/industrial-edge on stable-2.0 ◦ tree -L 2
+11 directories, 20 files</code></pre></div></div><div class=paragraph><p>First we notice some subdirectories: charts and common, along with <code>values-</code> yaml files.</p></div><div class=paragraph><p>The directory tree above shows the older flat layout, where all <code>values-&lt;clusterGroupName>.yaml</code> files sit at the repository root and <code>values-global.yaml</code> uses <code>main.clusterGroupName</code> to select the primary cluster group.</p></div><div class=paragraph><p>Starting with patterns-operator 0.0.78, clustergroup chart v0.9.57, and acm-chart v0.2.10, patterns can use a newer variant-based layout. In this layout, the per-cluster values files move into a <code>variants/</code> directory, organized by variant name, and <code>values-global.yaml</code> uses <code>main.variant</code> instead of <code>main.clusterGroupName</code>:
+This new directory layout will automatically be used if the pattern’s git repository detects a top-level <code>variants/</code> sub-folder.</p></div><div class=listingblock><div class=content><pre class="rouge highlight"><code data-lang=text>.
+├── charts
+│   ├── all
+│   └── region
+├── overrides
+│   ├── values-AWS.yaml
+│   └── values-IBMCloud.yaml
+├── pattern-metadata.yaml
+├── pattern.sh
+├── values-global.yaml
+├── values-secret.yaml.template
+└── variants
+    ├── hub
+    │   ├── values-group-one.yaml
+    │   └── values-hub.yaml
+    └── standalone
+        └── values-standalone.yaml</code></pre></div></div><div class=paragraph><p>With this layout, <code>values-global.yaml</code> specifies the default variant to deploy:</p></div><div class=listingblock><div class=content><pre class="rouge highlight"><code data-lang=yaml><span class=na>main</span><span class=pi>:</span>
+  <span class=na>variant</span><span class=pi>:</span> <span class=s>hub</span></code></pre></div></div><div class=paragraph><p>Running <code>./pattern.sh make install</code> deploys the variant specified in <code>main.variant</code>. Both <code>main.variant</code> and <code>main.clusterGroupName</code> are supported; if both are set, <code>variant</code> takes precedence. For a detailed description of these fields, see <a href=/learn/values-global-configuration/#main-variant>Global configuration reference</a>.</p></div></div><div class=sect2><h3 id=_industrial_edge><a class=anchor href=#_industrial_edge></a>Industrial edge</h3><div class=listingblock><div class=content><pre class="rouge highlight"><code data-lang=text>~/g/industrial-edge on stable-2.0 ◦ tree -L 2
 .
 ├── ansible
 │   ├── files
