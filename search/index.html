@@ -1073,7 +1073,7 @@ A Red Hat OpenShift Container Platform 4.14 or later cluster with enough comput
 Cluster administrator privileges and a working kubeconfig.
 Podman 4.3 or later for ./pattern.sh.
 Red Hat OpenShift GitOps available on the cluster (installed by the pattern framework or pre-installed).
-The tool dependencies are installed.
+The required tool dependencies are installed.
 Preparing for deployment Procedure Fork the rhoso-gitops repository on GitHub.
 Clone your fork:
 $ git clone git@github.com:&lt;your_organization&gt;/rhoso-gitops.git Change to the repository directory:
@@ -1085,10 +1085,7 @@ $ ./pattern.sh make install Verifying the deployment Procedure List Argo CD appl
 $ oc get applications -n vp-gitops List Argo CD applications in rhoso-gitops-standalone:
 $ oc get applications -n rhoso-gitops-standalone After install, run the pattern health check:
 $ ./pattern.sh make argo-healthcheck Validate the pattern schema:
-$ ./pattern.sh make validate-schema Next steps Configure the pattern
-Review cluster sizing
-Troubleshoot the pattern
-`,url:"https://validatedpatterns.io/patterns/rhoso-gitops/getting-started/",breadcrumb:"/patterns/rhoso-gitops/getting-started/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the OpenShift Virtualization Data Protection Pattern General Prerequisites An OpenShift cluster ( Go to the OpenShift console). See also sizing your cluster. Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks) The helm binary, see here Ansible, which is used in the bootstrap and provisioning phases of the pattern install (and to configure Ansible Automation Platform). Please note that when run on AWS, this pattern will provision an additional worker node, which will be a metal instance (c5n.metal) to run the Edge Virtual Machines. This worker is provisioned through the OpenShift MachineAPI and will be automatically cleaned up when the cluster is destroyed. The use of this pattern depends on having a running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
+$ ./pattern.sh make validate-schema `,url:"https://validatedpatterns.io/patterns/rhoso-gitops/getting-started/",breadcrumb:"/patterns/rhoso-gitops/getting-started/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the OpenShift Virtualization Data Protection Pattern General Prerequisites An OpenShift cluster ( Go to the OpenShift console). See also sizing your cluster. Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks) The helm binary, see here Ansible, which is used in the bootstrap and provisioning phases of the pattern install (and to configure Ansible Automation Platform). Please note that when run on AWS, this pattern will provision an additional worker node, which will be a metal instance (c5n.metal) to run the Edge Virtual Machines. This worker is provisioned through the OpenShift MachineAPI and will be automatically cleaned up when the cluster is destroyed. The use of this pattern depends on having a running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
 If you do not have a running Red Hat OpenShift cluster you can start one on a public or private cloud by using Red Hat&rsquo;s cloud service.
 Credentials Required in Pattern In addition to the OpenShift cluster, you will need to prepare a number of secrets, or credentials, which will be used in the pattern in various ways. To do this, copy the values-secret.yaml template to your home directory as values-secret.yaml and replace the explanatory text as follows:
 AWS Credentials (an access key and a secret key). These are used to provision the metal worker in AWS (which hosts the VMs) and (by default) to access a pre-created S3 bucket for exporting VM backups with Veeam Kasten. --- # NEVER COMMIT THESE VALUES TO GIT version: &#34;2.0&#34; secrets: - name: aws-creds fields: - name: aws_access_key_id value: &#39;An aws access key that can provision EC2 VMs and read/write to S3&#39; - name: aws_secret_access_key value: &#39;An aws access secret key that can provision VMs and read/write to S3&#39; A username and SSH Keypair (private key and public key). These will be used to provide access to the Kiosk VMs in the demo. - name: kiosk-ssh fields: # Username of user to which the privatekey and publickey are attached - cloud-user is a typical value - name: username value: &#39;cloud-user&#39; # Private ssh key of the user who will be able to elevate to root to provision kiosks - name: privatekey value: | -----BEGIN OPENSSH PRIVATE KEY----- b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn ... 5nZRiM0qkhEAAAAKY2xvdWQtdXNlcgE= -----END OPENSSH PRIVATE KEY----- # Public ssh key of the user who will be able to elevate to root to provision kiosks - name: publickey value: | ssh-rsa AAAAB3NzaC1yc2EAAAA...xiVgKANw== cloud-user A Red Hat Subscription Management username and password. These will be used to register Kiosk VM templates to the Red Hat Content Delivery Network and install content on the Kiosk VMs to run the demo. - name: rhsm fields: - name: username value: &#39;username of user to register RHEL VMs&#39; - name: password value: &#39;password of rhsm user in plaintext&#39; Container &ldquo;extra&rdquo; arguments which will set the admin password for the ignition application when it&rsquo;s running. - name: kiosk-extra fields: # Optional extra params to pass to kiosk ignition container, including admin password - name: container_extra_params value: &#39;--privileged -e GATEWAY_ADMIN_PASSWORD=redhat&#39; A userData block to use with cloud-init. This will allow console login as the user you specify (traditionally cloud-user) with the password you specify. The value in cloud-init is used as the default; roles in the edge-gitops-vms chart can also specify other secrets to use by referencing them in the role block. - name: cloud-init fields: - name: userData value: |- #cloud-config user: &#39;username of user for console, probably cloud-user&#39; password: &#39;a suitable password to use on the console&#39; chpasswd: { expire: False } A manifest file with an entitlement to run Ansible Automation Platform. This file (which will be a .zip file) will be posted to Ansible Automation Platform instance to enable its use. Instructions for creating a manifest file can be found here - name: aap-manifest fields: - name: b64content # Ex. /Users/john.doe/ansible-edge-gitops-kasten/my-aap-manifest.zip path: &#39;full path and file name of the Satellite Manifest .zip for entitling Ansible Automation Platform&#39; base64: true A passphrase that will be used to encrypt backups of the Veeam Kasten internal catalog of restore points, a process known as Kasten DR. These Kasten DR backups can be used to restore access to the catalog of previously created application backups in the event of infrastructure failure or cluster loss. - name: kastendr-passphrase fields: - name: key value: &#39;passphrase&#39; Prerequisites for deployment via make install If you are going to install via make install from your workstation, you will need the following tools and packages:
@@ -2405,36 +2402,10 @@ Some of the validated patterns use configuration files (for now), while others, 
 Policy While many enterprise Cloud Native applications are open source, many of the products used require licenses or subscriptions. Policies help enforce license and subscription management and the channels needed to get access to those licenses or subscriptions.
 Similarly, in multicloud deployments and complex edge deployments, policies can help define and select the correct GitOps workflows that need to be managed for various sites or clusters. E.g. defining an OpenShift Cluster as a &#34;Factory&#34; in the Industrial Edge validated pattern provides a simple trigger to roll-out the entire Factory deployment. Policy is a powerful tool in automation.
 Validated patterns use Red Hat Advanced Cluster Management for Kubernetes to control clusters and applications from a single console, with built-in security policies.
-`,url:"https://validatedpatterns.io/contribute/background-on-pattern-development/",breadcrumb:"/contribute/background-on-pattern-development/"},"https://validatedpatterns.io/patterns/rhoso-gitops/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` RHOSO GitOps pattern hub/datacenter cluster size The RHOSO GitOps pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
-The datacenter hub OpenShift cluster uses the following the deployment configuration:
-Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type Amazon Web Services
-Control Plane
-3
-m5.2xlarge
-Amazon Web Services
-Worker
-3
-m5.4xlarge
-Google Cloud Platform
-Control Plane
-3
-n1-standard-8
-Google Cloud Platform
-Worker
-3
-n1-standard-16
-Microsoft Azure
-Control Plane
-3
-Standard_D8s_v3
-Microsoft Azure
-Worker
-3
-Standard_D16s_v3
-Data plane host requirements The preceding hub cluster sizing tables cover the Red Hat OpenShift Container Platform nodes that host the RHOSO control plane. A full RHOSO deployment also requires separate RHEL hosts for the data plane (compute nodes running data plane elements).
+`,url:"https://validatedpatterns.io/contribute/background-on-pattern-development/",breadcrumb:"/contribute/background-on-pattern-development/"},"https://validatedpatterns.io/patterns/rhoso-gitops/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` Cluster requirements RHOSO requires bare-metal infrastructure for both the Red Hat OpenShift Container Platform cluster and the compute nodes. RHOSO does not support cloud-based instance types such as AWS, GCP, or Azure.
+For detailed hardware, software, and network requirements, see Infrastructure and system requirements in the Red Hat OpenStack Services on OpenShift Planning your deployment guide.
+Data plane host requirements The Red Hat OpenShift Container Platform cluster hosts the RHOSO control plane. A full RHOSO deployment also requires separate RHEL hosts for the data plane (compute nodes running data plane elements).
 Plan additional RHEL capacity beyond the OpenShift worker sizing in pattern-metadata.yaml. For Operator stages, sync order, and version pins, see the pattern repository VERSIONS.md file.
-Next steps Deploy the pattern
-Configure upstream pins and overrides
 `,url:"https://validatedpatterns.io/patterns/rhoso-gitops/cluster-sizing/",breadcrumb:"/patterns/rhoso-gitops/cluster-sizing/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:` About OpenShift cluster sizing for the Intel AMX accelerated Medical Diagnosis pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
 For AWS, see Installing OpenShift Container Platform on AWS.
 For bare-metal, see Installing OpenShift Container Platform on bare metal.
@@ -4088,38 +4059,38 @@ Pins upstream repoURL, targetRevision, and paths
 Platform overrides
 overrides/values-AWS.yaml
 Optional platform-specific overrides (placeholder)
-To change upstream Git content (revision, paths, enable or disable apps), edit overrides/values-rhoso-gitops.yaml and sync the pattern (or let automated sync reconcile, per global.options.syncPolicy in values-global.yaml).
-Upstream applications (default v0.1.0) Child Argo CD Applications sync from openstack-k8s-operators/gitops at the revision pinned in overrides/values-rhoso-gitops.yaml.
-Table 2. Default upstream applications Argo CD application Upstream path Enabled Sync operator-dependencies
+To change upstream Git content (revision, paths, enable or disable applications), edit overrides/values-rhoso-gitops.yaml and sync the pattern (or let automated sync reconcile, per global.options.syncPolicy in values-global.yaml).
+Upstream applications Child Argo CD Applications sync from openstack-k8s-operators/gitops at the revision pinned in overrides/values-rhoso-gitops.yaml.
+The example/ overlays shipped in the upstream repository are reference samples only. They do not produce a working deployment on your infrastructure. To deploy RHOSO, point each application at your own Git overlay (see Pointing an application to your Git overlay).
+Table 2. Default upstream applications Application Purpose Upstream path Red Hat OpenStack Services on OpenShift docs operator-dependencies
+Infrastructure Operators (cert-manager, MetalLB, nmstate, observability)
 example/dependencies
-Yes
-Automated
+RHOCP software requirements
 openstack-operator
+OpenStack Operator subscription
 example/openstack-operator
-Yes
-Automated
+Installing and preparing the OpenStack Operator
 openstack-operator-cr
+Main OpenStack custom resource
 example/openstack-operator-cr
-Yes
-Automated
+Installing and preparing the OpenStack Operator
 openstack-secrets
+Secure-backend sync (disabled by default)
 not configured (path: TODO)
-No
-Automated
+Providing secure access to the RHOSO services
 openstack-networks
+Network configuration
 example/openstack-networks
-Yes
-Automated
+Preparing RHOSO networks
 openstack-controlplane
+OpenStackControlPlane
 example/openstack-controlplane
-Yes
-Automated
+Creating the control plane
 openstack-dataplane
+Data plane
 example/openstack-dataplane
-Yes
-Automated
-All applications include a default retry policy to handle transient failures during deployment convergence.
-For product, framework, upstream Git, and Operator versions, see the pattern repository VERSIONS.md file.
+Creating the data plane
+By default, the pattern enables all applications except openstack-secrets. Applications use automated sync with a retry policy to handle transient failures during deployment convergence.
 Pinning a different upstream revision Child applications use automated sync by default: Argo CD reconciles them whenever the upstream Git repository changes. If targetRevision points to a branch name like main or HEAD, any push to that branch triggers an automatic deployment. This can cause unexpected changes in production.
 Always pin targetRevision to a tag or commit hash for stability.
 In overrides/values-rhoso-gitops.yaml, set targetRevision for each application that you want to pin:
@@ -4132,14 +4103,14 @@ Pointing an application to your Git overlay To point an application at your own 
 applications: openstack-controlplane: repoURL: &#34;https://github.com/example/your-gitops.git&#34; path: &#34;environments/prod/controlplane&#34; targetRevision: &#34;main&#34; Adding Kustomize components For example, add a secrets Operator component through operator-dependencies:
 applications: operator-dependencies: kustomize: components: - &#34;https://github.com/openstack-k8s-operators/gitops/components/secrets/vault-secrets-operator?ref=v0.2.0&#34; For Vault Secrets Operator and External Secrets Operator component URLs, see the upstream components/secrets README.
 Secret zero (bootstrap credential) RHOSO GitOps often uses a secure store (for example Vault). Do not store the bootstrap credential in Git. Complete the following steps:
-Create the openstack namespace (or the namespace your overlay specifies).
-Create the Kubernetes Secret out of band (oc create secret generic …​).
+Configure the secret wiring before deploying the pattern:
 Add a Kustomize overlay in your Git repository for secret wiring (non-sensitive manifests only).
 Enable and configure applications.openstack-secrets in overrides/values-rhoso-gitops.yaml (enabled: true, repoURL, path, targetRevision, optional kustomize patches).
 Install the secrets Operator through operator-dependencies by using kustomize.components URLs from the upstream secrets components.
-For standalone Helm usage and advanced chart examples, see the upstream rhoso-apps chart.
-Next steps Deploy the pattern
-Troubleshoot the pattern
+While the pattern is deploying, wait for the openstack namespace to appear (an earlier Argo CD application creates it). Then inject the bootstrap Secret out of band in a separate terminal. If you are working remotely, use tmux or screen so you can monitor the deployment and inject the secret in parallel.
+Do not create the openstack namespace manually. Argo CD creates it during deployment, and a pre-existing namespace causes ownership conflicts.
+Poll for the namespace and inject the secret as soon as it appears:
+$ while ! oc get namespace openstack &amp;&gt;/dev/null; do sleep 10; done $ oc create secret generic &lt;secret_name&gt; \\ --from-literal=&lt;key&gt;=&lt;value&gt; \\ -n openstack --dry-run=client -o yaml | oc apply -f - For standalone Helm usage and advanced chart examples, see the upstream rhoso-apps chart.
 `,url:"https://validatedpatterns.io/patterns/rhoso-gitops/configuration/",breadcrumb:"/patterns/rhoso-gitops/configuration/"},"https://validatedpatterns.io/patterns/trilio-continuous-restore/cr-operations/":{title:"CR operations",tags:[],content:`Operations Monitoring DR status # Hub — all phases make dr-status # Spoke — ConsistentSet and restore status (run on spoke context) oc get configmap trilio-cr-status -n imperative -o yaml Automated DR lifecycle The imperative framework runs continuously on a 10-minute schedule with no manual intervention required. The full lifecycle from a standing start (hub up, spoke just joined) to a completed Continuous Restore typically completes within 30–45 minutes.
 Hub job sequence:
 Job What it does Skips when trilio-enable-cr Creates CR BackupPlan + ContinuousRestore Policy CR BackupPlan already Available trilio-cr-backup Creates a backup against the CR BackupPlan Available CR backup exists trilio-backup Creates a standard backup Available backup exists trilio-restore-standard Restores to wordpress-restore on hub Completed restore exists trilio-e2e-status Writes status ConfigMap; fails until all phases pass — (always runs) Spoke job sequence (per DR cluster):
@@ -5194,7 +5165,7 @@ Problem The image-generator is scaled correctly, but the dashboard is not updati
 Solution The serverless eventing function might not be able to fetch the notifications from ODF and therefore, not triggering the knative-serving function to scale up. You may want to check the logs of the rook-ceph-rgw-ocs-storagecluster-cephobjectstore-a-&lt;podGUID&gt; pod in the openshift-storage namespace.
 $ oc logs -n openshift-storage -f &lt;pod&gt; -c rgw You should see the PUT statement with a status code of 200
 Ensure that the kafkasource, kafkservice, and kafka topic resources are created:
-$ oc get -n xraylab-1 kafkasource Example output NAME TOPICS BOOTSTRAPSERVERS READY REASON AGE xray-images [&#34;xray-images&#34;] [&#34;xray-cluster-kafka-bootstrap.xraylab-1.svc:9092&#34;] True 23m $ oc get -n xraylab-1 kservice Example output NAME URL LATESTCREATED LATESTREADY READY REASON risk-assessment https://risk-assessment-xraylab-1.apps.&lt;SUBDOMAIN&gt; risk-assessment-00001 risk-assessment-00001 True $ oc get -n xraylab-1 kafkatopics Example output NAME CLUSTER PARTITIONS REPLICATION FACTOR READY consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a xray-cluster 50 1 True strimzi-store-topic---effb8e3e057afce1ecf67c3f5d8e4e3ff177fc55 xray-cluster 1 3 True strimzi-topic-operator-kstreams-topic-store-changelog---b75e702040b99be8a9263134de3507fc0cc4017b xray-cluster 1 1 True xray-images xray-cluster 1 1 True `,url:"https://validatedpatterns.io/patterns/medical-diagnosis/troubleshooting/",breadcrumb:"/patterns/medical-diagnosis/troubleshooting/"},"https://validatedpatterns.io/patterns/rhoso-gitops/troubleshooting/":{title:"Troubleshooting",tags:[],content:`Troubleshooting the RHOSO GitOps pattern Use these procedures to validate the pattern, inspect Argo CD application and pod status, and review known issues for the RHOSO GitOps pattern.
+$ oc get -n xraylab-1 kafkasource Example output NAME TOPICS BOOTSTRAPSERVERS READY REASON AGE xray-images [&#34;xray-images&#34;] [&#34;xray-cluster-kafka-bootstrap.xraylab-1.svc:9092&#34;] True 23m $ oc get -n xraylab-1 kservice Example output NAME URL LATESTCREATED LATESTREADY READY REASON risk-assessment https://risk-assessment-xraylab-1.apps.&lt;SUBDOMAIN&gt; risk-assessment-00001 risk-assessment-00001 True $ oc get -n xraylab-1 kafkatopics Example output NAME CLUSTER PARTITIONS REPLICATION FACTOR READY consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a xray-cluster 50 1 True strimzi-store-topic---effb8e3e057afce1ecf67c3f5d8e4e3ff177fc55 xray-cluster 1 3 True strimzi-topic-operator-kstreams-topic-store-changelog---b75e702040b99be8a9263134de3507fc0cc4017b xray-cluster 1 1 True xray-images xray-cluster 1 1 True `,url:"https://validatedpatterns.io/patterns/medical-diagnosis/troubleshooting/",breadcrumb:"/patterns/medical-diagnosis/troubleshooting/"},"https://validatedpatterns.io/patterns/rhoso-gitops/troubleshooting/":{title:"Troubleshooting",tags:[],content:`Troubleshooting the RHOSO GitOps pattern Validate the RHOSO GitOps pattern deployment, inspect Argo CD application and pod status, and review known issues. Use these procedures when child applications fail to sync, pods are unhealthy, or you need to confirm a successful deployment.
 Validating the pattern Run the following pattern validation commands from the pattern repository root:
 Validate prerequisites:
 $ ./pattern.sh make validate-prereq Validate the schema:
@@ -5211,8 +5182,6 @@ openstack-secrets disabled: The default pattern leaves openstack-secrets disable
 Upstream sync failures: Confirm that targetRevision and paths in overrides/values-rhoso-gitops.yaml match a tag or branch that exists in openstack-k8s-operators/gitops.
 Operator install delays: Infrastructure Operators in operator-dependencies subscribe from the cluster catalog; allow time for OLM to resolve ClusterServiceVersions (CSVs). Other applications retry automatically until their dependencies are satisfied.
 For community support, open an issue in the pattern repository.
-Next steps Deploy the pattern
-Configure the pattern
 `,url:"https://validatedpatterns.io/patterns/rhoso-gitops/troubleshooting/",breadcrumb:"/patterns/rhoso-gitops/troubleshooting/"},"https://validatedpatterns.io/patterns/trilio-continuous-restore/troubleshooting/":{title:"Troubleshooting",tags:[],content:`Troubleshooting Trilio operator not installing oc get subscription k8s-triliovault -n trilio-system -o yaml oc get installplan -n trilio-system Check that the certified-operators CatalogSource is healthy:
 oc get catalogsource -n openshift-marketplace TrilioVaultManager not reaching Deployed or Updated oc get triliovaultmanager -n trilio-system -o yaml oc logs -n trilio-system -l app=k8s-triliovault-operator --tail=50 Common cause: the license Secret has not been created yet. Check External Secrets Operator (ESO) ExternalSecret status:
 oc get externalsecret -n trilio-system BackupTarget stuck in Failed oc get target -n trilio-system -o yaml Common causes:
@@ -6809,7 +6778,7 @@ Customizing this pattern
 Troubleshooting
 `,url:"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/",breadcrumb:"/patterns/lemonade-stand-quickstart/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by tier, focus area, industry, and product.
 `,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/rhoso-gitops/":{title:"RHOSO GitOps",tags:[],content:` About the RHOSO GitOps pattern Deploying Red Hat OpenStack Services on OpenShift spans Operators, networking, and control-plane and data-plane resources. Teams that rely on imperative scripts or manual cluster changes face slow rollouts, configuration drift, and weak audit trails when you upgrade or reproduce the stack.
-The RHOSO GitOps pattern addresses that by driving RHOSO from public Git through Argo CD: manifests stay declarative and version-controlled, and Argo CD reconciles the cluster to match what the repository declares.
+The RHOSO GitOps pattern addresses that by driving RHOSO from public Git through Argo CD. Manifests stay declarative and version-controlled, and Argo CD reconciles the cluster to match what the repository declares.
 Pattern goals The RHOSO GitOps pattern aims to:
 Install the rhoso-gitops meta-chart through the Validated Patterns clustergroup and Red Hat OpenShift GitOps Operator
 Create child Argo CD Applications that sync RHOSO stages from upstream openstack-k8s-operators/gitops (example/* Kustomize overlays)
@@ -6829,40 +6798,24 @@ None
 Not in scope (spoke_support: false in pattern-metadata.yaml). The pattern does not define or deploy spoke sizing, policies, RHACM placement, or remote Argo CD instances
 Sizing guidance under requirements.hub in the pattern repository applies to the single target cluster. Managed-cluster requirements (for example eventual consistency across spokes) do not apply to this pattern.
 Support This is a sandbox tier pattern. The community provides support on a best-effort basis. For details, see the support policy in the pattern repository.
-RHOSO GitOps pattern architecture The RHOSO GitOps pattern delivers RHOSO configuration through Argo CD Applications that the rhoso-gitops meta-chart creates. Use this overview to understand GitOps delivery, the dual Argo CD namespaces, infrastructure topology, and deployment convergence before you deploy or customize the pattern.
+RHOSO GitOps pattern architecture The RHOSO GitOps pattern delivers RHOSO configuration through Argo CD Applications that the rhoso-gitops meta-chart creates. The pattern uses GitOps delivery through dual Argo CD namespaces, manages infrastructure topology, and converges deployment through retry policies.
 GitOps delivery flow The pattern uses the Validated Patterns framework to install the rhoso-gitops Helm meta-chart. That chart creates Argo CD Application resources that sync RHOSO stages from the upstream openstack-k8s-operators/gitops repository (example/* Kustomize overlays).
 The delivery path is:
 The Validated Patterns Operator reconciles the pattern clustergroup
 The parent rhoso-gitops Application runs in vp-gitops (Validated Patterns GitOps)
 The meta-chart renders child Applications in rhoso-gitops-standalone (dedicated Argo CD instance)
-The child apps sync upstream example/* overlays (Operators, networks, control plane, data plane) and converge through retry policies
-Figure 1. GitOps application delivery The diagram shows the parent Application in vp-gitops, child Applications in rhoso-gitops-standalone, and the upstream Kustomize overlays they sync. All child Applications deploy at sync-wave 0 and converge eventually through retry policies.
+The child applications sync upstream example/* overlays (Operators, networks, control plane, data plane) and converge through retry policies
+Figure 1. GitOps application delivery The parent Application runs in vp-gitops. Child Applications in rhoso-gitops-standalone sync upstream Kustomize overlays. All child Applications deploy at sync-wave 0 and converge eventually through retry policies.
 Dual Argo CD namespaces The pattern uses two Argo CD namespaces:
 The Validated Patterns Operator deploys the parent rhoso-gitops Application into vp-gitops (Validated Patterns GitOps).
 The meta-chart creates child RHOSO Applications in rhoso-gitops-standalone, a dedicated Argo CD instance managed by the pattern (see applicationNamespace in the chart).
 Infrastructure topology An Red Hat OpenShift Container Platform cluster hosts the RHOSO control plane (OpenStack Operators and OpenStackControlPlane services on control-plane nodes). Separate RHEL hosts run the RHOSO data plane (data plane elements on compute nodes).
-The preceding GitOps flow describes how GitOps delivers configuration. The following diagram and list describe what gets deployed:
+The GitOps delivery flow defines how configuration reaches the cluster. The infrastructure topology defines what gets deployed:
 Figure 2. RHOSO infrastructure topology OpenShift cluster: Control-plane nodes run OpenStack Operators and OpenStackControlPlane services.
 Data plane hosts: One or more RHEL compute nodes run RHOSO data plane elements and connect to the control plane.
 Deployment convergence All child Applications deploy at sync-wave 0 (the default) when Argo CD reconciles the parent rhoso-gitops Application. Argo CD launches every child simultaneously. Each child retries (per syncPolicy.retry) until its upstream dependencies resolve and it converges eventually.
-Application Purpose operator-dependencies
-Infrastructure Operators (cert-manager, MetalLB, nmstate, observability)
-openstack-operator
-OpenStack Operator subscription
-openstack-operator-cr
-Main OpenStack custom resource
-openstack-secrets
-Secure-backend sync (disabled by default)
-openstack-networks
-Network configuration
-openstack-controlplane
-OpenStackControlPlane
-openstack-dataplane
-Data plane
-After you change overrides, confirm child apps in the Argo CD UI or with oc get applications -n rhoso-gitops-standalone.
-Next steps Deploy the pattern
-Review cluster sizing requirements
-Configure upstream pins and overrides
+For the full list of child applications, their upstream paths, and links to the corresponding Red Hat OpenStack Services on OpenShift product documentation, see Configuration &gt; Upstream applications.
+After you change overrides, confirm child applications in the Argo CD UI or with oc get applications -n rhoso-gitops-standalone.
 `,url:"https://validatedpatterns.io/patterns/rhoso-gitops/",breadcrumb:"/patterns/rhoso-gitops/"},"https://validatedpatterns.io/blog/2026-06-04-single-argocd-option/":{title:"New option to use a single ArgoCD instance",tags:[],content:` Preamble Historically, the VP framework had two Argo CD instances: a clusterwide one used for more privileged parts like namespaces, subscriptions, etc. where the &#34;App-of-Apps&#34; Argo application lived and another namespaced Argo CD instance where all the other Argo Applications lived.
 While this separation provided useful security boundaries, it brought additional resource usage and complexity. Running a single instance reduces the overall footprint on the cluster and simplifies troubleshooting by having all Argo Applications in one place.
 How to have a single Argo CD instance It is now possible to use a single Argo CD instance for all objects managed by the Validated Patterns framework.
