@@ -1,6 +1,6 @@
 ---
 title: Secure multitiered applications
-weight: 20
+weight: 30
 aliases: /layered-zero-trust/lzt-secure-multitier
 ---
 
@@ -11,6 +11,11 @@ include::modules/comm-attributes.adoc[]
 
 [id="lzt-secure-multitier"]
 = Use case: Secure multitiered applications
+
+[NOTE]
+====
+For a high-level overview of the `qtodo` demo application and its security features, see xref:/patterns/layered-zero-trust/lzt-data-protection.adoc[Data Protection]. This page provides the detailed technical walkthrough.
+====
 
 This use case demonstrates securing a common application design pattern: a frontend application using a database for persistent storage.
 

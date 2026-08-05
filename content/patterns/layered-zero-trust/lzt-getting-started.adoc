@@ -16,14 +16,10 @@ Follow these instructions to configure and deploy the Layered Zero Trust pattern
 
 .Prerequisites
 
-* An {ocp} 4.20 or newer cluster with:
+* An {ocp} 4.20, 4.21, or 4.22 cluster with:
 
 .. publicly signed certificates for Ingress.
 .. default `StorageClass` which provides dynamic `PersistentVolume` storage.
-
-* To customize the default configuration, you must have a GitHub account and a token with repositories permissions, to read from and write to your forks.
-
-* Access to Podman (or Docker) for execution of the container images used by `pattern.sh` script for provisioning.
 
 * Fulfill the general link:https://validatedpatterns.io/learn/quickstart/#_prerequisites[prerequisites for Validated Patterns].
 
@@ -32,18 +28,102 @@ For a single-node cluster, you can start with 4 vCPUs, 16 GB of memory, and 120 
 +
 For more details about {rh-rhacm} sizing, see link:https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/install/index#sizing-your-cluster[Sizing your cluster].
 
-* (Optional) The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm].
+* For the exact component versions validated on each OCP release, see the link:https://github.com/validatedpatterns/layered-zero-trust/blob/main/docs/support-matrix.md[Support Matrix].
 
 [NOTE]
 ====
-The Layered Zero Trust pattern's default deployment assumes that none of its components have been installed previously. Verify that your {ocp} environment does not already contain any of xref:/patterns/layered-zero-trust/index.html#architecture [the listed components] before proceeding.
+The Layered Zero Trust pattern's default deployment assumes that none of its components have been installed previously. Verify that your {ocp} environment does not already contain any of xref:/patterns/layered-zero-trust/index.html#architecture[the listed components] before proceeding.
 ====
 
+[id="lzt-gui-install"]
+== Quick install via OpenShift Console
+
+The fastest way to deploy the pattern is through the OpenShift Console. This GUI-based deployment covers the "batteries included" baseline configuration. For advanced feature sets, customization, or using your own fork, see the <<lzt-cli-install,Advanced Installation (CLI)>> section below.
+
+video::layered-zero-trust/gui-install/vp-1-click-install.mkv[width=800,opts="autoplay,loop,nocontrols"]
+
+[id="lzt-gui-step1"]
+=== Step 1: Install the Validated Patterns Operator
+
+Navigate to the Pattern Catalog in the OpenShift Console: *Patterns > Catalog* in the left navigation. Check the *Tested* checkbox to filter patterns by tier, then click *Install* on the Layered Zero Trust card.
+
+image::layered-zero-trust/gui-install/Validated_Patterns_Catalog-select-Tested.png[Pattern Catalog with Tested filter selected]
+
+Alternatively, use the Software Catalog: *Ecosystem > Software Catalog*, search for "validated", and select the *Validated Patterns Operator*.
+
+image::layered-zero-trust/gui-install/Validated_Pattern_Operator_Installation-step1.png[Validated Patterns Operator in the Software Catalog]
+
+[id="lzt-gui-step2"]
+=== Step 2: Review operator details
+
+The operator detail page shows the channel (fast), version (latest), capability level (Basic Install), and provider (Red Hat).
+
+image::layered-zero-trust/gui-install/Validated_Pattern_Operator_Installation-step2.png[Operator details page]
+
+[id="lzt-gui-step3"]
+=== Step 3: Configure and install the operator
+
+Accept the defaults: All namespaces, `patterns-operator` namespace (auto-created), Automatic updates. Click *Install*.
+
+image::layered-zero-trust/gui-install/Validated_Pattern_Operator_Installation-step3.png[Operator installation configuration]
+
+[id="lzt-gui-step4"]
+=== Step 4: Operator installed
+
+Wait for the "Operator installed successfully" confirmation.
+
+image::layered-zero-trust/gui-install/Validated_Pattern_Operator_Installation-step4.png[Operator installed successfully]
+
+[id="lzt-gui-step5"]
+=== Step 5: Install the Layered Zero Trust pattern
+
+Navigate to the Validated Patterns Operator and click *Install Pattern*. Configure:
+
+* *Name*: `layered-zero-trust` (pre-filled)
+* *Target Repo*: `https://github.com/validatedpatterns/layered-zero-trust.git` (or your fork — check "I want to use my own fork")
+* *Target Revision*: `main` (or your branch)
+* *Secrets Configuration*: Expand each section to configure secrets (config-demo, qtodo-db, qtodo-truststore, acs-central, keycloak, rhtpa-db, rhtpa-oidc-cli, keycloak-users, quay-users). Secrets marked "Auto-generate this value" will be created automatically by Vault.
+
+image::layered-zero-trust/gui-install/Layred_Zero_Trust_Installation.png[Layered Zero Trust pattern installation form]
+
+image::layered-zero-trust/gui-install/Layered_Zero_Trust_Installation-optional-settings.png[Optional settings and secrets configuration]
+
+Click *Install* to deploy the pattern.
+
+[id="lzt-gui-step6"]
+=== Step 6: Monitor deployment in Argo CD
+
+Open the Argo CD console to monitor the deployment. Navigate to the proper Argo CD instance using the *Application Selector* (the icon with nine small squares) in the top navigation bar.
+
+The Layered Zero Trust pattern installs two Argo CD instances on your Hub cluster:
+
+* *Cluster Argo CD*: Manages the `layered-zero-trust-hub` App-of-Apps application. This deploys the pattern's components in the correct order.
+* *Hub Argo CD*: Manages the Cluster Argo CD instance itself and the individual component applications.
+
+Navigate to the *Cluster Argo CD* instance to monitor the deployment progress. Components deploy in a specific order (sync waves). Initial deployment takes approximately 30-45 minutes.
+
+image::layered-zero-trust/gui-install/ArgoCD_Installation_Monitoring.png[Argo CD deployment monitoring]
+
+[id="lzt-gui-step7"]
+=== Step 7: Verify all components are healthy
+
+When all Argo CD applications show *Healthy* and *Synced* status, the pattern is fully deployed.
+
+image::layered-zero-trust/gui-install/ArgoCD_Installation_Monitoring-All-green.png[All Argo CD applications healthy]
+
+[id="lzt-cli-install"]
+== Advanced installation (CLI)
+
+For advanced feature sets, customization, or when using your own fork, use the CLI-based installation with the `pattern.sh` script. This method provides full control over the deployment configuration.
+
+.Additional prerequisites
+
+* A GitHub account and a token with repository permissions, to read from and write to your forks.
+* Access to Podman (or Docker) for execution of the container images used by the `pattern.sh` script for provisioning.
+* (Optional) The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm].
 
 [id="lzt-repository-setup"]
-== Repository setup
-
-Follow these instructions for setting up the project repository:
+=== Repository setup
 
 . Fork the layered-zero-trust repository from GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
 . Clone your forked repository.
@@ -53,23 +133,21 @@ Follow these instructions for setting up the project repository:
 $ git clone git@github.com:<your_username>/layered-zero-trust.git
 ----
 
-. Go to your repository: Ensure you are in the root directory of your
-Git repository by using the following command:
+. Go to your repository:
 +
 [source,terminal]
 ----
 $ cd </path_to_your_repository>
 ----
 
-. Set up upstream remote repository:
+. Set up the upstream remote repository:
 +
 [source,terminal]
 ----
 $ git remote add -f upstream git@github.com/validatedpatterns/layered-zero-trust.git
 ----
 
-. Verify the setup of your remote repositories by running the following
-command:
+. Verify the setup of your remote repositories:
 +
 [source,terminal]
 ----
@@ -85,14 +163,8 @@ origin  git@github.com:<your_username>/layered-zero-trust.git (push)
 upstream    https://github.com/validatedpatterns/layered-zero-trust.git (fetch)
 upstream    https://github.com/validatedpatterns/layered-zero-trust.git (push)
 ----
-+
-[WARNING]
-====
-The Layered Zero Trust pattern's default deployment assumes that none of its components have been installed previously. Verify that your {ocp} environment does not already contain any of xref:/patterns/layered-zero-trust/index.html#architecture [the listed components] before proceeding.
-====
 
-. Create a local copy of the secret values file that can safely include
-credentials. Run the following command:
+. Create a local copy of the secret values file:
 +
 [source,terminal]
 ----
@@ -102,20 +174,16 @@ $ cp values-secret.yaml.template ~/values-secret-layered-zero-trust.yaml
 [NOTE]
 ====
 To prevent pushing secrets to your Git repository, the command places the `values-secret.yaml` file in your home directory.
-You derive this file from the `values-secrets.yaml.template` file located in the pattern's top-level directory.
-When you create new patterns, add your secrets to the `values-secret.yaml` file in your home directory.
 ====
 
-. Create a new feature branch, for example `my-branch` from the `main`
-branch for your content:
+. Create a new feature branch from the `main` branch:
 +
 [source,terminal]
 ----
 $ git checkout -b my-branch main
 ----
 
-. (Optional) To customize the execution of the pattern, optionally change
-the Helm values files and then commit the changes.
+. (Optional) Customize the execution of the pattern by changing the Helm values files, then commit the changes.
 +
 [source,terminal]
 ----
@@ -125,8 +193,7 @@ $ git commit -m "Pattern customization"
 +
 [NOTE]
 ====
-The following configuration files define the behavior and settings of the various components in the Layered Zero Trust pattern.
-You can customize these files to fit your specific deployment needs.
+The following configuration files define the behavior and settings of the various components:
 
 * `values-global.yaml`: Global pattern configuration
 * `values-hub.yaml`: Hub cluster specific configuration
@@ -142,11 +209,9 @@ $ git push origin my-branch
 ----
 
 [id="deploying-cluster-using-patternsh-file"]
-== Deploying the pattern by using the pattern.sh file
+=== Deploying the pattern
 
-Deploy the Layered Zero Trust pattern by using the `pattern.sh` script.
-
-. Login to your {ocp} cluster:
+. Log in to your {ocp} cluster:
 
 .. By using the `oc` CLI:
 * Get an API token by visiting `pass:[https://oauth-openshift.apps.<your_cluster>.<domain>/oauth/token/request]`.
@@ -174,15 +239,14 @@ $ ./pattern.sh make install
 [id="lzt-verify-deployment"]
 === Verify the deployment
 
-The Layered Zero-Trust pattern provisions every component and manages them through {ocp} GitOps. After you deploy the pattern, verify that all components are running correctly.
+The Layered Zero Trust pattern provisions every component and manages them through {ocp} GitOps. After you deploy the pattern, verify that all components are running correctly.
 
-The Layered Zero-Trust pattern installs the following two {ocp} GitOps instances on your Hub cluster. You can view these instances in the {ocp} web console by using the **Application Selector** (the icon with nine small squares) in the top navigation bar.
+The Layered Zero Trust pattern installs the following two Argo CD instances on your Hub cluster. You can view these instances in the {ocp} web console by using the *Application Selector* (the icon with nine small squares) in the top navigation bar.
 
-. **Cluster Argo CD**: Deploys an *App-of-Apps* application named `layered-zero-trust-hub`. This application installs the pattern's components.
-. **Hub Argo CD**: Manages Cluster Argo CD instance and the individual components that belong to the pattern on the hub {ocp} instance.
+. *Cluster Argo CD*: Deploys an *App-of-Apps* application named `layered-zero-trust-hub`. This application installs the pattern's components.
+. *Hub Argo CD*: Manages the Cluster Argo CD instance and the individual components that belong to the pattern on the hub {ocp} instance.
 
-If every Argo CD application reports a **Healthy** status, the pattern has been deployed successfully.
-
+If every Argo CD application reports a *Healthy* status, the pattern has been deployed successfully.
 
 [id="lzt-importing-existing-clusters"]
 == Importing existing clusters

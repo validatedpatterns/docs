@@ -1,0 +1,97 @@
+---
+title: Data protection
+weight: 20
+aliases: /layered-zero-trust/lzt-data-protection/
+---
+
+:toc:
+:imagesdir: /images
+:_mod-docs-content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="lzt-demo-application"]
+= Data protection
+
+This use case demonstrates Zero Trust data protection using the `qtodo` demo application — a simple to-do list app built with Quarkus and PostgreSQL that is included in the default Layered Zero Trust pattern installation described in the xref:/patterns/layered-zero-trust/lzt-getting-started.adoc[Getting Started] guide. No additional setup is required to explore this use case.
+
+[id="what-this-demonstrates"]
+== What this demonstrates
+
+On its own, the `qtodo` application is unremarkable. What makes it special is _how_ it runs inside the ZTVP — every interaction is authenticated, every credential is dynamic, and every network connection is explicitly authorized. No application code was changed to achieve this.
+
+[id="security-features-in-action"]
+== Security features in action
+
+When a user accesses the `qtodo` application, the following security features activate:
+
+[id="user-authentication"]
+=== 1. User authentication
+
+The user is redirected to Red{nbsp}Hat build of Keycloak for login. Only users with the correct role in the `ztvp` realm can access the application. No credentials are stored in the application code.
+
+[id="workload-identity"]
+=== 2. Workload identity
+
+The `qtodo` pod proves its identity using a cryptographic SPIFFE certificate (SVID). This identity is issued by SPIRE and rotates automatically every hour. No static service account tokens are used.
+
+[id="dynamic-secrets"]
+=== 3. Dynamic secrets
+
+The `spiffe-vault-client` sidecar uses the pod's SPIFFE identity to authenticate with HashiCorp Vault and retrieve the PostgreSQL password. The password is never stored as a Kubernetes Secret — it's fetched just-in-time and exists only in memory.
+
+[id="network-isolation"]
+=== 4. Network isolation
+
+Default-deny NetworkPolicies block all traffic. Explicit allow rules permit only the connections that the application requires: browser to `qtodo` (port 8443), `qtodo` to PostgreSQL (port 5432), `qtodo` to Vault (port 8200), and `qtodo` to DNS (port 5353). Nothing else is permitted.
+
+[id="before-vs-after"]
+== Before vs. after
+
+[cols="2,2,3",options="header"]
+|===
+| Aspect | Traditional deployment | With ZTVP
+
+| Database credentials
+| Static Kubernetes Secret in etcd
+| Dynamic, fetched from Vault via SPIFFE
+
+| User authentication
+| Application-managed or none
+| Centralized Keycloak SSO
+
+| Network access
+| Allow-all (Kubernetes default)
+| Default-deny with per-pod allow rules
+
+| Workload identity
+| Shared service account
+| Cryptographic SPIFFE SVID (1-hour TTL)
+
+| Code changes required
+| N/A
+| None — security injected via sidecars
+|===
+
+[id="try-it-yourself"]
+== Try it yourself
+
+After deploying the ZTVP, you can access the `qtodo` application and observe the Zero Trust security features in action:
+
+. Navigate to the `qtodo` route in the {ocp} Console (*Networking > Routes* in the `qtodo` namespace).
+. You will be redirected to the Keycloak login page. Log in with the credentials stored in HashiCorp Vault.
++
+To retrieve the Keycloak user credentials:
++
+.. Open the Vault UI (available via the `vault` route in the `vault` namespace).
+.. Log in to Vault using the root token (available in the `vaultkeys` secret in the `imperative` namespace).
+.. Navigate to *Secrets > hub > keycloak-users* to find the demo user credentials.
++
+[NOTE]
+====
+The `keycloak-users` Secret was removed from Kubernetes in favor of storing all credentials exclusively in Vault. This is an intentional security improvement — credentials are managed in a single, auditable location.
+====
+
+. Observe the OIDC redirect flow — the browser is redirected to Keycloak, authenticated, and then returned to the application.
+. Add and remove to-do items to verify the application works end-to-end.
+
+For a detailed technical walkthrough of the sidecar architecture and data protection workflow, see xref:/patterns/layered-zero-trust/lzt-secure-multitier.adoc[Secure Multitiered Applications].

@@ -1,6 +1,6 @@
 ---
 title: Secure supply chain
-weight: 30
+weight: 35
 aliases: /layered-zero-trust/lzt-secure-supply-chain/
 ---
 

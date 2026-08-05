@@ -1,0 +1,88 @@
+---
+title: Security monitoring
+weight: 25
+aliases: /layered-zero-trust/lzt-security-monitoring/
+---
+
+:toc:
+:imagesdir: /images
+:_mod-docs-content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="lzt-security-monitoring"]
+= Security monitoring — ACS as the Zero Trust brain
+
+This use case is covered by the default Layered Zero Trust pattern installation described in the xref:/patterns/layered-zero-trust/lzt-getting-started.adoc[Getting Started] guide. Red{nbsp}Hat Advanced Cluster Security and the custom ZTVP security policies are deployed automatically — no additional configuration is required.
+
+[id="why-runtime-monitoring-matters"]
+== Why runtime monitoring matters
+
+Network policies establish the gates. Compliance scanning verifies the locks. But who watches what happens _inside_ the walls? Red{nbsp}Hat Advanced Cluster Security (ACS) is the central security brain of the ZTVP — it continuously monitors workload behavior, verifies that network boundaries are enforced, and terminates compromised pods in real-time.
+
+In the context of a link:https://csrc.nist.gov/pubs/sp/800/207/final[NIST SP 800-207] Zero Trust architecture, ACS implements the critical control loop: it acts as the Policy Information Point (PIP) that gathers real-time context, feeds it to the Policy Decision Point (PDP), and triggers automated responses at the Policy Enforcement Point (PEP).
+
+[id="network-policy-monitoring"]
+== Network policy monitoring
+
+ACS continuously verifies that every workload has proper network boundaries. The ZTVP deploys two custom ACS policies that alert administrators when projects or namespaces are missing network policy coverage:
+
+[cols="3,1,3",options="header"]
+|===
+| Policy | Phase | Action
+
+| Projects/Namespaces should have at least one ingress Network Policy
+| Deploy
+| Alert — flags workloads exposed to internal network traffic without an ingress boundary
+
+| Projects/Namespaces should have at least one egress Network Policy
+| Deploy
+| Alert — identifies configurations that could allow data exfiltration or unrestricted lateral movement
+|===
+
+These custom policies are deployed automatically by the ZTVP via the `acs-policies` Helm chart in the link:https://github.com/validatedpatterns/layered-zero-trust/tree/main/charts/acs-policies[`charts/acs-policies`] directory of the repository.
+
+Currently, to demonstrate this capability in a controlled manner and prevent alert fatigue across an entire cluster, these policies are scoped to the ZTVP demo application namespaces. Within this scope, the policies continuously scan the environment — if a developer pushes a deployment without defining its specific network boundaries, ACS immediately flags it.
+
+This complements the default-deny foundation described in our blog article: link:https://www.redhat.com/en/blog/cant-patch-fast-enough-zero-trust-last-line-defense[Can't Patch Fast Enough? Zero Trust as a Last Line of Defense].
+
+[id="real-time-threat-response"]
+== Real-time threat response
+
+When network policies contain an attacker, ACS eliminates the threat entirely. The ZTVP deploys two additional custom policies in termination mode:
+
+[cols="3,1,3",options="header"]
+|===
+| Policy | Phase | Action
+
+| Prevent Runtime Privilege Escalation
+| Runtime
+| Terminate — instantly kills the pod if a container attempts `sudo`, `su`, `pkexec`, `nsenter`, or `unshare`
+
+| Stop Suspicious Exec
+| Runtime
+| Terminate — immediately terminates the pod if an attacker runs reconnaissance tools (`nmap`, `nc`, `ncat`) or attempts to spawn interactive shells
+|===
+
+This is the "assume breach" principle in action: even if an attacker bypasses initial defenses, they cannot escalate privileges or map the internal environment.
+
+For the full deep dive, read: link:https://www.redhat.com/en/blog/lights-real-time-threat-response-red-hat-advanced-cluster-security[Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security].
+
+[id="defense-in-depth-synergy"]
+== The defense-in-depth synergy
+
+The combination of network policies and ACS runtime monitoring creates a layered defense where each layer reinforces the others:
+
+. *Network Policies* block lateral movement — the attacker is trapped inside the compromised container.
+. *ACS Runtime Monitoring* detects anomalous behavior — the attacker's actions are observed and classified.
+. *ACS Termination Policies* kill the compromised pod — the threat is eliminated automatically, without human intervention.
+
+The result: the attacker is contained, eliminated, and logged — all automatically. Even if a network policy configuration was missed, the risk of a successful, prolonged attack drops effectively to zero.
+
+[id="further-reading"]
+== Further reading
+
+* link:https://www.redhat.com/en/blog/cant-patch-fast-enough-zero-trust-last-line-defense[Can't Patch Fast Enough? Zero Trust as a Last Line of Defense] — Network policies as the last line of defense
+* link:https://www.redhat.com/en/blog/lights-real-time-threat-response-red-hat-advanced-cluster-security[Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security] — ACS as an active defense engine
+* xref:/patterns/layered-zero-trust/lzt-architecture.adoc[Architecture] — Full component breakdown
+* xref:/patterns/layered-zero-trust/lzt-data-protection.adoc[Data Protection] — Zero Trust data protection use case
+* xref:/patterns/layered-zero-trust/lzt-secure-multitier.adoc[Secure Multitiered Applications] — Detailed technical walkthrough
