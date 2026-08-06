@@ -1,0 +1,215 @@
+---
+title: Confidential containers
+weight: 40
+aliases: /layered-zero-trust/lzt-confidential-containers/
+---
+
+:toc:
+:imagesdir: /images
+:_mod-docs-content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="lzt-about-coco"]
+= Use case: Confidential containers
+
+[role="_abstract"]
+Confidential computing is a technology that protects data in use.
+Red{nbsp}Hat's link:https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.11/html/deploying_confidential_containers/index[OpenShift sandboxed containers Confidential Containers] (CoCo) feature uses Trusted Execution Environments (TEEs). TEEs are specialized CPU features from AMD, Intel, and others that create isolated, encrypted memory spaces (data in use) with cryptographic proof of integrity.
+These hardware guarantees mean workloads can prove they have not been tampered with, and secrets are protected, even from infrastructure administrators.
+
+Confidential containers within the layered zero-trust pattern integrate zero-trust workload identity management.
+You get defense in-depth: cryptographic identity verification and hardware-rooted trust.
+
+Using confidential containers in the layered zero-trust pattern is optional because it imposes specific hardware constraints.
+
+[IMPORTANT]
+====
+Using confidential containers restricts the platform to Microsoft Azure.
+You also need access to and quota for link:https://learn.microsoft.com/en-us/azure/confidential-computing/virtual-machine-options[specific Azure instance types] in the region where the cluster is deployed.
+
+Ensure that you check the availability of appropriate confidential virtual machines before testing.
+====
+
+Confidential containers are intentionally not the default deployment option.
+Therefore, you must perform extra steps to deploy confidential containers.
+
+[id="lzt-set-up-azure-coco"]
+== Setting up an Azure cluster
+
+Confidential containers on Azure use link:https://www.redhat.com/ja/blog/red-hat-openshift-sandboxed-containers-peer-pods-solution-overview[peer pods].
+This does not impose requirements on the base cluster type beyond sufficient capacity.
+This pattern has been tested with Azure Red{nbsp}Hat OpenShift clusters and OpenShift clusters installed using the `openshift-install` program.
+
+[NOTE]
+====
+To provision peer pods, the OpenShift cluster must be able to communicate with Azure APIs.
+The pattern uses the same Azure service account used during cluster provisioning to create:
+
+* VM Templates
+* The peer pod VMs
+* A link:https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.10/html/deploying_confidential_containers/deploying-cc_azure-cc#configuring-outbound-connections_azure-cc[NAT gateway] to allow outbound traffic from the peer pods
+====
+
+[id="lzt-set-up-repo-coco"]
+== Setting up the repository
+
+.Prerequisites
+
+* You must have completed the xref:../lzt-getting-started#lzt-repository-setup[repository setup] instructions.
+
+.Procedure
+
+. Verify that you are using `my-branch`:
++
+[source,terminal]
+----
+$ git status
+On branch my-branch
+Your branch is up to date with 'origin/my-branch'.
+
+nothing to commit, working tree clean
+----
+
+. Change `clusterGroupName` to `coco-dev` in the `values-global.yaml` file:
++
+[source,yaml]
+----
+...
+main:
+  clusterGroupName: coco-dev
+...
+----
+
+. Commit and push the change to your branch:
++
+[source,terminal]
+----
+$ git add values-global.yaml
+$ git commit -m 'Change to CoCo cluster group'
+$ git push origin my-branch
+----
+
+[id="lzt-configure-secrets-coco"]
+== Configuring secrets
+
+To secure confidential containers, the Key Broker Service, Red{nbsp}Hat build of Trustee, requires the configuration of extra secrets.
+Most credentials are automatically generated on the cluster where Trustee is deployed. However, you must generate the administrative credentials for Trustee off-cluster.
+
+[NOTE]
+====
+Red{nbsp}Hat recommends reading the full instructions on link:https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.11/html/deploying_red_hat_build_of_trustee/deploying-trustee_azure-trustee[configuring and deploying Red{nbsp}Hat build of Trustee].
+The Trustee role is security-sensitive.
+====
+
+.Procedure
+
+. Create a local copy of the secret values file that can safely include credentials:
++
+[source,terminal]
+----
+$ cp values-secret.yaml.template ~/values-secret-layered-zero-trust.yaml
+----
+
+. Uncomment the required additional secrets for the `coco-dev` chart. Each required secret has `# Required for coco-dev clusterGroup` comment above the secret.
++
+[source,terminal]
+----
+$ vim ~/values-secret-layered-zero-trust.yaml
+----
+
+. Generate the link:https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.11/html/deploying_red_hat_build_of_trustee/deploying-trustee_azure-trustee#creating-trustee-secret_azure-trustee[admin API authentication secret]:
++
+[source,terminal]
+----
+$ cd ~/
+$ openssl genpkey -algorithm ed25519 > kbsPrivateKey
+$ openssl pkey -in kbsPrivateKey -pubout -out kbsPublicKey
+----
++
+[NOTE]
+====
+The `values-secret.yaml.template` file references the `kbsPublicKey` file name specified here.
+Using a different path requires changes to `~/values-secrets-layered-zero-trust.yaml`.
+====
+
+[id="deploy-coco-patterns-file"]
+== Deploying the Confidential Containers variant
+
+The deployment of the confidential containers variant is same as the default version:
+
+. Log in to your {ocp} cluster:
+
+.. Using the `oc` CLI:
+* Get an API token by visiting `pass:[https://oauth-openshift.apps.<your_cluster>.<domain>/oauth/token/request]`.
+* Log in with the retrieved token:
++
+[source,terminal]
+----
+$ oc login --token=<retrieved_token> --server=https://api.<your_cluster>.<domain>:6443
+----
+
+.. Using `KUBECONFIG`:
++
+[source,terminal]
+----
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Run the pattern deployment script:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
+
+[NOTE]
+====
+The deployment of the OpenShift sandboxed containers Operator takes time and might result in timeouts in the installation script.
+This is because the `./pattern.sh make install` script waits for the Argo CD applications to become healthy.
+====
+
+[id="lzt-verify-deployment-coco"]
+=== Verifying the deployment
+
+The Layered Zero-Trust pattern provisions and manages every component through {ocp} GitOps. After you deploy the pattern, verify that all components are running correctly.
+
+The Layered Zero-Trust pattern installs the following two {ocp} GitOps instances on your hub cluster. You can view these instances in the {ocp} web console by using the **Application Selector** (the icon with nine small squares) in the top navigation bar.
+
+. **Cluster Argo CD**: Deploys an *app-of-apps* application named `layered-zero-trust-coco-dev`. This application installs the pattern's components.
+. **Coco-debugging Argo CD**: Manages the Cluster Argo CD instance and the individual components that belong to the pattern on the hub {ocp} instance.
+
+If every Argo CD application reports a **Healthy** status, the pattern has been deployed successfully.
+
+[id="lzt-troubleshoot-coco"]
+=== Troubleshooting confidential containers workloads
+
+If you encounter any issues with the confidential containers variant of the layered zero-trust pattern, first test deploying the default `hub` `clusterGroup`.
+
+.Procedure
+
+. Run a health check of Argo CD applications:
++
+[source,terminal]
+----
+$ ./pattern.sh make argo-healthcheck
+----
+
+. If all applications except `hello-coco` are healthy, the Operators have deployed, but the peer pods have not.
+
+. Check whether the pod is visible in the namespace:
++
+[source,terminal]
+----
+$ oc get pods -n zero-trust-workload-identity-manager spire-agent-cc -o yaml
+----
+
+. If the pod manifest is not visible, the Sandboxed Container Operator has not yet deployed.
+
+. If the pod is visible, check for the existence of and events for the peer pods:
++
+[source,terminal]
+----
+$ oc get peerpods -A -o yaml
+----
+
+. The most likely cause of failure is insufficient Azure quota.
