@@ -12,7 +12,7 @@ include::modules/comm-attributes.adoc[]
 [id="lzt-security-monitoring"]
 = Security monitoring — ACS as the Zero Trust brain
 
-This use case is covered by the default Layered Zero Trust pattern installation described in the xref:/patterns/layered-zero-trust/lzt-getting-started.adoc[Getting Started] guide. Red{nbsp}Hat Advanced Cluster Security and the custom ZTVP security policies are deployed automatically — no additional configuration is required.
+This use case is covered by the default Layered Zero Trust pattern installation described in the link:/patterns/layered-zero-trust/lzt-getting-started/[Getting Started] guide. Red{nbsp}Hat Advanced Cluster Security and the custom ZTVP security policies are deployed automatically — no additional configuration is required.
 
 [id="why-runtime-monitoring-matters"]
 == Why runtime monitoring matters
@@ -83,6 +83,6 @@ The result: the attacker is contained, eliminated, and logged — all automatica
 
 * link:https://www.redhat.com/en/blog/cant-patch-fast-enough-zero-trust-last-line-defense[Can't Patch Fast Enough? Zero Trust as a Last Line of Defense] — Network policies as the last line of defense
 * link:https://www.redhat.com/en/blog/lights-real-time-threat-response-red-hat-advanced-cluster-security[Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security] — ACS as an active defense engine
-* xref:/patterns/layered-zero-trust/lzt-architecture.adoc[Architecture] — Full component breakdown
-* xref:/patterns/layered-zero-trust/lzt-data-protection.adoc[Data Protection] — Zero Trust data protection use case
-* xref:/patterns/layered-zero-trust/lzt-secure-multitier.adoc[Secure Multitiered Applications] — Detailed technical walkthrough
+* link:/patterns/layered-zero-trust/lzt-architecture/[Architecture] — Full component breakdown
+* link:/patterns/layered-zero-trust/lzt-data-protection/[Data Protection] — Zero Trust data protection use case
+* link:/patterns/layered-zero-trust/lzt-secure-multitier/[Secure Multitiered Applications] — Detailed technical walkthrough

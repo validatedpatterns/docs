@@ -56,7 +56,7 @@ image::layered-zero-trust/layered-zero-trust-architecture-diagram.png[Layered Ze
 | CIS benchmark scanning and automated remediation
 | Continuous compliance monitoring
 
-| {rh-rhacm}
+| Red{nbsp}Hat Advanced Cluster Management
 | Multi-cluster management control plane
 | Centralized policy enforcement
 
@@ -104,13 +104,13 @@ image::layered-zero-trust/layered-zero-trust-architecture-diagram.png[Layered Ze
 |===
 | Use case | Description
 
-| xref:/patterns/layered-zero-trust/lzt-data-protection.adoc[Zero Trust Data Protection]
-| The `qtodo` demo application shows how workload identity, dynamic secrets, user authentication, and network segmentation protect a real application — with zero code changes.
+| link:/patterns/layered-zero-trust/lzt-data-protection/[Zero Trust Data Protection]
+| The `qtodo` demo application shows how workload identity, dynamic secrets, user authentication, and network segmentation protect a real application.
 
-| xref:/patterns/layered-zero-trust/lzt-secure-supply-chain.adoc[Secure Supply Chain]
+| link:/patterns/layered-zero-trust/lzt-secure-supply-chain/[Secure Supply Chain]
 | Manual walkthrough of container image signing, SBOM generation, and artifact verification using RHTAS and RHTPA.
 
-| xref:/patterns/layered-zero-trust/lzt-automated-secure-supply-chain.adoc[Automated Supply Chain]
+| link:/patterns/layered-zero-trust/lzt-automated-secure-supply-chain/[Automated Supply Chain]
 | Tekton pipeline automating the build, sign, verify, and deploy workflow end-to-end.
 |===
 
@@ -168,13 +168,13 @@ The pattern supports multiple deployment configurations:
 [id="feature-variant-system"]
 == Feature variant system
 
-Layer 1 features can be enabled or disabled independently using the feature variant system. Feature definitions are stored in `scripts/features/` and can be composed into deployment configurations using the `gen-feature-variants.py` script.
+Layer 1 features can be enabled or disabled independently using the `gen-feature-variants.py` script.
 
-For example, to generate a `values-hub.yaml` with Network Observability enabled:
+For example, to generate a `values-hub.yaml` with the supply chain feature set enabled:
 
 [source,terminal]
 ----
-$ python3 scripts/gen-feature-variants.py --features netobserv
+$ python3 scripts/gen-feature-variants.py --features supply-chain --registry-option 1
 ----
 
-See the link:https://github.com/validatedpatterns/layered-zero-trust/tree/main/scripts/features[feature definitions] in the repository for available options.
+See the link:https://github.com/validatedpatterns/layered-zero-trust/blob/main/scripts/gen-feature-variants.md[Feature Variant Generator] in the repository for detailed information.

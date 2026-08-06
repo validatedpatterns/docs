@@ -24,7 +24,7 @@ Follow these instructions to configure and deploy the Layered Zero Trust pattern
 * Fulfill the general link:https://validatedpatterns.io/learn/quickstart/#_prerequisites[prerequisites for Validated Patterns].
 
 * Depending on the characteristics of your cluster, you might need additional hardware resources for the {rh-rhacm-first} component.
-For a single-node cluster, you can start with 4 vCPUs, 16 GB of memory, and 120 GB of storage.
+For a single-node cluster, you can start with 8 CPUs, 16 GB of memory, and 120 GB of storage.
 +
 For more details about {rh-rhacm} sizing, see link:https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/install/index#sizing-your-cluster[Sizing your cluster].
 
@@ -32,7 +32,7 @@ For more details about {rh-rhacm} sizing, see link:https://docs.redhat.com/en/do
 
 [NOTE]
 ====
-The Layered Zero Trust pattern's default deployment assumes that none of its components have been installed previously. Verify that your {ocp} environment does not already contain any of xref:/patterns/layered-zero-trust/index.html#architecture[the listed components] before proceeding.
+The Layered Zero Trust pattern's default deployment assumes that none of its components have been installed previously. Verify that your {ocp} environment does not already contain any of link:/patterns/layered-zero-trust/lzt-architecture/[the listed components] before proceeding.
 ====
 
 [id="lzt-gui-install"]
@@ -45,16 +45,13 @@ video::layered-zero-trust/gui-install/vp-1-click-install.mkv[width=800,opts="aut
 [id="lzt-gui-step1"]
 === Step 1: Install the Validated Patterns Operator
 
-Navigate to the Pattern Catalog in the OpenShift Console: *Patterns > Catalog* in the left navigation. Check the *Tested* checkbox to filter patterns by tier, then click *Install* on the Layered Zero Trust card.
-
-image::layered-zero-trust/gui-install/Validated_Patterns_Catalog-select-Tested.png[Pattern Catalog with Tested filter selected]
-
-Alternatively, use the Software Catalog: *Ecosystem > Software Catalog*, search for "validated", and select the *Validated Patterns Operator*.
+First, install the Validated Patterns Operator from the Software Catalog: navigate to *Ecosystem > Software Catalog* in the OpenShift Console, search for "validated", and select the *Validated Patterns Operator*.
 
 image::layered-zero-trust/gui-install/Validated_Pattern_Operator_Installation-step1.png[Validated Patterns Operator in the Software Catalog]
 
 [id="lzt-gui-step2"]
 === Step 2: Review operator details
+
 
 The operator detail page shows the channel (fast), version (latest), capability level (Basic Install), and provider (Red Hat).
 
@@ -77,7 +74,11 @@ image::layered-zero-trust/gui-install/Validated_Pattern_Operator_Installation-st
 [id="lzt-gui-step5"]
 === Step 5: Install the Layered Zero Trust pattern
 
-Navigate to the Validated Patterns Operator and click *Install Pattern*. Configure:
+Once the operator is installed, the OpenShift Console will reload and a new *Patterns* entry will appear in the left-hand navigation menu. Navigate to *Patterns > Catalog*. By default, only `maintained` patterns are shown. Check the *Tested* checkbox to also display patterns with the `tested` tier, such as Layered Zero Trust.
+
+image::layered-zero-trust/gui-install/Validated_Patterns_Catalog-select-Tested.png[Pattern Catalog with Tested filter selected]
+
+Click *Install* on the Layered Zero Trust card and configure:
 
 * *Name*: `layered-zero-trust` (pre-filled)
 * *Target Repo*: `https://github.com/validatedpatterns/layered-zero-trust.git` (or your fork — check "I want to use my own fork")
@@ -100,7 +101,7 @@ The Layered Zero Trust pattern installs two Argo CD instances on your Hub cluste
 * *Cluster Argo CD*: Manages the `layered-zero-trust-hub` App-of-Apps application. This deploys the pattern's components in the correct order.
 * *Hub Argo CD*: Manages the Cluster Argo CD instance itself and the individual component applications.
 
-Navigate to the *Cluster Argo CD* instance to monitor the deployment progress. Components deploy in a specific order (sync waves). Initial deployment takes approximately 30-45 minutes.
+Navigate to the *Cluster Argo CD* instance to monitor the deployment progress. Components deploy in a specific order (sync waves). The deployment time varies depending on your cluster size and resources.
 
 image::layered-zero-trust/gui-install/ArgoCD_Installation_Monitoring.png[Argo CD deployment monitoring]
 
@@ -120,7 +121,6 @@ For advanced feature sets, customization, or when using your own fork, use the C
 
 * A GitHub account and a token with repository permissions, to read from and write to your forks.
 * Access to Podman (or Docker) for execution of the container images used by the `pattern.sh` script for provisioning.
-* (Optional) The Helm binary, for instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm].
 
 [id="lzt-repository-setup"]
 === Repository setup

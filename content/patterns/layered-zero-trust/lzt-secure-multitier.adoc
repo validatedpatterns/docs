@@ -14,7 +14,7 @@ include::modules/comm-attributes.adoc[]
 
 [NOTE]
 ====
-For a high-level overview of the `qtodo` demo application and its security features, see xref:/patterns/layered-zero-trust/lzt-data-protection.adoc[Data Protection]. This page provides the detailed technical walkthrough.
+For a high-level overview of the `qtodo` demo application and its security features, see link:/patterns/layered-zero-trust/lzt-data-protection/[Data Protection]. This page provides the detailed technical walkthrough.
 ====
 
 This use case demonstrates securing a common application design pattern: a frontend application using a database for persistent storage.

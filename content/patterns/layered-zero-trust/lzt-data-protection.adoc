@@ -12,12 +12,12 @@ include::modules/comm-attributes.adoc[]
 [id="lzt-demo-application"]
 = Data protection
 
-This use case demonstrates Zero Trust data protection using the `qtodo` demo application — a simple to-do list app built with Quarkus and PostgreSQL that is included in the default Layered Zero Trust pattern installation described in the xref:/patterns/layered-zero-trust/lzt-getting-started.adoc[Getting Started] guide. No additional setup is required to explore this use case.
+This use case demonstrates Zero Trust data protection using the `qtodo` demo application — a simple to-do list app built with Quarkus and PostgreSQL that is included in the default Layered Zero Trust pattern installation described in the link:/patterns/layered-zero-trust/lzt-getting-started/[Getting Started] guide. No additional setup is required to explore this use case.
 
 [id="what-this-demonstrates"]
 == What this demonstrates
 
-On its own, the `qtodo` application is unremarkable. What makes it special is _how_ it runs inside the ZTVP — every interaction is authenticated, every credential is dynamic, and every network connection is explicitly authorized. No application code was changed to achieve this.
+On its own, the `qtodo` application is unremarkable. What makes it special is _how_ it runs inside the ZTVP — every interaction is authenticated, every credential is dynamic, and every network connection is explicitly authorized.
 
 [id="security-features-in-action"]
 == Security features in action
@@ -69,7 +69,7 @@ Default-deny NetworkPolicies block all traffic. Explicit allow rules permit only
 
 | Code changes required
 | N/A
-| None — security injected via sidecars
+| Application reads credentials from sidecar-generated files instead of environment variables
 |===
 
 [id="try-it-yourself"]
@@ -94,4 +94,4 @@ The `keycloak-users` Secret was removed from Kubernetes in favor of storing all 
 . Observe the OIDC redirect flow — the browser is redirected to Keycloak, authenticated, and then returned to the application.
 . Add and remove to-do items to verify the application works end-to-end.
 
-For a detailed technical walkthrough of the sidecar architecture and data protection workflow, see xref:/patterns/layered-zero-trust/lzt-secure-multitier.adoc[Secure Multitiered Applications].
+For a detailed technical walkthrough of the sidecar architecture and data protection workflow, see link:/patterns/layered-zero-trust/lzt-secure-multitier/[Secure Multitiered Applications].
