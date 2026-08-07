@@ -95,4 +95,4 @@ See link:/patterns/layered-zero-trust/lzt-getting-started/#lzt-accessing-credent
 * link:https://www.redhat.com/en/blog/lights-real-time-threat-response-red-hat-advanced-cluster-security[Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security] — ACS as an active defense engine
 * link:/patterns/layered-zero-trust/lzt-architecture/[Architecture] — Full component breakdown
 * link:/patterns/layered-zero-trust/lzt-data-protection/[Data Protection] — Zero Trust data protection use case
-* link:/patterns/layered-zero-trust/lzt-secure-multitier/[Secure Multitiered Applications] — Detailed technical walkthrough
+* link:/patterns/layered-zero-trust/lzt-architecture/#sidecar-pattern[Sidecar pattern] — Detailed technical walkthrough

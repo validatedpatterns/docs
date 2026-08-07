@@ -1,7 +1,9 @@
 ---
 title: Data protection
 weight: 20
-aliases: /layered-zero-trust/lzt-data-protection/
+aliases:
+- /layered-zero-trust/lzt-data-protection/
+- /layered-zero-trust/lzt-secure-multitier
 ---
 
 :toc:
@@ -18,6 +20,23 @@ This use case demonstrates Zero Trust data protection using the `qtodo` demo app
 == What this demonstrates
 
 On its own, the `qtodo` application is unremarkable. What makes it special is _how_ it runs inside the ZTVP — every interaction is authenticated, every credential is dynamic, and every network connection is explicitly authorized.
+
+[id="lzt-application-components"]
+== Application components
+
+The `qtodo` application consists of the following key components:
+
+* *`qtodo`*: A link:https://quarkus.io[Quarkus-based] frontend application protected by OpenID Connect (OIDC) authentication. Users are managed in Red{nbsp}Hat build of Keycloak (RHBK).
+* *PostgreSQL*: The relational database used by `qtodo`, deployed in a separate `qtodo-db` namespace. Its credentials are dynamically generated and stored in HashiCorp Vault.
+* *HashiCorp Vault*: Stores sensitive values for all components. Implements JSON Web Token (JWT)-based authentication to enable access using SPIFFE-based identities.
+* *Zero Trust Workload Identity Manager (SPIRE/SPIFFE)*: Assigns a cryptographic identity to the `qtodo` pod, allowing it to authenticate with Vault and obtain database credentials.
+* *link:https://github.com/spiffe/spiffe-helper[spiffe-helper]*: A sidecar container that dynamically fetches JWT-based identities from the SPIFFE Workload API.
+* *`spiffe-vault-client`*: A sidecar container that uses the SPIFFE identity to authenticate with Vault and retrieve database credentials just-in-time.
+
+[NOTE]
+====
+The `qtodo` pod uses a series of init containers and sidecar containers to supply the application with the credentials required for operation. Explore the pod details in the {ocp} web console (*Workloads > Pods* in the `qtodo` namespace) to see this in action.
+====
 
 [id="security-features-in-action"]
 == Security features in action
@@ -88,4 +107,4 @@ After deploying the ZTVP, you can access the `qtodo` application and observe the
 . Observe the OIDC redirect flow — the browser is redirected to Keycloak, authenticated, and then returned to the application. During the first login you will be asked to change your credentials.
 . Add and remove to-do items to verify the application works end-to-end. You can also login as a `qtodo-admin` user, which can modify all demo application entries.
 
-For a detailed technical walkthrough of the sidecar architecture and data protection workflow, see link:/patterns/layered-zero-trust/lzt-secure-multitier/[Secure Multitiered Applications].
+For a detailed technical breakdown of the sidecar architecture and data protection workflow, see the link:/patterns/layered-zero-trust/lzt-architecture/#sidecar-pattern[Sidecar pattern] section in the Architecture page.
