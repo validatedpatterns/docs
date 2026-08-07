@@ -16,17 +16,11 @@ Follow these instructions to configure and deploy the Layered Zero Trust pattern
 
 .Prerequisites
 
-* An {ocp} 4.20, 4.21, or 4.22 cluster with:
-
-.. publicly signed certificates for Ingress.
-.. default `StorageClass` which provides dynamic `PersistentVolume` storage.
+* An {ocp} 4.20, 4.21, or 4.22 cluster with a default `StorageClass` which provides dynamic `PersistentVolume` storage.
 
 * Fulfill the general link:https://validatedpatterns.io/learn/quickstart/#_prerequisites[prerequisites for Validated Patterns].
 
-* Depending on the characteristics of your cluster, you might need additional hardware resources for the {rh-rhacm-first} component.
-For a single-node cluster, you can start with 8 CPUs, 16 GB of memory, and 120 GB of storage.
-+
-For more details about {rh-rhacm} sizing, see link:https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/install/index#sizing-your-cluster[Sizing your cluster].
+* Depending on the deployed pattern components, you might need additional hardware resources.
 
 * For the exact component versions validated on each OCP release, see the link:https://github.com/validatedpatterns/layered-zero-trust/blob/main/docs/support-matrix.md[Support Matrix].
 
@@ -39,8 +33,6 @@ The Layered Zero Trust pattern's default deployment assumes that none of its com
 == Quick install via OpenShift Console
 
 The fastest way to deploy the pattern is through the OpenShift Console. This GUI-based deployment covers the "batteries included" baseline configuration. For advanced feature sets, customization, or using your own fork, see the <<lzt-cli-install,Advanced Installation (CLI)>> section below.
-
-video::layered-zero-trust/gui-install/vp-1-click-install.mkv[width=800,opts="autoplay,loop,nocontrols"]
 
 [id="lzt-gui-step1"]
 === Step 1: Install the Validated Patterns Operator
@@ -247,6 +239,96 @@ The Layered Zero Trust pattern installs the following two Argo CD instances on y
 . *Hub Argo CD*: Manages the Cluster Argo CD instance and the individual components that belong to the pattern on the hub {ocp} instance.
 
 If every Argo CD application reports a *Healthy* status, the pattern has been deployed successfully.
+
+[id="lzt-accessing-credentials"]
+== Accessing credentials
+
+All sensitive credentials in this pattern are generated automatically and stored in HashiCorp Vault during deployment. There are no static default passwords. This section explains how to retrieve credentials for testing and exploration.
+
+[id="lzt-vault-root-token"]
+=== Retrieve the Vault root token
+
+The Vault initialization data, including the root token, is stored in a Kubernetes Secret in the `imperative` namespace:
+
+[source,terminal]
+----
+$ oc extract -n imperative secret/vaultkeys --to=- --keys=vault_data_json 2>/dev/null \
+  | jq -r ".root_token"
+----
+
+Save this value — you will need it to authenticate to Vault.
+
+[id="lzt-vault-web-ui"]
+=== Access the Vault Web UI
+
+Get the Vault route URL and open it in a browser:
+
+[source,terminal]
+----
+$ echo "https://$(oc get route -n vault vault -o jsonpath='{.spec.host}')"
+----
+
+On the login screen, select *Token* as the authentication method and paste the root token retrieved above.
+
+[id="lzt-vault-cli"]
+=== Access Vault via CLI
+
+You can query Vault directly from inside the `vault-0` pod without installing any local tooling. First export the token:
+
+[source,terminal]
+----
+$ VAULT_TOKEN=$(oc extract -n imperative secret/vaultkeys --to=- --keys=vault_data_json 2>/dev/null \
+  | jq -r ".root_token")
+----
+
+Then use `oc exec` to run Vault commands. For example, to list the top-level secret paths:
+
+[source,terminal]
+----
+$ oc exec -n vault vault-0 -- env VAULT_TOKEN="$VAULT_TOKEN" vault kv list secret/
+----
+
+To read a specific secret:
+
+[source,terminal]
+----
+$ oc exec -n vault vault-0 -- env VAULT_TOKEN="$VAULT_TOKEN" \
+  vault kv get secret/hub/infra/users/keycloak-users
+----
+
+[id="lzt-key-secret-paths"]
+=== Key secret paths
+
+Secrets are organized by component under the `secret/` KV mount. The table below lists the paths relevant to testing the default pattern deployment.
+
+[cols="2,3",options="header"]
+|===
+| Path | Contents
+
+| `secret/apps/qtodo/qtodo-db`
+| `admin-password`, `db-password` — PostgreSQL credentials for the qtodo database
+
+| `secret/apps/qtodo/qtodo-truststore`
+| `truststore-password` — Keycloak TLS truststore password for qtodo
+
+| `secret/hub/infra/keycloak/keycloak`
+| `admin-password`, `db-password` — Keycloak admin (username: `admin`) and database credentials
+
+| `secret/hub/infra/users/keycloak-users`
+| `qtodo-admin-password`, `qtodo-user1-password`, `rhtpa-user-password`, `rhtas-user-password` — application user passwords provisioned in Keycloak
+
+| `secret/hub/infra/acs/acs-central`
+| `admin-password` — ACS Central password (username: `admin` for basic auth, `acs-admin` for Keycloak OIDC)
+
+| `secret/hub/infra/quay/quay-users`
+| `quay-admin-password`, `quay-user-password` — Quay registry credentials _(optional component)_
+
+| `secret/hub/infra/rhtpa/rhtpa-db`
+| `db-password` — RHTPA PostgreSQL password _(optional component)_
+
+| `secret/hub/infra/rhtpa/rhtpa-oidc-cli`
+| `client-secret` — RHTPA Keycloak OIDC client secret _(optional component)_
+|===
 
 [id="lzt-importing-existing-clusters"]
 == Importing existing clusters

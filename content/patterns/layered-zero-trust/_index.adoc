@@ -2,7 +2,7 @@
 title: Layered Zero Trust
 date: 2025-09-12
 tier: tested
-summary: The Layered Zero Trust Validated Pattern deploys a complete Zero Trust security architecture on Red Hat OpenShift — automatically, via GitOps, in under an hour.
+summary: The Layered Zero Trust Validated Pattern deploys a complete Zero Trust security architecture on Red Hat OpenShift — automatically, via GitOps.
 rh_products:
 - Red Hat OpenShift Container Platform
 industries:
@@ -26,30 +26,14 @@ include::modules/comm-attributes.adoc[]
 [id="about-lzt-pattern"]
 = About the Layered Zero Trust pattern
 
-The Layered Zero Trust Validated Pattern deploys a complete Zero Trust security architecture on {rh-ocp}, automatically, via GitOps, in under an hour. It addresses the fundamental shortcoming of traditional perimeter security: the assumption that anything inside a trusted domain (the network, its services, and its actors) can be trusted.
+The Layered Zero Trust Validated Pattern deploys a complete Zero Trust security architecture on {rh-ocp}, automatically, via GitOps. It addresses the fundamental shortcoming of traditional perimeter security: the assumption that anything inside a trusted domain (the network, its services, and its actors) can be trusted.
 
-[id="problems-we-solve"]
-== The problems we solve
+* *Static defenses don't stop what's already inside* — Perimeter firewalls and ingress controllers protect the front door, but supply chain attacks, compromised dependencies, and insider threats operate from within. Zero Trust assumes breach and enforces verification at every interaction.
+* *You can't patch fast enough* — Over 40,000 CVEs were published in 2025. AI-powered exploit generation is shrinking the window between disclosure and exploitation. Zero Trust provides defense-in-depth that contains threats even when patches haven't been applied yet. link:https://www.redhat.com/en/blog/cant-patch-fast-enough-zero-trust-last-line-defense[Read more].
+* *Compliance mandates require evidence, not promises* — Federal mandates (EO 14028, OMB M-22-09, CISA Zero Trust Maturity Model) and industry standards (NIST SP 800-207, NIST SP 800-53) require organizations to demonstrate Zero Trust implementation with auditable evidence. The ZTVP generates this evidence automatically through GitOps audit trails, compliance scanning, and runtime monitoring.
 
-[id="static-defenses"]
-=== Static defenses don't stop what's already inside
-
-Perimeter firewalls and ingress controllers protect the front door, but supply chain attacks, compromised dependencies, and insider threats operate from within. Zero Trust assumes breach and enforces verification at every interaction — not just at the edge.
-
-[id="patching-gap"]
-=== You can't patch fast enough
-
-Over 40,000 CVEs were published in 2025 — more than 100 every day. AI-powered exploit generation is shrinking the window between disclosure and exploitation. Zero Trust provides defense-in-depth that contains threats even when patches haven't been applied yet.
-
-link:https://www.redhat.com/en/blog/cant-patch-fast-enough-zero-trust-last-line-defense[Read: Can't Patch Fast Enough? Zero Trust as a Last Line of Defense]
-
-[id="compliance"]
-=== Compliance mandates require evidence, not promises
-
-Federal mandates (EO 14028, OMB M-22-09, CISA Zero Trust Maturity Model) and industry standards (NIST SP 800-207, NIST SP 800-53) now require organizations to demonstrate Zero Trust implementation with auditable evidence. The ZTVP generates this evidence automatically through GitOps audit trails, compliance scanning, and runtime monitoring.
-
-[id="what-you-get"]
-== What you get
+[id="about-solution-lzt"]
+== About the solution elements
 
 The pattern deploys the following security capabilities automatically:
 
@@ -82,8 +66,8 @@ The pattern deploys the following security capabilities automatically:
 | Keyless artifact signing, SBOM analysis, and tamper-evident transparency logs.
 |===
 
-[id="how-it-works"]
-== How it works
+[id="about-architecture-lzt"]
+== About the architecture
 
 The ZTVP uses a layered architecture:
 
@@ -95,16 +79,10 @@ image::layered-zero-trust/layered-zero-trust-architecture-diagram.png[Layered Ze
 
 For a full technical breakdown, see the link:/patterns/layered-zero-trust/lzt-architecture/[Architecture] page.
 
-[id="get-started"]
-== Get started
+[id="next-steps_lzt-index"]
+== Next steps
 
-*Deploy Zero Trust in under an hour.* The Layered Zero Trust pattern can be installed directly from the OpenShift Console. The GUI-based deployment covers the "batteries included" baseline configuration. For advanced feature sets and customization, use the CLI-based installation.
-
-link:/patterns/layered-zero-trust/lzt-getting-started/[Get Started →]
-
-[id="learn-more"]
-== Learn more
-
+* link:/patterns/layered-zero-trust/lzt-getting-started/[Getting started] — Deploy the pattern via GUI or CLI
 * link:/patterns/layered-zero-trust/lzt-architecture/[Architecture] — Layered model, sidecar pattern, deployment variants
 * link:/patterns/layered-zero-trust/lzt-data-protection/[Data Protection] — Zero Trust data protection in action
 * link:/patterns/layered-zero-trust/lzt-security-monitoring/[Security Monitoring] — ACS as the Zero Trust brain

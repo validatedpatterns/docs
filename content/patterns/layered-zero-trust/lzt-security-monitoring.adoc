@@ -78,6 +78,16 @@ The combination of network policies and ACS runtime monitoring creates a layered
 
 The result: the attacker is contained, eliminated, and logged — all automatically. Even if a network policy configuration was missed, the risk of a successful, prolonged attack drops effectively to zero.
 
+[id="lzt-acs-access"]
+== Accessing ACS Central
+
+ACS Central supports two login methods:
+
+* *Keycloak OIDC* (default login page) — username `acs-admin`, password from Vault path `secret/hub/infra/acs/acs-central`.
+* *Basic auth* — select "Login with username/password" on the ACS login page — username `admin`, same password as above.
+
+See link:/patterns/layered-zero-trust/lzt-getting-started/#lzt-accessing-credentials[Accessing credentials] for instructions on how to retrieve secrets from Vault.
+
 [id="further-reading"]
 == Further reading
 

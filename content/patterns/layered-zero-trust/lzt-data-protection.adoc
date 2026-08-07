@@ -78,20 +78,9 @@ Default-deny NetworkPolicies block all traffic. Explicit allow rules permit only
 After deploying the ZTVP, you can access the `qtodo` application and observe the Zero Trust security features in action:
 
 . Navigate to the `qtodo` route in the {ocp} Console (*Networking > Routes* in the `qtodo` namespace).
-. You will be redirected to the Keycloak login page. Log in with the credentials stored in HashiCorp Vault.
-+
-To retrieve the Keycloak user credentials:
-+
-.. Open the Vault UI (available via the `vault` route in the `vault` namespace).
-.. Log in to Vault using the root token (available in the `vaultkeys` secret in the `imperative` namespace).
-.. Navigate to *Secrets > hub > keycloak-users* to find the demo user credentials.
-+
-[NOTE]
-====
-The `keycloak-users` Secret was removed from Kubernetes in favor of storing all credentials exclusively in Vault. This is an intentional security improvement — credentials are managed in a single, auditable location.
-====
+. You will be redirected to the Keycloak login page. Log in with the `qtodo` user credentials from Vault (path: `secret/hub/infra/users/keycloak-users`). See link:/patterns/layered-zero-trust/lzt-getting-started/#lzt-accessing-credentials[Accessing credentials] for instructions on how to retrieve secrets from Vault.
 
-. Observe the OIDC redirect flow — the browser is redirected to Keycloak, authenticated, and then returned to the application.
-. Add and remove to-do items to verify the application works end-to-end.
+. Observe the OIDC redirect flow — the browser is redirected to Keycloak, authenticated, and then returned to the application. During the first login you will be asked to change your credentials.
+. Add and remove to-do items to verify the application works end-to-end. You can also login as a `qtodo-admin` user, which can modify all demo application entries.
 
 For a detailed technical walkthrough of the sidecar architecture and data protection workflow, see link:/patterns/layered-zero-trust/lzt-secure-multitier/[Secure Multitiered Applications].
