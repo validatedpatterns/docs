@@ -2,7 +2,81 @@
 <script>var _paq=window._paq=window._paq||[];_paq.push(["trackPageView"]),_paq.push(["enableLinkTracking"]),function(){e="//analytics.ossupstream.org/",_paq.push(["setTrackerUrl",e+"matomo.php"]),_paq.push(["setSiteId","8"]);var e,n=document,t=n.createElement("script"),s=n.getElementsByTagName("script")[0];t.async=!0,t.src=e+"matomo.js",s.parentNode.insertBefore(t,s)}()</script></head><body><div class=pf-c-page><header class=pf-c-page__header><div class=pf-c-page__header-brand><a href=/ class=pf-c-page__header-brand-link><img src=/images/validated-patterns.png alt="Validated Patterns"></a></div><div class=pf-c-page__header-tools><nav class="pf-c-nav pf-m-horizontal mobile-nav" role=navigation id=mobile-nav><ul class=pf-c-nav__list><li class=pf-c-nav__item><a class=pf-c-nav__link href=/patterns/ title=Patterns>Patterns</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/learn/ title="Learn about Validated Patterns">Learn</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/demos/ title="Interactive demos">Demos</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/workshop/ title="Validated Patterns Workshop">Workshop</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/contribute/ title="Contribute to Validated Patterns">Contribute</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/blog/ title=Blog>Blog</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/ci/ title="CI Status">Status</a></li></ul></nav><form id=search action=https://validatedpatterns.io/search/ method=get><div class=pf-c-search-input><div class=pf-c-input-group><div class=pf-c-search-input__bar><span class=pf-c-search-input__text><span class=pf-c-search-input__icon><i class="fas fa-search fa-fw" aria-hidden=true></i>
 </span><input id=search-input name=query class=pf-c-search-input__text-input type=text placeholder=Search aria-label=Search></span></div><button form=search class="pf-c-button pf-m-control" type=submit aria-label=Search value=search>
 <i class="fas fa-arrow-right" aria-hidden=true></i></button></div></div></form></div><div class=pf-c-page__header-tools-group><button class="pf-c-button pf-m-plain main-nav-toggle" type=button aria-label="Main navigation" id=main-nav-toggle>
-<i class="fas fa-chevron-down" aria-hidden=true></i></button></div></header><main class=pf-c-page__main><section class=pf-c-page__main-section><div class="pf-l-grid__item pf-m-9-col"><div class=pf-u-text-align-center><div class=pf-c-content style=--pf-c-content--FontSize:1rem><h1 class="pf-c-title pf-m-4xl">Search</h1><div class=page-abstract><p>Enter a keyword to search the site.</p></div></div></div><div id=results class=p-fc-content></div></div></section><script>window.store={"https://validatedpatterns.io/learn/about-validated-patterns/":{title:"About Validated Patterns",tags:[],content:`Overview of Validated Patterns Validated Patterns are an advanced form of reference architectures that offer a streamlined approach to deploying complex business solutions. Validated Patterns are deployable, testable software artifacts with automated deployment, enhancing speed, reliability, and consistency across environments. These patterns are rigorously tested blueprints designed to meet specific business needs, reducing deployment risks.
+<i class="fas fa-chevron-down" aria-hidden=true></i></button></div></header><main class=pf-c-page__main><section class=pf-c-page__main-section><div class="pf-l-grid__item pf-m-9-col"><div class=pf-u-text-align-center><div class=pf-c-content style=--pf-c-content--FontSize:1rem><h1 class="pf-c-title pf-m-4xl">Search</h1><div class=page-abstract><p>Enter a keyword to search the site.</p></div></div></div><div id=results class=p-fc-content></div></div></section><script>window.store={"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-architecture/":{title:"Architecture",tags:[],content:`Architecture The Layered Zero Trust pattern implements a layered zero trust architecture that provides workload identity management, secure communication, secret management, runtime security monitoring, and compliance scanning on Red Hat OpenShift Container Platform.
+Layered architecture overview The ZTVP is structured in three decoupled layers, each building on the one below:
+Layer 0 — Foundation: The always-deployed security baseline. These components are installed automatically with every ZTVP deployment and provide the core Zero Trust capabilities.
+Layer 1 — Feature Sets: Optional capabilities that can be enabled per use case. These extend the foundation with additional security services like supply chain signing, private registries, and network observability.
+Layer 2 — Use Cases: Real applications that demonstrate Zero Trust principles in practice. They consume the services provided by Layers 0 and 1.
+Layer 0 — Foundation Component What it does Zero Trust contribution HashiCorp Vault
+Centralized secret storage and management with JWT-based authentication
+Dynamic secrets, just-in-time credential injection
+Zero Trust Workload Identity Manager (SPIRE/SPIFFE)
+Assigns short-lived cryptographic identities to workloads
+No shared secrets, mutual authentication
+Red Hat build of Keycloak
+User authentication and SSO via OIDC
+Centralized identity, per-application access control
+External Secrets Operator
+Synchronizes secrets from Vault into OpenShift Container Platform
+Automated secret lifecycle management
+Red Hat Cert Manager
+Automated TLS certificate lifecycle
+Encrypted communications, daily CA rotation
+Compliance Operator
+CIS benchmark scanning and automated remediation
+Continuous compliance monitoring
+Red Hat Advanced Cluster Management
+Multi-cluster management control plane
+Centralized policy enforcement
+Red Hat Advanced Cluster Security
+Runtime security monitoring, threat detection and response
+Continuous monitoring, automated threat termination
+Layer 1 — Feature Sets Component What it does Required for Red Hat Quay
+Private OCI image registry
+Supply chain security use cases
+Multicloud Object Gateway (NooBaa)
+Object storage service for OpenShift Container Platform
+Quay storage backend, Network Observability
+Red Hat Trusted Artifact Signer (RHTAS)
+Keyless signing and verification of container images and artifacts
+Secure supply chain
+Red Hat Trusted Profile Analyzer (RHTPA)
+SBOM storage, analysis, and CVE cross-referencing
+Supply chain vulnerability analysis
+Red Hat OpenShift Pipelines
+Cloud-native CI/CD on OpenShift Container Platform
+Automated supply chain workflows
+Network Observability (Loki + FlowCollector)
+Network flow monitoring and visualization
+Network traffic analysis
+Layer 2 — Use Cases Use case Description Zero Trust Data Protection
+The qtodo demo application shows how workload identity, dynamic secrets, user authentication, and network segmentation protect a real application.
+Secure Supply Chain
+Manual walkthrough of container image signing, SBOM generation, and artifact verification using RHTAS and RHTPA.
+Automated Supply Chain
+Tekton pipeline automating the build, sign, verify, and deploy workflow end-to-end.
+Sidecar pattern The sidecar pattern is a deployment model where a separate container runs alongside the main application to handle auxiliary tasks. In an OpenShift Container Platform environment, pods simplify this by ensuring the sidecar and main application share the same lifecycle. This approach benefits Zero Trust architectures by enabling centralized enforcement of security policies such as authentication, authorization, traffic encryption (mTLS), rate limiting, auditing, and logging — without requiring developers to add this logic to every microservice.
+The Layered Zero Trust pattern uses the sidecar approach to offload critical security functions from the main application. This centralizes policy enforcement, simplifies development, and separates security concerns.
+Applied sidecar pattern: Data protection The following diagrams illustrate how the sidecar pattern is applied in practice to solve the Data Protection use case. They demonstrate how an application (qtodo) retrieves database credentials dynamically without hard-coding secrets.
+Logical structure The logical structure diagram shows the composition of the application pod and its relationship to the infrastructure.
+Decoupled components: The qtodo application logic is separated from security functions. The application container runs alongside helper sidecars (spiffe-vault-client, spiffe-helper) and init containers.
+Infrastructure layers: The sidecars bridge the gap between the application and the platform services:
+Workload identity: The sidecars interface with SPIRE to prove the pod’s identity.
+Secret management: They connect to HashiCorp Vault to fetch secrets.
+Trust anchors: Keycloak and Cert Manager provide the root trust for the ecosystem.
+Schematic workflow The schematic diagram details the step-by-step execution flow:
+Identity minting (Steps 3-6): Upon startup, the SPIRE Agent validates the pod (via node attestors and kubelet) and mints a cryptographic identity (SPIFFE ID).
+Secret retrieval (Step 7): The spiffe-vault-client sidecar uses this verified identity to authenticate with HashiCorp Vault and request the specific credentials needed for the database.
+Secure access (Steps 8-9): The credentials are passed to the application, allowing it to authenticate and establish a connection to the PostgreSQL database securely.
+Deployment variants The pattern supports multiple deployment configurations:
+Configuration file Description values-hub.yaml
+Default hub cluster deployment with the full Layer 0 foundation
+values-coco-dev.yaml
+Development variant for Confidential Containers integration
+Feature variant system Layer 1 features can be enabled or disabled independently using the gen-feature-variants.py script.
+For example, to generate a values-hub.yaml with the supply chain feature set enabled:
+$ python3 scripts/gen-feature-variants.py --features supply-chain --registry-option 1 See the Feature Variant Generator in the repository for detailed information.
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-architecture/",breadcrumb:"/patterns/layered-zero-trust/lzt-architecture/"},"https://validatedpatterns.io/learn/about-validated-patterns/":{title:"About Validated Patterns",tags:[],content:`Overview of Validated Patterns Validated Patterns are an advanced form of reference architectures that offer a streamlined approach to deploying complex business solutions. Validated Patterns are deployable, testable software artifacts with automated deployment, enhancing speed, reliability, and consistency across environments. These patterns are rigorously tested blueprints designed to meet specific business needs, reducing deployment risks.
 Building on traditional architectures, Validated Patterns focus on customer solutions involving multiple Red Hat and partner products. Successful deployments serve as the foundation for these patterns, which include example applications and the necessary open source projects. You can easily change these patterns to fit your specific needs.
 The creation process involves selecting specific use cases, validating the patterns with engineering teams, and developing GitOps-based automation. This automation supports Continuous Integration (CI) pipelines for proactive updates and maintenance as new product versions are released.
 Beyond reference architectures Validated Patterns enhance reference architectures with automation and rigorous validation. Reference architectures provide a conceptual framework for building solutions. Validated Patterns take this further by offering a deployable software artifact that automates and optimizes the framework, ensuring consistent and efficient deployments. This approach allows businesses to implement complex solutions rapidly and with confidence, knowing that the patterns have been thoroughly tested and optimized for their use case.
@@ -421,46 +495,84 @@ Verify the BGP routing is functioning correctly by checking the routing table on
 Test the anycast service by accessing it from the client VM
 Explore the Red Hat Service Interconnect (Skupper) console to see the cross-cluster connectivity
 `,url:"https://validatedpatterns.io/patterns/ingress-mesh-bgp/imbgp-getting-started/",breadcrumb:"/patterns/ingress-mesh-bgp/imbgp-getting-started/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-getting-started/":{title:"Getting started",tags:[],content:`Deploying the Layered Zero Trust pattern Follow these instructions to configure and deploy the Layered Zero Trust pattern.
-Prerequisites An OpenShift Container Platform 4.20 or newer cluster with:
-publicly signed certificates for Ingress.
-default StorageClass which provides dynamic PersistentVolume storage.
-To customize the default configuration, you must have a GitHub account and a token with repositories permissions, to read from and write to your forks.
-Access to Podman (or Docker) for execution of the container images used by pattern.sh script for provisioning.
+Prerequisites An OpenShift Container Platform 4.20, 4.21, or 4.22 cluster with a default StorageClass which provides dynamic PersistentVolume storage.
 Fulfill the general prerequisites for Validated Patterns.
-Depending on the characteristics of your cluster, you might need additional hardware resources for the Red Hat Advanced Cluster Management (RHACM) component. For a single-node cluster, you can start with 4 vCPUs, 16 GB of memory, and 120 GB of storage.
-For more details about RHACM sizing, see Sizing your cluster.
-(Optional) The Helm binary, for instructions, see Installing Helm.
+Depending on the deployed pattern components, you might need additional hardware resources.
+For the exact component versions validated on each OCP release, see the Support Matrix.
 The Layered Zero Trust pattern’s default deployment assumes that none of its components have been installed previously. Verify that your OpenShift Container Platform environment does not already contain any of the listed components before proceeding.
-Repository setup Follow these instructions for setting up the project repository:
-Fork the layered-zero-trust repository from GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
+Quick install via OpenShift Console The fastest way to deploy the pattern is through the OpenShift Console. This GUI-based deployment covers the &#34;batteries included&#34; baseline configuration. For advanced feature sets, customization, or using your own fork, see the Advanced Installation (CLI) section below.
+Step 1: Install the Validated Patterns Operator First, install the Validated Patterns Operator from the Software Catalog: navigate to Ecosystem &gt; Software Catalog in the OpenShift Console, search for &#34;validated&#34;, and select the Validated Patterns Operator.
+Step 2: Review operator details The operator detail page shows the channel (fast), version (latest), capability level (Basic Install), and provider (Red Hat).
+Step 3: Configure and install the operator Accept the defaults: All namespaces, patterns-operator namespace (auto-created), Automatic updates. Click Install.
+Step 4: Operator installed Wait for the &#34;Operator installed successfully&#34; confirmation.
+Step 5: Install the Layered Zero Trust pattern Once the operator is installed, the OpenShift Console will reload and a new Patterns entry will appear in the left-hand navigation menu. Navigate to Patterns &gt; Catalog. By default, only maintained patterns are shown. Check the Tested checkbox to also display patterns with the tested tier, such as Layered Zero Trust.
+Click Install on the Layered Zero Trust card and configure:
+Name: layered-zero-trust (pre-filled)
+Target Repo: https://github.com/validatedpatterns/layered-zero-trust.git (or your fork — check &#34;I want to use my own fork&#34;)
+Target Revision: main (or your branch)
+Secrets Configuration: Expand each section to configure secrets (config-demo, qtodo-db, qtodo-truststore, acs-central, keycloak, rhtpa-db, rhtpa-oidc-cli, keycloak-users, quay-users). Secrets marked &#34;Auto-generate this value&#34; will be created automatically by Vault.
+Click Install to deploy the pattern.
+Step 6: Monitor deployment in Argo CD Open the Argo CD console to monitor the deployment. Navigate to the proper Argo CD instance using the Application Selector (the icon with nine small squares) in the top navigation bar.
+The Layered Zero Trust pattern installs two Argo CD instances on your Hub cluster:
+Cluster Argo CD: Manages the layered-zero-trust-hub App-of-Apps application. This deploys the pattern’s components in the correct order.
+Hub Argo CD: Manages the Cluster Argo CD instance itself and the individual component applications.
+Navigate to the Cluster Argo CD instance to monitor the deployment progress. Components deploy in a specific order (sync waves). The deployment time varies depending on your cluster size and resources.
+Step 7: Verify all components are healthy When all Argo CD applications show Healthy and Synced status, the pattern is fully deployed.
+Advanced installation (CLI) For advanced feature sets, customization, or when using your own fork, use the CLI-based installation with the pattern.sh script. This method provides full control over the deployment configuration.
+Additional prerequisites A GitHub account and a token with repository permissions, to read from and write to your forks.
+Access to Podman (or Docker) for execution of the container images used by the pattern.sh script for provisioning.
+Repository setup Fork the layered-zero-trust repository from GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
 Clone your forked repository.
-$ git clone git@github.com:&lt;your_username&gt;/layered-zero-trust.git Go to your repository: Ensure you are in the root directory of your Git repository by using the following command:
-$ cd &lt;/path_to_your_repository&gt; Set up upstream remote repository:
-$ git remote add -f upstream git@github.com/validatedpatterns/layered-zero-trust.git Verify the setup of your remote repositories by running the following command:
+$ git clone git@github.com:&lt;your_username&gt;/layered-zero-trust.git Go to your repository:
+$ cd &lt;/path_to_your_repository&gt; Set up the upstream remote repository:
+$ git remote add -f upstream git@github.com/validatedpatterns/layered-zero-trust.git Verify the setup of your remote repositories:
 $ git remote -v Example output:
-origin git@github.com:&lt;your_username&gt;/layered-zero-trust.git (fetch) origin git@github.com:&lt;your_username&gt;/layered-zero-trust.git (push) upstream https://github.com/validatedpatterns/layered-zero-trust.git (fetch) upstream https://github.com/validatedpatterns/layered-zero-trust.git (push) The Layered Zero Trust pattern’s default deployment assumes that none of its components have been installed previously. Verify that your OpenShift Container Platform environment does not already contain any of the listed components before proceeding.
-Create a local copy of the secret values file that can safely include credentials. Run the following command:
-$ cp values-secret.yaml.template ~/values-secret-layered-zero-trust.yaml To prevent pushing secrets to your Git repository, the command places the values-secret.yaml file in your home directory. You derive this file from the values-secrets.yaml.template file located in the pattern’s top-level directory. When you create new patterns, add your secrets to the values-secret.yaml file in your home directory.
-Create a new feature branch, for example my-branch from the main branch for your content:
-$ git checkout -b my-branch main (Optional) To customize the execution of the pattern, optionally change the Helm values files and then commit the changes.
-$ git add &lt;files_you_changed&gt; $ git commit -m &#34;Pattern customization&#34; The following configuration files define the behavior and settings of the various components in the Layered Zero Trust pattern. You can customize these files to fit your specific deployment needs.
+origin git@github.com:&lt;your_username&gt;/layered-zero-trust.git (fetch) origin git@github.com:&lt;your_username&gt;/layered-zero-trust.git (push) upstream https://github.com/validatedpatterns/layered-zero-trust.git (fetch) upstream https://github.com/validatedpatterns/layered-zero-trust.git (push) Create a local copy of the secret values file:
+$ cp values-secret.yaml.template ~/values-secret-layered-zero-trust.yaml To prevent pushing secrets to your Git repository, the command places the values-secret.yaml file in your home directory.
+Create a new feature branch from the main branch:
+$ git checkout -b my-branch main (Optional) Customize the execution of the pattern by changing the Helm values files, then commit the changes.
+$ git add &lt;files_you_changed&gt; $ git commit -m &#34;Pattern customization&#34; The following configuration files define the behavior and settings of the various components:
 values-global.yaml: Global pattern configuration
 values-hub.yaml: Hub cluster specific configuration
 values-secret.yaml: Secret values (created from template)
 values-&lt;environment&gt;.yaml: Environment-specific overrides (AWS, Azure, GCP)
 Push the changes from your local branch to your forked repository.
-$ git push origin my-branch Deploying the pattern by using the pattern.sh file Deploy the Layered Zero Trust pattern by using the pattern.sh script.
-Login to your OpenShift Container Platform cluster:
+$ git push origin my-branch Deploying the pattern Log in to your OpenShift Container Platform cluster:
 By using the oc CLI:
 Get an API token by visiting https://oauth-openshift.apps../oauth/token/request.
 Log in with the retrieved token:
 $ oc login --token=&lt;retrieved_token&gt; --server=https://api.&lt;your_cluster&gt;.&lt;domain&gt;:6443 By using KUBECONFIG:
 $ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Run the pattern deployment script:
-$ ./pattern.sh make install Verify the deployment The Layered Zero-Trust pattern provisions every component and manages them through OpenShift Container Platform GitOps. After you deploy the pattern, verify that all components are running correctly.
-The Layered Zero-Trust pattern installs the following two OpenShift Container Platform GitOps instances on your Hub cluster. You can view these instances in the OpenShift Container Platform web console by using the Application Selector (the icon with nine small squares) in the top navigation bar.
+$ ./pattern.sh make install Verify the deployment The Layered Zero Trust pattern provisions every component and manages them through OpenShift Container Platform GitOps. After you deploy the pattern, verify that all components are running correctly.
+The Layered Zero Trust pattern installs the following two Argo CD instances on your Hub cluster. You can view these instances in the OpenShift Container Platform web console by using the Application Selector (the icon with nine small squares) in the top navigation bar.
 Cluster Argo CD: Deploys an App-of-Apps application named layered-zero-trust-hub. This application installs the pattern’s components.
-Hub Argo CD: Manages Cluster Argo CD instance and the individual components that belong to the pattern on the hub OpenShift Container Platform instance.
+Hub Argo CD: Manages the Cluster Argo CD instance and the individual components that belong to the pattern on the hub OpenShift Container Platform instance.
 If every Argo CD application reports a Healthy status, the pattern has been deployed successfully.
+Accessing credentials All sensitive credentials in this pattern are generated automatically and stored in HashiCorp Vault during deployment. There are no static default passwords. This section explains how to retrieve credentials for testing and exploration.
+Retrieve the Vault root token The Vault initialization data, including the root token, is stored in a Kubernetes Secret in the imperative namespace:
+$ oc extract -n imperative secret/vaultkeys --to=- --keys=vault_data_json 2&gt;/dev/null \\ | jq -r &#34;.root_token&#34; Save this value — you will need it to authenticate to Vault.
+Access the Vault Web UI Get the Vault route URL and open it in a browser:
+$ echo &#34;https://$(oc get route -n vault vault -o jsonpath=&#39;{.spec.host}&#39;)&#34; On the login screen, select Token as the authentication method and paste the root token retrieved above.
+Access Vault via CLI You can query Vault directly from inside the vault-0 pod without installing any local tooling. First export the token:
+$ VAULT_TOKEN=$(oc extract -n imperative secret/vaultkeys --to=- --keys=vault_data_json 2&gt;/dev/null \\ | jq -r &#34;.root_token&#34;) Then use oc exec to run Vault commands. For example, to list the top-level secret paths:
+$ oc exec -n vault vault-0 -- env VAULT_TOKEN=&#34;$VAULT_TOKEN&#34; vault kv list secret/ To read a specific secret:
+$ oc exec -n vault vault-0 -- env VAULT_TOKEN=&#34;$VAULT_TOKEN&#34; \\ vault kv get secret/hub/infra/users/keycloak-users Key secret paths Secrets are organized by component under the secret/ KV mount. The table below lists the paths relevant to testing the default pattern deployment.
+Path Contents secret/apps/qtodo/qtodo-db
+admin-password, db-password — PostgreSQL credentials for the qtodo database
+secret/apps/qtodo/qtodo-truststore
+truststore-password — Keycloak TLS truststore password for qtodo
+secret/hub/infra/keycloak/keycloak
+admin-password, db-password — Keycloak admin (username: admin) and database credentials
+secret/hub/infra/users/keycloak-users
+qtodo-admin-password, qtodo-user1-password, rhtpa-user-password, rhtas-user-password — application user passwords provisioned in Keycloak
+secret/hub/infra/acs/acs-central
+admin-password — ACS Central password (username: admin for basic auth, acs-admin for Keycloak OIDC)
+secret/hub/infra/quay/quay-users
+quay-admin-password, quay-user-password — Quay registry credentials (optional component)
+secret/hub/infra/rhtpa/rhtpa-db
+db-password — RHTPA PostgreSQL password (optional component)
+secret/hub/infra/rhtpa/rhtpa-oidc-cli
+client-secret — RHTPA Keycloak OIDC client secret (optional component)
 Importing existing clusters The pattern supports importing pre-existing OpenShift Container Platform clusters into the Hub cluster, converting them into Managed Clusters.
 Do not use the ClusterPools configuration settings for RHACM chart provisioning. The ClusterPools technology is limited to cloud environments.
 Instead, use the acm-managed-clusters chart to import your existing standalone clusters.
@@ -2597,7 +2709,44 @@ The runtime defaults to vllm/vllm-openai:v0.11.1. If you need a later version, y
 llm-service: deviceConfigs: gpu: image: vllm/vllm-openai:nightly The example above sets a GPU-specific container image. To override the CPU-based image instead, use the key llm-service.deviceConfigs.cpu.image.
 Defining multiple models You can define multiple LLM models to be served simultaneously. For example:
 global: models: deepseek-r1: id: Valdemardi/DeepSeek-R1-Distill-Llama-70B-AWQ enabled: true resources: limits: cpu: &#34;32&#34; memory: 200Gi requests: cpu: &#34;24&#34; memory: 150Gi args: - --reasoning-parser - deepseek_r1 - --tool-call-parser - llama3_json - --enable-auto-tool-choice - --quantization - awq_marlin - --dtype - float16 - --max-model-len - &#34;65536&#34; gpt-oss-120b: id: openai/gpt-oss-120b enabled: true resources: limits: cpu: &#34;32&#34; memory: 200Gi requests: cpu: &#34;24&#34; memory: 150Gi args: - --tool-call-parser - openai - --enable-auto-tool-choice For a complete list of customizable values, see the AI Architecture charts repository.
-`,url:"https://validatedpatterns.io/patterns/rag-quickstart/customizing-this-pattern/",breadcrumb:"/patterns/rag-quickstart/customizing-this-pattern/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-explore-this-pattern/":{title:"Explore this pattern",tags:[],content:` Red Hat OpenShift AI components Most components installed as part of this pattern are available in the Red Hat OpenShift AI (RHOAI) console. To navigate to this page, click the Red Hat OpenShift AI link in the application launcher of the OpenShift console.
+`,url:"https://validatedpatterns.io/patterns/rag-quickstart/customizing-this-pattern/",breadcrumb:"/patterns/rag-quickstart/customizing-this-pattern/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-data-protection/":{title:"Data protection",tags:[],content:`Data protection This use case demonstrates Zero Trust data protection using the qtodo demo application — a simple to-do list app built with Quarkus and PostgreSQL that is included in the default Layered Zero Trust pattern installation described in the Getting Started guide. No additional setup is required to explore this use case.
+What this demonstrates On its own, the qtodo application is unremarkable. What makes it special is how it runs inside the ZTVP — every interaction is authenticated, every credential is dynamic, and every network connection is explicitly authorized.
+Application components The qtodo application consists of the following key components:
+qtodo: A Quarkus-based frontend application protected by OpenID Connect (OIDC) authentication. Users are managed in Red Hat build of Keycloak (RHBK).
+PostgreSQL: The relational database used by qtodo, deployed in a separate qtodo-db namespace. Its credentials are dynamically generated and stored in HashiCorp Vault.
+HashiCorp Vault: Stores sensitive values for all components. Implements JSON Web Token (JWT)-based authentication to enable access using SPIFFE-based identities.
+Zero Trust Workload Identity Manager (SPIRE/SPIFFE): Assigns a cryptographic identity to the qtodo pod, allowing it to authenticate with Vault and obtain database credentials.
+spiffe-helper: A sidecar container that dynamically fetches JWT-based identities from the SPIFFE Workload API.
+spiffe-vault-client: A sidecar container that uses the SPIFFE identity to authenticate with Vault and retrieve database credentials just-in-time.
+The qtodo pod uses a series of init containers and sidecar containers to supply the application with the credentials required for operation. Explore the pod details in the OpenShift Container Platform web console (Workloads &gt; Pods in the qtodo namespace) to see this in action.
+Security features in action When a user accesses the qtodo application, the following security features activate:
+1. User authentication The user is redirected to Red Hat build of Keycloak for login. Only users with the correct role in the ztvp realm can access the application. No credentials are stored in the application code.
+2. Workload identity The qtodo pod proves its identity using a cryptographic SPIFFE certificate (SVID). This identity is issued by SPIRE and rotates automatically every hour. No static service account tokens are used.
+3. Dynamic secrets The spiffe-vault-client sidecar uses the pod’s SPIFFE identity to authenticate with HashiCorp Vault and retrieve the PostgreSQL password. The password is never stored as a Kubernetes Secret — it’s fetched just-in-time and exists only in memory.
+4. Namespace separation The qtodo application and its PostgreSQL database run in separate namespaces (qtodo and qtodo-db). This isolation limits the blast radius of a compromise — an attacker who gains access to the application namespace cannot directly reach the database resources, and vice versa.
+5. Network isolation Default-deny NetworkPolicies are applied independently to both the application and database namespaces. Explicit allow rules permit only the connections that are strictly required: browser to qtodo (port 8443), qtodo to PostgreSQL (port 5432, cross-namespace), qtodo to Vault (port 8200), and qtodo to DNS (port 5353). Nothing else is permitted.
+Before vs. after Aspect Traditional deployment With ZTVP Database credentials
+Static Kubernetes Secret in etcd
+Dynamic, fetched from Vault via SPIFFE
+User authentication
+Application-managed or none
+Centralized Keycloak SSO
+Network access
+Allow-all (Kubernetes default)
+Default-deny with per-pod allow rules across separate namespaces
+Workload identity
+Shared service account
+Cryptographic SPIFFE SVID (1-hour TTL)
+Code changes required
+N/A
+Application reads credentials from sidecar-generated files instead of environment variables
+Try it yourself After deploying the ZTVP, you can access the qtodo application and observe the Zero Trust security features in action:
+Navigate to the qtodo route in the OpenShift Container Platform Console (Networking &gt; Routes in the qtodo namespace).
+You will be redirected to the Keycloak login page. Log in with the qtodo user credentials from Vault (path: secret/hub/infra/users/keycloak-users). See Accessing credentials for instructions on how to retrieve secrets from Vault.
+Observe the OIDC redirect flow — the browser is redirected to Keycloak, authenticated, and then returned to the application. During the first login you will be asked to change your credentials.
+Add and remove to-do items to verify the application works end-to-end. You can also login as a qtodo-admin user, which can modify all demo application entries.
+For a detailed technical breakdown of the sidecar architecture and data protection workflow, see the Sidecar pattern section in the Architecture page.
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-data-protection/",breadcrumb:"/patterns/layered-zero-trust/lzt-data-protection/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-explore-this-pattern/":{title:"Explore this pattern",tags:[],content:` Red Hat OpenShift AI components Most components installed as part of this pattern are available in the Red Hat OpenShift AI (RHOAI) console. To navigate to this page, click the Red Hat OpenShift AI link in the application launcher of the OpenShift console.
 Figure 1. The RHOAI Link Kubeflow pipeline The pattern installation automatically creates and runs a Kubeflow pipeline to build and train the fraud detection model. To view pipeline details in the RHOAI console, select the Pipelines tab.
 Figure 2. The pipelines tab This tab displays the fraud-detection pipeline deployed as part of this pattern. To view the specific run that trained the initial model, select the Runs tab and then select the job-run item.
 Figure 3. The runs tab The Runs page displays a diagram of the pipeline, which includes the following three major steps:
@@ -3186,40 +3335,7 @@ To tag the cluster as clusterGroup=&lt;managed-cluster-group&gt;, complete the f
 Procedure To find the new cluster, run the following command:
 oc get managedcluster.cluster.open-cluster-management.io To apply the label, run the following command:
 oc label managedcluster.cluster.open-cluster-management.io/YOURCLUSTER site=managed-cluster Verification Go to your managed cluster (edge) OpenShift console and check for the open-cluster-management-agent pod being launched. It might take a while for the RHACM agent and agent-addons to launch. After that, the OpenShift GitOps Operator is installed. On successful installation, launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx/mcg-sgx-managed-cluster/",breadcrumb:"/patterns/multicloud-gitops-sgx/mcg-sgx-managed-cluster/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-secure-multitier/":{title:"Secure multitiered applications",tags:[],content:`Use case: Secure multitiered applications This use case demonstrates securing a common application design pattern: a frontend application using a database for persistent storage.
-The Layered Zero Trust Pattern includes the qtodo application, which demonstrates a secure just-in-time (JIT) credential mechanism.
-Instead of relying on static credentials stored within the application, the qtodo application uses a JIT method to dynamically fetch database credentials from a central credential store.
-Application components and architecture The qtodo application consists of the following key components and their security roles:
-The qtodo application: A Quarkus-based frontend application protected by OpenID Connect (OIDC) authentication. Users are managed in an external identity store which uses Red Hat Build of Keycloak (RHBK).
-PostgreSQL: The relational database used by the qtodo application. Its credentials are dynamically generated and stored within HashiCorp Vault.
-External Identity store: Contains the provisioned users and configured OIDC clients that enable access to the qtodo frontend.
-HashiCorp Vault: Stores sensitive values for components, including PostgreSQL and RHBK. Implements JSON Web Token (JWT)-based authentication to enable access by using Zero Trust Workload Identity Manager (ZTWIM)-based identities.
-Zero Trust Workload Identity Manager: It assigns an identity to the qtodo application, allowing it to communicate with HashiCorp Vault and obtain the necessary PostgreSQL credentials.
-spiffe-helper: A supplemental sidecar component for the qtodo application used to dynamically fetch JWT-based identities from the SPIFFE Workload API.
-Exploring the qtodo application The qtodo application is a key component of the Layered Zero Trust Pattern, demonstrating the secure JIT fetching of credentials. To explore how the application implements Zero Trust principles, use the OpenShift Container Platform web console of the Hub cluster to investigate the resources in the qtodo project.
-Procedure In the OpenShift Container Platform web console, navigate to the Projects page and select the qtodo project. This namespace contains the qtodo Quarkus application and the qtodo-db PostgreSQL database.
-Select Workloads → Pods from the left-hand navigation bar. Explore both the qtodo and qtodo-db pods.
-The qtodo pod uses a series of init containers and sidecar containers to supply the application with the credentials required for operation.
-Locating the application address You can access the qtodo application through the OpenShift Container Platform route.
-Procedure In the OpenShift Container Platform web console, navigate to the Projects page and select the qtodo project.
-Select Networking → Routes from the left-hand navigation bar. Note the URL for the qtodo application in the Location column.
-Open a new browser tab and navigate to the qtodo application URL.
-The RHBK login page appears.
-Locating the application credentials The default External Identity Provider, RHBK, is provisioned with two users: qtodo-admin and qtodo-user. You can find the initial credentials in a Secret within the keycloak-system namespace called keycloak-users.
-Procedure In the OpenShift Container Platform web console, navigate to the Projects page and select the keycloak-system project.
-Select Workloads → Secrets from the left-hand navigation bar.
-Select the keycloak-users secret.
-Click the Reveal values link to see the credentials.
-Accessing the application Procedure Navigate to the RHBK login page, as described in the Locate the application’s address section.
-Enter the username and password for one of the users, using the values found in the Locate the application credentials section.
-After you log in, follow the on-screen instructions to change the temporary password.
-Set a new password and confirm the change.
-After the password change is complete, the qtodo application appears.
-Verifying integration The qtodo application uses PostgreSQL for persistent storage. You can verify that the application is correctly integrated with the database by creating a new to-do item.
-Procedure In the qtodo application, add new items to the list of to-dos and remove existing items.
-Refresh the page to verify that the items persist.
-By successfully modifying the list, you confirm that the integration between the Quarkus application and the PostgreSQL database—using credentials sourced dynamically from HashiCorp Vault—was successful.
-`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-secure-multitier/",breadcrumb:"/patterns/layered-zero-trust/lzt-secure-multitier/"},"https://validatedpatterns.io/patterns/devsecops/devel-cluster/":{title:"Secured Development Cluster",tags:[],content:`Having a development cluster (devel) join the hub Introduction Development clusters are responsible for building applications and delivering the applications to a secured registry. The development cluster defines a secure pipeline that includes code and image scans and image signing before delivering them to the registry. OpenShift Pipelines is used for the continuous integration (CI). The Quay registry is deployed on the hub and therefore integration is required for the development pipeline to push images to the registry.
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-sgx/mcg-sgx-managed-cluster/",breadcrumb:"/patterns/multicloud-gitops-sgx/mcg-sgx-managed-cluster/"},"https://validatedpatterns.io/patterns/devsecops/devel-cluster/":{title:"Secured Development Cluster",tags:[],content:`Having a development cluster (devel) join the hub Introduction Development clusters are responsible for building applications and delivering the applications to a secured registry. The development cluster defines a secure pipeline that includes code and image scans and image signing before delivering them to the registry. OpenShift Pipelines is used for the continuous integration (CI). The Quay registry is deployed on the hub and therefore integration is required for the development pipeline to push images to the registry.
 Development clusters also need to be secured and so one part of the deployment is Advanced Cluster Security with a secured configuration. This allows ACS to monitor and report on security issues on the cluster. ACS secured sites report to an ACS Central application that is deployed on the hub.
 Allow ACM to deploy the devel applications to a subset of clusters By default the devel applications are deployed on any development clusters that ACM knows about.
 managedClusterGroups: - name: devel helmOverrides: - name: clusterGroup.isHubCluster value: &#34;false&#34; clusterSelector: matchLabels: clusterGroup: devel matchExpressions: - key: vendor operator: In values: - OpenShift Remember to commit the changes and push to GitHub so that GitOps can see your changes and apply them.
@@ -3530,7 +3646,43 @@ Custom Ansible controller (API install) In this method, you provide an existing 
 You supply the manifest contents, endpoint hostname, admin username (defaults to &#34;admin&#34;), and admin password, and then the installation hands off to a controller_config_dir you define.
 Run the following command to install by using this method:
 $ ./pattern.sh make api_install Tearing down the installation To tear down the installation run the following command:
-$ ./pattern.sh make aws_uninstall `,url:"https://validatedpatterns.io/learn/vp_agof/",breadcrumb:"/learn/vp_agof/"},"https://validatedpatterns.io/learn/vp_agof_config_controller/":{title:"Using the Controller Configuration collection",tags:[],content:` Overview of the Ansible GitOps Framework (AGOF) Installation Process The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate the deployment and configuration of Ansible Automation Platform (AAP) environments using GitOps principles. It leverages Ansible to manage infrastructure and application provisioning in a declarative, version-controlled way. AGOF provides a structured approach to setting up cloud infrastructure, installing AAP components, and handing over control to the AAP Controller for ongoing automation and management. An overview of the steps involved in configuring a basic minimal demo application are listed here:
+$ ./pattern.sh make aws_uninstall `,url:"https://validatedpatterns.io/learn/vp_agof/",breadcrumb:"/learn/vp_agof/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-security-monitoring/":{title:"Security monitoring",tags:[],content:`Security monitoring — ACS as the Zero Trust brain This use case is covered by the default Layered Zero Trust pattern installation described in the Getting Started guide. Red Hat Advanced Cluster Security and the custom ZTVP security policies are deployed automatically — no additional configuration is required.
+Why runtime monitoring matters Network policies establish the gates. Compliance scanning verifies the locks. But who watches what happens inside the walls? Red Hat Advanced Cluster Security (ACS) is the central security brain of the ZTVP — it continuously monitors workload behavior, verifies that network boundaries are enforced, and terminates compromised pods in real-time.
+In the context of a NIST SP 800-207 Zero Trust architecture, ACS implements the critical control loop: it acts as the Policy Information Point (PIP) that gathers real-time context, feeds it to the Policy Decision Point (PDP), and triggers automated responses at the Policy Enforcement Point (PEP).
+Network policy monitoring ACS continuously verifies that every workload has proper network boundaries. The ZTVP deploys two custom ACS policies that alert administrators when projects or namespaces are missing network policy coverage:
+Policy Phase Action Projects/Namespaces should have at least one ingress Network Policy
+Deploy
+Alert — flags workloads exposed to internal network traffic without an ingress boundary
+Projects/Namespaces should have at least one egress Network Policy
+Deploy
+Alert — identifies configurations that could allow data exfiltration or unrestricted lateral movement
+These custom policies are deployed automatically by the ZTVP via the acs-policies Helm chart in the charts/acs-policies directory of the repository.
+Currently, to demonstrate this capability in a controlled manner and prevent alert fatigue across an entire cluster, these policies are scoped to the ZTVP demo application namespaces. Within this scope, the policies continuously scan the environment — if a developer pushes a deployment without defining its specific network boundaries, ACS immediately flags it.
+This complements the default-deny foundation described in our blog article: Can’t Patch Fast Enough? Zero Trust as a Last Line of Defense.
+Real-time threat response When network policies contain an attacker, ACS eliminates the threat entirely. The ZTVP deploys two additional custom policies in termination mode:
+Policy Phase Action Prevent Runtime Privilege Escalation
+Runtime
+Terminate — instantly kills the pod if a container attempts sudo, su, pkexec, nsenter, or unshare
+Stop Suspicious Exec
+Runtime
+Terminate — immediately terminates the pod if an attacker runs reconnaissance tools (nmap, nc, ncat) or attempts to spawn interactive shells
+This is the &#34;assume breach&#34; principle in action: even if an attacker bypasses initial defenses, they cannot escalate privileges or map the internal environment.
+For the full deep dive, read: Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security.
+The defense-in-depth synergy The combination of network policies and ACS runtime monitoring creates a layered defense where each layer reinforces the others:
+Network Policies block lateral movement — the attacker is trapped inside the compromised container.
+ACS Runtime Monitoring detects anomalous behavior — the attacker’s actions are observed and classified.
+ACS Termination Policies kill the compromised pod — the threat is eliminated automatically, without human intervention.
+The result: the attacker is contained, eliminated, and logged — all automatically. Even if a network policy configuration was missed, the risk of a successful, prolonged attack drops effectively to zero.
+Accessing ACS Central ACS Central supports two login methods:
+Keycloak OIDC (default login page) — username acs-admin, password from Vault path secret/hub/infra/acs/acs-central.
+Basic auth — select &#34;Login with username/password&#34; on the ACS login page — username admin, same password as above.
+See Accessing credentials for instructions on how to retrieve secrets from Vault.
+Further reading Can’t Patch Fast Enough? Zero Trust as a Last Line of Defense — Network policies as the last line of defense
+Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security — ACS as an active defense engine
+Architecture — Full component breakdown
+Data Protection — Zero Trust data protection use case
+Sidecar pattern — Detailed technical walkthrough
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-security-monitoring/",breadcrumb:"/patterns/layered-zero-trust/lzt-security-monitoring/"},"https://validatedpatterns.io/learn/vp_agof_config_controller/":{title:"Using the Controller Configuration collection",tags:[],content:` Overview of the Ansible GitOps Framework (AGOF) Installation Process The Ansible GitOps Framework (AGOF) is a powerful solution designed to automate the deployment and configuration of Ansible Automation Platform (AAP) environments using GitOps principles. It leverages Ansible to manage infrastructure and application provisioning in a declarative, version-controlled way. AGOF provides a structured approach to setting up cloud infrastructure, installing AAP components, and handing over control to the AAP Controller for ongoing automation and management. An overview of the steps involved in configuring a basic minimal demo application are listed here:
 1. Pre-Init Environment (Bootstrap Ansible) Ansible Configuration: The environment is initialized by generating an ansible.cfg file, which is configured with Automation Hub and public Galaxy endpoints. This process includes vault configuration to inject the Automation Hub token and install required Ansible collections from requirements.yml.
 Optional Image Build: Images are created using Red Hat Image Builder to produce AMIs, which include cloud-init, activation keys, and organization details. These images can be reused in future installations.
 2. Infrastructure Building (AWS Only) AWS Setup: The framework sets up AWS infrastructure, including VPC, subnets, and security groups, using predefined roles. It also manages Route53 DNS entries for VMs.
@@ -4451,7 +4603,18 @@ More information can be found on official Gaudi website.
 Recommended platforms We have deployed and tested this Validated Pattern on two platforms:
 Supermicro AI Training SuperServer SYS-820GH-TNR2
 DELL PowerEdge XE9680 Rack Server
-`,url:"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-required-hardware/",breadcrumb:"/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-required-hardware/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-secure-supply-chain/":{title:"Secure supply chain",tags:[],content:`Use case: Secure supply chain A key objective of ZTVP is the comprehensive security of both the platform and the applications deployed on it. This use case outlines the process of building, signing, and verifying artifacts and images within the Zero Trust Validated Pattern (ZTVP) using the Red Hat Trusted Artifact Signer (RHTAS) and the Red Hat Trusted Profile Analyzer (RHTPA). Through the implementation of this supply chain, we can establish a chain of trust and integrity for applications.
+`,url:"https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-required-hardware/",breadcrumb:"/patterns/gaudi-rag-chat-qna/gaudi-rag-chat-qna-required-hardware/"},"https://validatedpatterns.io/patterns/devsecops/production-cluster/":{title:"Secured Production Clusters",tags:[],content:`Having a production cluster join the hub Introduction Production clusters need to be secured and so one part of the deployment is to install the Advanced Cluster Security operator with a secured configuration. This allows ACS central to monitor and report on security issues on the cluster. ACS secured sites report to an ACS Central application that is deployed on the hub.
+Allow ACM to deploy the production application to a subset of secured clusters By default the production applications are deployed on all prod clusters that ACM knows about.
+- name: secured helmOverrides: - name: clusterGroup.isHubCluster value: &#34;false&#34; clusterSelector: matchLabels: clusterGroup: prod matchExpressions: - key: vendor operator: In values: - OpenShift Remember to commit the changes and push to GitHub so that GitOps can see your changes and apply them.
+Deploy a Production (prod) cluster For instructions on how to prepare and import a production (prod) cluster please read the section importing a cluster. Use clusterGroup=prod.
+You are done importing the production cluster That&rsquo;s it! Go to your production OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it&rsquo;s finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
+Next up Work your way through the Multicluster DevSecOps GitOps/DevOps demos (TBD)
+`,url:"https://validatedpatterns.io/patterns/devsecops/production-cluster/",breadcrumb:"/patterns/devsecops/production-cluster/"},"https://validatedpatterns.io/learn/validated_patterns_frameworks/":{title:"Validated patterns frameworks",tags:[],content:` Introduction Validated patterns provides two frameworks to deploy applications: the OpenShift-based Validated Patterns framework and the Ansible GitOps Framework (AGOF).
+The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat.
+Ansible GitOps Framework (AGOF) is an alternative framework, designed to provide a framework for GitOps without Kubernetes. AGOF is not a pattern itself; it is a framework for installing Ansible Automation Platform (AAP), and then using that as the GitOps engine to drive other pattern work. AGOF comes with code to install VMs in AWS, if desired, or else it can work with previously provisioned VMs, or a functional AAP Controller endpoint.
+The goal with either framework, is that developers, operators, security, and architects build a secure and repeatable day one deployment mechanism and maintenance automation for day two operations.
+`,url:"https://validatedpatterns.io/learn/validated_patterns_frameworks/",breadcrumb:"/learn/validated_patterns_frameworks/"},"https://validatedpatterns.io/workshop/partners/":{title:"Partners",tags:[],content:` Working with Partners Partners have taken notice of what Validated Patterns can bring to their organizations. In turn, they have had focused development cycles to deploy their product/features using the Validated Patterns framework. In the following sections we will discuss how a few of our partners have taken advantage of the Validated Patterns framework.
+Intel AMX Accelerated Hardware Portworx Cisco with Portworx Veeam Kasten `,url:"https://validatedpatterns.io/workshop/partners/",breadcrumb:"/workshop/partners/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-secure-supply-chain/":{title:"Secure supply chain",tags:[],content:`Use case: Secure supply chain A key objective of ZTVP is the comprehensive security of both the platform and the applications deployed on it. This use case outlines the process of building, signing, and verifying artifacts and images within the Zero Trust Validated Pattern (ZTVP) using the Red Hat Trusted Artifact Signer (RHTAS) and the Red Hat Trusted Profile Analyzer (RHTPA). Through the implementation of this supply chain, we can establish a chain of trust and integrity for applications.
 Cloning the app source code The qtodo demo application is publicly accessible within its dedicated GitHub repository. Clone the repository that has the source code.
 Procedure Clone the repository:
 $ git clone https://github.com/validatedpatterns-demos/qtodo.git Building the app artifact The application requires Java 17+ and Maven 3.8.x+ to compile. However, you can use containers and the Makefile that is already present in the repository.
@@ -4528,18 +4691,7 @@ Procedure Install the ec tool:
 # Install the ec tool (Example for Linux amd64) $ curl -sSfk &#34;\${CLI_SERVER_URL}/clients/linux/ec-amd64.gz&#34; -o - | gunzip -c &gt; /usr/local/bin/ec $ chmod +x /usr/local/bin/ec Verify the installation by checking the version:
 $ ec version Validate the SBOM attached to the image. Because ec communicates with the Rekor (RHTAS) service, initialize sigstore before this task.
 # Validate the SBOM of the image $ ec validate image \\ --image &#34;\${IMAGE}&#34; \\ --certificate-identity-regexp &#34;.*\${RHTAS_USER}.*&#34; \\ --certificate-oidc-issuer &#34;\${OIDC_ISSUER_URL}&#34; \\ --rekor-url &#34;\${REKOR_URL}&#34; \\ --show-successes Conclusion This concludes our implementation of a Secure Supply Chain leveraging Red Hat Trusted Artifact Signer (RHTAS) and the Red Hat Trusted Profile Analyzer (RHTPA). We have demonstrated the complete process, which encompasses building an application from source code, generating a container image, cryptographically signing the resulting binaries, and subsequently verifying that these binaries have been signed by an authorized entity. Future work may focus on the automation of this process and its integration into a Continuous Integration/Continuous Delivery (CI/CD) solution.
-`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-secure-supply-chain/",breadcrumb:"/patterns/layered-zero-trust/lzt-secure-supply-chain/"},"https://validatedpatterns.io/patterns/devsecops/production-cluster/":{title:"Secured Production Clusters",tags:[],content:`Having a production cluster join the hub Introduction Production clusters need to be secured and so one part of the deployment is to install the Advanced Cluster Security operator with a secured configuration. This allows ACS central to monitor and report on security issues on the cluster. ACS secured sites report to an ACS Central application that is deployed on the hub.
-Allow ACM to deploy the production application to a subset of secured clusters By default the production applications are deployed on all prod clusters that ACM knows about.
-- name: secured helmOverrides: - name: clusterGroup.isHubCluster value: &#34;false&#34; clusterSelector: matchLabels: clusterGroup: prod matchExpressions: - key: vendor operator: In values: - OpenShift Remember to commit the changes and push to GitHub so that GitOps can see your changes and apply them.
-Deploy a Production (prod) cluster For instructions on how to prepare and import a production (prod) cluster please read the section importing a cluster. Use clusterGroup=prod.
-You are done importing the production cluster That&rsquo;s it! Go to your production OpenShift console and check for the open-cluster-management-agent pod being launched. Be patient, it will take a while for the ACM agent and agent-addons to launch. After that, the operator OpenShift GitOps will run. When it&rsquo;s finished coming up launch the OpenShift GitOps (ArgoCD) console from the top right of the OpenShift console.
-Next up Work your way through the Multicluster DevSecOps GitOps/DevOps demos (TBD)
-`,url:"https://validatedpatterns.io/patterns/devsecops/production-cluster/",breadcrumb:"/patterns/devsecops/production-cluster/"},"https://validatedpatterns.io/learn/validated_patterns_frameworks/":{title:"Validated patterns frameworks",tags:[],content:` Introduction Validated patterns provides two frameworks to deploy applications: the OpenShift-based Validated Patterns framework and the Ansible GitOps Framework (AGOF).
-The OpenShift-based validated patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat.
-Ansible GitOps Framework (AGOF) is an alternative framework, designed to provide a framework for GitOps without Kubernetes. AGOF is not a pattern itself; it is a framework for installing Ansible Automation Platform (AAP), and then using that as the GitOps engine to drive other pattern work. AGOF comes with code to install VMs in AWS, if desired, or else it can work with previously provisioned VMs, or a functional AAP Controller endpoint.
-The goal with either framework, is that developers, operators, security, and architects build a secure and repeatable day one deployment mechanism and maintenance automation for day two operations.
-`,url:"https://validatedpatterns.io/learn/validated_patterns_frameworks/",breadcrumb:"/learn/validated_patterns_frameworks/"},"https://validatedpatterns.io/workshop/partners/":{title:"Partners",tags:[],content:` Working with Partners Partners have taken notice of what Validated Patterns can bring to their organizations. In turn, they have had focused development cycles to deploy their product/features using the Validated Patterns framework. In the following sections we will discuss how a few of our partners have taken advantage of the Validated Patterns framework.
-Intel AMX Accelerated Hardware Portworx Cisco with Portworx Veeam Kasten `,url:"https://validatedpatterns.io/workshop/partners/",breadcrumb:"/workshop/partners/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/ansible-automation-platform/":{title:"Ansible Automation Platform",tags:[],content:`Ansible Automation Platform How it&rsquo;s installed See the installation details here.
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-secure-supply-chain/",breadcrumb:"/patterns/layered-zero-trust/lzt-secure-supply-chain/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/ansible-automation-platform/":{title:"Ansible Automation Platform",tags:[],content:`Ansible Automation Platform How it&rsquo;s installed See the installation details here.
 How to Log In The default login user is admin and the password is generated randomly at install time; you will need the password to login in to the AAP interface. You do not have to log in to the interface - the pattern will configure the AAP instance; the pattern retrieves the password using the same technique as the ansible_get_credentials.sh script described below. If you want to inspect the AAP instance, or change any aspects of its configuration, there are two ways to login and look at it. Both mechanisms are equivalent; you get the same password to the same instance using either technique.
 Via the OpenShift Console In the OpenShift console, navigate to Workloads &gt; Secrets and select the &ldquo;ansible-automation-platform&rdquo; project if you want to limit the number of Secrets you can see.
 The Secret you are looking for is in the ansible-automation-platform project and is named controller-admin-password. If you click on it, you can see the Data.password field. It is shown revealed below to show that it is the same as what is shown by the script method of retrieving it below:
@@ -4756,7 +4908,7 @@ the pattern is no longer under active development or maintenance
 documentation remains available for reference
 Details
 Additional Resources For more details, see the Pattern Tier Types page and the Implementation Requirements guide.
-`,url:"https://validatedpatterns.io/workshop/tiers/",breadcrumb:"/workshop/tiers/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-automated-secure-supply-chain/":{title:"Secure supply chain - Automated approach",tags:[],content:`Use case: Automating the secure supply chain The Secure multitiered applications use case describes how to implement a secure supply chain for application development by using Red Hat Trusted Artifact Signer (RHTAS) and the Red Hat Trusted Profile Analyzer (RHTPA). This use case demonstrates automation of the secure supply chain for application development by using Red Hat OpenShift Pipelines.
+`,url:"https://validatedpatterns.io/workshop/tiers/",breadcrumb:"/workshop/tiers/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-automated-secure-supply-chain/":{title:"Secure supply chain - Automated approach",tags:[],content:`Use case: Automating the secure supply chain The Data Protection use case describes how to implement a secure supply chain for application development by using Red Hat Trusted Artifact Signer (RHTAS) and the Red Hat Trusted Profile Analyzer (RHTPA). This use case demonstrates automation of the secure supply chain for application development by using Red Hat OpenShift Pipelines.
 OpenShift Pipelines orchestrates the application building and certification process. The Zero Trust Validated Pattern (ZTVP) creates a pipeline in the cluster named qtodo-supply-chain.
 Pipeline tasks The pipeline includes the following tasks:
 qtodo-clone-repository: Clones the qtodo repository.
@@ -7543,87 +7695,39 @@ Customize while maintaining upstream compatibility
 Component Selection
 Declarative component enablement via kustomize resources
 Granular control over telco-hub functionality
-`,url:"https://validatedpatterns.io/patterns/telco-hub/",breadcrumb:"/patterns/telco-hub/"},"https://validatedpatterns.io/patterns/layered-zero-trust/":{title:"Layered Zero Trust",tags:[],content:`About the Layered Zero Trust pattern Zero trust is an approach to security architecture based on the idea that every interaction starts in an untrusted state. The Layered Zero Trust pattern shows how to implement zero trust in a Red Hat OpenShift Container Platform environment. The pattern identifies specific transactions between an actor and a resource. For these transactions, you can determine the context and enforce policies.
-Because of the breadth and diversity of possible interactions between components in Red Hat OpenShift Container Platform, this pattern is presented as a set of abstract, stackable layers. These layers provide the prerequisite capabilities that are needed to implement appropriate enforcement points. For each instance, this pattern describes the associated actors, transactions, and the zero-trust policy that you can implement within the platform. To provide context for users, this pattern uses relevant business use cases and traces them to the associated implementation components.
-Use case The pattern addresses the shortcomings of traditional cybersecurity methods, such as defensive hardening and reactive detection. It is particularly effective for the following types of systems and environments:
-Distributed systems, such as cloud and edge environments.
-Autonomous and artificial intelligence (AI) or machine learning (ML) based systems, including robotic process automation.
-Large, composite systems that integrate third-party or legacy components.
-This pattern provides specific implementations for each of these business use cases within its abstract, layered structure.
-Background Traditional security approaches are often incomplete, as they are susceptible to unknown exploits (zero-days) and rely on human-intensive processes that can be inconsistent and prone to error. Attackers continuously develop new methods to evade signature-based detection and exploit systems by targeting those already deemed trustworthy.
-In contrast, the Zero Trust architecture operates from the assumption that a breach will occur. It focuses on preventing further compromise by establishing well-defined security boundaries and enforcing a deny-all default access control stance. The pattern emphasizes significant automation and grants access dynamically, based on policies, with a least-privilege, as-needed approach. Instead of relying on signatures, it explicitly enumerates allowed actors and monitors their behavior, which is a more effective way to contain malicious activity. Zero Trust architectures incorporate contextual information and user behavior analytics to inform access decisions, proactively preventing lateral movement in case of a compromise.
-About the solution The Layered Zero Trust pattern implements a layered zero trust architecture that shows workload identity management, secure communication, and secret management capabilities.
-The solution integrates many Red Hat components to offer:
-Workload identity using Secure Production Identity Framework for Everyone (SPIFFE) and SPIFFE Runtime Environment (SPIRE) standards.
-Secure secret management through HashiCorp Vault.
-Identity and access management by using the Red Hat build of Keycloak (RHBK).
-Certificate management for secure communications.
-External secret management integration.
-Cryptographic signing and verification.
-SBOM vulnerability analysis.
-Architecture The Layered Zero Trust pattern architecture consists of many components that work together to offer a secure environment for applications and workloads.
-The pattern consists of the following key components:
-Compliance Operator
-Provides OpenShift Container Platform cluster hardening.
-Red Hat build of Keycloak (RHBK)
-Provides identities for pattern components.
-Provides an OIDC client that authenticates users to a web application.
-Red Hat Zero Trust Workload Identity Manager
-Provides identities to workloads running in OpenShift Container Platform.
-HashiCorp Vault
-Stores sensitive assets securely.
-External Secrets Operator (ESO)
-Synchronizes secrets stored in HashiCorp Vault with OpenShift Container Platform.
-Red Hat Advanced Cluster Management (RHACM)
-Provides a management control plane in multi-cluster scenarios.
-Red Hat Quay
-Enables a private repository for OCI images within the environment.
-Multicloud Object Gateway
-Provides an object storage service for OpenShift Container Platform.
-Red Hat Trusted Artifact Signer (RHTAS)
-Provides cryptographic signing and verification of software artifacts and container images.
-Red Hat Trusted Profile Analyzer (RHTPA)
-Provides the storage and management means for Software Bill of Materials (SBOMs), with cross-referencing capabilities between SBOMs and CVEs/Security Advisories.
-Red Hat OpenShift Pipelines
-Provides a cloud-native continuous integration and continuous deployment (CI/CD) solution on OpenShift Container Platform.
-Architecture diagram The layered zero trust architecture enforces a Zero Trust model through four decoupled layers:
-Identity: Keycloak manages user authentication, while SPIRE assigns short-lived, cryptographic identities to workloads for secure service-to-service recognition.
-Secure Transport: Sidecar proxies intercept traffic to enforce mutual TLS (mTLS), ensuring all communication is encrypted and mutually authenticated without application code changes.
-Secrets: Vault centrally stores sensitive data, which is securely synced into the cluster by the External Secrets Operator only when needed.
-Compliance: RHACM and the Compliance Operator monitor the environment to ensure consistent policy enforcement and infrastructure hardening.
-Sidecar pattern The sidecar pattern is a deployment model where a separate container or process, known as a sidecar, runs alongside the main application to handle auxiliary tasks. In an OpenShift Container Platform environment, pods simplify this by ensuring the sidecar and main application share the same lifecycle. This approach benefits Zero Trust architectures by enabling centralized enforcement of security policies such as authentication, authorization, traffic encryption (mTLS), rate limiting, auditing, and logging, without requiring developers to add this logic to every microservice. It separates concerns, simplifies development, and allows security policies to be updated independently of the main application.
-While sidecars are often criticized for adding complexity and resource usage, these are often misconceptions:
-Complexity: Sidecars simplify the main application by offloading tasks, and modern platforms, such as OpenShift Container Platform, are designed to manage them efficiently.
-Resource Usage: The resource cost of a sidecar is often minimal compared to the additional CPU and memory required to integrate security logic into every application.
-Debugging: Sidecars can simplify debugging by isolating logs and metrics from the main application, making it easier to pinpoint the source of a policy failure.
-The Layered Zero Trust pattern uses the sidecar approach to offload critical security functions from the main application. This centralizes policy enforcement, simplifies development, and separates security concerns. The sidecar patterns in this approach handle tasks such as authentication and authorization, traffic encryption, rate limiting, and auditing and logging.
-Applied sidecar pattern: Data protection The following diagrams illustrate how the sidecar pattern is applied in practice to solve the Data Protection use case. They demonstrate how an application (qtodo) retrieves database credentials dynamically without hard-coding secrets.
-Logical structure The logical structure diagram shows the composition of the application pod and its relationship to the infrastructure.
-Decoupled components: The qtodo application logic is separated from security functions. The application container runs alongside helper sidecars (spiffe-vault-client, spiffe-helper) and init containers.
-Infrastructure layers: The sidecars bridge the gap between the application and the platform services:
-Workload identity: The sidecars interface with SPIRE to prove the pod’s identity.
-Secret management: They connect to HashiCorp Vault to fetch secrets.
-Trust anchors: Keycloak and Cert Manager provide the root trust for the ecosystem.
-Schematic Workflow The schematic diagram details the step-by-step execution flow, matching the numbered markers in the schematic:
-Identity minting (Steps 3-6): Upon startup, the SPIRE Agent validates the pod (via node attestors and kubelet) and mints a cryptographic identity (SPIFFE ID).
-Secret retrieval (Step 7): The spiffe-vault-client sidecar uses this verified identity to authenticate with HashiCorp Vault and request the specific credentials needed for the database.
-Secure access (Steps 8-9): The credentials are passed to the application, allowing it to authenticate and establish a connection to the PostgreSQL database securely.
-About the technology The following technologies are used in this solution:
-Zero Trust Workload Identity Manager: Implements workload identity using SPIFFE/SPIRE.
-HashiCorp Vault: Provides secure secret storage and management.
-Red Hat build of Keycloak: Manages identity and access for users and services.
-Red Hat OpenShift GitOps: A GitOps continuous delivery (CD) solution based on ArgoCD
-OpenShift Cert Manager: Manages the lifecycle of certificates for secure communication.
-RHACM: Provides management capabilities in multi-cluster scenarios.
-External Secrets Operator: Synchronizes secrets from external systems into the cluster.
-Compliance Operator: Provides ability to scan and remediate cluster hardening based on profiles
-QTodo application: Serves as a sample Quarkus-based application to show zero trust principles.
-PostgreSQL database: Provides the backend database for the demonstration application.
-Multicloud Object Gateway: Lightweight object storage service for OpenShift Container Platform. Used by Quay for the storage of binary blobs.
-Red Hat Quay: Private registry for OCI images.
-Red Hat Trusted Artifact Signer: Facilitates signing and verification of software artifacts.
-Red Hat Trusted Profile Analyzer: Enables SBOM file analysis and vulnerability detection.
-Red Hat OpenShift Pipelines: Enables a native CI/CD solution on OpenShift Container Platform.
+`,url:"https://validatedpatterns.io/patterns/telco-hub/",breadcrumb:"/patterns/telco-hub/"},"https://validatedpatterns.io/patterns/layered-zero-trust/":{title:"Layered Zero Trust",tags:[],content:`About the Layered Zero Trust pattern The Layered Zero Trust Validated Pattern deploys a complete Zero Trust security architecture on Red Hat OpenShift Container Platform, automatically, via GitOps. It addresses the fundamental shortcoming of traditional perimeter security: the assumption that anything inside a trusted domain (the network, its services, and its actors) can be trusted.
+Static defenses don’t stop what’s already inside — Perimeter firewalls and ingress controllers protect the front door, but supply chain attacks, compromised dependencies, and insider threats operate from within. Zero Trust assumes breach and enforces verification at every interaction.
+You can’t patch fast enough — Over 40,000 CVEs were published in 2025. AI-powered exploit generation is shrinking the window between disclosure and exploitation. Zero Trust provides defense-in-depth that contains threats even when patches haven’t been applied yet. Read more.
+Compliance mandates require evidence, not promises — Federal mandates (EO 14028, OMB M-22-09, CISA Zero Trust Maturity Model) and industry standards (NIST SP 800-207, NIST SP 800-53) require organizations to demonstrate Zero Trust implementation with auditable evidence. The ZTVP generates this evidence automatically through GitOps audit trails, compliance scanning, and runtime monitoring.
+About the solution elements The pattern deploys the following security capabilities automatically:
+Capability What it does Secret Management
+Database credentials and API keys are stored in HashiCorp Vault and injected just-in-time. Vault also provides JWT-based authentication for workload identity verification. The External Secrets Operator (ESO) synchronizes secrets from Vault into the cluster, keeping them up to date automatically.
+Workload Identity
+Every pod gets a cryptographic identity (SPIFFE/SPIRE) — no shared secrets.
+User Authentication
+Centralized SSO via Red Hat build of Keycloak with per-application OIDC clients.
+Network Segmentation
+Default-deny NetworkPolicies — every connection must be explicitly allowed.
+Runtime Security
+Red Hat Advanced Cluster Security monitors workload behavior and terminates compromised pods in real-time.
+Compliance Scanning
+Continuous CIS benchmark scanning with automated remediation via the Compliance Operator.
+Certificate Management
+Automated TLS certificate lifecycle with daily CA rotation.
+Supply Chain Security
+Keyless artifact signing, SBOM analysis, and tamper-evident transparency logs.
+About the architecture The ZTVP uses a layered architecture:
+Layer 0 (Foundation) deploys the core security baseline automatically: identity, secrets, compliance, certificates, and runtime monitoring.
+Layer 1 (Feature Sets) adds optional capabilities like supply chain security and private registries when you need them.
+Layer 2 (Use Cases) provides real applications that demonstrate Zero Trust in practice.
+For a full technical breakdown, see the Architecture page.
+Next steps Getting started — Deploy the pattern via GUI or CLI
+Architecture — Layered model, sidecar pattern, deployment variants
+Data Protection — Zero Trust data protection in action
+Security Monitoring — ACS as the Zero Trust brain
+Blog: Can’t Patch Fast Enough? Zero Trust as a Last Line of Defense
+Blog: Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security
+GitHub Repository
 `,url:"https://validatedpatterns.io/patterns/layered-zero-trust/",breadcrumb:"/patterns/layered-zero-trust/"},"https://validatedpatterns.io/blog/2025-08-29-new-common-makefile-structure/":{title:"From slim common to no common",tags:[],content:` Retiring the common Directory with a Smarter Makefile We’re simplifying our Validated Patterns workflow in a big way: the common directory is going away.
 Why does this matter? Fewer moving parts, leaner repositories, and updates that flow automatically to every pattern. Instead of juggling wrapper scripts and redundant logic across repos, everything now runs through a centralized, smarter Makefile.
 This post explains why we made the change, how it benefits you, and what you need to do to start using this streamlined approach.
