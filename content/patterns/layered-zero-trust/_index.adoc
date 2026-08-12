@@ -2,7 +2,7 @@
 title: Layered Zero Trust
 date: 2025-09-12
 tier: tested
-summary: Layered Zero Trust demonstrates how to operationalize Zero Trust security principles when using products in the Red Hat Portfolio.
+summary: The Layered Zero Trust Validated Pattern deploys a complete Zero Trust security architecture on Red Hat OpenShift — automatically, via GitOps.
 rh_products:
 - Red Hat OpenShift Container Platform
 industries:
@@ -18,7 +18,6 @@ links:
 ci: layeredzerotrust
 ---
 
-
 :toc:
 :imagesdir: /images
 :_mod-docs-content-type: ASSEMBLY
@@ -27,169 +26,66 @@ include::modules/comm-attributes.adoc[]
 [id="about-lzt-pattern"]
 = About the Layered Zero Trust pattern
 
-link:https://www.redhat.com/en/topics/security/what-is-zero-trust[Zero trust] is an approach to security architecture based on the idea that every interaction starts in an untrusted state.
-The Layered Zero Trust pattern shows how to implement zero trust in a {rh-ocp} environment.
-The pattern identifies specific transactions between an actor and a resource.
-For these transactions, you can determine the context and enforce policies.
+The Layered Zero Trust Validated Pattern deploys a complete Zero Trust security architecture on {rh-ocp}, automatically, via GitOps. It addresses the fundamental shortcoming of traditional perimeter security: the assumption that anything inside a trusted domain (the network, its services, and its actors) can be trusted.
 
-Because of the breadth and diversity of possible interactions between components in {rh-ocp}, this pattern is presented as a set of abstract, stackable layers.
-These layers provide the prerequisite capabilities that are needed to implement appropriate enforcement points.
-For each instance, this pattern describes the associated actors, transactions, and the zero-trust policy that you can implement within the platform.
-To provide context for users, this pattern uses relevant business use cases and traces them to the associated implementation components.
+* *Static defenses don't stop what's already inside* — Perimeter firewalls and ingress controllers protect the front door, but supply chain attacks, compromised dependencies, and insider threats operate from within. Zero Trust assumes breach and enforces verification at every interaction.
+* *You can't patch fast enough* — Over 40,000 CVEs were published in 2025. AI-powered exploit generation is shrinking the window between disclosure and exploitation. Zero Trust provides defense-in-depth that contains threats even when patches haven't been applied yet. link:https://www.redhat.com/en/blog/cant-patch-fast-enough-zero-trust-last-line-defense[Read more].
+* *Compliance mandates require evidence, not promises* — Federal mandates (EO 14028, OMB M-22-09, CISA Zero Trust Maturity Model) and industry standards (NIST SP 800-207, NIST SP 800-53) require organizations to demonstrate Zero Trust implementation with auditable evidence. The ZTVP generates this evidence automatically through GitOps audit trails, compliance scanning, and runtime monitoring.
 
-Use case::
-The pattern addresses the shortcomings of traditional cybersecurity methods, such as defensive hardening and reactive detection.
-It is particularly effective for the following types of systems and environments:
+[id="about-solution-lzt"]
+== About the solution elements
 
-* Distributed systems, such as cloud and edge environments.
-* Autonomous and artificial intelligence (AI) or machine learning (ML) based systems, including robotic process automation.
-* Large, composite systems that integrate third-party or legacy components.
+The pattern deploys the following security capabilities automatically:
 
-This pattern provides specific implementations for each of these business use cases within its abstract, layered structure.
+[cols="1,3",options="header"]
+|===
+| Capability | What it does
 
-Background::
+| *Secret Management*
+| Database credentials and API keys are stored in HashiCorp Vault and injected just-in-time. Vault also provides JWT-based authentication for workload identity verification. The External Secrets Operator (ESO) synchronizes secrets from Vault into the cluster, keeping them up to date automatically.
 
-Traditional security approaches are often incomplete, as they are susceptible to unknown exploits (zero-days) and rely on human-intensive processes that can be inconsistent and prone to error.
-Attackers continuously develop new methods to evade signature-based detection and exploit systems by targeting those already deemed trustworthy.
+| *Workload Identity*
+| Every pod gets a cryptographic identity (SPIFFE/SPIRE) — no shared secrets.
 
-In contrast, the Zero Trust architecture operates from the assumption that a breach will occur.
-It focuses on preventing further compromise by establishing well-defined security boundaries and enforcing a deny-all default access control stance.
-The pattern emphasizes significant automation and grants access dynamically, based on policies, with a least-privilege, as-needed approach.
-Instead of relying on signatures, it explicitly enumerates allowed actors and monitors their behavior, which is a more effective way to contain malicious activity.
-Zero Trust architectures incorporate contextual information and user behavior analytics to inform access decisions, proactively preventing lateral movement in case of a compromise.
+| *User Authentication*
+| Centralized SSO via Red{nbsp}Hat build of Keycloak with per-application OIDC clients.
 
-[id="about-solution"]
-== About the solution
+| *Network Segmentation*
+| Default-deny NetworkPolicies — every connection must be explicitly allowed.
 
-The Layered Zero Trust pattern implements a layered zero trust architecture that shows workload identity management, secure communication, and secret management capabilities.
+| *Runtime Security*
+| Red{nbsp}Hat Advanced Cluster Security monitors workload behavior and terminates compromised pods in real-time.
 
-The solution integrates many Red{nbsp}Hat components to offer:
+| *Compliance Scanning*
+| Continuous CIS benchmark scanning with automated remediation via the Compliance Operator.
 
-* Workload identity using Secure Production Identity Framework for Everyone (SPIFFE) and SPIFFE Runtime Environment (SPIRE) standards.
-* Secure secret management through HashiCorp Vault.
-* Identity and access management by using the Red{nbsp}Hat build of Keycloak (RHBK).
-* Certificate management for secure communications.
-* External secret management integration.
-* Cryptographic signing and verification.
-* SBOM vulnerability analysis.
+| *Certificate Management*
+| Automated TLS certificate lifecycle with daily CA rotation.
 
-[id="architecture"]
-=== Architecture
+| *Supply Chain Security*
+| Keyless artifact signing, SBOM analysis, and tamper-evident transparency logs.
+|===
 
-The Layered Zero Trust pattern architecture consists of many components that work together to offer a secure environment for applications and workloads.
+[id="about-architecture-lzt"]
+== About the architecture
 
-The pattern consists of the following key components:
+The ZTVP uses a layered architecture:
 
-* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/security_and_compliance/compliance-operator[Compliance Operator]
-** Provides {ocp} cluster hardening.
-
-* link:https://access.redhat.com/products/red-hat-build-of-keycloak/[Red{nbsp}Hat build of Keycloak (RHBK)]
-** Provides identities for pattern components.
-** Provides an OIDC client that authenticates users to a web application.
-
-* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/security_and_compliance/zero-trust-workload-identity-manager[Red{nbsp}Hat Zero Trust Workload Identity Manager]
-** Provides identities to workloads running in {ocp}.
-
-* link:https://www.hashicorp.com/en/products/vault[HashiCorp Vault]
-** Stores sensitive assets securely.
-
-* link:https://external-secrets.io[External Secrets Operator (ESO)]
-** Synchronizes secrets stored in HashiCorp Vault with {ocp}.
-
-* link:https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14[{rh-rhacm-first}]
-** Provides a management control plane in multi-cluster scenarios.
-
-* link:https://docs.redhat.com/en/documentation/red_hat_quay/3.15[Red{nbsp}Hat Quay]
-** Enables a private repository for OCI images within the environment.
-
-* link:https://docs.redhat.com/en/documentation/red_hat_openshift_container_storage/4.8/html/managing_hybrid_and_multicloud_resources/index[Multicloud Object Gateway]
-** Provides an object storage service for {ocp}.
-
-* link:https://docs.redhat.com/en/documentation/red_hat_trusted_artifact_signer/1.3[Red{nbsp}Hat Trusted Artifact Signer (RHTAS)]
-** Provides cryptographic signing and verification of software artifacts and container images.
-
-* link:https://docs.redhat.com/es/documentation/red_hat_trusted_profile_analyzer/2.2[Red{nbsp}Hat Trusted Profile Analyzer (RHTPA)]
-** Provides the storage and management means for _Software Bill of Materials_ (SBOMs), with cross-referencing capabilities between SBOMs and CVEs/Security Advisories.
-
-* link:https://docs.redhat.com/en/documentation/red_hat_openshift_pipelines/1.20[Red{nbsp}Hat OpenShift Pipelines]
-** Provides a cloud-native continuous integration and continuous deployment (CI/CD) solution on {ocp}.
-
-[id="architecture-diagram"]
-==== Architecture diagram
-
-The layered zero trust architecture enforces a Zero Trust model through four decoupled layers:
-
-* *Identity*: Keycloak manages user authentication, while SPIRE assigns short-lived, cryptographic identities to workloads for secure service-to-service recognition.
-* *Secure Transport*: Sidecar proxies intercept traffic to enforce mutual TLS (mTLS), ensuring all communication is encrypted and mutually authenticated without application code changes.
-* *Secrets*: Vault centrally stores sensitive data, which is securely synced into the cluster by the External Secrets Operator only when needed.
-* *Compliance*: RHACM and the Compliance Operator monitor the environment to ensure consistent policy enforcement and infrastructure hardening.
+* *Layer 0 (Foundation)* deploys the core security baseline automatically: identity, secrets, compliance, certificates, and runtime monitoring.
+* *Layer 1 (Feature Sets)* adds optional capabilities like supply chain security and private registries when you need them.
+* *Layer 2 (Use Cases)* provides real applications that demonstrate Zero Trust in practice.
 
 image::layered-zero-trust/layered-zero-trust-architecture-diagram.png[Layered Zero Trust architecture diagram]
 
-[id="sidecar-pattern"]
-=== Sidecar pattern
+For a full technical breakdown, see the link:/patterns/layered-zero-trust/lzt-architecture/[Architecture] page.
 
-The sidecar pattern is a deployment model where a separate container or process, known as a sidecar, runs alongside the main application to handle auxiliary tasks.
-In an {ocp} environment, pods simplify this by ensuring the sidecar and main application share the same lifecycle.
-This approach benefits Zero Trust architectures by enabling centralized enforcement of security policies such as authentication, authorization, traffic encryption (mTLS), rate limiting, auditing, and logging, without requiring developers to add this logic to every microservice.
-It separates concerns, simplifies development, and allows security policies to be updated independently of the main application.
+[id="next-steps_lzt-index"]
+== Next steps
 
-While sidecars are often criticized for adding complexity and resource usage, these are often misconceptions:
-
-* *Complexity*: Sidecars simplify the main application by offloading tasks, and modern platforms, such as {ocp}, are designed to manage them efficiently.
-* *Resource Usage*: The resource cost of a sidecar is often minimal compared to the additional CPU and memory required to integrate security logic into every application.
-* *Debugging*: Sidecars can simplify debugging by isolating logs and metrics from the main application, making it easier to pinpoint the source of a policy failure.
-
-The Layered Zero Trust pattern uses the sidecar approach to offload critical security functions from the main application.
-This centralizes policy enforcement, simplifies development, and separates security concerns.
-The sidecar patterns in this approach handle tasks such as authentication and authorization, traffic encryption, rate limiting, and auditing and logging.
-
-[id="applied-sidecar-pattern-data-protection"]
-==== Applied sidecar pattern: Data protection
-
-The following diagrams illustrate how the sidecar pattern is applied in practice to solve the Data Protection use case.
-They demonstrate how an application (`qtodo`) retrieves database credentials dynamically without hard-coding secrets.
-
-===== Logical structure
-
-The logical structure diagram shows the composition of the application pod and its relationship to the infrastructure.
-
-* *Decoupled components*: The `qtodo` application logic is separated from security functions. The application container runs alongside helper sidecars (spiffe-vault-client, spiffe-helper) and init containers.
-* *Infrastructure layers*: The sidecars bridge the gap between the application and the platform services:
-
-** *Workload identity*: The sidecars interface with SPIRE to prove the pod's identity.
-** *Secret management*: They connect to HashiCorp Vault to fetch secrets.
-** *Trust anchors*: Keycloak and Cert Manager provide the root trust for the ecosystem.
-
-image::layered-zero-trust/layered-zero-trust-data-protection-logical.png[Logical structure of the sidecar pattern for data protection]
-
-===== Schematic Workflow
-
-The schematic diagram details the step-by-step execution flow, matching the numbered markers in the schematic:
-
-* *Identity minting* (Steps 3-6): Upon startup, the SPIRE Agent validates the pod (via node attestors and kubelet) and mints a cryptographic identity (SPIFFE ID).
-* *Secret retrieval* (Step 7): The spiffe-vault-client sidecar uses this verified identity to authenticate with HashiCorp Vault and request the specific credentials needed for the database.
-* *Secure access* (Steps 8-9): The credentials are passed to the application, allowing it to authenticate and establish a connection to the PostgreSQL database securely.
-
-image::layered-zero-trust/layered-zero-trust-data-protection-schematic.png[Schematic workflow of the sidecar pattern for data protection]
-
-[id="about-technology"]
-== About the technology
-
-The following technologies are used in this solution:
-
-* *Zero Trust Workload Identity Manager*: Implements workload identity using SPIFFE/SPIRE.
-* *HashiCorp Vault*: Provides secure secret storage and management.
-* *Red{nbsp}Hat build of Keycloak*: Manages identity and access for users and services.
-* *{rh-gitops}*: A GitOps continuous delivery (CD) solution based on ArgoCD
-* *OpenShift Cert Manager*: Manages the lifecycle of certificates for secure communication.
-* *{rh-rhacm}*: Provides management capabilities in multi-cluster scenarios.
-* *External Secrets Operator*: Synchronizes secrets from external systems into the cluster.
-* *Compliance Operator*: Provides ability to scan and remediate cluster hardening based on profiles
-* *QTodo application*: Serves as a sample Quarkus-based application to show zero trust principles.
-* *PostgreSQL database*: Provides the backend database for the demonstration application.
-* *Multicloud Object Gateway*: Lightweight object storage service for {ocp}. Used by Quay for the storage of binary blobs.
-* *Red{nbsp}Hat Quay*: Private registry for OCI images.
-* *Red{nbsp}Hat Trusted Artifact Signer*: Facilitates signing and verification of software artifacts.
-* *Red{nbsp}Hat Trusted Profile Analyzer*: Enables SBOM file analysis and vulnerability detection.
-* *Red{nbsp}Hat OpenShift Pipelines*: Enables a native CI/CD solution on {ocp}.
+* link:/patterns/layered-zero-trust/lzt-getting-started/[Getting started] — Deploy the pattern via GUI or CLI
+* link:/patterns/layered-zero-trust/lzt-architecture/[Architecture] — Layered model, sidecar pattern, deployment variants
+* link:/patterns/layered-zero-trust/lzt-data-protection/[Data Protection] — Zero Trust data protection in action
+* link:/patterns/layered-zero-trust/lzt-security-monitoring/[Security Monitoring] — ACS as the Zero Trust brain
+* link:https://www.redhat.com/en/blog/cant-patch-fast-enough-zero-trust-last-line-defense[Blog: Can't Patch Fast Enough? Zero Trust as a Last Line of Defense]
+* link:https://www.redhat.com/en/blog/lights-real-time-threat-response-red-hat-advanced-cluster-security[Blog: Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security]
+* link:https://github.com/validatedpatterns/layered-zero-trust[GitHub Repository]

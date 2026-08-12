@@ -1,0 +1,110 @@
+---
+title: Data protection
+weight: 20
+aliases:
+- /layered-zero-trust/lzt-data-protection/
+- /layered-zero-trust/lzt-secure-multitier
+---
+
+:toc:
+:imagesdir: /images
+:_mod-docs-content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="lzt-demo-application"]
+= Data protection
+
+This use case demonstrates Zero Trust data protection using the `qtodo` demo application — a simple to-do list app built with Quarkus and PostgreSQL that is included in the default Layered Zero Trust pattern installation described in the link:/patterns/layered-zero-trust/lzt-getting-started/[Getting Started] guide. No additional setup is required to explore this use case.
+
+[id="what-this-demonstrates"]
+== What this demonstrates
+
+On its own, the `qtodo` application is unremarkable. What makes it special is _how_ it runs inside the ZTVP — every interaction is authenticated, every credential is dynamic, and every network connection is explicitly authorized.
+
+[id="lzt-application-components"]
+== Application components
+
+The `qtodo` application consists of the following key components:
+
+* *`qtodo`*: A link:https://quarkus.io[Quarkus-based] frontend application protected by OpenID Connect (OIDC) authentication. Users are managed in Red{nbsp}Hat build of Keycloak (RHBK).
+* *PostgreSQL*: The relational database used by `qtodo`, deployed in a separate `qtodo-db` namespace. Its credentials are dynamically generated and stored in HashiCorp Vault.
+* *HashiCorp Vault*: Stores sensitive values for all components. Implements JSON Web Token (JWT)-based authentication to enable access using SPIFFE-based identities.
+* *Zero Trust Workload Identity Manager (SPIRE/SPIFFE)*: Assigns a cryptographic identity to the `qtodo` pod, allowing it to authenticate with Vault and obtain database credentials.
+* *link:https://github.com/spiffe/spiffe-helper[spiffe-helper]*: A sidecar container that dynamically fetches JWT-based identities from the SPIFFE Workload API.
+* *`spiffe-vault-client`*: A sidecar container that uses the SPIFFE identity to authenticate with Vault and retrieve database credentials just-in-time.
+
+[NOTE]
+====
+The `qtodo` pod uses a series of init containers and sidecar containers to supply the application with the credentials required for operation. Explore the pod details in the {ocp} web console (*Workloads > Pods* in the `qtodo` namespace) to see this in action.
+====
+
+[id="security-features-in-action"]
+== Security features in action
+
+When a user accesses the `qtodo` application, the following security features activate:
+
+[id="user-authentication"]
+=== 1. User authentication
+
+The user is redirected to Red{nbsp}Hat build of Keycloak for login. Only users with the correct role in the `ztvp` realm can access the application. No credentials are stored in the application code.
+
+[id="workload-identity"]
+=== 2. Workload identity
+
+The `qtodo` pod proves its identity using a cryptographic SPIFFE certificate (SVID). This identity is issued by SPIRE and rotates automatically every hour. No static service account tokens are used.
+
+[id="dynamic-secrets"]
+=== 3. Dynamic secrets
+
+The `spiffe-vault-client` sidecar uses the pod's SPIFFE identity to authenticate with HashiCorp Vault and retrieve the PostgreSQL password. The password is never stored as a Kubernetes Secret — it's fetched just-in-time and exists only in memory.
+
+[id="namespace-separation"]
+=== 4. Namespace separation
+
+The `qtodo` application and its PostgreSQL database run in separate namespaces (`qtodo` and `qtodo-db`). This isolation limits the blast radius of a compromise — an attacker who gains access to the application namespace cannot directly reach the database resources, and vice versa.
+
+[id="network-isolation"]
+=== 5. Network isolation
+
+Default-deny NetworkPolicies are applied independently to both the application and database namespaces. Explicit allow rules permit only the connections that are strictly required: browser to `qtodo` (port 8443), `qtodo` to PostgreSQL (port 5432, cross-namespace), `qtodo` to Vault (port 8200), and `qtodo` to DNS (port 5353). Nothing else is permitted.
+
+[id="before-vs-after"]
+== Before vs. after
+
+[cols="2,2,3",options="header"]
+|===
+| Aspect | Traditional deployment | With ZTVP
+
+| Database credentials
+| Static Kubernetes Secret in etcd
+| Dynamic, fetched from Vault via SPIFFE
+
+| User authentication
+| Application-managed or none
+| Centralized Keycloak SSO
+
+| Network access
+| Allow-all (Kubernetes default)
+| Default-deny with per-pod allow rules across separate namespaces
+
+| Workload identity
+| Shared service account
+| Cryptographic SPIFFE SVID (1-hour TTL)
+
+| Code changes required
+| N/A
+| Application reads credentials from sidecar-generated files instead of environment variables
+|===
+
+[id="try-it-yourself"]
+== Try it yourself
+
+After deploying the ZTVP, you can access the `qtodo` application and observe the Zero Trust security features in action:
+
+. Navigate to the `qtodo` route in the {ocp} Console (*Networking > Routes* in the `qtodo` namespace).
+. You will be redirected to the Keycloak login page. Log in with the `qtodo` user credentials from Vault (path: `secret/hub/infra/users/keycloak-users`). See link:/patterns/layered-zero-trust/lzt-getting-started/#lzt-accessing-credentials[Accessing credentials] for instructions on how to retrieve secrets from Vault.
+
+. Observe the OIDC redirect flow — the browser is redirected to Keycloak, authenticated, and then returned to the application. During the first login you will be asked to change your credentials.
+. Add and remove to-do items to verify the application works end-to-end. You can also login as a `qtodo-admin` user, which can modify all demo application entries.
+
+For a detailed technical breakdown of the sidecar architecture and data protection workflow, see the link:/patterns/layered-zero-trust/lzt-architecture/#sidecar-pattern[Sidecar pattern] section in the Architecture page.

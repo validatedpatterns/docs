@@ -1,6 +1,7 @@
 ---
 title: Secure supply chain - Automated approach
 weight: 40
+
 aliases: /layered-zero-trust/lzt-automated-secure-supply-chain/
 ---
 
@@ -13,7 +14,7 @@ include::modules/comm-attributes.adoc[]
 = Use case: Automating the secure supply chain
 
 [role="_abstract"]
-The xref:/patterns/layered-zero-trust/lzt-secure-multitier/index.html [Secure multitiered applications] use case describes how to implement a secure supply chain for application development by using Red{nbsp}Hat Trusted Artifact Signer (RHTAS) and the Red{nbsp}Hat Trusted Profile Analyzer (RHTPA). This use case demonstrates automation of the secure supply chain for application development by using link:https://docs.redhat.com/en/documentation/red_hat_openshift_pipelines/1.20[{rh-pipelines-first}].
+The link:/patterns/layered-zero-trust/lzt-data-protection/[Data Protection] use case describes how to implement a secure supply chain for application development by using Red{nbsp}Hat Trusted Artifact Signer (RHTAS) and the Red{nbsp}Hat Trusted Profile Analyzer (RHTPA). This use case demonstrates automation of the secure supply chain for application development by using link:https://docs.redhat.com/en/documentation/red_hat_openshift_pipelines/1.20[{rh-pipelines-first}].
 
 {pipelines-short} orchestrates the application building and certification process. The Zero Trust Validated Pattern (ZTVP) creates a pipeline in the cluster named `qtodo-supply-chain`.
 
