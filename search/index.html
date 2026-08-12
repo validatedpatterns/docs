@@ -1183,21 +1183,21 @@ Verify that the Operators are installed by navigating to Operators → Installed
 After all applications are healthy, open the RAG chatbot UI by clicking the route link in the Networking → Routes page of the ai-quickstart-rag-prod namespace.
 `,url:"https://validatedpatterns.io/patterns/rag-quickstart/getting-started/",breadcrumb:"/patterns/rag-quickstart/getting-started/"},"https://validatedpatterns.io/patterns/rhoso-gitops/getting-started/":{title:"Getting started",tags:[],content:` Deploying the RHOSO GitOps pattern Deploy the RHOSO GitOps pattern on a single Red Hat OpenShift Container Platform cluster. Complete the prerequisites, prepare your fork of the pattern repository, install with ./pattern.sh, and verify that Argo CD Applications are healthy.
 Prerequisites Before you deploy the pattern, verify that you have the following:
-A Red Hat OpenShift Container Platform 4.14 or later cluster with enough compute and storage for RHOSO. For sizing guidance, see Cluster sizing.
+A Red Hat OpenShift Container Platform cluster meeting the RHOSO software requirements with enough compute and storage. For sizing guidance, see Cluster sizing.
 Cluster administrator privileges and a working kubeconfig.
 Podman 4.3 or later for ./pattern.sh.
 Red Hat OpenShift GitOps available on the cluster (installed by the pattern framework or pre-installed).
-The required tool dependencies are installed.
+The required tool dependencies.
 Preparing for deployment Procedure Fork the rhoso-gitops repository on GitHub.
 Clone your fork:
 $ git clone git@github.com:&lt;your_organization&gt;/rhoso-gitops.git Change to the repository directory:
-$ cd rhoso-gitops Optional: If you plan to use Vault integration later, copy the secrets template:
-$ cp values-secret.yaml.template values-secret.yaml Installing the pattern Procedure Validate prerequisites without applying changes:
+$ cd rhoso-gitops Configure your secrets file before installing. See Secret management for the RHOSO GitOps pattern for instructions on both the Vault + External Secrets Operator and direct injection approaches.
+Installing the pattern Procedure Validate prerequisites without applying changes:
 $ ./pattern.sh make validate-prereq Preview the rendered manifests:
 $ ./pattern.sh make show Install the pattern:
 $ ./pattern.sh make install Verifying the deployment Procedure List Argo CD applications in vp-gitops:
 $ oc get applications -n vp-gitops List Argo CD applications in rhoso-gitops-standalone:
-$ oc get applications -n rhoso-gitops-standalone After install, run the pattern health check:
+$ oc get applications -n rhoso-gitops-standalone After installation, run the pattern health check:
 $ ./pattern.sh make argo-healthcheck Validate the pattern schema:
 $ ./pattern.sh make validate-schema `,url:"https://validatedpatterns.io/patterns/rhoso-gitops/getting-started/",breadcrumb:"/patterns/rhoso-gitops/getting-started/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the OpenShift Virtualization Data Protection Pattern General Prerequisites An OpenShift cluster ( Go to the OpenShift console). See also sizing your cluster. Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks) The helm binary, see here Ansible, which is used in the bootstrap and provisioning phases of the pattern install (and to configure Ansible Automation Platform). Please note that when run on AWS, this pattern will provision an additional worker node, which will be a metal instance (c5n.metal) to run the Edge Virtual Machines. This worker is provisioned through the OpenShift MachineAPI and will be automatically cleaned up when the cluster is destroyed. The use of this pattern depends on having a running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
 If you do not have a running Red Hat OpenShift cluster you can start one on a public or private cloud by using Red Hat&rsquo;s cloud service.
@@ -2521,7 +2521,6 @@ Validated patterns use Red Hat Advanced Cluster Management for Kubernetes to con
 `,url:"https://validatedpatterns.io/contribute/background-on-pattern-development/",breadcrumb:"/contribute/background-on-pattern-development/"},"https://validatedpatterns.io/patterns/rhoso-gitops/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` Cluster requirements RHOSO requires bare-metal infrastructure for both the Red Hat OpenShift Container Platform cluster and the compute nodes. RHOSO does not support cloud-based instance types such as AWS, GCP, or Azure.
 For detailed hardware, software, and network requirements, see Infrastructure and system requirements in the Red Hat OpenStack Services on OpenShift Planning your deployment guide.
 Data plane host requirements The Red Hat OpenShift Container Platform cluster hosts the RHOSO control plane. A full RHOSO deployment also requires separate RHEL hosts for the data plane (compute nodes running data plane elements).
-Plan additional RHEL capacity beyond the OpenShift worker sizing in pattern-metadata.yaml. For Operator stages, sync order, and version pins, see the pattern repository VERSIONS.md file.
 `,url:"https://validatedpatterns.io/patterns/rhoso-gitops/cluster-sizing/",breadcrumb:"/patterns/rhoso-gitops/cluster-sizing/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:` About OpenShift cluster sizing for the Intel AMX accelerated Medical Diagnosis pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
 For AWS, see Installing OpenShift Container Platform on AWS.
 For bare-metal, see Installing OpenShift Container Platform on bare metal.
@@ -3646,7 +3645,68 @@ Custom Ansible controller (API install) In this method, you provide an existing 
 You supply the manifest contents, endpoint hostname, admin username (defaults to &#34;admin&#34;), and admin password, and then the installation hands off to a controller_config_dir you define.
 Run the following command to install by using this method:
 $ ./pattern.sh make api_install Tearing down the installation To tear down the installation run the following command:
-$ ./pattern.sh make aws_uninstall `,url:"https://validatedpatterns.io/learn/vp_agof/",breadcrumb:"/learn/vp_agof/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-security-monitoring/":{title:"Security monitoring",tags:[],content:`Security monitoring — ACS as the Zero Trust brain This use case is covered by the default Layered Zero Trust pattern installation described in the Getting Started guide. Red Hat Advanced Cluster Security and the custom ZTVP security policies are deployed automatically — no additional configuration is required.
+$ ./pattern.sh make aws_uninstall `,url:"https://validatedpatterns.io/learn/vp_agof/",breadcrumb:"/learn/vp_agof/"},"https://validatedpatterns.io/patterns/rhoso-gitops/secret-management/":{title:"Secret management",tags:[],content:`Secret management for the RHOSO GitOps pattern The RHOSO GitOps pattern requires secrets for OpenStack service passwords, SSH key pairs, bare-metal controller credentials, and container registry authentication. You can provide these secrets in two ways depending on whether a secure storage backend is available. The two approaches can also be combined: for example, store shared credentials (registry, subscription) in the backend while injecting service-specific passwords as bootstrap_secrets, or use onMissingValue: generate to let the backend generate passwords at deployment time.
+For the canonical list of required secrets, see Providing secure access to the RHOSO services in the Red Hat OpenStack Services on OpenShift documentation.
+Choosing a secrets approach Review the following approaches before you deploy the pattern.
+Secure storage backend and External Secrets Operator This is the recommended approach for production deployments. You store secrets in a secure storage backend (for example HashiCorp Vault, AWS Secrets Manager, or any provider supported by the External Secrets Operator). ExternalSecret resources project these secrets into the openstack namespace through a SecretStore.
+The framework does not install the storage backend or the External Secrets Operator automatically. You must include the External Secrets Operator through the operator-dependencies Argo CD application by using a Kustomize component from the upstream secrets components. The openstack-secrets Argo CD application deploys the SecretStore and ExternalSecret resources that pull secrets from the backend.
+This approach uses the following configuration:
+The bootstrap secret (for example vault-approle-secret-id) is defined as a bootstrap_secret. The framework injects it into the openstack namespace during make install so that the External Secrets Operator SecretStore can authenticate against the backend.
+All other secrets are defined under the secrets: section of the values-secret.yaml file. The framework loads them into the backend during make load-secrets.
+ExternalSecret resources, deployed by the openstack-secrets Argo CD application, fetch secrets from the backend and create the corresponding Kubernetes Secret objects.
+Direct injection without an external store Use this approach when you do not have a secure storage backend. All secrets are defined as bootstrap_secrets in the values-secret.yaml file. The framework injects them as Kubernetes Secret objects during make install. No storage backend or External Secrets Operator is installed.
+When you use this approach, configure the following:
+Set global.secretStore.backend to &#34;none&#34; in values-global.yaml.
+Define every required secret under the bootstrap_secrets: section.
+Leave the secrets: section empty.
+Required secrets The RHOSO GitOps pattern requires the following secrets in the openstack namespace. The values-secret.yaml.template file in the pattern repository contains placeholder entries for each secret.
+Secret name Key fields Purpose vault-approle-secret-id
+id
+Authentication credential for the External Secrets Operator SecretStore to connect to the secure storage backend. Required only with the backend + External Secrets Operator approach.
+osp-secret
+Multiple service and database password fields
+OpenStack service passwords (for example AdminPassword, KeystoneDatabasePassword, NeutronPassword). See the Red Hat OpenStack Services on OpenShift documentation for the complete list.
+baremetalset-password-secret
+NodeRootPassword
+Root password for bare-metal data plane nodes.
+dataplane-ansible-ssh-private-key-secret
+ssh-privatekey, ssh-publickey, authorized_keys
+SSH key pair for Ansible provisioning of data plane nodes.
+libvirt-secret
+LibvirtPassword
+Libvirt authentication password.
+nova-migration-ssh-key
+ssh-privatekey, ssh-publickey
+SSH key pair for Nova live migration.
+redfish-bmc-secret-auth
+username, password
+Redfish BMC credentials for bare-metal node management.
+redhat-registry
+edpm_container_registry_logins
+Container registry credentials for EDPM nodes (JSON format).
+subscription-manager
+username, password, rhc_auth
+Red Hat Subscription Manager credentials for EDPM nodes.
+Configuring secrets with a secure storage backend Prerequisites You have forked and cloned the rhoso-gitops repository.
+You have deployed a secure storage backend and have an authentication credential (for example an AppRole secret ID) available.
+You have a Git repository with Kustomize overlays that define the SecretStore and ExternalSecret resources for the openstack namespace.
+You have the OpenStack service passwords, SSH key pairs, BMC credentials, and registry credentials listed in the Red Hat OpenStack Services on OpenShift documentation.
+Procedure Include the External Secrets Operator in the operator-dependencies application by adding a Kustomize component in overrides/values-rhoso-gitops.yaml. The following example uses the Red Hat build of the External Secrets Operator:
+applications: operator-dependencies: kustomize: components: - &#34;https://github.com/openstack-k8s-operators/gitops/components/secrets/external-secrets-operator/redhat?ref=&lt;gitops-tag&gt;&#34; For other External Secrets Operator variants, see the upstream components/secrets README.
+Enable the openstack-secrets application in the same overrides file. This application deploys the SecretStore and ExternalSecret resources that pull secrets from the backend:
+openstack-secrets: enabled: true repoURL: &#34;https://github.com/&lt;your_organization&gt;/&lt;your-gitops-overlay&gt;.git&#34; path: &#34;&lt;path-to-eso-overlay&gt;&#34; targetRevision: &#34;&lt;branch-or-tag&gt;&#34; Extract the authentication credential from your secure storage backend (for example an AppRole secret ID) and save it to a file:
+$ echo -n &#34;&lt;approle-secret-id&gt;&#34; &gt; ~/vault-approle-secret-id Create a values-secret.yaml file based on the template. Include the bootstrap secret for the backend credential and define all other secrets under the secrets: section for backend injection:
+version: &#34;2.0&#34; bootstrap_secrets: - name: vault-approle-secret-id targetNamespaces: - openstack fields: - name: id path: ~/vault-approle-secret-id onMissingValue: error secrets: - name: osp-secret fields: - name: AdminPassword value: &#34;&lt;admin-password&gt;&#34; # ... remaining service password fields # ... remaining secrets Install the pattern:
+$ ./pattern.sh make install Verify that the ExternalSecret resources are synchronized:
+$ oc get externalsecrets -n openstack Each ExternalSecret shows a SecretSynced status when the External Secrets Operator has created the corresponding Kubernetes Secret.
+Configuring secrets with direct injection Prerequisites You have forked and cloned the rhoso-gitops repository.
+You have the OpenStack service passwords, SSH key pairs, BMC credentials, and registry credentials listed in the Red Hat OpenStack Services on OpenShift documentation.
+Procedure Set the secret store backend to none in values-global.yaml:
+global: secretStore: backend: &#34;none&#34; Copy the secrets template and edit it:
+$ cp values-secret.yaml.template ~/values-secret-rhoso-gitops.yaml Replace every CHANGEME_* placeholder with the actual value. For SSH key pairs, set the path: field to point at your local key files. Secret values must be in plain text, not base64-encoded.
+Install the pattern:
+$ ./pattern.sh make install Verify that the secrets exist in the openstack namespace:
+$ oc get secrets -n openstack `,url:"https://validatedpatterns.io/patterns/rhoso-gitops/secret-management/",breadcrumb:"/patterns/rhoso-gitops/secret-management/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-security-monitoring/":{title:"Security monitoring",tags:[],content:`Security monitoring — ACS as the Zero Trust brain This use case is covered by the default Layered Zero Trust pattern installation described in the Getting Started guide. Red Hat Advanced Cluster Security and the custom ZTVP security policies are deployed automatically — no additional configuration is required.
 Why runtime monitoring matters Network policies establish the gates. Compliance scanning verifies the locks. But who watches what happens inside the walls? Red Hat Advanced Cluster Security (ACS) is the central security brain of the ZTVP — it continuously monitors workload behavior, verifies that network boundaries are enforced, and terminates compromised pods in real-time.
 In the context of a NIST SP 800-207 Zero Trust architecture, ACS implements the critical control loop: it acts as the Policy Information Point (PIP) that gathers real-time context, feeds it to the Policy Decision Point (PDP), and triggers automated responses at the Policy Enforcement Point (PEP).
 Network policy monitoring ACS continuously verifies that every workload has proper network boundaries. The ZTVP deploys two custom ACS policies that alert administrators when projects or namespaces are missing network policy coverage:
@@ -4261,19 +4321,11 @@ applications: openstack-operator: targetRevision: &#34;v0.2.0&#34; # tag — rec
 Disabling automated sync for an application To switch a specific application to manual sync, override its syncPolicy without the automated key:
 applications: openstack-dataplane: syncPolicy: syncOptions: - Prune=true Disabling a deployment stage To disable a deployment stage, set enabled to false for that application:
 applications: openstack-dataplane: enabled: false Setting a custom retry policy To override the default retry policy for an application:
-applications: openstack-controlplane: syncPolicy: automated: prune: true selfHeal: true retry: limit: 20 backoff: duration: &#34;10s&#34; factor: 2 maxDuration: &#34;5m&#34; Refer to the Argo CD automatic sync documentation for available retry options.
+applications: openstack-controlplane: syncPolicy: automated: prune: true selfHeal: true retry: limit: 20 backoff: duration: &#34;10s&#34; factor: 2 maxDuration: &#34;5m&#34; For more information about retry options, see the Argo CD automatic sync documentation.
 Pointing an application to your Git overlay To point an application at your own Git overlay, set repoURL, path, and targetRevision:
 applications: openstack-controlplane: repoURL: &#34;https://github.com/example/your-gitops.git&#34; path: &#34;environments/prod/controlplane&#34; targetRevision: &#34;main&#34; Adding Kustomize components For example, add a secrets Operator component through operator-dependencies:
 applications: operator-dependencies: kustomize: components: - &#34;https://github.com/openstack-k8s-operators/gitops/components/secrets/vault-secrets-operator?ref=v0.2.0&#34; For Vault Secrets Operator and External Secrets Operator component URLs, see the upstream components/secrets README.
-Secret zero (bootstrap credential) RHOSO GitOps often uses a secure store (for example Vault). Do not store the bootstrap credential in Git. Complete the following steps:
-Configure the secret wiring before deploying the pattern:
-Add a Kustomize overlay in your Git repository for secret wiring (non-sensitive manifests only).
-Enable and configure applications.openstack-secrets in overrides/values-rhoso-gitops.yaml (enabled: true, repoURL, path, targetRevision, optional kustomize patches).
-Install the secrets Operator through operator-dependencies by using kustomize.components URLs from the upstream secrets components.
-While the pattern is deploying, wait for the openstack namespace to appear (an earlier Argo CD application creates it). Then inject the bootstrap Secret out of band in a separate terminal. If you are working remotely, use tmux or screen so you can monitor the deployment and inject the secret in parallel.
-Do not create the openstack namespace manually. Argo CD creates it during deployment, and a pre-existing namespace causes ownership conflicts.
-Poll for the namespace and inject the secret as soon as it appears:
-$ while ! oc get namespace openstack &amp;&gt;/dev/null; do sleep 10; done $ oc create secret generic &lt;secret_name&gt; \\ --from-literal=&lt;key&gt;=&lt;value&gt; \\ -n openstack --dry-run=client -o yaml | oc apply -f - For standalone Helm usage and advanced chart examples, see the upstream rhoso-apps chart.
+For standalone Helm usage and advanced chart examples, see the upstream rhoso-apps chart.
 `,url:"https://validatedpatterns.io/patterns/rhoso-gitops/configuration/",breadcrumb:"/patterns/rhoso-gitops/configuration/"},"https://validatedpatterns.io/patterns/trilio-continuous-restore/cr-operations/":{title:"CR operations",tags:[],content:`Operations Monitoring DR status # Hub — all phases make dr-status # Spoke — ConsistentSet and restore status (run on spoke context) oc get configmap trilio-cr-status -n imperative -o yaml Automated DR lifecycle The imperative framework runs continuously on a 10-minute schedule with no manual intervention required. The full lifecycle from a standing start (hub up, spoke just joined) to a completed Continuous Restore typically completes within 30–45 minutes.
 Hub job sequence:
 Job What it does Skips when trilio-enable-cr Creates CR BackupPlan + ContinuousRestore Policy CR BackupPlan already Available trilio-cr-backup Creates a backup against the CR BackupPlan Available CR backup exists trilio-backup Creates a standard backup Available backup exists trilio-restore-standard Restores to wordpress-restore on hub Completed restore exists trilio-e2e-status Writes status ConfigMap; fails until all phases pass — (always runs) Spoke job sequence (per DR cluster):
@@ -5343,7 +5395,7 @@ $ oc describe application &lt;application_name&gt; -n rhoso-gitops-standalone Us
 Checking pod status To verify that workloads deployed successfully, list pods that are not Running or Completed:
 $ oc get pods -A | grep -v Running | grep -v Completed Review logs for a specific pod:
 $ oc logs -n &lt;namespace&gt; &lt;pod_name&gt; Known issues The following known issues can affect pattern deployment:
-openstack-secrets disabled: The default pattern leaves openstack-secrets disabled because no Git path exists (path: TODO). Enable it only after you configure secret wiring and a bootstrap credential out of band. See Secret zero (bootstrap credential).
+openstack-secrets disabled: The default pattern leaves openstack-secrets disabled because no Git path exists (path: TODO). Enable it only after you configure secret wiring. See Secret management for the RHOSO GitOps pattern.
 Upstream sync failures: Confirm that targetRevision and paths in overrides/values-rhoso-gitops.yaml match a tag or branch that exists in openstack-k8s-operators/gitops.
 Operator install delays: Infrastructure Operators in operator-dependencies subscribe from the cluster catalog; allow time for OLM to resolve ClusterServiceVersions (CSVs). Other applications retry automatically until their dependencies are satisfied.
 For community support, open an issue in the pattern repository.
