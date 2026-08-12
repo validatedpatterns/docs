@@ -5,9 +5,9 @@ aliases: /rhoso-gitops/cluster-sizing/
 ---
 
 :toc:
-:imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
+:imagesdir: /images
 include::modules/rhoso-gitops/metadata-rhoso-gitops.adoc[]
 
 [id="rhoso-gitops-cluster-requirements"]
@@ -27,9 +27,3 @@ in the {rh-rhoso} _Planning your deployment_ guide.
 The {rh-ocp} cluster hosts the {rh-rhoso-short} control plane. A full
 {rh-rhoso-short} deployment also requires separate {rhel-short} hosts for the
 data plane (compute nodes running data plane elements).
-
-Plan additional {rhel-short} capacity beyond the OpenShift worker sizing in
-`pattern-metadata.yaml`.
-For Operator stages, sync order, and version pins, see
-the pattern repository link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/blob/main/VERSIONS.md[VERSIONS.md]
-file.

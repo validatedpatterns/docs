@@ -75,8 +75,8 @@ dependencies resolve and it converges eventually.
 
 For the full list of child applications, their upstream paths, and links to the
 corresponding {rh-rhoso} product documentation, see
-xref:rhoso-gitops-configuration[Configuration] >
-xref:rhoso-gitops-upstream-applications[Upstream applications].
+link:configuration/#rhoso-gitops-configuration[Configuration] >
+link:configuration/#rhoso-gitops-upstream-applications[Upstream applications].
 
 After you change overrides, confirm child applications in the Argo CD UI or with
 `oc get applications -n rhoso-gitops-standalone`.

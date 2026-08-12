@@ -13,13 +13,15 @@ prerequisites, prepare your fork of the pattern repository, install with
 
 Before you deploy the pattern, verify that you have the following:
 
-* A {rh-ocp} 4.14 or later cluster with enough compute and storage for
-  {rh-rhoso-short}. For sizing guidance, see link:../cluster-sizing/[Cluster sizing].
+* A {rh-ocp} cluster meeting the
+  link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/planning_your_deployment/assembly_infrastructure-and-system-requirements#ref_RHOCP-software-requirements_planning[{rh-rhoso-short} software requirements]
+  with enough compute and storage. For sizing guidance, see
+  link:../cluster-sizing/[Cluster sizing].
 * Cluster administrator privileges and a working `kubeconfig`.
 * link:https://podman.io/[Podman] 4.3 or later for `./pattern.sh`.
 * {gitops-title} available on the cluster (installed by the pattern framework or
   pre-installed).
-* The required link:https://validatedpatterns.io/learn/quickstart/[tool dependencies] are installed.
+* The required link:https://validatedpatterns.io/learn/quickstart/[tool dependencies].
 
 [id="rhoso-gitops-preparing-deployment"]
 == Preparing for deployment
@@ -44,13 +46,10 @@ $ git clone git@github.com:__<your_organization>__/rhoso-gitops.git
 $ cd rhoso-gitops
 ----
 
-. Optional: If you plan to use {hashicorp-vault-short} integration later, copy
-  the secrets template:
-+
-[source,terminal]
-----
-$ cp values-secret.yaml.template values-secret.yaml
-----
+. Configure your secrets file before installing. See
+  link:../secret-management/[Secret management for the {rhoso-gitops-pattern}]
+  for instructions on both the {hashicorp-vault-short} + {eso-op} and direct
+  injection approaches.
 
 [id="rhoso-gitops-installing-pattern"]
 == Installing the pattern
@@ -97,7 +96,7 @@ $ oc get applications -n vp-gitops
 $ oc get applications -n rhoso-gitops-standalone
 ----
 
-. After install, run the pattern health check:
+. After installation, run the pattern health check:
 +
 [source,terminal]
 ----

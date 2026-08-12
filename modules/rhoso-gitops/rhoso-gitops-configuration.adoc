@@ -181,9 +181,8 @@ applications:
           maxDuration: "5m"
 ----
 
-Refer to the Argo CD
-link:https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/#automatic-sync-semantics[automatic sync documentation]
-for available retry options.
+For more information about retry options, see the Argo CD
+link:https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/#automatic-sync-semantics[automatic sync documentation].
 
 [id="rhoso-gitops-repoint-overlay"]
 == Pointing an application to your Git overlay
@@ -214,47 +213,9 @@ applications:
         - "https://github.com/openstack-k8s-operators/gitops/components/secrets/vault-secrets-operator?ref=v0.2.0"
 ----
 
-For Vault Secrets Operator and External Secrets Operator component URLs, see the
-upstream
+For Vault Secrets Operator and {eso-op} component URLs, see the upstream
 link:https://github.com/openstack-k8s-operators/gitops/tree/main/components/secrets[components/secrets]
 README.
-
-[id="rhoso-gitops-secret-zero"]
-== Secret zero (bootstrap credential)
-
-{rh-rhoso-short} GitOps often uses a secure store (for example
-{hashicorp-vault-short}). Do not store the bootstrap credential in Git. Complete
-the following steps:
-
-. Configure the secret wiring *before* deploying the pattern:
-.. Add a Kustomize overlay in *your* Git repository for secret wiring (non-sensitive
-   manifests only).
-.. Enable and configure `applications.openstack-secrets` in
-   `overrides/values-rhoso-gitops.yaml` (`enabled: true`, `repoURL`, `path`,
-   `targetRevision`, optional `kustomize` patches).
-.. Install the secrets Operator through `operator-dependencies` by using
-   `kustomize.components` URLs from the upstream secrets components.
-. While the pattern is deploying, *wait* for the `openstack` namespace to appear
-  (an earlier Argo CD application creates it). Then inject the bootstrap
-  `Secret` out of band in a separate terminal.
-  If you are working remotely, use `tmux` or `screen` so you can monitor the
-  deployment and inject the secret in parallel.
-+
-[IMPORTANT]
-====
-Do *not* create the `openstack` namespace manually. Argo CD creates it during
-deployment, and a pre-existing namespace causes ownership conflicts.
-====
-+
-Poll for the namespace and inject the secret as soon as it appears:
-+
-[source,terminal,subs="+quotes"]
-----
-$ while ! oc get namespace openstack &>/dev/null; do sleep 10; done
-$ oc create secret generic __<secret_name>__ \
-    --from-literal=__<key>__=__<value>__ \
-    -n openstack --dry-run=client -o yaml | oc apply -f -
-----
 
 For standalone Helm usage and advanced chart examples, see the upstream
 link:https://github.com/openstack-k8s-operators/gitops/tree/main/charts/rhoso-apps[rhoso-apps chart].

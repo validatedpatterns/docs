@@ -5,9 +5,9 @@ aliases: /rhoso-gitops/troubleshooting/
 ---
 
 :toc:
-:imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
+:imagesdir: /images
 
 [id="troubleshooting-rhoso-gitops"]
 = Troubleshooting the {rhoso-gitops-pattern}
@@ -96,9 +96,8 @@ The following known issues can affect pattern deployment:
 
 * *`openstack-secrets` disabled*: The default pattern leaves
   `openstack-secrets` disabled because no Git path exists (`path: TODO`).
-  Enable it only after you configure secret wiring and a bootstrap credential
-  out of band. See link:../configuration/#rhoso-gitops-secret-zero[Secret zero
-  (bootstrap credential)].
+  Enable it only after you configure secret wiring. See
+  link:../secret-management/[Secret management for the {rhoso-gitops-pattern}].
 * *Upstream sync failures*: Confirm that `targetRevision` and paths in
   `overrides/values-rhoso-gitops.yaml` match a tag or branch that exists in
   link:https://github.com/openstack-k8s-operators/gitops[openstack-k8s-operators/gitops].

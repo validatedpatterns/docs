@@ -20,9 +20,9 @@ links:
 ---
 
 :toc:
-:imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
+:imagesdir: /images
 
 include::modules/rhoso-gitops/rhoso-gitops-about.adoc[leveloffset=+1]
 
