@@ -7,9 +7,9 @@ aliases:
 ---
 
 :toc:
-:imagesdir: /images
 :_mod-docs-content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
+:imagesdir: /images
 
 [id="lzt-demo-application"]
 = Data protection

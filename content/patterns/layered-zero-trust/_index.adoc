@@ -19,9 +19,9 @@ ci: layeredzerotrust
 ---
 
 :toc:
-:imagesdir: /images
 :_mod-docs-content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
+:imagesdir: /images
 
 [id="about-lzt-pattern"]
 = About the Layered Zero Trust pattern
