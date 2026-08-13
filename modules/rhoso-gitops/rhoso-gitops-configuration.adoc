@@ -219,3 +219,91 @@ README.
 
 For standalone Helm usage and advanced chart examples, see the upstream
 link:https://github.com/openstack-k8s-operators/gitops/tree/main/charts/rhoso-apps[rhoso-apps chart].
+
+[id="rhoso-gitops-single-argocd"]
+== Switching to single ArgoCD mode
+
+By default the Validated Patterns framework deploys two Argo CD instances: a
+cluster-wide instance for privileged resources (namespaces, subscriptions) and a
+namespaced instance for pattern applications. The `singleArgoCD` option
+consolidates everything into one instance, reducing resource usage and
+simplifying troubleshooting.
+
+For background on this option, see the
+link:https://validatedpatterns.io/blog/2026-06-04-single-argocd-option/[single ArgoCD blog post].
+
+[WARNING]
+====
+There is no migration path from a dual-ArgoCD deployment to single-ArgoCD mode.
+Setting this flag on an existing installation is very unlikely to work. A fresh
+deploy is required.
+====
+
+=== Enable the flag
+
+In `values-global.yaml`, set `global.singleArgoCD` to `true`:
+
+[source,yaml]
+----
+global:
+  pattern: rhoso-gitops
+  singleArgoCD: true
+----
+
+=== Move custom ArgoCD health checks
+
+In single-ArgoCD mode, the namespaced ArgoCD instance is no longer created, so
+health checks previously defined in `values-standalone.yaml` under
+`clusterGroup.argoCD.resourceHealthChecks` must move to `values-global.yaml`
+under `main.gitops.customArgoYaml`:
+
+[source,yaml]
+----
+main:
+  clusterGroupName: standalone
+  multiSourceConfig:
+    enabled: true
+  gitops:
+    customArgoYaml: | # <1>
+      resourceHealthChecks:
+        - kind: PersistentVolumeClaim
+          check: |
+            # ... PVC health check ...
+        - group: operators.coreos.com
+          kind: Subscription
+          check: |
+            # ... Subscription health check ...
+        # Add all other RHOSO-specific health checks here
+----
+<1> Note the `|` scalar: `customArgoYaml` takes plain-text YAML, not a nested mapping.
+
+Remove the `argoCD` block from `values-standalone.yaml` after moving.
+
+=== Update namespace references in patches
+
+With single-ArgoCD mode, the ArgoCD namespace changes from
+`rhoso-gitops-standalone` to `vp-gitops`. Any Kustomize patches in
+`overrides/values-rhoso-gitops.yaml` that reference the old namespace must be
+updated accordingly. For example:
+
+[source,yaml]
+----
+# Before (dual-ArgoCD)
+patch: |-
+  [
+    {"op": "replace", "path": "/metadata/namespace", "value": "rhoso-gitops-standalone"}
+  ]
+
+# After (singleArgoCD)
+patch: |-
+  [
+    {"op": "replace", "path": "/metadata/namespace", "value": "vp-gitops"}
+  ]
+----
+
+Review all applications in `overrides/values-rhoso-gitops.yaml` and update any
+resource that references the old ArgoCD namespace or its associated service
+accounts.
+
+Deployment target namespaces for workloads (`openstack`, `openstack-operators`)
+are not affected by this change.
