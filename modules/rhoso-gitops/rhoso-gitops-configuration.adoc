@@ -22,7 +22,7 @@ The clustergroup application in `values-standalone.yaml` points Argo CD at
 
 | Pattern global
 | `values-global.yaml`
-| Pattern name, sync policy, clustergroup chart version
+| Pattern name, sync policy, singleArgoCD mode, custom ArgoCD health checks
 
 | Cluster group
 | `values-standalone.yaml`

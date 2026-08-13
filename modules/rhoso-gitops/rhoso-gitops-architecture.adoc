@@ -6,7 +6,7 @@
 
 The {rhoso-gitops-pattern} delivers {rh-rhoso-short} configuration through Argo CD
 Applications that the *rhoso-gitops* meta-chart creates. The pattern uses GitOps
-delivery through dual Argo CD namespaces, manages infrastructure topology, and
+delivery through a single Argo CD namespace, manages infrastructure topology, and
 converges deployment through retry policies.
 
 [id="rhoso-gitops-gitops-delivery"]
@@ -23,29 +23,28 @@ The delivery path is:
 . The {validated-patterns-op} reconciles the pattern clustergroup
 . The parent *rhoso-gitops* Application runs in `vp-gitops`
   ({solution-name-upstream} GitOps)
-. The meta-chart renders child Applications in `rhoso-gitops-standalone`
-  (dedicated Argo CD instance)
+. The meta-chart renders child Applications in the same `vp-gitops` namespace
 . The child applications sync upstream `example/*` overlays (Operators,
   networks, control plane, data plane) and converge through retry policies
 
 .GitOps application delivery
 image::rhoso-gitops/rhoso-gitops-applications.png[{rhoso-gitops-pattern} GitOps application delivery]
 
-The parent Application runs in `vp-gitops`. Child Applications in
-`rhoso-gitops-standalone` sync upstream Kustomize overlays.
-All child Applications deploy at sync-wave 0 and converge eventually through
-retry policies.
+Both the parent Application and child Applications run in `vp-gitops` and sync
+upstream Kustomize overlays. All child Applications deploy at sync-wave 0 and
+converge eventually through retry policies.
 
-[id="rhoso-gitops-dual-argocd"]
-== Dual Argo CD namespaces
+[id="rhoso-gitops-argocd-namespace"]
+== Argo CD namespace
 
-The pattern uses two Argo CD namespaces:
+The pattern runs all Argo CD Applications in a single *`vp-gitops`* namespace,
+enabled by `global.singleArgoCD: true` in `values-global.yaml`. The
+{validated-patterns-op} deploys the parent *rhoso-gitops* Application into
+`vp-gitops`, and the meta-chart creates child {rh-rhoso-short} Applications in
+the same namespace.
 
-* The {validated-patterns-op} deploys the parent *rhoso-gitops* Application into
-  *`vp-gitops`* ({solution-name-upstream} GitOps).
-* The meta-chart creates child {rh-rhoso-short} Applications in *`rhoso-gitops-standalone`*,
-  a dedicated Argo CD instance managed by the pattern (see `applicationNamespace`
-  in the chart).
+For background on this option, see the
+link:https://validatedpatterns.io/blog/2026-06-04-single-argocd-option/[single ArgoCD blog post].
 
 [id="rhoso-gitops-infrastructure-topology"]
 == Infrastructure topology
@@ -79,4 +78,4 @@ link:configuration/#rhoso-gitops-configuration[Configuration] >
 link:configuration/#rhoso-gitops-upstream-applications[Upstream applications].
 
 After you change overrides, confirm child applications in the Argo CD UI or with
-`oc get applications -n rhoso-gitops-standalone`.
+`oc get applications -n vp-gitops`.

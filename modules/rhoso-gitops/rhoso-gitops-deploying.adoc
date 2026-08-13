@@ -89,13 +89,6 @@ $ ./pattern.sh make install
 $ oc get applications -n vp-gitops
 ----
 
-. List Argo CD applications in `rhoso-gitops-standalone`:
-+
-[source,terminal]
-----
-$ oc get applications -n rhoso-gitops-standalone
-----
-
 . After installation, run the pattern health check:
 +
 [source,terminal]

@@ -54,7 +54,7 @@ fan-out.
 | Yes
 | {solution-name-upstream} clustergroup (`values-standalone.yaml`),
   *rhoso-gitops* meta-chart, and child {rh-rhoso-short} Applications in
-  `rhoso-gitops-standalone`
+  `vp-gitops`
 
 | Managed clusters
 | None
