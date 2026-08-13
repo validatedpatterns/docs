@@ -41,9 +41,9 @@ The clustergroup application in `values-standalone.yaml` points Argo CD at
 | Optional platform-specific overrides (placeholder)
 |===
 
-To change upstream Git content (revision, paths, enable or disable applications), edit
-`overrides/values-rhoso-gitops.yaml` and sync the pattern (or let automated
-sync reconcile, per `global.options.syncPolicy` in `values-global.yaml`).
+To change upstream Git content (revision, paths, or enabled applications), edit
+`overrides/values-rhoso-gitops.yaml`. The pattern syncs automatically if
+`global.options.syncPolicy` is set to `Automatic` in `values-global.yaml`.
 
 [id="rhoso-gitops-upstream-applications"]
 == Upstream applications
@@ -82,7 +82,7 @@ To deploy {rh-rhoso-short}, point each application at your own Git overlay
 
 | `openstack-secrets`
 | Secure-backend sync (disabled by default)
-| not configured (`path: TODO`)
+| not configured
 | link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_preparing-rhocp-for-rhoso#proc_providing-secure-access-to-the-RHOSO-services_preparing[Providing secure access to the RHOSO services]
 
 | `openstack-networks`

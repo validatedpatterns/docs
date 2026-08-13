@@ -30,9 +30,8 @@ The delivery path is:
 .GitOps application delivery
 image::rhoso-gitops/rhoso-gitops-applications.png[{rhoso-gitops-pattern} GitOps application delivery]
 
-Both the parent Application and child Applications run in `vp-gitops` and sync
-upstream Kustomize overlays. All child Applications deploy at sync-wave 0 and
-converge eventually through retry policies.
+All child Applications deploy at sync-wave 0 and converge eventually through
+retry policies.
 
 [id="rhoso-gitops-argocd-namespace"]
 == Argo CD namespace
@@ -43,7 +42,7 @@ enabled by `global.singleArgoCD: true` in `values-global.yaml`. The
 `vp-gitops`, and the meta-chart creates child {rh-rhoso-short} Applications in
 the same namespace.
 
-For background on this option, see the
+For more information about this option, see the
 link:https://validatedpatterns.io/blog/2026-06-04-single-argocd-option/[single ArgoCD blog post].
 
 [id="rhoso-gitops-infrastructure-topology"]
@@ -59,7 +58,7 @@ infrastructure topology defines *what* gets deployed:
 .{rh-rhoso-short} infrastructure topology
 image::rhoso-gitops/rhoso-gitops-infrastructure.png[{rhoso-gitops-pattern} infrastructure topology]
 
-* *OpenShift cluster*: Control-plane nodes run OpenStack Operators and
+* *{rh-ocp} cluster*: Control-plane nodes run OpenStack Operators and
   `OpenStackControlPlane` services.
 * *Data plane hosts*: One or more {rhel-short} compute nodes run {rh-rhoso-short}
   data plane elements and connect to the control plane.

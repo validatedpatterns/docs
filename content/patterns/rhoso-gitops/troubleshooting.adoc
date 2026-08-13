@@ -88,7 +88,7 @@ $ oc logs -n __<namespace>__ __<pod_name>__
 The following known issues can affect pattern deployment:
 
 * *`openstack-secrets` disabled*: The default pattern leaves
-  `openstack-secrets` disabled because no Git path exists (`path: TODO`).
+  `openstack-secrets` disabled because no Git path exists.
   Enable it only after you configure secret wiring. See
   link:../secret-management/[Secret management for the {rhoso-gitops-pattern}].
 * *Upstream sync failures*: Confirm that `targetRevision` and paths in

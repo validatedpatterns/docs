@@ -2,7 +2,7 @@
 // Do not edit manually!
 :metadata_version: 1.0
 :name: rhoso-gitops
-:description: Deploy Red Hat OpenStack Services on OpenShift (RHOSO) using GitOps via the rhoso-gitops meta-chart and upstream Kustomize example overlays.
+:description: Deploy Red Hat OpenStack Services on OpenShift (RHOSO) by using GitOps through the rhoso-gitops meta-chart and upstream Kustomize example overlays.
 :pattern_version: 0.1.0
 :display_name: RHOSO GitOps
 :repo_url: https://github.com/validatedpatterns-sandbox/rhoso-gitops
