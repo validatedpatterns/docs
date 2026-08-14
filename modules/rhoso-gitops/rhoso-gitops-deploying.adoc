@@ -46,6 +46,10 @@ $ git clone git@github.com:__<your_organization>__/rhoso-gitops.git
 $ cd rhoso-gitops
 ----
 
+. Configure your overrides. See
+  link:../configuration/[{rhoso-gitops-pattern} configuration] for the values
+  file layers and override options.
+
 . Configure your secrets file before installing. See
   link:../secret-management/[Secret management for the {rhoso-gitops-pattern}]
   for instructions on both the {hashicorp-vault-short} + {eso-op} and direct
@@ -87,13 +91,6 @@ $ ./pattern.sh make install
 [source,terminal]
 ----
 $ oc get applications -n vp-gitops
-----
-
-. List Argo CD applications in `rhoso-gitops-standalone`:
-+
-[source,terminal]
-----
-$ oc get applications -n rhoso-gitops-standalone
 ----
 
 . After installation, run the pattern health check:
