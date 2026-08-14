@@ -1,0 +1,26 @@
+// This file has been generated automatically from the pattern-metadata.yaml file
+// Do not edit manually!
+:metadata_version: 1.0
+:name: ramendr-starter-kit
+:description: RamenDR Regional DR with Virtualization starter kit (odf, drpartner-s4, and drpartner-minimal variants)
+:pattern_version: 1.3
+:display_name: RamenDR Starter Kit
+:repo_url: https://github.com/validatedpatterns/ramendr-starter-kit
+:docs_repo_url: https://github.com/validatedpatterns/docs
+:issues_url: https://github.com/validatedpatterns/ramendr-starter-kit/issues
+:docs_url: https://validatedpatterns.io/patterns/ramendr-starter-kit/
+:ci_url: https://validatedpatterns.io/ci/?pattern=ramendr-starter-kit
+:tier: sandbox
+:owners: mhjacks
+:requirements_hub_compute_platform_aws_replicas: 3
+:requirements_hub_compute_platform_aws_type: m5.2xlarge
+:requirements_hub_controlPlane_platform_aws_replicas: 3
+:requirements_hub_controlPlane_platform_aws_type: m5.xlarge
+:requirements_spoke_compute_platform_aws_replicas: 3
+:requirements_spoke_compute_platform_aws_type: m5.metal
+:requirements_spoke_controlPlane_platform_aws_replicas: 3
+:requirements_spoke_controlPlane_platform_aws_type: m5.4xlarge
+:extra_features_hypershift_support: false
+:extra_features_spoke_support: true
+:external_requirements: 
+:variants: [{"name"=>"odf", "default"=>true, "description"=>"Baseline full ODF Regional DR with Virtualization"}, {"name"=>"drpartner-s4", "description"=>"Partner CSI foundation with hub S4 object storage — Submariner, OADP, OCP-V, Ramen/MCO; infrastructure DRPolicy/DRClusters without DRPC/VMs"}, {"name"=>"drpartner-minimal", "description"=>"Partner CSI foundation without S4, Submariner, or DRCluster sync/validation — OADP, OCP-V, Ramen/MCO only (Hive/BYOC bring-up)"}]
