@@ -1,0 +1,98 @@
+---
+title: Architecture
+weight: 5
+aliases: /ramendr-starter-kit/architecture/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="ramendr-architecture"]
+= Architecture
+
+This page describes component schematics, connectivity overview diagrams, and TLS/CA handling for each install variant. For hub-to-managed network paths and ports, see link:connectivity[Connectivity].
+
+[id="architecture-diagrams"]
+== Architecture diagrams
+
+Each install variant has a full hub/spoke schematic. Draw.io source files are in `static/images/ramendr-starter-kit/` and match the copies under `docs/` in the
+link:https://github.com/validatedpatterns/ramendr-starter-kit[ramendr-starter-kit repository].
+
+[cols="2,1,3",options="header"]
+|===
+| Diagram | Variant | Notes
+
+| link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio[`ramendr-architecture-odf.drawio`]
+| `odf`
+| Full hub/spoke schematic: {ocp-data-short}, Submariner, DRPC, Edge GitOps VMs
+
+| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.drawio[`ramendr-architecture-drpartner-s4.drawio`]
+| `drpartner-s4`
+| Hub S4, partner CSI, VSA replication; Submariner disabled
+
+| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.drawio[`ramendr-architecture-drpartner-minimal.drawio`]
+| `drpartner-minimal`
+| {rh-rhacm-first} and partner operators only; no S4 or DR CRs
+
+| link:/images/ramendr-starter-kit/ramendr-architecture.drawio[`ramendr-architecture.drawio`]
+| `odf`
+| Alias for the `odf` schematic
+
+| link:/images/ramendr-starter-kit/hub-managed-connectivity.drawio[`hub-managed-connectivity.drawio`]
+| All variants
+| Lightweight connectivity tabs (one per variant)
+|===
+
+[id="architecture-odf"]
+=== `odf` schematic
+
+.ramendr-architecture-odf
+image::ramendr-starter-kit/ramendr-architecture.drawio.png[RamenDR architecture for the odf variant,title="RamenDR Starter Kit architecture (odf)"]
+
+Open the draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio[`ramendr-architecture-odf.drawio`].
+
+[id="architecture-drpartner-s4"]
+=== `drpartner-s4` schematic
+
+Download and open the draw.io source to view the full component layout:
+
+* link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.drawio[`ramendr-architecture-drpartner-s4.drawio`]
+
+[id="architecture-drpartner-minimal"]
+=== `drpartner-minimal` schematic
+
+Download and open the draw.io source to view the full component layout:
+
+* link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.drawio[`ramendr-architecture-drpartner-minimal.drawio`]
+
+[id="tls-and-ca"]
+== TLS and CA (current implementation)
+
+Certificate handling is delivered by external charts deployed via Argo CD, not local policy YAML in the pattern repository.
+
+[cols="2,3",options="header"]
+|===
+| Chart | Role
+
+| **vp-manage-proxy-cluster-ca**
+| Differential CA bundle for cluster API/ingress CAs (all variants)
+
+| **opp-policy-chart**
+| `s3CaInjector` injects `caCertificates` on Ramen `s3StoreProfiles` (`odf`, `drpartner-s4`)
+|===
+
+Chart overrides live in the pattern repository:
+
+* link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/overrides/values-vp-manage-proxy-cluster-ca-hub.yaml[`overrides/values-vp-manage-proxy-cluster-ca-hub.yaml`]
+* link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/overrides/values-vp-manage-proxy-cluster-ca-resilient.yaml[`overrides/values-vp-manage-proxy-cluster-ca-resilient.yaml`]
+
+Manual CA and cluster helpers live under `scripts/` in the pattern repository. Verify resource names against the live cluster before using examples that reference {rh-rhacm} policy names.
+
+[id="related-pages"]
+== Related pages
+
+* link:connectivity[Connectivity] — Hub-to-managed paths, ports, and variant comparison
+* link:installation-details[Installation details] — Variant installation differences and pattern scripts
+* link:getting-started[Getting started] — Variant selection, BYOC, and deployment
