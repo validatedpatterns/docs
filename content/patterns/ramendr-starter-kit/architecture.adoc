@@ -12,60 +12,73 @@ include::modules/comm-attributes.adoc[]
 [id="ramendr-architecture"]
 = Architecture
 
-This page describes component schematics, connectivity overview diagrams, and TLS/CA handling for each install variant. For hub-to-managed network paths and ports, see link:connectivity[Connectivity].
+This page describes component schematics, connectivity overview diagrams, and TLS/CA handling for each install variant. For hub-to-managed network paths and ports, see link:/patterns/ramendr-starter-kit/connectivity/[Connectivity].
 
 [id="architecture-diagrams"]
 == Architecture diagrams
 
-Each install variant has a full hub/spoke schematic. Draw.io source files are in `static/images/ramendr-starter-kit/` and match the copies under `docs/` in the
+Each install variant has a full hub/spoke schematic exported as PNG from draw.io source. PNG and draw.io files live in `static/images/ramendr-starter-kit/` and match the copies under `docs/` in the
 link:https://github.com/validatedpatterns/ramendr-starter-kit[ramendr-starter-kit repository].
 
-[cols="2,1,3",options="header"]
+[cols="2,1,2,2",options="header"]
 |===
-| Diagram | Variant | Notes
+| Diagram | Variant | PNG | draw.io source
 
+| `ramendr-architecture-odf`
+| `odf`
+| link:/images/ramendr-starter-kit/ramendr-architecture-odf.png[`ramendr-architecture-odf.png`]
 | link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio[`ramendr-architecture-odf.drawio`]
-| `odf`
-| Full hub/spoke schematic: {ocp-data-short}, Submariner, DRPC, Edge GitOps VMs
 
-| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.drawio[`ramendr-architecture-drpartner-s4.drawio`]
+| `ramendr-architecture-drpartner-s4`
 | `drpartner-s4`
-| Hub S4, partner CSI, VSA replication; Submariner disabled
+| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.png[`ramendr-architecture-drpartner-s4.png`]
+| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.drawio[`ramendr-architecture-drpartner-s4.drawio`]
 
-| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.drawio[`ramendr-architecture-drpartner-minimal.drawio`]
+| `ramendr-architecture-drpartner-minimal`
 | `drpartner-minimal`
-| {rh-rhacm-first} and partner operators only; no S4 or DR CRs
+| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.png[`ramendr-architecture-drpartner-minimal.png`]
+| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.drawio[`ramendr-architecture-drpartner-minimal.drawio`]
 
-| link:/images/ramendr-starter-kit/ramendr-architecture.drawio[`ramendr-architecture.drawio`]
+| `ramendr-architecture`
 | `odf`
-| Alias for the `odf` schematic
+| link:/images/ramendr-starter-kit/ramendr-architecture-odf.png[`ramendr-architecture-odf.png`]
+| link:/images/ramendr-starter-kit/ramendr-architecture.drawio[`ramendr-architecture.drawio`]
 
-| link:/images/ramendr-starter-kit/hub-managed-connectivity.drawio[`hub-managed-connectivity.drawio`]
+| `hub-managed-connectivity`
 | All variants
-| Lightweight connectivity tabs (one per variant)
+| link:/images/ramendr-starter-kit/hub-managed-connectivity-odf.png[`hub-managed-connectivity-odf.png`] (and per-variant tabs)
+| link:/images/ramendr-starter-kit/hub-managed-connectivity.drawio[`hub-managed-connectivity.drawio`]
 |===
 
 [id="architecture-odf"]
 === `odf` schematic
 
-.ramendr-architecture-odf
-image::ramendr-starter-kit/ramendr-architecture.drawio.png[RamenDR architecture for the odf variant,title="RamenDR Starter Kit architecture (odf)"]
+Full hub/spoke schematic: {ocp-data-short}, Submariner, DRPC, Edge GitOps VMs.
 
-Open the draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio[`ramendr-architecture-odf.drawio`].
+.ramendr-architecture-odf
+image::/images/ramendr-starter-kit/ramendr-architecture-odf.png[RamenDR architecture for the odf variant,title="RamenDR Starter Kit architecture (odf)"]
+
+draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio[`ramendr-architecture-odf.drawio`]
 
 [id="architecture-drpartner-s4"]
 === `drpartner-s4` schematic
 
-Download and open the draw.io source to view the full component layout:
+Hub S4, partner CSI, VSA replication; Submariner disabled.
 
-* link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.drawio[`ramendr-architecture-drpartner-s4.drawio`]
+.ramendr-architecture-drpartner-s4
+image::/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.png[RamenDR architecture for the drpartner-s4 variant,title="RamenDR Starter Kit architecture (drpartner-s4)"]
+
+draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.drawio[`ramendr-architecture-drpartner-s4.drawio`]
 
 [id="architecture-drpartner-minimal"]
 === `drpartner-minimal` schematic
 
-Download and open the draw.io source to view the full component layout:
+{rh-rhacm-first} and partner operators only; no S4 or DR CRs.
 
-* link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.drawio[`ramendr-architecture-drpartner-minimal.drawio`]
+.ramendr-architecture-drpartner-minimal
+image::/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.png[RamenDR architecture for the drpartner-minimal variant,title="RamenDR Starter Kit architecture (drpartner-minimal)"]
+
+draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.drawio[`ramendr-architecture-drpartner-minimal.drawio`]
 
 [id="tls-and-ca"]
 == TLS and CA (current implementation)
@@ -93,6 +106,6 @@ Manual CA and cluster helpers live under `scripts/` in the pattern repository. V
 [id="related-pages"]
 == Related pages
 
-* link:connectivity[Connectivity] — Hub-to-managed paths, ports, and variant comparison
-* link:installation-details[Installation details] — Variant installation differences and pattern scripts
-* link:getting-started[Getting started] — Variant selection, BYOC, and deployment
+* link:/patterns/ramendr-starter-kit/connectivity/[Connectivity] — Hub-to-managed paths, ports, and variant comparison
+* link:/patterns/ramendr-starter-kit/installation-details/[Installation details] — Variant installation differences and pattern scripts
+* link:/patterns/ramendr-starter-kit/getting-started/[Getting started] — Variant selection, BYOC, and deployment

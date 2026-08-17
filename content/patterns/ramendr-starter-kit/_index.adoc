@@ -46,7 +46,7 @@ installations and validate pre-requisites for all of the core components of the 
 
 You might fork the repository to customize chart values (for example `aws.region` in
 link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/charts/hub/rdr/values.yaml[`charts/hub/rdr/values.yaml`])
-or to select a non-default install variant. The link:getting-started[Getting started] page describes variant
+or to select a non-default install variant. The link:/patterns/ramendr-starter-kit/getting-started/[Getting started] page describes variant
 selection, BYOC, required secrets, and verification steps.
 
 [id="install-variants"]
@@ -65,8 +65,8 @@ before install. The default is `odf`.
 |===
 
 Spoke configuration files nest under each variant as `variants/<variant>/values-<managedClusterGroup.name>.yaml`.
-See link:installation-details#variant-installation-differences[Installation details] for what each variant deploys on the hub and managed clusters.
-For component schematics, connectivity paths, and TLS/CA handling, see link:architecture[Architecture] and link:connectivity[Connectivity].
+See link:/patterns/ramendr-starter-kit/installation-details/#variant-installation-differences[Installation details] for what each variant deploys on the hub and managed clusters.
+For component schematics, connectivity paths, and TLS/CA handling, see link:/patterns/ramendr-starter-kit/architecture/[Architecture] and link:/patterns/ramendr-starter-kit/connectivity/[Connectivity].
 
 === Background
 
@@ -95,16 +95,18 @@ This pattern uses OpenShift Virtualization (the productization of Kubevirt) to s
 
 === Architecture overview
 
-The default `odf` variant deploys a three-cluster Regional DR layout with {ocp-data-short}, Submariner, DRPC-protected VMs, and failover workflows documented in link:getting-started[Getting started].
+The default `odf` variant deploys a three-cluster Regional DR layout with {ocp-data-short}, Submariner, DRPC-protected VMs, and failover workflows documented in link:/patterns/ramendr-starter-kit/getting-started/[Getting started].
 
 .ramendr-architecture-diagram
-image::ramendr-starter-kit/ramendr-architecture.drawio.png[ramendr-starter-kit-architecture,title="RamenDR Starter Kit architecture (odf)"]
+image::/images/ramendr-starter-kit/ramendr-architecture-odf.png[ramendr-starter-kit-architecture,title="RamenDR Starter Kit architecture (odf)"]
 
-Partner variants use different S3 and replication models. See link:architecture[Architecture] for per-variant schematics and draw.io sources, and link:connectivity[Connectivity] for hub-to-managed network paths and ports.
+draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio[`ramendr-architecture-odf.drawio`]
+
+Partner variants use different S3 and replication models. See link:/patterns/ramendr-starter-kit/architecture/[Architecture] for per-variant schematics and draw.io sources, and link:/patterns/ramendr-starter-kit/connectivity/[Connectivity] for hub-to-managed network paths and ports.
 
 === Next steps
 
-* link:architecture[Architecture] — Component schematics, TLS/CA, draw.io sources
-* link:connectivity[Connectivity] — Hub-to-managed connectivity by variant
-* link:getting-started[Getting started] — Prerequisites, variant selection, BYOC, and deployment
-* link:installation-details[Installation details] — Install sequence and pattern scripts
+* link:/patterns/ramendr-starter-kit/architecture/[Architecture] — Component schematics, TLS/CA, draw.io sources
+* link:/patterns/ramendr-starter-kit/connectivity/[Connectivity] — Hub-to-managed connectivity by variant
+* link:/patterns/ramendr-starter-kit/getting-started/[Getting started] — Prerequisites, variant selection, BYOC, and deployment
+* link:/patterns/ramendr-starter-kit/installation-details/[Installation details] — Install sequence and pattern scripts

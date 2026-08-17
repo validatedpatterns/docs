@@ -42,29 +42,10 @@ Draw.io source with one tab per variant: link:/images/ramendr-starter-kit/hub-ma
 
 {rh-rhacm-first} needs DNS resolvability of managed cluster APIs. S3 metadata buckets (MCG) live **on each managed cluster** — hub and peers both reach those endpoints. **Submariner is required** for {ocp-data-short} RBD cross-site replication.
 
-++++
-<pre class="mermaid">
-flowchart TB
-  Hub["Hub cluster&lt;br/&gt;RHACM · MCO · Ramen Hub&lt;br/&gt;s3StoreProfiles → managed MCG"]
+.ramendr-hub-managed-connectivity-odf
+image::/images/ramendr-starter-kit/hub-managed-connectivity-odf.png[odf hub-to-managed connectivity,title="odf connectivity"]
 
-  subgraph PrimarySite["Primary managed cluster"]
-    Primary["Klusterlet · Ramen · ODF"]
-    MCG1["MCG S3 bucket"]
-  end
-
-  subgraph SecondarySite["Secondary managed cluster"]
-    Secondary["Klusterlet · Ramen · ODF"]
-    MCG2["MCG S3 bucket"]
-  end
-
-  Hub ---|"ACM DNS + HTTPS"| Primary
-  Hub ---|"ACM DNS + HTTPS"| Secondary
-  Hub -->|"HTTPS S3"| MCG1
-  Hub -->|"HTTPS S3"| MCG2
-  MCG1 ---|"Peer S3 metadata"| MCG2
-  Primary ---|"Submariner required&lt;br/&gt;Ceph RBD"| Secondary
-</pre>
-++++
+draw.io source: link:/images/ramendr-starter-kit/hub-managed-connectivity.drawio[`hub-managed-connectivity.drawio`] (**odf** tab).
 
 [id="managed-mcg-s3-detail"]
 === Managed MCG S3 detail
@@ -84,9 +65,9 @@ flowchart LR
 {rh-rhacm-first} needs DNS resolvability of managed cluster APIs. S3 metadata lives on **hub S4** (`vp-s4-storage`). Volume DR is array-native (VSA ↔ VSA). The `regional-dr` application creates hub DRClusters and a `2m-novm` DRPolicy only — no DRPC or VMs. **Submariner is not deployed** (`values-opp-policy.yaml` sets `submariner.enabled: false`).
 
 .ramendr-drpartner-s4-connectivity
-image::ramendr-starter-kit/drpartner-s4-connectivity.png[drpartner-s4 hub-to-managed connectivity,title="drpartner-s4 connectivity"]
+image::/images/ramendr-starter-kit/drpartner-s4-connectivity.png[drpartner-s4 hub-to-managed connectivity,title="drpartner-s4 connectivity"]
 
-SVG source: link:/images/ramendr-starter-kit/drpartner-s4-connectivity.svg[`drpartner-s4-connectivity.svg`]. Aligned with the **drpartner-s4** tab in link:/images/ramendr-starter-kit/hub-managed-connectivity.drawio[`hub-managed-connectivity.drawio`].
+PNG from draw.io: link:/images/ramendr-starter-kit/hub-managed-connectivity-drpartner-s4.png[`hub-managed-connectivity-drpartner-s4.png`]. SVG source: link:/images/ramendr-starter-kit/drpartner-s4-connectivity.svg[`drpartner-s4-connectivity.svg`]. draw.io source: link:/images/ramendr-starter-kit/hub-managed-connectivity.drawio[`hub-managed-connectivity.drawio`] (**drpartner-s4** tab).
 
 [id="hub-s4-detail"]
 === Hub S4 detail
@@ -108,9 +89,9 @@ No managed ↔ managed S3 and no Submariner in `drpartner-s4`.
 {rh-rhacm-first} needs DNS resolvability of managed cluster APIs. The pattern deploys partner operators (MCO/Ramen, {VirtProductName}, OADP) and Hive/BYOC plumbing only — **no `vp-s4-storage`**, no DRClusters, no `s3StoreProfiles`, and **no Submariner**. Volume DR and S3 metadata are outside this pattern.
 
 .ramendr-drpartner-minimal-connectivity
-image::ramendr-starter-kit/drpartner-minimal-connectivity.png[drpartner-minimal hub-to-managed connectivity,title="drpartner-minimal connectivity"]
+image::/images/ramendr-starter-kit/drpartner-minimal-connectivity.png[drpartner-minimal hub-to-managed connectivity,title="drpartner-minimal connectivity"]
 
-SVG source: link:/images/ramendr-starter-kit/drpartner-minimal-connectivity.svg[`drpartner-minimal-connectivity.svg`]. Aligned with the **drpartner-minimal** tab in link:/images/ramendr-starter-kit/hub-managed-connectivity.drawio[`hub-managed-connectivity.drawio`].
+PNG from draw.io: link:/images/ramendr-starter-kit/hub-managed-connectivity-drpartner-minimal.png[`hub-managed-connectivity-drpartner-minimal.png`]. SVG source: link:/images/ramendr-starter-kit/drpartner-minimal-connectivity.svg[`drpartner-minimal-connectivity.svg`]. draw.io source: link:/images/ramendr-starter-kit/hub-managed-connectivity.drawio[`hub-managed-connectivity.drawio`] (**drpartner-minimal** tab).
 
 [id="shared-requirements"]
 == Shared requirements
@@ -138,27 +119,33 @@ SVG source: link:/images/ramendr-starter-kit/drpartner-minimal-connectivity.svg[
 [id="related-diagrams"]
 == Related diagrams
 
-[cols="2,2",options="header"]
+[cols="2,2,2",options="header"]
 |===
-| Artifact | Location
+| Artifact | PNG | draw.io / other
 
 | Full component schematic (`odf`)
+| link:/images/ramendr-starter-kit/ramendr-architecture-odf.png[`ramendr-architecture-odf.png`]
 | link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio[`ramendr-architecture-odf.drawio`]
 
 | Full component schematic (`drpartner-s4`)
+| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.png[`ramendr-architecture-drpartner-s4.png`]
 | link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.drawio[`ramendr-architecture-drpartner-s4.drawio`]
 
 | Full component schematic (`drpartner-minimal`)
+| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.png[`ramendr-architecture-drpartner-minimal.png`]
 | link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.drawio[`ramendr-architecture-drpartner-minimal.drawio`]
 
-| Connectivity overview (all variants)
+| Connectivity overview (`odf`)
+| link:/images/ramendr-starter-kit/hub-managed-connectivity-odf.png[`hub-managed-connectivity-odf.png`]
 | link:/images/ramendr-starter-kit/hub-managed-connectivity.drawio[`hub-managed-connectivity.drawio`]
 
-| `drpartner-s4` connectivity (PNG)
-| link:/images/ramendr-starter-kit/drpartner-s4-connectivity.png[`drpartner-s4-connectivity.png`]
+| Connectivity overview (`drpartner-s4`)
+| link:/images/ramendr-starter-kit/hub-managed-connectivity-drpartner-s4.png[`hub-managed-connectivity-drpartner-s4.png`]
+| link:/images/ramendr-starter-kit/drpartner-s4-connectivity.svg[`drpartner-s4-connectivity.svg`]
 
-| `drpartner-minimal` connectivity (PNG)
-| link:/images/ramendr-starter-kit/drpartner-minimal-connectivity.png[`drpartner-minimal-connectivity.png`]
+| Connectivity overview (`drpartner-minimal`)
+| link:/images/ramendr-starter-kit/hub-managed-connectivity-drpartner-minimal.png[`hub-managed-connectivity-drpartner-minimal.png`]
+| link:/images/ramendr-starter-kit/drpartner-minimal-connectivity.svg[`drpartner-minimal-connectivity.svg`]
 |===
 
-See also link:architecture[Architecture] for TLS/CA handling and full schematic context.
+See also link:/patterns/ramendr-starter-kit/architecture/[Architecture] for TLS/CA handling and full schematic context.

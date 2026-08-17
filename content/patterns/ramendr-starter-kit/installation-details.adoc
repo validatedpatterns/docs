@@ -42,7 +42,7 @@ The pattern uses the clustergroup/{rh-rhacm} `variants/` folder layout. When `va
 By default, Hive provisions `ocp-primary` and `ocp-secondary` on AWS through {rh-rhacm-first}. Set `byoc: true` in
 link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/overrides/values-cluster-names.yaml[`overrides/values-cluster-names.yaml`]
 to use existing regional DR clusters instead. Add their kubeconfigs to your secrets file and run `./pattern.sh make install-byoc`.
-See link:getting-started#using-byoc[Using bring your own cluster (BYOC)] for requirements and configuration steps.
+See link:/patterns/ramendr-starter-kit/getting-started/#using-byoc[Using bring your own cluster (BYOC)] for requirements and configuration steps.
 
 [cols="1,1,1",options="header"]
 |===
@@ -104,7 +104,7 @@ main:
   variant: drpartner-s4
 ----
 
-Chart overrides live in the pattern repository. For TLS/CA roles and certificate chart references, see link:architecture#tls-and-ca[TLS and CA] on the Architecture page.
+Chart overrides live in the pattern repository. For TLS/CA roles and certificate chart references, see link:/patterns/ramendr-starter-kit/architecture/#tls-and-ca[TLS and CA] on the Architecture page.
 
 [id="pattern-scripts"]
 == Pattern scripts
