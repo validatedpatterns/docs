@@ -39,11 +39,6 @@ link:https://github.com/validatedpatterns/ramendr-starter-kit[ramendr-starter-ki
 | link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.png[`ramendr-architecture-drpartner-minimal.png`]
 | link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.drawio[`ramendr-architecture-drpartner-minimal.drawio`]
 
-| `ramendr-architecture`
-| `odf`
-| link:/images/ramendr-starter-kit/ramendr-architecture-odf.png[`ramendr-architecture-odf.png`]
-| link:/images/ramendr-starter-kit/ramendr-architecture.drawio[`ramendr-architecture.drawio`]
-
 | `hub-managed-connectivity`
 | All variants
 | link:/images/ramendr-starter-kit/hub-managed-connectivity-odf.png[`hub-managed-connectivity-odf.png`] (and per-variant tabs)
