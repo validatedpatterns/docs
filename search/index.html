@@ -76,7 +76,43 @@ Development variant for Confidential Containers integration
 Feature variant system Layer 1 features can be enabled or disabled independently using the gen-feature-variants.py script.
 For example, to generate a values-hub.yaml with the supply chain feature set enabled:
 $ python3 scripts/gen-feature-variants.py --features supply-chain --registry-option 1 See the Feature Variant Generator in the repository for detailed information.
-`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-architecture/",breadcrumb:"/patterns/layered-zero-trust/lzt-architecture/"},"https://validatedpatterns.io/learn/about-validated-patterns/":{title:"About Validated Patterns",tags:[],content:`Overview of Validated Patterns Validated Patterns are an advanced form of reference architectures that offer a streamlined approach to deploying complex business solutions. Validated Patterns are deployable, testable software artifacts with automated deployment, enhancing speed, reliability, and consistency across environments. These patterns are rigorously tested blueprints designed to meet specific business needs, reducing deployment risks.
+`,url:"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-architecture/",breadcrumb:"/patterns/layered-zero-trust/lzt-architecture/"},"https://validatedpatterns.io/patterns/ramendr-starter-kit/architecture/":{title:"Architecture",tags:[],content:`Architecture This page describes component schematics, connectivity overview diagrams, and TLS/CA handling for each install variant. For hub-to-managed network paths and ports, see Connectivity.
+Architecture diagrams Each install variant has a full hub/spoke schematic exported as PNG from draw.io source. PNG and draw.io files live in static/images/ramendr-starter-kit/.
+Diagram Variant PNG draw.io source ramendr-architecture-odf
+odf
+ramendr-architecture-odf.png
+ramendr-architecture-odf.drawio
+ramendr-architecture-drpartner-s4
+drpartner-s4
+ramendr-architecture-drpartner-s4.png
+ramendr-architecture-drpartner-s4.drawio
+ramendr-architecture-drpartner-minimal
+drpartner-minimal
+ramendr-architecture-drpartner-minimal.png
+ramendr-architecture-drpartner-minimal.drawio
+hub-managed-connectivity
+All variants
+hub-managed-connectivity-odf.png (and per-variant tabs)
+hub-managed-connectivity.drawio
+odf schematic Full hub/spoke schematic. DRPolicies live on the hub with the RamenDR Hub Operator and become volume replications and volume group replications on the managed clusters. The hub operator orchestrates the RamenDR Cluster Operators, which manage those replications plus OpenShift Data Foundation and OpenShift ADP (Kubernetes object backups), along with Submariner and Edge GitOps VMs.
+Figure 1. RamenDR Starter Kit architecture (odf) draw.io source: ramendr-architecture-odf.drawio
+drpartner-s4 schematic Hub S4 Object store for OpenShift ADP Kubernetes object backups. Partner CSI on the managed clusters provides VM data replication. DRPolicies live on the hub and become volume replications and volume group replications on the managed clusters. The RamenDR Hub Operator orchestrates the cluster operators. The pattern does not create DRPC or VMs.
+Figure 2. RamenDR Starter Kit architecture (drpartner-s4) draw.io source: ramendr-architecture-drpartner-s4.drawio
+drpartner-minimal schematic Red Hat Advanced Cluster Management (RHACM) and partner operators only. S3-compatible storage for OpenShift ADP is bring-your-own; this variant does not deploy S4. DRPolicies live on the hub and become volume replications and volume group replications on the managed clusters. The pattern does not create DR CRs.
+Figure 3. RamenDR Starter Kit architecture (drpartner-minimal) draw.io source: ramendr-architecture-drpartner-minimal.drawio
+TLS and CA (current implementation) Certificate handling is delivered by external charts deployed via Argo CD, not local policy YAML in the pattern repository.
+Chart Role vp-manage-proxy-cluster-ca
+Differential CA bundle for cluster API/ingress CAs (all variants)
+opp-policy-chart
+s3CaInjector injects caCertificates on Ramen s3StoreProfiles (odf, drpartner-s4)
+Chart overrides live in the pattern repository:
+overrides/values-vp-manage-proxy-cluster-ca-hub.yaml
+overrides/values-vp-manage-proxy-cluster-ca-resilient.yaml
+Manual CA and cluster helpers live under scripts/ in the pattern repository. Verify resource names against the live cluster before using examples that reference RHACM policy names.
+Related pages Connectivity — Hub-to-managed paths, ports, and variant comparison
+Installation details — Variant installation differences and pattern scripts
+Getting started — Variant selection, BYOC, and deployment
+`,url:"https://validatedpatterns.io/patterns/ramendr-starter-kit/architecture/",breadcrumb:"/patterns/ramendr-starter-kit/architecture/"},"https://validatedpatterns.io/learn/about-validated-patterns/":{title:"About Validated Patterns",tags:[],content:`Overview of Validated Patterns Validated Patterns are an advanced form of reference architectures that offer a streamlined approach to deploying complex business solutions. Validated Patterns are deployable, testable software artifacts with automated deployment, enhancing speed, reliability, and consistency across environments. These patterns are rigorously tested blueprints designed to meet specific business needs, reducing deployment risks.
 Building on traditional architectures, Validated Patterns focus on customer solutions involving multiple Red Hat and partner products. Successful deployments serve as the foundation for these patterns, which include example applications and the necessary open source projects. You can easily change these patterns to fit your specific needs.
 The creation process involves selecting specific use cases, validating the patterns with engineering teams, and developing GitOps-based automation. This automation supports Continuous Integration (CI) pipelines for proactive updates and maintenance as new product versions are released.
 Beyond reference architectures Validated Patterns enhance reference architectures with automation and rigorous validation. Reference architectures provide a conceptual framework for building solutions. Validated Patterns take this further by offering a deployable software artifact that automates and optimizes the framework, ensuring consistent and efficient deployments. This approach allows businesses to implement complex solutions rapidly and with confidence, knowing that the patterns have been thoroughly tested and optimized for their use case.
@@ -1941,7 +1977,8 @@ Clone the forked copy of this repository.
 $ git clone git@github.com:your-username/ramendr-starter-kit.git Go to your repository: Ensure you are in the root directory of your Git repository by using:
 $ cd /path/to/your/repository Run the following command to set the upstream repository:
 $ git remote add -f upstream git@github.com:validatedpatterns/ramendr-starter-kit.git Verify the setup of your remote repositories by running the following command:
-$ git remote -v Example output origin	git@github.com:kquinn1204/ramendr-starter-kit.git (fetch) origin	git@github.com:kquinn1204/ramendr-starter-kit.git (push) upstream	git@github.com:validatedpatterns/ramendr-starter-kit.git (fetch) upstream	git@github.com:validatedpatterns/ramendr-starter-kit.git (push) Make a local copy of secrets template outside of your repository to hold credentials for the pattern.
+$ git remote -v Example output origin	git@github.com:kquinn1204/ramendr-starter-kit.git (fetch) origin	git@github.com:kquinn1204/ramendr-starter-kit.git (push) upstream	git@github.com:validatedpatterns/ramendr-starter-kit.git (fetch) upstream	git@github.com:validatedpatterns/ramendr-starter-kit.git (push) Decide which install variant to use and set main.variant in values-global.yaml before install. The default is odf. For variant purposes and verification differences, see Install variants on the pattern overview page.
+main: variant: odf Make a local copy of secrets template outside of your repository to hold credentials for the pattern.
 Do not add, commit, or push this file to your repository. Doing so may expose personal credentials to GitHub.
 Run the following commands:
 $ cp values-secret.yaml.template ~/values-secret.yaml Populate this file with secrets, or credentials, that are needed to deploy the pattern successfully:
@@ -1950,26 +1987,54 @@ $ vi ~/values-secret.yaml Edit the vm-ssh section to include the username, priva
 Edit the cloud-init section to include the userData block to use with cloud-init. For example:
 - name: cloud-init vaultPrefixes: - global fields: - name: userData value: |- #cloud-config user: &#39;cloud-user&#39; password: &#39;cloud-user&#39; chpasswd: { expire: False } Edit the aws section to refer to the file containing your AWS credentials:
 - name: aws fields: - name: aws_access_key_id ini_file: ~/.aws/credentials ini_key: aws_access_key_id - name: aws_secret_access_key ini_file: ~/.aws/credentials ini_key: aws_secret_access_key - name: baseDomain value: aws.example.com - name: pullSecret path: ~/pull_secret.json - name: ssh-privatekey path: ~/.ssh/privatekey - name: ssh-publickey path: ~/.ssh/publickey Edit the openshiftPullSecret section to refer to the file containing your OpenShift pull secret:
-- name: openshiftPullSecret fields: - name: .dockerconfigjson path: ~/pull_secret.json Create and switch to a new branch named my-branch, by running the following command:
+- name: openshiftPullSecret fields: - name: .dockerconfigjson path: ~/pull_secret.json If you selected the drpartner-s4 variant, add the two Vault secrets required for hub vp-s4-storage. Paths must match the chart overrides in variants/drpartner-s4/values-drpartner-s4.yaml (s4UICredentials.vaultKey and s4APICredentials.vaultKey). The drpartner-minimal variant does not deploy vp-s4-storage and does not need these secrets.
+- name: s4-ui-credentials vaultPrefixes: - global fields: - name: UI_USERNAME value: s4admin onMissingValue: error - name: UI_PASSWORD onMissingValue: generate override: true vaultPolicy: advancedPolicy - name: s4-api-credentials vaultPrefixes: - global fields: - name: AWS_ACCESS_KEY_ID value: s4admin onMissingValue: error - name: AWS_SECRET_ACCESS_KEY onMissingValue: generate override: true vaultPolicy: advancedPolicy External Secrets merges both Vault entries into Kubernetes Secret s4-credentials in the vp-s4-storage namespace. Defaults in values-secret.yaml.template use s4admin for the UI user and access key ID; the password and secret key can be generated when onMissingValue: generate and vaultPolicies.advancedPolicy are set in your secrets file.
+If you plan to use bring your own cluster (BYOC) instead of Hive-provisioned managed clusters, add kubeconfig secrets for each regional DR cluster. See Using bring your own cluster (BYOC).
+- name: ocp-primary_cluster_kubeconfig fields: - name: kubeconfig path: /path/to/ocp-primary/kubeconfig - name: ocp-secondary_cluster_kubeconfig fields: - name: kubeconfig path: /path/to/ocp-secondary/kubeconfig Create and switch to a new branch named my-branch, by running the following command:
 $ git checkout -b my-branch The pattern will infer the baseDomain of your cluster based on the clusterDomain which is tracked by the pattern operator. Previously, this required the pattern to be forked to be useful - but this is no longer the case (you may still wish to change other settings in the RDR chart’s values file, such as aws.region settings. This file is at hub/rdr/values.yaml. If you do make customizations to this or other files, it is necessary to fork the pattern so that the changes will be seen by ArgoCD. If you made any changes to this or any other files tracked by git, git add them and then commit the changes by running the following command:
 $ git commit -m &#34;any updates&#34; Push the changes to your forked repository:
-$ git push origin my-branch The preferred way to install this pattern is by using the script ./pattern.sh script.
-Deploying the pattern by using the pattern.sh file To deploy the pattern by using the pattern.sh file, complete the following steps:
+$ git push origin my-branch The preferred way to install this pattern is by using the ./pattern.sh script. By default, Red Hat Advanced Cluster Management (RHACM) Hive provisions the primary and secondary managed clusters on AWS. If you already have regional DR clusters, use BYOC and ./pattern.sh make install-byoc instead of ./pattern.sh make install.
+Using bring your own cluster (BYOC) BYOC (bring your own cluster) lets you use existing OpenShift clusters as the regional DR pair (ocp-primary and ocp-secondary) instead of waiting for Hive to provision new managed clusters on AWS. This option is available for all install variants and is the typical path for drpartner-minimal (Hive/BYOC bring-up without Ramen DR CRs).
+When to use BYOC Use BYOC when:
+You already operate two OpenShift clusters that will serve as the primary and secondary DR sites.
+You want to avoid Hive cluster provisioning time and AWS cluster creation costs for the managed pair.
+You are validating partner CSI plumbing on clusters you provisioned outside the pattern.
+You are installing on a platform other than AWS
+The default install path (Hive provisioning) remains appropriate when you want the pattern to create and lifecycle-manage the managed clusters for you.
+BYOC cluster requirements Before install, the install-byoc target runs ansible/playbooks/validate_byoc.yml against the kubeconfigs in your secrets file. Clusters must meet these checks:
+Reachability — Hub and both regional clusters are reachable from the install environment.
+OpenShift Container Platform version — Hub is OpenShift Container Platform 4.18 or later. Primary and secondary must match the hub minor version (same minor is required for RamenDR and OpenShift Data Foundation).
+Non-overlapping networks — Pod and service CIDRs must not overlap between the hub, primary, and secondary clusters.
+You are responsible for making sure that the managed clusters are suitable for running Virtual Machines. The Hive provisioner will use m5.metal instances on AWS. Different clouds and bare metal have different requirements which are hard to generalize, so the playbook does not. (Previous versions would look for &#34;metal&#34; instance types but that only works on AWS.)
+Configuring BYOC Provision and register your regional DR clusters with Red Hat Advanced Cluster Management (RHACM). Managed cluster names must match the names in overrides/values-cluster-names.yaml (default: ocp-primary and ocp-secondary).
+Set byoc: true in overrides/values-cluster-names.yaml and align clusterOverrides with your cluster names, versions, and regions: +
+byoc: true clusterOverrides: primary: name: ocp-primary version: 4.22.1 secondary: name: ocp-secondary version: 4.22.1 Deploying the pattern by using the pattern.sh file Commit and push byoc: true and any clusterOverrides changes to your fork so Argo CD sees them during install. To deploy the pattern by using the pattern.sh file, complete the following steps:
 Log in to your cluster by following this procedure:
 Obtain an API token by visiting https://oauth-openshift.apps.&lt;your-cluster&gt;.&lt;domain&gt;/oauth/token/request.
 Log in to the cluster by running the following command:
 $ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your-cluster&gt;.&lt;domain&gt;:6443 Or log in by running the following command:
-$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your cluster. Run the following command:
-$ ./pattern.sh make install Verification Verify that the Operators have been installed on the hub cluster. Navigate to Operators → Installed Operators page in the OpenShift Container Platform web console on the Hub cluster (in the &#34;local-cluster&#34; view),
-Figure 1. RamenDR Hub Operators Verify that the primary and secondary managed clusters have been built. This can take close to an hour on AWS. On the hub cluster, navigate to All Clusters in the OpenShift Container Plaform web console:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern to your hub cluster.
+For the default Hive provisioning path, run:
+$ ./pattern.sh make install For BYOC, after setting byoc: true and adding regional cluster kubeconfigs to your secrets file, run:
+$ ./pattern.sh make install-byoc The install-byoc target loads secrets (when configured), runs the BYOC validation playbook, then installs the pattern the same way as install.
+Verification Verify that the Operators have been installed on the hub cluster. Navigate to Operators → Installed Operators page in the OpenShift Container Platform web console on the Hub cluster (in the &#34;local-cluster&#34; view),
+Figure 1. RamenDR Hub Operators Verify that the primary and secondary managed clusters are available in Red Hat Advanced Cluster Management (RHACM). For the default Hive path, cluster creation can take close to an hour on AWS. For BYOC, clusters should already be registered before install completes. On the hub cluster, navigate to All Clusters in the OpenShift Container Platform web console:
 Figure 2. RamenDR Clusters Wait some time for everything to deploy to all the clusters. It might take up to another hour from when the managed clusters finish building. You can track the progress through the Hub ArgoCD UI from the nines menu, especially the &#34;opp-policy&#34; and the &#34;regional-dr&#34; applications. Most of the critical resources are in the regional-dr application (at present, the opp-policy app may show missing/out-of-sync, and the regional-dr app may show OutOfSync - even when both are healthy. We are working on a fix, track bug progress here):
-Figure 3. RamenDR Starter Kit Applications Eventually, the Virtual Machines will be deployed and the Disaster Recovery Placement Control (DRPC) will show that resources are now protected. This screen can be reached via All Clusters → Data Services → Disaster Recovery → Protected Applications on the hub cluster. Normally it will be faster to synchronize Kubernetes objects than Application volumes. When these indicators both show Healthy it is safe to trigger a failover:
-Figure 4. RamenDR Starter Kit Applications You might want to see the VMs themselves running. They will be on the primary cluster in the Virtualization → VirtualMachines area. The pattern configures 4 RHEL9 VMs by default:
-Figure 5. RamenDR Starter Kit Trigger Failover, part 1 Clicking the &#34;Failover&#34; option will bring up a modal dialog that indicates where the failover will move the workload, and when the last known good state of the workload is. Click on the &#34;Initiate&#34; button to begin the failover:
-Figure 6. RamenDR Starter Kit Trigger Failover, part 2 While the failover is happening, you can watch the progress of it in the activity area. When it is done, it will say (with a discovered application) that it is necessary to clean up application resources to allow replication to start in the other direction. Notice that the primary cluster should have changed:
-Figure 7. RamenDR Starter Kit Failover Cleanup The pattern provides a script to do this cleanup. Invoke it with your Hub cluster KUBECONFIG set and running ./pattern.sh scripts/cleanup-gitops-vms-non-primary.sh:
-Figure 8. RamenDR Starter Kit Failover Cleanup After a few minutes, the resources should show healthy and protected again (the PVCs take a few minutes to synchronize):
-Figure 9. RamenDR Starter Kit Reprotected `,url:"https://validatedpatterns.io/patterns/ramendr-starter-kit/getting-started/",breadcrumb:"/patterns/ramendr-starter-kit/getting-started/"},"https://validatedpatterns.io/patterns/retail/getting-started/":{title:"Getting Started",tags:[],content:` Deploying the retail pattern Prerequisites An OpenShift cluster
+Figure 3. RamenDR Starter Kit Applications For the odf variant (default), the Virtual Machines will be deployed and the Disaster Recovery Placement Control (DRPC) will show that resources are now protected. This screen can be reached via All Clusters → Data Services → Disaster Recovery → Protected Applications on the hub cluster. Normally it will be faster to synchronize Kubernetes objects than Application volumes. When these indicators both show Healthy it is safe to trigger a failover:
+Figure 4. RamenDR Starter Kit Applications For the odf variant, you might want to see the VMs themselves running. They will be on the primary cluster in the Virtualization → VirtualMachines area. The pattern configures 4 RHEL9 VMs by default:
+Figure 5. RamenDR Starter Kit Trigger Failover, part 1 For the odf variant, clicking the Failover option will bring up a modal dialog that indicates where the failover will move the workload, and when the last known good state of the workload is. Click the Initiate button to begin the failover:
+Figure 6. RamenDR Starter Kit Trigger Failover, part 2 For the odf variant, while the failover is happening, you can watch the progress of it in the activity area. When it is done, it will say (with a discovered application) that it is necessary to clean up application resources to allow replication to start in the other direction. Notice that the primary cluster should have changed:
+Figure 7. RamenDR Starter Kit Failover Cleanup For the odf variant, the pattern provides a script to do this cleanup. Invoke it with your Hub cluster KUBECONFIG set and run ./pattern.sh scripts/cleanup-gitops-vms-non-primary.sh:
+Figure 8. RamenDR Starter Kit Failover Cleanup For the odf variant, after a few minutes, the resources should show healthy and protected again (the PVCs take a few minutes to synchronize):
+Figure 9. RamenDR Starter Kit Reprotected Verifying partner variants After sync, expect the following differences for the partner install variants.
+drpartner-s4 Hub operators include Multicluster Orchestrator (Ramen), OpenShift Virtualization, and OADP. Submariner is disabled in opp-policy.
+Hub vp-s4-storage is present and creates buckets via s4Role.buckets.
+No ODF StorageSystem, MirrorPeer, or odf-dr application.
+The regional-dr application runs with ramen.infrastructureEnabled: true. It creates DRClusters, a single 2m-novm DRPolicy (no 2m-vm), and upserts hub s3StoreProfiles with ensureBuckets: false. It does not deploy DRPC or VMs.
+The opp-policy application injects caCertificates on S3 profiles only.
+drpartner-minimal Same partner operators and plumbing as drpartner-s4, but without vp-s4-storage or Submariner (submariner.enabled: false in opp-policy).
+The regional-dr application runs with both ramen.resourcesEnabled and ramen.infrastructureEnabled set to false. No DRPolicy, DRClusters, S3 profile work, or DRPC/VM workloads are deployed.
+`,url:"https://validatedpatterns.io/patterns/ramendr-starter-kit/getting-started/",breadcrumb:"/patterns/ramendr-starter-kit/getting-started/"},"https://validatedpatterns.io/patterns/retail/getting-started/":{title:"Getting Started",tags:[],content:` Deploying the retail pattern Prerequisites An OpenShift cluster
 To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
 Select OpenShift -&gt; Red Hat OpenShift Container Platform -&gt; Create cluster.
 The cluster must have a dynamic StorageClass to provision PersistentVolumes. Verify that a dynamic StorageClass exists before creating one by running the following command:
@@ -2344,7 +2409,94 @@ Repository archived; docs kept for reference
 ✓
 `,url:"https://validatedpatterns.io/learn/about-pattern-tiers-types/",breadcrumb:"/learn/about-pattern-tiers-types/"},"https://validatedpatterns.io/patterns/rag-llm-gitops/deploying-different-db/":{title:"Deploying a different database",tags:[],content:`Deploying a different database This pattern supports several types of vector databases, EDB Postgres for Kubernetes, Elasticsearch, Redis, Microsoft SQL Server, and the cloud-deployed Azure SQL Server. By default the pattern will deploy EDB Postgres for Kubernetes as a vector database. To use a different vector database, change the global.db.type parameter to ELASTIC, MSSQL etc. in your local branch in values-global.yaml.
 global: pattern: rag-llm-gitops options: useCSV: false syncPolicy: Automatic installPlanApproval: Automatic # Possible values for RAG vector DB db.type: # REDIS -&gt; Redis (Local chart deploy) # EDB -&gt; PGVector (Local chart deploy) # ELASTIC -&gt; Elasticsearch (Local chart deploy) # MSSQL -&gt; MS SQL Server (Local chart deploy) # AZURESQL -&gt; Azure SQL (Pre-existing in Azure) db: index: docs type: EDB # Models used by the inference service (should be a HuggingFace model ID) model: vllm: ibm-granite/granite-3.3-8b-instruct embedding: sentence-transformers/all-mpnet-base-v2 storageClass: gp3-csi main: clusterGroupName: hub multiSourceConfig: enabled: true clusterGroupChartVersion: 0.9.* This is also where you are able to update both the LLM model served by the vLLM inference service as well as the embedding model used by the vector database.
-`,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/deploying-different-db/",breadcrumb:"/patterns/rag-llm-gitops/deploying-different-db/"},"https://validatedpatterns.io/learn/quickstart/":{title:"Patterns quick start",tags:[],content:` Patterns quick start overview This quickstart helps you get up and running with Validated Patterns — whether you are creating a new pattern or deploying an existing one.
+`,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/deploying-different-db/",breadcrumb:"/patterns/rag-llm-gitops/deploying-different-db/"},"https://validatedpatterns.io/patterns/ramendr-starter-kit/connectivity/":{title:"Connectivity",tags:[],content:`Hub-to-managed connectivity Three install variants (main.variant in values-global.yaml):
+odf (default) — full OpenShift Data Foundation Regional DR; MCG S3 on managed clusters; Submariner required for Ceph RBD replication
+drpartner-s4 — partner CSI + hub S4; array-native volume replication; Submariner disabled (submariner.enabled: false in opp-policy)
+drpartner-minimal — partner CSI operators and Hive/BYOC plumbing only; no S4, DRClusters, or Submariner
+Draw.io source with one tab per variant: hub-managed-connectivity.drawio.
+Variant comparison Concern odf drpartner-s4 drpartner-minimal S3 / DR metadata
+MCG buckets on each managed cluster
+Hub S4 buckets (vp-s4-storage)
+None
+Hub S3 reachability
+Hub → each managed MCG endpoint
+Hub + managed → hub S4
+n/a
+Peer S3
+Managed ↔ managed object-bucket metadata
+Not used
+Not used
+Volume replication
+OpenShift Data Foundation/Ceph over Submariner
+VSA ↔ VSA (array-native)
+External / out of pattern
+Submariner
+Required for Regional-DR volumes
+Disabled by default
+Disabled
+DRClusters / DRPolicy
+MirrorPeer / MCO / regionaldr
+regionaldr (infrastructureEnabled)
+None
+DRPC / VMs
+Yes (regionaldr resources)
+No (resourcesEnabled: false)
+No
+RHACM + DNS
+Required
+Required
+Required
+odf Red Hat Advanced Cluster Management (RHACM) needs DNS resolvability of managed cluster APIs. S3 metadata buckets (MCG) live on each managed cluster — hub and peers both reach those endpoints. Submariner is required for OpenShift Data Foundation RBD cross-site replication.
+Figure 1. odf connectivity draw.io source: hub-managed-connectivity.drawio (odf tab).
+Managed MCG S3 detail flowchart LR Hub[&#34;Ramen Hub Operator&#34;] --&gt; MCG1[&#34;Primary MCG S3&#34;] Hub --&gt; MCG2[&#34;Secondary MCG S3&#34;] MCG1 ---|&#34;Peer metadata&#34;| MCG2 drpartner-s4 Red Hat Advanced Cluster Management (RHACM) needs DNS resolvability of managed cluster APIs. S3 metadata lives on hub S4 (vp-s4-storage). Volume DR is array-native (VSA ↔ VSA). The regional-dr application creates hub DRClusters and a 2m-novm DRPolicy only — no DRPC or VMs. Submariner is not deployed (values-opp-policy.yaml sets submariner.enabled: false).
+Figure 2. drpartner-s4 connectivity PNG from draw.io: hub-managed-connectivity-drpartner-s4.png. SVG source: drpartner-s4-connectivity.svg. draw.io source: hub-managed-connectivity.drawio (drpartner-s4 tab).
+Hub S4 detail flowchart LR Ramen[&#34;Ramen Hub Operator&#34;] --&gt; S4[&#34;Hub S4 buckets&#34;] P[&#34;Primary DR operator&#34;] --&gt; S4 S[&#34;Secondary DR operator&#34;] --&gt; S4 No managed ↔ managed S3 and no Submariner in drpartner-s4.
+drpartner-minimal Red Hat Advanced Cluster Management (RHACM) needs DNS resolvability of managed cluster APIs. The pattern deploys partner operators (MCO/Ramen, OpenShift Virtualization, OADP) and Hive/BYOC plumbing only — no vp-s4-storage, no DRClusters, no s3StoreProfiles, and no Submariner. Volume DR and S3 metadata are outside this pattern.
+Figure 3. drpartner-minimal connectivity PNG from draw.io: hub-managed-connectivity-drpartner-minimal.png. SVG source: drpartner-minimal-connectivity.svg. draw.io source: hub-managed-connectivity.drawio (drpartner-minimal tab).
+Shared requirements RHACM + DNS — Hub must resolve each managed cluster API hostname, then connect over HTTPS 443 / kube API 6443.
+TLS / CA trust — Trust custom certs for S4 (drpartner-s4) or MCG endpoints (odf) via opp-policy s3CaInjector where S3 is used.
+Globalnet — For odf, enable if managed cluster/service CIDRs overlap.
+Ports Path When Protocol / ports Hub DNS → managed API
+All variants
+DNS UDP/TCP 53
+Hub ↔ managed API
+All variants
+HTTPS 443; kube API 6443
+Clients → hub S4
+drpartner-s4
+HTTPS 443
+Hub / peers → managed MCG
+odf
+HTTPS 443
+Cluster ↔ local VSA
+drpartner-s4, drpartner-minimal
+Vendor CSI / iSCSI / NVMe / mgmt
+VSA ↔ VSA replication
+drpartner-s4, drpartner-minimal
+Vendor replication ports
+Submariner
+odf only
+UDP 4500 / 4800 / 4490
+Related diagrams Artifact PNG draw.io / other Full component schematic (odf)
+ramendr-architecture-odf.png
+ramendr-architecture-odf.drawio
+Full component schematic (drpartner-s4)
+ramendr-architecture-drpartner-s4.png
+ramendr-architecture-drpartner-s4.drawio
+Full component schematic (drpartner-minimal)
+ramendr-architecture-drpartner-minimal.png
+ramendr-architecture-drpartner-minimal.drawio
+Connectivity overview (odf)
+hub-managed-connectivity-odf.png
+hub-managed-connectivity.drawio
+Connectivity overview (drpartner-s4)
+hub-managed-connectivity-drpartner-s4.png
+drpartner-s4-connectivity.svg
+Connectivity overview (drpartner-minimal)
+hub-managed-connectivity-drpartner-minimal.png
+drpartner-minimal-connectivity.svg
+See also Architecture for TLS/CA handling and full schematic context.
+`,url:"https://validatedpatterns.io/patterns/ramendr-starter-kit/connectivity/",breadcrumb:"/patterns/ramendr-starter-kit/connectivity/"},"https://validatedpatterns.io/learn/quickstart/":{title:"Patterns quick start",tags:[],content:` Patterns quick start overview This quickstart helps you get up and running with Validated Patterns — whether you are creating a new pattern or deploying an existing one.
 Create a new pattern — Use patternizer to bootstrap a Git repository into a ready-to-use Validated Pattern with all required scaffolding.
 Deploy an existing pattern — Deploy the Multicloud GitOps pattern to explore how the framework works in practice.
 Validated Patterns can be deployed using either the OpenShift-based Validated Patterns framework or the Ansible GitOps Framework (AGOF). The OpenShift-based Validated Patterns framework is the most common method for deploying applications and infrastructure on the OpenShift Container Platform. It offers a set of predefined configurations and patterns that follow best practices and are validated by Red Hat.
@@ -3074,41 +3226,80 @@ All of the Ansible interactions are defined in a Git Repository; the Ansible job
 It is very much the intention of this pattern to make it easy to replace the specific Edge management use case with another one. Some ideas on how to do that can be found here.
 Specifics of the Ansible content for this pattern can be seen here.
 More details of the specifics of how AAP is configured are available here.
-`,url:"https://validatedpatterns.io/patterns/ansible-edge-gitops/installation-details/",breadcrumb:"/patterns/ansible-edge-gitops/installation-details/"},"https://validatedpatterns.io/patterns/ramendr-starter-kit/installation-details/":{title:"Installation Details",tags:[],content:` Installation Steps Installation Steps The pattern will execute the following steps on the cluster:
-Apply Subscriptions and Applications to Hub Cluster
-This includes ACM, ODF and ODF MultiCluster Operator on the hub cluster
-Build managed clusters (ocp-primary and ocp-secondary) with Hive
-The managed clusters have identical configuration regarding Subscriptions and Applications, so they are both in the resilient clusterGroup
-opp-policy app is responsible for copying CA certificates to the following places:
-Creating a configmap cluster-proxy-ca-bundle in namespace openshift-config
-Assigning this configmap to the proxy cluster resource
-Adding the certificate material to ramen-dr-cluster-operator config in openshift-dr-system
-regional-dr app is responsible for:
-ensuring ODF is setup properly
-Installing submariner add-ons on managed clusters
-Creating DRPolicy, MirrorPeer, DRPC, and Placement objects for RamenDR
-Installing the VM workload on the primary cluster
-Disabling Sync on the regional-dr app to prevent potential conflicts later
-Various Scripts included in the pattern and how to use them scripts/cleanup-gitops-vms-non-primary.sh
-Designed to be run when you need to manually cleanup resources from a &#34;failed&#34; cluster. Intended to be run with the kubeconfig from the hub cluster; it will determine where to delete resources based on the current DRPC state.
+`,url:"https://validatedpatterns.io/patterns/ansible-edge-gitops/installation-details/",breadcrumb:"/patterns/ansible-edge-gitops/installation-details/"},"https://validatedpatterns.io/patterns/ramendr-starter-kit/installation-details/":{title:"Installation Details",tags:[],content:` Installation steps The pattern executes the following steps on the cluster. Hub and spoke chart values differ by install variant; see Variant installation differences.
+Apply Subscriptions and Applications to the hub cluster.
+Install Red Hat Advanced Cluster Management (RHACM), OpenShift Data Foundation, and the OpenShift Data Foundation Multicluster Orchestrator on the hub cluster for the odf variant. Partner variants install Red Hat Advanced Cluster Management (RHACM), Multicluster Orchestrator (Ramen), OpenShift Virtualization, and OADP without ODF StorageSystem or MirrorPeer.
+Build managed clusters (ocp-primary and ocp-secondary) with Hive.
+The managed clusters have identical subscription and application configuration, so they are both in the resilient cluster group.
+The opp-policy application is responsible for copying CA certificates to the following places:
+Creating a cluster-proxy-ca-bundle ConfigMap in the openshift-config namespace.
+Assigning this ConfigMap to the proxy cluster resource.
+Adding the certificate material to the ramen-dr-cluster-operator config in openshift-dr-system.
+The regional-dr application is responsible for:
+Ensuring ODF is set up properly (odf variant).
+Installing Submariner add-ons on managed clusters (odf variant; disabled for partner variants).
+Creating DRPolicy, MirrorPeer, DRPC, and Placement objects for RamenDR (odf variant).
+Creating DRClusters and hub s3StoreProfiles without DRPC or VMs (drpartner-s4 variant).
+Installing the VM workload on the primary cluster (odf variant).
+Disabling sync on the regional-dr application after settlement to prevent potential conflicts later.
+Variant installation differences The pattern uses the clustergroup/RHACM variants/ folder layout. When variants/ is present, the patterns-operator sets global.vpNewFolderDir=true. Spoke configuration nests under each variant as variants/&lt;variant&gt;/values-&lt;managedClusterGroup.name&gt;.yaml.
+Cluster provisioning (Hive vs BYOC) By default, Hive provisions ocp-primary and ocp-secondary on AWS through Red Hat Advanced Cluster Management (RHACM). Set byoc: true in overrides/values-cluster-names.yaml to use existing regional DR clusters instead. Add their kubeconfigs to your secrets file and run ./pattern.sh make install-byoc. See Using bring your own cluster (BYOC) for requirements and configuration steps.
+Mode Install command Managed clusters Hive (default)
+./pattern.sh make install
+Hive creates and registers ocp-primary and ocp-secondary
+BYOC
+./pattern.sh make install-byoc
+You provision and register clusters; pattern validates kubeconfigs before install
+Variant component differences Component odf drpartner-s4 drpartner-minimal Hub DRClusters
+MirrorPeer / Multicluster Orchestrator
+regional-dr (ramen.infrastructureEnabled)
+none
+Hub s3StoreProfiles
+MirrorPeer / Multicluster Orchestrator
+regional-dr upsert (ensureBuckets: false)
+none
+S3 buckets
+ODF
+vp-s4-storage (s4Role.buckets)
+none
+CA on profiles
+opp-policy s3CaInjector
+opp-policy s3CaInjector
+n/a
+Submariner
+enabled
+disabled
+disabled
+DRPolicy / DRPC / VMs
+2m-vm DRPolicy, DRPC, VMs
+2m-novm only; no DRPC or VMs
+none
+odf-dr application
+yes
+no
+no
+Variant layout values-global.yaml variants/ odf/ values-odf.yaml values-resilient.yaml # full ODF spoke BOM drpartner-s4/ values-drpartner-s4.yaml values-resilient.yaml # partner spoke BOM (no ODF) values-regional-dr.yaml # infrastructureEnabled: DRClusters + 2m-novm only + hub s3StoreProfiles values-console-plugins-*.yaml drpartner-minimal/ values-drpartner-minimal.yaml # no vp-s4-storage values-resilient.yaml values-regional-dr.yaml # resourcesEnabled + infrastructureEnabled false values-opp-policy.yaml # submariner.enabled: false values-console-plugins-*.yaml overrides/ # shared hub/spoke chart overrides Set the variant in values-global.yaml:
+main: variant: drpartner-s4 Chart overrides live in the pattern repository. For TLS/CA roles and certificate chart references, see TLS and CA on the Architecture page.
+Pattern scripts scripts/cleanup-gitops-vms-non-primary.sh
+Designed to be run when you need to manually clean up resources from a &#34;failed&#34; cluster. Intended to be run with the kubeconfig from the hub cluster; it will determine where to delete resources based on the current DRPC state. Applies to the odf variant.
 scripts/download-kubeconfigs.sh
-Will download and extract the kubeconfigs for the managed clusters to the current directory. Useful when you need to check something or do something on one of the managed clusters.
+Downloads and extracts the kubeconfigs for the managed clusters to the current directory. Useful when you need to check something or do something on one of the managed clusters.
 charts/hub/opp/scripts/argocd-health-monitor.sh
-Ensures that ArgoCD is progressing properly in deploying resources. A workaround for an ArgoCD bug we ran into during development.
+Ensures that ArgoCD is progressing properly in deploying resources. A workaround for an ArgoCD bug encountered during development.
 charts/hub/opp/scripts/odf-ssl-precheck.sh
 Ensures all the preconditions have been met for extracting certificates to distribute among the clusters.
 charts/hub/opp/scripts/odf-ssl-certificate-extraction.sh
-This script does the actual work of extracting and distributing the CA material to the various places it needs to go. Will also restart velero (OADP) pods if needed.
+Extracts and distributes the CA material to the places it needs to go. Will also restart velero (OADP) pods if needed.
 charts/hub/rdr/scripts/odf-dr-prerequisites-check.sh
 Ensures that ODF is fully ready to be configured for Disaster Recovery. In particular waits for ODF to finish deployment and for the NooBaa/S3 service to be operational on all clusters.
 charts/hub/rdr/scripts/submariner-prerequisites-check.sh
-Ensures that submariner is running properly and operational on both clusters. This is required for ODF PVC replication to work.
+Ensures that Submariner is running properly and operational on both clusters. This is required for ODF PVC replication to work.
 charts/hub/rdr/scripts/edge-gitops-vms-deploy.sh
-This script deploys the VM workload to the primary cluster. It uses the Validated Patterns helm chart but is not an argo application to avoid starting up resources on clusters where we do not want them running. Thus it runs from the Hub cluster.
+Deploys the VM workload to the primary cluster. It uses the Validated Patterns Helm chart but is not an ArgoCD application to avoid starting up resources on clusters where you do not want them running. Thus it runs from the hub cluster. Applies to the odf variant.
 charts/hub/rdr/scripts/drpc-health-check-argocd-sync-disable.sh
-This script disables sync on the rdr application to prevent ArgoCD from changing something during the
+Disables sync on the regional-dr application to prevent ArgoCD from changing resources during settlement.
 charts/hub/rdr/scripts/submariner-sg-tag.sh
-During development of the pattern we discovered a bug in submariner that can prevent LoadBalancer services from being created correctly after submariner is installed. This is a workaround for that bug.
+During development of the pattern, a bug in Submariner was discovered that can prevent LoadBalancer services from being created correctly after Submariner is installed. This is a workaround for that bug.
 `,url:"https://validatedpatterns.io/patterns/ramendr-starter-kit/installation-details/",breadcrumb:"/patterns/ramendr-starter-kit/installation-details/"},"https://validatedpatterns.io/patterns/virtualization-starter-kit/installation-details/":{title:"Installation Details",tags:[],content:`Installation Details Installation Steps These are the steps run by make install and what each one does:
 operator-deploy The operator-deploy task installs the Validated Patterns Operator, which in turn creates a subscription for the OpenShift GitOps operator and installs both the cluster and hub instances of it. The clustergroup application will then read the values-global.yaml and values-hub.yaml files for other subscriptions and applications to install.
 The legacy-install is still provided for users that cannot or do not want to use the Validated Patterns operator. Instead of installing the operator, it installs a helm chart that does the same thing - installs a subscription for OpenShift GitOps and installs a cluster-wide and hub instance of that operator. It then proceeds with installing the clustergroup application.
@@ -7704,7 +7895,18 @@ Annette Clewett, without whom this pattern would not exist. Annette took the tim
 `,url:"https://validatedpatterns.io/blog/2025-11-17-introducing-ramendr-starter-kit/",breadcrumb:"/blog/2025-11-17-introducing-ramendr-starter-kit/"},"https://validatedpatterns.io/patterns/ramendr-starter-kit/":{title:"RamenDR Starter Kit",tags:[],content:` RamenDR Regional Disaster Recovery with Virtualization Starter Kit This pattern sets up three clusters as recommended for OpenShift Data Foundations Regional Disaster Recovery as documented here.
 Of additional interest is that the workload that it sets up protection for and can failover involves running virtual machines.
 The setup process is relatively intricate; the goal of this pattern is to handle all the intricate parts and present a functional DR-capable starting point for Virtual Machine workloads. In particular this pattern takes care to sequence installations and validate pre-requisites for all of the core components of the Disaster Recovery system.
-In particular, this pattern must be customized to specify DNS basedomains for the managed clusters, which makes forking the pattern (which we generally recommend anyway, in case you want to make other customizations) effectively a requirement. The Getting Started doc has details on what needs to be changed and how to commit and push those changes.
+You might fork the repository to customize chart values (for example aws.region in charts/hub/rdr/values.yaml) or to select a non-default install variant. The Getting started page describes variant selection, BYOC, required secrets, and verification steps.
+Install variants The pattern ships three install variants under variants/ in the repository. Set main.variant in values-global.yaml before install. The default is odf.
+Variant main.variant Purpose odf
+odf (default)
+Full OpenShift Data Foundation Regional DR with OpenShift Virtualization workloads, MirrorPeer, and failover-capable VMs
+drpartner-s4
+drpartner-s4
+Partner CSI foundation with hub S4 object storage: OADP, OpenShift Virtualization, Ramen/Multicluster Orchestrator; infrastructure DRClusters and a 2m-novm DRPolicy without DRPC or VMs; Submariner disabled
+drpartner-minimal
+drpartner-minimal
+Partner CSI foundation without S4, Submariner, or DRCluster sync/validation: OADP, OpenShift Virtualization, and Ramen/Multicluster Orchestrator only (Hive or BYOC bring-up)
+Spoke configuration files nest under each variant as variants/&lt;variant&gt;/values-&lt;managedClusterGroup.name&gt;.yaml. See Installation details for what each variant deploys on the hub and managed clusters. For component schematics, connectivity paths, and TLS/CA handling, see Architecture and Connectivity.
 Background It would be ideal if all applications in the world understood availability concepts natively and had their own integrated regional failover strategies. However, many workloads do not, and users who need regional disaster recovery capabilities need to solve this problem for the applications that cannot solve it for themselves.
 This pattern uses OpenShift Virtualization (the productization of Kubevirt) to simulate the Edge environment for VMs.
 Solution elements Red Hat Technologies Red Hat OpenShift Container Platform (Kubernetes)
@@ -7716,7 +7918,14 @@ OpenShift Virtualization (Kubevirt)
 Red Hat Enterprise Linux 9 (on the VMs)
 Other technologies this pattern Uses HashiCorp Vault (Community Edition)
 External Secrets Operator (Community Edition)
-Architecture Figure 1. RamenDR Starter Kit Architecture `,url:"https://validatedpatterns.io/patterns/ramendr-starter-kit/",breadcrumb:"/patterns/ramendr-starter-kit/"},"https://validatedpatterns.io/blog/2025-11-06-multicloud-gitops-downstream-eso/":{title:"Openshift External Secrets Operator Support",tags:[],content:` We are excited to announce that the validatedpatterns/multicloud-gitops repository is now using the supported Red Hat OpenShift External Secrets Operator when running on OpenShift 4.20 deployments.
+Architecture overview The default odf variant deploys a three-cluster Regional DR layout with OpenShift Data Foundation, Submariner, DRPC-protected VMs, and failover workflows documented in Getting started.
+Figure 1. RamenDR Starter Kit architecture (odf) draw.io source: ramendr-architecture-odf.drawio
+Partner variants use different S3 and replication models. See Architecture for per-variant schematics and draw.io sources, and Connectivity for hub-to-managed network paths and ports.
+Next steps Architecture — Component schematics, TLS/CA, draw.io sources
+Connectivity — Hub-to-managed connectivity by variant
+Getting started — Prerequisites, variant selection, BYOC, and deployment
+Installation details — Install sequence and pattern scripts
+`,url:"https://validatedpatterns.io/patterns/ramendr-starter-kit/",breadcrumb:"/patterns/ramendr-starter-kit/"},"https://validatedpatterns.io/blog/2025-11-06-multicloud-gitops-downstream-eso/":{title:"Openshift External Secrets Operator Support",tags:[],content:` We are excited to announce that the validatedpatterns/multicloud-gitops repository is now using the supported Red Hat OpenShift External Secrets Operator when running on OpenShift 4.20 deployments.
 Why the Switch to Red Hat ESO Matters While the community version of ESO has served us well, switching to the Red Hat supported version for OpenShift 4.20 brings several immediate benefits:
 Enterprise-Grade Assurance By utilizing a Red Hat supported Operator, our validated pattern now relies on components that offer the highest level of stability and receive official technical support.
 Simplified Compliance and Integration The Red Hat ESO is officially tested and validated for compatibility with OpenShift Container Platform (OCP) 4.20. This ensures a smooth, predictable installation process and deep integration with OCP’s internal mechanisms, reducing the risk of runtime issues. And also making the upgrades more tested.

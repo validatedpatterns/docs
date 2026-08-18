@@ -1,0 +1,54 @@
+<svg width="860" height="280" viewBox="0 0 860 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">drpartner-minimal hub and managed cluster connectivity</title>
+  <defs>
+    <marker id="arrow-acm" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#2f6fad"/>
+    </marker>
+    <marker id="arrow-stor" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#b35a3a"/>
+    </marker>
+    <marker id="arrow-stor-dim" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#999"/>
+    </marker>
+  </defs>
+
+  <rect x="280" y="30" width="210" height="210" rx="8" fill="none" stroke="#d6b656" stroke-width="1.5"/>
+  <text x="405" y="48" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="600" fill="#555">Managed clusters</text>
+
+  <rect x="540" y="30" width="170" height="210" rx="8" fill="none" stroke="#999" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="615" y="48" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="600" fill="#666">External VSAs</text>
+
+  <rect x="40" y="105" width="200" height="80" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+  <text x="150" y="132" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="14" font-weight="700">Hub cluster</text>
+  <text x="150" y="152" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#555">RHACM &#183; MCO &#183; Ramen Hub</text>
+
+  <rect x="300" y="55" width="190" height="65" rx="8" fill="#fff2cc" stroke="#d6b656" stroke-width="1.5"/>
+  <text x="395" y="80" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700">Primary managed</text>
+  <text x="395" y="98" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#555">Ramen &#183; CNV &#183; OADP</text>
+
+  <rect x="300" y="170" width="190" height="65" rx="8" fill="#fff2cc" stroke="#d6b656" stroke-width="1.5"/>
+  <text x="395" y="195" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700">Secondary managed</text>
+  <text x="395" y="213" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#555">Ramen &#183; CNV &#183; OADP</text>
+
+  <rect x="555" y="60" width="130" height="50" rx="8" fill="#f5f5f5" stroke="#999" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="615" y="82" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="600">Primary VSA</text>
+  <text x="615" y="98" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="10" fill="#666">(external)</text>
+
+  <rect x="555" y="175" width="130" height="50" rx="8" fill="#f5f5f5" stroke="#999" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="615" y="197" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="600">Secondary VSA</text>
+  <text x="615" y="213" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="10" fill="#666">(external)</text>
+
+  <path d="M 240 125 L 300 87" fill="none" stroke="#2f6fad" stroke-width="2" marker-end="url(#arrow-acm)"/>
+  <path d="M 240 155 L 300 202" fill="none" stroke="#2f6fad" stroke-width="2" marker-end="url(#arrow-acm)"/>
+  <text x="255" y="118" font-family="Segoe UI, system-ui, sans-serif" font-size="10" font-weight="600" fill="#2f6fad">ACM DNS + HTTPS</text>
+  <text x="255" y="218" font-family="Segoe UI, system-ui, sans-serif" font-size="10" font-weight="600" fill="#2f6fad">ACM DNS + HTTPS</text>
+
+  <path d="M 490 87 L 555 85" fill="none" stroke="#b35a3a" stroke-width="2" marker-end="url(#arrow-stor)"/>
+  <path d="M 490 202 L 555 200" fill="none" stroke="#b35a3a" stroke-width="2" marker-end="url(#arrow-stor)"/>
+  <text x="520" y="78" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="10" font-weight="600" fill="#b35a3a">CSI / mgmt / data</text>
+  <text x="520" y="225" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="10" font-weight="600" fill="#b35a3a">CSI / mgmt / data</text>
+
+  <path d="M 685 85 L 685 175" fill="none" stroke="#999" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-stor-dim)"/>
+  <text x="700" y="140" font-family="Segoe UI, system-ui, sans-serif" font-size="10" font-weight="600" fill="#666">Array replication</text>
+  <text x="700" y="152" font-family="Segoe UI, system-ui, sans-serif" font-size="10" fill="#666">(external)</text>
+</svg>
