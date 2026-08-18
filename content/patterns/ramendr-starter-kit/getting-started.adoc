@@ -248,6 +248,7 @@ Use BYOC when:
 * You already operate two OpenShift clusters that will serve as the primary and secondary DR sites.
 * You want to avoid Hive cluster provisioning time and AWS cluster creation costs for the managed pair.
 * You are validating partner CSI plumbing on clusters you provisioned outside the pattern.
+* You are installing on a platform other than AWS
 
 The default install path (Hive provisioning) remains appropriate when you want the pattern to create and lifecycle-manage the managed clusters for you.
 
@@ -259,7 +260,11 @@ Before install, the `install-byoc` target runs `ansible/playbooks/validate_byoc.
 * **Reachability** — Hub and both regional clusters are reachable from the install environment.
 * **{ocp} version** — Hub is {ocp} 4.18 or later. Primary and secondary must match the hub minor version (same minor is required for RamenDR and {ocp-data-short}).
 * **Non-overlapping networks** — Pod and service CIDRs must not overlap between the hub, primary, and secondary clusters.
-* **Metal workers for VMs** — For the `odf` variant, both regional clusters need at least one worker node with a metal instance type (for example `m5.metal`) to run the sample VM workload.
+
+You are responsible for making sure that the managed clusters are suitable for running Virtual Machines. The Hive
+provisioner will use `m5.metal` instances on AWS. Different clouds and bare metal have different requirements which
+are hard to generalize, so the playbook does not. (Previous versions would look for "metal" instance types but that
+only works on AWS.)
 
 [id="byoc-configuration"]
 === Configuring BYOC
