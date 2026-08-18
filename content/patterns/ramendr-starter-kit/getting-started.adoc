@@ -67,6 +67,14 @@ upstream	git@github.com:validatedpatterns/ramendr-starter-kit.git (fetch)
 upstream	git@github.com:validatedpatterns/ramendr-starter-kit.git (push)
 ----
 
+. Decide which install variant to use and set `main.variant` in `values-global.yaml` before install. The default is `odf`. For variant purposes and verification differences, see link:/patterns/ramendr-starter-kit/#install-variants[Install variants] on the pattern overview page.
++
+[source,yaml]
+----
+main:
+  variant: odf
+----
+
 . Make a local copy of secrets template outside of your repository to hold credentials for the pattern.
 +
 [WARNING]
@@ -154,6 +162,52 @@ Paste the path to your locally stored private and public keys. If you do not hav
         path: ~/pull_secret.json
 ----
 
+.. If you selected the `drpartner-s4` variant, add the two Vault secrets required for hub `vp-s4-storage`. Paths must match the chart overrides in `variants/drpartner-s4/values-drpartner-s4.yaml` (`s4UICredentials.vaultKey` and `s4APICredentials.vaultKey`). The `drpartner-minimal` variant does not deploy `vp-s4-storage` and does not need these secrets.
++
+[source,yaml]
+----
+  - name: s4-ui-credentials
+    vaultPrefixes:
+      - global
+    fields:
+      - name: UI_USERNAME
+        value: s4admin
+        onMissingValue: error
+      - name: UI_PASSWORD
+        onMissingValue: generate
+        override: true
+        vaultPolicy: advancedPolicy
+
+  - name: s4-api-credentials
+    vaultPrefixes:
+      - global
+    fields:
+      - name: AWS_ACCESS_KEY_ID
+        value: s4admin
+        onMissingValue: error
+      - name: AWS_SECRET_ACCESS_KEY
+        onMissingValue: generate
+        override: true
+        vaultPolicy: advancedPolicy
+----
++
+External Secrets merges both Vault entries into Kubernetes Secret `s4-credentials` in the `vp-s4-storage` namespace. Defaults in `values-secret.yaml.template` use `s4admin` for the UI user and access key ID; the password and secret key can be generated when `onMissingValue: generate` and `vaultPolicies.advancedPolicy` are set in your secrets file.
+
+.. If you plan to use bring your own cluster (BYOC) instead of Hive-provisioned managed clusters, add kubeconfig secrets for each regional DR cluster. See link:#using-byoc[Using bring your own cluster (BYOC)].
++
+[source,yaml]
+----
+  - name: ocp-primary_cluster_kubeconfig
+    fields:
+      - name: kubeconfig
+        path: /path/to/ocp-primary/kubeconfig
+
+  - name: ocp-secondary_cluster_kubeconfig
+    fields:
+      - name: kubeconfig
+        path: /path/to/ocp-secondary/kubeconfig
+----
+
 . Create and switch to a new branch named `my-branch`, by running the following command:
 +
 [source,terminal]
@@ -179,7 +233,63 @@ $ git commit -m "any updates"
 $ git push origin my-branch
 ----
 
-The preferred way to install this pattern is by using the script `./pattern.sh` script. 
+The preferred way to install this pattern is by using the `./pattern.sh` script. By default, {rh-rhacm-first} Hive provisions the primary and secondary managed clusters on AWS. If you already have regional DR clusters, use link:#using-byoc[BYOC] and `./pattern.sh make install-byoc` instead of `./pattern.sh make install`.
+
+[id="using-byoc"]
+== Using bring your own cluster (BYOC)
+
+BYOC (bring your own cluster) lets you use existing OpenShift clusters as the regional DR pair (`ocp-primary` and `ocp-secondary`) instead of waiting for Hive to provision new managed clusters on AWS. This option is available for all install variants and is the typical path for `drpartner-minimal` (Hive/BYOC bring-up without Ramen DR CRs).
+
+[id="byoc-when-to-use"]
+=== When to use BYOC
+
+Use BYOC when:
+
+* You already operate two OpenShift clusters that will serve as the primary and secondary DR sites.
+* You want to avoid Hive cluster provisioning time and AWS cluster creation costs for the managed pair.
+* You are validating partner CSI plumbing on clusters you provisioned outside the pattern.
+* You are installing on a platform other than AWS
+
+The default install path (Hive provisioning) remains appropriate when you want the pattern to create and lifecycle-manage the managed clusters for you.
+
+[id="byoc-requirements"]
+=== BYOC cluster requirements
+
+Before install, the `install-byoc` target runs `ansible/playbooks/validate_byoc.yml` against the kubeconfigs in your secrets file. Clusters must meet these checks:
+
+* **Reachability** — Hub and both regional clusters are reachable from the install environment.
+* **{ocp} version** — Hub is {ocp} 4.18 or later. Primary and secondary must match the hub minor version (same minor is required for RamenDR and {ocp-data-short}).
+* **Non-overlapping networks** — Pod and service CIDRs must not overlap between the hub, primary, and secondary clusters.
+
+You are responsible for making sure that the managed clusters are suitable for running Virtual Machines. The Hive
+provisioner will use `m5.metal` instances on AWS. Different clouds and bare metal have different requirements which
+are hard to generalize, so the playbook does not. (Previous versions would look for "metal" instance types but that
+only works on AWS.)
+
+[id="byoc-configuration"]
+=== Configuring BYOC
+
+.Provision and register your regional DR clusters with {rh-rhacm-first}. Managed cluster names must match the names in
+link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/overrides/values-cluster-names.yaml[`overrides/values-cluster-names.yaml`] (default: `ocp-primary` and `ocp-secondary`).
+
+.Set `byoc: true` in `overrides/values-cluster-names.yaml` and align `clusterOverrides` with your cluster names, versions, and regions:
++
+[source,yaml]
+----
+byoc: true
+
+clusterOverrides:
+  primary:
+    name: ocp-primary
+    version: 4.22.1
+  secondary:
+    name: ocp-secondary
+    version: 4.22.1
+----
+
+.Add kubeconfig paths for both regional clusters to your secrets file (see the `ocp-primary_cluster_kubeconfig` and `ocp-secondary_cluster_kubeconfig` entries in link:#preparing-for-deployment[Preparing for deployment]).
+
+.Commit and push `byoc: true` and any `clusterOverrides` changes to your fork so Argo CD sees them during install.
 
 [id="deploying-cluster-using-patternsh-file"]
 == Deploying the pattern by using the pattern.sh file
@@ -204,12 +314,23 @@ Or log in by running the following command:
 $ export KUBECONFIG=~/<path_to_kubeconfig>
 ----
 
-. Deploy the pattern to your cluster. Run the following command:
+. Deploy the pattern to your hub cluster.
+
+.. For the default Hive provisioning path, run:
 +
 [source,terminal]
 ----
 $ ./pattern.sh make install
 ----
+
+.. For BYOC, after setting `byoc: true` and adding regional cluster kubeconfigs to your secrets file, run:
++
+[source,terminal]
+----
+$ ./pattern.sh make install-byoc
+----
++
+The `install-byoc` target loads secrets (when configured), runs the BYOC validation playbook, then installs the pattern the same way as `install`.
 
 .Verification
 
@@ -219,7 +340,7 @@ $ ./pattern.sh make install
 image::/images/ramendr-starter-kit/ramendr-hub-operators.png[ramendr-starter-kit-operators,title="RamenDR Hub Operators"]
 
 
-. Verify that the primary and secondary managed clusters have been built. This can take close to an hour on AWS. On the hub cluster, navigate to *All Clusters* in the OpenShift Container Plaform web console:
+. Verify that the primary and secondary managed clusters are available in {rh-rhacm-first}. For the default Hive path, cluster creation can take close to an hour on AWS. For BYOC, clusters should already be registered before install completes. On the hub cluster, navigate to *All Clusters* in the OpenShift Container Platform web console:
 +
 .ramendr-starter-kit-clusters
 image::/images/ramendr-starter-kit/ramendr-clusters-built.png[ramendr-starter-kit-operators,title="RamenDR Clusters"]
@@ -227,27 +348,45 @@ image::/images/ramendr-starter-kit/ramendr-clusters-built.png[ramendr-starter-ki
 +
 .ramendr-starter-kit-operators-applications
 image::/images/ramendr-starter-kit/ramendr-starter-kit-hub-applications.png[ramendr-starter-kit-hub-applications,title="RamenDR Starter Kit Applications"]
-. Eventually, the Virtual Machines will be deployed and the Disaster Recovery Placement Control (DRPC) will show that resources are now protected. This screen can be reached via *All Clusters → Data Services → Disaster Recovery → Protected Applications* on the hub cluster. Normally it will be faster to synchronize Kubernetes objects than Application volumes. When these indicators both show Healthy it is safe to trigger a failover:
+. For the `odf` variant (default), the Virtual Machines will be deployed and the Disaster Recovery Placement Control (DRPC) will show that resources are now protected. This screen can be reached via *All Clusters → Data Services → Disaster Recovery → Protected Applications* on the hub cluster. Normally it will be faster to synchronize Kubernetes objects than Application volumes. When these indicators both show Healthy it is safe to trigger a failover:
 +
 .ramendr-starter-kit-running-vms
 image::/images/ramendr-starter-kit/ramendr-starter-kit-running-vms.png[ramendr-starter-kit-running-vms,title="RamenDR Starter Kit Applications"]
-. You might want to see the VMs themselves running. They will be on the primary cluster in the *Virtualization → VirtualMachines* area. The pattern configures 4 RHEL9 VMs by default:
+. For the `odf` variant, you might want to see the VMs themselves running. They will be on the primary cluster in the *Virtualization → VirtualMachines* area. The pattern configures 4 RHEL9 VMs by default:
 +
 .ramendr-starter-kit-trigger-failover
 image::/images/ramendr-starter-kit/ramendr-starter-kit-trigger-failover-1.png[ramendr-starter-kit-trigger-failover-1,title="RamenDR Starter Kit Trigger Failover, part 1"]
-. Clicking the "Failover" option will bring up a modal dialog that indicates where the failover will move the workload, and when the last known good state of the workload is. Click on the "Initiate" button to begin the failover:
+. For the `odf` variant, clicking the *Failover* option will bring up a modal dialog that indicates where the failover will move the workload, and when the last known good state of the workload is. Click the *Initiate* button to begin the failover:
 +
 .ramendr-starter-kit-trigger-failover-part-2
 image::/images/ramendr-starter-kit/ramendr-starter-kit-trigger-failover-2.png[ramendr-starter-kit-trigger-failover-2,title="RamenDR Starter Kit Trigger Failover, part 2"]
-. While the failover is happening, you can watch the progress of it in the activity area. When it is done, it will say (with a discovered application) that it is necessary to clean up application resources to allow replication to start in the other direction. Notice that the primary cluster should have changed:
+. For the `odf` variant, while the failover is happening, you can watch the progress of it in the activity area. When it is done, it will say (with a discovered application) that it is necessary to clean up application resources to allow replication to start in the other direction. Notice that the primary cluster should have changed:
 +
 .ramendr-starter-kit-trigger-failover-cleanup
 image::/images/ramendr-starter-kit/ramendr-starter-kit-failover-cleanup.png[ramendr-starter-kit-failover-cleanup,title="RamenDR Starter Kit Failover Cleanup"]
-. The pattern provides a script to do this cleanup. Invoke it with your Hub cluster KUBECONFIG set and running `./pattern.sh scripts/cleanup-gitops-vms-non-primary.sh`:
+. For the `odf` variant, the pattern provides a script to do this cleanup. Invoke it with your Hub cluster KUBECONFIG set and run `./pattern.sh scripts/cleanup-gitops-vms-non-primary.sh`:
 +
 .ramendr-starter-kit-failover-cleanup-script
 image::/images/ramendr-starter-kit/ramendr-starter-kit-failover-cleanup-script.png[ramendr-starter-kit-failover-cleanup-script,title="RamenDR Starter Kit Failover Cleanup"]
-. After a few minutes, the resources should show healthy and protected again (the PVCs take a few minutes to synchronize):
+. For the `odf` variant, after a few minutes, the resources should show healthy and protected again (the PVCs take a few minutes to synchronize):
 +
 .ramendr-starter-kit-failover-reprotected
 image::/images/ramendr-starter-kit/ramendr-starter-kit-reprotected.png[ramendr-starter-kit-reprotected,title="RamenDR Starter Kit Reprotected"]
+
+[id="verifying-partner-variants"]
+== Verifying partner variants
+
+After sync, expect the following differences for the partner install variants.
+
+=== `drpartner-s4`
+
+* Hub operators include Multicluster Orchestrator (Ramen), {VirtProductName}, and OADP. Submariner is disabled in `opp-policy`.
+* Hub `vp-s4-storage` is present and creates buckets via `s4Role.buckets`.
+* No ODF StorageSystem, MirrorPeer, or `odf-dr` application.
+* The `regional-dr` application runs with `ramen.infrastructureEnabled: true`. It creates DRClusters, a single `2m-novm` DRPolicy (no `2m-vm`), and upserts hub `s3StoreProfiles` with `ensureBuckets: false`. It does not deploy DRPC or VMs.
+* The `opp-policy` application injects `caCertificates` on S3 profiles only.
+
+=== `drpartner-minimal`
+
+* Same partner operators and plumbing as `drpartner-s4`, but without `vp-s4-storage` or Submariner (`submariner.enabled: false` in `opp-policy`).
+* The `regional-dr` application runs with both `ramen.resourcesEnabled` and `ramen.infrastructureEnabled` set to `false`. No DRPolicy, DRClusters, S3 profile work, or DRPC/VM workloads are deployed.

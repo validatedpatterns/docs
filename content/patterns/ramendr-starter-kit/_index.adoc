@@ -44,10 +44,29 @@ The setup process is relatively intricate; the goal of this pattern is to handle
 a functional DR-capable starting point for Virtual Machine workloads. In particular this pattern takes care to sequence
 installations and validate pre-requisites for all of the core components of the Disaster Recovery system.
 
-In particular, this pattern must be customized to specify DNS basedomains for the managed clusters, which makes 
-forking the pattern (which we generally recommend anyway, in case you want to make other customizations) effectively
-a requirement. The link:https://validatedpatterns/patterns/getting-started[**Getting Started**] doc has
-details on what needs to be changed and how to commit and push those changes.
+You might fork the repository to customize chart values (for example `aws.region` in
+link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/charts/hub/rdr/values.yaml[`charts/hub/rdr/values.yaml`])
+or to select a non-default install variant. The link:/patterns/ramendr-starter-kit/getting-started/[Getting started] page describes variant
+selection, BYOC, required secrets, and verification steps.
+
+[id="install-variants"]
+=== Install variants
+
+The pattern ships three install variants under `variants/` in the repository. Set `main.variant` in
+link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/values-global.yaml[`values-global.yaml`]
+before install. The default is `odf`.
+
+[cols="1,1,3",options="header"]
+|===
+| Variant | `main.variant` | Purpose
+| `odf` | `odf` (default) | Full {ocp-data-short} Regional DR with {VirtProductName} workloads, MirrorPeer, and failover-capable VMs
+| `drpartner-s4` | `drpartner-s4` | Partner CSI foundation with hub S4 object storage: OADP, {VirtProductName}, Ramen/Multicluster Orchestrator; infrastructure DRClusters and a `2m-novm` DRPolicy without DRPC or VMs; Submariner disabled
+| `drpartner-minimal` | `drpartner-minimal` | Partner CSI foundation without S4, Submariner, or DRCluster sync/validation: OADP, {VirtProductName}, and Ramen/Multicluster Orchestrator only (Hive or BYOC bring-up)
+|===
+
+Spoke configuration files nest under each variant as `variants/<variant>/values-<managedClusterGroup.name>.yaml`.
+See link:/patterns/ramendr-starter-kit/installation-details/#variant-installation-differences[Installation details] for what each variant deploys on the hub and managed clusters.
+For component schematics, connectivity paths, and TLS/CA handling, see link:/patterns/ramendr-starter-kit/architecture/[Architecture] and link:/patterns/ramendr-starter-kit/connectivity/[Connectivity].
 
 === Background
 
@@ -74,7 +93,20 @@ This pattern uses OpenShift Virtualization (the productization of Kubevirt) to s
 * HashiCorp Vault (Community Edition)
 * External Secrets Operator (Community Edition)
 
-=== Architecture
+=== Architecture overview
+
+The default `odf` variant deploys a three-cluster Regional DR layout with {ocp-data-short}, Submariner, DRPC-protected VMs, and failover workflows documented in link:/patterns/ramendr-starter-kit/getting-started/[Getting started].
 
 .ramendr-architecture-diagram
-image::/images/ramendr-starter-kit/ramendr-architecture.drawio.png[ramendr-starter-kit-architecture,title="RamenDR Starter Kit Architecture"]
+image::/images/ramendr-starter-kit/ramendr-architecture-odf.png[ramendr-starter-kit-architecture,title="RamenDR Starter Kit architecture (odf)"]
+
+draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio[`ramendr-architecture-odf.drawio`]
+
+Partner variants use different S3 and replication models. See link:/patterns/ramendr-starter-kit/architecture/[Architecture] for per-variant schematics and draw.io sources, and link:/patterns/ramendr-starter-kit/connectivity/[Connectivity] for hub-to-managed network paths and ports.
+
+=== Next steps
+
+* link:/patterns/ramendr-starter-kit/architecture/[Architecture] — Component schematics, TLS/CA, draw.io sources
+* link:/patterns/ramendr-starter-kit/connectivity/[Connectivity] — Hub-to-managed connectivity by variant
+* link:/patterns/ramendr-starter-kit/getting-started/[Getting started] — Prerequisites, variant selection, BYOC, and deployment
+* link:/patterns/ramendr-starter-kit/installation-details/[Installation details] — Install sequence and pattern scripts
