@@ -53,7 +53,7 @@ link:https://github.com/validatedpatterns/ramendr-starter-kit[ramendr-starter-ki
 [id="architecture-odf"]
 === `odf` schematic
 
-Full hub/spoke schematic: {ocp-data-short}, Submariner, DRPC, Edge GitOps VMs.
+Full hub/spoke schematic. DRPC lives on the hub. Managed clusters run {ocp-data-short} with Submariner for volume replication, plus Edge GitOps VMs.
 
 .ramendr-architecture-odf
 image::/images/ramendr-starter-kit/ramendr-architecture-odf.png[RamenDR architecture for the odf variant,title="RamenDR Starter Kit architecture (odf)"]

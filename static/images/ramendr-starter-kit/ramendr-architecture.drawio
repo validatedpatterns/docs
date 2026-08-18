@@ -160,7 +160,7 @@
         <mxCell id="90" value="Disaster Recovery" style="whiteSpace=wrap;html=1;fillColor=#1D4174;strokeColor=#4C4C4C;fontColor=#FFFFFF;movable=0;resizable=0;rotatable=0;cloneable=0;deletable=0;imageAspect=0;connectable=0;recursiveResize=0;fontFamily=Red Hat Text;fontStyle=1;align=left;fontSize=12;spacingLeft=10;spacingRight=50;allowArrows=0;expand=0;part=1;" parent="88" vertex="1">
           <mxGeometry x="14" y="10" width="160" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="91" value="DRPC&lt;br&gt;ODF&lt;br&gt;Submariner&lt;br&gt;Edge GitOps VMs" style="whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;fontFamily=Red Hat Text;fontSize=11;fontStyle=0;verticalAlign=bottom;fontColor=#595959;movable=0;rotatable=0;cloneable=0;deletable=1;connectable=0;imageAspect=0;recursiveResize=0;resizable=0;allowArrows=0;expand=0;part=1;" parent="88" vertex="1">
+        <mxCell id="91" value="ODF&lt;br&gt;Submariner&lt;br&gt;Edge GitOps VMs" style="whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;fontFamily=Red Hat Text;fontSize=11;fontStyle=0;verticalAlign=bottom;fontColor=#595959;movable=0;rotatable=0;cloneable=0;deletable=1;connectable=0;imageAspect=0;recursiveResize=0;resizable=0;allowArrows=0;expand=0;part=1;" parent="88" vertex="1">
           <mxGeometry x="14" y="58" width="130" height="60" as="geometry" />
         </mxCell>
         <mxCell id="92" value="" style="ellipse;allowArrows=1;editable=0;movable=0;resizable=0;rotatable=0;cloneable=0;deletable=0;fillColor=none;strokeColor=none;connectable=1;part=1;perimeter=none;points=[[0,0,0]];snapToPoint=1;" parent="88" vertex="1">
@@ -280,7 +280,7 @@
         <mxCell id="352" value="Disaster Recovery" style="whiteSpace=wrap;html=1;fillColor=#1D4174;strokeColor=#4C4C4C;fontColor=#FFFFFF;movable=0;resizable=0;rotatable=0;cloneable=0;deletable=0;imageAspect=0;connectable=0;recursiveResize=0;fontFamily=Red Hat Text;fontStyle=1;align=left;fontSize=12;spacingLeft=10;spacingRight=50;allowArrows=0;expand=0;part=1;" parent="350" vertex="1">
           <mxGeometry x="14" y="10" width="160" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="353" value="DRPC&lt;br&gt;ODF&lt;br&gt;Submariner&lt;br&gt;Edge GitOps VMs" style="whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;fontFamily=Red Hat Text;fontSize=11;fontStyle=0;verticalAlign=bottom;fontColor=#595959;movable=0;rotatable=0;cloneable=0;deletable=1;connectable=0;imageAspect=0;recursiveResize=0;resizable=0;allowArrows=0;expand=0;part=1;" parent="350" vertex="1">
+        <mxCell id="353" value="ODF&lt;br&gt;Submariner&lt;br&gt;Edge GitOps VMs" style="whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;fontFamily=Red Hat Text;fontSize=11;fontStyle=0;verticalAlign=bottom;fontColor=#595959;movable=0;rotatable=0;cloneable=0;deletable=1;connectable=0;imageAspect=0;recursiveResize=0;resizable=0;allowArrows=0;expand=0;part=1;" parent="350" vertex="1">
           <mxGeometry x="14" y="58" width="130" height="60" as="geometry" />
         </mxCell>
         <mxCell id="354" value="" style="ellipse;allowArrows=1;editable=0;movable=0;resizable=0;rotatable=0;cloneable=0;deletable=0;fillColor=none;strokeColor=none;connectable=1;part=1;perimeter=none;points=[[0,0,0]];snapToPoint=1;" parent="350" vertex="1">
@@ -590,7 +590,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="254" value="Submariner Network&lt;br&gt;ODF Replication&lt;br&gt;DRPC Protection" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" parent="253" vertex="1" connectable="0">
+        <mxCell id="254" value="Submariner Network&lt;br&gt;ODF Replication" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" parent="253" vertex="1" connectable="0">
           <mxGeometry x="-0.8087" relative="1" as="geometry">
             <mxPoint x="163" as="offset" />
           </mxGeometry>
