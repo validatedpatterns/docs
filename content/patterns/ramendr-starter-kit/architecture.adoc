@@ -53,7 +53,7 @@ link:https://github.com/validatedpatterns/ramendr-starter-kit[ramendr-starter-ki
 [id="architecture-odf"]
 === `odf` schematic
 
-Full hub/spoke schematic. DRPC lives on the hub. Managed clusters run {ocp-data-short} with Submariner for volume replication, plus Edge GitOps VMs.
+Full hub/spoke schematic. DRPolicies live on the hub with the RamenDR Hub Operator and become volume replications and volume group replications on the managed clusters. The hub operator orchestrates the RamenDR Cluster Operators, which manage those replications plus {ocp-data-short} and OpenShift ADP (Kubernetes object backups), along with Submariner and Edge GitOps VMs.
 
 .ramendr-architecture-odf
 image::/images/ramendr-starter-kit/ramendr-architecture-odf.png[RamenDR architecture for the odf variant,title="RamenDR Starter Kit architecture (odf)"]
@@ -63,7 +63,7 @@ draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio
 [id="architecture-drpartner-s4"]
 === `drpartner-s4` schematic
 
-Hub S4, partner CSI, VSA replication; Submariner disabled.
+Hub S4 Object store for OpenShift ADP Kubernetes object backups. Partner CSI on the managed clusters provides VM data replication. DRPolicies live on the hub and become volume replications and volume group replications on the managed clusters. The RamenDR Hub Operator orchestrates the cluster operators. The pattern does not create DRPC or VMs.
 
 .ramendr-architecture-drpartner-s4
 image::/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.png[RamenDR architecture for the drpartner-s4 variant,title="RamenDR Starter Kit architecture (drpartner-s4)"]
@@ -73,7 +73,7 @@ draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-
 [id="architecture-drpartner-minimal"]
 === `drpartner-minimal` schematic
 
-{rh-rhacm-first} and partner operators only; no S4 or DR CRs.
+{rh-rhacm-first} and partner operators only. S3-compatible storage for OpenShift ADP is bring-your-own; this variant does not deploy S4. DRPolicies live on the hub and become volume replications and volume group replications on the managed clusters. The pattern does not create DR CRs.
 
 .ramendr-architecture-drpartner-minimal
 image::/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.png[RamenDR architecture for the drpartner-minimal variant,title="RamenDR Starter Kit architecture (drpartner-minimal)"]
