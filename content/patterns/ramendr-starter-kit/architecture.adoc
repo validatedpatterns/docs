@@ -17,8 +17,7 @@ This page describes component schematics, connectivity overview diagrams, and TL
 [id="architecture-diagrams"]
 == Architecture diagrams
 
-Each install variant has a full hub/spoke schematic exported as PNG from draw.io source. PNG and draw.io files live in `static/images/ramendr-starter-kit/` and match the copies under `docs/` in the
-link:https://github.com/validatedpatterns/ramendr-starter-kit[ramendr-starter-kit repository].
+Each install variant has a full hub/spoke schematic exported as PNG from draw.io source. PNG and draw.io files live in `static/images/ramendr-starter-kit/`.
 
 [cols="2,1,2,2",options="header"]
 |===
