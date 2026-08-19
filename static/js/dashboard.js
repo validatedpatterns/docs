@@ -166,7 +166,7 @@ function pattern_url(key) {
 }
 
 function repo_url(key) {
-    const prefix = 'https://github.com/hybrid-cloud-patterns/'
+    const prefix = 'https://github.com/validatedpatterns/'
     const dictionary = {
 	aegitops: "ansible-edge-gitops",
 	devsecops: "multicluster-devsecops",

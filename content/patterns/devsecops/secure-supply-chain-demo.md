@@ -29,7 +29,7 @@ You will need to login into GitHub and be able to fork two repositories.
 * validatedpatterns/multicluster-devsecops
 
 <!--There is no such repo as chat-client in either orgs -->
-* hybrid-cloud-patterns/chat-client
+* validatedpatterns/chat-client
 
 ## Pipeline Demos
 
