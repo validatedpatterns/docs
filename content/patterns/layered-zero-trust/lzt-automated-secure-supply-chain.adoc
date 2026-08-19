@@ -6,9 +6,9 @@ aliases: /layered-zero-trust/lzt-automated-secure-supply-chain/
 ---
 
 :toc:
-:imagesdir: /images
 :_mod-docs-content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
+:imagesdir: /images
 
 [id="lzt-automated-secure-supply-chain"]
 = Use case: Automating the secure supply chain

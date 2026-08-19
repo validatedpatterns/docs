@@ -5,9 +5,9 @@ aliases: /layered-zero-trust/lzt-getting-started/
 ---
 
 :toc:
-:imagesdir: /images
 :_mod-docs-content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
+:imagesdir: /images
 
 [id="lzt-deploying-lzt-pattern"]
 = Deploying the Layered Zero Trust pattern
