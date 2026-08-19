@@ -1,0 +1,1123 @@
+:_content-type: PROCEDURE
+:imagesdir: ../../../images
+
+[id="deploying-openshift-aiops-platform"]
+= Deploying the OpenShift AIOps Self-Healing Platform
+
+This procedure walks through deploying the OpenShift AIOps Self-Healing Platform on an OpenShift cluster using the Validated Patterns Operator framework.
+
+== Prerequisites
+
+*Hub Cluster*::
+* OpenShift Container Platform 4.18 or later
+* Cluster admin access
+* Standard HighlyAvailable topology: At least 3 control plane nodes and 6+ compute nodes, OR
+* Single Node OpenShift (SNO) topology: 1 node with 8+ vCPU, 32+ GB RAM, 120+ GB storage
+* Internet connectivity for pulling container images
+
+*Optional Spoke Clusters*::
+* One or more OpenShift clusters to manage with the self-healing platform
+* These can be added after initial hub deployment
+
+*Required Local Tools*::
+* `oc` CLI (matching your OpenShift version)
+* `git` CLI installed locally
+* `make` for running deployment targets
+* `podman` — used by `pattern.sh` to run Ansible playbooks in a container
+
+*Optional Local Tools (for advanced operations)*::
+* `kubectl` CLI
+* `helm` CLI version 3.12 or later
+* `yq` for YAML processing
+* `jq` for JSON processing
+* `ansible-navigator` for running Ansible automation locally (not required for `./pattern.sh make install`)
+
+*Optional: RHEL Prerequisite Installer*::
+* For RHEL 9/10 systems, a prerequisite installation script is available
+* Installs all required tools automatically
+
+*Required Access*::
+* Cluster admin credentials for the hub cluster
+* GitHub account for forking the pattern repository (MANDATORY)
+
+== Preparing for deployment
+
+Follow these steps to prepare your environment for deployment.
+
+.Procedure
+
+. Fork the pattern repository on GitHub:
++
+[IMPORTANT]
+====
+Forking the repository is MANDATORY. The pattern will not work correctly if you clone the upstream repository directly, as GitOps requires your own repository URL for synchronization.
+====
++
+Navigate to https://github.com/KubeHeal/openshift-aiops-platform and click the *Fork* button.
+
+. Clone YOUR forked repository (not the upstream):
++
+[source,terminal]
+----
+git clone https://github.com/<your-username>/openshift-aiops-platform.git
+cd openshift-aiops-platform
+----
+
+. Set the upstream remote to track pattern updates:
++
+[source,terminal]
+----
+git remote add upstream https://github.com/KubeHeal/openshift-aiops-platform.git
+----
+
+. (Optional) Install prerequisites using the RHEL installer script:
++
+[source,terminal]
+----
+# RHEL 9 or RHEL 10 only
+./scripts/install-prerequisites-rhel.sh
+
+# Start a new terminal session or source your shell configuration
+source ~/.bashrc  # or ~/.zshrc if using zsh
+----
++
+The script is *idempotent* (safe to run multiple times) and will prompt before reinstalling existing tools.
++
+*What the script installs:*
++
+* *System packages via dnf:* `podman`, `git`, `make`, `jq`, `python3-pip`, development headers
+* *Python virtual environment:* Created at `~/.venv/aiops-platform` with `ansible-navigator` and `ansible-builder`
+* *CLI tools installed to `/usr/local/bin/`:*
+** `oc` - OpenShift CLI
+** `kubectl` - Kubernetes CLI
+** `helm` 3.12+ - Kubernetes package manager
+** `yq` - YAML processor
+** `tkn` - Tekton CLI for pipeline management
++
+[NOTE]
+====
+*Ubuntu/macOS users:* The RHEL script is not compatible with other operating systems. Install the required tools manually:
+
+*Ubuntu:*
+[source,terminal]
+----
+apt install podman git make jq
+pip3 install ansible-navigator ansible-builder
+----
+
+*macOS (using Homebrew):*
+[source,terminal]
+----
+brew install podman git make jq yq helm kubectl openshift-cli tektoncd-cli
+pip3 install ansible-navigator ansible-builder
+----
+====
++
+[NOTE]
+====
+*Fedora/CentOS Stream:* The script may work on Fedora and CentOS Stream 9+ but is officially tested on RHEL 9 and RHEL 10 only. Use at your own discretion.
+====
+
+. Log into your OpenShift cluster:
++
+[source,terminal]
+----
+oc login --token=<your-token> --server=https://api.cluster.example.com:6443
+----
+
+. Verify you have cluster admin privileges:
++
+[source,terminal]
+----
+oc auth can-i '*' '*' --all-namespaces
+----
++
+This should return `yes`.
+
+. Verify cluster topology and version:
++
+[source,terminal]
+----
+make show-cluster-info
+----
++
+This command displays:
+* OpenShift version
+* Cluster topology (HighlyAvailable or SingleReplica for SNO)
+* Node count and resources
+* Kubernetes version
++
+[NOTE]
+====
+The pattern supports both standard HighlyAvailable clusters and Single Node OpenShift (SNO). The topology is automatically detected.
+====
+
+. Configure cluster infrastructure:
++
+[source,terminal]
+----
+make configure-cluster
+----
++
+This command:
+* Installs OpenShift Data Foundation (ODF) if not present
+* Scales compute nodes if needed
+* Configures storage classes
+* Validates cluster prerequisites
++
+This step takes approximately 10-15 minutes.
+
+. Verify available storage classes on your cluster:
++
+[source,terminal]
+----
+oc get storageclass
+----
++
+Identify the appropriate storage class for your cluster topology and cloud provider:
++
+* *AWS SNO/HA:* Use `gp3-csi` or `gp2-csi`
+* *Azure SNO/HA:* Use `managed-csi`
+* *GCP SNO/HA:* Use `standard-rw`
+* *Local/Edge SNO:* Use `local-path` (if available)
++
+Note the storage class name for use in `values-hub.yaml` configuration.
+
+[CRITICAL]
+====
+The following steps MUST be completed before running ANY `make` targets. The Makefile reads `values-global.yaml` on startup, so all make commands will fail if this file doesn't exist or is misconfigured.
+====
+
+. Create values files from examples:
++
+[source,terminal]
+----
+# Create global values file (REQUIRED)
+cp values-global.yaml.example values-global.yaml
+
+# Create hub values file (REQUIRED - may already exist)
+cp values-hub.yaml.example values-hub.yaml
+----
++
+[IMPORTANT]
+====
+Both `values-global.yaml` and `values-hub.yaml` are REQUIRED before proceeding. All subsequent `make` commands depend on these files existing and being properly configured.
+====
+
+. Edit `values-global.yaml` and update the repository URL to YOUR fork:
++
+[source,yaml]
+----
+global:
+  pattern: openshift-aiops-platform
+
+  git:
+    # CRITICAL: Update this to YOUR forked repository URL
+    repoURL: https://github.com/<your-username>/openshift-aiops-platform.git
+    branch: main
+
+  options:
+    useCSV: false
+    syncPolicy: Automatic
+    installPlanApproval: Automatic
+----
++
+[WARNING]
+====
+Failing to update `git.repoURL` to your fork will cause deployment failures. The pattern requires your repository for GitOps synchronization.
+====
+
+. Edit `values-hub.yaml` and update the repository URL:
++
+[source,yaml]
+----
+clusterGroup:
+  name: hub
+
+  git:
+    # CRITICAL: Update this to YOUR forked repository URL
+    repoURL: https://github.com/<your-username>/openshift-aiops-platform.git
+    branch: main
+----
++
+For Single Node OpenShift deployments, also update the topology and storage class:
++
+[source,yaml]
+----
+clusterGroup:
+  name: hub
+
+  cluster:
+    # IMPORTANT: Set topology to "sno" for Single Node OpenShift
+    topology: "sno"  # Or "ha" for standard HighlyAvailable (default)
+
+  storage:
+    # SNO storage class depends on your cloud provider:
+    # - AWS SNO: "gp3-csi" (recommended) or "gp2-csi"
+    # - Azure SNO: "managed-csi"
+    # - GCP SNO: "standard-rw"
+    # - Local/edge SNO: "local-path"
+    storageClass: "gp3-csi"  # Example for AWS SNO clusters
+----
+
+. Review the secrets template to understand what source secrets are needed for your configuration:
++
+[source,terminal]
+----
+cat values-secret.yaml.template
+----
++
+[NOTE]
+====
+*Default deployment (GitHub public repository, no Gitea):*
+No source secrets are required in `values-secret.yaml` for a default deployment. The pattern sets `gitea.enabled: false` by default, which disables the optional `git-credentials` and `gitea-credentials` ExternalSecrets that would otherwise require a token. The `secretLoader` is also disabled (`global.secretLoader.disabled: true`), so Vault pre-flight checks are bypassed when using Kubernetes-native secrets.
+
+*Optional: AWS S3 credentials* — if you want to configure external S3 storage instead of using the in-cluster OpenShift Data Foundation S3 service, add AWS credentials as Kubernetes secrets directly:
+[source,terminal]
+----
+oc create secret generic aws-s3-secret \
+  --from-literal=AWS_ACCESS_KEY_ID=<your-access-key> \
+  --from-literal=AWS_SECRET_ACCESS_KEY=<your-secret-key> \
+  -n self-healing-platform
+----
+
+*Optional: Gitea integration* — if you want to use an internal Gitea instance instead of GitHub, set `gitea.enabled: true` in `values-hub.yaml` and provide the required credentials:
+[source,yaml]
+----
+version: "2.0"
+secrets:
+  - name: git-credentials-source
+    fields:
+    - name: username
+      value: <gitea-username>
+    - name: password
+      value: <gitea-password-or-token>
+  - name: gitea-credentials-source
+    fields:
+    - name: username
+      value: <gitea-admin-username>
+    - name: password
+      value: <gitea-admin-password>
+----
+====
+
+. Commit your customized values files to your fork:
++
+[source,terminal]
+----
+git add values-global.yaml values-hub.yaml
+git commit -m "Configure AIOps platform for deployment"
+git push origin main
+----
+
+== Understanding OpenShift Data Foundation (ODF) deployment
+
+The pattern requires S3-compatible object storage for metrics, logs, and model artifacts. The `make configure-cluster` step automatically installs OpenShift Data Foundation with different configurations based on cluster topology.
+
+*Standard HighlyAvailable (HA) Clusters*::
++
+Full ODF deployment including:
++
+* Ceph storage cluster (requires 3+ worker nodes with local disks or cloud volumes)
+* Multi-Cloud Gateway (MCG/NooBaa) for S3-compatible object storage
+* CephFS and RBD storage classes for persistent volumes
++
+Resource requirements:
++
+* 3+ worker nodes with dedicated storage devices or cloud volumes
+* 16 vCPU and 64 GB RAM per ODF node
+* 1 TB+ storage per node for Ceph OSDs
++
+Installation time: 10-15 minutes
+
+*Single Node OpenShift (SNO)*::
++
+MCG-only deployment (NooBaa standalone):
++
+* No Ceph storage cluster (SNO has insufficient nodes)
+* Multi-Cloud Gateway for S3-compatible object storage only
+* Uses cluster's existing storage class for MCG database and cache
+* Suitable for edge deployments with single-node constraints
++
+Resource requirements:
++
+* 4 vCPU and 16 GB RAM for MCG pods
+* 100 GB storage for MCG database (uses cluster's default storage class)
++
+Installation time: 5-10 minutes
+
+.Procedure
+
+. Run the cluster configuration script:
++
+[source,terminal]
+----
+make configure-cluster
+----
++
+This command automatically:
++
+* Detects cluster topology (HA or SNO) via OpenShift API
+* Installs appropriate ODF configuration (full ODF for HA, MCG-only for SNO)
+* Configures storage classes and object storage endpoints
+* Scales MachineSets if needed (HA clusters only)
+* Waits for ODF components to be ready
+
+. (Optional) Skip ODF installation if you already have S3-compatible storage:
++
+[source,terminal]
+----
+./scripts/configure-cluster-infrastructure.sh --skip-odf
+----
++
+[NOTE]
+====
+If skipping ODF, you must manually configure S3 credentials in `values-secret.yaml` to point to your external S3 service (AWS S3, MinIO, etc.).
+====
+
+. Verify ODF installation completed successfully:
++
+[source,terminal]
+----
+# Check ODF operator installation
+oc get csv -n openshift-storage | grep odf
+
+# Check NooBaa (MCG) status - should show "Ready"
+oc get noobaa -n openshift-storage
+
+# For HA clusters only, also check Ceph cluster status
+oc get cephcluster -n openshift-storage
+----
+
+. Verify S3 endpoint is available:
++
+[source,terminal]
+----
+# Get S3 endpoint route
+oc get route s3 -n openshift-storage -o jsonpath='{.spec.host}'
+
+# Verify NooBaa admin console route
+oc get route noobaa-mgmt -n openshift-storage -o jsonpath='{.spec.host}'
+----
++
+Expected output: Routes should be available and healthy.
+
+[NOTE]
+====
+The pattern automatically configures access to the ODF S3 service using Kubernetes secrets. No manual S3 configuration is needed unless using external S3 storage.
+
+For MCG-only (SNO) deployments, object storage functionality is provided without the full Ceph cluster, making it suitable for resource-constrained edge environments.
+====
+
+== Get Ansible Execution Environment
+
+The pattern uses Ansible for cluster-scoped resource management and requires an execution environment container image.
+
+.Procedure
+
+Choose one of the following options:
+
+*Option A: Use pre-built execution environment (Recommended)*::
++
+[source,terminal]
+----
+podman pull quay.io/takinosh/openshift-aiops-platform-ee:latest
+podman tag quay.io/takinosh/openshift-aiops-platform-ee:latest openshift-aiops-platform-ee:latest
+----
+
+*Option B: Build execution environment locally*::
++
+Requires Red Hat Ansible Automation Hub token configured in `~/.ansible.cfg`:
++
+[source,terminal]
+----
+make build-execution-environment
+----
++
+This takes approximately 5-10 minutes.
+
+== Pre-deployment validation
+
+Before deploying the pattern, validate your configuration files and cluster readiness to catch common errors early.
+
+.Procedure
+
+. Validate YAML syntax in values files:
++
+[source,terminal]
+----
+# Validate values-global.yaml syntax
+yq eval '.' values-global.yaml > /dev/null && echo "✓ values-global.yaml syntax valid" || echo "✗ values-global.yaml has syntax errors"
+
+# Validate values-hub.yaml syntax
+yq eval '.' values-hub.yaml > /dev/null && echo "✓ values-hub.yaml syntax valid" || echo "✗ values-hub.yaml has syntax errors"
+----
++
+Both commands should output "✓" confirming valid YAML syntax.
+
+. Verify Git repository URLs are set correctly:
++
+[source,terminal]
+----
+# Check global values repository URL
+yq eval '.global.git.repoURL' values-global.yaml
+
+# Check hub values repository URL
+yq eval '.clusterGroup.git.repoURL' values-hub.yaml
+
+# Both should output YOUR forked repository URL, not the upstream
+----
++
+[WARNING]
+====
+If either value shows `https://github.com/KubeHeal/openshift-aiops-platform.git` (upstream), you MUST update it to your forked repository URL. Deployment will fail if this is not corrected.
+
+Expected format: `https://github.com/<your-github-username>/openshift-aiops-platform.git`
+====
+
+. Verify cluster topology configuration matches actual cluster:
++
+[source,terminal]
+----
+# Check detected topology from cluster
+make show-cluster-info
+
+# Check configured topology in values file
+yq eval '.clusterGroup.cluster.topology' values-hub.yaml
+
+# Verify they match:
+# - SNO clusters: both should show "sno"
+# - HA clusters: values file should show "ha" or be empty (defaults to "ha")
+----
+
+. Test network connectivity from cluster to required container registries:
++
+[source,terminal]
+----
+# Test connectivity to Quay.io
+oc debug node/$(oc get nodes -o jsonpath='{.items[0].metadata.name}') -- \
+  chroot /host curl -I https://quay.io
+
+# Test connectivity to Red Hat Container Registry
+oc debug node/$(oc get nodes -o jsonpath='{.items[0].metadata.name}') -- \
+  chroot /host curl -I https://registry.redhat.io
+
+# Both should return HTTP 200 or 301/302 redirects
+----
+
+. Verify sufficient cluster resources are available:
++
+[source,terminal]
+----
+# Check total allocatable resources across all nodes
+oc get nodes -o custom-columns=NAME:.metadata.name,CPU:.status.allocatable.cpu,MEMORY:.status.allocatable.memory
+
+# Verify resource requirements are met:
+# - SNO: minimum 8 vCPU, 32 GB RAM on the single node
+# - HA: minimum 120 vCPU, 480 GB RAM total across all nodes
+----
++
+If resources are insufficient, deployment may fail or components may not schedule properly.
+
+== Deploying the pattern
+
+The pattern deploys using the Validated Patterns framework. A single command installs the Validated Patterns Operator, creates all ArgoCD applications, and waits for convergence.
+
+[IMPORTANT]
+====
+Ensure you have logged into OpenShift (`oc login ...`) and set the `git.repoURL` in `values-global.yaml` to YOUR fork before running the install command.
+====
+
+.Procedure
+
+. Run the pattern installation:
++
+[source,terminal]
+----
+./pattern.sh make install
+----
++
+This command:
++
+* Installs the Validated Patterns Operator from OperatorHub
+* Creates the `Pattern` custom resource that bootstraps ArgoCD
+* Deploys all operators via OLM subscriptions (Red Hat OpenShift AI, Pipelines, Serverless, External Secrets)
+* Applies all application Helm charts to the `self-healing-platform` namespace
+* Runs imperative Ansible jobs (creates `DataScienceCluster` for RHOAI)
++
+The deployment takes approximately 20-30 minutes depending on cluster size and network speed. The command exits with code `0` when the pattern is accepted by the operator (ArgoCD convergence continues in the background).
+
+. Wait for all ArgoCD applications to reach `Synced/Healthy`:
++
+[source,terminal]
+----
+# Monitor the hub application (created by the VP Operator)
+oc get applications.argoproj.io -n self-healing-platform-hub -w
+----
++
+Expected final state:
++
+[source,terminal]
+----
+NAME                    SYNC STATUS   HEALTH STATUS
+self-healing-platform   Synced        Healthy
+----
++
+[NOTE]
+====
+The `self-healing-platform-hub` application in the `vp-gitops` namespace manages the hub group subscriptions and namespaces. On clusters with an existing Red Hat OpenShift AI (RHOAI) installation, this application may show `Degraded` due to a known RHOAI CRD version history issue. This does not prevent the pattern from functioning correctly.
+====
+
+. Trigger a hard refresh if ArgoCD shows `OutOfSync` after the install:
++
+[source,terminal]
+----
+oc annotate application.argoproj.io self-healing-platform \
+  -n self-healing-platform-hub \
+  argocd.argoproj.io/refresh=hard \
+  --overwrite
+----
+
+. Run comprehensive deployment validation pipeline:
++
+[source,terminal]
+----
+tkn pipeline start deployment-validation-pipeline --showlog
+----
++
+This automated validation pipeline runs *26 comprehensive checks* grouped into the following categories:
++
+*Prerequisite Validation (5 checks):*
++
+* Cluster version compatibility (OpenShift 4.18 or later)
+* Required CLI tools availability (`oc`, `kubectl`, `helm`, `tkn`)
+* Storage class availability and configuration
+* Network connectivity to container registries
+* Cluster resource capacity (CPU, memory, storage)
++
+*Operator Deployment Verification (6 checks):*
++
+* OpenShift GitOps operator installation and health
+* OpenShift Pipelines operator installation and health
+* OpenShift AI (RHODS) operator installation and health
+* KServe operator installation and health
+* GPU operator installation and health (if GPU nodes configured)
+* OpenShift Data Foundation operator installation and health
++
+*Storage Provisioning Validation (3 checks):*
++
+* PersistentVolumeClaim binding status
+* ODF/NooBaa readiness and S3 endpoint availability
+* Storage class configuration for model storage
++
+*Model Serving Endpoint Validation (4 checks):*
++
+* InferenceService custom resource definitions installed
+* InferenceService deployment status (anomaly-detector, predictive-analytics)
+* Model serving endpoint HTTP connectivity
+* Inference endpoint response validation (POST request test)
++
+*Coordination Engine Validation (3 checks):*
++
+* Coordination engine pod health and readiness
+* REST API endpoint availability (`:8080/health`)
+* Health check endpoint response validation
++
+*Monitoring Infrastructure Validation (5 checks):*
++
+* Prometheus availability and metric scraping
+* Grafana dashboard deployment and accessibility
+* Logging stack operational status (if deployed)
+* Metrics collection validation for self-healing platform
+* Custom ServiceMonitor resource creation
+
+. Verify model training pipeline status:
++
+After initial deployment, ArgoCD automatically triggers initial training for both ML models. Verify the PipelineRuns were created and completed successfully:
++
+[source,terminal]
+----
+tkn pipelinerun list -n self-healing-platform
+----
++
+Expected output shows completed PipelineRuns for:
++
+* `anomaly-detector-training-<timestamp>` - Anomaly detection model
+* `predictive-analytics-training-<timestamp>` - Predictive analytics model (GPU-accelerated)
++
+Both should show `Succeeded` status. If status shows `Failed` or `Running`, investigate logs.
+
+. If model training failed or was not automatically triggered, manually start the training pipelines:
++
+*Start anomaly detector model training:*
++
+[source,terminal]
+----
+tkn pipeline start model-training-pipeline \
+  -p model-name=anomaly-detector \
+  -p notebook-path=notebooks/02-anomaly-detection/01-isolation-forest-implementation.ipynb \
+  -p data-source=prometheus \
+  -p training-hours=168 \
+  -p inference-service-name=anomaly-detector \
+  -p health-check-enabled=true \
+  -p git-url=https://github.com/<your-username>/openshift-aiops-platform.git \
+  -p git-ref=main \
+  -n self-healing-platform \
+  --showlog
+----
++
+*Start predictive analytics model training (requires GPU):*
++
+[source,terminal]
+----
+tkn pipeline start model-training-pipeline-gpu \
+  -p model-name=predictive-analytics \
+  -p notebook-path=notebooks/02-anomaly-detection/05-predictive-analytics-kserve.ipynb \
+  -p data-source=prometheus \
+  -p training-hours=720 \
+  -p inference-service-name=predictive-analytics \
+  -p health-check-enabled=true \
+  -p git-url=https://github.com/<your-username>/openshift-aiops-platform.git \
+  -p git-ref=main \
+  -n self-healing-platform \
+  --showlog
+----
++
+[NOTE]
+====
+* `training-hours` parameter specifies how much historical metric data to use for training
+* `anomaly-detector`: 168 hours (7 days) - runs on CPU nodes
+* `predictive-analytics`: 720 hours (30 days) - requires GPU nodes
+* Training time varies: 10-30 minutes for anomaly-detector, 1-3 hours for predictive-analytics
+====
+
+== Verification
+
+After installation completes, verify all components are running correctly.
+
+.Procedure
+
+. Check that all required operators are installed:
++
+[source,terminal]
+----
+oc get csv -n openshift-operators
+----
++
+You should see ClusterServiceVersions for:
+* OpenShift GitOps
+* OpenShift Pipelines
+* OpenShift AI (RHODS)
+* KServe
+* Advanced Cluster Management (if multi-cluster)
+* OpenShift Data Foundation (if deployed)
+
+. Check all pods in the self-healing platform namespace:
++
+[source,terminal]
+----
+oc get pods -n self-healing-platform
+----
++
+All pods should be in `Running` or `Completed` state.
+
+. Verify InferenceServices are ready:
++
+[source,terminal]
+----
+oc get inferenceservice -n self-healing-platform
+----
++
+The incident prediction model should be in `Ready` state.
+
+. Access the ArgoCD UI:
++
+[source,terminal]
+----
+oc get route openshift-gitops-server -n openshift-gitops
+----
++
+Open the URL in your browser and log in with your OpenShift credentials.
+
+. Verify all ArgoCD applications are synced and healthy:
++
+image::openshift-aiops-platform/oaiops-applications.png[ArgoCD Applications]
++
+You should see applications including:
+* `self-healing-platform`
+* `openshift-ai-operators`
+* `aiops-observability`
+* `aiops-mlops-pipeline`
+
+. Check ArgoCD application sync status via CLI:
++
+[source,terminal]
+----
+oc get applications -n self-healing-platform-hub
+----
++
+All applications should show `Synced` and `Healthy` status.
+
+. Verify Tekton deployment validation pipeline status:
++
+[source,terminal]
+----
+tkn pipelinerun list -n self-healing-platform
+----
++
+The deployment-validation-pipeline should show `Succeeded` status.
+
+== Post-deployment configuration
+
+Configure access to platform components and verify functionality.
+
+.Procedure
+
+. Access the Jupyter workbench for model development:
++
+[source,terminal]
+----
+oc port-forward self-healing-workbench-0 8888:8888 -n self-healing-platform
+----
++
+Open http://localhost:8888 in your browser. The Jupyter environment includes notebooks for:
+* Model training workflows
+* Feature engineering
+* Incident analysis
+* A/B testing configuration
+
+. Verify model storage directory structure:
++
+[source,terminal]
+----
+oc exec -it self-healing-workbench-0 -n self-healing-platform -- ls -la /mnt/models/
+----
++
+Expected subdirectories created by the init-models-job:
+* `predictive-analytics/`
+* `arima-predictor/`
+* `prophet-predictor/`
+* `lstm-predictor/`
+* `ensemble-predictor/`
+* `anomaly-detector/`
+
+. Check coordination engine status and logs:
++
+[source,terminal]
+----
+# View coordination engine pod status
+oc get pods -n self-healing-platform -l app.kubernetes.io/component=coordination-engine
+
+# Check coordination engine health endpoint
+oc port-forward svc/coordination-engine 8080:8080 -n self-healing-platform
+# In another terminal:
+curl http://localhost:8080/health
+
+# View logs for self-healing decisions
+oc logs -n self-healing-platform -l app.kubernetes.io/component=coordination-engine --tail=100 -f
+----
+
+. Verify NotebookValidationJobs:
++
+[source,terminal]
+----
+oc get notebookvalidationjob -n self-healing-platform
+----
++
+These jobs validate notebook execution and model serving functionality.
+
+. Test model inference endpoints:
++
+[source,terminal]
+----
+# List all InferenceServices
+oc get inferenceservices -n self-healing-platform
+
+# Verify model serving endpoints are ready
+oc get inferenceservices -n self-healing-platform -o wide
+----
++
+The deployment validation pipeline tests inference endpoints automatically.
+
+. Access ArgoCD UI for GitOps management:
++
+[source,terminal]
+----
+# Get ArgoCD route
+oc get route openshift-gitops-server -n openshift-gitops -o jsonpath='{.spec.host}'
+
+# Retrieve admin password
+oc extract secret/openshift-gitops-cluster -n openshift-gitops --to=-
+----
++
+Log in to the ArgoCD UI to view all applications and their sync status.
+
+. Check MCP server status:
++
+[source,terminal]
+----
+# View cluster health MCP server logs
+oc logs deployment/cluster-health-mcp-server -n self-healing-platform
+----
++
+The MCP server operates via stdio transport and provides cluster health monitoring capabilities.
+
+. Clean up auto-generated namespaces (optional):
++
+[source,terminal]
+----
+# These namespaces are created by upstream Validated Patterns defaults
+# They can be safely deleted if not needed
+oc delete namespace self-healing-platform-example imperative --ignore-not-found=true
+----
+
+. Verify external secrets synchronization:
++
+[source,terminal]
+----
+# Check ExternalSecrets status
+oc get externalsecrets -n self-healing-platform
+
+# Verify synchronized secrets exist
+oc get secrets -n self-healing-platform | grep -E "git-credentials|model-storage"
+----
+
+== Adding spoke clusters (Optional)
+
+To add managed spoke clusters for multi-cluster self-healing:
+
+.Procedure
+
+. In the ACM console on the hub cluster, navigate to *Infrastructure* -> *Clusters*.
+
+. Click *Import cluster*.
+
+. Follow the import wizard to add your spoke cluster:
++
+* Enter a cluster name
+* Select cluster set (create one if needed)
+* Copy and run the generated `oc` command on the spoke cluster
+
+. After import completes, verify observability is enabled:
++
+[source,terminal]
+----
+oc get managedcluster <spoke-name> -o yaml | grep observability
+----
+
+. The spoke cluster will automatically start sending metrics, logs, and alerts to the hub cluster.
+
+. Verify spoke metrics in Grafana on the hub cluster.
+
+For detailed multi-cluster configuration, see the link:https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes[Advanced Cluster Management documentation].
+
+== Troubleshooting
+
+If you encounter issues during deployment:
+
+*ArgoCD applications not syncing*::
++
+Check that your Git repository URL is correctly configured:
++
+[source,terminal]
+----
+oc get application self-healing-platform -n self-healing-platform-hub -o yaml | grep repoURL
+----
++
+Verify it points to YOUR fork, not the upstream repository. If applications are OutOfSync, force synchronization:
++
+[source,terminal]
+----
+argocd app sync self-healing-platform --force
+----
+
+*Pods in "Init:Error" state*::
++
+This usually indicates missing ServiceAccounts or RBAC. Re-run the prerequisite deployment:
++
+[source,terminal]
+----
+make deploy-prereqs-only
+----
+
+*NotebookValidationJobs fail*::
++
+Verify the init-models-job successfully created model storage subdirectories:
++
+[source,terminal]
+----
+oc get job init-models-job -n self-healing-platform
+oc logs job/init-models-job -n self-healing-platform
+----
+
+*Operator deployment fails*::
++
+Check operator logs:
++
+[source,terminal]
+----
+oc logs -n openshift-operators deployment/validated-patterns-operator -f
+----
+
+*InferenceService not ready*::
++
+Check KServe controller logs:
++
+[source,terminal]
+----
+oc logs -n knative-serving deployment/controller -f
+----
+
+*Storage issues*::
++
+Verify storage classes are configured:
++
+[source,terminal]
+----
+oc get storageclass
+----
++
+For SNO, ensure the correct storage class is specified in `values-hub.yaml`.
++
+Check PVC binding status:
++
+[source,terminal]
+----
+oc get pvc -n self-healing-platform
+----
+
+*ODF installation fails during configure-cluster*::
++
+Check ODF operator status and logs:
++
+[source,terminal]
+----
+# Check ODF operator installation
+oc get csv -n openshift-storage
+
+# Check operator controller logs
+oc logs -n openshift-storage deployment/odf-operator-controller-manager --tail=100
+
+# For HA clusters, check Ceph cluster status
+oc get cephcluster -n openshift-storage -o yaml
+
+# For all deployments, check NooBaa status
+oc get noobaa -n openshift-storage -o yaml
+----
++
+Common ODF issues and solutions:
++
+* *Insufficient nodes for Ceph (HA):* HA clusters need 3+ worker nodes for Ceph. If fewer nodes, use `--skip-odf` and configure external S3.
+* *Storage class not found:* Verify backing storage class exists with `oc get storageclass`. Ensure cloud provider storage drivers are installed.
+* *OSD creation fails:* Check that nodes have available disks/volumes: `oc debug node/<node-name> -- lsblk`
+* *NooBaa pods in CrashLoopBackOff:* Check PVC binding: `oc get pvc -n openshift-storage`. Ensure storage class can provision volumes.
+
+*Model training pipeline fails*::
++
+Check pipeline logs and resource availability:
++
+[source,terminal]
+----
+# List recent pipeline runs
+tkn pipelinerun list -n self-healing-platform
+
+# Get detailed logs for failed pipeline run
+tkn pipelinerun logs <pipelinerun-name> -n self-healing-platform
+
+# Check GPU availability (required for predictive-analytics model)
+oc get nodes -l nvidia.com/gpu.present=true
+
+# Verify training data storage is available
+oc exec -it self-healing-workbench-0 -n self-healing-platform -- \
+  ls -lh /mnt/models/
+----
++
+Common model training issues:
++
+* *Insufficient training data:* Pipeline requires historical Prometheus metrics. Wait 24-48 hours after deployment before training.
+* *GPU not available:* `predictive-analytics` model requires GPU nodes. Use `anomaly-detector` model only for non-GPU clusters.
+* *Notebook execution fails:* Check Jupyter workbench logs: `oc logs self-healing-workbench-0 -n self-healing-platform`
+* *S3 storage access denied:* Verify `values-secret.yaml` has correct S3 credentials and secrets are synced: `oc get secrets -n self-healing-platform`
+
+*Execution environment image issues*::
++
+Verify the Ansible execution environment image is available:
++
+[source,terminal]
+----
+# List local podman images
+podman images | grep openshift-aiops-platform-ee
+
+# Test the execution environment image
+podman run --rm openshift-aiops-platform-ee:latest ansible --version
+
+# If building locally, check for errors in build logs
+podman build --help  # Verify podman build works
+----
++
+If image is missing, re-pull or rebuild:
++
+[source,terminal]
+----
+# Re-pull pre-built image
+podman pull quay.io/takinosh/openshift-aiops-platform-ee:latest
+podman tag quay.io/takinosh/openshift-aiops-platform-ee:latest openshift-aiops-platform-ee:latest
+
+# Or rebuild locally (requires ANSIBLE_HUB_TOKEN)
+export ANSIBLE_HUB_TOKEN='your-token-here'
+make build-ee
+----
+
+*Values file repository URL still pointing to upstream*::
++
+Verify and fix repository URL configuration:
++
+[source,terminal]
+----
+# Check current repository URLs
+yq eval '.global.git.repoURL' values-global.yaml
+yq eval '.clusterGroup.git.repoURL' values-hub.yaml
+
+# Update if pointing to upstream (KubeHeal/openshift-aiops-platform)
+yq eval '.global.git.repoURL = "https://github.com/<your-username>/openshift-aiops-platform.git"' -i values-global.yaml
+yq eval '.clusterGroup.git.repoURL = "https://github.com/<your-username>/openshift-aiops-platform.git"' -i values-hub.yaml
+
+# Commit and push changes
+git add values-global.yaml values-hub.yaml
+git commit -m "Update repository URLs to forked repo"
+git push origin main
+
+# Re-sync ArgoCD applications
+oc annotate application self-healing-platform -n self-healing-platform-hub \
+  argocd.argoproj.io/refresh=hard --overwrite
+----
+
+*Complete cleanup and redeployment*::
++
+If you need to clean up the pattern while preserving infrastructure operators:
++
+[source,terminal]
+----
+ansible-navigator run ansible/playbooks/cleanup_pattern.yml \
+  --container-engine podman \
+  --execution-environment-image openshift-aiops-platform-ee:latest \
+  --mode stdout
+----
++
+This removes the pattern CR, ArgoCD applications, and application namespace while retaining GitOps, Gitea, and the Validated Patterns Operator.
+
+For additional troubleshooting, see:
+* link:https://github.com/KubeHeal/openshift-aiops-platform/blob/main/README.md[Pattern README]
+* link:https://github.com/KubeHeal/openshift-aiops-platform/blob/main/DEPLOYMENT.md[Detailed Deployment Guide]
+* link:https://github.com/KubeHeal/openshift-aiops-platform/issues[GitHub Issues]
+
+== Next steps
+
+* Explore the self-healing dashboard in Grafana to see incident detection and remediation
+* Review the link:https://github.com/KubeHeal/openshift-aiops-platform/blob/main/AGENTS.md[AI Agent Development Guide] to customize agent behavior
+* Access Jupyter notebooks to explore model training workflows
+* Configure confidence thresholds and auto-remediation settings in `values-global.yaml`
+* Train custom ML models using your historical incident data
+* Set up integrations with external systems like ServiceNow or Slack for notifications
+
+For customization options, see link:ideas-for-customization[Ideas for Customization].
