@@ -1,5 +1,5 @@
 ---
-title: Troubleshooting
+title: Troubleshooting the RHOSO GitOps pattern
 weight: 40
 aliases: /rhoso-gitops/troubleshooting/
 ---
@@ -12,9 +12,13 @@ include::modules/comm-attributes.adoc[]
 [id="troubleshooting-rhoso-gitops"]
 = Troubleshooting the {rhoso-gitops-pattern}
 
-Validate the {rhoso-gitops-pattern} deployment, inspect Argo CD application and
-pod status, and review known issues. Use these procedures when child applications
-fail to sync, pods are unhealthy, or you need to confirm a successful deployment.
+Validate the {rhoso-gitops-pattern} deployment and inspect Argo CD application and
+pod status. Use these procedures when child applications fail to sync, pods are
+unhealthy, or you need to confirm a successful deployment.
+
+For known issues that can affect deployment, see
+link:../#rhoso-gitops-known-issues[Known issues] in
+link:../[About the {rhoso-gitops-pattern}].
 
 [id="rhoso-gitops-validate-pattern"]
 == Validating the pattern
@@ -81,23 +85,6 @@ Review logs for a specific pod:
 ----
 $ oc logs -n __<namespace>__ __<pod_name>__
 ----
-
-[id="rhoso-gitops-known-issues"]
-== Known issues
-
-The following known issues can affect pattern deployment:
-
-* *`openstack-secrets` disabled*: The default pattern leaves
-  `openstack-secrets` disabled because no Git path exists.
-  Enable it only after you configure secret wiring. See
-  link:../secret-management/[Secret management for the {rhoso-gitops-pattern}].
-* *Upstream sync failures*: Confirm that `targetRevision` and paths in
-  `overrides/values-rhoso-gitops.yaml` match a tag or branch that exists in
-  link:https://github.com/openstack-k8s-operators/gitops[openstack-k8s-operators/gitops].
-* *Operator install delays*: Infrastructure Operators in `operator-dependencies`
-  subscribe from the cluster catalog; allow time for OLM to resolve
-  `ClusterServiceVersions` (CSVs). Other applications retry automatically
-  until their dependencies are satisfied.
 
 For community support, open an issue in the
 link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/issues[pattern repository].

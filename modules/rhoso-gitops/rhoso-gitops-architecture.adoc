@@ -78,3 +78,21 @@ link:configuration/#rhoso-gitops-upstream-applications[Upstream applications].
 
 After you change overrides, confirm child applications in the Argo CD UI or with
 `oc get applications -n vp-gitops`.
+
+[id="rhoso-gitops-cluster-requirements"]
+== Cluster requirements
+
+{rh-rhoso-short} requires bare-metal infrastructure for both the {rh-ocp} cluster
+and the compute nodes. {rh-rhoso-short} does not support cloud-based instance types
+such as AWS, GCP, or Azure.
+
+For detailed hardware, software, and network requirements, see
+link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/planning_your_deployment/assembly_infrastructure-and-system-requirements[Infrastructure and system requirements]
+in the {rh-rhoso} _Planning your deployment_ guide.
+
+[id="rhoso-gitops-dataplane-hosts"]
+== Data plane host requirements
+
+The {rh-ocp} cluster hosts the {rh-rhoso-short} control plane. A full
+{rh-rhoso-short} deployment also requires separate {rhel-short} hosts for the
+data plane (compute nodes running data plane elements).
