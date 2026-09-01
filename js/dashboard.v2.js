@@ -1349,7 +1349,8 @@ function getBadges (xmlText, bucket_url, badge_set) {
   var xmlDoc = parser.parseFromString(xmlText, 'application/xml')
   const errorNode = xmlDoc.querySelector('parsererror')
   if (errorNode) {
-    return
+    console.warn('Failed to parse bucket listing XML:', bucket_url)
+    return []
   }
 
   var badges = []
@@ -1457,21 +1458,25 @@ function getBucketOptions (input) {
 }
 
 function fetchBucketBadges(bucket, inputs) {
-  return new Promise((resolve, reject) => {
-    let req = new XMLHttpRequest();
-    const options = getBucketOptions(inputs);
-    req.open('GET', bucket);
+  return new Promise(function (resolve) {
+    var req = new XMLHttpRequest()
+    const options = getBucketOptions(inputs)
+    req.open('GET', bucket)
     req.onload = function () {
-      if (req.status == 200) {
-        const badges = getBadges(req.responseText, bucket, options.get('sets'))
-        resolve(badges);
+      if (req.status === 200) {
+        const badges = getBadges(req.responseText, bucket, options.get('sets')) || []
+        resolve(badges)
       } else {
-        console.error('Error: ' + req.status);
-        reject('Error: ' + req.status);
+        console.warn('CI badge bucket unavailable:', bucket, '(HTTP', req.status + ')')
+        resolve([])
       }
-    };
-    req.send();
-  });
+    }
+    req.onerror = function () {
+      console.warn('CI badge bucket request failed:', bucket)
+      resolve([])
+    }
+    req.send()
+  })
 }
 
 function obtainBadgesFromSample (inputs) {
@@ -1515,18 +1520,17 @@ function obtainBadges (inputs) {
   }
 
   Promise.all(badgePromises)
-    .then((results) => {
-      const allBadges = [];
-      for (const badges of results) {
-        console.log("Got "+badges.length+" badges")
-        allBadges.push(...badges);
-      }
+    .then(function (results) {
+      const allBadges = []
+      results.forEach(function (badges) {
+        if (badges && badges.length > 0) {
+          console.log('Got ' + badges.length + ' badges')
+        }
+        allBadges.push.apply(allBadges, badges || [])
+      })
 
-      console.log('All badges:', allBadges);
+      console.log('All badges:', allBadges)
 
       processBadges(allBadges, options)
     })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
 }
