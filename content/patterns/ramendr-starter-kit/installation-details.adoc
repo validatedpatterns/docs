@@ -37,24 +37,24 @@ link:#variant-installation-differences[Variant installation differences].
 The pattern uses the clustergroup/{rh-rhacm} `variants/` folder layout. When `variants/` is present, the patterns-operator sets `global.vpNewFolderDir=true`. Spoke configuration nests under each variant as `variants/<variant>/values-<managedClusterGroup.name>.yaml`.
 
 [id="cluster-provisioning"]
-=== Cluster provisioning (Hive vs BYOC)
+=== Cluster provisioning (BYOC vs Hive)
 
-By default, Hive provisions `ocp-primary` and `ocp-secondary` on AWS through {rh-rhacm-first}. Set `byoc: true` in
+By default, the pattern expects existing regional DR clusters with references to their kubeconfigs in your secrets file. If instead 
+you prefer to let the pattern provision the two spoke clusters `ocp-primary` and `ocp-secondary` on AWS through {rh-rhacm-first} for you, set `byoc: false` in 
 link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/overrides/values-cluster-names.yaml[`overrides/values-cluster-names.yaml`]
-to use existing regional DR clusters instead. Add their kubeconfigs to your secrets file and run `./pattern.sh make install-byoc`.
 See link:/patterns/ramendr-starter-kit/getting-started/#using-byoc[Using bring your own cluster (BYOC)] for requirements and configuration steps.
 
 [cols="1,1,1",options="header"]
 |===
 | Mode | Install command | Managed clusters
 
-| Hive (default)
-| `./pattern.sh make install`
-| Hive creates and registers `ocp-primary` and `ocp-secondary`
-
-| BYOC
+| BYOC (default)
 | `./pattern.sh make install-byoc`
 | You provision and register clusters; pattern validates kubeconfigs before install
+
+| Hive
+| `./pattern.sh make install`
+| Hive creates and registers `ocp-primary` and `ocp-secondary`
 |===
 
 [id="variant-component-differences"]
