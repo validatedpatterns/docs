@@ -11,11 +11,15 @@
 :docs_url: https://validatedpatterns.io/patterns/rag-llm-gitops/
 :ci_url: https://validatedpatterns.io/ci/?pattern=ragllm
 :tier: tested
-:owners: day0hero, sauagarwa
+:owners: dminnear-rh
 :requirements_hub_compute_platform_aws_replicas: 3
 :requirements_hub_compute_platform_aws_type: m5.2xlarge
-:requirements_hub_controlPlane_platform_aws_replicas: 1
-:requirements_hub_controlPlane_platform_aws_type: m5.2xlarge
+:requirements_hub_compute_platform_azure_replicas: 3
+:requirements_hub_compute_platform_azure_type: Standard_D8s_v4
+:requirements_hub_controlPlane_platform_aws_replicas: 3
+:requirements_hub_controlPlane_platform_aws_type: m5.xlarge
+:requirements_hub_controlPlane_platform_azure_replicas: 3
+:requirements_hub_controlPlane_platform_azure_type: Standard_D4s_v4
 :extra_features_hypershift_support: false
 :extra_features_spoke_support: false
 :external_requirements_cluster_sizing_note: This pattern will require nodes with GPUs which are only supported in certain regions. You can create them before deploying the pattern via the special `make create-gpu-machineset` command, after the initial cluster has been created.
