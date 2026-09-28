@@ -6086,12 +6086,20 @@ Standard_D16as_v4
 The datacenter hub OpenShift cluster uses the following the deployment configuration:
 Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type Amazon Web Services
 Control Plane
-1
-m5.2xlarge
+3
+m5.xlarge
 Amazon Web Services
 Worker
 3
 m5.2xlarge
+Microsoft Azure
+Control Plane
+3
+Standard_D4s_v4
+Microsoft Azure
+Worker
+3
+Standard_D8s_v4
 `,url:"https://validatedpatterns.io/patterns/rag-llm-gitops/cluster-sizing/",breadcrumb:"/patterns/rag-llm-gitops/cluster-sizing/"},"https://validatedpatterns.io/patterns/devsecops/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:`OpenShift Cluster Sizing for the Multicluster DevSecOps Pattern Tested Platforms The Multicluster DevSecOps pattern has been tested in the following Certified Cloud Providers. Due to changes in Advanced Cluster Management 2.5, this pattern does not work, &ldquo;out-of-the-box&rdquo;, with earlier versions of OCP than 4.10. While it&rsquo;s possible that it could work with some changes, we do not recommend using a version less than 4.10.
 | Certified Cloud Providers | 4.10 | 4.11 | 4.x | :&mdash;- | :&mdash;- | :&mdash;- | Amazon Web Services | Tested | Untested | | Google Compute | Untested | Untested | | Microsoft Azure | Untested | Untested |
 Multicluster DevSecOps Pattern Components Here&rsquo;s an inventory of what gets deployed by default the Secure Supply Chain pattern on the Hub OpenShift cluster:
