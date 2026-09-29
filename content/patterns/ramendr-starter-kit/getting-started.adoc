@@ -193,7 +193,7 @@ Paste the path to your locally stored private and public keys. If you do not hav
 +
 External Secrets merges both Vault entries into Kubernetes Secret `s4-credentials` in the `vp-s4-storage` namespace. Defaults in `values-secret.yaml.template` use `s4admin` for the UI user and access key ID; the password and secret key can be generated when `onMissingValue: generate` and `vaultPolicies.advancedPolicy` are set in your secrets file.
 
-.. If you plan to use bring your own cluster (BYOC) instead of Hive-provisioned managed clusters, add kubeconfig secrets for each regional DR cluster. See link:#using-byoc[Using bring your own cluster (BYOC)].
+.. Add kubeconfig secrets for each regional DR cluster. See link:#using-byoc[Using bring your own cluster (BYOC)]. If you instead plan to disable BYOC in favor of Hive-provisioned managed clusters, you can skip this step.
 +
 [source,yaml]
 ----
@@ -216,9 +216,9 @@ $ git checkout -b my-branch
 ----
 
 . The pattern will infer the baseDomain of your cluster based on the clusterDomain which is tracked by the pattern
-operator. Previously, this required the pattern to be forked to be useful - but this is no longer the case (you may 
+operator. Previously, this required the pattern to be forked to be useful - but this is no longer the case. You may
 still wish to change other settings in the RDR chart's values file, such as `aws.region` settings. This file is at
-link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/charts/hub/rdr/values.yaml[hub/rdr/values.yaml]. If you do make customizations to this or other files, it is necessary to fork the pattern so that the changes
+link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/overrides/values-cluster-names.yaml[overrides/values-cluster-names.yaml]. If you do make customizations to this or other files, it is necessary to fork the pattern so that the changes
 will be seen by ArgoCD.  If you made any changes to this or any other files tracked by git, git add them and then commit the changes by running the following command:
 +
 [source,terminal]
@@ -233,12 +233,15 @@ $ git commit -m "any updates"
 $ git push origin my-branch
 ----
 
-The preferred way to install this pattern is by using the `./pattern.sh` script. By default, {rh-rhacm-first} Hive provisions the primary and secondary managed clusters on AWS. If you already have regional DR clusters, use link:#using-byoc[BYOC] and `./pattern.sh make install-byoc` instead of `./pattern.sh make install`.
+The preferred way to install this pattern is by using the `./pattern.sh` script. By default, the pattern assumes you already have two regional DR clusters and have referenced their kubeconfigs in the secrets. Use link:#using-byoc[BYOC] and `./pattern.sh make install-byoc`. 
+If instead, you prefer for the pattern to launch the clusters for you, you can set `byoc: false` in 
+link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/overrides/values-cluster-names.yaml[`overrides/values-cluster-names.yaml`]
+and allow {rh-rhacm-first} Hive to provision the primary and secondary managed clusters on AWS, and use `./pattern.sh make install` instead of `./pattern.sh make install-byoc`.
 
 [id="using-byoc"]
 == Using bring your own cluster (BYOC)
 
-BYOC (bring your own cluster) lets you use existing OpenShift clusters as the regional DR pair (`ocp-primary` and `ocp-secondary`) instead of waiting for Hive to provision new managed clusters on AWS. This option is available for all install variants and is the typical path for `drpartner-minimal` (Hive/BYOC bring-up without Ramen DR CRs).
+BYOC (bring your own cluster) lets you use existing OpenShift clusters as the regional DR pair (`ocp-primary` and `ocp-secondary`) instead of waiting for Hive to provision new managed clusters on AWS. This option is on by default for all variants. Alternatively, you can disable BYOC and have the pattern launch the two spoke clusters for you.
 
 [id="byoc-when-to-use"]
 === When to use BYOC
@@ -250,7 +253,7 @@ Use BYOC when:
 * You are validating partner CSI plumbing on clusters you provisioned outside the pattern.
 * You are installing on a platform other than AWS
 
-The default install path (Hive provisioning) remains appropriate when you want the pattern to create and lifecycle-manage the managed clusters for you.
+The Hive provisioning path is a better option when you want the pattern to create and lifecycle-manage the managed clusters for you.
 
 [id="byoc-requirements"]
 === BYOC cluster requirements
@@ -272,7 +275,7 @@ only works on AWS.)
 .Provision and register your regional DR clusters with {rh-rhacm-first}. Managed cluster names must match the names in
 link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/overrides/values-cluster-names.yaml[`overrides/values-cluster-names.yaml`] (default: `ocp-primary` and `ocp-secondary`).
 
-.Set `byoc: true` in `overrides/values-cluster-names.yaml` and align `clusterOverrides` with your cluster names, versions, and regions:
+.Align `clusterOverrides` with your cluster names, versions, and regions:
 +
 [source,yaml]
 ----
@@ -289,7 +292,7 @@ clusterOverrides:
 
 .Add kubeconfig paths for both regional clusters to your secrets file (see the `ocp-primary_cluster_kubeconfig` and `ocp-secondary_cluster_kubeconfig` entries in link:#preparing-for-deployment[Preparing for deployment]).
 
-.Commit and push `byoc: true` and any `clusterOverrides` changes to your fork so Argo CD sees them during install.
+.Commit and push any `clusterOverrides` changes to your fork so Argo CD sees them during install.
 
 [id="deploying-cluster-using-patternsh-file"]
 == Deploying the pattern by using the pattern.sh file
@@ -316,18 +319,18 @@ $ export KUBECONFIG=~/<path_to_kubeconfig>
 
 . Deploy the pattern to your hub cluster.
 
-.. For the default Hive provisioning path, run:
-+
-[source,terminal]
-----
-$ ./pattern.sh make install
-----
-
-.. For BYOC, after setting `byoc: true` and adding regional cluster kubeconfigs to your secrets file, run:
+.. For the default BYOC path, after adding regional cluster kubeconfigs to your secrets file, run:
 +
 [source,terminal]
 ----
 $ ./pattern.sh make install-byoc
+----
+
+.. For Hive provisioning, simply run:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
 ----
 +
 The `install-byoc` target loads secrets (when configured), runs the BYOC validation playbook, then installs the pattern the same way as `install`.
@@ -340,7 +343,7 @@ The `install-byoc` target loads secrets (when configured), runs the BYOC validat
 image::/images/ramendr-starter-kit/ramendr-hub-operators.png[ramendr-starter-kit-operators,title="RamenDR Hub Operators"]
 
 
-. Verify that the primary and secondary managed clusters are available in {rh-rhacm-first}. For the default Hive path, cluster creation can take close to an hour on AWS. For BYOC, clusters should already be registered before install completes. On the hub cluster, navigate to *All Clusters* in the OpenShift Container Platform web console:
+. Verify that the primary and secondary managed clusters are available in {rh-rhacm-first}. For the default BYOC path, clusters should already be registered before install completes. For the Hive path, cluster creation can take close to an hour on AWS. On the hub cluster, navigate to *All Clusters* in the OpenShift Container Platform web console:
 +
 .ramendr-starter-kit-clusters
 image::/images/ramendr-starter-kit/ramendr-clusters-built.png[ramendr-starter-kit-operators,title="RamenDR Clusters"]
