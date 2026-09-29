@@ -99,6 +99,102 @@ spec:
     tokenSecretNamespace: openshift-operators
 ----
 
+== SSH known hosts for self-hosted Git servers
+
+When you deploy a pattern from a self-hosted or non-public SSH remote (for example `git@controller-0.utility:/var/git/repo.git`), both the patterns operator and Argo CD need to verify the server's SSH host key. Public hosts such as `github.com` and `gitlab.com` are already trusted by Argo CD, but private hosts are not.
+
+Without known hosts the operator falls back to accepting any host key, and Argo CD will reject the connection entirely with:
+
+[source,text]
+----
+ssh: handshake failed: knownhosts: key is unknown
+----
+
+To fix this, add an `sshKnownHosts` key to the same secret that holds your `sshPrivateKey`. The operator will:
+
+* Use the known hosts for its own strict host-key verification when cloning the pattern repository.
+* Set `InitialSSHKnownHosts` on the managed Argo CD instance so that Argo CD merges your entries into `argocd-ssh-known-hosts-cm` alongside the built-in public-host fingerprints.
+
+=== Obtain the host fingerprints
+
+Run `ssh-keyscan` against your Git server to collect its public keys:
+
+[source,terminal]
+----
+ssh-keyscan my-git-server.example.com
+----
+
+This prints one or more `known_hosts` lines. You can also obtain fingerprints from your server administrator.
+
+=== Add sshKnownHosts to the secret
+
+Include the `sshKnownHosts` field in the same secret that contains `sshPrivateKey`:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  name: private-repo
+  namespace: openshift-operators
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  type: git
+  url: git@my-git-server.example.com:org/repo.git
+  sshPrivateKey: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    a3...
+    ...
+    -----END OPENSSH PRIVATE KEY-----
+  sshKnownHosts: |
+    my-git-server.example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA...
+    my-git-server.example.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQA...
+----
+
+Using the `bootstrap_secrets` feature:
+
+[source,yaml]
+----
+version: "2.0"
+
+bootstrap_secrets:
+  - name: private-repo
+    targetNamespaces:
+      - openshift-operators
+    labels:
+      argocd.argoproj.io/secret-type: repository
+    fields:
+      - name: type
+        value: git
+      - name: url
+        value: git@my-git-server.example.com:org/repo.git
+      - name: sshPrivateKey
+        value: |
+          -----BEGIN OPENSSH PRIVATE KEY-----
+          a3...
+          ...
+          -----END OPENSSH PRIVATE KEY-----
+      - name: sshKnownHosts
+        value: |
+          my-git-server.example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA...
+          my-git-server.example.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQA...
+----
+
+Then deploy as usual:
+
+[source,terminal]
+----
+./pattern.sh make TOKEN_SECRET=private-repo TOKEN_NAMESPACE=openshift-operators install
+----
+
+=== Behavior details
+
+* Argo CD's default known hosts (github.com, gitlab.com, bitbucket.org, ssh.dev.azure.com) are always preserved. Your entries are merged with them, not replaced.
+* The operator re-applies the known hosts on every reconcile, so if `argocd-ssh-known-hosts-cm` drifts, it will be corrected automatically.
+* If `sshKnownHosts` is not present in the secret, the operator falls back to accepting any host key for its own clone operations. Argo CD will still enforce its default known hosts.
+* For public Git hosting services you do not need `sshKnownHosts` — only `sshPrivateKey` is required.
+
 == Using a GitLab private repository with a PAT
 
 First, make sure your PAT has at least Read and Download permissions for your private repository.
