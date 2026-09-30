@@ -36,6 +36,8 @@
 :requirements_spoke_controlPlane_platform_azure_type: Standard_D8s_v3
 :requirements_spoke_controlPlane_platform_aws_replicas: 3
 :requirements_spoke_controlPlane_platform_aws_type: m5.2xlarge
+:ocp_versions_minimum: 4.20
+:ocp_versions_unsupported: [{"version"=>"4.23", "reason"=>"Not yet validated — operator catalog and channel availability unconfirmed"}]
 :extra_features_hypershift_support: true
 :extra_features_spoke_support: true
 :external_requirements: 
