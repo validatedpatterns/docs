@@ -1,27 +1,35 @@
 # OpenShift AIOps Platform Logo
 
-## Status: Placeholder Logo
+## Logo Source
 
-The current logo (`openshift-aiops-platform.svg`) is a placeholder SVG file.
+The pattern logo (`openshift-aiops-platform.png`) is rendered from the official KubeHeal brand icon:
+- **Source SVG**: [`assets/branding/svg/kubeheal-icon.svg`](https://github.com/KubeHeal/openshift-aiops-platform/blob/main/assets/branding/svg/kubeheal-icon.svg)
+- **Brand guide**: [`assets/branding/README.md`](https://github.com/KubeHeal/openshift-aiops-platform/blob/main/assets/branding/README.md)
 
-## Required Action
+## Logo Details
 
-A proper pattern logo needs to be created and added as `openshift-aiops-platform.png` to match the front matter specification in `content/patterns/openshift-aiops-platform/_index.adoc`.
+- **Format**: PNG (400×400 px, RGBA)
+- **Visual elements**: Cybernetic hexagonal node, ECG pulse wave, healing cross, neural mesh lattice
+- **Colors**: Deep Space Navy background, Self-Healing Cyan pulse, OpenShift Crimson peak, Cobalt Intelligence nodes
+- **Rendered with**: cairosvg from the master vector icon
 
-## Logo Requirements
+## Regenerating
 
-- **Format**: PNG
-- **Dimensions**: Recommended 400x400 pixels (square aspect ratio)
-- **Style**: Should align with Validated Patterns branding
-- **Content**: Should visually represent AI/ML-powered self-healing for OpenShift clusters
+To re-render from the latest SVG source:
 
-## Design Suggestions
-
-- Include OpenShift or Kubernetes iconography
-- Incorporate AI/ML visual elements (brain, neural network, gears for automation)
-- Use Red Hat brand colors if appropriate
-- Keep it simple and recognizable at small sizes
+```bash
+pip install cairosvg
+python3 -c "
+import cairosvg
+cairosvg.svg2png(
+    url='assets/branding/svg/kubeheal-icon.svg',
+    write_to='static/images/logos/openshift-aiops-platform.png',
+    output_width=400, output_height=400
+)
+"
+```
 
 ## Contact
 
-For logo design, contact the KubeHeal team or the Validated Patterns community.
+- Pattern maintainers: https://github.com/KubeHeal/openshift-aiops-platform
+- Brand assets: https://github.com/KubeHeal/openshift-aiops-platform/tree/main/assets/branding
