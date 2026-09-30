@@ -1,0 +1,42 @@
+---
+title: Secure Agent Workspace
+date: 2026-09-30
+tier: sandbox
+summary: This pattern gives each user an isolated AI agent workspace in their own OpenShift Virtualization VM, running NVIDIA OpenShell and OpenClaw agents with OIDC sign-in, governed sandbox policy, and API keys kept in Vault.
+rh_products:
+  - Red Hat OpenShift Container Platform
+  - Red Hat OpenShift Virtualization
+  - Red Hat OpenShift GitOps
+  - Red Hat build of Keycloak
+partners:
+  - NVIDIA
+industries:
+  - General
+focus_areas:
+  - AI
+  - Security
+  - Virtualization
+aliases: /secure-agent-workspace/
+links:
+  github: https://github.com/validatedpatterns-sandbox/secure-agent-workspace
+  install: getting-started
+  arch: /images/secure-agent-workspace/saw-architecture.png
+  bugs: https://github.com/validatedpatterns-sandbox/secure-agent-workspace/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/secure-agent-workspace-about.adoc[leveloffset=+1]
+
+include::modules/secure-agent-workspace-architecture.adoc[leveloffset=+1]
+
+[id="next-steps-secure-agent-workspace"]
+== Next steps
+
+* link:getting-started[Install this pattern]
+* link:cluster-sizing[Cluster sizing]
+* link:ideas-for-customization[Ideas for customization]
+* link:troubleshooting[Troubleshooting]
