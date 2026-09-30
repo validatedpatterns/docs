@@ -68,8 +68,9 @@ workbench-data-development      20Gi       RWO            gp3-csi
 *Storage class selection by topology:*
 
 * *HA clusters:* Use `ocs-storagecluster-cephfs` (RWX) for shared model storage accessed by multiple pods, plus `gp3-csi` (RWO) for GPU training nodes (CephFS unavailable on GPU nodes)
+* *ROSA clusters:* Use `gp3-csi` (RWO) for persistent volumes and native AWS S3 for object storage (model artifacts)
 * *SNO clusters:* Use `gp3-csi` (RWO) exclusively - simpler, more reliable, and works everywhere
-* *S3 storage:* NooBaa S3 available on both topologies (full ODF on HA, MCG-only on SNO)
+* *S3 storage:* Native AWS S3 on ROSA (default), NooBaa S3 available on IPI/baremetal (full ODF on HA, MCG-only on SNO)
 
 === Platform configuration tuning
 
@@ -113,7 +114,7 @@ data:
 The pattern deploys these core services:
 
 *Coordination Engine (Go-based):*
-- Deployment: `quay.io/takinosh/openshift-coordination-engine:ocp-4.18-latest`
+- Deployment: `quay.io/takinosh/openshift-coordination-engine:<version>-latest` (version auto-derived from cluster, e.g. `4.20-latest`, `4.22-latest`)
 - Ports: 8080 (API), 9090 (Prometheus metrics)
 - Resources: 200m CPU / 256Mi memory (requests), 500m CPU / 512Mi memory (limits)
 - Function: Orchestrates remediation actions, integrates with KServe models

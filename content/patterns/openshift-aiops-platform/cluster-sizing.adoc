@@ -24,9 +24,24 @@ The hub cluster hosts the majority of the AIOps platform components including ob
 
 The pattern supports two deployment topologies, which are automatically detected during deployment using `make show-cluster-info`:
 
-*Standard HighlyAvailable Topology*::
+*ROSA Classic HA (Recommended)*::
 +
-Recommended for production multi-cluster deployments:
+Recommended for production deployments on AWS:
++
+*Worker Nodes (managed)*::
+* Minimum: 3 worker nodes (control plane is managed by ROSA)
+* Instance type: m5.2xlarge or larger
+* Optional: g5.2xlarge machine pool for GPU/ML training
+* Storage: Native AWS S3 (default) or ODF add-on
++
+[NOTE]
+====
+ROSA manages the control plane — you only configure worker nodes via machine pools. Use `rosa create machinepool` for scaling.
+====
+
+*Standard HighlyAvailable Topology (IPI/Baremetal)*::
++
+Recommended for self-managed production multi-cluster deployments:
 +
 *Control Plane Nodes*::
 * Minimum: 3 nodes

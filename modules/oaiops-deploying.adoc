@@ -9,10 +9,12 @@ This procedure walks through deploying the OpenShift AIOps Self-Healing Platform
 == Prerequisites
 
 *Hub Cluster*::
-* OpenShift Container Platform 4.18 or later
+* OpenShift Container Platform 4.20, 4.21, or 4.22 (auto-detected during deployment)
 * Cluster admin access
-* Standard HighlyAvailable topology: At least 3 control plane nodes and 6+ compute nodes, OR
-* Single Node OpenShift (SNO) topology: 1 node with 8+ vCPU, 32+ GB RAM, 120+ GB storage
+* Supported platforms:
+** **ROSA Classic (recommended)**: 3+ worker nodes (HA) or 1 worker (dev/test) — managed control plane
+** **IPI / Baremetal HA**: At least 3 control plane nodes and 3+ compute nodes
+** **Single Node OpenShift (SNO)**: 1 node with 8+ vCPU, 32+ GB RAM, 120+ GB storage
 * Internet connectivity for pulling container images
 
 *Optional Spoke Clusters*::
@@ -40,6 +42,11 @@ This procedure walks through deploying the OpenShift AIOps Self-Healing Platform
 * Cluster admin credentials for the hub cluster
 * GitHub account for forking the pattern repository (MANDATORY)
 
+*ROSA-Specific Prerequisites (if using ROSA Classic)*::
+* AWS account with ROSA quota
+* `rosa` CLI installed and configured
+* `aws` CLI installed with valid credentials
+
 == Preparing for deployment
 
 Follow these steps to prepare your environment for deployment.
@@ -54,6 +61,27 @@ Forking the repository is MANDATORY. The pattern will not work correctly if you 
 ====
 +
 Navigate to https://github.com/KubeHeal/openshift-aiops-platform and click the *Fork* button.
+
+. (Optional) Provision a ROSA Classic cluster if you don't have one:
++
+[source,terminal]
+----
+# Full HA cluster with GPU machine pool and S3 bucket
+./scripts/create-rosa-cluster.sh
+
+# Single-worker for development/testing
+./scripts/create-rosa-cluster.sh --replicas 1 --no-gpu
+
+# Preview without executing
+./scripts/create-rosa-cluster.sh --dry-run
+----
++
+The script handles cluster creation, admin user, GPU machine pool, S3 bucket provisioning, and `oc login`. Takes approximately 35-45 minutes.
++
+[NOTE]
+====
+Skip this step if you already have a ROSA cluster or are deploying on another platform (IPI, baremetal, SNO).
+====
 
 . Clone YOUR forked repository (not the upstream):
 +
@@ -197,11 +225,14 @@ cp values-global.yaml.example values-global.yaml
 
 # Create hub values file (REQUIRED - may already exist)
 cp values-hub.yaml.example values-hub.yaml
+
+# Create secrets values file (REQUIRED - VP framework needs valid YAML structure)
+cp values-secret.yaml.example values-secret.yaml
 ----
 +
 [IMPORTANT]
 ====
-Both `values-global.yaml` and `values-hub.yaml` are REQUIRED before proceeding. All subsequent `make` commands depend on these files existing and being properly configured.
+All three files (`values-global.yaml`, `values-hub.yaml`, and `values-secret.yaml`) are REQUIRED before proceeding. The VP framework requires `values-secret.yaml` to contain valid YAML with `version: "2.0"` and a `secrets` key, even if no secrets are configured.
 ====
 
 . Edit `values-global.yaml` and update the repository URL to YOUR fork:
@@ -259,12 +290,25 @@ clusterGroup:
     # - Local/edge SNO: "local-path"
     storageClass: "gp3-csi"  # Example for AWS SNO clusters
 ----
++
+For ROSA Classic clusters, configure object storage:
++
+[source,yaml]
+----
+# ROSA uses native AWS S3 instead of ODF for object storage
+objectStore:
+  enabled: true
+  backend: "aws-s3"
+  aws:
+    region: "us-east-1"
+    bucketName: "your-model-storage-bucket"
+----
 
 . Review the secrets template to understand what source secrets are needed for your configuration:
 +
 [source,terminal]
 ----
-cat values-secret.yaml.template
+cat values-secret.yaml.example
 ----
 +
 [NOTE]
@@ -312,11 +356,22 @@ git push origin main
 
 == Understanding OpenShift Data Foundation (ODF) deployment
 
-The pattern requires S3-compatible object storage for metrics, logs, and model artifacts. The `make configure-cluster` step automatically installs OpenShift Data Foundation with different configurations based on cluster topology.
+The pattern requires S3-compatible object storage for metrics, logs, and model artifacts. Storage configuration depends on your deployment platform:
 
-*Standard HighlyAvailable (HA) Clusters*::
+*ROSA Classic Clusters (AWS)*::
 +
-Full ODF deployment including:
+ROSA clusters can use native AWS S3 for object storage:
++
+* No ODF installation required when using native S3
+* Set `objectStore.backend: "aws-s3"` in `values-hub.yaml`
+* S3 bucket can be provisioned by `scripts/create-rosa-cluster.sh` or manually
+* Still run `make configure-cluster` for other infrastructure setup
++
+If you prefer ODF on ROSA, it is available as an add-on.
+
+*IPI / Baremetal HA Clusters*::
++
+The `make configure-cluster` step automatically installs OpenShift Data Foundation:
 +
 * Ceph storage cluster (requires 3+ worker nodes with local disks or cloud volumes)
 * Multi-Cloud Gateway (MCG/NooBaa) for S3-compatible object storage
@@ -767,6 +822,14 @@ tkn pipelinerun list -n self-healing-platform
 +
 The deployment-validation-pipeline should show `Succeeded` status.
 
+. (Optional) Review CI validation status:
++
+The pattern includes a comprehensive end-to-end CI pipeline in GitHub Actions (`.github/workflows/validate-pattern.yml`) that validates the full lifecycle: install, ArgoCD convergence, health checks, and uninstall. Check the latest run status at:
++
+----
+https://github.com/<your-username>/openshift-aiops-platform/actions
+----
+
 == Post-deployment configuration
 
 Configure access to platform components and verify functionality.
@@ -937,7 +1000,7 @@ This usually indicates missing ServiceAccounts or RBAC. Re-run the prerequisite 
 +
 [source,terminal]
 ----
-make deploy-prereqs-only
+make operator-deploy-prereqs
 ----
 
 *NotebookValidationJobs fail*::
@@ -957,6 +1020,13 @@ Check operator logs:
 [source,terminal]
 ----
 oc logs -n openshift-operators deployment/validated-patterns-operator -f
+----
++
+If the install step times out waiting for Vault (which is not used when using External Secrets Operator), set `global.secretStore.backend = "none"` in `values-global.yaml` to skip the Vault post-install check:
++
+[source,terminal]
+----
+yq -i '.global.secretStore.backend = "none"' values-global.yaml
 ----
 
 *InferenceService not ready*::
@@ -1098,23 +1168,38 @@ If you need to clean up the pattern while preserving infrastructure operators:
 +
 [source,terminal]
 ----
-ansible-navigator run ansible/playbooks/cleanup_pattern.yml \
-  --container-engine podman \
-  --execution-environment-image openshift-aiops-platform-ee:latest \
-  --mode stdout
+# Step 1: Annotate the Pattern CR for pruning (required by VP admission webhook)
+oc annotate pattern self-healing-platform -n openshift-operators \
+  patterns.gitops.hybrid-cloud-patterns.io/prune="true" --overwrite 2>/dev/null || true
+oc annotate pattern self-healing-platform -n patterns-operator \
+  patterns.gitops.hybrid-cloud-patterns.io/prune="true" --overwrite 2>/dev/null || true
+
+# Step 2: Delete the Pattern CR
+oc delete pattern self-healing-platform -n openshift-operators --wait=false 2>/dev/null || true
+oc delete pattern self-healing-platform -n patterns-operator --wait=false 2>/dev/null || true
+
+# Step 3: Wait for deletion to complete (may take 2-5 minutes)
+sleep 60
+
+# Step 4: Verify Pattern CR is gone before redeploying
+oc get pattern -A
 ----
 +
-This removes the pattern CR, ArgoCD applications, and application namespace while retaining GitOps, Gitea, and the Validated Patterns Operator.
+[WARNING]
+====
+The VP admission webhook enforces "only one Pattern resource allowed." You must fully delete the existing Pattern CR before creating a new one. The prune annotation is required — without it, the webhook blocks deletion.
+====
 
 For additional troubleshooting, see:
 * link:https://github.com/KubeHeal/openshift-aiops-platform/blob/main/README.md[Pattern README]
-* link:https://github.com/KubeHeal/openshift-aiops-platform/blob/main/DEPLOYMENT.md[Detailed Deployment Guide]
+* link:https://github.com/KubeHeal/openshift-aiops-platform/blob/main/CLAUDE.md[AI Agent Quick Reference]
+* link:https://github.com/KubeHeal/openshift-aiops-platform/blob/main/docs/guides/TROUBLESHOOTING-GUIDE.md[Troubleshooting Guide]
 * link:https://github.com/KubeHeal/openshift-aiops-platform/issues[GitHub Issues]
 
 == Next steps
 
 * Explore the self-healing dashboard in Grafana to see incident detection and remediation
-* Review the link:https://github.com/KubeHeal/openshift-aiops-platform/blob/main/AGENTS.md[AI Agent Development Guide] to customize agent behavior
+* Review the link:https://github.com/KubeHeal/openshift-aiops-platform/blob/main/docs/explanation/ai-agent-development-guide.md[AI Agent Development Guide] to customize agent behavior
 * Access Jupyter notebooks to explore model training workflows
 * Configure confidence thresholds and auto-remediation settings in `values-global.yaml`
 * Train custom ML models using your historical incident data

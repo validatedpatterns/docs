@@ -9,7 +9,7 @@
 :issues_url: https://github.com/KubeHeal/openshift-aiops-platform/issues
 :docs_url: https://validatedpatterns.io/patterns/openshift-aiops-platform/
 :ci_url: https://validatedpatterns.io/ci/?pattern=openshift-aiops-platform
-:tier: community
+:tier: sandbox
 :owners: KubeHeal
 :requirements_hub_compute_platform_gcp_replicas: 5
 :requirements_hub_compute_platform_gcp_type: n2-standard-16

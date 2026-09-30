@@ -20,7 +20,7 @@ Run production workloads and lightweight monitoring agents. Send metrics, logs, 
 Store cluster configurations and pattern deployment manifests. The Validated Patterns framework uses Git as the source of truth for infrastructure-as-code, with the Validated Patterns Operator synchronizing configurations via ArgoCD.
 
 *Model Storage & Serving*::
-Stores trained ML models in S3-compatible storage (NooBaa on HA clusters, external S3 on SNO) and serves them via two KServe InferenceServices: `anomaly-detector-predictor` (Isolation Forest model) and `predictive-analytics-predictor` (Random Forest Regressor model) for low-latency inference during incident analysis.
+Stores trained ML models in S3-compatible storage (native AWS S3 on ROSA, NooBaa on IPI/baremetal HA clusters, MCG-only NooBaa on SNO) and serves them via two KServe InferenceServices: `anomaly-detector-predictor` (Isolation Forest model) and `predictive-analytics-predictor` (Random Forest Regressor model) for low-latency inference during incident analysis.
 
 .Logical architecture of OpenShift AIOps Self-Healing Platform
 image::openshift-aiops-platform/aiops-logical-architecture.png[Logical Architecture]
@@ -118,9 +118,10 @@ image::openshift-aiops-platform/aiops-ml-pipeline.png[ML Pipeline]
 
 *Data Storage*::
 OpenShift Data Foundation provides topology-aware storage:
-* *HA clusters*: Full ODF with CephFS (RWX for shared model storage), Ceph RBD (RWO for block storage), NooBaa S3 (object storage)
+* *ROSA clusters*: Native AWS S3 for model artifacts (default), ODF optional as add-on
+* *HA clusters (IPI/baremetal)*: Full ODF with CephFS (RWX for shared model storage), Ceph RBD (RWO for block storage), NooBaa S3 (object storage)
 * *SNO clusters*: MCG-only ODF (NooBaa S3 without Ceph), gp3-csi (RWO for all persistent volumes)
-* *Model artifacts*: `/mnt/models/` mounted from `model-storage-pvc` (10Gi CephFS on HA, 10Gi gp3-csi on SNO)
+* *Model artifacts*: `/mnt/models/` mounted from `model-storage-pvc` (10Gi CephFS on HA, 10Gi gp3-csi on SNO/ROSA)
 * *Notebook data*: `/opt/app-root/src/data` mounted from `workbench-data-development` (20Gi)
 
 *Training Workflow*::
@@ -159,9 +160,10 @@ The pattern deploys using the Validated Patterns framework with the Validated Pa
 * *GitOps*: All components are deployed via ArgoCD applications
 * *Helm Charts*: Component configurations use Helm for parameterization
 * *Values Hierarchy*: Global values, site-specific values, and secret values
-* *Secret Management*: External Secrets Operator integrates with HashiCorp Vault
+* *Secret Management*: External Secrets Operator integrates with Kubernetes backend (default) or HashiCorp Vault
 * *Operator Lifecycle*: OpenShift Operator Lifecycle Manager (OLM) manages operator installation and updates
-* *Topology Support*: Automatic detection and configuration for both standard HighlyAvailable and Single Node OpenShift (SNO) topologies
+* *Topology Support*: Automatic detection and configuration for ROSA Classic, standard HighlyAvailable, and Single Node OpenShift (SNO) topologies
+* *CI Validation*: End-to-end GitHub Actions pipeline validates full pattern lifecycle (install, convergence, health, uninstall)
 
 For detailed architectural decisions, see the pattern's link:https://github.com/KubeHeal/openshift-aiops-platform/tree/main/docs/adrs[Architecture Decision Records (ADRs)], including:
 

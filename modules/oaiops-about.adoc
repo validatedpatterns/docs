@@ -27,6 +27,8 @@ The pattern is deployed using the Validated Patterns framework with the Validate
 
 The pattern supports both standard HighlyAvailable multi-node clusters and Single Node OpenShift (SNO) deployments, with automatic topology detection and configuration during deployment.
 
+The primary deployment target is ROSA Classic (Red Hat OpenShift Service on AWS), with full support for IPI/baremetal HA clusters and SNO edge deployments. The pattern has been tested and validated on OpenShift 4.20, 4.21, and 4.22.
+
 For a hands-on walkthrough of the complete self-healing workflow, see the link:https://kubeheal.github.io/self-healing-workshop/modules/index.html[Self-Healing Workshop] which demonstrates end-to-end scenarios including anomaly detection, model training, MCP server integration, and AI-powered remediation with OpenShift Lightspeed.
 
 [id="about-solution"]

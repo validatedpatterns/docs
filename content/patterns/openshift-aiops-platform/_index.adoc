@@ -5,6 +5,7 @@ tier: sandbox
 summary: This pattern provides an AI-powered self-healing platform for OpenShift clusters, combining deterministic automation with machine learning for intelligent incident response.
 rh_products:
 - Red Hat OpenShift Container Platform
+- Red Hat OpenShift Service on AWS
 - Red Hat OpenShift AI
 - Red Hat OpenShift GitOps
 - Red Hat OpenShift Pipelines
