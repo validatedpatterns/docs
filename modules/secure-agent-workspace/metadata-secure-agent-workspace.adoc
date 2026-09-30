@@ -1,0 +1,17 @@
+// This file defines metadata attributes for the Secure Agent Workspace pattern.
+// The pattern repository has no pattern-metadata.yaml yet, so these values are defined manually.
+:metadata_version: 1.0
+:name: secure-agent-workspace
+:pattern_version: 1.0
+:description: Give each user an isolated AI agent workspace in their own OpenShift Virtualization VM, with NVIDIA OpenShell, OIDC sign-in, and governed sandbox policy.
+:display_name: Secure Agent Workspace
+:repo_url: https://github.com/validatedpatterns-sandbox/secure-agent-workspace
+:docs_repo_url: https://github.com/validatedpatterns/docs
+:issues_url: https://github.com/validatedpatterns-sandbox/secure-agent-workspace/issues
+:docs_url: https://validatedpatterns.io/patterns/secure-agent-workspace/
+:ci_url: https://validatedpatterns.io/ci/?pattern=secure-agent-workspace
+:tier: sandbox
+:owners: sauagarwa
+:extra_features_hypershift_support: false
+:extra_features_spoke_support: false
+:external_requirements: Bare-metal worker nodes for OpenShift Virtualization; API keys for build.nvidia.com and Brave Search
