@@ -1,0 +1,20 @@
+---
+title: Getting started
+weight: 10
+aliases: /openshift-aiops-platform/getting-started/
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+include::modules/oaiops-deploying.adoc[leveloffset=+1]
+
+[id="next-steps_openshift-aiops-platform-getting-started"]
+= Next steps
+
+* Review link:../cluster-sizing[cluster sizing requirements] to ensure your infrastructure meets the pattern's needs
+* Explore link:../ideas-for-customization[customization options] to adapt the self-healing platform to your environment
+* Check the Grafana dashboards to monitor self-healing activity and model performance
+* Review and extend the runbook library for your specific use cases
+* Configure integrations with external systems like ServiceNow, PagerDuty, or Slack
