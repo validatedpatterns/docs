@@ -12,6 +12,11 @@ industries:
 focus_areas:
   - DevSecOps
 aliases: /rhoso-gitops/
+ci: rhoso-gitops
+ci_github_sources:
+  - raw_base: https://raw.githubusercontent.com/validatedpatterns-sandbox/rhoso-gitops/reporting/
+    files:
+      - rhoso-gitops-baremetal-4.18-stable-badge.json
 links:
   github: https://github.com/validatedpatterns-sandbox/rhoso-gitops
   install: getting-started
