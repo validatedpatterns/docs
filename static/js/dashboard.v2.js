@@ -4,17 +4,18 @@
 
 class Badge {
 
-  constructor(base, key, date) {
+  constructor(base, key, date, useJsonMetadata = false) {
     this.base = base
     this.key = key
     this._json = null
+    this.useJsonMetadata = useJsonMetadata || isNewCiBadgeBase(base)
     this.operator = 'N/A'
     this.date = date.substr(0, 10)
     this.pattern = ''
     this.platform = ''
     this.version = ''
 
-    if (isNewCiBadgeBase(base)) {
+    if (this.useJsonMetadata) {
       return
     }
 
@@ -36,7 +37,7 @@ class Badge {
   applyJson(json) {
     this._json = json
 
-    if (!isNewCiBadgeBase(this.base)) {
+    if (!this.useJsonMetadata) {
       return this
     }
 
@@ -410,6 +411,9 @@ function enrichBadgesFromJson(badges) {
     return Promise.resolve(badges || [])
   }
   return Promise.all(badges.map(function (badge) {
+    if (badge._json != null) {
+      return Promise.resolve(badge)
+    }
     return fetch(badge.getURI())
       .then(function (response) {
         if (!response.ok) {
@@ -1401,6 +1405,34 @@ function fetchBucketBadges(bucket, inputs) {
   })
 }
 
+function fetchGithubBadges(source, badgeSet) {
+  const base = source.raw_base.replace(/\/$/, '')
+  const files = source.files.filter(function (key) {
+    return (badgeSet === 'GA' && key.endsWith('stable-badge.json')) ||
+      (badgeSet === 'early' && (key.endsWith('prerelease-badge.json') ||
+        key.endsWith('nightly-badge.json') || key.endsWith('operator-badge.json'))) ||
+      (badgeSet === 'all' && key.endsWith('-badge.json'))
+  })
+  return Promise.all(files.map(function (key) {
+    return fetch(base + '/' + key)
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error('HTTP error: ' + response.status)
+        }
+        return response.json()
+      })
+      .then(function (json) {
+        return new Badge(base, key, json.date || '', true).applyJson(json)
+      })
+      .catch(function (error) {
+        console.warn('GitHub CI badge unavailable:', key, error.message)
+        return null
+      })
+  })).then(function (badges) {
+    return badges.filter(function (badge) { return badge != null })
+  })
+}
+
 function obtainBadgesFromSample(inputs) {
   const options = getBucketOptions(inputs);
 
@@ -1439,6 +1471,9 @@ function obtainBadges(inputs) {
 
   for (const bucket of buckets) {
     badgePromises.push(fetchBucketBadges(bucket, inputs));
+  }
+  for (const source of inputs.github_sources || []) {
+    badgePromises.push(fetchGithubBadges(source, options.get('sets')))
   }
 
   Promise.all(badgePromises)

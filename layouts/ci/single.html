@@ -21,7 +21,15 @@
            </div>
           <script>
             {{ $internal := .Param "internal" }}
-            obtainBadges({ 'target': 'ci-dataset' {{ if (eq $internal true ) }}, 'links': 'internal'{{ end }} });
+            {{ $githubSources := slice }}
+            {{ range .Site.Pages }}
+              {{ if ne .Params.tier "archived" }}
+                {{ range .Params.ci_github_sources }}
+                  {{ $githubSources = $githubSources | append . }}
+                {{ end }}
+              {{ end }}
+            {{ end }}
+            obtainBadges({ 'target': 'ci-dataset', 'github_sources': {{ $githubSources | jsonify | safeJS }} {{ if (eq $internal true ) }}, 'links': 'internal'{{ end }} });
           </script>
       </div>
       </div>

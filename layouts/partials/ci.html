@@ -5,6 +5,6 @@
     {{ partial "spinner.html" . }}
   </div>
   <script>
-    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': '{{ .Params.ci }}', 'disable_buttons': true });
+    obtainBadges({ 'target':'ci-dataset', 'filter_field':'pattern', 'filter_value': '{{ .Params.ci }}', 'disable_buttons': true, 'github_sources': {{ .Params.ci_github_sources | default (slice) | jsonify | safeJS }} });
   </script>
 </div>
