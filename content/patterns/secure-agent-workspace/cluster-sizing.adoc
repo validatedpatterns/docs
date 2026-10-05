@@ -11,19 +11,19 @@ include::modules/comm-attributes.adoc[]
 include::modules/secure-agent-workspace/metadata-secure-agent-workspace.adoc[]
 
 [id="secure-agent-workspace-bare-metal"]
-== Bare-metal nodes are required
+== Hardware virtualization requirements
 
 Each workspace is a {VirtProductName} virtual machine. {VirtProductName} uses the hardware virtualization of the node (Intel VT-x or AMD-V through KVM), so the worker nodes that run the workspace VMs must be bare metal:
 
 * *On premises*: {ocp} installed on bare-metal servers, with virtualization enabled in the firmware.
-* *Public cloud*: bare-metal instance types, for example `m5.metal`, `m6i.metal`, or `c5n.metal` on Amazon Web Services. Virtualized instance types cannot run the VMs, because nested virtualization is not supported.
+* *Public cloud*: bare-metal instance types, for example `m5.metal`, `m6i.metal`, or `c5n.metal` on {AWS}. Virtualized instance types cannot run the VMs, because nested virtualization is not supported.
 
 The control plane nodes can be virtual machines or virtualized instances. For the full list of requirements, see link:https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/virtualization/installing#preparing-cluster-for-virt[Preparing your cluster for OpenShift Virtualization].
 
 [id="secure-agent-workspace-sizing"]
-== Sizing
+== Sizing requirements
 
-Size the bare-metal workers for the shared services plus one VM per user. Each VM requests its full memory from the node, so memory usually decides how many workspaces a node can hold.
+Size the bare-metal workers for the shared services plus one VM per user. Each VM requests its full memory from the node, so the amount of memory on the node limits the number of workspaces the node can run.
 
 .Resources per component
 [cols="2,1,1,1",options="header"]
@@ -33,7 +33,7 @@ Size the bare-metal workers for the shared services plus one VM per user. Each V
 | Shared services: Operators, Argo CD, Keycloak and its database, Vault, governance interceptor
 | 8
 | 16 GiB
-| 50 GiB, including the golden VM image
+| 50 GiB, including the template VM image
 
 | Each workspace VM (default, set in the `openshell-saw` chart as `vm.cores`, `vm.memory`, `vm.diskSize`)
 | 4
@@ -55,12 +55,12 @@ Size the bare-metal workers for the shared services plus one VM per user. Each V
 | `m5.metal` (96 vCPU, 384 GiB memory)
 |===
 
-Two bare-metal workers of this size hold the shared services and dozens of workspaces. With smaller servers, plan for the shared services plus 4 vCPU and 8 GiB of memory per user, and keep room for one node to fail if the VMs must be able to move to another node.
+Two bare-metal workers of this size hold the shared services and dozens of workspaces. With smaller servers, plan for the shared services plus 4 vCPU and 8 GiB of memory per user. Ensure that there is room to move VMs from one node to another in case of node failure.
 
 [id="secure-agent-workspace-storage"]
-== Storage
+== Storage requirements
 
-The cluster needs a default storage class for the VM disks (`ReadWriteOnce`, 40 GiB per user by default) and for the golden image that the disks are cloned from. Storage that supports smart cloning, such as {rh-ocp-data-first} or a CSI driver with volume snapshots, makes new workspaces start faster.
+The cluster needs a default storage class for the VM disks (`ReadWriteOnce`, 40 GiB per user by default) and for the template image that the disks are cloned from. Storage that supports smart cloning, such as {rh-ocp-data-first} or a CSI driver with volume snapshots, makes new workspaces start faster.
 
 [id="secure-agent-workspace-model-serving"]
 == Model serving

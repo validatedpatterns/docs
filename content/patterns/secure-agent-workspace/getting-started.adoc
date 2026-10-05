@@ -14,14 +14,14 @@ include::modules/comm-attributes.adoc[]
 
 .Prerequisites
 
-* An {ocp} cluster with *bare-metal worker nodes*. The workspaces are {VirtProductName} VMs, and {VirtProductName} needs hardware virtualization on the nodes that run them:
-** *On premises*: install {ocp} on bare-metal servers with Intel VT-x or AMD-V enabled in the firmware.
-** *Public cloud*: use bare-metal instance types for the workers, for example `m5.metal` or `c5n.metal` on AWS. Virtualized instance types do not work, because nested virtualization is not supported.
-** For the number and size of nodes, see link:cluster-sizing[Cluster sizing].
-** To create an {ocp} cluster, go to the https://console.redhat.com/[Red{nbsp}Hat Hybrid Cloud console] and select *OpenShift \-> Red{nbsp}Hat OpenShift Container Platform \-> Create cluster*.
+* An {ocp} cluster with *bare-metal worker nodes* to provide hardware virtualization to run a separate {VirtProductName} VM for each workspace. {VirtProductName} does not support nested virtualization.
+** *For on-premises deployments*, install {ocp} on bare-metal servers with Intel VT-x or AMD-V enabled in the firmware.
+** *For public cloud deployments*, select bare-metal instance types for workers, for example, on AWS, select `m5.metal` or `c5n.metal`.
+** See link:cluster-sizing[Cluster sizing] for advice on the size and number of nodes required.
+** You can create an {ocp} cluster by using the link:https://console.redhat.com/openshift/create[Red{nbsp}Hat Hybrid Cloud Console].
 * A default storage class that can provision `ReadWriteOnce` volumes for the VM disks.
 * Cluster administrator access. End users need no {ocp} access: they sign in to the workspaces with Keycloak.
-* An API key for build.nvidia.com (NVIDIA Nemotron) and one for Brave Search, which the default profile uses. To use a model server of your own instead, see link:ideas-for-customization[Ideas for customization].
+* An API key for each service that the default profile uses: build.nvidia.com (NVIDIA Nemotron) and Brave Search. To use a model server of your own instead, see link:ideas-for-customization[Ideas for customization].
 * The `oc` CLI. For instructions, see link:https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/getting-started-cli.html[Getting started with the OpenShift CLI].
 * The Helm binary. For instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm].
 * The `openshell` CLI, version 0.1.x, from the link:https://github.com/NVIDIA/OpenShell/releases[OpenShell releases]. A 0.0.x CLI cannot connect to the 0.1.x gateway that this pattern installs.
@@ -35,9 +35,9 @@ include::modules/comm-attributes.adoc[]
 
 . Clone the forked copy of this repository.
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
-$ git clone git@github.com:your-username/secure-agent-workspace.git
+$ git clone git@github.com:__<your-username>__/secure-agent-workspace.git
 ----
 
 . Go to the root directory of your Git repository:
@@ -72,7 +72,7 @@ $ echo '<Brave Search API key>' > ~/.brave-api-key
 $ chmod 600 ~/.nvidia-api-key ~/.brave-api-key
 ----
 
-. Make a local copy of the secrets template outside of your repository to hold credentials for the pattern.
+. Make a local copy of the secrets template outside your repository to hold credentials for the pattern.
 +
 [WARNING]
 ====
@@ -86,9 +86,9 @@ Run the following command:
 $ cp values-secret.yaml.template ~/values-secret-secure-agent-workspace.yaml
 ----
 +
-The template reads the SSH keys and the two API key files from the paths above. Edit the copy if you keep them elsewhere, or to use a model provider other than build.nvidia.com.
+The template reads the SSH keys and the two API key files from the paths above. Edit your copy of the secrets file to store your API key files in a different location, or to use a different model provider.
 
-. Optional: Choose who gets a workspace. Edit `overrides/saw-users.yaml`. Each entry is one user, whose VM and namespace are named after them:
+. Optional: Choose who gets a workspace. Edit `overrides/saw-users.yaml`. Each entry in the `users` list defines one user. The `name` of each user is also used for that user's namespace and for their VM:
 +
 [source,yaml]
 ----
@@ -98,7 +98,7 @@ users:
       - data-science
 ----
 +
-The name must also be a user in Keycloak. The pattern's realm includes the test users `alice` and `bob`. Names are lowercase DNS labels of at most 19 characters.
+The name must also be a user in Keycloak. The pattern's realm includes the test users `alice` and `bob`. Each name must be a lowercase DNS label no more than 19 characters long.
 
 . Optional: To customize the deployment, create and switch to a new branch by running the following command:
 +
@@ -123,9 +123,9 @@ The branch that you deploy must exist on your fork, because {rh-gitops} syncs fr
 
 To deploy the pattern by using the `pattern.sh` file, complete the following steps:
 
-. Log in to your cluster by following this procedure:
+. Log in to your cluster.
 
-.. Obtain an API token by visiting link:https://oauth-openshift.apps.<your_cluster>.<domain>/oauth/token/request[https://oauth-openshift.apps.<your_cluster>.<domain>/oauth/token/request].
+.. Obtain an API token by visiting `https://oauth-openshift.apps.<your_cluster>.<domain>/oauth/token/request`.
 
 .. Log in to the cluster by running the following command:
 +
@@ -141,7 +141,7 @@ Or log in by running the following command:
 $ export KUBECONFIG=~/<path_to_kubeconfig>
 ----
 
-. Copy the prebuilt golden VM image into the cluster's internal registry. This takes about 5 minutes:
+. Copy the prebuilt template VM image into the cluster's internal registry. This takes about 5 minutes:
 +
 [source,terminal]
 ----
@@ -155,7 +155,14 @@ $ make copy-images
 $ ./pattern.sh make install
 ----
 +
-To deploy a branch other than the one that is checked out, set `TARGET_BRANCH` (and `TARGET_ORIGIN` for a remote other than `origin`) before you run the command.
+To deploy a branch other than the one that is checked out, export `TARGET_BRANCH` before you run the command, and `TARGET_ORIGIN` if the branch is on a remote other than `origin`. For example:
++
+[source,terminal]
+----
+$ export TARGET_BRANCH=my-branch
+$ export TARGET_ORIGIN=origin
+$ ./pattern.sh make install
+----
 
 .Verification
 
@@ -168,7 +175,7 @@ $ ./pattern.sh make argo-healthcheck
 +
 It might take 20 to 30 minutes for all applications to synchronize, the Operators to install, and the first workspace VM to boot.
 
-. Verify that the Operators are installed. In the {ocp} web console, go to *Operators -> Installed Operators* and confirm that the following Operators are present:
+. Verify that the Operators are installed. In the {ocp} web console, go to *Operators \-> Installed Operators* and confirm that the following Operators are present:
 +
 * {VirtProductName}
 * Red{nbsp}Hat build of Keycloak
@@ -201,7 +208,9 @@ To follow the installer as it runs, use `make openshell-saw-logs OPENSHELL_SAW_N
 [id="accessing-a-workspace-saw"]
 == Accessing a workspace
 
-. Register the user's gateway with the `openshell` CLI and sign in. A browser opens for the Keycloak sign-in; sign in as the user (for the test user, `alice` with the password `alice`):
+. Register the user's gateway and log in.
++
+Run the following commands, then use the browser window that opens to log in using Keycloak. The test user is `alice` with password `alice`.
 +
 [source,terminal]
 ----
@@ -241,6 +250,21 @@ The browser UI opens through an SSH tunnel on `http://localhost:28789`.
 [source,terminal]
 ----
 $ oc get route alice-webui -n saw-alice -o jsonpath='https://{.spec.host}{"\n"}'
+----
+
+. Optional: See the sandbox policy in effect. GitHub is not one of the hosts that the default profile allows, so the sandbox's egress proxy blocks the agent's request. In the OpenClaw agent of the `notebook` sandbox, enter the following prompt:
++
+[source,text]
+----
+Use your terminal tool to run curl -sS --max-time 10 https://api.github.com/zen. Show the command and its exact output.
+----
++
+The command fails because the connection is denied. To see the denial, view the sandbox logs:
++
+[source,terminal]
+----
+$ openshell --gateway alice --workspace default \
+  logs notebook --since 5m --source sandbox
 ----
 
 [id="next-steps-getting-started-saw"]

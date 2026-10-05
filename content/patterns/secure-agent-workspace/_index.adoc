@@ -36,7 +36,7 @@ include::modules/secure-agent-workspace-architecture.adoc[leveloffset=+1]
 [id="next-steps-secure-agent-workspace"]
 == Next steps
 
-* link:getting-started[Install this pattern]
+* link:getting-started[Getting started]
 * link:cluster-sizing[Cluster sizing]
 * link:ideas-for-customization[Ideas for customization]
 * link:troubleshooting[Troubleshooting]

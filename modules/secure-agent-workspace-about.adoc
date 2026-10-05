@@ -5,7 +5,7 @@ include::comm-attributes.adoc[]
 [id="about-secure-agent-workspace"]
 = About the Secure Agent Workspace pattern
 
-Give each user an isolated AI agent workspace on {rh-ocp}: a dedicated virtual machine that runs NVIDIA OpenShell and its agent sandboxes, with single sign-on, centrally governed sandbox policy, and API keys that never enter the agent's environment.
+The Secure Agent Workspace Validated Pattern creates isolated AI agent workspaces on {rh-ocp} for each user. Each workspace contains a dedicated virtual machine that runs NVIDIA OpenShell and its agent sandboxes. Workspaces are consistent and secure, with single sign-on (SSO), centrally governed sandbox policy, and API keys that never enter the agent environment.
 
 Use case::
 
@@ -20,7 +20,12 @@ This pattern implements the NVIDIA link:https://docs.nvidia.com/enterprise-refer
 [id="about-secure-agent-workspace-solution"]
 == About the solution
 
-The {solution-name-upstream} framework installs the operators and shared services, then creates one workspace per user listed in `overrides/saw-users.yaml`: a namespace `saw-<user>`, a {VirtProductName} VM named after the user, the VM's routes, and the inputs its installer reads.
+The {solution-name-upstream} framework installs the Operators and shared services, then creates one workspace per user listed in `overrides/saw-users.yaml`. Each workspace contains the following:
+
+* a namespace, `saw-<user>`
+* a {VirtProductName} VM named after the user
+* routes for the user VM
+* inputs to the VM installer
 
 Each VM installs a pinned OpenShell release on every boot from a versioned bill of materials (the _InstallerBOM_), then applies the user's _SAW-BOM profiles_: the OpenShell workspaces, model and tool providers, and agent sandboxes the user gets. The default `data-science` profile creates two sandboxes running the OpenClaw agent with the NVIDIA Nemotron model on build.nvidia.com, and Brave web search in the `default` workspace.
 
@@ -29,7 +34,7 @@ Security comes in layers:
 * *VM isolation:* one VM per user, so no agent shares a kernel or process space with another user's agents.
 * *Identity:* users sign in to Keycloak with OIDC. The OpenShell gateway in each VM accepts only tokens for its realm and maps Keycloak roles to OpenShell roles.
 * *Governance:* every sandbox and provider change goes through a governance interceptor that serves a signed sandbox policy and the approved provider profiles. Policy changes are made in Git.
-* *Credentials:* API keys are stored in {hashicorp-vault} and reach the user's namespace through the {eso}. Inside a sandbox the agent sees only a placeholder. The sandbox's egress proxy substitutes the real key, and only for the hosts and programs the provider profile allows.
+* *Credentials:* API keys are stored in {hashicorp-vault} and reach the user's namespace through the {eso}. Inside a sandbox, the agent receives only a placeholder. The sandbox's egress proxy substitutes the real key, but only for the hosts and programs that the provider profile allows.
 
 [id="about-secure-agent-workspace-technology"]
 == About the technology
@@ -40,9 +45,9 @@ https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-ocp}
 An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments.
 
 https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[Red{nbsp}Hat {VirtProductName}]::
-Runs virtual machines alongside containers on {ocp}. This pattern runs one workspace VM per user, cloned from a golden image. {VirtProductName} needs bare-metal worker nodes.
+Runs virtual machines alongside containers on {ocp}. This pattern runs one workspace VM per user, cloned from a template image with a known, stable configuration. {VirtProductName} requires bare-metal worker nodes.
 
-https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-gitops}]::
+https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[{rh-gitops}]::
 A declarative application continuous delivery tool for Kubernetes based on the Argo CD project. Application definitions, configurations, and environments are declarative and version controlled in Git.
 
 https://access.redhat.com/products/red-hat-build-of-keycloak[Red{nbsp}Hat build of Keycloak]::
@@ -58,4 +63,4 @@ https://github.com/openclaw/openclaw[OpenClaw] and https://github.com/NVIDIA/Nem
 The AI agents that run in the sandboxes, with a terminal UI and a web UI.
 
 https://build.nvidia.com/[NVIDIA models on build.nvidia.com]::
-The default model provider (NVIDIA Nemotron). Any OpenAI-compatible endpoint, such as vLLM or Ollama on the cluster, can be used instead.
+The default model provider (NVIDIA Nemotron). You can use any OpenAI-compatible endpoint on the cluster instead, such as vLLM or Ollama.
