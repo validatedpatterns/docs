@@ -1235,7 +1235,63 @@ $ ./pattern.sh make show Install the pattern:
 $ ./pattern.sh make install Verifying the deployment Procedure List Argo CD applications in vp-gitops:
 $ oc get applications -n vp-gitops After installation, run the pattern health check:
 $ ./pattern.sh make argo-healthcheck Validate the pattern schema:
-$ ./pattern.sh make validate-schema `,url:"https://validatedpatterns.io/patterns/rhoso-gitops/getting-started/",breadcrumb:"/patterns/rhoso-gitops/getting-started/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the OpenShift Virtualization Data Protection Pattern General Prerequisites An OpenShift cluster ( Go to the OpenShift console). See also sizing your cluster. Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks) The helm binary, see here Ansible, which is used in the bootstrap and provisioning phases of the pattern install (and to configure Ansible Automation Platform). Please note that when run on AWS, this pattern will provision an additional worker node, which will be a metal instance (c5n.metal) to run the Edge Virtual Machines. This worker is provisioned through the OpenShift MachineAPI and will be automatically cleaned up when the cluster is destroyed. The use of this pattern depends on having a running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
+$ ./pattern.sh make validate-schema `,url:"https://validatedpatterns.io/patterns/rhoso-gitops/getting-started/",breadcrumb:"/patterns/rhoso-gitops/getting-started/"},"https://validatedpatterns.io/patterns/secure-agent-workspace/getting-started/":{title:"Getting started",tags:[],content:` Deploying the Secure Agent Workspace pattern Prerequisites An OpenShift Container Platform cluster with bare-metal worker nodes to provide hardware virtualization to run a separate OpenShift Virtualization VM for each workspace. OpenShift Virtualization does not support nested virtualization.
+For on-premises deployments, install OpenShift Container Platform on bare-metal servers with Intel VT-x or AMD-V enabled in the firmware.
+For public cloud deployments, select bare-metal instance types for workers, for example, on AWS, select m5.metal or c5n.metal.
+See Cluster sizing for advice on the size and number of nodes required.
+You can create an OpenShift Container Platform cluster by using the Red Hat Hybrid Cloud Console.
+A default storage class that can provision ReadWriteOnce volumes for the VM disks.
+Cluster administrator access. End users need no OpenShift Container Platform access: they sign in to the workspaces with Keycloak.
+An API key for each service that the default profile uses: build.nvidia.com (NVIDIA Nemotron) and Brave Search. To use a model server of your own instead, see Ideas for customization.
+The oc CLI. For instructions, see Getting started with the OpenShift CLI.
+The Helm binary. For instructions, see Installing Helm.
+The openshell CLI, version 0.1.x, from the OpenShell releases. A 0.0.x CLI cannot connect to the 0.1.x gateway that this pattern installs.
+Additional installation tool dependencies. For details, see Patterns quick start.
+Preparing for deployment Procedure Fork the secure-agent-workspace repository on GitHub. You must fork the repository to add users and to customize this pattern.
+Clone the forked copy of this repository.
+$ git clone git@github.com:&lt;your-username&gt;/secure-agent-workspace.git Go to the root directory of your Git repository:
+$ cd secure-agent-workspace Run the following command to set the upstream repository:
+$ git remote add -f upstream git@github.com:validatedpatterns-sandbox/secure-agent-workspace.git Generate the SSH key pair that the pattern uses to reach the workspace VMs for troubleshooting:
+$ make generate-keys The keys are written to ~/.generated-ssh-keys/.
+Save your API keys in files outside the repository, one key per line:
+$ echo &#39;&lt;build.nvidia.com API key&gt;&#39; &gt; ~/.nvidia-api-key $ echo &#39;&lt;Brave Search API key&gt;&#39; &gt; ~/.brave-api-key $ chmod 600 ~/.nvidia-api-key ~/.brave-api-key Make a local copy of the secrets template outside your repository to hold credentials for the pattern.
+Do not add, commit, or push this file to your repository. Doing so might expose personal credentials to GitHub.
+Run the following command:
+$ cp values-secret.yaml.template ~/values-secret-secure-agent-workspace.yaml The template reads the SSH keys and the two API key files from the paths above. Edit your copy of the secrets file to store your API key files in a different location, or to use a different model provider.
+Optional: Choose who gets a workspace. Edit overrides/saw-users.yaml. Each entry in the users list defines one user. The name of each user is also used for that user’s namespace and for their VM:
+users: - name: alice profiles: - data-science The name must also be a user in Keycloak. The pattern’s realm includes the test users alice and bob. Each name must be a lowercase DNS label no more than 19 characters long.
+Optional: To customize the deployment, create and switch to a new branch by running the following command:
+$ git checkout -b my-branch Make your changes, then stage, commit, and push them:
+$ git add &lt;changed-files&gt; $ git commit -m &#34;Customize deployment&#34; $ git push origin my-branch The branch that you deploy must exist on your fork, because Red Hat OpenShift GitOps syncs from it.
+Deploying the pattern by using the pattern.sh file To deploy the pattern by using the pattern.sh file, complete the following steps:
+Log in to your cluster.
+Obtain an API token by visiting https://oauth-openshift.apps.&lt;your_cluster&gt;.&lt;domain&gt;/oauth/token/request.
+Log in to the cluster by running the following command:
+$ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your_cluster&gt;.&lt;domain&gt;:6443 Or log in by running the following command:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Copy the prebuilt template VM image into the cluster’s internal registry. This takes about 5 minutes:
+$ make copy-images Deploy the pattern to your cluster. Run the following command:
+$ ./pattern.sh make install To deploy a branch other than the one that is checked out, export TARGET_BRANCH before you run the command, and TARGET_ORIGIN if the branch is on a remote other than origin. For example:
+$ export TARGET_BRANCH=my-branch $ export TARGET_ORIGIN=origin $ ./pattern.sh make install Verification Check the health of the Argo CD applications:
+$ ./pattern.sh make argo-healthcheck It might take 20 to 30 minutes for all applications to synchronize, the Operators to install, and the first workspace VM to boot.
+Verify that the Operators are installed. In the OpenShift Container Platform web console, go to Operators -&gt; Installed Operators and confirm that the following Operators are present:
+OpenShift Virtualization
+Red Hat build of Keycloak
+External Secrets Operator
+Verify that each user’s VM is running. For the user alice:
+$ oc get vm -n saw-alice Example output NAME AGE STATUS READY alice 12m Running True Check that the installer in the VM finished. Both steps must show &#34;phase&#34;: &#34;Done&#34;:
+$ make openshell-saw-status OPENSHELL_SAW_NAME=alice To follow the installer as it runs, use make openshell-saw-logs OPENSHELL_SAW_NAME=alice.
+Accessing a workspace Register the user’s gateway and log in.
+Run the following commands, then use the browser window that opens to log in using Keycloak. The test user is alice with password alice.
+$ export OPENSHELL_SAW_NAME=alice $ make openshell-saw-configure-gateway $ openshell gateway login alice List the sandboxes of the default profile:
+$ openshell sandbox list $ openshell sandbox list --workspace cuda-dev Example output NAME CREATED PHASE notebook 2026-09-30 14:40:42 Ready Open the OpenClaw agent in the notebook sandbox, in the terminal or in the browser:
+$ make openclaw-tui SANDBOX_NAME=notebook $ make openclaw-gui SANDBOX_NAME=notebook GUI_PORT=28789 The browser UI opens through an SSH tunnel on http://localhost:28789.
+Open the OpenShell web UI, which lists the user’s workspaces and sandboxes:
+$ oc get route alice-webui -n saw-alice -o jsonpath=&#39;https://{.spec.host}{&#34;\\n&#34;}&#39; Optional: See the sandbox policy in effect. GitHub is not one of the hosts that the default profile allows, so the sandbox’s egress proxy blocks the agent’s request. In the OpenClaw agent of the notebook sandbox, enter the following prompt:
+Use your terminal tool to run curl -sS --max-time 10 https://api.github.com/zen. Show the command and its exact output. The command fails because the connection is denied. To see the denial, view the sandbox logs:
+$ openshell --gateway alice --workspace default \\ logs notebook --since 5m --source sandbox Next steps Ideas for customization
+Cluster sizing
+Troubleshooting
+`,url:"https://validatedpatterns.io/patterns/secure-agent-workspace/getting-started/",breadcrumb:"/patterns/secure-agent-workspace/getting-started/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/getting-started/":{title:"Getting Started",tags:[],content:`Deploying the OpenShift Virtualization Data Protection Pattern General Prerequisites An OpenShift cluster ( Go to the OpenShift console). See also sizing your cluster. Currently this pattern only supports AWS. It could also run on a baremetal OpenShift cluster, because OpenShift Virtualization supports that; there would need to be some customizations made to support it as the default is AWS. We hope that GCP and Azure will support provisioning metal workers in due course so this can be a more clearly multicloud pattern. A GitHub account (and, optionally, a token for it with repositories permissions, to read from and write to your forks) The helm binary, see here Ansible, which is used in the bootstrap and provisioning phases of the pattern install (and to configure Ansible Automation Platform). Please note that when run on AWS, this pattern will provision an additional worker node, which will be a metal instance (c5n.metal) to run the Edge Virtual Machines. This worker is provisioned through the OpenShift MachineAPI and will be automatically cleaned up when the cluster is destroyed. The use of this pattern depends on having a running Red Hat OpenShift cluster. It is desirable to have a cluster for deploying the GitOps management hub assets and a separate cluster(s) for the managed cluster(s).
 If you do not have a running Red Hat OpenShift cluster you can start one on a public or private cloud by using Red Hat&rsquo;s cloud service.
 Credentials Required in Pattern In addition to the OpenShift cluster, you will need to prepare a number of secrets, or credentials, which will be used in the pattern in various ways. To do this, copy the values-secret.yaml template to your home directory as values-secret.yaml and replace the explanatory text as follows:
 AWS Credentials (an access key and a secret key). These are used to provision the metal worker in AWS (which hosts the VMs) and (by default) to access a pre-created S3 bucket for exporting VM backups with Veeam Kasten. --- # NEVER COMMIT THESE VALUES TO GIT version: &#34;2.0&#34; secrets: - name: aws-creds fields: - name: aws_access_key_id value: &#39;An aws access key that can provision EC2 VMs and read/write to S3&#39; - name: aws_secret_access_key value: &#39;An aws access secret key that can provision VMs and read/write to S3&#39; A username and SSH Keypair (private key and public key). These will be used to provide access to the Kiosk VMs in the demo. - name: kiosk-ssh fields: # Username of user to which the privatekey and publickey are attached - cloud-user is a typical value - name: username value: &#39;cloud-user&#39; # Private ssh key of the user who will be able to elevate to root to provision kiosks - name: privatekey value: | -----BEGIN OPENSSH PRIVATE KEY----- b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn ... 5nZRiM0qkhEAAAAKY2xvdWQtdXNlcgE= -----END OPENSSH PRIVATE KEY----- # Public ssh key of the user who will be able to elevate to root to provision kiosks - name: publickey value: | ssh-rsa AAAAB3NzaC1yc2EAAAA...xiVgKANw== cloud-user A Red Hat Subscription Management username and password. These will be used to register Kiosk VM templates to the Red Hat Content Delivery Network and install content on the Kiosk VMs to run the demo. - name: rhsm fields: - name: username value: &#39;username of user to register RHEL VMs&#39; - name: password value: &#39;password of rhsm user in plaintext&#39; Container &ldquo;extra&rdquo; arguments which will set the admin password for the ignition application when it&rsquo;s running. - name: kiosk-extra fields: # Optional extra params to pass to kiosk ignition container, including admin password - name: container_extra_params value: &#39;--privileged -e GATEWAY_ADMIN_PASSWORD=redhat&#39; A userData block to use with cloud-init. This will allow console login as the user you specify (traditionally cloud-user) with the password you specify. The value in cloud-init is used as the default; roles in the edge-gitops-vms chart can also specify other secrets to use by referencing them in the role block. - name: cloud-init fields: - name: userData value: |- #cloud-config user: &#39;username of user for console, probably cloud-user&#39; password: &#39;a suitable password to use on the console&#39; chpasswd: { expire: False } A manifest file with an entitlement to run Ansible Automation Platform. This file (which will be a .zip file) will be posted to Ansible Automation Platform instance to enable its use. Instructions for creating a manifest file can be found here - name: aap-manifest fields: - name: b64content # Ex. /Users/john.doe/ansible-edge-gitops-kasten/my-aap-manifest.zip path: &#39;full path and file name of the Satellite Manifest .zip for entitling Ansible Automation Platform&#39; base64: true A passphrase that will be used to encrypt backups of the Veeam Kasten internal catalog of restore points, a process known as Kasten DR. These Kasten DR backups can be used to restore access to the catalog of previously created application backups in the event of infrastructure failure or cluster loss. - name: kastendr-passphrase fields: - name: key value: &#39;passphrase&#39; Prerequisites for deployment via make install If you are going to install via make install from your workstation, you will need the following tools and packages:
@@ -2674,7 +2730,29 @@ Validated patterns use Red Hat Advanced Cluster Management for Kubernetes to con
 Cluster requirements RHOSO requires bare-metal infrastructure for both the Red Hat OpenShift Container Platform cluster and the compute nodes. RHOSO does not support cloud-based instance types such as AWS, GCP, or Azure.
 For detailed hardware, software, and network requirements, see Infrastructure and system requirements in the Red Hat OpenStack Services on OpenShift Planning your deployment guide.
 Data plane host requirements The Red Hat OpenShift Container Platform cluster hosts the RHOSO control plane. A full RHOSO deployment also requires separate RHEL hosts for the data plane (compute nodes running data plane elements).
-`,url:"https://validatedpatterns.io/patterns/rhoso-gitops/cluster-sizing/",breadcrumb:"/patterns/rhoso-gitops/cluster-sizing/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:` About OpenShift cluster sizing for the Intel AMX accelerated Medical Diagnosis pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
+`,url:"https://validatedpatterns.io/patterns/rhoso-gitops/cluster-sizing/",breadcrumb:"/patterns/rhoso-gitops/cluster-sizing/"},"https://validatedpatterns.io/patterns/secure-agent-workspace/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` Hardware virtualization requirements Each workspace is a OpenShift Virtualization virtual machine. OpenShift Virtualization uses the hardware virtualization of the node (Intel VT-x or AMD-V through KVM), so the worker nodes that run the workspace VMs must be bare metal:
+On premises: OpenShift Container Platform installed on bare-metal servers, with virtualization enabled in the firmware.
+Public cloud: bare-metal instance types, for example m5.metal, m6i.metal, or c5n.metal on Amazon Web Services (AWS). Virtualized instance types cannot run the VMs, because nested virtualization is not supported.
+The control plane nodes can be virtual machines or virtualized instances. For the full list of requirements, see Preparing your cluster for OpenShift Virtualization.
+Sizing requirements Size the bare-metal workers for the shared services plus one VM per user. Each VM requests its full memory from the node, so the amount of memory on the node limits the number of workspaces the node can run.
+Table 1. Resources per component Component vCPU Memory Storage Shared services: Operators, Argo CD, Keycloak and its database, Vault, governance interceptor
+8
+16 GiB
+50 GiB, including the template VM image
+Each workspace VM (default, set in the openshell-saw chart as vm.cores, vm.memory, vm.diskSize)
+4
+8 GiB
+40 GiB
+Table 2. Example minimum cluster Node type Number of nodes Example (AWS) Control plane
+3
+m5.xlarge
+Bare-metal worker
+2
+m5.metal (96 vCPU, 384 GiB memory)
+Two bare-metal workers of this size hold the shared services and dozens of workspaces. With smaller servers, plan for the shared services plus 4 vCPU and 8 GiB of memory per user. Ensure that there is room to move VMs from one node to another in case of node failure.
+Storage requirements The cluster needs a default storage class for the VM disks (ReadWriteOnce, 40 GiB per user by default) and for the template image that the disks are cloned from. Storage that supports smart cloning, such as Red Hat OpenShift Data Foundation or a CSI driver with volume snapshots, makes new workspaces start faster.
+Model serving By default, the agents use NVIDIA Nemotron on build.nvidia.com and need no GPU in the cluster. If you serve models on the cluster instead, for example with vLLM, add the GPU nodes that the model server needs. For more information, see Ideas for customization.
+`,url:"https://validatedpatterns.io/patterns/secure-agent-workspace/cluster-sizing/",breadcrumb:"/patterns/secure-agent-workspace/cluster-sizing/"},"https://validatedpatterns.io/patterns/medical-diagnosis-amx/cluster-sizing/":{title:"Cluster Sizing",tags:[],content:` About OpenShift cluster sizing for the Intel AMX accelerated Medical Diagnosis pattern The minimum requirements for an OpenShift Container Platform cluster depend on your installation platform, for example:
 For AWS, see Installing OpenShift Container Platform on AWS.
 For bare-metal, see Installing OpenShift Container Platform on bare metal.
 To understand cluster sizing requirements for the Intel AMX accelerated Medical Diagnosis pattern, consider the following components that the Intel AMX accelerated Medical Diagnosis pattern deploys on the datacenter or the hub OpenShift cluster:
@@ -4589,7 +4667,37 @@ Select the Kafka Topic tab. Is there a lab-streams topic created?
 This is a very simple and minimal Kafka set up. It is likely you will need to add more manifests to the Chart but it is a good start.
 `,url:"https://validatedpatterns.io/contribute/extending-a-pattern/",breadcrumb:"/contribute/extending-a-pattern/"},"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-ibm-fusion/":{title:"Fraud Detection on IBM Fusion",tags:[],content:` MLOPS credit card fraud detection on IBM Fusion This pattern can be deployed on IBM Fusion. For more details, see the IBM Community Post.
 `,url:"https://validatedpatterns.io/patterns/mlops-fraud-detection/mfd-ibm-fusion/",breadcrumb:"/patterns/mlops-fraud-detection/mfd-ibm-fusion/"},"https://validatedpatterns.io/patterns/rag-llm-cpu/ibm-fusion/":{title:"GPU-free RAG LLM pattern on IBM Fusion",tags:[],content:`GPU-free RAG LLM pattern on IBM Fusion This pattern can be deployed on IBM Fusion. For more details, see the IBM Community Post.
-`,url:"https://validatedpatterns.io/patterns/rag-llm-cpu/ibm-fusion/",breadcrumb:"/patterns/rag-llm-cpu/ibm-fusion/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/mcg-amx-rhoai-bert-script/":{title:"Intel AMX Demo",tags:[],content:` Introduction The Intel AMX accelerated Multicloud GitOps pattern with Openshift AI provides developers and data scientists with Red Hat OpenShift AI product that is fully configured and ready to go. It also helps to boost their workloads by integrating AMX, which ensures efficiency and performance optimization for AI workloads.
+`,url:"https://validatedpatterns.io/patterns/rag-llm-cpu/ibm-fusion/",breadcrumb:"/patterns/rag-llm-cpu/ibm-fusion/"},"https://validatedpatterns.io/patterns/secure-agent-workspace/ideas-for-customization/":{title:"Ideas for customization",tags:[],content:` Ideas for customizing the Secure Agent Workspace pattern Everything in this pattern is configured in Git: who gets a workspace, what each workspace contains, which providers and hosts agents can use, and which OpenShell release the VMs run. Commit and push a change to the branch that the pattern deploys, and Red Hat OpenShift GitOps applies it.
+Adding and removing users Each entry in overrides/saw-users.yaml is one workspace:
+users: - name: alice profiles: - data-science - name: bob profiles: - data-science # Optional: vaultPrefix: secret/data/hub/saw-bob # bob&#39;s own API keys in Vault ownerSubject: &lt;keycloak-subject&gt; # from \`openshell whoami\` after bob&#39;s first sign-in name is the user’s Keycloak user name, the VM name, and the namespace suffix (saw-&lt;name&gt;). It must be a lowercase DNS label of at most 19 characters.
+profiles lists the SAW-BOM profiles the workspace gets (default: data-science).
+ownerSubject makes that Keycloak user an administrator of the workspaces in the VM.
+vaultPrefix points the workspace at its own API keys. Load them into Vault under that prefix, as the commented example in values-secret.yaml.template shows. By default all workspaces share the keys under secret/data/hub.
+The pattern does not create Keycloak users. Create each user in the openshell realm of the Keycloak instance in the saw-keycloak namespace, and give them the openshell-user role.
+Removing an entry deletes that user’s Argo CD applications but keeps the VM and the namespace. To delete them as well, first set pruneOnRemove: true on the entry and push, then remove the entry and push.
+Changing what a workspace contains SAW-BOM profiles are directories in charts/saw-bom/profiles/&lt;profile&gt;/&lt;workspace&gt;/, one per OpenShell workspace, with three files:
+workspace.yaml The workspace name and description.
+providers.yaml The providers: a type from the governance catalog, the Secret and key that hold the API key, and for model providers the model name.
+sandbox.yaml The sandboxes: name, type (openclaw, nemoclaw, or generic), container image, and the providers to attach.
+To add a profile, copy data-science, change it, and list it under profiles for the users that need it. A workspace VM applies profile changes on its next restart:
+$ make openshell-saw-restart OPENSHELL_SAW_NAME=alice Changing the model provider The default profile uses NVIDIA Nemotron on build.nvidia.com. To use another provider, change the inference secret in your values-secret file (the provider, model, and api_key fields) and a matching provider in the profile. Then load the secrets again:
+$ ./pattern.sh make load-secrets To use an alternative model server on your cluster, such as vLLM or Ollama, give users the custom-inference profile and complete the details of the inference example in values-secret.yaml.template. This section is commented out by default. You must specify provider: openai, and must provide valid values for the model, url, and api_key parameters. The URL must be reachable from the workspace VMs, for example a cluster Service. It cannot be localhost.
+Agents call the model endpoint directly, and the sandbox’s egress proxy allows only the hosts that the provider profile names. For a custom endpoint, set the endpoint’s host and port in charts/governance-policy/profiles/openai.yaml. Without that change, requests to your server are denied.
+Changing the governance policy and provider profiles The governance interceptor serves two things from the governance-policy chart:
+policy.yaml The sandbox policy: filesystem paths that are read-only or writable, the user that agents run as, and Landlock settings. It applies to every sandbox.
+profiles/&lt;id&gt;.yaml The provider profiles. You must define a provider profile in this directory before you can create a provider of that type. You cannot create providers whose type has no profile here. Each profile lists the credentials, the endpoints (hosts, ports, and protocols) that sandboxes can reach with it, and the binaries that can connect, for example node for OpenClaw or curl.
+For example, to let agents use GitHub, keep the github profile and add a provider of type github to a profile. To allow a new API, add a profile file with its hosts and binaries.
+A profile that does not list binaries blocks all connections. List the real path of each program: the egress proxy resolves symbolic links before it matches a program, and you can use wildcards. For example, in the default image /usr/bin/node is a link to /usr/bin/node-&lt;version&gt;, so for OpenClaw the profile must list /usr/bin/node-*.
+Changes take effect when Red Hat OpenShift GitOps syncs the chart. Profile changes affect running sandboxes without restarting the sandbox.
+Upgrading OpenShell The OpenShell release that the VMs run is pinned by image digest in the InstallerBOM, the bom block in charts/openshell-saw/values.yaml. To upgrade OpenShell, complete the following steps:
+Change the component versions and digests in the bom block. All components (gateway, CLI, supervisor, and sandbox runtime) must come from the same release.
+Build the governance interceptor from the same OpenShell release. It is set as source.git.ref in image-builder-charts/helm/governance-interceptor-image/values.yaml, and the chart’s image tag must match.
+Push, and restart the VMs. Each VM installs the new release on boot.
+Updating to a new release series, for example from 0.0.x to 0.1.x, causes the gateway to lose its state, and the data in the /sandbox directory of each sandbox is lost. This occurs because the OpenShell installer moves the old gateway database aside and creates fresh workspaces, providers, and sandboxes. After an update to a new release series, users also need to update to a compatible version of the openshell CLI.
+Additional customization options Custom container images: sandbox images are set per sandbox in the profile’s sandbox.yaml. The VM pulls them from their registry.
+Custom VM size: vm.cores, vm.memory, and vm.diskSize in charts/openshell-saw/values.yaml, or per user under values in overrides/saw-users.yaml.
+Signing: the installer can require signed OpenShell images (signing.mode: enforce in charts/openshell-saw/values.yaml) after the images you pin are signed.
+`,url:"https://validatedpatterns.io/patterns/secure-agent-workspace/ideas-for-customization/",breadcrumb:"/patterns/secure-agent-workspace/ideas-for-customization/"},"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/mcg-amx-rhoai-bert-script/":{title:"Intel AMX Demo",tags:[],content:` Introduction The Intel AMX accelerated Multicloud GitOps pattern with Openshift AI provides developers and data scientists with Red Hat OpenShift AI product that is fully configured and ready to go. It also helps to boost their workloads by integrating AMX, which ensures efficiency and performance optimization for AI workloads.
 AMX demo Using 5th Generation Intel Xeon Scalable Processors the kernel detects Intel® AMX at run-time, there is no need to enable and configure it additionally to improve performance. However, we need Intel optimized tools and frameworks to take advantage of AMX acceleration, such as OpenVINO Toolkit.
 Before proceeding with this demo steps, please make sure you have your pattern deployed with Getting started.
 Verify if the openvino-notebooks-v2022.3-1 build is completed under Builds &gt; Builds. Build might take some time and before it is finished it won’t be accessible from Openshift AI console.
@@ -5590,7 +5698,52 @@ openstack-secrets disabled: The default pattern leaves openstack-secrets disable
 Upstream sync failures: Confirm that targetRevision and paths in overrides/values-rhoso-gitops.yaml match a tag or branch that exists in openstack-k8s-operators/gitops.
 Operator install delays: Infrastructure Operators in operator-dependencies subscribe from the cluster catalog; allow time for OLM to resolve ClusterServiceVersions (CSVs). Other applications retry automatically until their dependencies are satisfied.
 For community support, open an issue in the pattern repository.
-`,url:"https://validatedpatterns.io/patterns/rhoso-gitops/troubleshooting/",breadcrumb:"/patterns/rhoso-gitops/troubleshooting/"},"https://validatedpatterns.io/patterns/trilio-continuous-restore/troubleshooting/":{title:"Troubleshooting",tags:[],content:`Troubleshooting Trilio operator not installing oc get subscription k8s-triliovault -n trilio-system -o yaml oc get installplan -n trilio-system Check that the certified-operators CatalogSource is healthy:
+`,url:"https://validatedpatterns.io/patterns/rhoso-gitops/troubleshooting/",breadcrumb:"/patterns/rhoso-gitops/troubleshooting/"},"https://validatedpatterns.io/patterns/secure-agent-workspace/troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting the Secure Agent Workspace pattern Use this page to diagnose common issues when you deploy or use this pattern. Most commands take the user’s name as OPENSHELL_SAW_NAME; the examples use alice.
+The workspace VM does not start Symptom oc get vm -n saw-alice shows ErrorUnschedulable or stays in Scheduling, or the OpenShift Virtualization Operator reports that no node supports virtualization.
+Cause The worker nodes are not bare metal, or hardware virtualization is turned off in the firmware. OpenShift Virtualization cannot run the VMs on virtualized nodes.
+Resolution Add bare-metal worker nodes (on public clouds, *.metal instance types) and check that the nodes are labeled as able to run VMs:
+$ oc get nodes -l kubevirt.io/schedulable=true For more information, see Cluster sizing.
+The installer in the VM fails Symptom make openshell-saw-status OPENSHELL_SAW_NAME=alice shows the install or apply step in a phase other than Done. The command prints each step with its phase and the first line of the error.
+Cause Common causes are the following:
+A provider key is missing. The workspace needs the inference and web-search Secrets in saw-alice.
+The provider in the Secret does not match the profile. The installer refuses an inference Secret whose provider does not match the profile’s provider type.
+An image cannot be pulled. The VM pulls the OpenShell images from quay.io and the sandbox images from their registries.
+Resolution Read the installer’s log to find the cause:
+$ make openshell-saw-logs OPENSHELL_SAW_NAME=alice For a shell on the VM, run make openshell-saw-vm-ssh OPENSHELL_SAW_NAME=alice. It adds your SSH key to the VM when needed.
+For a missing key, check that the ExternalSecrets synced (oc get externalsecret -n saw-alice) and that the keys are in Vault. After you change your values-secret file, run ./pattern.sh make load-secrets.
+For a provider mismatch, set the provider of the inference secret in your values-secret file to the provider type of the profile, and load the secrets again.
+For an image that cannot be pulled, check that the cluster can reach the registry.
+After you fix the cause, restart the VM to run the installer again:
+$ make openshell-saw-restart OPENSHELL_SAW_NAME=alice A sandbox stays in Error Symptom openshell sandbox list shows a sandbox in Error, and its supervisor log reports Startup configuration did not stabilize after 5 attempts.
+Cause With OpenShell 0.1.x, a provider profile that carries more than one annotation makes the gateway compute a different provider revision on every request (NVIDIA/OpenShell#3929). The governance interceptor that this pattern builds keeps only one annotation per profile. An interceptor built without that change, or from another OpenShell release, causes this error.
+Resolution Check that the governance interceptor runs the image defined in the chart, and that the image and gateways are built using the same OpenShell release:
+$ oc get deploy governance-interceptor -n openshell-agents -o jsonpath=&#39;{.spec.template.spec.containers[0].image}{&#34;\\n&#34;}&#39; Then restart the VM. The installer recreates sandboxes that are in Error.
+Sandboxes and providers cannot be created Symptom openshell sandbox create or openshell provider create fails, or the installer logs that the gateway has no profile for a provider type.
+Cause The governance interceptor is unreachable or does not serve that profile. The gateways fail closed.
+Resolution Check the interceptor pod and its log. The log lists the profiles it loaded:
+$ oc get pods -n openshell-agents -l app.kubernetes.io/name=governance-interceptor $ oc logs -n openshell-agents -l app.kubernetes.io/name=governance-interceptor --tail=20 If the pod is in ImagePullBackOff, check that the interceptor image exists and that the cluster can pull it without credentials. A provider type that has no profile in charts/governance-policy/profiles/ cannot be created.
+An agent cannot reach a model or tool API Symptom The agent reports a network error or 403, or the sandbox log shows a denied connection.
+Cause Sandboxes can reach only the hosts that their attached providers&#39; profiles list, and only from the programs that the profiles list.
+Resolution Check that the provider is attached to the sandbox (openshell sandbox provider list &lt;sandbox&gt;). Check also that its profile lists the host and port and the real path of the program that connects, such as /usr/bin/node-* for OpenClaw. For a custom model endpoint, the openai profile must name the endpoint’s host. See Ideas for customization.
+The openshell CLI reports a version mismatch Symptom The openshell CLI cannot connect to the gateway.
+Cause The CLI is from a different OpenShell release series than the gateway. The gateway that this pattern installs is from the 0.1.x series.
+Resolution Check the CLI version with openshell --version, and install a 0.1.x CLI from the OpenShell releases.
+The openshell CLI reports an expired sign-in Symptom The openshell CLI reports an expired or inactive token.
+Cause The Keycloak session that the CLI signed in with has ended.
+Resolution Sign in again:
+$ openshell gateway login alice The openshell CLI reports a TLS handshake error Symptom The openshell CLI fails with a TLS handshake error.
+Cause The gateway was registered with an old route.
+Resolution Register the gateway again. The route is alice-gateway in saw-alice.
+$ make openshell-saw-configure-gateway OPENSHELL_SAW_NAME=alice The web UI is blank after an upgrade Symptom The OpenShell web UI shows a blank page after the pattern is upgraded.
+Cause The browser is using cached files from the previous build.
+Resolution Reload the page without the cache (for example, Shift+Reload), or clear the site data.
+The web UI reports that a workspace is not found Symptom The OpenShell web UI shows workspace &#39; &lt;name&gt;&#39; not found.
+Cause The web UI build and the gateway release do not match. The OpenShell web UI and the gateway must use the same API version.
+Resolution Upgrade the gateway, or pin a web UI image that matches it.
+Argo CD applications are not healthy Symptom ./pattern.sh make argo-healthcheck reports applications that are not Synced and Healthy.
+Cause An application failed to sync or one of its resources is not ready. Each user has three applications, saw-&lt;user&gt;-secrets, saw-&lt;user&gt;-bom, and saw-&lt;user&gt;. The shared ones are openshift-cnv, openshell-keycloak, vault, openshift-external-secrets, governance-policy, governance-interceptor, and saw-users.
+Resolution Open the application in the Argo CD console and check the sync status and the resources that are not healthy. For a user’s applications, also check the sections above about the VM and its installer.
+`,url:"https://validatedpatterns.io/patterns/secure-agent-workspace/troubleshooting/",breadcrumb:"/patterns/secure-agent-workspace/troubleshooting/"},"https://validatedpatterns.io/patterns/trilio-continuous-restore/troubleshooting/":{title:"Troubleshooting",tags:[],content:`Troubleshooting Trilio operator not installing oc get subscription k8s-triliovault -n trilio-system -o yaml oc get installplan -n trilio-system Check that the certified-operators CatalogSource is healthy:
 oc get catalogsource -n openshift-marketplace TrilioVaultManager not reaching Deployed or Updated oc get triliovaultmanager -n trilio-system -o yaml oc logs -n trilio-system -l app=k8s-triliovault-operator --tail=50 Common cause: the license Secret has not been created yet. Check External Secrets Operator (ESO) ExternalSecret status:
 oc get externalsecret -n trilio-system BackupTarget stuck in Failed oc get target -n trilio-system -o yaml Common causes:
 S3 credentials are incorrect or the Secret has not been created by ESO yet backupTarget.region does not match the bucket&rsquo;s actual region — always set it explicitly No ConsistentSets appearing on the spoke Verify the EventTarget pod is running: oc get pods -n trilio-system | grep event Verify the spoke BackupTarget is Available: oc get target -n trilio-system Verify at least one Available backup exists on the hub using the CR BackupPlan: oc get backup -n wordpress Check that hub and spoke are running the same Trilio version: oc get csv -n trilio-system Imperative jobs stuck in Init:Error # View logs from the failing init container oc logs -n imperative &lt;pod-name&gt; -c &lt;init-container-name&gt; # List init containers in order oc get pod &lt;pod-name&gt; -n imperative -o jsonpath=&#39;{.spec.initContainers[*].name}&#39; The init container name matches the job name (e.g., trilio-backup). Each init container runs one playbook; a failure stops all subsequent jobs.
@@ -7383,7 +7536,88 @@ update index.yaml
 Next Steps Continue to monitor for any issues in Argo
 Expand the usage in other patterns
 Create a simple way to test charts without pushing them to the main repo (dev/qa workflow)
-`,url:"https://validatedpatterns.io/workshop/multisource/",breadcrumb:"/workshop/multisource/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
+`,url:"https://validatedpatterns.io/workshop/multisource/",breadcrumb:"/workshop/multisource/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by tier, focus area, industry, and product.
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/secure-agent-workspace/":{title:"Secure Agent Workspace",tags:[],content:` About the Secure Agent Workspace pattern The Secure Agent Workspace Validated Pattern creates isolated AI agent workspaces on Red Hat OpenShift Container Platform for each user. Each workspace contains a dedicated virtual machine that runs NVIDIA OpenShell and its agent sandboxes. Workspaces are consistent and secure, with single sign-on (SSO), centrally governed sandbox policy, and API keys that never enter the agent environment.
+Use case Run AI coding and knowledge agents, which execute code and call tools on a user’s behalf, inside a boundary that belongs to one user only.
+Control what agents can reach: which hosts, which programs, and which credentials, from policy kept in Git.
+Onboard and remove users by editing one file in Git, with Red Hat OpenShift GitOps creating or deleting each user’s workspace.
+Background This pattern implements the NVIDIA Secure Agent Workspace reference design on Red Hat OpenShift Container Platform with OpenShift Virtualization, following its OpenShift Virtualization reference implementation. Agents can run arbitrary code, so container isolation alone is not enough: each user gets a virtual machine, and inside it every agent runs in an OpenShell sandbox whose network access and credentials are enforced by a supervisor, not by the agent. This pattern generalizes one or more successful deployments of this use case. Implementation details might vary depending on your specific environment and requirements.
+About the solution The Validated Patterns framework installs the Operators and shared services, then creates one workspace per user listed in overrides/saw-users.yaml. Each workspace contains the following:
+a namespace, saw-&lt;user&gt;
+a OpenShift Virtualization VM named after the user
+routes for the user VM
+inputs to the VM installer
+Each VM installs a pinned OpenShell release on every boot from a versioned bill of materials (the InstallerBOM), then applies the user’s SAW-BOM profiles: the OpenShell workspaces, model and tool providers, and agent sandboxes the user gets. The default data-science profile creates two sandboxes running the OpenClaw agent with the NVIDIA Nemotron model on build.nvidia.com, and Brave web search in the default workspace.
+Security comes in layers:
+VM isolation: one VM per user, so no agent shares a kernel or process space with another user’s agents.
+Identity: users sign in to Keycloak with OIDC. The OpenShell gateway in each VM accepts only tokens for its realm and maps Keycloak roles to OpenShell roles.
+Governance: every sandbox and provider change goes through a governance interceptor that serves a signed sandbox policy and the approved provider profiles. Policy changes are made in Git.
+Credentials: API keys are stored in HashiCorp Vault and reach the user’s namespace through the External Secrets Operator. Inside a sandbox, the agent receives only a placeholder. The sandbox’s egress proxy substitutes the real key, but only for the hosts and programs that the provider profile allows.
+About the technology This solution uses the following technologies:
+Red Hat OpenShift Container Platform An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments.
+Red Hat OpenShift Virtualization Runs virtual machines alongside containers on OpenShift Container Platform. This pattern runs one workspace VM per user, cloned from a template image with a known, stable configuration. OpenShift Virtualization requires bare-metal worker nodes.
+Red Hat OpenShift GitOps A declarative application continuous delivery tool for Kubernetes based on the Argo CD project. Application definitions, configurations, and environments are declarative and version controlled in Git.
+Red Hat build of Keycloak Identity and access management based on Keycloak. The pattern creates an openshell realm with the roles and OIDC clients that the OpenShell CLI, gateway, and web UI use.
+HashiCorp Vault and the External Secrets Operator Store the model and tool API keys and the SSH key, and copy them into each user’s namespace.
+NVIDIA OpenShell The runtime for agent sandboxes: a gateway that manages workspaces, providers, and sandboxes, and a supervisor in each sandbox that enforces filesystem, process, and network policy. The pattern uses the Red Hat build of OpenShell (quay.io/opendatahub/odh-openshell-*).
+OpenClaw and NVIDIA NemoClaw The AI agents that run in the sandboxes, with a terminal UI and a web UI.
+NVIDIA models on build.nvidia.com The default model provider (NVIDIA Nemotron). You can use any OpenAI-compatible endpoint on the cluster instead, such as vLLM or Ollama.
+Secure Agent Workspace architecture The following figure shows the pattern on one cluster, with the workspace of one user, alice, in detail.
+Figure 1. Secure Agent Workspace architecture The following list describes the numbered flows shown in the Secure Agent Workspace architecture figure:
+Red Hat OpenShift GitOps syncs the pattern from your fork of the pattern repository.
+Red Hat OpenShift GitOps installs the shared services and, for each user in overrides/saw-users.yaml, a namespace, a VM, and the VM’s inputs.
+Users sign in to Keycloak with OIDC. The OpenShell gateway in each VM accepts those tokens.
+The openshell CLI and the web UI reach the user’s own gateway through the routes in the user’s namespace.
+The gateway checks every sandbox and provider change with the governance interceptor.
+The External Secrets Operator copies the provider API keys from HashiCorp Vault into the user’s namespace.
+Sandbox traffic leaves through the sandbox supervisor’s egress proxy. Only the hosts specified as allowed in the provider profiles are reachable, and the egress proxy adds the real API key to those requests.
+Every time the VM boots, it installs the OpenShell release that is pinned in its InstallerBOM.
+OpenShift Virtualization runs virtual machines with hardware virtualization, so the worker nodes that run the workspace VMs must be bare metal: an on-premise bare-metal cluster, or bare-metal instance types in a public cloud (for example, *.metal instances on AWS). Nested virtualization is not supported. For more information, see Cluster sizing.
+Shared services The pattern installs these once per cluster:
+OpenShift Virtualization (openshift-cnv) Runs the workspace VMs. The pattern creates each VM by cloning from a template image with a known, stable configuration. The template image is based on Fedora and includes podman and OpenShell service units. The pattern stores the template image as a Containerized Data Importer (CDI) DataSource.
+Red Hat build of Keycloak (saw-keycloak) Provides the openshell realm with the openshell-user and openshell-admin roles and the OIDC clients for the CLI (openshell-cli, device code and PKCE) and the web UI (openshell-dashboard). The realm includes test users (alice, bob, developer, admin). Replace these test users before you use the pattern in production.
+HashiCorp Vault and the External Secrets Operator (vault, external-secrets) Store the model provider key, the web search key, and the SSH key that the pattern loads from your values-secret file. The External Secrets Operator copies them into each user’s namespace. By default, all users share one set of keys, but you can also configure an individual Vault path for each user as needed.
+Governance interceptor (openshell-agents) A gRPC service that every OpenShell gateway calls before it creates a sandbox or a provider, or changes a sandbox’s configuration. It serves the signed sandbox policy (filesystem, process, and Landlock rules) and the only provider profiles that users can use: nvidia, openai, brave, github, slack, gemini, and web-search. The policy and the profiles are files in the governance-policy chart, so changing them is a Git change. The interceptor fails closed: if it is unreachable, the gateways refuse those operations.
+Per-user workspace For each entry in overrides/saw-users.yaml, the saw-users chart creates a namespace saw-&lt;user&gt; and three Argo CD applications: the user’s secrets, the user’s bill of materials, and the VM.
+Routes &lt;user&gt;-gateway exposes the OpenShell gateway (port 17670, TLS passthrough, gRPC) for the openshell CLI and the web UI. &lt;user&gt;-webui exposes the OpenShell web UI through an OAuth2 proxy that signs in with Keycloak.
+Installer inputs The user’s provider Secrets (inference, web-search), the InstallerBOM, and the user’s SAW-BOM profiles. They are attached to the VM as read-only disks, so the installer reads them without any access to the cluster API.
+VirtualMachine A Fedora VM (4 vCPU, 8 GiB memory, and a 40 GiB disk by default). The VM runs the following tasks every time it boots:
+saw-install pulls each OpenShell component (gateway, CLI, supervisor, and sandbox runtime) by digest, checks its version, starts the gateway, and, when the gateway moves to a new OpenShell release series, recreates the gateway state.
+saw-apply signs in to the gateway with its own mTLS identity and creates the workspaces, providers, and sandboxes of the user’s profiles. It then onboards the OpenClaw agent in each agent sandbox against its model provider.
+Sandboxes Each sandbox is a rootless podman container that the OpenShell gateway creates, with a supervisor that enforces the signed policy. The agent’s environment holds only placeholders for API keys. The supervisor’s egress proxy only adds the real API key to requests that are from allowed programs (for example node or curl) and to allowed hosts, which are defined in the sandbox’s provider profiles lists. This means that when an agent calls a model or tool API, the supervisor’s egress proxy can deny outbound traffic by withholding the real API key. All other outbound traffic is denied.
+Default profile The data-science SAW-BOM profile, which every user gets by default, creates:
+Workspace Sandbox Agent Providers default
+notebook
+OpenClaw
+nvidia (NVIDIA Nemotron on build.nvidia.com), brave (web search)
+cuda-dev
+cuda-sandbox
+OpenClaw in the NemoClaw sandbox image
+nvidia
+The custom-inference profile uses an OpenAI-compatible endpoint of your own, such as vLLM or Ollama on the cluster, instead of build.nvidia.com. For more information, see Ideas for customization.
+Implementation technologies Component Technology VM isolation
+OpenShift Virtualization (KubeVirt, CDI)
+GitOps
+Validated Patterns Operator, Red Hat OpenShift GitOps
+Identity
+Red Hat build of Keycloak (OIDC)
+Secrets
+HashiCorp Vault, External Secrets Operator
+Agent runtime
+NVIDIA OpenShell (gateway, supervisor), podman
+Agents
+OpenClaw, NVIDIA NemoClaw sandbox image
+Governance
+OpenShell governance interceptor (signed sandbox policy, provider profiles)
+Models
+NVIDIA Nemotron on build.nvidia.com, or any OpenAI-compatible endpoint
+Next steps Getting started
+Cluster sizing
+Ideas for customization
+Troubleshooting
+`,url:"https://validatedpatterns.io/patterns/secure-agent-workspace/",breadcrumb:"/patterns/secure-agent-workspace/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
 `,url:"https://validatedpatterns.io/blog/",breadcrumb:"/blog/"},"https://validatedpatterns.io/blog/2026-08-04-variants-folder-structure/":{title:"Introducing the variants folder structure",tags:[],content:` Preamble As validated patterns grow in complexity, the repository root can become cluttered with numerous values-&lt;clusterGroupName&gt;.yaml files. A pattern that supports a hub, a standalone deployment, and several managed cluster groups might have half a dozen values files sitting alongside charts, overrides, scripts, and everything else.
 Starting with patterns-operator 0.0.78, clustergroup chart v0.9.57, and acm-chart v0.2.10, patterns can adopt a new variant-based directory layout that groups per-cluster values files under a variants/ directory. This keeps the repository root focused on truly global concerns while making it immediately clear which files belong to which deployment scenario.
 What changed A new main.variant field in values-global.yaml replaces (or supplements) main.clusterGroupName. The two fields are functionally equivalent, but when main.variant is set the framework looks for values files inside variants/&lt;variant&gt;/ instead of the repository root.
@@ -7400,9 +7634,7 @@ Validated pattern structure shows both the flat and variant directory trees side
 ClusterGroup in values files and the managed cluster groups section reference both main.clusterGroupName and main.variant.
 Exploring values files mentions the newer layout option.
 For full details on all values-global.yaml fields, see the Global configuration reference.
-`,url:"https://validatedpatterns.io/blog/2026-08-04-variants-folder-structure/",breadcrumb:"/blog/2026-08-04-variants-folder-structure/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
-Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/2026-07-29-zero-trust-runtime-threat-response/":{title:"Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security",tags:[],content:` From gates to guards In the first article of this series, we locked every door: default-deny network policies block lateral movement and data exfiltration even when a vulnerability is exploited faster than you can patch.
+`,url:"https://validatedpatterns.io/blog/2026-08-04-variants-folder-structure/",breadcrumb:"/blog/2026-08-04-variants-folder-structure/"},"https://validatedpatterns.io/blog/2026-07-29-zero-trust-runtime-threat-response/":{title:"Lights On! Real-Time Threat Response with Red Hat Advanced Cluster Security",tags:[],content:` From gates to guards In the first article of this series, we locked every door: default-deny network policies block lateral movement and data exfiltration even when a vulnerability is exploited faster than you can patch.
 But locking doors only works if someone is watching what happens inside the room. A true zero trust architecture — as defined by NIST SP 800-207 — demands continuous runtime verification, not just static access controls.
 ACS as the zero trust brain The Layered Zero Trust Validated Pattern deploys Red Hat Advanced Cluster Security with four custom security policies that go far beyond the default configuration. These policies are split into two operational categories:
 Deploy-time alerting — catches missing network boundaries before they reach production:
@@ -7563,8 +7795,7 @@ Next steps Install this pattern
 Cluster sizing
 Customizing this pattern
 Troubleshooting
-`,url:"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/",breadcrumb:"/patterns/lemonade-stand-quickstart/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by tier, focus area, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/rhoso-gitops/":{title:"RHOSO GitOps",tags:[],content:` About the RHOSO GitOps pattern Deploying Red Hat OpenStack Services on OpenShift spans Operators, networking, and control-plane and data-plane resources. Teams that rely on imperative scripts or manual cluster changes face slow rollouts, configuration drift, and weak audit trails when you upgrade or reproduce the stack.
+`,url:"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/",breadcrumb:"/patterns/lemonade-stand-quickstart/"},"https://validatedpatterns.io/patterns/rhoso-gitops/":{title:"RHOSO GitOps",tags:[],content:` About the RHOSO GitOps pattern Deploying Red Hat OpenStack Services on OpenShift spans Operators, networking, and control-plane and data-plane resources. Teams that rely on imperative scripts or manual cluster changes face slow rollouts, configuration drift, and weak audit trails when you upgrade or reproduce the stack.
 The RHOSO GitOps pattern addresses that by driving RHOSO from public Git through Argo CD. Manifests stay declarative and version-controlled, and Argo CD reconciles the cluster to match what the repository declares.
 Pattern goals The RHOSO GitOps pattern aims to:
 Install the rhoso-gitops meta-chart through the Validated Patterns clustergroup and Red Hat OpenShift GitOps Operator
