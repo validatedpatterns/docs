@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="950" viewBox="0 0 1680 950">
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6e73"/></marker>
+<marker id="ah-s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6e73"/></marker>
+</defs>
+<rect width="1680" height="950" fill="#ffffff"/>
+<rect x="24" y="60" width="230" height="126" rx="8" fill="#ffffff" stroke="#6a6e73" stroke-width="1.5"/>
+<text x="36" y="83" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">Git repository</text>
+<text x="36" y="103" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">validatedpatterns-sandbox/</text>
+<text x="36" y="120" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">secure-agent-workspace (fork):</text>
+<text x="36" y="137" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">values-*.yaml, charts/,</text>
+<text x="36" y="154" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">overrides/saw-users.yaml</text>
+<rect x="24" y="532" width="230" height="124" rx="8" fill="#ffffff" stroke="#6a6e73" stroke-width="1.5"/>
+<text x="36" y="555" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">Workspace user</text>
+<text x="36" y="575" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">openshell CLI (0.1.x)</text>
+<text x="36" y="592" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">browser: OpenShell web UI</text>
+<text x="36" y="609" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">and OpenClaw UI</text>
+<text x="36" y="626" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">signs in with OIDC</text>
+<rect x="1436" y="438" width="222" height="112" rx="8" fill="#ffffff" stroke="#6a6e73" stroke-width="1.5"/>
+<text x="1448" y="461" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">Container registries</text>
+<text x="1448" y="481" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">quay.io/opendatahub (OpenShell)</text>
+<text x="1448" y="498" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">quay.io/rh-ai-quickstart</text>
+<text x="1448" y="515" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">ghcr.io (interceptor)</text>
+<rect x="1436" y="670" width="222" height="112" rx="8" fill="#ffffff" stroke="#6a6e73" stroke-width="1.5"/>
+<text x="1448" y="693" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">Model provider</text>
+<text x="1448" y="713" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">build.nvidia.com (NVIDIA)</text>
+<text x="1448" y="730" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">or an OpenAI-compatible</text>
+<text x="1448" y="747" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">endpoint (vLLM, Ollama)</text>
+<rect x="1436" y="804" width="222" height="76" rx="8" fill="#ffffff" stroke="#6a6e73" stroke-width="1.5"/>
+<text x="1448" y="827" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">Web search API</text>
+<text x="1448" y="847" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">Brave Search</text>
+<rect x="300" y="24" width="1100" height="912" rx="12" fill="#f5f5f5" stroke="#8a8d90" stroke-width="2"/>
+<text x="318" y="54" font-family="'Red Hat Display','Red Hat Text',sans-serif" font-size="19" font-weight="700" fill="#151515" text-anchor="start">Red Hat OpenShift on bare metal</text>
+<text x="618" y="54" font-family="'Red Hat Text',sans-serif" font-size="13" font-weight="400" fill="#4d4d4d" text-anchor="start">OpenShift Virtualization runs the VMs, so worker nodes must be bare metal</text>
+<rect x="318" y="64" width="1002" height="64" rx="8" fill="#f3faf2" stroke="#3e8635" stroke-width="1.5"/>
+<text x="334" y="90" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">Validated Patterns Operator + Red Hat OpenShift GitOps (Argo CD)</text>
+<text x="334" y="112" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">installs the operators and syncs every application from Git, including one namespace, VM and inputs per user</text>
+<rect x="318" y="160" width="240" height="112" rx="8" fill="#e7f1fa" stroke="#0066cc" stroke-width="1.5"/>
+<text x="330" y="183" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">saw-keycloak</text>
+<text x="330" y="203" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">Red Hat build of Keycloak:</text>
+<text x="330" y="220" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">realm openshell, users,</text>
+<text x="330" y="237" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">roles, OIDC clients</text>
+<rect x="572" y="160" width="240" height="112" rx="8" fill="#e7f1fa" stroke="#0066cc" stroke-width="1.5"/>
+<text x="584" y="183" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">vault, external-secrets</text>
+<text x="584" y="203" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">HashiCorp Vault and the</text>
+<text x="584" y="220" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">External Secrets Operator:</text>
+<text x="584" y="237" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">provider API keys, SSH key</text>
+<rect x="826" y="160" width="240" height="112" rx="8" fill="#e7f1fa" stroke="#0066cc" stroke-width="1.5"/>
+<text x="838" y="183" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">openshell-agents</text>
+<text x="838" y="203" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">Governance interceptor:</text>
+<text x="838" y="220" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">signed sandbox policy and</text>
+<text x="838" y="237" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">provider profiles; golden image</text>
+<rect x="1080" y="160" width="240" height="112" rx="8" fill="#e7f1fa" stroke="#0066cc" stroke-width="1.5"/>
+<text x="1092" y="183" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">openshift-cnv</text>
+<text x="1092" y="203" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">OpenShift Virtualization</text>
+<text x="1092" y="220" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">(KubeVirt, CDI): VMs,</text>
+<text x="1092" y="237" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">disks, golden DataSource</text>
+<rect x="328" y="348" width="1022" height="560" rx="10" fill="#fcefef" stroke="#f0abab" stroke-width="1.5" stroke-dasharray="6 4"/>
+<rect x="318" y="356" width="1022" height="560" rx="10" fill="#fff4f4" stroke="#ee0000" stroke-width="2"/>
+<text x="334" y="384" font-family="'Red Hat Display','Red Hat Text',sans-serif" font-size="17" font-weight="700" fill="#151515" text-anchor="start">saw-alice</text>
+<text x="422" y="384" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">one namespace per user</text>
+<rect x="334" y="408" width="170" height="112" rx="8" fill="#ffffff" stroke="#ee0000" stroke-width="1.5"/>
+<text x="346" y="431" font-family="'Red Hat Text',sans-serif" font-size="13.5" font-weight="700" fill="#151515" text-anchor="start">Installer inputs</text>
+<text x="346" y="451" font-family="'Red Hat Text',sans-serif" font-size="11.5" font-weight="400" fill="#4d4d4d" text-anchor="start">Secrets from Vault:</text>
+<text x="346" y="468" font-family="'Red Hat Text',sans-serif" font-size="11.5" font-weight="400" fill="#4d4d4d" text-anchor="start">inference, web-search</text>
+<text x="346" y="485" font-family="'Red Hat Text',sans-serif" font-size="11.5" font-weight="400" fill="#4d4d4d" text-anchor="start">ConfigMaps: BOM,</text>
+<text x="346" y="502" font-family="'Red Hat Text',sans-serif" font-size="11.5" font-weight="400" fill="#4d4d4d" text-anchor="start">SAW-BOM profiles</text>
+<rect x="334" y="536" width="170" height="100" rx="8" fill="#ffffff" stroke="#ee0000" stroke-width="1.5"/>
+<text x="346" y="559" font-family="'Red Hat Text',sans-serif" font-size="13.5" font-weight="700" fill="#151515" text-anchor="start">Routes</text>
+<text x="346" y="579" font-family="'Red Hat Text',sans-serif" font-size="11.5" font-weight="400" fill="#4d4d4d" text-anchor="start">alice-gateway :17670</text>
+<text x="346" y="596" font-family="'Red Hat Text',sans-serif" font-size="11.5" font-weight="400" fill="#4d4d4d" text-anchor="start">(TLS passthrough)</text>
+<text x="346" y="613" font-family="'Red Hat Text',sans-serif" font-size="11.5" font-weight="400" fill="#4d4d4d" text-anchor="start">alice-webui (edge)</text>
+<rect x="334" y="652" width="170" height="82" rx="8" fill="#ffffff" stroke="#ee0000" stroke-width="1.5"/>
+<text x="346" y="675" font-family="'Red Hat Text',sans-serif" font-size="13.5" font-weight="700" fill="#151515" text-anchor="start">VM disk (PVC)</text>
+<text x="346" y="695" font-family="'Red Hat Text',sans-serif" font-size="11.5" font-weight="400" fill="#4d4d4d" text-anchor="start">cloned from the</text>
+<text x="346" y="712" font-family="'Red Hat Text',sans-serif" font-size="11.5" font-weight="400" fill="#4d4d4d" text-anchor="start">golden image</text>
+<rect x="540" y="408" width="784" height="496" rx="10" fill="#ffffff" stroke="#a30000" stroke-width="2"/>
+<text x="556" y="434" font-family="'Red Hat Display','Red Hat Text',sans-serif" font-size="16" font-weight="700" fill="#151515" text-anchor="start">VirtualMachine alice</text>
+<text x="724" y="434" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">Fedora, KubeVirt</text>
+<rect x="556" y="450" width="344" height="118" rx="8" fill="#fafafa" stroke="#6a6e73" stroke-width="1.5"/>
+<text x="568" y="473" font-family="'Red Hat Text',sans-serif" font-size="13.5" font-weight="700" fill="#151515" text-anchor="start">In-guest installer (every boot)</text>
+<text x="568" y="493" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">saw-install: OpenShell by digest from the</text>
+<text x="568" y="510" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">InstallerBOM</text>
+<text x="568" y="527" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">saw-apply: workspaces, providers and</text>
+<text x="568" y="544" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">sandboxes from the SAW-BOM profiles</text>
+<rect x="916" y="450" width="392" height="118" rx="8" fill="#fafafa" stroke="#6a6e73" stroke-width="1.5"/>
+<text x="928" y="473" font-family="'Red Hat Text',sans-serif" font-size="13.5" font-weight="700" fill="#151515" text-anchor="start">OpenShell gateway :17670 + web UI</text>
+<text x="928" y="493" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">OIDC tokens from Keycloak for users,</text>
+<text x="928" y="510" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">mTLS for the installer; podman driver;</text>
+<text x="928" y="527" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">every sandbox and provider change</text>
+<text x="928" y="544" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">goes through the governance interceptor</text>
+<text x="556" y="622" font-family="'Red Hat Text',sans-serif" font-size="13" font-weight="700" fill="#151515" text-anchor="start">Sandboxes: one container each, created by the gateway</text>
+<rect x="556" y="634" width="368" height="258" rx="8" fill="#fdf0e6" stroke="#c46100" stroke-width="1.5"/>
+<text x="568" y="656" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="700" fill="#c46100" text-anchor="start">workspace default</text>
+<text x="568" y="678" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">notebook</text>
+<text x="664" y="678" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">OpenClaw</text>
+<rect x="568" y="692" width="344" height="76" rx="6" fill="#ffffff" stroke="#6a6e73" stroke-width="1.2"/>
+<text x="578" y="713" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#151515" text-anchor="start">Agent (OpenClaw, node)</text>
+<text x="578" y="731" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">providers attached: nvidia, brave</text>
+<text x="578" y="749" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">API key in its env is a placeholder</text>
+<rect x="568" y="780" width="344" height="98" rx="6" fill="#ffffff" stroke="#6a6e73" stroke-width="1.2"/>
+<text x="578" y="801" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#151515" text-anchor="start">Supervisor + egress proxy</text>
+<text x="578" y="820" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">enforces the signed policy; allows only</text>
+<text x="578" y="837" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">the provider profiles' hosts and binaries,</text>
+<text x="578" y="854" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">and puts the real key in only there</text>
+<rect x="940" y="634" width="368" height="258" rx="8" fill="#fdf0e6" stroke="#c46100" stroke-width="1.5"/>
+<text x="952" y="656" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="700" fill="#c46100" text-anchor="start">workspace cuda-dev</text>
+<text x="952" y="678" font-family="'Red Hat Text',sans-serif" font-size="15" font-weight="700" fill="#151515" text-anchor="start">cuda-sandbox</text>
+<text x="1072" y="678" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="400" fill="#4d4d4d" text-anchor="start">NemoClaw image</text>
+<rect x="952" y="692" width="344" height="76" rx="6" fill="#ffffff" stroke="#6a6e73" stroke-width="1.2"/>
+<text x="962" y="713" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#151515" text-anchor="start">Agent (OpenClaw, node)</text>
+<text x="962" y="731" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">providers attached: nvidia</text>
+<text x="962" y="749" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">API key in its env is a placeholder</text>
+<rect x="952" y="780" width="344" height="98" rx="6" fill="#ffffff" stroke="#6a6e73" stroke-width="1.2"/>
+<text x="962" y="801" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#151515" text-anchor="start">Supervisor + egress proxy</text>
+<text x="962" y="820" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">enforces the signed policy; allows only</text>
+<text x="962" y="837" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">the provider profiles' hosts and binaries,</text>
+<text x="962" y="854" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="400" fill="#4d4d4d" text-anchor="start">and puts the real key in only there</text>
+<path d="M 254 96 L 318 96" fill="none" stroke="#3e8635" stroke-width="1.8" marker-end="url(#ah)"/>
+<circle cx="277" cy="96" r="11" fill="#151515"/>
+<text x="277" y="100.5" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+<path d="M 438 128 L 438 160" fill="none" stroke="#3e8635" stroke-width="1.8" marker-end="url(#ah)"/>
+<path d="M 1370 128 L 1370 396 L 1350 396" fill="none" stroke="#3e8635" stroke-width="1.8" marker-end="url(#ah)"/>
+<circle cx="1370" cy="240" r="11" fill="#151515"/>
+<text x="1370" y="244.5" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+<path d="M 110 532 L 110 290 L 378 290 L 378 272" fill="none" stroke="#0066cc" stroke-width="1.8" marker-end="url(#ah)"/>
+<circle cx="110" cy="330" r="11" fill="#151515"/>
+<text x="110" y="334.5" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+<rect x="117" y="306" width="90.64000000000001" height="19" rx="3" fill="#ffffff" opacity="0.92"/>
+<text x="122" y="318" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="500" fill="#151515" text-anchor="start">OIDC sign-in</text>
+<path d="M 254 586 L 334 586" fill="none" stroke="#ee0000" stroke-width="1.8" marker-end="url(#ah)"/>
+<circle cx="290" cy="586" r="11" fill="#151515"/>
+<text x="290" y="590.5" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+<path d="M 504 586 L 1112 586 L 1112 568" fill="none" stroke="#ee0000" stroke-width="1.8" marker-end="url(#ah)"/>
+<path d="M 996 450 L 996 272" fill="none" stroke="#0066cc" stroke-width="1.8" marker-start="url(#ah-s)" marker-end="url(#ah)"/>
+<circle cx="996" cy="318" r="11" fill="#151515"/>
+<text x="996" y="322.5" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">5</text>
+<rect x="1005" y="311" width="164.56" height="19" rx="3" fill="#ffffff" opacity="0.92"/>
+<text x="1010" y="323" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="500" fill="#151515" text-anchor="start">policy, profiles (gRPC)</text>
+<path d="M 612 272 L 612 306 L 419 306 L 419 408" fill="none" stroke="#0066cc" stroke-width="1.8" marker-end="url(#ah)"/>
+<circle cx="612" cy="306" r="11" fill="#151515"/>
+<text x="612" y="310.5" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">6</text>
+<rect x="623" y="277" width="90.64000000000001" height="19" rx="3" fill="#ffffff" opacity="0.92"/>
+<text x="628" y="289" font-family="'Red Hat Text',sans-serif" font-size="12" font-weight="500" fill="#151515" text-anchor="start">secrets sync</text>
+<path d="M 504 464 L 540 464" fill="none" stroke="#ee0000" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+<path d="M 1296 829 L 1410 829 L 1410 726 L 1436 726" fill="none" stroke="#c46100" stroke-width="1.8" marker-end="url(#ah)"/>
+<path d="M 1410 829 L 1410 842 L 1436 842" fill="none" stroke="#c46100" stroke-width="1.8" marker-end="url(#ah)"/>
+<circle cx="1410" cy="780" r="11" fill="#151515"/>
+<text x="1410" y="784.5" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">7</text>
+<path d="M 1324 494 L 1436 494" fill="none" stroke="#6a6e73" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+<circle cx="1394" cy="494" r="11" fill="#151515"/>
+<text x="1394" y="498.5" font-family="'Red Hat Text',sans-serif" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">8</text>
+</svg>

@@ -1,0 +1,201 @@
+---
+title: Troubleshooting
+weight: 40
+aliases: /secure-agent-workspace/troubleshooting/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="troubleshooting-secure-agent-workspace"]
+== Troubleshooting the Secure Agent Workspace pattern
+
+Use this page to diagnose common issues when you deploy or use this pattern. Most commands take the user's name as `OPENSHELL_SAW_NAME`; the examples use `alice`.
+
+[id="troubleshooting-vm-saw"]
+=== The workspace VM does not start
+
+Symptom::
+`oc get vm -n saw-alice` shows `ErrorUnschedulable` or stays in `Scheduling`, or the {VirtProductName} Operator reports that no node supports virtualization.
+
+Cause::
+The worker nodes are not bare metal, or hardware virtualization is turned off in the firmware. {VirtProductName} cannot run the VMs on virtualized nodes.
+
+Resolution::
+Add bare-metal worker nodes (on public clouds, `*.metal` instance types) and check that the nodes are labeled as able to run VMs:
++
+[source,terminal]
+----
+$ oc get nodes -l kubevirt.io/schedulable=true
+----
++
+For more information, see link:cluster-sizing[Cluster sizing].
+
+[id="troubleshooting-installer-saw"]
+=== The installer in the VM fails
+
+Symptom::
+`make openshell-saw-status OPENSHELL_SAW_NAME=alice` shows the `install` or `apply` step in a phase other than `Done`. The command prints each step with its phase and the first line of the error.
+
+Cause::
+Common causes are the following:
++
+* *A provider key is missing.* The workspace needs the `inference` and `web-search` Secrets in `saw-alice`.
+* *The provider in the Secret does not match the profile.* The installer refuses an `inference` Secret whose `provider` does not match the profile's provider type.
+* *An image cannot be pulled.* The VM pulls the OpenShell images from quay.io and the sandbox images from their registries.
+
+Resolution::
+Read the installer's log to find the cause:
++
+[source,terminal]
+----
+$ make openshell-saw-logs OPENSHELL_SAW_NAME=alice
+----
++
+For a shell on the VM, run `make openshell-saw-vm-ssh OPENSHELL_SAW_NAME=alice`. It adds your SSH key to the VM when needed.
++
+* For a missing key, check that the ExternalSecrets synced (`oc get externalsecret -n saw-alice`) and that the keys are in {hashicorp-vault-short}. After you change your `values-secret` file, run `./pattern.sh make load-secrets`.
+* For a provider mismatch, set the `provider` of the `inference` secret in your `values-secret` file to the provider type of the profile, and load the secrets again.
+* For an image that cannot be pulled, check that the cluster can reach the registry.
++
+After you fix the cause, restart the VM to run the installer again:
++
+[source,terminal]
+----
+$ make openshell-saw-restart OPENSHELL_SAW_NAME=alice
+----
+
+[id="troubleshooting-sandbox-saw"]
+=== A sandbox stays in Error
+
+Symptom::
+`openshell sandbox list` shows a sandbox in `Error`, and its supervisor log reports `Startup configuration did not stabilize after 5 attempts`.
+
+Cause::
+With OpenShell 0.1.x, a provider profile that carries more than one annotation makes the gateway compute a different provider revision on every request (link:https://github.com/NVIDIA/OpenShell/issues/3929[NVIDIA/OpenShell#3929]). The governance interceptor that this pattern builds keeps only one annotation per profile. An interceptor built without that change, or from another OpenShell release, causes this error.
+
+Resolution::
+Check that the governance interceptor runs the image defined in the chart, and that the image and gateways are built using the same OpenShell release:
++
+[source,terminal]
+----
+$ oc get deploy governance-interceptor -n openshell-agents -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
+----
++
+Then restart the VM. The installer recreates sandboxes that are in `Error`.
+
+[id="troubleshooting-interceptor-saw"]
+=== Sandboxes and providers cannot be created
+
+Symptom::
+`openshell sandbox create` or `openshell provider create` fails, or the installer logs that the gateway has no profile for a provider type.
+
+Cause::
+The governance interceptor is unreachable or does not serve that profile. The gateways fail closed.
+
+Resolution::
+Check the interceptor pod and its log. The log lists the profiles it loaded:
++
+[source,terminal]
+----
+$ oc get pods -n openshell-agents -l app.kubernetes.io/name=governance-interceptor
+$ oc logs -n openshell-agents -l app.kubernetes.io/name=governance-interceptor --tail=20
+----
++
+If the pod is in `ImagePullBackOff`, check that the interceptor image exists and that the cluster can pull it without credentials. A provider type that has no profile in `charts/governance-policy/profiles/` cannot be created.
+
+[id="troubleshooting-egress-saw"]
+=== An agent cannot reach a model or tool API
+
+Symptom::
+The agent reports a network error or `403`, or the sandbox log shows a denied connection.
+
+Cause::
+Sandboxes can reach only the hosts that their attached providers' profiles list, and only from the programs that the profiles list.
+
+Resolution::
+Check that the provider is attached to the sandbox (`openshell sandbox provider list <sandbox>`). Check also that its profile lists the host and port and the real path of the program that connects, such as `/usr/bin/node-*` for OpenClaw. For a custom model endpoint, the `openai` profile must name the endpoint's host. See link:ideas-for-customization[Ideas for customization].
+
+[id="troubleshooting-cli-version-saw"]
+=== The openshell CLI reports a version mismatch
+
+Symptom::
+The `openshell` CLI cannot connect to the gateway.
+
+Cause::
+The CLI is from a different OpenShell release series than the gateway. The gateway that this pattern installs is from the 0.1.x series.
+
+Resolution::
+Check the CLI version with `openshell --version`, and install a 0.1.x CLI from the link:https://github.com/NVIDIA/OpenShell/releases[OpenShell releases].
+
+[id="troubleshooting-cli-login-saw"]
+=== The openshell CLI reports an expired sign-in
+
+Symptom::
+The `openshell` CLI reports an expired or inactive token.
+
+Cause::
+The Keycloak session that the CLI signed in with has ended.
+
+Resolution::
+Sign in again:
++
+[source,terminal]
+----
+$ openshell gateway login alice
+----
+
+[id="troubleshooting-cli-tls-saw"]
+=== The openshell CLI reports a TLS handshake error
+
+Symptom::
+The `openshell` CLI fails with a TLS handshake error.
+
+Cause::
+The gateway was registered with an old route.
+
+Resolution::
+Register the gateway again. The route is `alice-gateway` in `saw-alice`.
++
+[source,terminal]
+----
+$ make openshell-saw-configure-gateway OPENSHELL_SAW_NAME=alice
+----
+
+[id="troubleshooting-webui-cache-saw"]
+=== The web UI is blank after an upgrade
+
+Symptom::
+The OpenShell web UI shows a blank page after the pattern is upgraded.
+
+Cause::
+The browser is using cached files from the previous build.
+
+Resolution::
+Reload the page without the cache (for example, Shift+Reload), or clear the site data.
+
+[id="troubleshooting-webui-version-saw"]
+=== The web UI reports that a workspace is not found
+
+Symptom::
+The OpenShell web UI shows `workspace ' <name>' not found`.
+
+Cause::
+The web UI build and the gateway release do not match. The OpenShell web UI and the gateway must use the same API version.
+
+Resolution::
+Upgrade the gateway, or pin a web UI image that matches it.
+
+[id="troubleshooting-argo-saw"]
+=== Argo CD applications are not healthy
+
+Symptom::
+`./pattern.sh make argo-healthcheck` reports applications that are not `Synced` and `Healthy`.
+
+Cause::
+An application failed to sync or one of its resources is not ready. Each user has three applications, `saw-<user>-secrets`, `saw-<user>-bom`, and `saw-<user>`. The shared ones are `openshift-cnv`, `openshell-keycloak`, `vault`, `openshift-external-secrets`, `governance-policy`, `governance-interceptor`, and `saw-users`.
+
+Resolution::
+Open the application in the Argo CD console and check the sync status and the resources that are not healthy. For a user's applications, also check the sections above about the VM and its installer.

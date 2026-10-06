@@ -1,0 +1,118 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+include::comm-attributes.adoc[]
+
+[id="secure-agent-workspace-architecture"]
+= Secure Agent Workspace architecture
+
+The following figure shows the pattern on one cluster, with the workspace of one user, `alice`, in detail.
+
+.Secure Agent Workspace architecture
+image::secure-agent-workspace/saw-architecture.png["An architectural and workflow diagram showing a workspace created for hypothetical user Alice using the Secure Agent Workspace Validated Pattern",link="/images/secure-agent-workspace/saw-architecture.png"]
+
+The following list describes the numbered flows shown in the _Secure Agent Workspace architecture_ figure:
+
+. {rh-gitops} syncs the pattern from your fork of the pattern repository.
+. {rh-gitops} installs the shared services and, for each user in `overrides/saw-users.yaml`, a namespace, a VM, and the VM's inputs.
+. Users sign in to Keycloak with OIDC. The OpenShell gateway in each VM accepts those tokens.
+. The `openshell` CLI and the web UI reach the user's own gateway through the routes in the user's namespace.
+. The gateway checks every sandbox and provider change with the governance interceptor.
+. The {eso} copies the provider API keys from {hashicorp-vault} into the user's namespace.
+. Sandbox traffic leaves through the sandbox supervisor's egress proxy. Only the hosts specified as allowed in the provider profiles are reachable, and the egress proxy adds the real API key to those requests.
+. Every time the VM boots, it installs the OpenShell release that is pinned in its InstallerBOM.
+
+[IMPORTANT]
+====
+{VirtProductName} runs virtual machines with hardware virtualization, so the worker nodes that run the workspace VMs must be *bare metal*: an on-premise bare-metal cluster, or bare-metal instance types in a public cloud (for example, `*.metal` instances on AWS). Nested virtualization is not supported. For more information, see link:cluster-sizing[Cluster sizing].
+====
+
+[id="secure-agent-workspace-shared-services"]
+== Shared services
+
+The pattern installs these once per cluster:
+
+{VirtProductName} (`openshift-cnv`)::
+Runs the workspace VMs. The pattern creates each VM by cloning from a template image with a known, stable configuration. The template image is based on Fedora and includes podman and OpenShell service units. The pattern stores the template image as a Containerized Data Importer (CDI) `DataSource`.
+
+Red{nbsp}Hat build of Keycloak (`saw-keycloak`)::
+Provides the `openshell` realm with the `openshell-user` and `openshell-admin` roles and the OIDC clients for the CLI (`openshell-cli`, device code and PKCE) and the web UI (`openshell-dashboard`). The realm includes test users (`alice`, `bob`, `developer`, `admin`). Replace these test users before you use the pattern in production.
+
+{hashicorp-vault} and the {eso} (`vault`, `external-secrets`)::
+Store the model provider key, the web search key, and the SSH key that the pattern loads from your `values-secret` file. The {eso} copies them into each user's namespace. By default, all users share one set of keys, but you can also configure an individual Vault path for each user as needed.
+
+Governance interceptor (`openshell-agents`)::
+A gRPC service that every OpenShell gateway calls before it creates a sandbox or a provider, or changes a sandbox's configuration. It serves the signed sandbox policy (filesystem, process, and Landlock rules) and the only provider profiles that users can use: `nvidia`, `openai`, `brave`, `github`, `slack`, `gemini`, and `web-search`. The policy and the profiles are files in the `governance-policy` chart, so changing them is a Git change. The interceptor fails closed: if it is unreachable, the gateways refuse those operations.
+
+[id="secure-agent-workspace-per-user"]
+== Per-user workspace
+
+For each entry in `overrides/saw-users.yaml`, the `saw-users` chart creates a namespace `saw-<user>` and three Argo CD applications: the user's secrets, the user's bill of materials, and the VM.
+
+Routes::
+`<user>-gateway` exposes the OpenShell gateway (port 17670, TLS passthrough, gRPC) for the `openshell` CLI and the web UI. `<user>-webui` exposes the OpenShell web UI through an OAuth2 proxy that signs in with Keycloak.
+
+Installer inputs::
+The user's provider Secrets (`inference`, `web-search`), the InstallerBOM, and the user's SAW-BOM profiles. They are attached to the VM as read-only disks, so the installer reads them without any access to the cluster API.
+
+VirtualMachine::
+A Fedora VM (4 vCPU, 8 GiB memory, and a 40 GiB disk by default). The VM runs the following tasks every time it boots:
+
+* `saw-install` pulls each OpenShell component (gateway, CLI, supervisor, and sandbox runtime) by digest, checks its version, starts the gateway, and, when the gateway moves to a new OpenShell release series, recreates the gateway state.
+* `saw-apply` signs in to the gateway with its own mTLS identity and creates the workspaces, providers, and sandboxes of the user's profiles. It then onboards the OpenClaw agent in each agent sandbox against its model provider.
+
+Sandboxes::
+Each sandbox is a rootless podman container that the OpenShell gateway creates, with a supervisor that enforces the signed policy. The agent's environment holds only placeholders for API keys. The supervisor's egress proxy only adds the real API key to requests that are from allowed programs (for example `node` or `curl`) and to allowed hosts, which are defined in the sandbox's provider profiles lists. This means that when an agent calls a model or tool API, the supervisor's egress proxy can deny outbound traffic by withholding the real API key. All other outbound traffic is denied.
+
+[id="secure-agent-workspace-default-profile"]
+== Default profile
+
+The `data-science` SAW-BOM profile, which every user gets by default, creates:
+
+[cols="1,1,1,2",options="header"]
+|===
+| Workspace | Sandbox | Agent | Providers
+
+| `default`
+| `notebook`
+| OpenClaw
+| `nvidia` (NVIDIA Nemotron on build.nvidia.com), `brave` (web search)
+
+| `cuda-dev`
+| `cuda-sandbox`
+| OpenClaw in the NemoClaw sandbox image
+| `nvidia`
+|===
+
+The `custom-inference` profile uses an OpenAI-compatible endpoint of your own, such as vLLM or Ollama on the cluster, instead of build.nvidia.com. For more information, see link:ideas-for-customization[Ideas for customization].
+
+[id="secure-agent-workspace-technologies"]
+== Implementation technologies
+
+[cols="1,2",options="header"]
+|===
+| Component | Technology
+
+| VM isolation
+| {VirtProductName} (KubeVirt, CDI)
+
+| GitOps
+| {solution-name-upstream} Operator, {rh-gitops}
+
+| Identity
+| Red{nbsp}Hat build of Keycloak (OIDC)
+
+| Secrets
+| {hashicorp-vault}, {eso}
+
+| Agent runtime
+| NVIDIA OpenShell (gateway, supervisor), podman
+
+| Agents
+| OpenClaw, NVIDIA NemoClaw sandbox image
+
+| Governance
+| OpenShell governance interceptor (signed sandbox policy, provider profiles)
+
+| Models
+| NVIDIA Nemotron on build.nvidia.com, or any OpenAI-compatible endpoint
+|===

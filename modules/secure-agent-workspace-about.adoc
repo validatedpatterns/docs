@@ -1,0 +1,66 @@
+:_content-type: CONCEPT
+:imagesdir: ../../images
+include::comm-attributes.adoc[]
+
+[id="about-secure-agent-workspace"]
+= About the Secure Agent Workspace pattern
+
+The Secure Agent Workspace Validated Pattern creates isolated AI agent workspaces on {rh-ocp} for each user. Each workspace contains a dedicated virtual machine that runs NVIDIA OpenShell and its agent sandboxes. Workspaces are consistent and secure, with single sign-on (SSO), centrally governed sandbox policy, and API keys that never enter the agent environment.
+
+Use case::
+
+* Run AI coding and knowledge agents, which execute code and call tools on a user's behalf, inside a boundary that belongs to one user only.
+* Control what agents can reach: which hosts, which programs, and which credentials, from policy kept in Git.
+* Onboard and remove users by editing one file in Git, with {rh-gitops} creating or deleting each user's workspace.
+
+Background::
+
+This pattern implements the NVIDIA link:https://docs.nvidia.com/enterprise-reference-architectures/secure-agent-workspace-reference-design/latest/[Secure Agent Workspace reference design] on {rh-ocp} with {VirtProductName}, following its link:https://docs.nvidia.com/enterprise-reference-architectures/secure-agent-workspace-reference-design/latest/openshift-virtualization-reference-implementation.html[OpenShift Virtualization reference implementation]. Agents can run arbitrary code, so container isolation alone is not enough: each user gets a virtual machine, and inside it every agent runs in an OpenShell sandbox whose network access and credentials are enforced by a supervisor, not by the agent. This pattern generalizes one or more successful deployments of this use case. Implementation details might vary depending on your specific environment and requirements.
+
+[id="about-secure-agent-workspace-solution"]
+== About the solution
+
+The {solution-name-upstream} framework installs the Operators and shared services, then creates one workspace per user listed in `overrides/saw-users.yaml`. Each workspace contains the following:
+
+* a namespace, `saw-<user>`
+* a {VirtProductName} VM named after the user
+* routes for the user VM
+* inputs to the VM installer
+
+Each VM installs a pinned OpenShell release on every boot from a versioned bill of materials (the _InstallerBOM_), then applies the user's _SAW-BOM profiles_: the OpenShell workspaces, model and tool providers, and agent sandboxes the user gets. The default `data-science` profile creates two sandboxes running the OpenClaw agent with the NVIDIA Nemotron model on build.nvidia.com, and Brave web search in the `default` workspace.
+
+Security comes in layers:
+
+* *VM isolation:* one VM per user, so no agent shares a kernel or process space with another user's agents.
+* *Identity:* users sign in to Keycloak with OIDC. The OpenShell gateway in each VM accepts only tokens for its realm and maps Keycloak roles to OpenShell roles.
+* *Governance:* every sandbox and provider change goes through a governance interceptor that serves a signed sandbox policy and the approved provider profiles. Policy changes are made in Git.
+* *Credentials:* API keys are stored in {hashicorp-vault} and reach the user's namespace through the {eso}. Inside a sandbox, the agent receives only a placeholder. The sandbox's egress proxy substitutes the real key, but only for the hosts and programs that the provider profile allows.
+
+[id="about-secure-agent-workspace-technology"]
+== About the technology
+
+This solution uses the following technologies:
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[{rh-ocp}]::
+An enterprise-ready Kubernetes container platform built for an open hybrid cloud strategy. It provides a consistent application platform to manage hybrid cloud, public cloud, and edge deployments.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[Red{nbsp}Hat {VirtProductName}]::
+Runs virtual machines alongside containers on {ocp}. This pattern runs one workspace VM per user, cloned from a template image with a known, stable configuration. {VirtProductName} requires bare-metal worker nodes.
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[{rh-gitops}]::
+A declarative application continuous delivery tool for Kubernetes based on the Argo CD project. Application definitions, configurations, and environments are declarative and version controlled in Git.
+
+https://access.redhat.com/products/red-hat-build-of-keycloak[Red{nbsp}Hat build of Keycloak]::
+Identity and access management based on Keycloak. The pattern creates an `openshell` realm with the roles and OIDC clients that the OpenShell CLI, gateway, and web UI use.
+
+https://www.vaultproject.io/[{hashicorp-vault}] and the {eso}::
+Store the model and tool API keys and the SSH key, and copy them into each user's namespace.
+
+https://github.com/NVIDIA/OpenShell[NVIDIA OpenShell]::
+The runtime for agent sandboxes: a gateway that manages workspaces, providers, and sandboxes, and a supervisor in each sandbox that enforces filesystem, process, and network policy. The pattern uses the Red{nbsp}Hat build of OpenShell (`quay.io/opendatahub/odh-openshell-*`).
+
+https://github.com/openclaw/openclaw[OpenClaw] and https://github.com/NVIDIA/NemoClaw[NVIDIA NemoClaw]::
+The AI agents that run in the sandboxes, with a terminal UI and a web UI.
+
+https://build.nvidia.com/[NVIDIA models on build.nvidia.com]::
+The default model provider (NVIDIA Nemotron). You can use any OpenAI-compatible endpoint on the cluster instead, such as vLLM or Ollama.
