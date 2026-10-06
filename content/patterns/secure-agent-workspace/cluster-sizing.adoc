@@ -8,6 +8,7 @@ aliases: /secure-agent-workspace/cluster-sizing/
 :imagesdir: /images
 :_content-type: ASSEMBLY
 include::modules/comm-attributes.adoc[]
+
 include::modules/secure-agent-workspace/metadata-secure-agent-workspace.adoc[]
 
 [id="secure-agent-workspace-bare-metal"]
@@ -65,4 +66,4 @@ The cluster needs a default storage class for the VM disks (`ReadWriteOnce`, 40 
 [id="secure-agent-workspace-model-serving"]
 == Model serving
 
-By default, the agents use NVIDIA Nemotron on build.nvidia.com and need no GPU in the cluster. If you serve models on the cluster instead, for example with vLLM, add the GPU nodes that the model server needs. For more information, see link:ideas-for-customization[Ideas for customization].
+By default, the agents use NVIDIA Nemotron on build.nvidia.com and need no GPU in the cluster. If you serve models on the cluster instead, for example with vLLM, add the GPU nodes that the model server needs. For more information, see link:../ideas-for-customization/[Ideas for customization].

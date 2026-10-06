@@ -31,7 +31,7 @@ Add bare-metal worker nodes (on public clouds, `*.metal` instance types) and che
 $ oc get nodes -l kubevirt.io/schedulable=true
 ----
 +
-For more information, see link:cluster-sizing[Cluster sizing].
+For more information, see link:../cluster-sizing/[Cluster sizing].
 
 [id="troubleshooting-installer-saw"]
 === The installer in the VM fails
@@ -116,7 +116,7 @@ Cause::
 Sandboxes can reach only the hosts that their attached providers' profiles list, and only from the programs that the profiles list.
 
 Resolution::
-Check that the provider is attached to the sandbox (`openshell sandbox provider list <sandbox>`). Check also that its profile lists the host and port and the real path of the program that connects, such as `/usr/bin/node-*` for OpenClaw. For a custom model endpoint, the `openai` profile must name the endpoint's host. See link:ideas-for-customization[Ideas for customization].
+Check that the provider is attached to the sandbox (`openshell sandbox provider list <sandbox>`). Check also that its profile lists the host and port and the real path of the program that connects, such as `/usr/bin/node-*` for OpenClaw. For a custom model endpoint, the `openai` profile must name the endpoint's host. See link:../ideas-for-customization/[Ideas for customization].
 
 [id="troubleshooting-cli-version-saw"]
 === The openshell CLI reports a version mismatch

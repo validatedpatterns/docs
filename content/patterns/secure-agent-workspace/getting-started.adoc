@@ -17,11 +17,11 @@ include::modules/comm-attributes.adoc[]
 * An {ocp} cluster with *bare-metal worker nodes* to provide hardware virtualization to run a separate {VirtProductName} VM for each workspace. {VirtProductName} does not support nested virtualization.
 ** *For on-premises deployments*, install {ocp} on bare-metal servers with Intel VT-x or AMD-V enabled in the firmware.
 ** *For public cloud deployments*, select bare-metal instance types for workers, for example, on AWS, select `m5.metal` or `c5n.metal`.
-** See link:cluster-sizing[Cluster sizing] for advice on the size and number of nodes required.
+** See link:../cluster-sizing/[Cluster sizing] for advice on the size and number of nodes required.
 ** You can create an {ocp} cluster by using the link:https://console.redhat.com/openshift/create[Red{nbsp}Hat Hybrid Cloud Console].
 * A default storage class that can provision `ReadWriteOnce` volumes for the VM disks.
 * Cluster administrator access. End users need no {ocp} access: they sign in to the workspaces with Keycloak.
-* An API key for each service that the default profile uses: build.nvidia.com (NVIDIA Nemotron) and Brave Search. To use a model server of your own instead, see link:ideas-for-customization[Ideas for customization].
+* An API key for each service that the default profile uses: build.nvidia.com (NVIDIA Nemotron) and Brave Search. To use a model server of your own instead, see link:../ideas-for-customization/[Ideas for customization].
 * The `oc` CLI. For instructions, see link:https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/getting-started-cli.html[Getting started with the OpenShift CLI].
 * The Helm binary. For instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm].
 * The `openshell` CLI, version 0.1.x, from the link:https://github.com/NVIDIA/OpenShell/releases[OpenShell releases]. A 0.0.x CLI cannot connect to the 0.1.x gateway that this pattern installs.
@@ -270,6 +270,6 @@ $ openshell --gateway alice --workspace default \
 [id="next-steps-getting-started-saw"]
 == Next steps
 
-* link:ideas-for-customization[Ideas for customization]
-* link:cluster-sizing[Cluster sizing]
-* link:troubleshooting[Troubleshooting]
+* link:../ideas-for-customization/[Ideas for customization]
+* link:../cluster-sizing/[Cluster sizing]
+* link:../troubleshooting/[Troubleshooting]
