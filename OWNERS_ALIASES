@@ -1,0 +1,12 @@
+# See the OWNERS docs: https://git.k8s.io/community/contributors/guide/owners.md
+# Used in conjunction with the OWNERS file
+aliases:
+  tech-smes:    # Technical reviewers and approvers
+    - mbaldessari
+    - darkdoc
+    - dminnear-rh
+    - mhjacks
+    - day0hero
+  content-smes: # Content reviewers and approvers
+    - laubai
+    - kquinn1204
