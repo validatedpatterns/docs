@@ -1,14 +1,23 @@
 # See the OWNERS docs: https://git.k8s.io/community/contributors/guide/owners.md
-approvers:
-  - beekhof
-  - dminnear-rh
-  - gaurav-nelson
-  - mbaldessari
-  - mhjacks
-options: {}
-reviewers:
-  - beekhof
-  - dminnear-rh
-  - gaurav-nelson
-  - mbaldessari
-  - mhjacks
+# Used in conjunction with the OWNERS_ALIASES file to ensure
+# that at least one person in each group reviews and approves
+# each pull request.
+filters:
+  ".*": # Technical SMEs
+    labels:
+      - needs-tech-review
+    approvers:
+      - tech-smes
+    reviewers:
+      - tech-smes
+    emeritus_approvers:
+      - beekhof       # 2026-04-01 ish
+  ".*": # Content SMEs
+    labels:
+      - needs-docs-review
+    reviewers:
+      - content-smes
+    approvers:
+      - content-smes
+    emeritus_approvers:
+      - gaurav-nelson   # 2026-09-30
