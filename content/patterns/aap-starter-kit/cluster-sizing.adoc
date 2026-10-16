@@ -1,0 +1,62 @@
+---
+title: Cluster sizing
+weight: 30
+aliases: /aap-starter-kit/cluster-sizing/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="cluster-sizing"]
+== Cluster sizing for AAP Starter Kit
+
+The pattern runs on a single OpenShift hub cluster.
+The following table lists minimum sizes that support the default `minimal-aap` variant.
+Variants that add {ocp-data-short}, automation hub, or Automation Orchestrator need more capacity.
+
+.Minimum cluster requirements (`minimal-aap`)
+[options="header"]
+|===
+| Node role | Count | CPU | Memory | Storage
+
+| Control plane
+| 3
+| 4 vCPU
+| 16 GB
+| 100 GB
+
+| Worker
+| 3
+| 8 vCPU
+| 32 GB
+| 200 GB
+|===
+
+[NOTE]
+====
+These are minimum requirements.
+Production deployments and the `aap-with-hub`, `aap-with-ao`, and `complete-aap-ao` variants typically need additional worker CPU, memory, and storage for {ocp-data-short}, hub content, PostgreSQL, and Automation Orchestrator.
+On AWS, `m5.4xlarge` (or larger) worker instances are a practical starting point for hub and complete variants.
+====
+
+[id="variant-sizing-notes"]
+=== Variant sizing notes
+
+[cols="1,3",options="header"]
+|===
+| Variant | Additional capacity considerations
+
+| `minimal-aap`
+| Baseline AAP controller and Vault footprint
+
+| `aap-with-hub`
+| {ocp-data-short} StorageSystem and automation hub; plan for RWX-backed volumes
+
+| `aap-with-ao`
+| CloudNativePG PostgreSQL volumes and Automation Orchestrator pods
+
+| `complete-aap-ao`
+| Combined hub, Lightspeed, ODF, CNPG, and Orchestrator requirements
+|===
