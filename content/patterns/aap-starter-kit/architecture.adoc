@@ -55,7 +55,6 @@ Related charts:
 
 Each install variant has a hub-cluster schematic as PNG with matching draw.io source.
 PNG and draw.io files live in `static/images/aap-starter-kit/`.
-Regenerate both with `python3 static/images/aap-starter-kit/generate_architecture_diagrams.py`.
 
 [cols="2,1,2,2",options="header"]
 |===
