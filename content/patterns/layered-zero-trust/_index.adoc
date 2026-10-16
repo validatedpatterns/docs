@@ -112,6 +112,7 @@ The pattern consists of the following key components:
 
 * link:https://docs.redhat.com/es/documentation/red_hat_trusted_profile_analyzer/2.2[Red{nbsp}Hat Trusted Profile Analyzer (RHTPA)]
 ** Provides the storage and management means for _Software Bill of Materials_ (SBOMs), with cross-referencing capabilities between SBOMs and CVEs/Security Advisories.
+
 Optionally:
 
 * link:https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.11/html/deploying_confidential_containers/index[Red{nbsp}Hat OpenShift sandboxed containers]
