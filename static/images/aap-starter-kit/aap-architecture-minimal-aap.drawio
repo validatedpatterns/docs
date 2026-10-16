@@ -1,80 +1,80 @@
 <mxfile host="app.diagrams.net" agent="aap-starter-kit-docs" version="22.1.0">
-  <diagram name="minimal-aap" id="b0bbf0f57405411f8646">
-    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+  <diagram name="minimal-aap" id="a096fd00c6574e9fad80">
+    <mxGraphModel dx="1280" dy="820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1320" pageHeight="580" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="title" value="&lt;b&gt;Schematic - AAP Starter Kit (minimal-aap variant)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Red Hat Text;fontSize=26;fontColor=#595959;" vertex="1" parent="1">
-          <mxGeometry x="40" y="20" width="1200" height="40" as="geometry" />
+        <mxCell id="title" value="&lt;b&gt;Schematic - AAP Starter Kit (minimal-aap)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Red Hat Text;fontSize=44;fontColor=#595959;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="24" y="16" width="1200" height="44" as="geometry" />
         </mxCell>
-        <mxCell id="cluster" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4CB6D6;strokeColor=#000000;strokeWidth=1;opacity=20;" vertex="1" parent="1">
-          <mxGeometry x="280" y="90" width="1040" height="400" as="geometry" />
+        <mxCell id="cluster" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4CB6D6;strokeColor=#000000;strokeWidth=2;opacity=20;" vertex="1" parent="1">
+          <mxGeometry x="280" y="78" width="980" height="450" as="geometry" />
         </mxCell>
-        <mxCell id="cluster-label" value="&lt;b&gt;OpenShift cluster (hub)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Red Hat Text;fontSize=16;fontColor=#595959;" vertex="1" parent="1">
-          <mxGeometry x="296" y="100" width="400" height="28" as="geometry" />
+        <mxCell id="cluster-label" value="&lt;b&gt;OpenShift cluster (hub)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Red Hat Text;fontSize=30;fontColor=#595959;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="296" y="88" width="480" height="36" as="geometry" />
         </mxCell>
-        <mxCell id="scm-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CDCECE;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="40" y="200" width="200" height="120" as="geometry" />
+        <mxCell id="scm-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CDCECE;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="24" y="155" width="240" height="196" as="geometry" />
         </mxCell>
-        <mxCell id="scm-hdr" value="&lt;b&gt;SCM repository&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4C4C4C;strokeColor=#4C4C4C;fontColor=#FFFFFF;fontFamily=Red Hat Text;fontSize=12;align=left;spacingLeft=10;verticalAlign=middle;" vertex="1" parent="1">
-          <mxGeometry x="48" y="208" width="184" height="28" as="geometry" />
+        <mxCell id="scm-hdr" value="&lt;b&gt;SCM repository&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4C4C4C;strokeColor=#4C4C4C;fontColor=#FFFFFF;fontFamily=Red Hat Text;fontSize=26;align=left;spacingLeft=12;verticalAlign=middle;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="36" y="167" width="216" height="54" as="geometry" />
         </mxCell>
-        <mxCell id="scm-body" value="GitHub&#xa;Helm charts&#xa;CaC (aap-config)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Red Hat Text;fontSize=11;fontColor=#595959;spacingLeft=4;" vertex="1" parent="1">
-          <mxGeometry x="52" y="242" width="176" height="68" as="geometry" />
+        <mxCell id="scm-body" value="GitHub&#xa;Helm charts&#xa;CaC (aap-config)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Red Hat Text;fontSize=26;fontColor=#595959;spacingLeft=4;spacingTop=2;" vertex="1" parent="1">
+          <mxGeometry x="38" y="229" width="212" height="114" as="geometry" />
         </mxCell>
-        <mxCell id="user" value="User / Admin" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4C4C4C;fontFamily=Red Hat Text;fontSize=12;fontColor=#595959;" vertex="1" parent="1">
-          <mxGeometry x="70" y="360" width="140" height="70" as="geometry" />
+        <mxCell id="user" value="User / Admin" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4C4C4C;strokeWidth=2;fontFamily=Red Hat Text;fontSize=22;fontColor=#595959;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="380" width="180" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="e-user-scm" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#4C4C4C;strokeWidth=2;" edge="1" parent="1">
+        <mxCell id="e-user-scm" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#4C4C4C;strokeWidth=3;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="140" y="360" as="sourcePoint" />
-            <mxPoint x="140" y="320" as="targetPoint" />
+            <mxPoint x="140" y="380" as="sourcePoint" />
+            <mxPoint x="140" y="340" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="e-scm-cluster" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#43ADAF;strokeWidth=2;" edge="1" parent="1" source="scm-bg" target="cluster">
+        <mxCell id="e-scm-cluster" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#43ADAF;strokeWidth=3;" edge="1" parent="1" source="scm-bg" target="cluster">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="240" y="260" as="sourcePoint" />
-            <mxPoint x="280" y="200" as="targetPoint" />
+            <mxPoint x="264" y="240" as="sourcePoint" />
+            <mxPoint x="280" y="175" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="e-scm-label" value="GitOps sync" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontFamily=Red Hat Text;fontSize=11;fontColor=#43ADAF;fontStyle=2;" vertex="1" parent="1">
-          <mxGeometry x="220" y="165" width="90" height="20" as="geometry" />
+        <mxCell id="e-scm-label" value="GitOps sync" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontFamily=Red Hat Text;fontSize=22;fontColor=#43ADAF;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="200" y="120" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="c0-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CDCECE;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="310" y="140" width="220" height="120" as="geometry" />
+        <mxCell id="c0-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CDCECE;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="310" y="130" width="380" height="196" as="geometry" />
         </mxCell>
-        <mxCell id="c0-hdr" value="&lt;b&gt;GitOps&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#43ADAF;strokeColor=#43ADAF;fontColor=#FFFFFF;fontFamily=Red Hat Text;fontSize=12;align=left;spacingLeft=10;verticalAlign=middle;" vertex="1" parent="1">
-          <mxGeometry x="318" y="148" width="204" height="28" as="geometry" />
+        <mxCell id="c0-hdr" value="&lt;b&gt;GitOps&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#43ADAF;strokeColor=#43ADAF;fontColor=#FFFFFF;fontFamily=Red Hat Text;fontSize=26;align=left;spacingLeft=12;verticalAlign=middle;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="322" y="142" width="356" height="54" as="geometry" />
         </mxCell>
-        <mxCell id="c0-body" value="Validated Patterns Operator&#xa;OpenShift GitOps&#xa;(single Argo CD)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Red Hat Text;fontSize=11;fontColor=#595959;spacingLeft=4;" vertex="1" parent="1">
-          <mxGeometry x="322" y="182" width="196" height="68" as="geometry" />
+        <mxCell id="c0-body" value="Validated Patterns Operator&#xa;OpenShift GitOps&#xa;(single Argo CD)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Red Hat Text;fontSize=26;fontColor=#595959;spacingLeft=4;spacingTop=2;" vertex="1" parent="1">
+          <mxGeometry x="324" y="204" width="352" height="114" as="geometry" />
         </mxCell>
-        <mxCell id="c1-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CDCECE;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="560" y="140" width="220" height="120" as="geometry" />
+        <mxCell id="c1-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CDCECE;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="720" y="130" width="360" height="162" as="geometry" />
         </mxCell>
-        <mxCell id="c1-hdr" value="&lt;b&gt;Secrets&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4C4C4C;strokeColor=#4C4C4C;fontColor=#FFFFFF;fontFamily=Red Hat Text;fontSize=12;align=left;spacingLeft=10;verticalAlign=middle;" vertex="1" parent="1">
-          <mxGeometry x="568" y="148" width="204" height="28" as="geometry" />
+        <mxCell id="c1-hdr" value="&lt;b&gt;Secrets&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4C4C4C;strokeColor=#4C4C4C;fontColor=#FFFFFF;fontFamily=Red Hat Text;fontSize=26;align=left;spacingLeft=12;verticalAlign=middle;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="732" y="142" width="336" height="54" as="geometry" />
         </mxCell>
-        <mxCell id="c1-body" value="HashiCorp Vault&#xa;External Secrets Operator" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Red Hat Text;fontSize=11;fontColor=#595959;spacingLeft=4;" vertex="1" parent="1">
-          <mxGeometry x="572" y="182" width="196" height="68" as="geometry" />
+        <mxCell id="c1-body" value="HashiCorp Vault&#xa;External Secrets Operator" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Red Hat Text;fontSize=26;fontColor=#595959;spacingLeft=4;spacingTop=2;" vertex="1" parent="1">
+          <mxGeometry x="734" y="204" width="332" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="c2-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CDCECE;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="310" y="290" width="280" height="140" as="geometry" />
+        <mxCell id="c2-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CDCECE;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="310" y="310" width="380" height="230" as="geometry" />
         </mxCell>
-        <mxCell id="c2-hdr" value="&lt;b&gt;Ansible Automation Platform&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#43ADAF;strokeColor=#43ADAF;fontColor=#FFFFFF;fontFamily=Red Hat Text;fontSize=12;align=left;spacingLeft=10;verticalAlign=middle;" vertex="1" parent="1">
-          <mxGeometry x="318" y="298" width="264" height="28" as="geometry" />
+        <mxCell id="c2-hdr" value="&lt;b&gt;AAP&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#43ADAF;strokeColor=#43ADAF;fontColor=#FFFFFF;fontFamily=Red Hat Text;fontSize=26;align=left;spacingLeft=12;verticalAlign=middle;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="322" y="322" width="356" height="54" as="geometry" />
         </mxCell>
-        <mxCell id="c2-body" value="Operator stable-2.7&#xa;Controller instance&#xa;Hub: disabled&#xa;Lightspeed: disabled" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Red Hat Text;fontSize=11;fontColor=#595959;spacingLeft=4;" vertex="1" parent="1">
-          <mxGeometry x="322" y="332" width="256" height="88" as="geometry" />
+        <mxCell id="c2-body" value="Operator stable-2.7&#xa;Controller instance&#xa;Hub: disabled&#xa;Lightspeed: disabled" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Red Hat Text;fontSize=26;fontColor=#595959;spacingLeft=4;spacingTop=2;" vertex="1" parent="1">
+          <mxGeometry x="324" y="384" width="352" height="148" as="geometry" />
         </mxCell>
-        <mxCell id="c3-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CDCECE;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="620" y="290" width="240" height="140" as="geometry" />
+        <mxCell id="c3-bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CDCECE;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="720" y="310" width="360" height="162" as="geometry" />
         </mxCell>
-        <mxCell id="c3-hdr" value="&lt;b&gt;aap-config (CaC)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4C4C4C;strokeColor=#4C4C4C;fontColor=#FFFFFF;fontFamily=Red Hat Text;fontSize=12;align=left;spacingLeft=10;verticalAlign=middle;" vertex="1" parent="1">
-          <mxGeometry x="628" y="298" width="224" height="28" as="geometry" />
+        <mxCell id="c3-hdr" value="&lt;b&gt;aap-config (CaC)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4C4C4C;strokeColor=#4C4C4C;fontColor=#FFFFFF;fontFamily=Red Hat Text;fontSize=26;align=left;spacingLeft=12;verticalAlign=middle;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="732" y="322" width="336" height="54" as="geometry" />
         </mxCell>
-        <mxCell id="c3-body" value="Config as Code&#xa;Default: agof_null_config" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Red Hat Text;fontSize=11;fontColor=#595959;spacingLeft=4;" vertex="1" parent="1">
-          <mxGeometry x="632" y="332" width="216" height="88" as="geometry" />
+        <mxCell id="c3-body" value="Config as Code&#xa;Default: agof_null_config" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontFamily=Red Hat Text;fontSize=26;fontColor=#595959;spacingLeft=4;spacingTop=2;" vertex="1" parent="1">
+          <mxGeometry x="734" y="384" width="332" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
