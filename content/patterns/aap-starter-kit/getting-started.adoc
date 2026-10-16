@@ -1,0 +1,262 @@
+---
+title: Getting started
+weight: 10
+aliases: /aap-starter-kit/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="deploying-aap-starter-kit-pattern"]
+== Deploying the AAP Starter Kit pattern
+
+.Prerequisites
+
+* An OpenShift cluster
+ ** To create an OpenShift cluster, go to the https://console.redhat.com/[Red Hat Hybrid Cloud console].
+ ** Select *OpenShift \-> Red Hat OpenShift Container Platform \-> Create cluster*.
+ ** The cluster must have a dynamic `StorageClass` to provision `PersistentVolumes`.
+ ** link:/patterns/aap-starter-kit/cluster-sizing[Cluster sizing] requirements.
+* A GitHub account with a personal access token that has repository read and write permissions.
+* The Helm binary. For instructions, see link:https://helm.sh/docs/intro/install/[Installing Helm].
+* Additional installation tool dependencies. For details, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
+* An {rh-ansible} subscription manifest zip file for entitlement.
+* An automation hub token if you plan to pull certified or validated content.
+
+[id="preparing-for-deployment"]
+== Preparing for deployment
+
+.Procedure
+
+. Fork the link:https://github.com/validatedpatterns/aap-starter-kit[aap-starter-kit] repository on GitHub.
+You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
+
+. Clone the forked copy of this repository.
++
+[source,terminal]
+----
+$ git clone git@github.com:your-username/aap-starter-kit.git
+----
+
+. Change to the repository root directory:
++
+[source,terminal]
+----
+$ cd aap-starter-kit
+----
+
+. Add the upstream repository:
++
+[source,terminal]
+----
+$ git remote add -f upstream git@github.com:validatedpatterns/aap-starter-kit.git
+----
+
+. Verify the remote repositories:
++
+[source,terminal]
+----
+$ git remote -v
+----
++
+.Example output
++
+[source,terminal]
+----
+origin	git@github.com:your-username/aap-starter-kit.git (fetch)
+origin	git@github.com:your-username/aap-starter-kit.git (push)
+upstream	git@github.com:validatedpatterns/aap-starter-kit.git (fetch)
+upstream	git@github.com:validatedpatterns/aap-starter-kit.git (push)
+----
+
+. Decide which install variant to use and set `main.variant` in `values-global.yaml` before install.
+The default is `minimal-aap`.
+For variant purposes and expected installations, see link:/patterns/aap-starter-kit/#install-variants[Install variants] on the pattern overview page and link:/patterns/aap-starter-kit/installation-details/[Installation details].
++
+[source,yaml]
+----
+main:
+  variant: minimal-aap
+----
+
+. Make a local copy of the secrets template outside of your repository to hold credentials for the pattern.
++
+[WARNING]
+====
+Do not add, commit, or push this file to your repository.
+Doing so might expose personal credentials to GitHub.
+====
++
+[source,terminal]
+----
+$ cp values-secret.yaml.template ~/values-secret.yaml
+----
+
+. Populate the secrets file with credentials that the pattern needs:
++
+[source,terminal]
+----
+$ vi ~/values-secret.yaml
+----
+
+.. Edit the `aap-manifest` section to point to your {rh-ansible} subscription manifest zip file.
+Create a subscription manifest by following the guidance at
+link:https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/html-single/red_hat_ansible_automation_platform_operations_guide/index#proc-create-subscription-allocation_obtain-manifest[Obtaining a manifest file].
+For example:
++
+[source,yaml]
+----
+  - name: aap-manifest
+    fields:
+    - name: b64content
+      path: '~/Downloads/<manifest_filename>.zip'
+      base64: true
+----
+
+.. Edit the `automation-hub-token` section to include a token from the
+link:https://console.redhat.com/ansible/automation-hub/token[Automation Hub Token] page:
++
+[source,yaml]
+----
+  - name: automation-hub-token
+    fields:
+    - name: token
+      value: '<your-automation-hub-token>'
+----
+
+.. Optionally edit the `agof-vault-file` section.
+For the default CaC repository you can use a minimal value:
++
+[source,yaml]
+----
+  - name: agof-vault-file
+    fields:
+    - name: agof-vault-file
+      value: '---'
+      base64: true
+----
+
+.. If you selected `aap-with-ao` or `complete-aap-ao`, keep the PostgreSQL secret entries for Automation Orchestrator.
+The template generates alphanumeric passwords with `postgresPasswordPolicy` so special characters do not break AO startup.
+You can leave `onMissingValue: generate` for the password fields, or set explicit values.
+These secrets are not required for `minimal-aap` or `aap-with-hub`.
+
+. Create and switch to a new branch:
++
+[source,terminal]
+----
+$ git checkout -b my-branch
+----
+
+. Optional: Customize chart overrides under `overrides/` or CaC settings in `overrides/values-aap-config-aeg.yaml`.
+If you change tracked files, stage and commit them:
++
+[source,terminal]
+----
+$ git add -A
+$ git commit -m "Customize AAP Starter Kit for my cluster"
+----
+
+. Push the changes to your forked repository:
++
+[source,terminal]
+----
+$ git push origin my-branch
+----
+
+The preferred way to install this pattern is by using the `./pattern.sh` script.
+
+[id="deploying-cluster-using-patternsh-file"]
+== Deploying the pattern by using the pattern.sh file
+
+. Log in to your cluster:
+
+.. Obtain an API token by visiting
+link:https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request[https://oauth-openshift.apps.<your-cluster>.<domain>/oauth/token/request].
+
+.. Log in to the cluster:
++
+[source,terminal]
+----
+$ oc login --token=<retrieved-token> --server=https://api.<your-cluster>.<domain>:6443
+----
++
+Or set the kubeconfig:
++
+[source,terminal]
+----
+$ export KUBECONFIG=~/<path_to_kubeconfig>
+----
+
+. Deploy the pattern:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
+
+.Verification
+
+. Verify that the operators are installed.
+Navigate to *Operators → Installed Operators* in the OpenShift Container Platform web console.
+Confirm the {rh-ansible} operator and External Secrets Operator.
+For hub variants, also confirm {ocp-data-short}.
+For AO variants, also confirm CloudNativePG and Automation Orchestrator.
+
+. Track Argo CD application sync through the `Hub ArgoCD` UI from the nines menu.
+Confirm that the applications listed for your variant in
+link:/patterns/aap-starter-kit/installation-details/#expected-installations[Expected installations by variant]
+are Healthy and Synced.
+
+. Retrieve AAP admin credentials:
++
+[source,terminal]
+----
+$ ./pattern.sh scripts/ansible_get_credentials.sh
+----
+
+. For `aap-with-ao` or `complete-aap-ao`, retrieve Automation Orchestrator credentials:
++
+[source,terminal]
+----
+$ ./pattern.sh scripts/ao_get_credentials.sh
+----
+
+As part of installing with `pattern.sh`, HashiCorp Vault is installed.
+Running `./pattern.sh make install` also calls the `load-secrets` target when secret loading is enabled.
+For more information, see https://validatedpatterns.io/secrets/vault/[Vault].
+
+[id="verifying-install-variants"]
+== Verifying install variants
+
+After sync, expect the following differences by variant.
+
+=== `minimal-aap`
+
+* AAP instance with controller; automation hub and Lightspeed disabled.
+* No `openshift-storage` or Automation Orchestrator namespaces.
+
+=== `aap-with-hub`
+
+* {ocp-data-short} and automation hub present; Lightspeed disabled.
+* RWX storage available for hub.
+
+=== `aap-with-ao`
+
+* CloudNativePG and Automation Orchestrator present.
+* AAP instance remains without hub and Lightspeed.
+* PostgreSQL secrets for Orchestrator and Temporal loaded in Vault under the `hub` prefix.
+
+=== `complete-aap-ao`
+
+* Automation hub, Lightspeed, {ocp-data-short}, CloudNativePG, and Automation Orchestrator all present.
+
+[id="next-steps"]
+== Next steps
+
+* link:/patterns/aap-starter-kit/architecture/[Architecture]
+* link:/patterns/aap-starter-kit/installation-details/[Installation details]
+* link:/patterns/aap-starter-kit/ideas-for-customization/[Ideas for customization]
+* link:/patterns/aap-starter-kit/troubleshooting/[Troubleshooting]
