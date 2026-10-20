@@ -51,16 +51,16 @@ This pattern is single-cluster; there are no managed cluster group value files u
 | `values-aap-instance-complete.yaml`
 
 | Automation hub
-| disabled
-| enabled
-| disabled
-| enabled
+| no
+| yes
+| no
+| yes
 
 | Lightspeed
-| disabled
-| disabled
-| disabled
-| enabled
+| no
+| no
+| no
+| yes
 
 | {ocp-data-short} (`odf` app)
 | no
