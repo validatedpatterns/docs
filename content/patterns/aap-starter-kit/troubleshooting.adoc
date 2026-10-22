@@ -1,0 +1,88 @@
+---
+title: Troubleshooting
+weight: 50
+aliases: /aap-starter-kit/troubleshooting/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="troubleshooting"]
+== Troubleshooting the pattern
+
+[id="checking-the-deployment-status"]
+=== Checking the deployment status
+
+To list pods that are not Running or Completed:
+
+[source,terminal]
+----
+$ oc get pods -A | grep -v Running | grep -v Completed
+----
+
+To check Argo CD application health:
+
+[source,terminal]
+----
+$ ./pattern.sh make argo-healthcheck
+----
+
+[id="reviewing-logs"]
+=== Reviewing application logs
+
+To check the logs of a specific application pod:
+
+[source,terminal]
+----
+$ oc logs -n <namespace> <pod-name>
+----
+
+Useful namespaces by variant:
+
+* `ansible-automation-platform` — AAP operator and instance (all variants)
+* `aap-config` — CaC configuration jobs
+* `openshift-storage` — {ocp-data-short} (`aap-with-hub`, `complete-aap-ao`)
+* `automation-orchestrator` — Automation Orchestrator and CNPG cluster (`aap-with-ao`, `complete-aap-ao`)
+
+[id="retrieving-credentials"]
+=== Retrieving credentials
+
+If you cannot log in to AAP or Automation Orchestrator, retrieve credentials from the cluster:
+
+[source,terminal]
+----
+$ ./pattern.sh scripts/ansible_get_credentials.sh
+$ ./pattern.sh scripts/ao_get_credentials.sh
+----
+
+Confirm that secrets were loaded into Vault (`./pattern.sh make load-secrets`) and that External Secrets has projected them into the target namespaces.
+
+[id="automation-hub-storage"]
+=== Automation hub storage issues
+
+If automation hub pods remain pending on `aap-with-hub` or `complete-aap-ao`, confirm that the `odf` Argo CD application is Healthy and that RWX storage classes from the {ocp-data-short} chart exist.
+Hub requires RWX storage; RWO-only clusters fail to bind hub volumes.
+
+[id="automation-orchestrator-database"]
+=== Automation Orchestrator database issues
+
+If Automation Orchestrator fails to start on `aap-with-ao` or `complete-aap-ao`:
+
+* Confirm the `vp-cloudnative-pg-cluster` application is Synced and that the `orchestrator-postgres` cluster is ready.
+* Confirm Vault contains `orchestrator-postgres-secret`, `temporal-postgres-secret`, and `temporal-visibility-postgres-secret` with alphanumeric passwords.
+* Avoid passwords that contain `@`, `%`, or similar characters; AO builds a PostgreSQL URL that can break Alembic or configparser when those characters are percent-encoded.
+* Remember that CloudNativePG is not supported by Red Hat for AO databases; consult the guidance link:https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/latest/install-configure_an_external_database_for_ansible_automation_platform[here] for Red Hat supported solutions.
+
+[id="gitops-server-name-length"]
+=== GitOps server DNS label length
+
+Variant and cluster group names feed into GitOps server DNS labels that must stay within 63 characters.
+Use the shipped variant names (`minimal-aap`, `aap-with-hub`, `aap-with-ao`, `complete-aap-ao`) or keep custom names short.
+
+[id="known-issues"]
+=== Known issues
+
+* Red Hat does not support CloudNativePG for Automation Orchestrator databases.
+* The default CaC repository (`agof_null_config`) is a minimal placeholder; replace it with your own CaC content for real controller configuration.
