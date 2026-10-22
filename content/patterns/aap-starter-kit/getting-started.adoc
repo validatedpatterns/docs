@@ -103,7 +103,7 @@ $ vi ~/values-secret.yaml
 
 .. Edit the `aap-manifest` section to point to your {rh-ansible} subscription manifest zip file.
 Create a subscription manifest by following the guidance at
-link:https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/html-single/red_hat_ansible_automation_platform_operations_guide/index#proc-create-subscription-allocation_obtain-manifest[Obtaining a manifest file].
+link:https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/latest/install-assembly_aap_manifest_files[Obtaining a manifest file].
 For example:
 +
 [source,yaml]
@@ -204,6 +204,9 @@ Navigate to *Operators → Installed Operators* in the OpenShift Container Platf
 Confirm the {rh-ansible} operator and External Secrets Operator.
 For hub variants, also confirm {ocp-data-short}.
 For AO variants, also confirm CloudNativePG and Automation Orchestrator.
+It typically takes around 30 minutes from running the install command for all of the installation activities to
+complete. If it takes longer than 60 minutes, something likely requires troubleshooting. Most commonly, this will
+be a missing or mis-named secret.
 
 . Track Argo CD application sync through the `Hub ArgoCD` UI from the nines menu.
 Confirm that the applications listed for your variant in
@@ -256,7 +259,6 @@ After sync, expect the following differences by variant.
 [id="next-steps"]
 == Next steps
 
-* link:/patterns/aap-starter-kit/architecture/[Architecture]
 * link:/patterns/aap-starter-kit/installation-details/[Installation details]
 * link:/patterns/aap-starter-kit/ideas-for-customization/[Ideas for customization]
 * link:/patterns/aap-starter-kit/troubleshooting/[Troubleshooting]

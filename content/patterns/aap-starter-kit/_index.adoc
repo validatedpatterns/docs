@@ -31,7 +31,8 @@ include::modules/comm-attributes.adoc[]
 == AAP Starter Kit
 
 This pattern installs and configures {rh-ansible} on {ocp} by using a Config as Code (CaC) and GitOps approach.
-It is derived from the concepts in the link:/patterns/ansible-edge-gitops/[Ansible Edge GitOps] pattern, focused on AAP itself rather than edge virtualization workloads.
+It uses the same concepts (and charts) as the link:/patterns/ansible-edge-gitops/[Ansible Edge GitOps] pattern,
+focusing on Ansible Automation Platform (AAP) itself rather than edge virtualization workloads.
 
 The pattern deploys a single-cluster hub layout with {rh-gitops-short} (single Argo CD), HashiCorp Vault, the External Secrets Operator, an AAP instance, and AAP configuration loaded from a CaC repository.
 Install variants add automation hub (with {ocp-data-short} for RWX storage), Ansible Lightspeed, CloudNativePG, and Automation Orchestrator.
@@ -96,7 +97,7 @@ This pattern provides that baseline and offers install variants so you can add a
 * Load AAP configuration from a CaC repository
 * Optionally enable automation hub, Lightspeed, and Automation Orchestrator
 
-==== Red Hat Technologies
+==== Red Hat technologies
 
 * {rh-ocp}
 * {rh-ansible}

@@ -174,11 +174,11 @@ For component roles and secret mappings, see link:/patterns/aap-starter-kit/arch
 == Pattern scripts
 
 * `scripts/ansible_get_credentials.sh`
-
++
 Runs `rhvp.cluster_utils.aap_get_admin_credentials` to retrieve AAP admin credentials from the cluster.
 
 * `scripts/ao_get_credentials.sh`
-
++
 Runs `rhvp.cluster_utils.ao_get_admin_credentials` to retrieve Automation Orchestrator admin credentials.
 Use this after installing `aap-with-ao` or `complete-aap-ao`.
 
@@ -202,7 +202,7 @@ Useful related targets from the pattern Makefile:
 | Load secrets into Vault
 
 | `./pattern.sh make show`
-| Show the template that install would apply
+| Show the template that installation applies
 
 | `./pattern.sh make argo-healthcheck`
 | Check whether Argo CD applications are synced

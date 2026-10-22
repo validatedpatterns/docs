@@ -16,6 +16,8 @@ The pattern runs on a single OpenShift hub cluster.
 The following table lists minimum sizes that support the default `minimal-aap` variant.
 Variants that add {ocp-data-short}, automation hub, or Automation Orchestrator need more capacity.
 
+On AWS, `m5.4xlarge` worker instances are a practical starting point for hub and complete variants.
+
 .Minimum cluster requirements (`minimal-aap`)
 [options="header"]
 |===
@@ -33,13 +35,6 @@ Variants that add {ocp-data-short}, automation hub, or Automation Orchestrator n
 | 32 GB
 | 200 GB
 |===
-
-[NOTE]
-====
-These are minimum requirements.
-Production deployments and the `aap-with-hub`, `aap-with-ao`, and `complete-aap-ao` variants typically need additional worker CPU, memory, and storage for {ocp-data-short}, hub content, PostgreSQL, and Automation Orchestrator.
-On AWS, `m5.4xlarge` (or larger) worker instances are a practical starting point for hub and complete variants.
-====
 
 [id="variant-sizing-notes"]
 === Variant sizing notes

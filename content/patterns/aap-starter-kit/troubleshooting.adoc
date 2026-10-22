@@ -73,7 +73,7 @@ If Automation Orchestrator fails to start on `aap-with-ao` or `complete-aap-ao`:
 * Confirm the `vp-cloudnative-pg-cluster` application is Synced and that the `orchestrator-postgres` cluster is ready.
 * Confirm Vault contains `orchestrator-postgres-secret`, `temporal-postgres-secret`, and `temporal-visibility-postgres-secret` with alphanumeric passwords.
 * Avoid passwords that contain `@`, `%`, or similar characters; AO builds a PostgreSQL URL that can break Alembic or configparser when those characters are percent-encoded.
-* Remember that CloudNativePG is not supported by Red Hat for AO databases; use an externally supported PostgreSQL 15 when that matters for your environment.
+* Remember that CloudNativePG is not supported by Red Hat for AO databases; consult the guidance link:https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/latest/install-configure_an_external_database_for_ansible_automation_platform[here] for Red Hat supported solutions.
 
 [id="gitops-server-name-length"]
 === GitOps server DNS label length

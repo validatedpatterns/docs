@@ -18,7 +18,15 @@ You can also change CaC content and chart overrides without rewriting the patter
 [id="selecting-a-different-variant"]
 === Selecting a different variant
 
-Set `main.variant` in `values-global.yaml` to one of `minimal-aap`, `aap-with-hub`, `aap-with-ao`, or `complete-aap-ao`, commit the change to your fork, and reinstall or allow Argo CD to sync.
+Set `main.variant` in `values-global.yaml` to one of the following values:
+
+* `minimal-aap`
+* `aap-with-hub`
+* `aap-with-ao`
+* `complete-aap-ao`
+
+Commit the change to your fork, and reinstall or allow Argo CD to sync.
+
 See link:/patterns/aap-starter-kit/installation-details/[Installation details] for what each variant deploys.
 
 [id="replacing-cac-content"]
