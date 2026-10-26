@@ -84,16 +84,10 @@ image::layered-zero-trust/gui-install/Layered_Zero_Trust_Installation-optional-s
 Click *Install* to deploy the pattern.
 
 [id="lzt-gui-step6"]
-=== Step 6: Monitor deployment in Argo CD
+=== Step 6: Monitor deployment in {ocp} GitOps (Argo CD)
 
-Open the Argo CD console to monitor the deployment. Navigate to the proper Argo CD instance using the *Application Selector* (the icon with nine small squares) in the top navigation bar.
-
-The Layered Zero Trust pattern installs two Argo CD instances on your Hub cluster:
-
-* *Cluster Argo CD*: Manages the `layered-zero-trust-hub` App-of-Apps application. This deploys the pattern's components in the correct order.
-* *Hub Argo CD*: Manages the Cluster Argo CD instance itself and the individual component applications.
-
-Navigate to the *Cluster Argo CD* instance to monitor the deployment progress. Components deploy in a specific order (sync waves). The deployment time varies depending on your cluster size and resources.
+Open the Argo CD console to monitor the deployment. Navigate to the `Argo CD VP` instance using the *Application Selector* (the icon with nine small squares) in the top navigation bar to monitor the deployment progress.  
+Components deploy in a specific order (sync waves). The deployment time varies depending on your cluster size and resources.
 
 image::layered-zero-trust/gui-install/ArgoCD_Installation_Monitoring.png[Argo CD deployment monitoring]
 
@@ -231,12 +225,9 @@ $ ./pattern.sh make install
 [id="lzt-verify-deployment"]
 === Verify the deployment
 
-The Layered Zero Trust pattern provisions every component and manages them through {ocp} GitOps. After you deploy the pattern, verify that all components are running correctly.
+The Layered Zero Trust pattern provisions every component and manages them through {ocp} GitOps (Argo CD). After you deploy the pattern, verify that all components are running correctly.
 
-The Layered Zero Trust pattern installs the following two Argo CD instances on your Hub cluster. You can view these instances in the {ocp} web console by using the *Application Selector* (the icon with nine small squares) in the top navigation bar.
-
-. *Cluster Argo CD*: Deploys an *App-of-Apps* application named `layered-zero-trust-hub`. This application installs the pattern's components.
-. *Hub Argo CD*: Manages the Cluster Argo CD instance and the individual components that belong to the pattern on the hub {ocp} instance.
+The Layered Zero Trust pattern installs one GitOps instance on your Hub cluster, named `Argo CD VP` in the `vp-gitops` namespace . You can view this instance in the {ocp} web console by using the *Application Selector* (the icon with nine small squares) in the top navigation bar.
 
 If every Argo CD application reports a *Healthy* status, the pattern has been deployed successfully.
 
