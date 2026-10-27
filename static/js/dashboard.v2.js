@@ -86,6 +86,44 @@ class Badge {
 // Still present in badge buckets but no longer in the CI matrix (omit from dashboard)
 var CI_DASHBOARD_EXCLUDED_OCP_VERSIONS = ['4.19']
 
+// patternRepo comes from external badge JSON; only link to known GitHub orgs.
+var TRUSTED_PATTERN_REPO_PATH_PREFIXES = [
+  '/validatedpatterns/',
+  '/validatedpatterns-sandbox/'
+]
+
+// Returns true when repoUrl is an https://github.com URL under a trusted org.
+function isTrustedPatternRepo(repoUrl) {
+  if (repoUrl == null || repoUrl === '') {
+    return false
+  }
+  try {
+    var url = new URL(String(repoUrl).trim())
+    if (url.protocol !== 'https:') {
+      return false
+    }
+    if (url.username !== '' || url.password !== '') {
+      return false
+    }
+    if (url.hostname.toLowerCase() !== 'github.com') {
+      return false
+    }
+    var path = url.pathname.toLowerCase()
+    if (path.length > 1 && path.charAt(path.length - 1) !== '/') {
+      path += '/'
+    }
+    for (var i = 0; i < TRUSTED_PATTERN_REPO_PATH_PREFIXES.length; i++) {
+      var prefix = TRUSTED_PATTERN_REPO_PATH_PREFIXES[i]
+      if (path.indexOf(prefix) === 0 && path.length > prefix.length) {
+        return true
+      }
+    }
+    return false
+  } catch (e) {
+    return false
+  }
+}
+
 // Only the old bucket uses filename parsing, new CI badge bucket / external raw badges — hydrate metadata from JSON, not filename.
 function usesJsonMetadata(base) {
   if (base == null || base === '' || String(base).indexOf('storage.googleapis.com/vp-results') !== -1 ) {
@@ -509,7 +547,7 @@ function renderBadgeHtml(badge, field) {
   }
 
   let envLink = encodeURI(badge_url)
-  let branchLink = json_obj.patternRepo != null ? encodeURI(json_obj.patternRepo) : null
+  let branchLink = isTrustedPatternRepo(json_obj.patternRepo) ? encodeURI(json_obj.patternRepo) : null
   let badgeText = '<span class="ci-label">'
   badgeText += '<a href="' + envLink + '"><span class="' + badgeClass + '"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + '</span></a>'
   if (branchLink != null) {
