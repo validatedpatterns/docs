@@ -548,11 +548,7 @@ Target Repo: https://github.com/validatedpatterns/layered-zero-trust.git (or you
 Target Revision: main (or your branch)
 Secrets Configuration: Expand each section to configure secrets (config-demo, qtodo-db, qtodo-truststore, acs-central, keycloak, rhtpa-db, rhtpa-oidc-cli, keycloak-users, quay-users). Secrets marked &#34;Auto-generate this value&#34; will be created automatically by Vault.
 Click Install to deploy the pattern.
-Step 6: Monitor deployment in Argo CD Open the Argo CD console to monitor the deployment. Navigate to the proper Argo CD instance using the Application Selector (the icon with nine small squares) in the top navigation bar.
-The Layered Zero Trust pattern installs two Argo CD instances on your Hub cluster:
-Cluster Argo CD: Manages the layered-zero-trust-hub App-of-Apps application. This deploys the pattern’s components in the correct order.
-Hub Argo CD: Manages the Cluster Argo CD instance itself and the individual component applications.
-Navigate to the Cluster Argo CD instance to monitor the deployment progress. Components deploy in a specific order (sync waves). The deployment time varies depending on your cluster size and resources.
+Step 6: Monitor deployment in OpenShift Container Platform GitOps (Argo CD) Open the Argo CD console to monitor the deployment. Navigate to the Argo CD VP instance using the Application Selector (the icon with nine small squares) in the top navigation bar to monitor the deployment progress. Components deploy in a specific order (sync waves). The deployment time varies depending on your cluster size and resources.
 Step 7: Verify all components are healthy When all Argo CD applications show Healthy and Synced status, the pattern is fully deployed.
 Advanced installation (CLI) For advanced feature sets, customization, or when using your own fork, use the CLI-based installation with the pattern.sh script. This method provides full control over the deployment configuration.
 Additional prerequisites A GitHub account and a token with repository permissions, to read from and write to your forks.
@@ -579,10 +575,8 @@ Get an API token by visiting https://oauth-openshift.apps../oauth/token/request.
 Log in with the retrieved token:
 $ oc login --token=&lt;retrieved_token&gt; --server=https://api.&lt;your_cluster&gt;.&lt;domain&gt;:6443 By using KUBECONFIG:
 $ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Run the pattern deployment script:
-$ ./pattern.sh make install Verify the deployment The Layered Zero Trust pattern provisions every component and manages them through OpenShift Container Platform GitOps. After you deploy the pattern, verify that all components are running correctly.
-The Layered Zero Trust pattern installs the following two Argo CD instances on your Hub cluster. You can view these instances in the OpenShift Container Platform web console by using the Application Selector (the icon with nine small squares) in the top navigation bar.
-Cluster Argo CD: Deploys an App-of-Apps application named layered-zero-trust-hub. This application installs the pattern’s components.
-Hub Argo CD: Manages the Cluster Argo CD instance and the individual components that belong to the pattern on the hub OpenShift Container Platform instance.
+$ ./pattern.sh make install Verify the deployment The Layered Zero Trust pattern provisions every component and manages them through OpenShift Container Platform GitOps (Argo CD). After you deploy the pattern, verify that all components are running correctly.
+The Layered Zero Trust pattern installs one GitOps instance on your Hub cluster, named Argo CD VP in the vp-gitops namespace . You can view this instance in the OpenShift Container Platform web console by using the Application Selector (the icon with nine small squares) in the top navigation bar.
 If every Argo CD application reports a Healthy status, the pattern has been deployed successfully.
 Accessing credentials All sensitive credentials in this pattern are generated automatically and stored in HashiCorp Vault during deployment. There are no static default passwords. This section explains how to retrieve credentials for testing and exploration.
 Retrieve the Vault root token The Vault initialization data, including the root token, is stored in a Kubernetes Secret in the imperative namespace:
@@ -5277,7 +5271,7 @@ Running the pipeline Start the pipeline by using the OpenShift Container Platfor
 Running the pipeline from the web console To start a pipeline execution from the OpenShift Container Platform Web console:
 Procedure Log in to the OpenShift Container Platform web console.
 From the left navigation bar, select Pipelines → Pipelines.
-In the layered-zero-trust-hub project, find the qtodo-supply-chain pipeline.
+In the vp-gitops project, find the qtodo-supply-chain pipeline.
 Click the Options menu (⋮) and select Start.
 Verify the parameters. Most default values are correct for single-cluster mode.
 Configure the following workspaces:
@@ -5286,29 +5280,29 @@ For registry-auth-config, select Secret and ensure the secret name is qtodo-regi
 Click Start.
 Running the pipeline from the CLI Start a pipeline execution by creating a PipelineRun resource that references the qtodo-supply-chain pipeline.
 Procedure Create a file named qtodo-pipeline.yaml with the following content:
-apiVersion: tekton.dev/v1 kind: PipelineRun metadata: generateName: qtodo-manual-run- namespace: layered-zero-trust-hub spec: pipelineRef: name: qtodo-supply-chain taskRunTemplate: serviceAccountName: pipeline timeouts: pipeline: 1h0m0s workspaces: - name: qtodo-source persistentVolumeClaim: claimName: qtodo-workspace-source - name: registry-auth-config secret: secretName: qtodo-registry-auth Verify the values for the PVC storage and registry configuration.
+apiVersion: tekton.dev/v1 kind: PipelineRun metadata: generateName: qtodo-manual-run- namespace: vp-gitops spec: pipelineRef: name: qtodo-supply-chain taskRunTemplate: serviceAccountName: pipeline timeouts: pipeline: 1h0m0s workspaces: - name: qtodo-source persistentVolumeClaim: claimName: qtodo-workspace-source - name: registry-auth-config secret: secretName: qtodo-registry-auth Verify the values for the PVC storage and registry configuration.
 Create the PipelineRun resource:
 $ oc create -f qtodo-pipeline.yaml Verification Review the pipeline logs using the Tekton CLI:
-$ tkn pipeline logs -n layered-zero-trust-hub -L -f Inspecting pipeline results Verify the status and output of the pipeline by using the web console or the CLI.
+$ tkn pipeline logs -n vp-gitops -L -f Inspecting pipeline results Verify the status and output of the pipeline by using the web console or the CLI.
 Inspecting results from the web console You can inspect the results of the pipeline execution from the OpenShift Container Platform web console.
 Procedure Log in to the OpenShift Container Platform web console.
 From the left navigation bar, select Pipelines → Pipelines.
-In the layered-zero-trust-hub project, find the qtodo-supply-chain pipeline.
+In the vp-gitops project, find the qtodo-supply-chain pipeline.
 Click the PipelineRun link in the Last run column.
 In the Details tab, view the summary of the pipeline execution and tasks.
 Click on a task or the Logs tab to see the output of specific tasks.
 Inspecting results from the CLI You can inspect the results of the pipeline execution by using the CLI.
 Procedure Verify that the pipeline completed successfully:
-$ oc get pipelinerun -n layered-zero-trust-hub NAME SUCCEEDED REASON STARTTIME COMPLETIONTIME qtodo-manual-run-p46f7 True Succeeded 7m4s 2m12s Review the TaskRuns to see the results of each step:
-$ oc get taskruns -n layered-zero-trust-hub NAME SUCCEEDED REASON STARTTIME COMPLETIONTIME qtodo-manual-run-p46f7-qtodo-build-artifact True Succeeded 7m44s 5m17s qtodo-manual-run-p46f7-qtodo-build-image True Succeeded 4m55s 4m4s qtodo-manual-run-p46f7-qtodo-clone-repository True Succeeded 7m55s 7m44s ... Identify the pods associated with the tasks in the layered-zero-trust-hub namespace:
-$ oc get pods -n layered-zero-trust-hub NAME READY STATUS RESTARTS AGE qtodo-manual-run-p46f7-qtodo-build-artifact-pod 0/1 Completed 0 10m qtodo-manual-run-p46f7-qtodo-build-image-pod 0/1 Completed 0 7m21s ... Review the pod logs to view the output of a specific step. For example, to view image verification messages:
-$ oc logs -n layered-zero-trust-hub qtodo-manual-run-p46f7-qtodo-verify-image-pod Success: true Result: SUCCESS Violations: 0, Warnings: 0, Successes: 3 Component: Unnamed ImageRef: quay-registry-quay-quay-enterprise.apps.example.com/ztvp/qtodo@sha256:df6506e93a141cfcaeb3b4686b558cddd963410a146b10c3cbd1319122f5f880 Results: ✓ [Success] builtin.attestation.signature_check ... ✓ [Success] builtin.image.signature_check ... Reviewing integrated services The supply chain results are visible in the services used during the build process.
+$ oc get pipelinerun -n vp-gitops NAME SUCCEEDED REASON STARTTIME COMPLETIONTIME qtodo-manual-run-p46f7 True Succeeded 7m4s 2m12s Review the TaskRuns to see the results of each step:
+$ oc get taskruns -n vp-gitops NAME SUCCEEDED REASON STARTTIME COMPLETIONTIME qtodo-manual-run-p46f7-qtodo-build-artifact True Succeeded 7m44s 5m17s qtodo-manual-run-p46f7-qtodo-build-image True Succeeded 4m55s 4m4s qtodo-manual-run-p46f7-qtodo-clone-repository True Succeeded 7m55s 7m44s ... Identify the pods associated with the tasks in the vp-gitops namespace:
+$ oc get pods -n vp-gitops NAME READY STATUS RESTARTS AGE qtodo-manual-run-p46f7-qtodo-build-artifact-pod 0/1 Completed 0 10m qtodo-manual-run-p46f7-qtodo-build-image-pod 0/1 Completed 0 7m21s ... Review the pod logs to view the output of a specific step. For example, to view image verification messages:
+$ oc logs -n vp-gitops qtodo-manual-run-p46f7-qtodo-verify-image-pod Success: true Result: SUCCESS Violations: 0, Warnings: 0, Successes: 3 Component: Unnamed ImageRef: quay-registry-quay-quay-enterprise.apps.example.com/ztvp/qtodo@sha256:df6506e93a141cfcaeb3b4686b558cddd963410a146b10c3cbd1319122f5f880 Results: ✓ [Success] builtin.attestation.signature_check ... ✓ [Success] builtin.image.signature_check ... Reviewing integrated services The supply chain results are visible in the services used during the build process.
 Reviewing images in Quay If you used Quay as the image registry, you can review the built image inside the registry.
 Procedure Obtain the credentials for the Quay web interface:
 Quay URL:
 $ echo &#34;https://$(oc get route -n quay-enterprise \\ -l quay-component=quay-app-route \\ -o jsonpath=&#39;{.items[0].spec.host}&#39;)&#34; Quay username: Use the value specified in values-hub.yaml or quay-user.
 Quay password:
-$ oc get secret -n layered-zero-trust-hub qtodo-quay-password -o json | jq &#39;.data[&#34;password&#34;] | @base64d&#39; Log in to the Quay web interface.
+$ oc get secret -n vp-gitops qtodo-quay-password -o json | jq &#39;.data[&#34;password&#34;] | @base64d&#39; Log in to the Quay web interface.
 Select the ztvp/qtodo repository.
 In the navigation menu, select Tags.
 Verify that the latest tag is signed and that the .att attestation file is present.
