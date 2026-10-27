@@ -886,6 +886,7 @@ function renderDashboardTableRow(badge) {
 function isProductionSite() {
   var host = window.location.hostname
   return host === 'validatedpatterns.io' ||
+    host === 'netlify.app' ||
     host === 'localhost' ||
     host === '127.0.0.1'
 }
