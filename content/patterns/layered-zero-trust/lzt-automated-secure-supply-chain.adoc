@@ -48,7 +48,7 @@ To start a pipeline execution from the {ocp} Web console:
 
 . Log in to the {ocp} web console.
 . From the left navigation bar, select **Pipelines** -> **Pipelines**.
-. In the **layered-zero-trust-hub** project, find the **qtodo-supply-chain** pipeline.
+. In the **vp-gitops** project, find the **qtodo-supply-chain** pipeline.
 . Click the **Options** menu (⋮) and select **Start**.
 . Verify the parameters. Most default values are correct for single-cluster mode.
 . Configure the following workspaces:
@@ -72,7 +72,7 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   generateName: qtodo-manual-run-
-  namespace: layered-zero-trust-hub
+  namespace: vp-gitops
 spec:
   pipelineRef:
     name: qtodo-supply-chain
@@ -104,7 +104,7 @@ $ oc create -f qtodo-pipeline.yaml
 +
 [source,terminal]
 ----
-$ tkn pipeline logs -n layered-zero-trust-hub -L -f
+$ tkn pipeline logs -n vp-gitops -L -f
 ----
 
 [id="inspect-results"]
@@ -121,7 +121,7 @@ You can inspect the results of the pipeline execution from the {ocp} web console
 
 . Log in to the {ocp} web console.
 . From the left navigation bar, select **Pipelines** -> **Pipelines**.
-. In the **layered-zero-trust-hub** project, find the **qtodo-supply-chain** pipeline.
+. In the **vp-gitops** project, find the **qtodo-supply-chain** pipeline.
 . Click the *PipelineRun* link in the *Last run* column.
 . In the *Details* tab, view the summary of the pipeline execution and tasks.
 . Click on a task or the *Logs* tab to see the output of specific tasks.
@@ -137,7 +137,7 @@ You can inspect the results of the pipeline execution by using the CLI.
 +
 [source,terminal]
 ----
-$ oc get pipelinerun -n layered-zero-trust-hub
+$ oc get pipelinerun -n vp-gitops
 
 NAME                        SUCCEEDED   REASON      STARTTIME   COMPLETIONTIME
 qtodo-manual-run-p46f7      True        Succeeded   7m4s        2m12s
@@ -147,7 +147,7 @@ qtodo-manual-run-p46f7      True        Succeeded   7m4s        2m12s
 +
 [source,terminal]
 ----
-$ oc get taskruns -n layered-zero-trust-hub
+$ oc get taskruns -n vp-gitops
 
 NAME                                               SUCCEEDED   REASON             STARTTIME   COMPLETIONTIME
 qtodo-manual-run-p46f7-qtodo-build-artifact        True        Succeeded          7m44s       5m17s
@@ -156,11 +156,11 @@ qtodo-manual-run-p46f7-qtodo-clone-repository      True        Succeeded        
 ...
 ----
 
-. Identify the pods associated with the tasks in the `layered-zero-trust-hub` namespace:
+. Identify the pods associated with the tasks in the `vp-gitops` namespace:
 +
 [source,terminal]
 ----
-$ oc get pods -n layered-zero-trust-hub
+$ oc get pods -n vp-gitops
 
 NAME                                                    READY   STATUS      RESTARTS   AGE
 qtodo-manual-run-p46f7-qtodo-build-artifact-pod         0/1     Completed   0          10m
@@ -172,7 +172,7 @@ qtodo-manual-run-p46f7-qtodo-build-image-pod            0/1     Completed   0   
 +
 [source,terminal]
 ----
-$ oc logs -n layered-zero-trust-hub qtodo-manual-run-p46f7-qtodo-verify-image-pod
+$ oc logs -n vp-gitops qtodo-manual-run-p46f7-qtodo-verify-image-pod
 
 Success: true
 Result: SUCCESS
@@ -214,7 +214,7 @@ $ echo "https://$(oc get route -n quay-enterprise \
 +
 [source,terminal]
 ----
-$ oc get secret -n layered-zero-trust-hub qtodo-quay-password -o json | jq '.data["password"] | @base64d'
+$ oc get secret -n vp-gitops qtodo-quay-password -o json | jq '.data["password"] | @base64d'
 ----
 
 . Log in to the Quay web interface.
