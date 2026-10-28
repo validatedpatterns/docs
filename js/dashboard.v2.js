@@ -4,17 +4,18 @@
 
 class Badge {
 
-  constructor(base, key, date) {
+  constructor(base, key, date, useJsonMetadata = true) {
     this.base = base
     this.key = key
     this._json = null
+    this.useJsonMetadata = useJsonMetadata
     this.operator = 'N/A'
     this.date = date.substr(0, 10)
     this.pattern = ''
     this.platform = ''
     this.version = ''
 
-    if (isNewCiBadgeBase(base)) {
+    if (this.useJsonMetadata) {
       return
     }
 
@@ -36,7 +37,7 @@ class Badge {
   applyJson(json) {
     this._json = json
 
-    if (!isNewCiBadgeBase(this.base)) {
+    if (!this.useJsonMetadata) {
       return this
     }
 
@@ -84,6 +85,52 @@ class Badge {
 
 // Still present in badge buckets but no longer in the CI matrix (omit from dashboard)
 var CI_DASHBOARD_EXCLUDED_OCP_VERSIONS = ['4.19']
+
+// patternRepo comes from external badge JSON; only link to known GitHub orgs.
+var TRUSTED_PATTERN_REPO_PATH_PREFIXES = [
+  '/validatedpatterns/',
+  '/validatedpatterns-sandbox/'
+]
+
+// Returns true when repoUrl is an https://github.com URL under a trusted org.
+function isTrustedPatternRepo(repoUrl) {
+  if (repoUrl == null || repoUrl === '') {
+    return false
+  }
+  try {
+    var url = new URL(String(repoUrl).trim())
+    if (url.protocol !== 'https:') {
+      return false
+    }
+    if (url.username !== '' || url.password !== '') {
+      return false
+    }
+    if (url.hostname.toLowerCase() !== 'github.com') {
+      return false
+    }
+    var path = url.pathname.toLowerCase()
+    if (path.length > 1 && path.charAt(path.length - 1) !== '/') {
+      path += '/'
+    }
+    for (var i = 0; i < TRUSTED_PATTERN_REPO_PATH_PREFIXES.length; i++) {
+      var prefix = TRUSTED_PATTERN_REPO_PATH_PREFIXES[i]
+      if (path.indexOf(prefix) === 0 && path.length > prefix.length) {
+        return true
+      }
+    }
+    return false
+  } catch (e) {
+    return false
+  }
+}
+
+// Only the old bucket uses filename parsing, new CI badge bucket / external raw badges — hydrate metadata from JSON, not filename.
+function usesJsonMetadata(base) {
+  if (base == null || base === '' || String(base).indexOf('storage.googleapis.com/vp-results') !== -1 ) {
+    return false
+  }
+  return true
+}
 
 function excludeRetiredOcpVersionsFromDashboard(badges) {
   if (!badges || badges.length === 0) {
@@ -155,14 +202,6 @@ var CI_PATTERN_DOC_SLUG = {
   telcohub: 'telco-hub',
   travelops: 'travelops',
   vsk: 'virtualization-starter-kit'
-}
-
-// New CI badge bucket (S3 keys under ci-badges/) — distinct from legacy vp-results filenames.
-
-var NEW_CI_BADGE_KEY_PREFIX = "https://vp-qe-ci-badges"
-
-function isNewCiBadgeBase(base) {
-  return base != null && base.startsWith(NEW_CI_BADGE_KEY_PREFIX)
 }
 
 function normalizeInfraProvider(provider) {
@@ -317,6 +356,9 @@ function stringForKey(key) {
   }
   if (key == 'nutanix') {
     return 'Nutanix'
+  }
+  if (key == 'rhoso-gitops') {
+    return 'RHOSO GitOps'
   }
   return key
 }
@@ -505,7 +547,7 @@ function renderBadgeHtml(badge, field) {
   }
 
   let envLink = encodeURI(badge_url)
-  let branchLink = json_obj.patternRepo != null ? encodeURI(json_obj.patternRepo) : null
+  let branchLink = isTrustedPatternRepo(json_obj.patternRepo) ? encodeURI(json_obj.patternRepo) : null
   let badgeText = '<span class="ci-label">'
   badgeText += '<a href="' + envLink + '"><span class="' + badgeClass + '"><i class="ci-icon fas fa-fw fa-brands fa-git-alt" aria-hidden="true"></i>' + envLabel + '</span></a>'
   if (branchLink != null) {
@@ -632,7 +674,8 @@ function platformDisplayName(platform) {
     'azr': 'Azure',
     'gcp': 'Google Cloud',
     'nutanix': 'Nutanix',
-    'intel': 'On-prem (Intel)'
+    'intel': 'On-prem (Intel)',
+    'baremetal': 'Baremetal',
   }
   return names[platform] || stringForKey(platform)
 }
@@ -843,6 +886,7 @@ function renderDashboardTableRow(badge) {
 function isProductionSite() {
   var host = window.location.hostname
   return host === 'validatedpatterns.io' ||
+    host === 'netlify.app' ||
     host === 'localhost' ||
     host === '127.0.0.1'
 }
@@ -1063,7 +1107,7 @@ function renderPatternCard(pattern, platformBadges, comboBadges, tracker) {
     var platformColor = tracker.platforms[b.platform] || 'unavailable'
     html += '<span class="ci-card-platform" title="' + platformDisplayName(b.platform) + '">'
     html += '<span class="ci-card-platform-dot ' + platformColor + '" id="ci-card-dot-' + patternId + '-' + sanitizeId(b.platform) + '"></span>'
-    html += '<span class="ci-card-platform-label">' + stringForKey(b.platform) + '</span>'
+    html += '<span class="ci-card-platform-label">' + platformDisplayName(b.platform) + '</span>'
     html += '</span>'
   })
   html += '</div>'
@@ -1283,12 +1327,8 @@ function getBadges(xmlText, bucket_url, badge_set) {
 
   for (let i = 0; i < l; i++) {
     let key = entries[i].childNodes[0].nodeValue
-    if (badge_set == "GA" && key.endsWith("stable-badge.json")) {
-      badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
-    } else if (badge_set == "early" && (key.endsWith("prerelease-badge.json") || key.endsWith("nightly-badge.json") || key.endsWith("operator-badge.json"))) {
-      badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
-    } else if (badge_set == "all" && key.endsWith("-badge.json")) {
-      badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i])));
+    if (badgeKeyMatchesSet(key, badge_set)) {
+      badges.push(new Badge(bucket_url, key, getBadgeDate(entries[i]), usesJsonMetadata(bucket_url)))
     } else {
       console.log("Skipping: " + key);
     }
@@ -1379,6 +1419,36 @@ function getBucketOptions(input) {
   return options
 }
 
+function badgeKeyMatchesSet(key, badge_set) {
+  if (badge_set === 'GA' && key.endsWith('stable-badge.json')) {
+    return true
+  }
+  if (badge_set === 'early' && (key.endsWith('prerelease-badge.json') || key.endsWith('nightly-badge.json') || key.endsWith('operator-badge.json'))) {
+    return true
+  }
+  if (badge_set === 'all' && key.endsWith('-badge.json')) {
+    return true
+  }
+  return false
+}
+
+function createBadgesFromExternalSources(sources, badge_set) {
+  const badges = []
+  const sourceList = sources || []
+  sourceList.forEach(function (source) {
+    const base = String(source.base || '').replace(/\/$/, '')
+    const files = source.files || []
+    files.forEach(function (file) {
+      if (!badgeKeyMatchesSet(file, badge_set)) {
+        return
+      }
+      // Date filled from JSON during enrich
+      badges.push(new Badge(base, file, '1970-01-01T00:00:00Z'))
+    })
+  })
+  return badges
+}
+
 function fetchBucketBadges(bucket, inputs) {
   return new Promise(function (resolve) {
     var req = new XMLHttpRequest()
@@ -1450,6 +1520,11 @@ function obtainBadges(inputs) {
         }
         allBadges.push.apply(allBadges, badges || [])
       })
+      var ciSources = createBadgesFromExternalSources(inputs.ci_sources, options.get('sets'))
+      if (ciSources.length > 0) {
+        console.log('Got ' + ciSources.length + ' external badges')
+        allBadges.push.apply(allBadges, ciSources)
+      }
 
       console.log('All badges:', allBadges)
       return enrichBadgesFromJson(allBadges)
