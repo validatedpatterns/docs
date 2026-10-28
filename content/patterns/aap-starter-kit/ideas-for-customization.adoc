@@ -1,0 +1,70 @@
+---
+title: Ideas for customization
+weight: 40
+aliases: /aap-starter-kit/ideas-for-customization/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="ideas-for-customization"]
+== Ideas for customizing the pattern
+
+This pattern is modular so you can start with a small AAP footprint and add hub, Lightspeed, or Automation Orchestrator through install variants.
+You can also change CaC content and chart overrides without rewriting the pattern.
+
+[id="selecting-a-different-variant"]
+=== Selecting a different variant
+
+Set `main.variant` in `values-global.yaml` to one of the following values:
+
+* `minimal-aap`
+* `aap-with-hub`
+* `aap-with-ao`
+* `complete-aap-ao`
+
+Commit the change to your fork, and reinstall or allow Argo CD to sync.
+
+See link:/patterns/aap-starter-kit/installation-details/[Installation details] for what each variant deploys.
+
+[id="replacing-cac-content"]
+=== Replacing CaC content
+
+The `aap-config` application uses overrides in
+link:https://github.com/validatedpatterns/aap-starter-kit/blob/main/overrides/values-aap-config-aeg.yaml[`overrides/values-aap-config-aeg.yaml`].
+Point `agof.cac_repo` and `agof.cac_revision` at your own Config as Code repository to load controller configuration that matches your environment.
+
+[id="tuning-aap-instance-flags"]
+=== Tuning AAP instance flags
+
+Per-variant instance overrides live under `overrides/`:
+
+* `values-aap-instance-minimal.yaml` — hub and Lightspeed disabled
+* `values-aap-instance-with-hub.yaml` — hub enabled
+* `values-aap-instance-complete.yaml` — hub and Lightspeed enabled
+
+Fork the pattern and adjust these files when you need a combination that does not match a shipped variant.
+Keep the AAP `release` field aligned with the operator channel (`stable-2.7`).
+
+[id="using-external-postgresql-for-ao"]
+=== Using an external PostgreSQL for Automation Orchestrator
+
+CloudNativePG is convenient for demos and labs, but Red Hat does not support it for Automation Orchestrator databases.
+For supported environments, replace or bypass `vp-cloudnative-pg-cluster` and point the Automation Orchestrator instance at an externally supported PostgreSQL 15 database.
+Update Vault secrets and Orchestrator chart values accordingly.
+
+[id="extending-from-ansible-edge-gitops"]
+=== Extending from Ansible Edge GitOps
+
+This pattern focuses on AAP installation and CaC.
+If you need OpenShift Virtualization edge workloads managed by AAP, start from
+link:/patterns/ansible-edge-gitops/[Ansible Edge GitOps]
+and reuse ideas from that pattern's customization guide.
+
+[id="next-steps"]
+== Next steps
+
+* link:/patterns/aap-starter-kit/getting-started/[Getting started]
+* link:/patterns/aap-starter-kit/troubleshooting/[Troubleshooting]
