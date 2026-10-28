@@ -1,0 +1,21 @@
+// This file has been generated automatically from the pattern-metadata.yaml file
+// Do not edit manually!
+:metadata_version: 1.0
+:name: emerging-disease-detection
+:description: This pattern deploys a sepsis early warning system driven by clinical AI at the edge
+:pattern_version: 1.0
+:display_name: Emerging Disease Detection
+:repo_url: https://github.com/validatedpatterns/emerging-disease-detection
+:docs_repo_url: https://github.com/validatedpatterns/docs
+:issues_url: https://github.com/validatedpatterns/emerging-disease-detection/issues
+:docs_url: https://validatedpatterns.io/patterns/emerging-disease-detection/
+:ci_url: https://validatedpatterns.io/ci/?pattern=emerging-disease-detection
+:tier: sandbox
+:owners: dminnear-rh
+:requirements_hub_compute_platform_aws_replicas: 3
+:requirements_hub_compute_platform_aws_type: m5.2xlarge
+:requirements_hub_controlPlane_platform_aws_replicas: 3
+:requirements_hub_controlPlane_platform_aws_type: m5.xlarge
+:extra_features_hypershift_support: true
+:extra_features_spoke_support: false
+:external_requirements: 
