@@ -2,7 +2,97 @@
 <script>var _paq=window._paq=window._paq||[];_paq.push(["trackPageView"]),_paq.push(["enableLinkTracking"]),function(){e="//analytics.ossupstream.org/",_paq.push(["setTrackerUrl",e+"matomo.php"]),_paq.push(["setSiteId","8"]);var e,n=document,t=n.createElement("script"),s=n.getElementsByTagName("script")[0];t.async=!0,t.src=e+"matomo.js",s.parentNode.insertBefore(t,s)}()</script></head><body><div class=pf-c-page><header class=pf-c-page__header><div class=pf-c-page__header-brand><a href=/ class=pf-c-page__header-brand-link><img src=/images/validated-patterns.png alt="Validated Patterns"></a></div><div class=pf-c-page__header-tools><nav class="pf-c-nav pf-m-horizontal mobile-nav" role=navigation id=mobile-nav><ul class=pf-c-nav__list><li class=pf-c-nav__item><a class=pf-c-nav__link href=/patterns/ title=Patterns>Patterns</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/learn/ title="Learn about Validated Patterns">Learn</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/demos/ title="Interactive demos">Demos</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/workshop/ title="Validated Patterns Workshop">Workshop</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/contribute/ title="Contribute to Validated Patterns">Contribute</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/blog/ title=Blog>Blog</a></li><li class=pf-c-nav__item><a class=pf-c-nav__link href=/ci/ title="CI Status">Status</a></li></ul></nav><form id=search action=https://validatedpatterns.io/search/ method=get><div class=pf-c-search-input><div class=pf-c-input-group><div class=pf-c-search-input__bar><span class=pf-c-search-input__text><span class=pf-c-search-input__icon><i class="fas fa-search fa-fw" aria-hidden=true></i>
 </span><input id=search-input name=query class=pf-c-search-input__text-input type=text placeholder=Search aria-label=Search></span></div><button form=search class="pf-c-button pf-m-control" type=submit aria-label=Search value=search>
 <i class="fas fa-arrow-right" aria-hidden=true></i></button></div></div></form></div><div class=pf-c-page__header-tools-group><button class="pf-c-button pf-m-plain main-nav-toggle" type=button aria-label="Main navigation" id=main-nav-toggle>
-<i class="fas fa-chevron-down" aria-hidden=true></i></button></div></header><main class=pf-c-page__main><section class=pf-c-page__main-section><div class="pf-l-grid__item pf-m-9-col"><div class=pf-u-text-align-center><div class=pf-c-content style=--pf-c-content--FontSize:1rem><h1 class="pf-c-title pf-m-4xl">Search</h1><div class=page-abstract><p>Enter a keyword to search the site.</p></div></div></div><div id=results class=p-fc-content></div></div></section><script>window.store={"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-architecture/":{title:"Architecture",tags:[],content:`Architecture The Layered Zero Trust pattern implements a layered zero trust architecture that provides workload identity management, secure communication, secret management, runtime security monitoring, and compliance scanning on Red Hat OpenShift Container Platform.
+<i class="fas fa-chevron-down" aria-hidden=true></i></button></div></header><main class=pf-c-page__main><section class=pf-c-page__main-section><div class="pf-l-grid__item pf-m-9-col"><div class=pf-u-text-align-center><div class=pf-c-content style=--pf-c-content--FontSize:1rem><h1 class="pf-c-title pf-m-4xl">Search</h1><div class=page-abstract><p>Enter a keyword to search the site.</p></div></div></div><div id=results class=p-fc-content></div></div></section><script>window.store={"https://validatedpatterns.io/patterns/aap-starter-kit/architecture/":{title:"Architecture",tags:[],content:`Architecture This page describes component schematics for each install variant. For what each variant installs on the cluster and which overrides apply, see Installation details.
+Common components Every variant deploys these components on the single hub cluster:
+Component Role Validated Patterns Operator and OpenShift GitOps
+Installs and syncs the pattern through a single Argo CD instance (global.singleArgoCD: true)
+HashiCorp Vault
+Stores secrets loaded from your secrets file
+External Secrets Operator
+Projects Vault secrets into Kubernetes Secrets for AAP and related charts
+ansible-automation-platform-operator
+Operator channel stable-2.7 in the ansible-automation-platform namespace
+ansible-automation-platform-instance chart
+Deploys the AAP instance; release and feature flags come from per-variant overrides
+aap-config chart
+Loads CaC from the configured repository (default: agof_null_config)
+Related charts:
+ansible-automation-platform-instance
+openshift-data-foundations
+vp-cloudnative-pg-cluster
+automation-orchestrator-instance
+Architecture diagrams Each install variant has a hub-cluster schematic as PNG with matching draw.io source. PNG and draw.io files live in static/images/aap-starter-kit/.
+Diagram Variant PNG draw.io source aap-architecture-minimal-aap
+minimal-aap
+aap-architecture-minimal-aap.png
+aap-architecture-minimal-aap.drawio
+aap-architecture-aap-with-hub
+aap-with-hub
+aap-architecture-aap-with-hub.png
+aap-architecture-aap-with-hub.drawio
+aap-architecture-aap-with-ao
+aap-with-ao
+aap-architecture-aap-with-ao.png
+aap-architecture-aap-with-ao.drawio
+aap-architecture-complete-aap-ao
+complete-aap-ao
+aap-architecture-complete-aap-ao.png
+aap-architecture-complete-aap-ao.drawio
+minimal-aap schematic Default variant. Deploys AAP 2.7 with controller and minimal CaC. Automation hub and Lightspeed are disabled through overrides/values-aap-instance-minimal.yaml.
+Figure 1. AAP Starter Kit architecture (minimal-aap) draw.io source: aap-architecture-minimal-aap.drawio
+Layer What runs Storage
+Cluster default storage classes only (no OpenShift Data Foundation chart)
+AAP features
+Controller; automation hub off; Lightspeed off
+Orchestration
+None
+aap-with-hub schematic Adds OpenShift Data Foundation for RWX storage and enables automation hub. Lightspeed remains disabled. Instance flags come from overrides/values-aap-instance-with-hub.yaml. ODF object storage is disabled in overrides/values-odf-chart.yaml.
+Figure 2. AAP Starter Kit architecture (aap-with-hub) draw.io source: aap-architecture-aap-with-hub.drawio
+Layer What runs Storage
+OpenShift Data Foundation StorageSystem (inventory; object storage disabled)
+AAP features
+Controller and automation hub; Lightspeed off
+Orchestration
+None
+aap-with-ao schematic Adds CloudNativePG and Automation Orchestrator on top of the minimal AAP instance (hub and Lightspeed still disabled). PostgreSQL 15 for Orchestrator and Temporal databases is provided by the vp-cloudnative-pg-cluster chart with overrides in overrides/values-vp-cloudnative-pg-ao.yaml.
+Figure 3. AAP Starter Kit architecture (aap-with-ao) draw.io source: aap-architecture-aap-with-ao.drawio
+Layer What runs Storage
+Cluster default storage for CNPG volumes (no OpenShift Data Foundation)
+AAP features
+Controller; automation hub off; Lightspeed off
+Database
+CloudNativePG PostgreSQL 15 (orchestrator, temporal, temporal_visibility)
+Orchestration
+Automation Orchestrator operator and instance chart
+Red Hat does not support CloudNativePG for Automation Orchestrator databases. Prefer an externally supported PostgreSQL 15 instance when a supported database is required.
+complete-aap-ao schematic Full stack: automation hub, Lightspeed, OpenShift Data Foundation, CloudNativePG, and Automation Orchestrator. Instance flags come from overrides/values-aap-instance-complete.yaml.
+Figure 4. AAP Starter Kit architecture (complete-aap-ao) draw.io source: aap-architecture-complete-aap-ao.drawio
+Layer What runs Storage
+OpenShift Data Foundation StorageSystem (RWX for automation hub)
+AAP features
+Controller, automation hub, and Lightspeed
+Database
+CloudNativePG PostgreSQL 15 for Automation Orchestrator
+Orchestration
+Automation Orchestrator operator and instance chart
+Secrets and credentials Certificate and secret handling uses Vault and External Secrets rather than local policy YAML in the pattern repository.
+Secret / policy Used by aap-manifest
+AAP entitlement (all variants)
+automation-hub-token
+Certified and validated content retrieval
+agof-vault-file
+Optional CaC secret overlay for aap-config
+orchestrator-postgres-secret, temporal-postgres-secret, temporal-visibility-postgres-secret
+aap-with-ao and complete-aap-ao (CNPG / AO)
+postgresPasswordPolicy
+Alphanumeric generated passwords so URL-encoded characters do not break AO Alembic or configparser
+Helper scripts in the pattern repository:
+scripts/ansible_get_credentials.sh — retrieves AAP admin credentials
+scripts/ao_get_credentials.sh — retrieves Automation Orchestrator admin credentials
+Related pages Installation details — Variant installation differences and install sequence
+Getting started — Variant selection, secrets, and deployment
+AAP Starter Kit overview — Install variants summary
+`,url:"https://validatedpatterns.io/patterns/aap-starter-kit/architecture/",breadcrumb:"/patterns/aap-starter-kit/architecture/"},"https://validatedpatterns.io/patterns/layered-zero-trust/lzt-architecture/":{title:"Architecture",tags:[],content:`Architecture The Layered Zero Trust pattern implements a layered zero trust architecture that provides workload identity management, secure communication, secret management, runtime security monitoring, and compliance scanning on Red Hat OpenShift Container Platform.
 Layered architecture overview The ZTVP is structured in three decoupled layers, each building on the one below:
 Layer 0 — Foundation: The always-deployed security baseline. These components are installed automatically with every ZTVP deployment and provide the core Zero Trust capabilities.
 Layer 1 — Feature Sets: Optional capabilities that can be enabled per use case. These extend the foundation with additional security services like supply chain signing, private registries, and network observability.
@@ -247,7 +337,56 @@ Formatting commands and code blocks To enable syntax highlighting, use [source,t
 [source,yaml]
 [source,go]
 [source,javascript]
-`,url:"https://validatedpatterns.io/contribute/contribute-to-docs/",breadcrumb:"/contribute/contribute-to-docs/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-getting-started/":{title:"Getting started",tags:[],content:` Deploying the OPEA QnA chat accelerated with AMD Instinct pattern Prerequisites An OpenShift Container Platform (4.16-4.18) cluster. If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by visiting Red Hat Hybrid Cloud Console.
+`,url:"https://validatedpatterns.io/contribute/contribute-to-docs/",breadcrumb:"/contribute/contribute-to-docs/"},"https://validatedpatterns.io/patterns/aap-starter-kit/getting-started/":{title:"Getting started",tags:[],content:` Deploying the AAP Starter Kit pattern Prerequisites An OpenShift cluster
+To create an OpenShift cluster, go to the Red Hat Hybrid Cloud console.
+Select OpenShift -&gt; Red Hat OpenShift Container Platform -&gt; Create cluster.
+The cluster must have a dynamic StorageClass to provision PersistentVolumes.
+Cluster sizing requirements.
+A GitHub account with a personal access token that has repository read and write permissions.
+The Helm binary. For instructions, see Installing Helm.
+Additional installation tool dependencies. For details, see Patterns quick start.
+An Red Hat Ansible Automation Platform subscription manifest zip file for entitlement.
+An automation hub token if you plan to pull certified or validated content.
+Preparing for deployment Procedure Fork the aap-starter-kit repository on GitHub. You must fork the repository because your fork is updated as part of the GitOps and DevOps processes.
+Clone the forked copy of this repository.
+$ git clone git@github.com:your-username/aap-starter-kit.git Change to the repository root directory:
+$ cd aap-starter-kit Add the upstream repository:
+$ git remote add -f upstream git@github.com:validatedpatterns/aap-starter-kit.git Verify the remote repositories:
+$ git remote -v Example output origin	git@github.com:your-username/aap-starter-kit.git (fetch) origin	git@github.com:your-username/aap-starter-kit.git (push) upstream	git@github.com:validatedpatterns/aap-starter-kit.git (fetch) upstream	git@github.com:validatedpatterns/aap-starter-kit.git (push) Decide which install variant to use and set main.variant in values-global.yaml before install. The default is minimal-aap. For variant purposes and expected installations, see Install variants on the pattern overview page and Installation details.
+main: variant: minimal-aap Make a local copy of the secrets template outside of your repository to hold credentials for the pattern.
+Do not add, commit, or push this file to your repository. Doing so might expose personal credentials to GitHub.
+$ cp values-secret.yaml.template ~/values-secret.yaml Populate the secrets file with credentials that the pattern needs:
+$ vi ~/values-secret.yaml Edit the aap-manifest section to point to your Red Hat Ansible Automation Platform subscription manifest zip file. Create a subscription manifest by following the guidance at Obtaining a manifest file. For example:
+- name: aap-manifest fields: - name: b64content path: &#39;~/Downloads/&lt;manifest_filename&gt;.zip&#39; base64: true Edit the automation-hub-token section to include a token from the Automation Hub Token page:
+- name: automation-hub-token fields: - name: token value: &#39;&lt;your-automation-hub-token&gt;&#39; Optionally edit the agof-vault-file section. For the default CaC repository you can use a minimal value:
+- name: agof-vault-file fields: - name: agof-vault-file value: &#39;---&#39; base64: true If you selected aap-with-ao or complete-aap-ao, keep the PostgreSQL secret entries for Automation Orchestrator. The template generates alphanumeric passwords with postgresPasswordPolicy so special characters do not break AO startup. You can leave onMissingValue: generate for the password fields, or set explicit values. These secrets are not required for minimal-aap or aap-with-hub.
+Create and switch to a new branch:
+$ git checkout -b my-branch Optional: Customize chart overrides under overrides/ or CaC settings in overrides/values-aap-config-aeg.yaml. If you change tracked files, stage and commit them:
+$ git add -A $ git commit -m &#34;Customize AAP Starter Kit for my cluster&#34; Push the changes to your forked repository:
+$ git push origin my-branch The preferred way to install this pattern is by using the ./pattern.sh script.
+Deploying the pattern by using the pattern.sh file Log in to your cluster:
+Obtain an API token by visiting https://oauth-openshift.apps.&lt;your-cluster&gt;.&lt;domain&gt;/oauth/token/request.
+Log in to the cluster:
+$ oc login --token=&lt;retrieved-token&gt; --server=https://api.&lt;your-cluster&gt;.&lt;domain&gt;:6443 Or set the kubeconfig:
+$ export KUBECONFIG=~/&lt;path_to_kubeconfig&gt; Deploy the pattern:
+$ ./pattern.sh make install Verification Verify that the operators are installed. Navigate to Operators → Installed Operators in the OpenShift Container Platform web console. Confirm the Red Hat Ansible Automation Platform operator and External Secrets Operator. For hub variants, also confirm OpenShift Data Foundation. For AO variants, also confirm CloudNativePG and Automation Orchestrator. It typically takes around 30 minutes from running the install command for all of the installation activities to complete. If it takes longer than 60 minutes, something likely requires troubleshooting. Most commonly, this will be a missing or mis-named secret.
+Track Argo CD application sync through the Hub ArgoCD UI from the nines menu. Confirm that the applications listed for your variant in Expected installations by variant are Healthy and Synced.
+Retrieve AAP admin credentials:
+$ ./pattern.sh scripts/ansible_get_credentials.sh For aap-with-ao or complete-aap-ao, retrieve Automation Orchestrator credentials:
+$ ./pattern.sh scripts/ao_get_credentials.sh As part of installing with pattern.sh, HashiCorp Vault is installed. Running ./pattern.sh make install also calls the load-secrets target when secret loading is enabled. For more information, see Vault.
+Verifying install variants After sync, expect the following differences by variant.
+minimal-aap AAP instance with controller; automation hub and Lightspeed disabled.
+No openshift-storage or Automation Orchestrator namespaces.
+aap-with-hub OpenShift Data Foundation and automation hub present; Lightspeed disabled.
+RWX storage available for hub.
+aap-with-ao CloudNativePG and Automation Orchestrator present.
+AAP instance remains without hub and Lightspeed.
+PostgreSQL secrets for Orchestrator and Temporal loaded in Vault under the hub prefix.
+complete-aap-ao Automation hub, Lightspeed, OpenShift Data Foundation, CloudNativePG, and Automation Orchestrator all present.
+Next steps Installation details
+Ideas for customization
+Troubleshooting
+`,url:"https://validatedpatterns.io/patterns/aap-starter-kit/getting-started/",breadcrumb:"/patterns/aap-starter-kit/getting-started/"},"https://validatedpatterns.io/patterns/amd-rag-chat-qna/amd-rag-chat-qna-getting-started/":{title:"Getting started",tags:[],content:` Deploying the OPEA QnA chat accelerated with AMD Instinct pattern Prerequisites An OpenShift Container Platform (4.16-4.18) cluster. If you do not have a running Red Hat OpenShift cluster, you can start one on a public or private cloud by visiting Red Hat Hybrid Cloud Console.
 select Services -&gt; Containers -&gt; Create cluster.
 Required hardware.
 OpenShift Container Platform Cluster must have a configured Image Registry.
@@ -3229,7 +3368,104 @@ Make a small change to the test web pages Now we can try and tweak the hello-wor
 diff --git a/charts/all/hello-world/templates/hello-world-cm.yaml b/charts/all/hello-world/templates/hello-world-cm.yaml index e59561ca..bd416bc6 100644 --- a/charts/all/hello-world/templates/hello-world-cm.yaml +++ b/charts/all/hello-world/templates/hello-world-cm.yaml @@ -14,6 +14,7 @@ data: &lt;/head&gt; &lt;body&gt; &lt;h1&gt;Hello World!&lt;/h1&gt; + &lt;h1&gt;This is a patched version via git&lt;/h1&gt; &lt;br/&gt; &lt;h2&gt; Hub Cluster domain is &#39;{{ .Values.global.hubClusterDomain }}&#39; &lt;br&gt; Once we commit the above change via git commit -a -m &#34;test a change&#34; and run git push origin my-branch we will be able to observe argo applying the above change:
 Summary You did it! You have completed the deployment of the MultiCloud GitOps pattern and you made a small local change and applied it via GitOps! Hopefully you are getting ideas of how you can take advantage of our GitOps framework to deploy and manage your applications.
 For more information on Validated Patterns visit our website
-`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/mcg-amx-rhoai-demo-script/",breadcrumb:"/patterns/multicloud-gitops-amx-rhoai/mcg-amx-rhoai-demo-script/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/installation-details/":{title:"Installation Details",tags:[],content:`Installation Details Installation Steps These are the steps run by make install and what each one does:
+`,url:"https://validatedpatterns.io/patterns/multicloud-gitops-amx-rhoai/mcg-amx-rhoai-demo-script/",breadcrumb:"/patterns/multicloud-gitops-amx-rhoai/mcg-amx-rhoai-demo-script/"},"https://validatedpatterns.io/patterns/aap-starter-kit/installation-details/":{title:"Installation details",tags:[],content:` Installation steps The pattern executes the following steps on the cluster. Subscriptions, applications, and chart overrides differ by install variant; see Variant installation differences.
+Apply the Validated Patterns Operator and OpenShift GitOps (single Argo CD).
+Load secrets into Vault when secret loading is enabled (global.secretLoader.disabled: false).
+Sync the cluster group for the selected main.variant under variants/&lt;variant&gt;/values-&lt;variant&gt;.yaml.
+Install the AAP operator (stable-2.7) and the ansible-automation-platform-instance application with the matching override file.
+Install the aap-config application to load CaC from the configured repository.
+For hub variants, install the OpenShift Data Foundation operator and openshift-data-foundations chart to provide RWX storage for automation hub.
+For Automation Orchestrator variants, install CloudNativePG, vp-cloudnative-pg-cluster, and the Automation Orchestrator operator and instance.
+Variant installation differences The pattern uses the clustergroup variants/ folder layout. When variants/ is present, the patterns operator sets global.vpNewFolderDir=true. This pattern is single-cluster; there are no managed cluster group value files under the variants.
+Variant component differences Component minimal-aap aap-with-hub aap-with-ao complete-aap-ao AAP operator (stable-2.7)
+yes
+yes
+yes
+yes
+AAP instance override
+values-aap-instance-minimal.yaml
+values-aap-instance-with-hub.yaml
+values-aap-instance-minimal.yaml
+values-aap-instance-complete.yaml
+Automation hub
+no
+yes
+no
+yes
+Lightspeed
+no
+no
+no
+yes
+OpenShift Data Foundation (odf app)
+no
+yes
+no
+yes
+CloudNativePG operator
+no
+no
+yes
+yes
+vp-cloudnative-pg-cluster
+no
+no
+yes
+yes
+Automation Orchestrator
+no
+no
+yes
+yes
+Vault + External Secrets
+yes
+yes
+yes
+yes
+aap-config CaC
+yes
+yes
+yes
+yes
+Expected installations by variant After a successful sync, expect the following on the hub cluster.
+minimal-aap (default) Namespaces: vault, external-secrets-operator, external-secrets, ansible-automation-platform, aap-config
+Installed operators: AAP operator, External Secrets Operator
+Argo CD applications: aap, aap-config, vault, openshift-external-secrets
+AAP instance: controller present; automation hub and Lightspeed not deployed
+aap-with-hub Everything in minimal-aap, plus:
+Namespace: openshift-storage
+Operators: OpenShift Data Foundation (odf-operator)
+Argo CD application: odf (openshift-data-foundations chart)
+AAP instance: automation hub enabled; Lightspeed disabled
+RWX storage classes from the ODF chart available for hub
+aap-with-ao Everything in minimal-aap, plus:
+Namespaces: cloudnative-pg, automation-orchestrator
+Operators: CloudNativePG (certified-operators, channel stable-v1), Automation Orchestrator (stable)
+Argo CD applications: vp-cloudnative-pg-cluster, automation-orchestrator
+PostgreSQL cluster named orchestrator-postgres with databases for Orchestrator and Temporal
+AAP instance remains minimal (no hub, no Lightspeed)
+complete-aap-ao Combination of hub and AO stacks:
+OpenShift Data Foundation and automation hub (as in aap-with-hub)
+Lightspeed enabled on the AAP instance
+CloudNativePG and Automation Orchestrator (as in aap-with-ao)
+Variant layout values-global.yaml variants/ minimal-aap/ values-minimal-aap.yaml aap-with-hub/ values-aap-with-hub.yaml aap-with-ao/ values-aap-with-ao.yaml complete-aap-ao/ values-complete-aap-ao.yaml overrides/ values-aap-instance-minimal.yaml values-aap-instance-with-hub.yaml values-aap-instance-complete.yaml values-aap-config-aeg.yaml values-odf-chart.yaml values-vp-cloudnative-pg-ao.yaml Set the variant in values-global.yaml:
+main: variant: minimal-aap For component roles and secret mappings, see Architecture.
+Pattern scripts scripts/ansible_get_credentials.sh
+Runs rhvp.cluster_utils.aap_get_admin_credentials to retrieve AAP admin credentials from the cluster.
+scripts/ao_get_credentials.sh
+Runs rhvp.cluster_utils.ao_get_admin_credentials to retrieve Automation Orchestrator admin credentials. Use this after installing aap-with-ao or complete-aap-ao.
+Install targets Use ./pattern.sh make install to install the pattern and load secrets (when secret loading is configured). Useful related targets from the pattern Makefile:
+Target Purpose ./pattern.sh make install
+Install the pattern and load secrets
+./pattern.sh make operator-deploy
+Install or update without loading secrets
+./pattern.sh make load-secrets
+Load secrets into Vault
+./pattern.sh make show
+Show the template that installation applies
+./pattern.sh make argo-healthcheck
+Check whether Argo CD applications are synced
+`,url:"https://validatedpatterns.io/patterns/aap-starter-kit/installation-details/",breadcrumb:"/patterns/aap-starter-kit/installation-details/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops-kasten/installation-details/":{title:"Installation Details",tags:[],content:`Installation Details Installation Steps These are the steps run by make install and what each one does:
 operator-deploy The operator-deploy task installs the Validated Patterns Operator, which in turn creates a subscription for the OpenShift GitOps operator and installs both the cluster and hub instances of it. The clustergroup application will then read the values-global.yaml and values-hub.yaml files for other subscriptions and applications to install.
 The legacy-install is still provided for users that cannot or do not want to use the Validated Patterns operator. Instead of installing the operator, it installs a helm chart that does the same thing - installs a subscription for OpenShift GitOps and installs a cluster-wide and hub instance of that operator. It then proceeds with installing the clustergroup application.
 Note that both the upgrade and legacy-upgrade targets are now equivalent and interchangeable with install and legacy-install (respectively - legacy-install/legacy-upgrade are not compatible with standard install/upgrade. This was not always the case, so both install/upgrade targets are still provided).
@@ -4124,7 +4360,27 @@ To submit the pipeline, select Run Pipeline (&ldquo;play&rdquo; icon in the top 
 We&rsquo;re now back in the OpenShift AI dashboard and can monitor the progress of our model CI/CD pipeline in real-time. You can select individual tasks to look up details such as pipeline logs, which helps to troubleshoot the pipeline code.
 Once the pipeline has finished running, step over to Gitea and look up the industrial-edge repository (select rhdp-deploy branch if you&rsquo;ve provisioned the pattern through RHDP). Notice the new commit indicating a model update in the test environment.
 (to be continued&hellip;)
-`,url:"https://validatedpatterns.io/patterns/industrial-edge/application/",breadcrumb:"/patterns/industrial-edge/application/"},"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` Lemonade Stand AI Quickstart pattern hub/datacenter cluster size The Lemonade Stand AI Quickstart pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
+`,url:"https://validatedpatterns.io/patterns/industrial-edge/application/",breadcrumb:"/patterns/industrial-edge/application/"},"https://validatedpatterns.io/patterns/aap-starter-kit/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` Cluster sizing for AAP Starter Kit The pattern runs on a single OpenShift hub cluster. The following table lists minimum sizes that support the default minimal-aap variant. Variants that add OpenShift Data Foundation, automation hub, or Automation Orchestrator need more capacity.
+On AWS, m5.4xlarge worker instances are a practical starting point for hub and complete variants.
+Table 1. Minimum cluster requirements (minimal-aap) Node role Count CPU Memory Storage Control plane
+3
+4 vCPU
+16 GB
+100 GB
+Worker
+3
+8 vCPU
+32 GB
+200 GB
+Variant sizing notes Variant Additional capacity considerations minimal-aap
+Baseline AAP controller and Vault footprint
+aap-with-hub
+OpenShift Data Foundation StorageSystem and automation hub; plan for RWX-backed volumes
+aap-with-ao
+CloudNativePG PostgreSQL volumes and Automation Orchestrator pods
+complete-aap-ao
+Combined hub, Lightspeed, ODF, CNPG, and Orchestrator requirements
+`,url:"https://validatedpatterns.io/patterns/aap-starter-kit/cluster-sizing/",breadcrumb:"/patterns/aap-starter-kit/cluster-sizing/"},"https://validatedpatterns.io/patterns/lemonade-stand-quickstart/cluster-sizing/":{title:"Cluster sizing",tags:[],content:` Lemonade Stand AI Quickstart pattern hub/datacenter cluster size The Lemonade Stand AI Quickstart pattern has been tested with a defined set of specifically tested configurations that represent the most common combinations that Red Hat OpenShift Container Platform customers are using or deploying for the x86_64 architecture.
 The datacenter hub OpenShift cluster uses the following the deployment configuration:
 Table 1. Hub cluster minimum requirements Cloud Provider Node Type Number of nodes Instance Type Amazon Web Services
 Control Plane
@@ -5163,7 +5419,25 @@ Order by clicking the Place an Order button on the front page. The menu should l
 Click the Add button next to a menu item; the item name will appear. Add a name for the order:
 Add as many orders as you want. On your last item, click the Place Order button on the item dialog:
 As the orders are serviced by the barista and kitchen services, you can see their status in the Orders section of the page:
-`,url:"https://validatedpatterns.io/patterns/retail/application/",breadcrumb:"/patterns/retail/application/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops/ideas-for-customization/":{title:"Ideas for Customization",tags:[],content:` Why customize the pattern A key goal of the Red Hat patterns development process is to create modular, customizable demos. You can adapt them to fit your specific use cases. For example:
+`,url:"https://validatedpatterns.io/patterns/retail/application/",breadcrumb:"/patterns/retail/application/"},"https://validatedpatterns.io/patterns/aap-starter-kit/ideas-for-customization/":{title:"Ideas for customization",tags:[],content:` Ideas for customizing the pattern This pattern is modular so you can start with a small AAP footprint and add hub, Lightspeed, or Automation Orchestrator through install variants. You can also change CaC content and chart overrides without rewriting the pattern.
+Selecting a different variant Set main.variant in values-global.yaml to one of the following values:
+minimal-aap
+aap-with-hub
+aap-with-ao
+complete-aap-ao
+Commit the change to your fork, and reinstall or allow Argo CD to sync.
+See Installation details for what each variant deploys.
+Replacing CaC content The aap-config application uses overrides in overrides/values-aap-config-aeg.yaml. Point agof.cac_repo and agof.cac_revision at your own Config as Code repository to load controller configuration that matches your environment.
+Tuning AAP instance flags Per-variant instance overrides live under overrides/:
+values-aap-instance-minimal.yaml — hub and Lightspeed disabled
+values-aap-instance-with-hub.yaml — hub enabled
+values-aap-instance-complete.yaml — hub and Lightspeed enabled
+Fork the pattern and adjust these files when you need a combination that does not match a shipped variant. Keep the AAP release field aligned with the operator channel (stable-2.7).
+Using an external PostgreSQL for Automation Orchestrator CloudNativePG is convenient for demos and labs, but Red Hat does not support it for Automation Orchestrator databases. For supported environments, replace or bypass vp-cloudnative-pg-cluster and point the Automation Orchestrator instance at an externally supported PostgreSQL 15 database. Update Vault secrets and Orchestrator chart values accordingly.
+Extending from Ansible Edge GitOps This pattern focuses on AAP installation and CaC. If you need OpenShift Virtualization edge workloads managed by AAP, start from Ansible Edge GitOps and reuse ideas from that pattern’s customization guide.
+Next steps Getting started
+Troubleshooting
+`,url:"https://validatedpatterns.io/patterns/aap-starter-kit/ideas-for-customization/",breadcrumb:"/patterns/aap-starter-kit/ideas-for-customization/"},"https://validatedpatterns.io/patterns/ansible-edge-gitops/ideas-for-customization/":{title:"Ideas for Customization",tags:[],content:` Why customize the pattern A key goal of the Red Hat patterns development process is to create modular, customizable demos. You can adapt them to fit your specific use cases. For example:
 You may not be interested in Ignition as an application.
 You might not have kiosks, but you have other edge computing use cases involving containers.
 You may want to experiment with different RHEL releases.
@@ -6466,7 +6740,26 @@ Virtual Machine Console Access via OpenShift Console Navigate to Virtualization 
 Click on the &ldquo;three dots&rdquo; menu on the right, which will open a dialog like the following:
 The virtual machine console view will show a standard RHEL console login screen. It can be accessed using the initial user name (cloud-user by default) and password (which is what is specified in the Helm chart Values as either the password specific to that machine group, or the default cloudInit.
 Initial User login (cloud-user) In general you can log in to the VMs on the console using the user and password you specified in the Helm chart, or else you can look at the VirtualMachine object and see what the username and password setting are.
-Next Steps Help &amp; Feedback Report Bugs `,url:"https://validatedpatterns.io/patterns/virtualization-starter-kit/openshift-virtualization/",breadcrumb:"/patterns/virtualization-starter-kit/openshift-virtualization/"},"https://validatedpatterns.io/learn/using-validated-pattern-operator/":{title:"Using the Validated Patterns Operator",tags:[],content:`About the Validated Patterns Operator You can use the Validated Patterns Operator to install and manage Validated Patterns. Use the Red Hat Hybrid Cloud Console to install the Validated Patterns Operator. After installing the Operator, you can create an instance where you can specify the details for your pattern. The Validated Patterns Operator then installs and manages the required assets and artifacts that the pattern requires.
+Next Steps Help &amp; Feedback Report Bugs `,url:"https://validatedpatterns.io/patterns/virtualization-starter-kit/openshift-virtualization/",breadcrumb:"/patterns/virtualization-starter-kit/openshift-virtualization/"},"https://validatedpatterns.io/patterns/aap-starter-kit/troubleshooting/":{title:"Troubleshooting",tags:[],content:` Troubleshooting the pattern Checking the deployment status To list pods that are not Running or Completed:
+$ oc get pods -A | grep -v Running | grep -v Completed To check Argo CD application health:
+$ ./pattern.sh make argo-healthcheck Reviewing application logs To check the logs of a specific application pod:
+$ oc logs -n &lt;namespace&gt; &lt;pod-name&gt; Useful namespaces by variant:
+ansible-automation-platform — AAP operator and instance (all variants)
+aap-config — CaC configuration jobs
+openshift-storage — OpenShift Data Foundation (aap-with-hub, complete-aap-ao)
+automation-orchestrator — Automation Orchestrator and CNPG cluster (aap-with-ao, complete-aap-ao)
+Retrieving credentials If you cannot log in to AAP or Automation Orchestrator, retrieve credentials from the cluster:
+$ ./pattern.sh scripts/ansible_get_credentials.sh $ ./pattern.sh scripts/ao_get_credentials.sh Confirm that secrets were loaded into Vault (./pattern.sh make load-secrets) and that External Secrets has projected them into the target namespaces.
+Automation hub storage issues If automation hub pods remain pending on aap-with-hub or complete-aap-ao, confirm that the odf Argo CD application is Healthy and that RWX storage classes from the OpenShift Data Foundation chart exist. Hub requires RWX storage; RWO-only clusters fail to bind hub volumes.
+Automation Orchestrator database issues If Automation Orchestrator fails to start on aap-with-ao or complete-aap-ao:
+Confirm the vp-cloudnative-pg-cluster application is Synced and that the orchestrator-postgres cluster is ready.
+Confirm Vault contains orchestrator-postgres-secret, temporal-postgres-secret, and temporal-visibility-postgres-secret with alphanumeric passwords.
+Avoid passwords that contain @, %, or similar characters; AO builds a PostgreSQL URL that can break Alembic or configparser when those characters are percent-encoded.
+Remember that CloudNativePG is not supported by Red Hat for AO databases; consult the guidance here for Red Hat supported solutions.
+GitOps server DNS label length Variant and cluster group names feed into GitOps server DNS labels that must stay within 63 characters. Use the shipped variant names (minimal-aap, aap-with-hub, aap-with-ao, complete-aap-ao) or keep custom names short.
+Known issues Red Hat does not support CloudNativePG for Automation Orchestrator databases.
+The default CaC repository (agof_null_config) is a minimal placeholder; replace it with your own CaC content for real controller configuration.
+`,url:"https://validatedpatterns.io/patterns/aap-starter-kit/troubleshooting/",breadcrumb:"/patterns/aap-starter-kit/troubleshooting/"},"https://validatedpatterns.io/learn/using-validated-pattern-operator/":{title:"Using the Validated Patterns Operator",tags:[],content:`About the Validated Patterns Operator You can use the Validated Patterns Operator to install and manage Validated Patterns. Use the Red Hat Hybrid Cloud Console to install the Validated Patterns Operator. After installing the Operator, you can create an instance where you can specify the details for your pattern. The Validated Patterns Operator then installs and manages the required assets and artifacts that the pattern requires.
 Installing the Validated Patterns Operator Prerequisites Access to an OpenShift Container Platform cluster using an account with cluster-admin permissions.
 Procedure Navigate in the Red Hat Hybrid Cloud Console to the Operators → OperatorHub page.
 Scroll or type a keyword into the Filter by keyword box to find the Operator you want. For example, type validated patterns to find the Validated Patterns Operator.
@@ -7530,8 +7823,47 @@ update index.yaml
 Next Steps Continue to monitor for any issues in Argo
 Expand the usage in other patterns
 Create a simple way to test charts without pushing them to the main repo (dev/qa workflow)
-`,url:"https://validatedpatterns.io/workshop/multisource/",breadcrumb:"/workshop/multisource/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by tier, focus area, industry, and product.
-`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/patterns/secure-agent-workspace/":{title:"Secure Agent Workspace",tags:[],content:` About the Secure Agent Workspace pattern The Secure Agent Workspace Validated Pattern creates isolated AI agent workspaces on Red Hat OpenShift Container Platform for each user. Each workspace contains a dedicated virtual machine that runs NVIDIA OpenShell and its agent sandboxes. Workspaces are consistent and secure, with single sign-on (SSO), centrally governed sandbox policy, and API keys that never enter the agent environment.
+`,url:"https://validatedpatterns.io/workshop/multisource/",breadcrumb:"/workshop/multisource/"},"https://validatedpatterns.io/patterns/aap-starter-kit/":{title:"AAP Starter Kit",tags:[],content:` AAP Starter Kit This pattern installs and configures Red Hat Ansible Automation Platform on OpenShift Container Platform by using a Config as Code (CaC) and GitOps approach. It uses the same concepts (and charts) as the Ansible Edge GitOps pattern, focusing on Ansible Automation Platform (AAP) itself rather than edge virtualization workloads.
+The pattern deploys a single-cluster hub layout with OpenShift GitOps (single Argo CD), HashiCorp Vault, the External Secrets Operator, an AAP instance, and AAP configuration loaded from a CaC repository. Install variants add automation hub (with OpenShift Data Foundation for RWX storage), Ansible Lightspeed, CloudNativePG, and Automation Orchestrator.
+You might fork the repository to customize chart overrides under overrides/ or to select a non-default install variant. The Getting started page describes variant selection, required secrets, and verification steps.
+Install variants The pattern ships four install variants under variants/ in the repository. Set main.variant in values-global.yaml before install. The default is minimal-aap.
+Variant main.variant Purpose minimal-aap
+minimal-aap (default)
+Ansible Automation Platform 2.7 with controller and minimal CaC. Automation hub and Lightspeed are disabled.
+aap-with-hub
+aap-with-hub
+minimal-aap plus OpenShift Data Foundation and automation hub (RWX storage required).
+aap-with-ao
+aap-with-ao
+minimal-aap plus CloudNativePG (vp-cloudnative-pg-cluster) and Automation Orchestrator.
+complete-aap-ao
+complete-aap-ao
+Automation hub, Lightspeed, and Automation Orchestrator (includes OpenShift Data Foundation and CloudNativePG).
+Variant values live under variants/&lt;name&gt;/values-&lt;name&gt;.yaml. The pattern enables global.singleArgoCD: true and global.vpNewFolderDir: true. Keep variant and cluster group names short so GitOps server DNS labels stay within 63 characters (the complete variant is named complete-aap-ao for that reason).
+Automation hub variants need RWX storage from the Validated Patterns OpenShift Data Foundation chart. Automation Orchestrator variants install the CloudNativePG operator from certified-operators. Red Hat does not support CloudNativePG for Automation Orchestrator databases. Use an externally supported PostgreSQL 15 instance when a supported database is required for your environment.
+See Installation details for what each variant deploys. For component schematics by variant, see Architecture.
+Background Teams that adopt Ansible on OpenShift often need a repeatable starting point that installs the operator and instance, wires secrets through Vault and External Secrets, and loads controller configuration from Git. This pattern provides that baseline and offers install variants so you can add automation hub, Lightspeed, or Automation Orchestrator without rebuilding the pattern from scratch.
+Solution elements Deploy Ansible Automation Platform on OpenShift Container Platform with GitOps
+Load AAP configuration from a CaC repository
+Optionally enable automation hub, Lightspeed, and Automation Orchestrator
+Red Hat technologies Red Hat OpenShift Container Platform
+Red Hat Ansible Automation Platform
+Red Hat OpenShift GitOps
+Red Hat OpenShift Data Foundation (hub and complete variants)
+Other technologies this pattern uses HashiCorp Vault (Community Edition)
+External Secrets Operator
+CloudNativePG (Automation Orchestrator variants; not supported by Red Hat for AO databases)
+Architecture overview All variants run on a single OpenShift cluster (hub cluster group). The default minimal-aap variant deploys Vault, External Secrets, the AAP operator and instance (controller; hub and Lightspeed disabled), and the aap-config CaC application.
+Figure 1. AAP Starter Kit architecture (minimal-aap) draw.io source: aap-architecture-minimal-aap.drawio
+Other variants add OpenShift Data Foundation, automation hub, Lightspeed, CloudNativePG, and Automation Orchestrator. See Architecture for per-variant schematics and draw.io sources.
+Next steps Architecture — Component schematics and draw.io sources by variant
+Getting started — Prerequisites, variant selection, and deployment
+Installation details — Install sequence and expected installations
+Cluster sizing — Resource requirements
+`,url:"https://validatedpatterns.io/patterns/aap-starter-kit/",breadcrumb:"/patterns/aap-starter-kit/"},"https://validatedpatterns.io/patterns/":{title:"Patterns",tags:[],content:`Browse through available patterns and their respective documentation for deployment and operation. Filter patterns by tier, focus area, industry, and product.
+`,url:"https://validatedpatterns.io/patterns/",breadcrumb:"/patterns/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
+Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
+`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/patterns/secure-agent-workspace/":{title:"Secure Agent Workspace",tags:[],content:` About the Secure Agent Workspace pattern The Secure Agent Workspace Validated Pattern creates isolated AI agent workspaces on Red Hat OpenShift Container Platform for each user. Each workspace contains a dedicated virtual machine that runs NVIDIA OpenShell and its agent sandboxes. Workspaces are consistent and secure, with single sign-on (SSO), centrally governed sandbox policy, and API keys that never enter the agent environment.
 Use case Run AI coding and knowledge agents, which execute code and call tools on a user’s behalf, inside a boundary that belongs to one user only.
 Control what agents can reach: which hosts, which programs, and which credentials, from policy kept in Git.
 Onboard and remove users by editing one file in Git, with Red Hat OpenShift GitOps creating or deleting each user’s workspace.
@@ -7609,9 +7941,7 @@ Next steps Getting started
 Cluster sizing
 Ideas for customization
 Troubleshooting
-`,url:"https://validatedpatterns.io/patterns/secure-agent-workspace/",breadcrumb:"/patterns/secure-agent-workspace/"},"https://validatedpatterns.io/":{title:"Validated Patterns",tags:[],content:`
-Deploy complex solutions with unprecedented speed and confidence. Go beyond traditional reference architectures. Validated Patterns deliver automated, rigorously tested application stacks for your hybrid cloud, powered by GitOps.
-`,url:"https://validatedpatterns.io/",breadcrumb:"/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
+`,url:"https://validatedpatterns.io/patterns/secure-agent-workspace/",breadcrumb:"/patterns/secure-agent-workspace/"},"https://validatedpatterns.io/blog/":{title:"Blog",tags:[],content:`Find out the latest news about Validated Patterns.
 `,url:"https://validatedpatterns.io/blog/",breadcrumb:"/blog/"},"https://validatedpatterns.io/blog/2026-08-04-variants-folder-structure/":{title:"Introducing the variants folder structure",tags:[],content:` Preamble As validated patterns grow in complexity, the repository root can become cluttered with numerous values-&lt;clusterGroupName&gt;.yaml files. A pattern that supports a hub, a standalone deployment, and several managed cluster groups might have half a dozen values files sitting alongside charts, overrides, scripts, and everything else.
 Starting with patterns-operator 0.0.78, clustergroup chart v0.9.57, and acm-chart v0.2.10, patterns can adopt a new variant-based directory layout that groups per-cluster values files under a variants/ directory. This keeps the repository root focused on truly global concerns while making it immediately clear which files belong to which deployment scenario.
 What changed A new main.variant field in values-global.yaml replaces (or supplements) main.clusterGroupName. The two fields are functionally equivalent, but when main.variant is set the framework looks for values files inside variants/&lt;variant&gt;/ instead of the repository root.
