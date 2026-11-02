@@ -1,0 +1,209 @@
+---
+title: Installation details
+weight: 20
+aliases: /aap-starter-kit/installation-details/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+[id="installation-steps"]
+== Installation steps
+
+The pattern executes the following steps on the cluster.
+Subscriptions, applications, and chart overrides differ by install variant; see
+link:#variant-installation-differences[Variant installation differences].
+
+. Apply the Validated Patterns Operator and {rh-gitops-short} (single Argo CD).
+. Load secrets into Vault when secret loading is enabled (`global.secretLoader.disabled: false`).
+. Sync the cluster group for the selected `main.variant` under `variants/<variant>/values-<variant>.yaml`.
+. Install the AAP operator (`stable-2.7`) and the `ansible-automation-platform-instance` application with the matching override file.
+. Install the `aap-config` application to load CaC from the configured repository.
+. For hub variants, install the {ocp-data-short} operator and `openshift-data-foundations` chart to provide RWX storage for automation hub.
+. For Automation Orchestrator variants, install CloudNativePG, `vp-cloudnative-pg-cluster`, and the Automation Orchestrator operator and instance.
+
+[id="variant-installation-differences"]
+== Variant installation differences
+
+The pattern uses the clustergroup `variants/` folder layout.
+When `variants/` is present, the patterns operator sets `global.vpNewFolderDir=true`.
+This pattern is single-cluster; there are no managed cluster group value files under the variants.
+
+[id="variant-component-differences"]
+=== Variant component differences
+
+[cols="2,1,1,1,1",options="header"]
+|===
+| Component | `minimal-aap` | `aap-with-hub` | `aap-with-ao` | `complete-aap-ao`
+
+| AAP operator (`stable-2.7`)
+| yes
+| yes
+| yes
+| yes
+
+| AAP instance override
+| `values-aap-instance-minimal.yaml`
+| `values-aap-instance-with-hub.yaml`
+| `values-aap-instance-minimal.yaml`
+| `values-aap-instance-complete.yaml`
+
+| Automation hub
+| no
+| yes
+| no
+| yes
+
+| Lightspeed
+| no
+| no
+| no
+| yes
+
+| {ocp-data-short} (`odf` app)
+| no
+| yes
+| no
+| yes
+
+| CloudNativePG operator
+| no
+| no
+| yes
+| yes
+
+| `vp-cloudnative-pg-cluster`
+| no
+| no
+| yes
+| yes
+
+| Automation Orchestrator
+| no
+| no
+| yes
+| yes
+
+| Vault + External Secrets
+| yes
+| yes
+| yes
+| yes
+
+| `aap-config` CaC
+| yes
+| yes
+| yes
+| yes
+|===
+
+[id="expected-installations"]
+=== Expected installations by variant
+
+After a successful sync, expect the following on the hub cluster.
+
+==== `minimal-aap` (default)
+
+* Namespaces: `vault`, `external-secrets-operator`, `external-secrets`, `ansible-automation-platform`, `aap-config`
+* Installed operators: AAP operator, External Secrets Operator
+* Argo CD applications: `aap`, `aap-config`, `vault`, `openshift-external-secrets`
+* AAP instance: controller present; automation hub and Lightspeed not deployed
+
+==== `aap-with-hub`
+
+* Everything in `minimal-aap`, plus:
+* Namespace: `openshift-storage`
+* Operators: {ocp-data-short} (`odf-operator`)
+* Argo CD application: `odf` (`openshift-data-foundations` chart)
+* AAP instance: automation hub enabled; Lightspeed disabled
+* RWX storage classes from the ODF chart available for hub
+
+==== `aap-with-ao`
+
+* Everything in `minimal-aap`, plus:
+* Namespaces: `cloudnative-pg`, `automation-orchestrator`
+* Operators: CloudNativePG (`certified-operators`, channel `stable-v1`), Automation Orchestrator (`stable`)
+* Argo CD applications: `vp-cloudnative-pg-cluster`, `automation-orchestrator`
+* PostgreSQL cluster named `orchestrator-postgres` with databases for Orchestrator and Temporal
+* AAP instance remains minimal (no hub, no Lightspeed)
+
+==== `complete-aap-ao`
+
+* Combination of hub and AO stacks:
+* {ocp-data-short} and automation hub (as in `aap-with-hub`)
+* Lightspeed enabled on the AAP instance
+* CloudNativePG and Automation Orchestrator (as in `aap-with-ao`)
+
+[id="variant-layout"]
+=== Variant layout
+
+[source,text]
+----
+values-global.yaml
+variants/
+  minimal-aap/
+    values-minimal-aap.yaml
+  aap-with-hub/
+    values-aap-with-hub.yaml
+  aap-with-ao/
+    values-aap-with-ao.yaml
+  complete-aap-ao/
+    values-complete-aap-ao.yaml
+overrides/
+  values-aap-instance-minimal.yaml
+  values-aap-instance-with-hub.yaml
+  values-aap-instance-complete.yaml
+  values-aap-config-aeg.yaml
+  values-odf-chart.yaml
+  values-vp-cloudnative-pg-ao.yaml
+----
+
+Set the variant in `values-global.yaml`:
+
+[source,yaml]
+----
+main:
+  variant: minimal-aap
+----
+
+For component roles and secret mappings, see link:/patterns/aap-starter-kit/architecture/[Architecture].
+
+[id="pattern-scripts"]
+== Pattern scripts
+
+* `scripts/ansible_get_credentials.sh`
++
+Runs `rhvp.cluster_utils.aap_get_admin_credentials` to retrieve AAP admin credentials from the cluster.
+
+* `scripts/ao_get_credentials.sh`
++
+Runs `rhvp.cluster_utils.ao_get_admin_credentials` to retrieve Automation Orchestrator admin credentials.
+Use this after installing `aap-with-ao` or `complete-aap-ao`.
+
+[id="install-targets"]
+== Install targets
+
+Use `./pattern.sh make install` to install the pattern and load secrets (when secret loading is configured).
+Useful related targets from the pattern Makefile:
+
+[cols="1,3",options="header"]
+|===
+| Target | Purpose
+
+| `./pattern.sh make install`
+| Install the pattern and load secrets
+
+| `./pattern.sh make operator-deploy`
+| Install or update without loading secrets
+
+| `./pattern.sh make load-secrets`
+| Load secrets into Vault
+
+| `./pattern.sh make show`
+| Show the template that installation applies
+
+| `./pattern.sh make argo-healthcheck`
+| Check whether Argo CD applications are synced
+|===

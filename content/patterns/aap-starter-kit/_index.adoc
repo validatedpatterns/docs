@@ -1,0 +1,131 @@
+---
+title: AAP Starter Kit
+date: 2026-10-16
+tier: sandbox
+summary: Install Red Hat Ansible Automation Platform on OpenShift with Config as Code, including optional automation hub, Lightspeed, and Automation Orchestrator variants.
+rh_products:
+- Red Hat OpenShift Container Platform
+- Red Hat Ansible Automation Platform
+- Red Hat OpenShift Data Foundation
+- Red Hat OpenShift GitOps
+industries:
+- General
+focus_areas:
+- Automation
+- GitOps
+- DevSecOps
+aliases: /aap-starter-kit/
+pattern_logo: ansible-edge.png
+links:
+  github: https://github.com/validatedpatterns/aap-starter-kit/
+  install: getting-started
+  bugs: https://github.com/validatedpatterns/aap-starter-kit/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+
+== AAP Starter Kit
+
+This pattern installs and configures {rh-ansible} on {ocp} by using a Config as Code (CaC) and GitOps approach.
+It uses the same concepts (and charts) as the link:/patterns/ansible-edge-gitops/[Ansible Edge GitOps] pattern,
+focusing on Ansible Automation Platform (AAP) itself rather than edge virtualization workloads.
+
+The pattern deploys a single-cluster hub layout with {rh-gitops-short} (single Argo CD), HashiCorp Vault, the External Secrets Operator, an AAP instance, and AAP configuration loaded from a CaC repository.
+Install variants add automation hub (with {ocp-data-short} for RWX storage), Ansible Lightspeed, CloudNativePG, and Automation Orchestrator.
+
+You might fork the repository to customize chart overrides under `overrides/` or to select a non-default install variant.
+The link:/patterns/aap-starter-kit/getting-started/[Getting started] page describes variant selection, required secrets, and verification steps.
+
+[id="install-variants"]
+=== Install variants
+
+The pattern ships four install variants under `variants/` in the repository.
+Set `main.variant` in
+link:https://github.com/validatedpatterns/aap-starter-kit/blob/main/values-global.yaml[`values-global.yaml`]
+before install.
+The default is `minimal-aap`.
+
+[cols="1,1,3",options="header"]
+|===
+| Variant | `main.variant` | Purpose
+
+| `minimal-aap`
+| `minimal-aap` (default)
+| {ansible} 2.7 with controller and minimal CaC.
+Automation hub and Lightspeed are disabled.
+
+| `aap-with-hub`
+| `aap-with-hub`
+| `minimal-aap` plus {ocp-data-short} and automation hub (RWX storage required).
+
+| `aap-with-ao`
+| `aap-with-ao`
+| `minimal-aap` plus CloudNativePG (`vp-cloudnative-pg-cluster`) and Automation Orchestrator.
+
+| `complete-aap-ao`
+| `complete-aap-ao`
+| Automation hub, Lightspeed, and Automation Orchestrator (includes {ocp-data-short} and CloudNativePG).
+|===
+
+Variant values live under `variants/<name>/values-<name>.yaml`.
+The pattern enables `global.singleArgoCD: true` and `global.vpNewFolderDir: true`.
+Keep variant and cluster group names short so GitOps server DNS labels stay within 63 characters (the complete variant is named `complete-aap-ao` for that reason).
+
+[NOTE]
+====
+Automation hub variants need RWX storage from the Validated Patterns {ocp-data-short} chart.
+Automation Orchestrator variants install the CloudNativePG operator from `certified-operators`.
+Red Hat does not support CloudNativePG for Automation Orchestrator databases.
+Use an externally supported PostgreSQL 15 instance when a supported database is required for your environment.
+====
+
+See link:/patterns/aap-starter-kit/installation-details/#variant-installation-differences[Installation details] for what each variant deploys.
+For component schematics by variant, see link:/patterns/aap-starter-kit/architecture/[Architecture].
+
+=== Background
+
+Teams that adopt Ansible on OpenShift often need a repeatable starting point that installs the operator and instance, wires secrets through Vault and External Secrets, and loads controller configuration from Git.
+This pattern provides that baseline and offers install variants so you can add automation hub, Lightspeed, or Automation Orchestrator without rebuilding the pattern from scratch.
+
+==== Solution elements
+
+* Deploy {ansible} on {ocp} with GitOps
+* Load AAP configuration from a CaC repository
+* Optionally enable automation hub, Lightspeed, and Automation Orchestrator
+
+==== Red Hat technologies
+
+* {rh-ocp}
+* {rh-ansible}
+* {rh-gitops}
+* {rh-ocp-data-first} (hub and complete variants)
+
+==== Other technologies this pattern uses
+
+* HashiCorp Vault (Community Edition)
+* External Secrets Operator
+* CloudNativePG (Automation Orchestrator variants; not supported by Red Hat for AO databases)
+
+=== Architecture overview
+
+All variants run on a single OpenShift cluster (hub cluster group).
+The default `minimal-aap` variant deploys Vault, External Secrets, the AAP operator and instance (controller; hub and Lightspeed disabled), and the `aap-config` CaC application.
+
+.aap-architecture-diagram
+image::/images/aap-starter-kit/aap-architecture-minimal-aap.png[aap-starter-kit-architecture,title="AAP Starter Kit architecture (minimal-aap)"]
+
+draw.io source: link:/images/aap-starter-kit/aap-architecture-minimal-aap.drawio[`aap-architecture-minimal-aap.drawio`]
+
+Other variants add {ocp-data-short}, automation hub, Lightspeed, CloudNativePG, and Automation Orchestrator.
+See link:/patterns/aap-starter-kit/architecture/[Architecture] for per-variant schematics and draw.io sources.
+
+=== Next steps
+
+* link:/patterns/aap-starter-kit/architecture/[Architecture] — Component schematics and draw.io sources by variant
+* link:/patterns/aap-starter-kit/getting-started/[Getting started] — Prerequisites, variant selection, and deployment
+* link:/patterns/aap-starter-kit/installation-details/[Installation details] — Install sequence and expected installations
+* link:/patterns/aap-starter-kit/cluster-sizing/[Cluster sizing] — Resource requirements
