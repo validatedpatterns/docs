@@ -1,0 +1,41 @@
+---
+title: "Closing the loop: From network policy intent to verified reality"
+date: 2026-09-10
+summary: Declaring network policy is only half the battle. This post covers common mistakes that undermine network policy intent, the importance of verifying real behavior at runtime, and the design-test-deploy-observe loop that underpins the Zero Trust Validated Pattern.
+author: Przemyslaw Roguski
+blog_tags:
+- patterns
+- zero-trust
+- security
+- network-policies
+- openshift
+---
+:toc:
+:imagesdir: /images
+
+== Intent is not verification
+
+A Kubernetes NetworkPolicy declares intent: _this pod should only accept connections from the ingress namespace through port 8443._ But you know the line about good intentions, right? Writing a policy and applying it to a cluster is only half the job. You also need to verify that what you intended is what happens in reality.
+
+The https://validatedpatterns.io/blog/2026-06-29-zero-trust-network-policies/[first article] in the Layered Zero Trust Validated Pattern series showed how this pattern combines default-deny policies with per-pod allow rules to limit the damage potential of a compromised workload in accordance with https://csrc.nist.gov/pubs/sp/800/207/final[NIST SP 800-207].
+
+The https://validatedpatterns.io/blog/2026-07-29-zero-trust-runtime-threat-response/[second article] showed how Red Hat Advanced Cluster Security enforces those boundaries at runtime.
+
+The third article in the series pulls network policy intent into the real world.
+
+* Learn from seven common mistakes that undermine network policies.
+* Understand the limitations of the policy analysis tooling landscape.
+* See how the Layered Zero Trust Validated Pattern uses a design-test-deploy-observe loop to close the gap between policy intent and real-world impact.
+
+== Read the full article
+
+For the complete breakdown of mistakes that catch out even experienced architects, the gap between generated and dry-run policy verification, and how the Layered Zero Trust Validated Pattern addresses these problems, read the full article on the Red Hat blog:
+
+**https://www.redhat.com/en/blog/closing-loop-network-policy-intent-verified-reality[Closing the loop: From network policy intent to verified reality]**
+
+== Get started
+
+The Layered Zero Trust Validated Pattern is open source:
+
+* https://validatedpatterns.io/patterns/layered-zero-trust/[Pattern documentation]
+* https://github.com/validatedpatterns/layered-zero-trust[Source repository]
