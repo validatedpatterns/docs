@@ -1,0 +1,76 @@
+---
+date: 2026-10-22
+title: "From Buzzword to Blueprint: Implementing Zero Trust on Red Hat OpenShift with the Layered Zero Trust Validated Pattern"
+summary: Zero trust is easy to describe; the hard part is making it repeatable. This fourth article in the ZTVP series steps back from individual security layers to show what a user actually gets when those ideas are assembled into a full, deployable architecture.
+author: Przemyslaw Roguski, Michael Epley, Andrew Block
+blog_tags:
+- patterns
+- zero-trust
+- security
+- openshift
+- validated-patterns
+- architecture
+---
+:toc:
+:imagesdir: /images
+
+== From architecture to implementation
+
+Zero trust is often reduced to a memorable phrase: never trust, always verify. The principle is sound, but that sentence does not explain what a platform team should deploy on Monday morning, how a security architect should connect controls across a Kubernetes environment, or how a compliance officer can show that those controls are working.
+
+That implementation gap is exactly where the https://validatedpatterns.io/patterns/layered-zero-trust/[Layered Zero Trust Validated Pattern] (ZTVP) provides its value.
+
+The previous articles in this series focused on specific security layers — https://validatedpatterns.io/blog/2026-06-29-zero-trust-network-policies/[network policies as a last line of defense], https://validatedpatterns.io/blog/2026-07-29-zero-trust-runtime-threat-response/[ACS for real-time threat response], and verifying that policy intent matches live cluster behavior. This fourth article steps back and answers a broader question: what does the complete, assembled architecture actually look like?
+
+== A layered model for real deployments
+
+The ZTVP organizes its capabilities into three decoupled layers, each building on the one below it.
+
+*Layer 0 — Foundation* provides the baseline every deployment can use:
+
+* **Red Hat build of Keycloak** for user authentication and single sign-on (OIDC)
+* **Zero Trust Workload Identity Manager** (SPIFFE/SPIRE) for short-lived cryptographic workload identities
+* **HashiCorp Vault** and the External Secrets Operator for centralized, just-in-time secret delivery
+* **cert-manager** for certificate lifecycle management and encrypted communications
+* **Red Hat Advanced Cluster Security** for runtime monitoring, threat detection, and response
+* **Red Hat Advanced Cluster Management** for centralized policy and multi-cluster management
+* **Compliance Operator** for continuous scanning and remediation against security profiles
+
+*Layer 1 — Feature sets* extend the foundation to meet specific operational requirements: Red Hat Quay for private image storage, Red Hat Trusted Artifact Signer and Trusted Profile Analyzer for software supply-chain provenance, OpenShift Pipelines for automated build and delivery, and network observability for flow visibility.
+
+The key insight of the layered design: a team does not have to solve workload identity, application data protection, image provenance, and network analytics as one indivisible project. Start with the foundation, then add feature sets as your use cases mature.
+
+== Three user journeys that make it concrete
+
+The pattern documentation provides use cases that show real transactions — not toy diagrams. Three are particularly illustrative.
+
+*Protect application data without putting security logic in the application.* A workload authenticates through Keycloak, receives a SPIFFE identity from SPIRE at pod start, uses that identity to retrieve a short-lived database credential from Vault, and operates inside a namespace where default-deny network policy restricts lateral movement. The application code does not handle authentication, mTLS, or credential rotation — the platform does.
+
+*Establish trust from source to running workload.* A change at source triggers a pipeline that builds the artifact, generates an SBOM, analyzes it against known vulnerabilities, signs the image with Trusted Artifact Signer, and deploys only after signature verification. Every step in that chain is visible, reviewable, and policy-enforced before the workload reaches a production cluster.
+
+*Turn security configuration into evidence.* GitOps-managed deployment means the desired state is stored in Git, reconciled by OpenShift GitOps, and auditable as a change history. The Compliance Operator continuously scans against its profiles, and ACS provides runtime findings. The evidence produced gives compliance teams a more useful starting point than a one-time screenshot.
+
+== Framework alignment
+
+A default ZTVP deployment does not automatically certify an organization — but it does provide a substantial and documented baseline across major frameworks:
+
+* **NIST SP 800-207** — all seven ZTA tenets addressed, including SPIFFE-based identity (800-207A §3) and micro-segmentation
+* **NIST SP 800-53 Rev 5** — 45+ controls across 12 families (IA, AC, SC, CM, AU, CA, SI, RA, SA, SR, PL, PM)
+* **CISA ZTMM v2.0** — all five pillars at Advanced-to-Optimal; all three cross-cutting capabilities covered
+* **EO 14028** — zero trust adoption, MFA, encryption, SBOM, and software attestation mandates directly addressed
+* **DoD ZT RA** — six of seven pillars covered with specific capability numbers
+
+The full per-capability mapping is published in the project's GitHub repository.
+
+== Read the full article
+
+For the complete architecture walkthrough, detailed use case narratives, and the per-framework capability breakdown, read the full article on the Red Hat blog:
+
+**https://www.redhat.com/en/blog/buzzword-blueprint-implementing-zero-trust-red-hat-openshift-layered-zero-trust-validated-pattern[From Buzzword to Blueprint: Implementing Zero Trust on Red Hat OpenShift with the Layered Zero Trust Validated Pattern]**
+
+== Get started
+
+The Layered Zero Trust Validated Pattern is open source:
+
+* https://validatedpatterns.io/patterns/layered-zero-trust/[Pattern documentation]
+* https://github.com/validatedpatterns/layered-zero-trust[Source repository]
