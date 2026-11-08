@@ -1,0 +1,101 @@
+---
+# The directory name, the aliases, and the GitHub links in this page set use the
+# current repository name, rhvp-vllm-ray-inference-server. That name can change,
+# pending two open questions to the Validated Patterns team: whether the "rhvp-"
+# prefix is acceptable under the Red Hat trademark guidelines, and whether the
+# repository moves to the validatedpatterns-sandbox organization. If either
+# changes, rename the directory, the aliases, the image folder, and every link
+# in both pages together.
+title: vLLM Ray Inference Server
+date: 2026-11-08
+validated: false
+tier: sandbox
+summary: This pattern deploys an OpenAI-compatible large language model (LLM) server that runs vLLM on Ray Serve with one GPU, built inside the cluster from upstream packages and managed by OpenShift GitOps.
+rh_products:
+  - Red Hat OpenShift Container Platform
+  - Red Hat OpenShift GitOps
+# partners: left out on purpose. The pattern deploys software from NVIDIA (the
+# GPU Operator and the CUDA base image) and from the Ray and vLLM projects, but
+# no partner organization takes part in the pattern. A partners entry suggests a
+# partnership, and the site prints a partner trademark notice for it. Add an
+# entry only when a partner organization joins the pattern.
+industries:
+  - General
+focus_areas:
+  - AI
+aliases: /rhvp-vllm-ray-inference-server/
+links:
+  github: https://github.com/eugo-inc/rhvp-vllm-ray-inference-server
+  install: getting-started
+  arch: /images/rhvp-vllm-ray-inference-server/architecture.svg
+  bugs: https://github.com/eugo-inc/rhvp-vllm-ray-inference-server/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+:vllm-ray-pattern: vLLM Ray Inference Server pattern
+
+// The pattern name can change. See the comment at the top of the front matter.
+
+[id="about-vllm-ray-inference-server-pattern"]
+= About the {vllm-ray-pattern}
+
+The {vllm-ray-pattern} deploys a private, OpenAI-compatible large language model (LLM) endpoint on {rh-ocp}. {rh-gitops} deploys every component from your fork of the pattern repository, and the cluster builds the server image itself from upstream packages. Eugo maintains the pattern as community content in the {sandbox-tier-first}.
+
+[WARNING]
+====
+On {AWS}, the default installation creates one billable GPU instance: a `g6.2xlarge` instance with one NVIDIA L4 GPU. AWS bills the instance for as long as it runs. To skip the instance, set `global.gpuMachineSet: none` in the `values-global.yaml` file in your fork, and push the change before you install the pattern. On other platforms, the pattern creates no instance. Uninstalling the pattern does not delete the instance. For the steps to delete it, see link:getting-started/#uninstalling-the-vllm-ray-pattern[Uninstalling the pattern].
+====
+
+[id="background-vllm-ray"]
+== Background
+
+A team that wants a private, OpenAI-compatible LLM endpoint on its own {ocp} cluster usually assembles the parts by hand: GPU enablement, a serving runtime, a model cache, a secret for gated models, and a way to rebuild the server image when the software stack changes. This pattern describes all of these parts in one Git repository. You fork the repository, set the model, and push the change, and the cluster converges to a running endpoint.
+
+The pattern pins every Python package by hash and the base image by digest, so each rebuild installs the same software stack, and each change is a reviewable commit. The pattern uses upstream open source components only: vLLM, Ray Serve, and Python wheels from PyPI, on the NVIDIA CUDA image that is based on Red{nbsp}Hat Universal Base Image 9.
+
+[id="architecture-vllm-ray"]
+== Architecture
+
+.Architecture of the {vllm-ray-pattern}
+image::/images/rhvp-vllm-ray-inference-server/architecture.svg[Diagram of the vLLM Ray Inference Server pattern. The Validated Patterns Operator and OpenShift GitOps deploy secrets management, GPU enablement, the inference server, and the notebook from your Git fork.]
+
+The pattern works in the following way:
+
+* The {validated-patterns-op} installs {rh-gitops} and points the Argo CD instance at your fork. The `clustergroup` Helm chart then creates every application that the `prod` variant lists.
+* {hashicorp-vault} and the {eso-op} deliver an optional Hugging Face token to the server as a Kubernetes secret. The default model is not gated and needs no token.
+* The {rh-nfd} and the NVIDIA GPU Operator prepare the GPU node. On AWS, an imperative job creates the GPU node.
+* A `BuildConfig` object builds the server image inside the cluster. The server deployment runs one pod with a Ray head, Ray Serve, and the vLLM engine on one GPU. The pod reports `Ready` only after the model loads.
+* A persistent volume claim keeps the model weights across pod restarts.
+* A JupyterLab notebook runs behind the OpenShift OAuth proxy. Only users who can edit the `rhvp-notebook` namespace can open it. The notebook sends requests to the server through the in-cluster service.
+
+[id="components-vllm-ray"]
+== Components that the pattern deploys
+
+The pattern deploys the following Operators:
+
+* {rh-gitops}
+* The {validated-patterns-op}, a community Operator
+* The {eso-op} for Red{nbsp}Hat OpenShift
+* The {rh-nfd}
+* The NVIDIA GPU Operator, from the certified Operators catalog
+
+The pattern deploys the following applications:
+
+* {hashicorp-vault}, from the {solution-name-upstream} Helm chart.
+* The inference server. Ray Serve LLM runs the vLLM engine and serves an OpenAI-compatible API on port 8000. The default model is `Qwen/Qwen2.5-0.5B-Instruct`. The server image turns off the usage statistics of Ray and vLLM.
+* The notebook. A JupyterLab notebook measures the running server: the time from pod start to `Ready`, the time to first token, and the token throughput at several concurrency levels.
+
+The link:https://github.com/eugo-inc/rhvp-vllm-ray-inference-server#what-is-in-the-stock-stack[pattern README] lists the exact version of each component.
+
+[id="support-vllm-ray"]
+== Support
+
+The {vllm-ray-pattern} is community content in the {sandbox-tier-first}. Eugo maintains the pattern and supports it on a best-effort basis through link:https://github.com/eugo-inc/rhvp-vllm-ray-inference-server/issues[GitHub issues] in the pattern repository. The maintainers do not guarantee a response time. Red{nbsp}Hat does not produce, support, or validate this pattern. For an issue with a product that the pattern deploys, contact the vendor of that product.
+
+[id="next-steps-vllm-ray"]
+== Next steps
+
+* link:getting-started[Getting started]
