@@ -39,7 +39,7 @@ To ensure we can best help you please provide the following information:
 * Any changes that were made prior to the failure
 * Expected Outcome: What you thought should have happened
 
-If you are unsure if your issue is product or pattern related, please reach out to the community using https://groups.google.com/g/validatedpatterns or by emailing validatedpatterns@googlegroups.com 
+If you are unsure if your issue is product or pattern related, https://groups.google.com/g/validatedpatterns/about[join the validatedpatterns group] and reach out to the community by posting in the group or emailing mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com]. 
 
 Any pattern-based security issues, such as hard coded secrets, found should be reported to: validated-patterns-team@redhat.com  You can expect a response **within 5 business days**
 
