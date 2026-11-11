@@ -122,6 +122,6 @@ The workflow validates `repo_url`, flattens the metadata, and opens a pull reque
 
 . Review and merge the resulting pull request in `validatedpatterns/docs`.
 
-Contact mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com] if you need help configuring repository secrets for metadata sync.
+https://groups.google.com/g/validatedpatterns/about[Join the validatedpatterns group] and contact mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com] if you need help configuring repository secrets for metadata sync.
 
 For sync failures, see link:/contribute/pattern-metadata-validation/#metadata-sync-workflow-fails-on-repo-url[Metadata sync workflow fails on repo URL] in Validation and troubleshooting.

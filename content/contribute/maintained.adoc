@@ -20,7 +20,7 @@ A pattern categorized under the {maintained} tier implies that the pattern was k
 [id="nominating-a-pattern-for-maintained-tier"]
 == Nominating a pattern for the {maintained} tier
 
-If your pattern qualifies or meets the criteria for {maintained} tier, submit your nomination to mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
+If your pattern qualifies or meets the criteria for {maintained} tier, https://groups.google.com/g/validatedpatterns/about[join the validatedpatterns group] and submit your nomination to mailto:validatedpatterns@googlegroups.com[validatedpatterns@googlegroups.com].
 
 [NOTE]
 ====
