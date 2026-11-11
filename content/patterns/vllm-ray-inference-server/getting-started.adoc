@@ -1,9 +1,7 @@
 ---
-# The pattern name in this page can change. See the comment at the top of the
-# front matter in _index.adoc in this folder.
 title: Getting started
 weight: 10
-aliases: /rhvp-vllm-ray-inference-server/getting-started/
+aliases: /vllm-ray-inference-server/getting-started/
 ---
 
 :toc:
@@ -31,25 +29,25 @@ $ oc get configs.imageregistry.operator.openshift.io cluster -o jsonpath='{.spec
 ** On AWS, the pattern creates one `g6.2xlarge` node with one NVIDIA L4 GPU by default. AWS bills this instance for as long as it runs.
 ** On an AWS cluster that was installed into existing subnets, the job that creates the GPU node fails. Set `global.gpuMachineSet: none` and add a GPU node yourself.
 ** On other platforms, add a node with an NVIDIA GPU that the NVIDIA GPU Operator supports.
-* The server runs on `amd64` nodes by default. If your GPU node is an `arm64` node, read the prerequisites in the link:https://github.com/eugo-inc/rhvp-vllm-ray-inference-server/blob/main/AGENTS.md#prerequisites[AGENTS.md file] in the pattern repository before you install.
+* The server runs on `amd64` nodes by default. If your GPU node is an `arm64` node, read the prerequisites in the link:https://github.com/eugo-inc/vllm-ray-inference-server/blob/main/AGENTS.md#prerequisites[AGENTS.md file] in the pattern repository before you install.
 * On your workstation, Podman 4.3 or later, Git, and the `oc` CLI, logged in to the cluster. If you set the `KUBECONFIG` environment variable, it must point to a file in your home directory. For the other installation tool dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
 
 .Procedure
 
-. Fork the link:https://github.com/eugo-inc/rhvp-vllm-ray-inference-server[rhvp-vllm-ray-inference-server] repository on GitHub.
+. Fork the link:https://github.com/eugo-inc/vllm-ray-inference-server[vllm-ray-inference-server] repository on GitHub.
 
 . Clone your fork:
 +
 [source,terminal,subs="+quotes"]
 ----
-$ git clone https://github.com/__<your_username>__/rhvp-vllm-ray-inference-server.git
+$ git clone https://github.com/__<your_username>__/vllm-ray-inference-server.git
 ----
 
 . Go to the root directory of the repository:
 +
 [source,terminal]
 ----
-$ cd rhvp-vllm-ray-inference-server
+$ cd vllm-ray-inference-server
 ----
 
 . Edit the `values-global.yaml` file:
@@ -71,7 +69,7 @@ $ git push
 ----
 $ mkdir -p ~/.config/validated-patterns
 $ cp values-secret.yaml.template \
-    ~/.config/validated-patterns/values-secret-rhvp-vllm-ray-inference-server.yaml
+    ~/.config/validated-patterns/values-secret-vllm-ray-inference-server.yaml
 ----
 .. In the copied file, set the `value` of the `hftoken` field to your Hugging Face token, which starts with `hf_`. Do not commit this file.
 
@@ -154,7 +152,7 @@ $ oc get route -n rhvp-notebook
 
 . Open the URL in a browser and log in with your OpenShift account.
 
-. Open the `stock_vs_eugo_inference.ipynb` notebook and run all cells. The notebook pod copies the notebook folder to a scratch directory each time that it starts, so download any change that you want to keep.
+. Open the `inference_timings.ipynb` notebook and run all cells. The notebook pod copies the notebook folder to a scratch directory each time that it starts, so download any change that you want to keep.
 
 . Optional: To give another user access to the notebook, grant the `edit` role in the `rhvp-notebook` namespace:
 +
@@ -202,5 +200,5 @@ $ oc get pv
 [id="next-steps-vllm-ray-getting-started"]
 == Next steps
 
-* For the web console installation, private forks, updates, and troubleshooting, see the link:https://github.com/eugo-inc/rhvp-vllm-ray-inference-server/blob/main/AGENTS.md[AGENTS.md file] in the pattern repository.
+* For the web console installation, private forks, updates, and troubleshooting, see the link:https://github.com/eugo-inc/vllm-ray-inference-server/blob/main/AGENTS.md[AGENTS.md file] in the pattern repository.
 * For the pattern overview, see link:../[{vllm-ray-pattern}].
