@@ -18,6 +18,7 @@ You deploy the pattern from your own fork of the pattern repository. {rh-gitops}
 .Prerequisites
 
 * An {ocp} 4.18 or later cluster, and cluster administrator access. To create a cluster, go to the link:https://console.redhat.com/[{hybrid-console-first}] and select *Services -> Containers -> Create cluster*.
+* A cluster that does not already run the {rh-nfd} or the NVIDIA GPU Operator. The pattern installs both Operators itself, with its own `OperatorGroup` objects and settings, and can conflict with existing installations of these Operators. The pattern has not been tested on a cluster that runs {rhoai}.
 * A storage class that provisions persistent volumes dynamically. The model cache uses one persistent volume claim.
 * The {ocp-registry} in the `Managed` state, and the `Build` and `ImageRegistry` cluster capabilities enabled. The cluster builds the server image and the notebook image itself. On bare metal and on vSphere, the registry starts in the `Removed` state. To check the registry state, run the following command:
 +
