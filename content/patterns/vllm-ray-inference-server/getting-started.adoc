@@ -94,8 +94,8 @@ The installer waits up to 60 minutes for every Argo CD application to report `Sy
 [source,terminal]
 ----
 $ oc get applications.argoproj.io -A
-$ oc get builds -n rhvp-inference
-$ oc get pods -n rhvp-inference -w
+$ oc get builds -n vllm-inference
+$ oc get pods -n vllm-inference -w
 ----
 +
 The server pod stays in the `Pending` state until a node advertises the `nvidia.com/gpu` resource. The pod reports `Ready` after it loads the model.
@@ -103,7 +103,7 @@ The server pod stays in the `Pending` state until a node advertises the `nvidia.
 [id="verifying-the-vllm-ray-pattern"]
 == Verifying the inference server
 
-The server is reachable inside the cluster at `http://ray-serve-llm.rhvp-inference.svc:8000`. To send a test request from your workstation, forward the server port.
+The server is reachable inside the cluster at `http://ray-serve-llm.vllm-inference.svc:8000`. To send a test request from your workstation, forward the server port.
 
 .Procedure
 
@@ -111,7 +111,7 @@ The server is reachable inside the cluster at `http://ray-serve-llm.rhvp-inferen
 +
 [source,terminal]
 ----
-$ oc port-forward svc/ray-serve-llm 8000:8000 -n rhvp-inference
+$ oc port-forward svc/ray-serve-llm 8000:8000 -n vllm-inference
 ----
 
 . In another terminal, list the models that the server serves:
@@ -139,7 +139,7 @@ The `model` field takes the value of `global.model.id`. Any OpenAI-compatible cl
 [id="opening-the-notebook-vllm-ray"]
 == Opening the notebook
 
-The notebook pod runs JupyterLab behind the OpenShift OAuth proxy. Users who can edit the `rhvp-notebook` namespace, and cluster administrators, can open it.
+The notebook pod runs JupyterLab behind the OpenShift OAuth proxy. Users who can edit the `vllm-notebook` namespace, and cluster administrators, can open it.
 
 .Procedure
 
@@ -147,18 +147,18 @@ The notebook pod runs JupyterLab behind the OpenShift OAuth proxy. Users who can
 +
 [source,terminal]
 ----
-$ oc get route -n rhvp-notebook
+$ oc get route -n vllm-notebook
 ----
 
 . Open the URL in a browser and log in with your OpenShift account.
 
 . Open the `inference_timings.ipynb` notebook and run all cells. The notebook pod copies the notebook folder to a scratch directory each time that it starts, so download any change that you want to keep.
 
-. Optional: To give another user access to the notebook, grant the `edit` role in the `rhvp-notebook` namespace:
+. Optional: To give another user access to the notebook, grant the `edit` role in the `vllm-notebook` namespace:
 +
 [source,terminal,subs="+quotes"]
 ----
-$ oc adm policy add-role-to-user edit __<user_name>__ -n rhvp-notebook
+$ oc adm policy add-role-to-user edit __<user_name>__ -n vllm-notebook
 ----
 
 [id="uninstalling-the-vllm-ray-pattern"]
@@ -190,7 +190,7 @@ $ oc get machinesets -n openshift-machine-api \
 $ oc delete machineset __<machine_set_name>__ -n openshift-machine-api
 ----
 
-. Check for a leftover persistent volume from the `rhvp-inference/ray-serve-llm-models` claim:
+. Check for a leftover persistent volume from the `vllm-inference/ray-serve-llm-models` claim:
 +
 [source,terminal]
 ----

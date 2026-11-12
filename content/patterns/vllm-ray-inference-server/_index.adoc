@@ -56,7 +56,7 @@ The pattern works in the following way:
 * The {rh-nfd} and the NVIDIA GPU Operator prepare the GPU node. On AWS, an imperative job creates the GPU node.
 * A `BuildConfig` object builds the server image inside the cluster. The server deployment runs one pod with a Ray head, Ray Serve, and the vLLM engine on one GPU. The pod reports `Ready` only after the model loads.
 * A persistent volume claim keeps the model weights across pod restarts.
-* A JupyterLab notebook runs behind the OpenShift OAuth proxy. Only users who can edit the `rhvp-notebook` namespace can open it. The notebook sends requests to the server through the in-cluster service.
+* A JupyterLab notebook runs behind the OpenShift OAuth proxy. Only users who can edit the `vllm-notebook` namespace can open it. The notebook sends requests to the server through the in-cluster service.
 
 [id="components-vllm-ray"]
 == Components that the pattern deploys
@@ -73,7 +73,7 @@ The pattern deploys the following applications:
 
 * {hashicorp-vault}, from the {solution-name-upstream} Helm chart.
 * The inference server. Ray Serve LLM runs the vLLM engine and serves an OpenAI-compatible API on port 8000. The default model is `Qwen/Qwen2.5-0.5B-Instruct`. The server image turns off the usage statistics of Ray and vLLM.
-* The notebook. A JupyterLab notebook measures the running server: the time from pod start to `Ready`, the time to first token, and the token throughput at several concurrency levels.
+* The notebook. A JupyterLab notebook measures the running server: the time from pod start to `Ready`, the time to first token, the decode speed of one stream, and the token throughput at several concurrency levels.
 
 The link:https://github.com/eugo-inc/vllm-ray-inference-server#what-is-in-the-stock-stack[pattern README] lists the exact version of each component.
 
