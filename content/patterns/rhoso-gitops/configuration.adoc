@@ -1,5 +1,5 @@
 ---
-title: Configuration
+title: RHOSO GitOps pattern configuration
 weight: 30
 aliases: /rhoso-gitops/configuration/
 ---

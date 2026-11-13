@@ -1,7 +1,9 @@
 ---
-title: Getting started
-weight: 10
-aliases: /rhoso-gitops/getting-started/
+title: Deploying the RHOSO GitOps pattern
+weight: 20
+aliases:
+  - /rhoso-gitops/deploying-rhoso-gitops-pattern/
+  - /rhoso-gitops/getting-started/
 ---
 
 :toc:

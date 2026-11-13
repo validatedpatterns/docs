@@ -63,7 +63,7 @@ To deploy {rh-rhoso-short}, point each application at your own Git overlay
 .Default upstream applications
 [cols="2,3,2,3",options="header"]
 |===
-| Application | Purpose | Upstream path | {rh-rhoso} docs
+| Application | Purpose | Upstream path | Documentation
 
 | `operator-dependencies`
 | Infrastructure Operators (cert-manager, MetalLB, nmstate, observability)
@@ -119,7 +119,7 @@ Always pin `targetRevision` to a *tag* or *commit hash* for stability.
 ====
 
 In `overrides/values-rhoso-gitops.yaml`, set `targetRevision` for each
-application that you want to pin:
+application that you want to pin to a specific revision:
 
 [source,yaml]
 ----
@@ -130,8 +130,7 @@ applications:
     targetRevision: "abc123def456"           # commit hash — also safe
 ----
 
-Apply the same key under every application you want on that revision, or only
-the entries that you want to change; unspecified keys keep chart defaults.
+Applications without an explicit `targetRevision` use the default *automated sync* behavior.
 
 [id="rhoso-gitops-disable-automated-sync"]
 == Disabling automated sync for an application
@@ -196,13 +195,13 @@ applications:
   openstack-controlplane:
     repoURL: "https://github.com/example/your-gitops.git"
     path: "environments/prod/controlplane"
-    targetRevision: "main"
+    targetRevision: "version-x.y.z"
 ----
 
 [id="rhoso-gitops-kustomize-components"]
 == Adding Kustomize components
 
-For example, add a secrets Operator component through `operator-dependencies`:
+To include a Kustomize component in an application, define the component under `operator-dependecies.kustomize`. For example, to add a secrets Operator component:
 
 [source,yaml]
 ----
