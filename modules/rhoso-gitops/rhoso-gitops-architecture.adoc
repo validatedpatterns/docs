@@ -5,9 +5,7 @@
 = {rhoso-gitops-pattern} architecture
 
 The {rhoso-gitops-pattern} delivers {rh-rhoso-short} configuration through Argo CD
-Applications that the *rhoso-gitops* meta-chart creates. The pattern uses GitOps
-delivery through a single Argo CD namespace, manages infrastructure topology, and
-converges deployment through retry policies.
+Applications that the *rhoso-gitops* meta-chart creates. The pattern uses GitOps to deploy all Argo CD applications to a single namespace, control cluster topology, and converge deployment dependencies using retry policies.
 
 [id="rhoso-gitops-gitops-delivery"]
 == GitOps delivery flow
@@ -30,7 +28,7 @@ The delivery path is:
 .GitOps application delivery
 image::rhoso-gitops/rhoso-gitops-applications.png[{rhoso-gitops-pattern} GitOps application delivery]
 
-All child Applications deploy at sync-wave 0 and converge eventually through
+All child Applications deploy at sync-wave `0` and converge eventually through
 retry policies.
 
 [id="rhoso-gitops-argocd-namespace"]
@@ -43,7 +41,7 @@ enabled by `global.singleArgoCD: true` in `values-global.yaml`. The
 the same namespace.
 
 For more information about this option, see the
-link:https://validatedpatterns.io/blog/2026-06-04-single-argocd-option/[single ArgoCD blog post].
+link:https://validatedpatterns.io/blog/2026-06-04-single-argocd-option/[single Argo CD blog post].
 
 [id="rhoso-gitops-infrastructure-topology"]
 == Infrastructure topology
@@ -53,7 +51,7 @@ and `OpenStackControlPlane` services on control-plane nodes). Separate {rhel-sho
 hosts run the {rh-rhoso-short} data plane (data plane elements on compute nodes).
 
 The GitOps delivery flow defines *how* configuration reaches the cluster. The
-infrastructure topology defines *what* gets deployed:
+infrastructure topology defines *what* gets deployed.
 
 .{rh-rhoso-short} infrastructure topology
 image::rhoso-gitops/rhoso-gitops-infrastructure.png[{rhoso-gitops-pattern} infrastructure topology]
@@ -72,27 +70,30 @@ simultaneously. Each child retries (per `syncPolicy.retry`) until its upstream
 dependencies resolve and it converges eventually.
 
 For the full list of child applications, their upstream paths, and links to the
-corresponding {rh-rhoso} product documentation, see
-link:configuration/#rhoso-gitops-configuration[Configuration] >
-link:configuration/#rhoso-gitops-upstream-applications[Upstream applications].
+corresponding {rh-rhoso} product documentation, see link:configuration/#rhoso-gitops-upstream-applications[Upstream applications].
 
-After you change overrides, confirm child applications in the Argo CD UI or with
-`oc get applications -n vp-gitops`.
+After you change overrides,confirm that child applications are healthy by using
+the Argo CD UI or running the following command:
+
+[source,terminal]
+---
+$ oc get applications -n vp-gitops
+---
 
 [id="rhoso-gitops-cluster-requirements"]
 == Cluster requirements
 
 {rh-rhoso-short} requires bare-metal infrastructure for both the {rh-ocp} cluster
-and the compute nodes. {rh-rhoso-short} does not support cloud-based instance types
-such as AWS, GCP, or Azure.
+and the compute nodes. {rh-rhoso-short} does not support cloud-based infrastructure
+such as deployments on AWS, GCP, or Azure.
 
 For detailed hardware, software, and network requirements, see
-link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/planning_your_deployment/assembly_infrastructure-and-system-requirements[Infrastructure and system requirements]
-in the {rh-rhoso} _Planning your deployment_ guide.
+link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/plan-ref_rhocp_cluster_requirements[Infrastructure and system requirements]
+in the {rh-rhoso} documentation.
 
 [id="rhoso-gitops-dataplane-hosts"]
-== Data plane host requirements
+== Data plane requirements
 
-The {rh-ocp} cluster hosts the {rh-rhoso-short} control plane. A full
-{rh-rhoso-short} deployment also requires separate {rhel-short} hosts for the
+Deploying {rh-rhoso-short} requires separate {rhel-short} hosts for the
 data plane (compute nodes running data plane elements).
+For detailed data plane requirements, see link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/plan-ref_data_plane_node_requirements[Data plane node requirements] in the {rh-rhoso} documentation.

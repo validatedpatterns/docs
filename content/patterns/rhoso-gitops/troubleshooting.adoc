@@ -49,23 +49,23 @@ $ ./pattern.sh make argo-healthcheck
 [id="rhoso-gitops-check-argocd"]
 == Checking Argo CD application status
 
-All Argo CD applications run in the `vp-gitops` namespace:
+Confirm the health of the Argo CD applications.
 
-. List applications in `vp-gitops`:
+. Confirm that all Argo CD applications run in the `vp-gitops` namespace:
 +
 [source,terminal]
 ----
 $ oc get applications -n vp-gitops
 ----
 
-. Inspect a child application that is out of sync or unhealthy:
+. Inspect any child application that is out of sync or unhealthy:
 +
 [source,terminal,subs="+quotes"]
 ----
 $ oc describe application __<application_name>__ -n vp-gitops
 ----
 
-Use the Argo CD UI in the `vp-gitops` namespace to review application status,
+. Use the Argo CD UI in the `vp-gitops` namespace to review application status,
 resource health, and diff details for upstream overlays.
 
 [id="rhoso-gitops-check-pods"]
