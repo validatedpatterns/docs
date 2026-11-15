@@ -98,9 +98,9 @@ No image comparison has run on {ocp} yet, and neither autoscaler has added a rea
 [id="partner-results-vllm-ray"]
 == Partner results: Eugo
 
-Eugo measured its next vLLM image (release pending) against the upstream `vllm/vllm-openai` v0.33.0 image on one NVIDIA DGX Spark that other jobs kept busy, in paired rounds with an exact sign test.
+Eugo measured its next vLLM test build (release pending) against the upstream `vllm/vllm-openai` v0.33.0 image on one NVIDIA DGX Spark that other jobs kept busy, in paired rounds with an exact sign test.
 
-* *Time for a new server to serve.* With Qwen2.5-0.5B-Instruct in plain `vllm serve` containers, the software caches empty and the model files already in memory, a new Eugo server served its first token a median of 20.2 seconds (22%) sooner than the upstream image with `--attention-backend FLASHINFER`, in 6 of 6 rounds (p = 0.031). The Eugo build in these runs picked Triton attention by itself; upstream with `--attention-backend TRITON_ATTN` was not part of these runs, and the lead against it is likely smaller.
+* *Time for a new server to serve.* With Qwen2.5-0.5B-Instruct in plain `vllm serve` containers, the software caches empty and the model files already in memory, a new Eugo server served its first token sooner than the upstream image in every paired round with each of three upstream attention settings: a median of 10.9 seconds (18%) sooner with FlashInfer and its TRT-LLM attention turned off (11 of 11 rounds), 12.0 seconds (20%) sooner with `--attention-backend TRITON_ATTN` (9 of 9), and 16.4 seconds (25%) sooner with `--attention-backend FLASHINFER` (10 of 10), with p = 0.004 or lower after Holm's correction. Both sides loaded the weights eagerly, and the Eugo build chose its attention kernel itself.
 * *Starts that succeed first time.* The vLLM start-up memory check stopped 4 of 12 upstream starts and none of 28 Eugo starts. Eugo's vLLM carries a fix that mitigates this.
 
 For details, see the link:https://github.com/eugo-inc/vllm-ray-inference-server#partner-results-eugo[Partner results: Eugo] section of the pattern README.
