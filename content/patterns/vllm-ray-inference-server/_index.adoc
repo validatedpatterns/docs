@@ -85,6 +85,16 @@ The pattern deploys the following applications:
 
 The link:https://github.com/eugo-inc/vllm-ray-inference-server#what-is-in-the-stock-stack[pattern README] lists the exact version of each component.
 
+[id="compare-scale-out-vllm-ray"]
+== Image comparison and scale out
+
+The pattern has two optional features, and both are off by default:
+
+* *Image comparison.* A job in the cluster runs two server images through the same benchmark, on the same GPU, with the same model and requests. The job records the time to ready, the time to first answer, and, at each load level, the time to first token, the inter-token latency, the output tokens per second, and the output tokens per joule of GPU energy. Each round also starts an identical copy of each image. A rule that is fixed before the first launch counts a difference between the images only when it is larger than the gap between two starts of one image and significant in an exact sign test over the paired rounds. Each case ends with a verdict, such as FASTER, SLOWER, or TIE, or with NO VERDICT and a reason. A run scales the inference server to zero pods for its whole length.
+* *Scale out.* Ray Serve can add vLLM replicas inside the server pod. With `global.scaleOut.mode: keda`, the Red{nbsp}Hat Custom Metrics Autoscaler, the supported build of KEDA, adds whole server pods when the vLLM count of waiting requests per pod rises above a set limit, and removes them after a cooldown. The image comparison also has a scale-out mode: at a fixed request rate, it starts a second replica of each image at a fixed time, and measures how soon that replica gives its first answer and what share of the requests meets the latency goals. For now, this mode runs only with Docker on one machine, not in the cluster.
+
+No image comparison has run on {ocp} yet, and neither autoscaler has added a real vLLM replica or pod yet. For the settings, the steps, and what has not been checked, see the link:https://github.com/eugo-inc/vllm-ray-inference-server#compare-two-images[Compare two images] and link:https://github.com/eugo-inc/vllm-ray-inference-server#scale-out[Scale out] sections of the pattern README.
+
 [id="partner-results-vllm-ray"]
 == Partner results: Eugo
 
