@@ -90,7 +90,7 @@ The link:https://github.com/eugo-inc/vllm-ray-inference-server#what-is-in-the-st
 
 Eugo measured its next vLLM image (release pending) against the upstream `vllm/vllm-openai` v0.33.0 image on one NVIDIA DGX Spark that other jobs kept busy, in paired rounds with an exact sign test.
 
-* *Time for a new server to serve.* With Qwen2.5-0.5B-Instruct in plain `vllm serve` containers, the software caches empty and the model files already in memory, a new Eugo server served its first token a median of 20.2 seconds (22%) sooner than the upstream image with `--attention-backend FLASHINFER`, in 6 of 6 rounds (p = 0.031).
+* *Time for a new server to serve.* With Qwen2.5-0.5B-Instruct in plain `vllm serve` containers, the software caches empty and the model files already in memory, a new Eugo server served its first token a median of 20.2 seconds (22%) sooner than the upstream image with `--attention-backend FLASHINFER`, in 6 of 6 rounds (p = 0.031). Eugo's image picked Triton attention by itself; upstream with `--attention-backend TRITON_ATTN` was not measured, and the lead against it is likely smaller.
 * *Starts that succeed first time.* The vLLM start-up memory check stopped 4 of 12 upstream starts and none of 28 Eugo starts. Eugo's vLLM carries a fix that mitigates this.
 
 For details, see the link:https://github.com/eugo-inc/vllm-ray-inference-server#partner-results-eugo[Partner results: Eugo] section of the pattern README.
