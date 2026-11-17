@@ -89,21 +89,14 @@ ok: [localhost] => {
 }
 
 PLAY RECAP *******************************************************************************
-localhost                  : ok=7    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+localhost                  : ok=7    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ----
 
 == Pattern AAP Configuration Details
 
-This section describes the AAP configuration during the pattern installation. All of the configuration discussed in this section is applied by the
-https://github.com/validatedpatterns/ansible-edge-gitops/blob/main/scripts/ansible_load_controller.sh[ansible_load_controller.sh]
-script.
+This section describes the AAP configuration during the pattern installation. All of the configuration discussed in this section is applied by the https://charts.validatedpatterns.io/charts/aap-config[aap-config] chart. This chart embeds
+https://validatedpatterns.io/patterns/ansible-gitops-framework/[AGOF] v3 to apply an AAP Config-as-Code (CaC) configuration to the AAP instance in the cluster.
 
-The `ansible_load_controller.sh` script automates the configuration of the Ansible Automation Platform (AAP) by executing a series of Ansible playbooks. These playbooks perform tasks such as retrieving credentials, parsing secrets, and configuring the AAP instance.
-
-Key components of the configuration process:
-
-* Retrieving AAP Credentials: The script runs the `ansible_get_credentials.yml` playbook to obtain necessary credentials for accessing and managing the AAP instance.
-
-* Parsing Secrets: It then executes the `parse_secrets_from_values_secret.yml` playbook to extract and process sensitive information stored in the `values_secret.yaml` file, which includes passwords, tokens, or other confidential data required for configuration.
-
-* Configuring the AAP Instance: Finally, the script runs the `ansible_configure_controller.yml` playbook to set up and configure the AAP controller based on the retrieved credentials and parsed secrets.
+The chart automates the configuration of the Ansible Automation Platform (AAP) by executing a series of Ansible playbooks. These playbooks perform tasks such as retrieving credentials, parsing secrets, and configuring the AAP instance. The
+chart also runs a Kubernetes CronJob to re-apply the config-as-code repository periodically, so if the repository is
+updated the config in AAP will be updated.
