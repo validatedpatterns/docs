@@ -98,12 +98,48 @@ No image comparison has run on {ocp} yet, and neither autoscaler has added a rea
 [id="partner-results-vllm-ray"]
 == Partner results: Eugo
 
-Eugo measured its next vLLM test build (release pending) against the upstream `vllm/vllm-openai` v0.33.0 image on one NVIDIA DGX Spark that other jobs kept busy, in paired rounds with an exact sign test.
+Eugo measured its next release build against the upstream `vllm/vllm-openai` v0.33.0 image, with Qwen2.5-0.5B-Instruct on one NVIDIA DGX Spark that other jobs kept busy, in Docker containers, not on {ocp}. The Eugo build runs a vLLM development snapshot taken after 0.33.0 branched off, plus Eugo's fixes. Every start was a new container with empty compile caches, with the model files already in memory and the image already on the machine. Both sides got the same settings apart from the attention setting that the table names. Some of those settings were not the defaults: every run in the table gave vLLM 12% of GPU memory (vLLM's default is 92%, this pattern's 85%), and in the rows that name `--safetensors-load-strategy eager`, both sides used it in place of vLLM's default weight loading. Each lead is the median of the differences over paired rounds.
 
-* *Time for a new server to serve.* With Qwen2.5-0.5B-Instruct in plain `vllm serve` containers, the software caches empty and the model files already in memory, a new Eugo server served its first token sooner than the upstream image in every paired round with each of three upstream attention settings: a median of 10.9 seconds (18%) sooner with FlashInfer and its TRT-LLM attention turned off (11 of 11 rounds), 12.0 seconds (20%) sooner with `--attention-backend TRITON_ATTN` (9 of 9), and 16.4 seconds (25%) sooner with `--attention-backend FLASHINFER` (10 of 10), with p = 0.004 or lower after Holm's correction. Both sides loaded the weights eagerly, and the Eugo build chose its attention kernel itself.
-* *Starts that succeed first time.* The vLLM start-up memory check stopped 15 of 45 upstream starts and none of 11 Eugo starts. Eugo's vLLM carries a fix that mitigates this.
+[cols="3,3,3,2",options="header"]
+|===
+|Against upstream vLLM 0.33.0 |How the servers ran |Eugo sooner by (median) |Eugo sooner in
 
-For details, see the link:https://github.com/eugo-inc/vllm-ray-inference-server#partner-results-eugo[Partner results: Eugo] section of the pattern README.
+|As shipped, with no attention setting on either side
+|Plain `vllm serve`, both sides with `--safetensors-load-strategy eager`, to the first streamed token
+|90.9 seconds (65%); upstream took 2.9 times as long
+|10 of 10 rounds
+
+|As shipped, with only the 12% GPU memory setting
+|Plain `vllm serve`, both sides with vLLM's default weight loading, to the first streamed token
+|169.5 seconds (77%); upstream took 4.5 times as long
+|12 of 12 rounds
+
+|As shipped
+|This pattern's Ray Serve LLM server, both sides with vLLM's default weight loading, to the first answer
+|19.7 seconds (8%)
+|8 of 8 rounds
+
+|Tuned with `--attention-backend FLASHINFER` and TRT-LLM attention turned off
+|Plain `vllm serve`, both sides with `--safetensors-load-strategy eager`, to the first streamed token
+|10.9 seconds (18%)
+|11 of 11 rounds
+
+|Tuned with `--attention-backend TRITON_ATTN`
+|Plain `vllm serve`, both sides with `--safetensors-load-strategy eager`, to the first streamed token
+|12.0 seconds (20%)
+|9 of 9 rounds
+
+|Tuned with `--attention-backend FLASHINFER`
+|Plain `vllm serve`, both sides with `--safetensors-load-strategy eager`, to the first streamed token
+|16.4 seconds (25%)
+|10 of 10 rounds
+|===
+
+In the tuned runs, the vLLM start-up memory check stopped 12 of 33 upstream first tries and none of 11 Eugo first tries; in the run with only the 12% GPU memory setting, every upstream and Eugo start succeeded on its first try (12 of 12 starts each).
+
+Against upstream as shipped, the time per output token was a tie, at one stream through this pattern's server, in a short check. Most of that time is set by the hardware: at one stream, each output token needs all of the model's weights, about 0.99 GB, read from memory, which at the NVIDIA DGX Spark's published memory bandwidth of 273 GB/s takes at least 3.6 ms of the measured 5.8 ms per token for both servers. The rest depends on the software and on how much of that bandwidth the GPU reaches; in this check both servers used FlashAttention-2 for attention.
+
+For the settings that each run used and what is not yet measured, see the link:https://github.com/eugo-inc/vllm-ray-inference-server#partner-results-eugo[Partner results: Eugo] section of the pattern README.
 
 [id="support-vllm-ray"]
 == Support
