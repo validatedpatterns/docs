@@ -1,0 +1,205 @@
+---
+title: Getting started
+weight: 10
+aliases: /vllm-ray-inference-server/getting-started/
+---
+
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+:vllm-ray-pattern: vLLM Ray Inference Server pattern
+
+[id="deploying-the-vllm-ray-pattern"]
+== Deploying the {vllm-ray-pattern}
+
+You deploy the pattern from your own fork of the pattern repository. {rh-gitops} deploys the content of your fork on GitHub, not the files on your workstation, so commit and push every change before you install the pattern.
+
+.Prerequisites
+
+* An {ocp} 4.18 or later cluster, and cluster administrator access. To create a cluster, go to the link:https://console.redhat.com/[{hybrid-console-first}] and select *Services -> Containers -> Create cluster*.
+* A cluster that does not already run the {rh-nfd} or the NVIDIA GPU Operator. The pattern installs both Operators itself, with its own `OperatorGroup` objects and settings, and can conflict with existing installations of these Operators. The pattern has not been tested on a cluster that runs {rhoai}.
+* A storage class that provisions persistent volumes dynamically. The model cache uses one persistent volume claim.
+* The {ocp-registry} in the `Managed` state, and the `Build` and `ImageRegistry` cluster capabilities enabled. The cluster builds the server image and the notebook image itself. On bare metal and on vSphere, the registry starts in the `Removed` state. To check the registry state, run the following command:
++
+[source,terminal]
+----
+$ oc get configs.imageregistry.operator.openshift.io cluster -o jsonpath='{.spec.managementState}'
+----
+* A GPU node:
+** On AWS, the pattern creates one `g6.2xlarge` node with one NVIDIA L4 GPU by default. AWS bills this instance for as long as it runs.
+** On an AWS cluster that was installed into existing subnets, the job that creates the GPU node fails. Set `global.gpuMachineSet: none` and add a GPU node yourself.
+** On other platforms, add a node with an NVIDIA GPU that the NVIDIA GPU Operator supports.
+* The server runs on `amd64` nodes by default. If your GPU node is an `arm64` node, read the prerequisites in the link:https://github.com/eugo-inc/vllm-ray-inference-server/blob/main/AGENTS.md#prerequisites[AGENTS.md file] in the pattern repository before you install.
+* On your workstation, Podman 4.3 or later, Git, and the `oc` CLI, logged in to the cluster. If you set the `KUBECONFIG` environment variable, it must point to a file in your home directory. For the other installation tool dependencies, see link:https://validatedpatterns.io/learn/quickstart/[Patterns quick start].
+
+.Procedure
+
+. Fork the link:https://github.com/eugo-inc/vllm-ray-inference-server[vllm-ray-inference-server] repository on GitHub.
+
+. Clone your fork:
++
+[source,terminal,subs="+quotes"]
+----
+$ git clone https://github.com/__<your_username>__/vllm-ray-inference-server.git
+----
+
+. Go to the root directory of the repository:
++
+[source,terminal]
+----
+$ cd vllm-ray-inference-server
+----
+
+. Edit the `values-global.yaml` file:
+** Set `global.gpuMachineSet` to `create` to let the pattern create one AWS `g6.2xlarge` GPU node, or to `none` to use a GPU node that you provide.
+** Optional: To serve a different model from Hugging Face, set `global.model.id`, `global.model.source`, and `global.model.revision`.
+
+. Commit and push the change:
++
+[source,terminal]
+----
+$ git commit -am "Configure the pattern"
+$ git push
+----
+
+. Optional: To serve a gated model, create the secrets file for the pattern and add your Hugging Face token:
+.. Copy the secrets template:
++
+[source,terminal]
+----
+$ mkdir -p ~/.config/validated-patterns
+$ cp values-secret.yaml.template \
+    ~/.config/validated-patterns/values-secret-vllm-ray-inference-server.yaml
+----
+.. In the copied file, set the `value` of the `hftoken` field to your Hugging Face token, which starts with `hf_`. Do not commit this file.
+
+. Log in to the cluster:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc login --token=__<token>__ --server=__<api_url>__
+----
+
+. Install the pattern:
++
+[source,terminal]
+----
+$ ./pattern.sh make install
+----
++
+The installer waits up to 60 minutes for every Argo CD application to report `Synced` and `Healthy`. A first installation can take longer, because the cluster builds a large server image, the GPU node joins the cluster, and the server downloads the model. If the wait times out, the pattern stays installed. Check the progress with the commands in the next step, and then run `./pattern.sh make argo-healthcheck`.
+
+. Watch the deployment:
++
+[source,terminal]
+----
+$ oc get applications.argoproj.io -A
+$ oc get builds -n vllm-inference
+$ oc get pods -n vllm-inference -w
+----
++
+The server pod stays in the `Pending` state until a node advertises the `nvidia.com/gpu` resource. The pod reports `Ready` after it loads the model.
+
+[id="verifying-the-vllm-ray-pattern"]
+== Verifying the inference server
+
+The server is reachable inside the cluster at `http://ray-serve-llm.vllm-inference.svc:8000`. To send a test request from your workstation, forward the server port.
+
+.Procedure
+
+. Forward the server port to your workstation:
++
+[source,terminal]
+----
+$ oc port-forward svc/ray-serve-llm 8000:8000 -n vllm-inference
+----
+
+. In another terminal, list the models that the server serves:
++
+[source,terminal]
+----
+$ curl -s http://localhost:8000/v1/models
+----
+
+. Send a chat request:
++
+[source,terminal]
+----
+$ curl -s http://localhost:8000/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "model": "qwen2.5-0.5b-instruct",
+        "messages": [{"role": "user", "content": "Say hello in one sentence."}],
+        "max_tokens": 64
+      }'
+----
++
+The `model` field takes the value of `global.model.id`. Any OpenAI-compatible client works with the base URL `http://localhost:8000/v1`.
+
+[id="opening-the-notebook-vllm-ray"]
+== Opening the notebook
+
+The notebook pod runs JupyterLab behind the OpenShift OAuth proxy. Users who can edit the `vllm-notebook` namespace, and cluster administrators, can open it.
+
+.Procedure
+
+. Get the URL of the notebook route:
++
+[source,terminal]
+----
+$ oc get route -n vllm-notebook
+----
+
+. Open the URL in a browser and log in with your OpenShift account.
+
+. Open the `inference_timings.ipynb` notebook and run all cells. The notebook pod copies the notebook folder to a scratch directory each time that it starts, so download any change that you want to keep.
+
+. Optional: To give another user access to the notebook, grant the `edit` role in the `vllm-notebook` namespace:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc adm policy add-role-to-user edit __<user_name>__ -n vllm-notebook
+----
+
+[id="uninstalling-the-vllm-ray-pattern"]
+== Uninstalling the pattern
+
+The {solution-name-upstream} framework marks uninstallation as experimental. Uninstalling the pattern leaves the {validated-patterns-op} and {rh-gitops} installed, and it does not delete the AWS GPU node. AWS bills the GPU instance until you delete its machine set.
+
+.Procedure
+
+. Uninstall the pattern:
++
+[source,terminal]
+----
+$ ./pattern.sh make uninstall
+----
+
+. List the machine sets with their instance types:
++
+[source,terminal]
+----
+$ oc get machinesets -n openshift-machine-api \
+    -o custom-columns=NAME:.metadata.name,TYPE:.spec.template.spec.providerSpec.value.instanceType
+----
+
+. Delete the machine set of the `g6.2xlarge` instance type. Delete it only after the uninstallation finishes, or after the `global.gpuMachineSet: none` setting syncs. Otherwise, the job creates the machine set again.
++
+[source,terminal,subs="+quotes"]
+----
+$ oc delete machineset __<machine_set_name>__ -n openshift-machine-api
+----
+
+. Check for a leftover persistent volume from the `vllm-inference/ray-serve-llm-models` claim:
++
+[source,terminal]
+----
+$ oc get pv
+----
+
+[id="next-steps-vllm-ray-getting-started"]
+== Next steps
+
+* For the web console installation, private forks, updates, and troubleshooting, see the link:https://github.com/eugo-inc/vllm-ray-inference-server/blob/main/AGENTS.md[AGENTS.md file] in the pattern repository.
+* For the pattern overview, see link:../[{vllm-ray-pattern}].

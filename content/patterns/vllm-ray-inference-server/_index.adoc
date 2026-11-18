@@ -1,0 +1,152 @@
+---
+title: vLLM Ray Inference Server
+date: 2026-11-08
+tier: sandbox
+summary: This pattern deploys an OpenAI-compatible large language model (LLM) server that runs vLLM on Ray Serve with one GPU, built inside the cluster from upstream packages and managed by OpenShift GitOps.
+rh_products:
+  - Red Hat OpenShift Container Platform
+  - Red Hat OpenShift GitOps
+partners:
+  - Eugo
+industries:
+  - General
+focus_areas:
+  - AI
+aliases: /vllm-ray-inference-server/
+links:
+  github: https://github.com/eugo-inc/vllm-ray-inference-server
+  install: getting-started
+  arch: /images/vllm-ray-inference-server/architecture.svg
+  bugs: https://github.com/eugo-inc/vllm-ray-inference-server/issues
+  feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+---
+:toc:
+:imagesdir: /images
+:_content-type: ASSEMBLY
+include::modules/comm-attributes.adoc[]
+:vllm-ray-pattern: vLLM Ray Inference Server pattern
+
+[id="about-vllm-ray-inference-server-pattern"]
+= About the {vllm-ray-pattern}
+
+The {vllm-ray-pattern} deploys a private, OpenAI-compatible large language model (LLM) endpoint on {rh-ocp}. {rh-gitops} deploys every component from your fork of the pattern repository, and the cluster builds the server image itself from upstream packages. Eugo maintains the pattern as community content in the {sandbox-tier-first}.
+
+[WARNING]
+====
+On {AWS}, the default installation creates one billable GPU instance: a `g6.2xlarge` instance with one NVIDIA L4 GPU. AWS bills the instance for as long as it runs. To skip the instance, set `global.gpuMachineSet: none` in the `values-global.yaml` file in your fork, and push the change before you install the pattern. On other platforms, the pattern creates no instance. Uninstalling the pattern does not delete the instance. For the steps to delete it, see link:getting-started/#uninstalling-the-vllm-ray-pattern[Uninstalling the pattern].
+====
+
+[id="background-vllm-ray"]
+== Background
+
+The {vllm-ray-pattern} does not replace the Red{nbsp}Hat AI products, such as {rhoai}, and it does not integrate with them. The pattern is a small, community-maintained reference point: the upstream vLLM engine on Ray Serve, built from known versions and measured the same way each time. The pattern does not need a {rhoai} subscription.
+
+Your fork of the pattern repository describes the whole deployment: GPU enablement, the server, a model cache, a secret for gated models, and a timing notebook. You run the `./pattern.sh make install` command one time. After that, {rh-gitops} syncs each commit on your branch. It does not delete the objects that a commit removes, and it does not change the image of the running server or notebook. A job in the cluster starts new image builds: every 10 minutes, it starts a build when the server or notebook folder changed and no build of that image is running. For details, see link:https://github.com/eugo-inc/vllm-ray-inference-server/blob/main/AGENTS.md#updating-a-running-install[Updating a running install] in the pattern repository.
+
+The pattern pins every Python package by hash and installs wheels only. It pins the base images of the server and the notebook by digest, and the default model by its Hugging Face commit. Some parts are not pinned, among them the system packages that the server image installs with `dnf`, the Operator versions, and the patch versions of the Validated Patterns Helm charts. Two builds from the same commit therefore install the same Python packages, but their system packages can differ.
+
+The notebook measures the server in your cluster: the time from pod start to `Ready`, the time to first token, the decode speed of one stream, and the token throughput at 1, 8, and 32 concurrent requests. The notebook chooses its prompts from a fixed seed, and every request uses a temperature of 0 and a fixed number of output tokens. The time to `Ready` is in whole seconds and can trail the server by up to about 2 seconds.
+
+The server runs Ray Serve LLM and the vLLM engine in one pod of a standard deployment, without KServe or KubeRay. Ray, vLLM, and PyTorch come from PyPI and run on the NVIDIA CUDA image that is based on Red{nbsp}Hat Universal Base Image 9. The pattern creates no KServe `InferenceService` or `ServingRuntime` resource.
+
+The pattern installs the {rh-nfd} and the NVIDIA GPU Operator itself. On a cluster that already runs these Operators, the pattern can conflict with them, and the pattern has not been tested on a cluster that runs {rhoai}. Install the pattern on a cluster that does not run these Operators.
+
+[id="architecture-vllm-ray"]
+== Architecture
+
+.Architecture of the {vllm-ray-pattern}
+image::/images/vllm-ray-inference-server/architecture.svg[Diagram of the vLLM Ray Inference Server pattern. The Validated Patterns Operator and OpenShift GitOps deploy secrets management, GPU enablement, the inference server, and the notebook from your Git fork.]
+
+The pattern works in the following way:
+
+* The {validated-patterns-op} installs {rh-gitops} and points the Argo CD instance at your fork. The `clustergroup` Helm chart then creates every application that the `prod` variant lists.
+* {hashicorp-vault} and the {eso-op} deliver an optional Hugging Face token to the server as a Kubernetes secret. The default model is not gated and needs no token.
+* The {rh-nfd} and the NVIDIA GPU Operator prepare the GPU node. On AWS, an imperative job creates the GPU node.
+* A `BuildConfig` object builds the server image inside the cluster. The server deployment runs one pod with a Ray head, Ray Serve, and the vLLM engine on one GPU. The pod reports `Ready` only after the model loads.
+* A persistent volume claim keeps the model weights across pod restarts.
+* A JupyterLab notebook runs behind the OpenShift OAuth proxy. Only users who can edit the `vllm-notebook` namespace can open it. The notebook sends requests to the server through the in-cluster service.
+
+[id="components-vllm-ray"]
+== Components that the pattern deploys
+
+The pattern deploys the following Operators:
+
+* {rh-gitops}
+* The {validated-patterns-op}, a community Operator
+* The {eso-op} for Red{nbsp}Hat OpenShift
+* The {rh-nfd}
+* The NVIDIA GPU Operator, from the certified Operators catalog
+
+The pattern deploys the following applications:
+
+* {hashicorp-vault}, from the {solution-name-upstream} Helm chart.
+* The inference server. Ray Serve LLM runs the vLLM engine and serves an OpenAI-compatible API on port 8000. The default model is `Qwen/Qwen2.5-0.5B-Instruct`. The server image turns off the usage statistics of Ray and vLLM.
+* The notebook. A JupyterLab notebook measures the running server: the time from pod start to `Ready`, the time to first token, the decode speed of one stream, and the token throughput at several concurrency levels.
+
+The link:https://github.com/eugo-inc/vllm-ray-inference-server#what-is-in-the-stock-stack[pattern README] lists the exact version of each component.
+
+[id="compare-scale-out-vllm-ray"]
+== Image comparison and scale out
+
+The pattern has two optional features, and both are off by default:
+
+* *Image comparison.* A job in the cluster runs two server images through the same benchmark, on the same GPU, with the same model and requests. The job records the time to ready, the time to first answer, and, at each load level, the time to first token, the inter-token latency, the output tokens per second, and the output tokens per joule of GPU energy. Each round also starts an identical copy of each image. A rule that is fixed before the first launch counts a difference between the images only when it is larger than the gap between two starts of one image and significant in an exact sign test over the paired rounds. Each case ends with a verdict, such as FASTER, SLOWER, or TIE, or with NO VERDICT and a reason. A run scales the inference server to zero pods for its whole length.
+* *Scale out.* Ray Serve can add vLLM replicas inside the server pod. With `global.scaleOut.mode: keda`, the Red{nbsp}Hat Custom Metrics Autoscaler, the supported build of KEDA, adds whole server pods when the vLLM count of waiting requests per pod rises above a set limit, and removes them after a cooldown. The image comparison also has a scale-out mode: at a fixed request rate, it starts a second replica of each image at a fixed time, and measures how soon that replica gives its first answer and what share of the requests meets the latency goals. For now, this mode runs only with Docker on one machine, not in the cluster.
+
+No image comparison has run on {ocp} yet, and neither autoscaler has added a real vLLM replica or pod yet. For the settings, the steps, and what has not been checked, see the link:https://github.com/eugo-inc/vllm-ray-inference-server#compare-two-images[Compare two images] and link:https://github.com/eugo-inc/vllm-ray-inference-server#scale-out[Scale out] sections of the pattern README.
+
+[id="partner-results-vllm-ray"]
+== Partner results: Eugo
+
+Eugo measured its next release build against the upstream `vllm/vllm-openai` v0.33.0 image, with Qwen2.5-0.5B-Instruct on one NVIDIA DGX Spark that other jobs kept busy, in Docker containers, not on {ocp}. The Eugo build runs a vLLM development snapshot taken after 0.33.0 branched off, plus Eugo's fixes. Every start was a new container with empty compile caches, with the model files already in memory and the image already on the machine. Both sides got the same settings apart from the attention setting that the table names. Some of those settings were not the defaults: every run in the table gave vLLM 12% of GPU memory (vLLM's default is 92%, this pattern's 85%), and in the rows that name `--safetensors-load-strategy eager`, both sides used it in place of vLLM's default weight loading. Each lead is the median of the differences over paired rounds.
+
+[cols="3,3,3,2",options="header"]
+|===
+|Against upstream vLLM 0.33.0 |How the servers ran |Eugo sooner by (median) |Eugo sooner in
+
+|As shipped, with no attention setting on either side
+|Plain `vllm serve`, both sides with `--safetensors-load-strategy eager`, to the first streamed token
+|90.9 seconds (65%); upstream took 2.9 times as long
+|10 of 10 rounds
+
+|As shipped, with only the 12% GPU memory setting
+|Plain `vllm serve`, both sides with vLLM's default weight loading, to the first streamed token
+|169.5 seconds (77%); upstream took 4.5 times as long
+|12 of 12 rounds
+
+|As shipped
+|This pattern's Ray Serve LLM server, both sides with vLLM's default weight loading, to the first answer
+|19.7 seconds (8%)
+|8 of 8 rounds
+
+|Tuned with `--attention-backend FLASHINFER` and TRT-LLM attention turned off
+|Plain `vllm serve`, both sides with `--safetensors-load-strategy eager`, to the first streamed token
+|10.9 seconds (18%)
+|11 of 11 rounds
+
+|Tuned with `--attention-backend TRITON_ATTN`
+|Plain `vllm serve`, both sides with `--safetensors-load-strategy eager`, to the first streamed token
+|12.0 seconds (20%)
+|9 of 9 rounds
+
+|Tuned with `--attention-backend FLASHINFER`
+|Plain `vllm serve`, both sides with `--safetensors-load-strategy eager`, to the first streamed token
+|16.4 seconds (25%)
+|10 of 10 rounds
+|===
+
+In the tuned runs, the vLLM start-up memory check stopped 12 of 33 upstream first tries and none of 11 Eugo first tries; in the run with only the 12% GPU memory setting, every upstream and Eugo start succeeded on its first try (12 of 12 starts each).
+
+Against upstream as shipped, the time per output token was a tie, at one stream through this pattern's server, in a short check. Most of that time is set by the hardware: at one stream, each output token needs all of the model's weights, about 0.99 GB, read from memory, which at the NVIDIA DGX Spark's published memory bandwidth of 273 GB/s takes at least 3.6 ms of the measured 5.8 ms per token for both servers. The rest depends on the software and on how much of that bandwidth the GPU reaches; in this check both servers used FlashAttention-2 for attention.
+
+For the settings that each run used and what is not yet measured, see the link:https://github.com/eugo-inc/vllm-ray-inference-server#partner-results-eugo[Partner results: Eugo] section of the pattern README.
+
+[id="support-vllm-ray"]
+== Support
+
+The {vllm-ray-pattern} is community content in the {sandbox-tier-first}. Eugo maintains the pattern and supports it on a best-effort basis through link:https://github.com/eugo-inc/vllm-ray-inference-server/issues[GitHub issues] in the pattern repository. The maintainers do not guarantee a response time. Red{nbsp}Hat does not produce, support, or validate this pattern. For an issue with a product that the pattern deploys, contact the vendor of that product.
+
+[id="next-steps-vllm-ray"]
+== Next steps
+
+* link:getting-started[Getting started]
