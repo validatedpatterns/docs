@@ -1,0 +1,794 @@
+---
+ date: 2026-10-26
+ title: Disconnected Patterns UX Update
+ summary: We've made some improvements to our disconnected pattern UX
+ author: jonny rickard
+ blog_tags:
+ - patterns
+ - patternizer
+ - disconnected
+ - airgap
+ mermaid: true
+ asciinema: true
+---
+:toc:
+:imagesdir: /images
+
+== Preamble
+
+Identifying every operator, container image, and Helm chart for a pattern is an
+extremely cumbersome chore—especially when remote charts use wildcard versions.
+We wanted to help with that artifact collection without putting more burden on
+the technician gathering the images.
+
+We also assumed that person may need images, operators, and Helm charts for
+workflows that are not strictly pattern-related, so `--extra-config` lets you
+merge additional content into the generated mirror set.
+
+The disconnected workflow centers on three steps:
+
+. `patternizer airgap init` — scrape the pattern and generate an oc-mirror
+  `imagesetconfig.yaml` (plus helpers)
+. `patternizer airgap bootstrap` — apply disconnected registry/Git/CatalogSource
+  settings into the pattern values from an `airgap:` block in your secrets file
+. `./pattern.sh make install-airgap` — install while injecting CA trust and
+  registry credentials so Argo CD can sync
+
+== Patternizer Updates
+
+If you're not familiar with the `patternizer` utility, see the
+https://github.com/validatedpatterns/patternizer[patternizer GitHub repository].
+
+There are several ways to run it:
+
+.Run patternizer directly with podman
+[source,bash]
+----
+podman run --pull=newer -v "$PWD:$PWD:z" -v "$HOME:$HOME:z" -w "$PWD" \
+  quay.io/validatedpatterns/patternizer
+----
+
+Or add a function to `~/.bashrc` or `~/.zshrc`:
+
+.Add patternizer function to your rc file
+[source,bash]
+----
+patternizer() {
+  podman run --pull=newer \
+    -v "$PWD:$PWD:z" \
+    -v "$HOME:$HOME:z" \
+    -w "$PWD" \
+    quay.io/validatedpatterns/patternizer "$@"
+}
+----
+
+Open a new terminal session or `source` your rc file after adding the function.
+
+To build and run the binary locally:
+
+[NOTE]
+====
+As of this writing you will need `make` and Go 1.26.
+====
+
+.Build patternizer locally
+[source,bash]
+----
+git clone https://github.com/validatedpatterns/patternizer
+cd patternizer
+make build
+cp src/patternizer ~/.local/bin/patternizer
+----
+
+== Airgap Capability
+
+We will use the
+https://github.com/validatedpatterns/multicloud-gitops[multicloud-gitops pattern]
+throughout this example. Lab networking and bastion services used in the
+screenshots and hostnames below are described in <<lab-environment>>.
+
+.Example: patternizer airgap init
+[source,bash]
+----
+patternizer airgap init https://github.com/validatedpatterns/multicloud-gitops \
+  --extra-config ~/extra-images.yaml \
+  --ocp-version 4.22 \
+  --output-dir ~/mcgodemo
+----
+
+////
+.Asciinema placeholder: airgap init
+[NOTE]
+====
+Recording pending:
+`static/casts/blog/2026-10-26-disconnected-updates/airgap-init.cast`
+(show scrape + generated `imagesetconfig.yaml`). Uncomment the player block
+below after the cast is committed.
+====
+
+++++
+<!-- ASCIINEMA: airgap-init
+<div id="asciinema-airgap-init"></div>
+<script>
+AsciinemaPlayer.create(
+  "/casts/blog/2026-10-26-disconnected-updates/airgap-init.cast",
+  document.getElementById("asciinema-airgap-init"),
+  { autoPlay: false, fit: "width", rows: 24 }
+);
+</script>
+-->
+++++
+////
+
+=== What's happening
+
+`--extra-config` merges additional operators, images, and Helm entries into the
+generated <<imagesetconfig>>.
+
+`--ocp-version` includes the OpenShift platform channel and tags OLM catalogs /
+CatalogSources for that release.
+
+[NOTE]
+====
+When omitted, catalog tagging defaults to 4.22. Override with `--ocp-version`,
+or edit `${output-dir}/imagesetconfig.yaml` before mirroring.
+====
+
+Patternizer scrapes the repository for operators, container images, and Helm
+charts. When a remote chart uses a wildcard version, the command resolves the
+latest from the chart repository. The pattern is cloned with full history so
+pushing into your airgapped Git service does not fail on shallow clones.
+
+.Additional arguments
+|===
+|--clone-dir string | Directory for Git clones (default: --output-dir)
+|--cluster-groups string | Comma-separated cluster group names (default: all)
+|--download-oc-mirror | Download oc-mirror archives into --output-dir
+|--extra-config string | External YAML with operators, additionalImages, and helm.local entries to merge into imagesetconfig
+|--git-ref string | Branch or tag to clone when the source is a Git URL
+|--helm-repo string | OCI registry/org for Validated Patterns charts (default "quay.io/validatedpatterns")
+|-h --help | Help for init
+|--ocp-version string | Include OpenShift platform channel stable-<version> and tag OLM catalogs / CatalogSources (e.g. 4.22)
+|--output-dir string | Directory for generated artifacts (default "./airgap-out")
+|--registry string | Optional mirror registry hostname for values-disconnected.yaml and mirror-commands.sh
+|--skip-oci-resolve | Skip live OCI chart version resolution and image discovery (wildcards will not be resolved)
+|===
+
+=== Base imagesetconfig
+
+.Example imagesetconfig.yaml (pattern scrape)
+[#imagesetconfig]
+[source,yaml]
+----
+# Generated by patternizer airgap init
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v2alpha1
+mirror:
+  platform:
+    graph: true
+    channels:
+      - name: stable-4.22
+        type: ocp
+  operators:
+    - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.22
+      packages:
+        - name: advanced-cluster-management
+          defaultChannel: release-2.16
+          channels:
+            - name: release-2.16
+        - name: multicluster-engine
+        - name: openshift-external-secrets-operator
+          defaultChannel: stable-v1
+          channels:
+            - name: stable-v1
+        - name: openshift-gitops-operator
+    - catalog: registry.redhat.io/redhat/community-operator-index:v4.22
+      packages:
+        - name: patterns-operator
+  additionalImages:
+    - name: quay.io/validatedpatterns/acm:0.2.11
+    - name: quay.io/validatedpatterns/clustergroup:0.9.58
+    - name: quay.io/validatedpatterns/hashicorp-vault:0.1.11
+    - name: quay.io/validatedpatterns/imperative-container:v1
+    - name: quay.io/validatedpatterns/openshift-external-secrets:0.0.4
+    - name: quay.io/validatedpatterns/pattern-install:0.0.18
+    - name: quay.io/validatedpatterns/utility-container:latest
+    - name: registry.access.redhat.com/ubi10/httpd-24:10.0-1755779646
+    - name: registry.connect.redhat.com/hashicorp/vault:2.1.2-ubi
+----
+
+=== Extra-images config
+
+.Example: extra-images.yaml
+[#extra-images]
+[source,yaml]
+----
+operators:
+  - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.22
+    packages:
+      - name: lvms-operator
+  - catalog: quay.io/rhpds/gitea-catalog:latest
+    packages:
+      - name: gitea-operator
+additionalImages:
+  - name: "registry.access.redhat.com/ubi10/httpd-24:10.0-1755779646"
+  - name: "registry.redhat.io/ubi9/ubi:latest"
+  - name: "registry.redhat.io/ubi9/ubi-minimal:latest"
+  - name: "quay.io/rhpds/gitea-operator-bundle:v2.1.0"
+  - name: "quay.io/rhpds/gitea:latest"
+  - name: "quay.io/rhpds/gitea:1.27.3"
+----
+
+=== Merged imagesetconfig
+
+After `--extra-config` is applied, the LVMS and Gitea operator catalogs (and
+their images) are merged with the pattern scrape. That is the file you feed to
+oc-mirror.
+
+.Example: merged imagesetconfig.yaml (truncated)
+[#merged-imageset]
+[source,yaml]
+----
+# Generated by patternizer airgap init
+# Merged --extra-config: ~/extra-images.yaml
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v2alpha1
+mirror:
+  platform:
+    graph: true
+    channels:
+      - name: stable-4.22
+        type: ocp
+  operators:
+    - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.22
+      packages:
+        - name: advanced-cluster-management
+          defaultChannel: release-2.16
+          channels:
+            - name: release-2.16
+        - name: multicluster-engine
+        - name: openshift-external-secrets-operator
+          defaultChannel: stable-v1
+          channels:
+            - name: stable-v1
+        - name: openshift-gitops-operator
+        - name: lvms-operator
+    - catalog: registry.redhat.io/redhat/community-operator-index:v4.22
+      packages:
+        - name: patterns-operator
+    - catalog: quay.io/rhpds/gitea-catalog:latest
+      packages:
+        - name: gitea-operator
+  additionalImages:
+    - name: quay.io/rhpds/gitea-operator-bundle:v2.1.0
+    - name: quay.io/rhpds/gitea:1.27.3
+    - name: quay.io/rhpds/gitea:latest
+    - name: quay.io/validatedpatterns/acm:0.2.11
+    # ... remaining pattern + UBI images ...
+----
+
+[IMPORTANT]
+====
+Mirror the images into your disconnected registry next (the generated
+`mirror-commands.sh` is a starting point), and install OpenShift in the airgap
+if you have not already. In this lab the registry is Quay mirror-registry on the
+bastion, and the cluster is brought up with the agent-based installer—see
+<<lab-environment>> and <<agent-install>>.
+====
+
+== Airgapped Environment
+
+[TIP]
+====
+Copy the contents of `--output-dir` to your disconnected bastion/control node.
+====
+
+[#scp]
+.Procedure: scp from a connected machine
+[source,bash]
+----
+scp -r ~/mcgodemo bastion:~
+----
+
+== Repo Configuration
+
+[IMPORTANT]
+====
+In this example the Gitea container image was mirrored into the registry on the
+bastion. To start Gitea the same way, see <<gitea-startup>>.
+====
+
+Publish the cloned pattern into your airgapped Git service (Gitea in this lab):
+
+. Create the empty repository in Gitea
+. Push the local clone
+
+.Procedure: Make the repo available in your SCM
+[source,bash]
+----
+cd ~/mcgodemo/multicloud-gitops
+
+git remote rename origin old
+git remote add origin https://gitea.airgap.rhuk.lab:3000/admin/multicloud-gitops.git
+git push --set-upstream origin main
+----
+
+== Prepare the pattern for airgap installation
+
+. Run `patternizer upgrade` so Makefile targets support airgap
+. Copy `values-secret.yaml.template` to your home directory and add an `airgap:` section
+. Run `patternizer airgap bootstrap`
+. Review, push, and deploy
+
+== patternizer upgrade
+[#upgrade]
+[source,bash]
+----
+cd ~/mcgodemo/multicloud-gitops
+patternizer upgrade
+----
+
+`Makefile-common` gains airgap targets and `pattern.sh` is updated for
+disconnected installs. Review with `git status` / `git diff` before committing;
+you should at least see updates to `Makefile-common` and `pattern.sh`.
+
+== Copy and update values-secret to your home directory
+
+.Procedure: Configure secrets for the airgap deployment
+[source,bash]
+----
+cp ~/mcgodemo/multicloud-gitops/values-secret.yaml.template \
+  ~/values-secret-multicloud-gitops.yaml
+----
+
+Something we wanted to improve was removing the guesswork from disconnected
+deployments. Instead of hunting which Secret or ConfigMap Argo CD needs for
+your registry or Git host, an `airgap:` block in the values-secret file drives
+that for you. (Same `path` / `value` field style as Vault secrets; it is *not*
+loaded into Vault.)
+
+You need the CA for your Git server and either a dockerconfig JSON or
+username/password for the mirror registry.
+
+.Example: values-secret-<pattern>.yaml
+[source,yaml]
+----
+secrets:
+  - name: config-demo
+    vaultPrefixes:
+    - global
+    fields:
+    - name: secret
+      onMissingValue: generate
+      vaultPolicy: validatedPatternDefaultPolicy
+airgap:
+  argocdNamespace: vp-gitops
+  patternsOperatorNamespace: patterns-operator
+  certificates:
+    - name: gitea
+      fields:
+      - name: host
+        value: gitea.airgap.rhuk.lab
+      - name: ca
+        path: ~/gitea_container_certs/cert.pem
+      - name: clusterProxy
+        value: "true"
+      - name: argocdTLS
+        value: "true"
+    - name: mirror-registry
+      fields:
+      - name: host
+        value: mirror.airgap.rhuk.lab
+      - name: ca
+        path: /etc/pki/ca-trust/source/anchors/quay-rootCA.pem
+      - name: clusterProxy
+        value: "true"
+      - name: argocdTLS
+        value: "true"
+  registries:
+    - name: mirror
+      fields:
+      - name: url
+        value: mirror.airgap.rhuk.lab:8443
+      - name: dockerconfig
+        path: ~/.docker/config.json
+      # Or username + password file instead of dockerconfig:
+      # - name: username
+      #   value: init
+      # - name: password
+      #   path: /path/to/registry.password
+
+  # Disconnected pattern values (rendered into values-global.yaml + variants)
+  registry: mirror.airgap.rhuk.lab:8443
+  ocpVersion: "4.22"   # derives cs-*-operator-index-v4-22
+  # Or declare CatalogSources explicitly (overrides ocpVersion derivation):
+  # catalogSources:
+  #   redhat: cs-redhat-operator-index-v4-22
+  #   community: cs-community-operator-index-v4-22
+  # Or discover from the cluster (requires oc / kubeconfig):
+  # discoverCatalogs: true
+  # renderValues: true   # default when registry/ocpVersion/catalogSources set
+----
+
+[#bootstrap]
+== patternizer airgap bootstrap
+
+.Procedure: patternizer airgap bootstrap
+[source,bash]
+----
+patternizer airgap bootstrap ~/mcgodemo/multicloud-gitops/ \
+  --output-dir ./airgap-bootstrap \
+  --discover-catalogs \
+  --secrets-file ~/values-secret-multicloud-gitops.yaml
+----
+
+`patternizer airgap bootstrap` does the following:
+
+* Ingests the `airgap:` section from `~/values-secret-multicloud-gitops.yaml`
+* Discovers CatalogSources from the cluster (with `--discover-catalogs`)
+* Updates `values-global.yaml` and variant values
+  (`variants/hub/values-{hub,standalone}.yaml`) with those CatalogSources,
+  `helmRepoUrl`, and related disconnected fields
+
+////
+.Asciinema placeholder: airgap bootstrap
+[NOTE]
+====
+Recording pending:
+`static/casts/blog/2026-10-26-disconnected-updates/airgap-bootstrap.cast`
+(show secrets ingest, catalog discovery, and values updates). Uncomment the
+player block below after the cast is committed.
+====
+
+++++
+<!-- ASCIINEMA: airgap-bootstrap
+<div id="asciinema-airgap-bootstrap"></div>
+<script>
+AsciinemaPlayer.create(
+  "/casts/blog/2026-10-26-disconnected-updates/airgap-bootstrap.cast",
+  document.getElementById("asciinema-airgap-bootstrap"),
+  { autoPlay: false, fit: "width", rows: 24 }
+);
+</script>
+-->
+++++
+////
+
+.Example: values-global.yaml
+[source,yaml]
+----
+# Updated by patternizer airgap bootstrap (disconnected CatalogSources / helmRepoUrl)
+global:
+  options:
+    installPlanApproval: Automatic
+    syncPolicy: Automatic
+    useCSV: false
+  pattern: multicloud-gitops
+  singleArgoCD: true
+main:
+  gitops:
+    operatorSource: cs-redhat-operator-index-v4-22
+  multiSourceConfig:
+    clusterGroupChartVersion: 0.9.*
+    enabled: true
+    helmRepoUrl: mirror.airgap.rhuk.lab:8443/validatedpatterns
+  patternsOperator:
+    source: cs-community-operator-index-v4-22
+  variant: hub
+----
+
+.Example: variants/hub/values-hub.yaml (subscriptions / chart sources)
+[source,yaml]
+----
+# Updated by patternizer airgap bootstrap (disconnected CatalogSources / helmRepoUrl)
+acm:
+  mce_operator:
+    source: cs-redhat-operator-index-v4-22
+clusterGroup:
+  subscriptions:
+    acm:
+      channel: release-2.16
+      name: advanced-cluster-management
+      namespace: open-cluster-management
+      source: cs-redhat-operator-index-v4-22
+    eso:
+      channel: stable-v1
+      name: openshift-external-secrets-operator
+      namespace: external-secrets-operator
+      source: cs-redhat-operator-index-v4-22
+  # applications / namespaces unchanged aside from operator source fields
+----
+
+Once you confirm the values look right, push to Git and install:
+
+.Procedure: git commit and push
+[source,bash]
+----
+git add .
+git commit -m "patternizer airgap bootstrap"
+git push -u origin main
+----
+
+.Procedure: make install-airgap
+[source,bash]
+----
+./pattern.sh make install-airgap
+----
+
+`install-airgap` starts the normal install path while applying trust and
+credentials that would otherwise deadlock Argo CD:
+
+. Patch the cluster proxy / user-CA bundle with the Quay and Gitea certificates, then wait for rollout
+. When `vp-gitops` / Argo CD is available, apply TLS trust and registry repo-creds
+. Wait for install to complete
+
+////
+.Asciinema placeholder: install-airgap
+[NOTE]
+====
+Recording pending:
+`static/casts/blog/2026-10-26-disconnected-updates/install-airgap.cast`
+(show CA/repo-creds injection alongside install progress). Uncomment the
+player block below after the cast is committed.
+====
+
+++++
+<!-- ASCIINEMA: install-airgap
+<div id="asciinema-install-airgap"></div>
+<script>
+AsciinemaPlayer.create(
+  "/casts/blog/2026-10-26-disconnected-updates/install-airgap.cast",
+  document.getElementById("asciinema-install-airgap"),
+  { autoPlay: false, fit: "width", rows: 24 }
+);
+</script>
+-->
+++++
+////
+
+== Summary
+
+These changes are meant to take the guesswork out of collecting content and
+wiring trust for a pattern in an airgapped environment. If you want a feature or
+hit an issue, open an
+https://github.com/validatedpatterns/patternizer/issues[issue] or a
+https://github.com/validatedpatterns/patternizer/pulls[pull request].
+
+[appendix]
+[#lab-environment]
+== Lab environment used in this post
+
+All testing for this post was done from a laptop running KVM/libvirt. DNS for
+the guests comes from libvirt's dnsmasq. An isolated host-only network named
+`airgap` (`192.168.127.0/24`) has no outbound internet path. A single bastion VM
+on that network hosts Git, the mirror registry, and the install load-balancer /
+HTTP services. The Single Node OpenShift (SNO) node sits on the same L2 segment.
+
+In this lab, Git and the mirror share the bastion IP under different DNS names.
+From the cluster's point of view they are local HTTPS services—exactly what the
+`airgap.certificates` and `airgap.registries` entries in the values-secret file
+refer to.
+
+=== Topology
+
+* Hypervisor: laptop (KVM/libvirt + dnsmasq)
+* Network: `airgap` / `192.168.127.0/24` (no outbound internet)
+* Bastion: `bastion.airgap.rhuk.lab` → `192.168.127.5`
+* SNO node: `sno0` → `192.168.127.11`
+* Names that resolve to the bastion IP:
+  `mirror.airgap.rhuk.lab`, `gitea.airgap.rhuk.lab`,
+  `api.airgap.rhuk.lab`, `api-int.airgap.rhuk.lab`
+
+[#bastion-specs]
+=== Bastion / control node
+
+Base image:
+https://fedora.mirrorservice.org/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-44-1.7.x86_64.qcow2[Fedora 44 Cloud qcow2],
+resized large enough to hold mirrored content (500G in this lab).
+
+[source,text]
+----
+HOSTNAME: bastion.airgap.rhuk.lab
+CPU:      4
+RAM:      8Gi
+DISK:     500G
+NETWORK:  airgap (192.168.127.0/24) @ 192.168.127.5
+DNS:      192.168.127.1 (libvirt dnsmasq)
+----
+
+Useful packages on the bastion image: `podman`, `skopeo`, `git`, `jq`,
+`bind-utils`, `qemu-guest-agent`, plus the usual admin tools (`vim`, `tmux`).
+
+=== Services on the bastion
+
+[cols="1,2,2"]
+|===
+| Role | Hostname / endpoint | Purpose
+
+| Mirror registry
+| `https://mirror.airgap.rhuk.lab:8443`
+| Quay mirror-registry. Holds OCP release content, operators, and pattern
+  images/charts. Patternizer `airgap.registries` and cluster pull secret /
+  IDMS/ITMS point here. Trust the Quay root CA
+  (`quay-rootCA.pem`) via `airgap.certificates`.
+
+| Git (Gitea)
+| `https://gitea.airgap.rhuk.lab:3000`
+| Gitea in a podman container. Pattern repos are pushed here after
+  `airgap init`; Argo CD uses this as the Git origin. Trust
+  `~/gitea_container_certs/cert.pem` via `airgap.certificates`.
+
+| API / apps VIP
+| `api.airgap.rhuk.lab`, `api-int.airgap.rhuk.lab`, apps wildcard → bastion IP
+| HAProxy on the bastion fronts API and ingress traffic for the SNO node during
+  and after agent-based install.
+
+| Agent / install assets
+| HTTP on the bastion
+| httpd serves agent ISO / install assets while the cluster is coming up.
+|===
+
+[#gitea-startup]
+=== Gitea on the bastion
+
+Gitea runs as a podman container with HTTPS on port 3000. TLS material lives in
+`~/gitea_container_certs` (`cert.pem` / `key.pem`), and a named volume holds
+Gitea data. Prefer pulling the image from the local mirror so the bastion never
+needs internet:
+
+.Example: start Gitea from the mirrored image
+[source,bash]
+----
+GITEA_HOSTNAME=gitea.airgap.rhuk.lab
+GITEA_HTTP_PORT=3000
+GITEA_SSH_PORT=2222
+GITEA_IMAGE=mirror.airgap.rhuk.lab:8443/rhpds/gitea:1.27.3
+GITEA_CERT_DIR=~/gitea_container_certs
+GITEA_ROOT_URL=https://${GITEA_HOSTNAME}:${GITEA_HTTP_PORT}/
+
+podman volume exists gitea-data || podman volume create gitea-data
+
+podman run -d --name gitea --net=host \
+  -e GITEA__database__DB_TYPE=sqlite3 \
+  -e GITEA__server__PROTOCOL=https \
+  -e GITEA__server__DOMAIN="${GITEA_HOSTNAME}" \
+  -e GITEA__server__HTTP_PORT="${GITEA_HTTP_PORT}" \
+  -e GITEA__server__ROOT_URL="${GITEA_ROOT_URL}" \
+  -e GITEA__server__CERT_FILE=/data/gitea/https/cert.pem \
+  -e GITEA__server__KEY_FILE=/data/gitea/https/key.pem \
+  -e GITEA__server__SSH_DOMAIN="${GITEA_HOSTNAME}" \
+  -e GITEA__server__SSH_PORT="${GITEA_SSH_PORT}" \
+  -e GITEA__server__SSH_LISTEN_PORT="${GITEA_SSH_PORT}" \
+  -v gitea-data:/data:Z \
+  -v "${GITEA_CERT_DIR}:/data/gitea/https:ro,Z" \
+  "${GITEA_IMAGE}"
+----
+
+Create the empty `multicloud-gitops` repository in the Gitea UI (or API), then
+push as shown earlier in <<scp>> / Repo Configuration.
+
+=== SNO node (for context)
+
+The OpenShift node is a separate VM on the same airgap network—not on the
+bastion:
+
+[source,text]
+----
+NAME:     sno0
+ROLE:     control-plane (SNO)
+CPU:      10
+RAM:      32Gi
+DISK:     120G root + extra disks for LVMS
+NETWORK:  airgap @ 192.168.127.11
+DNS/GW:   192.168.127.1
+----
+
+[#agent-install]
+=== Agent-based OpenShift install (summary)
+
+Patternizer assumes a reachable disconnected cluster; this lab brings that
+cluster up with the
+https://docs.openshift.com/container-platform/latest/installing/installing_with_agent/[OpenShift agent-based installer]
+so nothing in the install path needs internet.
+
+High-level sequence:
+
+. Mirror OCP release + operators into Quay on the bastion (`oc-mirror` against
+  the generated `imagesetconfig.yaml`)
+. On the bastion, write disconnected `install-config.yaml` and `agent-config.yaml`
+. Build the agent ISO with `openshift-install agent create image` (using a
+  local RHCOS live ISO and pull access to the mirrored release)
+. Run HAProxy + httpd on the bastion so `api` / `api-int` / apps DNS names and
+  install assets are available on the airgap network
+. Attach the agent ISO to the SNO VM, boot it, wait for the disk image write to
+  finish, then boot from disk
+. Wait for install complete from the bastion
+. Apply mirror-published cluster resources (IDMS/ITMS, CatalogSources), then
+  continue with patternizer bootstrap / `install-airgap`
+
+==== What goes into the agent configs
+
+The disconnected pieces that matter for agent install are in
+`install-config.yaml`:
+
+* `pullSecret` — credentials for `mirror.airgap.rhuk.lab:8443`
+* `additionalTrustBundle` — Quay mirror-registry root CA
+* `imageDigestSources` — map release / operator source registries to the
+  bastion mirror (produced by oc-mirror / publish)
+
+`agent-config.yaml` stays network-focused for the SNO host:
+
+* `rendezvousIP` — the SNO address on the airgap network
+* Static interface / MAC / DNS / gateway (no DHCP dependency for install)
+* `additionalNTPSources` — bastion IP, so time sync works without public NTP
+
+.Example shape (illustrative)
+[source,yaml]
+----
+# install-config.yaml (disconnected bits)
+pullSecret: '{"auths":{"mirror.airgap.rhuk.lab:8443":{...}}}'
+additionalTrustBundle: |
+  -----BEGIN CERTIFICATE-----
+  ... quay root CA ...
+  -----END CERTIFICATE-----
+imageDigestSources:
+  - source: quay.io/openshift-release-dev/ocp-release
+    mirrors:
+      - mirror.airgap.rhuk.lab:8443/openshift/release-images
+  - source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+    mirrors:
+      - mirror.airgap.rhuk.lab:8443/openshift/release
+
+# agent-config.yaml
+rendezvousIP: 192.168.127.11
+additionalNTPSources:
+  - 192.168.127.5
+hosts:
+  - hostname: sno0.airgap.rhuk.lab
+    role: master
+    interfaces:
+      - name: enp1s0
+        macAddress: "52:54:00:..."
+    networkConfig:
+      # static IPv4 192.168.127.11/24, DNS/GW 192.168.127.1
+----
+
+==== Build, boot, and wait
+
+On the bastion (with `openshift-install` and registry auth configured):
+
+[source,bash]
+----
+# After install-config.yaml + agent-config.yaml are in the install directory:
+openshift-install agent create image --dir /root/airgap
+
+# Monitor from the bastion once the node is booting the agent ISO:
+openshift-install agent wait-for install-complete \
+  --dir /root/airgap --log-level debug
+----
+
+Two practical notes from this lab:
+
+* Do not switch the VM from CDROM to disk at the first
+  `Writing image to disk: 100%` if the OS disk still looks empty—wait until the
+  disk has a real partition table / has grown, then detach the ISO and boot from
+  disk.
+* After the cluster is up, apply the IDMS/ITMS and CatalogSource manifests from
+  your mirror publish workspace so OLM pulls operators from
+  `mirror.airgap.rhuk.lab:8443`. That is the cluster state
+  `patternizer airgap bootstrap --discover-catalogs` expects to find.
+
+At that point the pattern path in the main post continues: push the repo to
+Gitea, configure `airgap:` in the values-secret file, bootstrap, and
+`./pattern.sh make install-airgap`.
+
+=== Assumptions
+
+* Bastion and SNO share the airgap network and can resolve the DNS names above
+* Mirror registry and Gitea CAs are available as PEM files for
+  `airgap.certificates` in `~/values-secret-*.yaml`
+* Pattern Git history is pushed to Gitea before `./pattern.sh make install-airgap`
+* Cluster CatalogSources / IDMS/ITMS already target
+  `mirror.airgap.rhuk.lab:8443` (or you discover CatalogSources at bootstrap time)
+* Agent install completed with pull secret + trust bundle + image digest sources
+  pointed at the bastion mirror
