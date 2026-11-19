@@ -11,7 +11,9 @@ industries:
   - General
 focus_areas:
   - DevSecOps
-aliases: /rhoso-gitops/
+aliases:
+  - /rhoso-gitops/
+  - /rhoso-gitops/cluster-sizing/
 ci: rhoso-gitops
 ci_sources:
   - base: https://raw.githubusercontent.com/validatedpatterns-sandbox/rhoso-gitops/reporting/
@@ -19,7 +21,7 @@ ci_sources:
       - rhoso-gitops-baremetal-4.18-stable-badge.json
 links:
   github: https://github.com/validatedpatterns-sandbox/rhoso-gitops
-  install: getting-started
+  install: deploying-rhoso-gitops-pattern
   bugs: https://github.com/validatedpatterns-sandbox/rhoso-gitops/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
 ---
