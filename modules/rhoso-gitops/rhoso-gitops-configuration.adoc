@@ -68,37 +68,37 @@ To deploy {rh-rhoso-short}, point each application at your own Git overlay
 | `operator-dependencies`
 | Infrastructure Operators (cert-manager, MetalLB, nmstate, observability)
 | link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/dependencies[`example/dependencies`]
-| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/planning_your_deployment/assembly_infrastructure-and-system-requirements#ref_RHOCP-software-requirements_planning[RHOCP software requirements]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/plan-ref_rhocp_cluster_requirements[RHOCP software requirements]
 
 | `openstack-operator`
 | OpenStack Operator subscription
 | link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/openstack-operator[`example/openstack-operator`]
-| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_installing-and-preparing-the-openstack-operator[Installing and preparing the OpenStack Operator]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/install-assembly_installing_and_preparing_the_openstack_operator[Install and prepare the OpenStack Operator]
 
 | `openstack-operator-cr`
 | Main `OpenStack` custom resource
 | link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/openstack-operator-cr[`example/openstack-operator-cr`]
-| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_installing-and-preparing-the-openstack-operator[Installing and preparing the OpenStack Operator]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/install-assembly_installing_and_preparing_the_openstack_operator[Install and prepare the OpenStack Operator]
 
 | `openstack-secrets`
 | Secure-backend sync (disabled by default)
 | not configured
-| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_preparing-rhocp-for-rhoso#proc_providing-secure-access-to-the-RHOSO-services_preparing[Providing secure access to the RHOSO services]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/install-proc_providing_secure_access_to_the_rhoso_services[Provide secure access to the RHOSO services]
 
 | `openstack-networks`
 | Network configuration
 | link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/openstack-networks[`example/openstack-networks`]
-| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_preparing-rhoso-networks_preparing[Preparing RHOSO networks]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/install-assembly_preparing_rhocp_for_rhoso_networks[Prepare RHOSO networks]
 
 | `openstack-controlplane`
 | `OpenStackControlPlane`
 | link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/openstack-controlplane[`example/openstack-controlplane`]
-| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_creating-the-control-plane[Creating the control plane]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/install-assembly_creating_the_control_plane[Control plane deployment]
 
 | `openstack-dataplane`
 | Data plane
 | link:https://github.com/openstack-k8s-operators/gitops/tree/main/example/openstack-dataplane[`example/openstack-dataplane`]
-| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/deploying_red_hat_openstack_services_on_openshift/assembly_creating-the-data-plane[Creating the data plane]
+| link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/install-assembly_creating_the_data_plane[Create and deploy the data plane]
 |===
 
 By default, the pattern enables all applications except `openstack-secrets`.

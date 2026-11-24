@@ -1,7 +1,7 @@
 ---
 title: RHOSO GitOps
 date: 2026-06-15
-tier: sandbox
+tier: tested
 summary: Deploy Red Hat OpenStack Services on OpenShift using GitOps through the rhoso-gitops meta-chart.
 rh_products:
   - Red Hat OpenShift Container Platform

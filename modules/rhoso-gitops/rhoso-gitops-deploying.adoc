@@ -14,7 +14,7 @@ prerequisites, prepare your fork of the pattern repository, install with
 Before you deploy the pattern, verify that you have the following:
 
 * A {rh-ocp} cluster that meets the 
-  link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/latest/html/planning_your_deployment/assembly_infrastructure-and-system-requirements#ref_RHOCP-software-requirements_planning[{rh-rhoso-short} software requirements]
+  link:https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/plan-ref_rhocp_cluster_requirements[{rh-rhoso-short} software requirements]
   and has enough compute and storage capacity. For sizing guidance, see
   link:../#rhoso-gitops-cluster-requirements[Cluster requirements].
 * Cluster administrator privileges and a working `kubeconfig`.
