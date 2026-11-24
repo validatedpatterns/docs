@@ -28,15 +28,20 @@ Each install variant has a full hub/spoke schematic exported as PNG from draw.io
 | link:/images/ramendr-starter-kit/ramendr-architecture-odf.png[`ramendr-architecture-odf.png`]
 | link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio[`ramendr-architecture-odf.drawio`]
 
+| `ramendr-architecture-techdemo`
+| `techdemo`
+| link:/images/ramendr-starter-kit/ramendr-architecture-techdemo.png[`ramendr-architecture-techdemo.png`]
+| link:/images/ramendr-starter-kit/ramendr-architecture-techdemo.drawio[`ramendr-architecture-techdemo.drawio`]
+
 | `ramendr-architecture-drpartner-s4`
 | `drpartner-s4`
 | link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.png[`ramendr-architecture-drpartner-s4.png`]
 | link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.drawio[`ramendr-architecture-drpartner-s4.drawio`]
 
-| `ramendr-architecture-drpartner-minimal`
-| `drpartner-minimal`
-| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.png[`ramendr-architecture-drpartner-minimal.png`]
-| link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.drawio[`ramendr-architecture-drpartner-minimal.drawio`]
+| `ramendr-architecture-minimal`
+| `minimal`
+| link:/images/ramendr-starter-kit/ramendr-architecture-minimal.png[`ramendr-architecture-minimal.png`]
+| link:/images/ramendr-starter-kit/ramendr-architecture-minimal.drawio[`ramendr-architecture-minimal.drawio`]
 
 | `hub-managed-connectivity`
 | All variants
@@ -54,6 +59,21 @@ image::/images/ramendr-starter-kit/ramendr-architecture-odf.png[RamenDR architec
 
 draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio[`ramendr-architecture-odf.drawio`]
 
+[id="architecture-techdemo"]
+=== `techdemo` schematic
+
+Extends the `odf` Regional DR layout with {ansible} on the hub and demo workloads on the managed clusters. Hub connectivity, {ocp-data-short}, Submariner, MirrorPeer, and DRPC behavior match `odf`. Additional components:
+
+* {ansible} Operator, AAP instance, and `aap-config` application driven by the link:https://github.com/validatedpatterns-demos/ramendr-techdemo-config-as-code[`ramendr-techdemo-config-as-code`] repository
+* Boutique demo application on spoke clusters, with Redis configured as an external service pointing at the Redis VM
+* Redis RHEL 9 VM (`rhel9-redis-001`) for Boutique and AAP Redis discovery playbooks
+* Windows Server 2022 desktop VM pulled from a private Quay image (requires `privatevm-credentials`)
+
+.ramendr-architecture-techdemo
+image::/images/ramendr-starter-kit/ramendr-architecture-techdemo.png[RamenDR architecture for the techdemo variant,title="RamenDR Starter Kit architecture (techdemo)"]
+
+draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-techdemo.drawio[`ramendr-architecture-techdemo.drawio`]
+
 [id="architecture-drpartner-s4"]
 === `drpartner-s4` schematic
 
@@ -64,15 +84,15 @@ image::/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.png[RamenDR
 
 draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-s4.drawio[`ramendr-architecture-drpartner-s4.drawio`]
 
-[id="architecture-drpartner-minimal"]
-=== `drpartner-minimal` schematic
+[id="architecture-minimal"]
+=== `minimal` schematic
 
 {rh-rhacm-first} and partner operators only. S3-compatible storage for OpenShift ADP is bring-your-own; this variant does not deploy S4. DRPolicies live on the hub and become volume replications and volume group replications on the managed clusters. The pattern does not create DR CRs.
 
-.ramendr-architecture-drpartner-minimal
-image::/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.png[RamenDR architecture for the drpartner-minimal variant,title="RamenDR Starter Kit architecture (drpartner-minimal)"]
+.ramendr-architecture-minimal
+image::/images/ramendr-starter-kit/ramendr-architecture-minimal.png[RamenDR architecture for the minimal variant,title="RamenDR Starter Kit architecture (minimal)"]
 
-draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-drpartner-minimal.drawio[`ramendr-architecture-drpartner-minimal.drawio`]
+draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-minimal.drawio[`ramendr-architecture-minimal.drawio`]
 
 [id="tls-and-ca"]
 == TLS and CA (current implementation)
@@ -87,7 +107,7 @@ Certificate handling is delivered by external charts deployed via Argo CD, not l
 | Differential CA bundle for cluster API/ingress CAs (all variants)
 
 | **opp-policy-chart**
-| `s3CaInjector` injects `caCertificates` on Ramen `s3StoreProfiles` (`odf`, `drpartner-s4`)
+| `s3CaInjector` injects `caCertificates` on Ramen `s3StoreProfiles` (`odf`, `techdemo`, `drpartner-s4`)
 |===
 
 Chart overrides live in the pattern repository:

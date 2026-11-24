@@ -1,0 +1,60 @@
+<svg width="980" height="320" viewBox="0 0 980 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">techdemo hub and managed cluster connectivity</title>
+  <defs>
+    <marker id="arrow-acm" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#2f6fad"/>
+    </marker>
+    <marker id="arrow-s3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#3a7a9c"/>
+    </marker>
+    <marker id="arrow-demo" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#d79b00"/>
+    </marker>
+    <marker id="arrow-redis" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#82b366"/>
+    </marker>
+    <marker id="arrow-win" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#9673a6"/>
+    </marker>
+  </defs>
+
+  <rect x="40" y="90" width="210" height="90" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+  <text x="145" y="118" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="14" font-weight="700">Hub cluster</text>
+  <text x="145" y="138" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#555">RHACM &#183; MCO &#183; Ramen &#183; AAP</text>
+  <text x="145" y="156" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#555">s3StoreProfiles &#8594; MCG</text>
+
+  <rect x="320" y="40" width="240" height="90" rx="8" fill="#fff2cc" stroke="#d6b656" stroke-width="1.5"/>
+  <text x="440" y="68" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700">Primary managed</text>
+  <text x="440" y="88" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#555">ODF &#183; Ramen &#183; MCG S3</text>
+  <text x="440" y="106" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#555">Boutique &#183; Redis VM &#183; Windows VM</text>
+
+  <rect x="320" y="180" width="240" height="90" rx="8" fill="#fff2cc" stroke="#d6b656" stroke-width="1.5"/>
+  <text x="440" y="208" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700">Secondary managed</text>
+  <text x="440" y="228" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#555">ODF &#183; Ramen &#183; MCG S3</text>
+  <text x="440" y="246" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#555">Boutique &#183; Redis VM &#183; Windows VM</text>
+
+  <rect x="620" y="30" width="150" height="55" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+  <text x="695" y="52" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">Redis VM</text>
+  <text x="695" y="70" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#555">TCP 6379</text>
+
+  <rect x="620" y="100" width="150" height="45" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+  <text x="695" y="128" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">Boutique app</text>
+
+  <rect x="620" y="160" width="150" height="45" rx="8" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+  <text x="695" y="188" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">Windows VM</text>
+
+  <line x1="250" y1="125" x2="320" y2="85" stroke="#2f6fad" stroke-width="2" marker-end="url(#arrow-acm)"/>
+  <text x="265" y="95" font-family="Segoe UI, system-ui, sans-serif" font-size="10" fill="#2f6fad">ACM DNS + HTTPS / S3</text>
+  <line x1="250" y1="155" x2="320" y2="225" stroke="#2f6fad" stroke-width="2" marker-end="url(#arrow-acm)"/>
+
+  <line x1="440" y1="130" x2="440" y2="180" stroke="#3a7a9c" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#arrow-s3)"/>
+  <text x="448" y="158" font-family="Segoe UI, system-ui, sans-serif" font-size="10" fill="#3a7a9c">Peer S3 metadata</text>
+
+  <line x1="560" y1="70" x2="620" y2="55" stroke="#82b366" stroke-width="1.5" marker-end="url(#arrow-redis)"/>
+  <line x1="560" y1="100" x2="620" y2="122" stroke="#d79b00" stroke-width="1.5" marker-end="url(#arrow-demo)"/>
+  <line x1="560" y1="120" x2="620" y2="182" stroke="#9673a6" stroke-width="1.5" marker-end="url(#arrow-win)"/>
+  <path d="M695 100 C 695 90, 695 75, 695 85" fill="none" stroke="#d79b00" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-demo)"/>
+  <text x="705" y="95" font-family="Segoe UI, system-ui, sans-serif" font-size="10" fill="#d79b00">TCP 6379</text>
+
+  <text x="40" y="300" font-family="Segoe UI, system-ui, sans-serif" font-size="11" fill="#555">Same Regional DR paths as odf, plus AAP on hub and Boutique / Redis / Windows workloads on the primary. Submariner required.</text>
+</svg>

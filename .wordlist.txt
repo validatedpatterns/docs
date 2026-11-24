@@ -96,6 +96,7 @@ bls
 bluegreen
 bluegreenpause
 bootstrapservers
+boutique
 bpxrficyexamplekey
 brms
 bt
@@ -790,6 +791,7 @@ prereq
 prereqs
 prerequisitesrequirements
 privatekey
+privatevm
 processserver
 productization
 productize
@@ -984,6 +986,7 @@ targetport
 tbd
 tcp
 tdx
+techdemo
 techpreview
 tee
 tei

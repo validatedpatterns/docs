@@ -8,28 +8,26 @@
           <mxGeometry x="40" y="20" width="500" height="30" as="geometry" />
         </mxCell>
         <mxCell id="hub" value="Hub&#xa;RHACM · MCO · Ramen&#xa;s3StoreProfiles → MCG" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="80" y="120" width="200" height="90" as="geometry" />
+          <mxGeometry x="80" y="80" width="200" height="90" as="geometry" />
         </mxCell>
         <mxCell id="pri" value="Primary managed&#xa;ODF · Ramen · MCG S3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
           <mxGeometry x="420" y="80" width="200" height="80" as="geometry" />
         </mxCell>
         <mxCell id="sec" value="Secondary managed&#xa;ODF · Ramen · MCG S3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-          <mxGeometry x="420" y="220" width="200" height="80" as="geometry" />
+          <mxGeometry x="420" y="250" width="200" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="e1" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#2f6fad;" edge="1" parent="1" source="hub" target="pri">
+        <mxCell id="e1" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#2f6fad;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="hub" target="pri">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e1l" value="ACM DNS + HTTPS" style="edgeLabel;html=1;align=center;" vertex="1" connectable="0" parent="e1">
-          <mxGeometry relative="1" x="-0.1" y="-1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        <mxCell id="e1l" value="ACM DNS + HTTPS / S3" style="edgeLabel;html=1;align=center;" vertex="1" connectable="0" parent="e1">
+          <mxGeometry relative="1" y="-14" as="geometry"><mxPoint as="offset" /></mxGeometry>
         </mxCell>
-        <mxCell id="e2" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#2f6fad;" edge="1" parent="1" source="hub" target="sec">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e3" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#3a7a9c;" edge="1" parent="1" source="hub" target="pri">
-          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="360" y="165" /><mxPoint x="360" y="120" /></Array></mxGeometry>
-        </mxCell>
-        <mxCell id="e3l" value="HTTPS S3" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e3">
-          <mxGeometry relative="1" as="geometry"><mxPoint x="10" y="-10" as="offset" /></mxGeometry>
+        <mxCell id="e2" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#2f6fad;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="hub" target="sec">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="290" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="e4" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#3a7a9c;dashed=1;" edge="1" parent="1" source="pri" target="sec">
           <mxGeometry relative="1" as="geometry" />
@@ -45,6 +43,62 @@
         </mxCell>
         <mxCell id="note" value="Submariner: required (UDP 4500/4800/4490). Globalnet if CIDRs overlap." style="text;html=1;align=left;fontSize=11;fontColor=#555555;" vertex="1" parent="1">
           <mxGeometry x="80" y="340" width="540" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="techdemo" id="conn-tech">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="750" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tt" value="Hub ↔ managed connectivity — techdemo" style="text;html=1;fontSize=18;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="560" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="thub" value="Hub&#xa;RHACM · MCO · Ramen · AAP&#xa;s3StoreProfiles → MCG" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="120" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="tpri" value="Primary managed&#xa;ODF · Ramen · MCG S3&#xa;Boutique · Redis VM · Windows VM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="420" y="60" width="240" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="tsec" value="Secondary managed&#xa;ODF · Ramen · MCG S3&#xa;Boutique · Redis VM · Windows VM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="420" y="220" width="240" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="tredis" value="Redis VM&#xa;rhel9-redis-001&#xa;TCP 6379" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="720" y="40" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="tbout" value="Boutique app&#xa;→ Redis VM service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="720" y="130" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="twin" value="Windows VM&#xa;desktop / RDP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="720" y="210" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="te1" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#2f6fad;" edge="1" parent="1" source="thub" target="tpri">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="te1l" value="ACM DNS + HTTPS / S3" style="edgeLabel;html=1;align=center;" vertex="1" connectable="0" parent="te1">
+          <mxGeometry relative="1" x="-0.1" y="-1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="te2" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#2f6fad;" edge="1" parent="1" source="thub" target="tsec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="te4" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#3a7a9c;dashed=1;" edge="1" parent="1" source="tpri" target="tsec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="te4l" value="Peer S3 metadata" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="te4">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="te6" style="endArrow=classic;html=1;strokeWidth=1;strokeColor=#82b366;" edge="1" parent="1" source="tpri" target="tredis"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="te7" style="endArrow=classic;html=1;strokeWidth=1;strokeColor=#9673a6;" edge="1" parent="1" source="tpri" target="twin"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="te8" style="endArrow=classic;html=1;strokeWidth=1;strokeColor=#d79b00;" edge="1" parent="1" source="tpri" target="tbout"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="te9" style="endArrow=classic;html=1;strokeWidth=1;strokeColor=#d79b00;dashed=1;" edge="1" parent="1" source="tbout" target="tredis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="te9l" value="TCP 6379" style="edgeLabel;html=1;fontSize=10;" vertex="1" connectable="0" parent="te9">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="8" as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="tnote" value="Same Regional DR paths as odf. Demo additions: AAP on hub; Boutique + Redis RHEL VM + Windows desktop VM on the primary. Submariner required." style="text;html=1;align=left;fontSize=11;fontColor=#555555;" vertex="1" parent="1">
+          <mxGeometry x="80" y="360" width="760" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
@@ -86,12 +140,12 @@
       </root>
     </mxGraphModel>
   </diagram>
-  <diagram name="drpartner-minimal" id="conn-min">
+  <diagram name="minimal" id="conn-min">
     <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="700" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="t3" value="Hub ↔ managed connectivity — drpartner-minimal" style="text;html=1;fontSize=18;fontStyle=1;align=left;" vertex="1" parent="1">
+        <mxCell id="t3" value="Hub ↔ managed connectivity — minimal" style="text;html=1;fontSize=18;fontStyle=1;align=left;" vertex="1" parent="1">
           <mxGeometry x="40" y="20" width="600" height="30" as="geometry" />
         </mxCell>
         <mxCell id="hub3" value="Hub&#xa;RHACM · MCO · Ramen&#xa;(no S4 · no DRClusters)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">

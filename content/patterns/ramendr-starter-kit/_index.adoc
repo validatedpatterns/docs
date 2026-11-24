@@ -52,7 +52,7 @@ selection, BYOC, required secrets, and verification steps.
 [id="install-variants"]
 === Install variants
 
-The pattern ships three install variants under `variants/` in the repository. Set `main.variant` in
+The pattern ships four install variants under `variants/` in the repository. Set `main.variant` in
 link:https://github.com/validatedpatterns/ramendr-starter-kit/blob/main/values-global.yaml[`values-global.yaml`]
 before install. The default is `odf`.
 
@@ -60,8 +60,9 @@ before install. The default is `odf`.
 |===
 | Variant | `main.variant` | Purpose
 | `odf` | `odf` (default) | Full {ocp-data-short} Regional DR with {VirtProductName} workloads, MirrorPeer, and failover-capable VMs
+| `techdemo` | `techdemo` | Full {ocp-data-short} Regional DR with {VirtProductName}, plus {ansible} (AAP) config-as-code. Deploys the Boutique demo workload on spoke clusters, backed by a Redis RHEL VM, and a Windows Server 2022 desktop VM
 | `drpartner-s4` | `drpartner-s4` | Partner CSI foundation with hub S4 object storage: OADP, {VirtProductName}, Ramen/Multicluster Orchestrator; infrastructure DRClusters and a `2m-novm` DRPolicy without DRPC or VMs; Submariner disabled
-| `drpartner-minimal` | `drpartner-minimal` | Partner CSI foundation without S4, Submariner, or DRCluster sync/validation: OADP, {VirtProductName}, and Ramen/Multicluster Orchestrator only (Hive or BYOC bring-up)
+| `minimal` | `minimal` | Partner CSI foundation without S4, Submariner, or DRCluster sync/validation: OADP, {VirtProductName}, and Ramen/Multicluster Orchestrator only (Hive or BYOC bring-up)
 |===
 
 Spoke configuration files nest under each variant as `variants/<variant>/values-<managedClusterGroup.name>.yaml`.
@@ -87,6 +88,7 @@ This pattern uses OpenShift Virtualization (the productization of Kubevirt) to s
 * Red Hat OpenShift GitOps (ArgoCD)
 * OpenShift Virtualization (Kubevirt)
 * Red Hat Enterprise Linux 9 (on the VMs)
+* {rh-ansible} (`techdemo` variant)
 
 ==== Other technologies this pattern Uses
 
@@ -95,14 +97,14 @@ This pattern uses OpenShift Virtualization (the productization of Kubevirt) to s
 
 === Architecture overview
 
-The default `odf` variant deploys a three-cluster Regional DR layout with {ocp-data-short}, Submariner, DRPC-protected VMs, and failover workflows documented in link:/patterns/ramendr-starter-kit/getting-started/[Getting started].
+The default `odf` variant deploys a three-cluster Regional DR layout with {ocp-data-short}, Submariner, DRPC-protected VMs, and failover workflows documented in link:/patterns/ramendr-starter-kit/getting-started/[Getting started]. The `techdemo` variant uses the same Regional DR foundation and adds {ansible}, Boutique, a Redis RHEL VM, and a Windows desktop VM.
 
 .ramendr-architecture-diagram
 image::/images/ramendr-starter-kit/ramendr-architecture-odf.png[ramendr-starter-kit-architecture,title="RamenDR Starter Kit architecture (odf)"]
 
 draw.io source: link:/images/ramendr-starter-kit/ramendr-architecture-odf.drawio[`ramendr-architecture-odf.drawio`]
 
-Partner variants use different S3 and replication models. See link:/patterns/ramendr-starter-kit/architecture/[Architecture] for per-variant schematics and draw.io sources, and link:/patterns/ramendr-starter-kit/connectivity/[Connectivity] for hub-to-managed network paths and ports.
+Partner variants (`drpartner-s4`, `minimal`) use different S3 and replication models. See link:/patterns/ramendr-starter-kit/architecture/[Architecture] for per-variant schematics and draw.io sources, and link:/patterns/ramendr-starter-kit/connectivity/[Connectivity] for hub-to-managed network paths and ports.
 
 === Next steps
 
