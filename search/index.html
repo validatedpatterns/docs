@@ -2364,7 +2364,7 @@ git
 python3
 rhvp.cluster_utils Ansible collection (for make install):
 ansible-galaxy collection install community.okd kubernetes.core \\ https://github.com/validatedpatterns/rhvp.cluster_utils/releases/download/v0.0.6/rhvp-cluster_utils-0.0.6.tar.gz `,url:"https://validatedpatterns.io/patterns/trilio-continuous-restore/prerequisites/",breadcrumb:"/patterns/trilio-continuous-restore/prerequisites/"},"https://validatedpatterns.io/patterns/rhoso-gitops/secret-management/":{title:"Secret management for the RHOSO GitOps pattern",tags:[],content:`Secret management for the RHOSO GitOps pattern The RHOSO GitOps pattern requires secrets for OpenStack service passwords, SSH key pairs, bare-metal controller credentials, and container registry authentication. You can provide these secrets in two ways depending on whether a secure storage backend is available. The two approaches can also be combined, for example, by storing shared credentials (registry, subscription) in the backend while injecting service-specific passwords as bootstrap_secrets, or by using onMissingValue: generate to have the backend generate passwords at deployment time.
-For the canonical list of required secrets, see Providing secure access to the RHOSO services in the Red Hat OpenStack Services on OpenShift documentation.
+For the canonical list of required secrets, see Provide secure access to the RHOSO services in the Red Hat OpenStack Services on OpenShift documentation.
 Choosing a secrets approach Review the following approaches before you deploy the pattern.
 Secure storage backend and External Secrets Operator For production deployments, store secrets in a secure storage backend such as HashiCorp Vault, AWS Secrets Manager, or any provider supported by the External Secrets Operator. ExternalSecret resources project these secrets into the openstack namespace through a SecretStore.
 Figure 1. Secret flow from secure storage method The framework does not install the storage backend or the External Secrets Operator automatically. You must include the External Secrets Operator through the operator-dependencies Argo CD application by using a Kustomize component from the upstream secrets components. The openstack-secrets Argo CD application deploys the SecretStore and ExternalSecret resources that pull secrets from the backend.
@@ -2383,7 +2383,7 @@ id
 Authentication credential for the External Secrets Operator SecretStore to connect to the secure storage backend. Required only with the backend and External Secrets Operator approach.
 osp-secret
 Multiple service and database password fields
-OpenStack service passwords (for example AdminPassword, KeystoneDatabasePassword, NeutronPassword). See the Red Hat OpenStack Services on OpenShift documentation for the complete list.
+OpenStack service passwords (for example AdminPassword, KeystoneDatabasePassword, NeutronPassword). See Provide secure access to services in the Red Hat OpenStack Services on OpenShift documentation for the complete list.
 baremetalset-password-secret
 NodeRootPassword
 Root password for bare-metal data plane nodes.
@@ -2408,7 +2408,7 @@ Red Hat Subscription Manager credentials for EDPM nodes.
 Configuring secrets with a secure storage backend Prerequisites You have forked and cloned the rhoso-gitops repository.
 You have deployed a secure storage backend and have an authentication credential (for example an AppRole secret ID) available.
 You have a Git repository with Kustomize overlays that define the SecretStore and ExternalSecret resources for the openstack namespace.
-You have the OpenStack service passwords, SSH key pairs, BMC credentials, and registry credentials listed in the Red Hat OpenStack Services on OpenShift documentation.
+You have the OpenStack service passwords, SSH key pairs, BMC credentials, and registry credentials listed in Provide secure access to services in the Red Hat OpenStack Services on OpenShift documentation.
 Procedure Include the External Secrets Operator in the operator-dependencies application by adding a Kustomize component in overrides/values-rhoso-gitops.yaml. The following example uses the Red Hat build of the External Secrets Operator:
 applications: operator-dependencies: kustomize: components: - &#34;https://github.com/openstack-k8s-operators/gitops/components/secrets/external-secrets-operator/redhat?ref=&lt;gitops-tag&gt;&#34; For other External Secrets Operator variants, see the upstream components/secrets README.
 Enable the openstack-secrets application in the same overrides file. This application deploys the SecretStore and ExternalSecret resources that pull secrets from the backend:
@@ -2418,7 +2418,7 @@ version: &#34;2.0&#34; bootstrap_secrets: - name: vault-approle-secret-id target
 $ ./pattern.sh make install Verify that the ExternalSecret resources synchronized:
 $ oc get externalsecrets -n openstack Each ExternalSecret shows a SecretSynced status when the External Secrets Operator has created the corresponding Kubernetes Secret.
 Configuring secrets with direct injection Prerequisites You have forked and cloned the rhoso-gitops repository.
-You have the OpenStack service passwords, SSH key pairs, BMC credentials, and registry credentials listed in the Red Hat OpenStack Services on OpenShift documentation.
+You have the OpenStack service passwords, SSH key pairs, BMC credentials, and registry credentials listed in Provide secure access to services in the Red Hat OpenStack Services on OpenShift documentation.
 Procedure Set the secret store backend to none in values-global.yaml:
 global: secretStore: backend: &#34;none&#34; Copy the secrets template and edit it:
 $ cp values-secret.yaml.template ~/values-secret-rhoso-gitops.yaml Replace every CHANGEME_* placeholder with the actual value. For SSH key pairs, set the path: field to point at your local key files. Secret values must be in plain text, not base64-encoded.
@@ -5145,27 +5145,27 @@ RHOCP software requirements
 openstack-operator
 OpenStack Operator subscription
 example/openstack-operator
-Installing and preparing the OpenStack Operator
+Install and prepare the OpenStack Operator
 openstack-operator-cr
 Main OpenStack custom resource
 example/openstack-operator-cr
-Installing and preparing the OpenStack Operator
+Install and prepare the OpenStack Operator
 openstack-secrets
 Secure-backend sync (disabled by default)
 not configured
-Providing secure access to the RHOSO services
+Provide secure access to the RHOSO services
 openstack-networks
 Network configuration
 example/openstack-networks
-Preparing RHOSO networks
+Prepare RHOSO networks
 openstack-controlplane
 OpenStackControlPlane
 example/openstack-controlplane
-Creating the control plane
+Control plane deployment
 openstack-dataplane
 Data plane
 example/openstack-dataplane
-Creating the data plane
+Create and deploy the data plane
 By default, the pattern enables all applications except openstack-secrets. Applications use automated sync with a retry policy to handle transient failures during deployment convergence.
 Pinning a different upstream revision Child applications use automated sync by default: Argo CD reconciles them whenever the upstream Git repository changes. If targetRevision points to a branch name like main or HEAD, any push to that branch triggers an automatic deployment. This can cause unexpected changes in production.
 Always pin targetRevision to a tag or commit hash for stability.
