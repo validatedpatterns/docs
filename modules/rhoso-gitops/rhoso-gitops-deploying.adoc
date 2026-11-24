@@ -28,7 +28,7 @@ Before you deploy the pattern, verify that you have the following:
 .Procedure
 
 . Fork the
-  link:https://github.com/validatedpatterns-sandbox/rhoso-gitops[rhoso-gitops]
+  link:https://github.com/validatedpatterns/rhoso-gitops[rhoso-gitops]
   repository on GitHub.
 
 . Clone your fork:

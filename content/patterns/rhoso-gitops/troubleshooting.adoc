@@ -87,4 +87,4 @@ $ oc logs -n __<namespace>__ __<pod_name>__
 ----
 
 For community support, open an issue in the
-link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/issues[pattern repository].
+link:https://github.com/validatedpatterns/rhoso-gitops/issues[pattern repository].

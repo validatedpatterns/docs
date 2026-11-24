@@ -69,7 +69,7 @@ the single target cluster. Requirements that apply only to managed clusters are 
 
 This is a *sandbox tier* pattern. The community provides support on a
 best-effort basis. For details, see the
-link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/blob/main/SUPPORT.md[support policy]
+link:https://github.com/validatedpatterns/rhoso-gitops/blob/main/SUPPORT.md[support policy]
 in the pattern repository.
 
 [id="rhoso-gitops-known-issues"]
@@ -91,4 +91,4 @@ For deployment validation and troubleshooting procedures, see
 link:troubleshooting[Troubleshooting the {rhoso-gitops-pattern}].
 
 For community support, open an issue in the
-link:https://github.com/validatedpatterns-sandbox/rhoso-gitops/issues[pattern repository].
+link:https://github.com/validatedpatterns/rhoso-gitops/issues[pattern repository].
