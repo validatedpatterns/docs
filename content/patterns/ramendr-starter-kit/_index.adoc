@@ -1,7 +1,7 @@
 ---
 title: RamenDR Starter Kit
 date: 2025-11-13
-tier: sandbox
+tier: maintained
 summary: This pattern demonstrates the use of Red Hat OpenShift Data Foundations for Virtualization Regional Disaster Recovery
 rh_products:
 - Red Hat OpenShift Container Platform
@@ -24,7 +24,7 @@ links:
   bugs: https://github.com/validatedpatterns/ramendr-starter-kit/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
   demo: Qla3IzaQVM9yQP27TWDU
-ci: ramendr-starter-kit
+ci: ramen
 ---
 
 :toc:
