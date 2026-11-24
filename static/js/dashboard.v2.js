@@ -196,7 +196,7 @@ var CI_PATTERN_DOC_SLUG = {
   patternsoperator: '/learn/using-validated-pattern-operator',
   portworx: 'portworx-dr',
   ragllm: 'rag-llm-gitops',
-  ramendr: 'ramendr-starter-kit',
+  ramen: 'ramendr-starter-kit',
   retail: 'retail',
   telco: 'telco-hub',
   telcohub: 'telco-hub',
