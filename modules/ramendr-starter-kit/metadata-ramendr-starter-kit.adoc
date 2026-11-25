@@ -2,7 +2,7 @@
 // Do not edit manually!
 :metadata_version: 1.0
 :name: ramendr-starter-kit
-:description: RamenDR Regional DR with Virtualization starter kit (odf, drpartner-s4, and drpartner-minimal variants)
+:description: RamenDR Regional DR with Virtualization starter kit (odf, drpartner-s4, minimal, and techdemo variants)
 :pattern_version: 1.3
 :display_name: RamenDR Starter Kit
 :repo_url: https://github.com/validatedpatterns/ramendr-starter-kit
@@ -23,4 +23,4 @@
 :extra_features_hypershift_support: false
 :extra_features_spoke_support: true
 :external_requirements: 
-:variants: [{"name"=>"odf", "default"=>true, "description"=>"Baseline full ODF Regional DR with Virtualization"}, {"name"=>"drpartner-s4", "description"=>"Partner CSI foundation with hub S4 object storage — OADP, OCP-V, preview RHDR; infrastructure DRPolicy/DRClusters without DRPC/VMs. Uses preview builds of RHDR (for testing only, not production)"}, {"name"=>"drpartner-minimal", "description"=>"Partner CSI foundation without S4, Submariner, or DRCluster sync/validation — OADP, OCP-V, preview RHDR only (Hive/BYOC bring-up; byoc true by default). Uses preview builds of RHDR (for testing only, not production)"}]
+:variants: [{"name"=>"odf", "default"=>true, "description"=>"Baseline full ODF Regional DR with Virtualization"}, {"name"=>"drpartner-s4", "description"=>"Partner CSI foundation with hub S4 object storage — OADP, OCP-V, preview RHDR; infrastructure DRPolicy/DRClusters without DRPC/VMs. Uses preview builds of RHDR (for testing only, not production)"}, {"name"=>"minimal", "description"=>"Partner CSI foundation without S4, Submariner, or DRCluster sync/validation — OADP, OCP-V, preview RHDR only (Hive/BYOC bring-up; byoc true by default). Uses preview builds of RHDR (for testing only, not production)"}, {"name"=>"techdemo", "description"=>"Full ODF Regional DR with Virtualization and Ansible Automation Platform (AAP) config-as-code. Adds AAP instance and aap-config application driven by the ramendr-techdemo-config-as-code repo. Deploys the Boutique workload on spoke clusters for end-to-end demo scenarios."}]

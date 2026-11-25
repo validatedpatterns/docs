@@ -162,7 +162,7 @@ Paste the path to your locally stored private and public keys. If you do not hav
         path: ~/pull_secret.json
 ----
 
-.. If you selected the `drpartner-s4` variant, add the two Vault secrets required for hub `vp-s4-storage`. Paths must match the chart overrides in `variants/drpartner-s4/values-drpartner-s4.yaml` (`s4UICredentials.vaultKey` and `s4APICredentials.vaultKey`). The `drpartner-minimal` variant does not deploy `vp-s4-storage` and does not need these secrets.
+.. If you selected the `drpartner-s4` variant, add the two Vault secrets required for hub `vp-s4-storage`. Paths must match the chart overrides in `variants/drpartner-s4/values-drpartner-s4.yaml` (`s4UICredentials.vaultKey` and `s4APICredentials.vaultKey`). The `minimal` variant does not deploy `vp-s4-storage` and does not need these secrets.
 +
 [source,yaml]
 ----
@@ -192,6 +192,20 @@ Paste the path to your locally stored private and public keys. If you do not hav
 ----
 +
 External Secrets merges both Vault entries into Kubernetes Secret `s4-credentials` in the `vp-s4-storage` namespace. Defaults in `values-secret.yaml.template` use `s4admin` for the UI user and access key ID; the password and secret key can be generated when `onMissingValue: generate` and `vaultPolicies.advancedPolicy` are set in your secrets file.
+
+.. If you selected the `techdemo` variant, add the `privatevm-credentials` Vault secret so the pattern can pull the Windows Server 2022 disk image from the private Quay repository referenced in `variants/techdemo/values-egv-dr.yaml`. The Vault path must be `secret/data/global/privatevm-credentials`.
++
+[source,yaml]
+----
+  - name: privatevm-credentials
+    vaultPrefixes:
+      - global
+    fields:
+      - name: accessKeyId
+        value: '<quay-robot-username>'
+      - name: secretKey
+        value: '<quay-robot-token>'
+----
 
 .. Add kubeconfig secrets for each regional DR cluster. See link:#using-byoc[Using bring your own cluster (BYOC)]. If you instead plan to disable BYOC in favor of Hive-provisioned managed clusters, you can skip this step.
 +
@@ -376,6 +390,17 @@ image::/images/ramendr-starter-kit/ramendr-starter-kit-failover-cleanup-script.p
 .ramendr-starter-kit-failover-reprotected
 image::/images/ramendr-starter-kit/ramendr-starter-kit-reprotected.png[ramendr-starter-kit-reprotected,title="RamenDR Starter Kit Reprotected"]
 
+[id="verifying-techdemo-variant"]
+== Verifying the `techdemo` variant
+
+After sync, expect the following differences from the default `odf` variant.
+
+* Hub operators and applications match `odf` Regional DR (including `odf-dr` and `regional-dr`), plus {ansible} Operator, AAP instance, and `aap-config` applications.
+* ACM Observability is not deployed (simplified demo install).
+* The `regional-dr` application uses `variants/techdemo/values-egv-dr.yaml` instead of the default edge-gitops-vms overrides.
+* Spoke workloads include the Boutique demo application with external Redis pointed at the `rhel9-redis-001` VM service, a Redis RHEL 9 VM (`role: redis`), and a Windows Server 2022 desktop VM (`role: desktop`).
+* Protected applications and failover workflows match the `odf` verification steps above. Confirm Boutique, the Redis VM, and the Windows VM on the primary cluster under *Virtualization → VirtualMachines* and the Boutique namespace.
+
 [id="verifying-partner-variants"]
 == Verifying partner variants
 
@@ -389,7 +414,7 @@ After sync, expect the following differences for the partner install variants.
 * The `regional-dr` application runs with `ramen.infrastructureEnabled: true`. It creates DRClusters, a single `2m-novm` DRPolicy (no `2m-vm`), and upserts hub `s3StoreProfiles` with `ensureBuckets: false`. It does not deploy DRPC or VMs.
 * The `opp-policy` application injects `caCertificates` on S3 profiles only.
 
-=== `drpartner-minimal`
+=== `minimal`
 
 * Same partner operators and plumbing as `drpartner-s4`, but without `vp-s4-storage` or Submariner (`submariner.enabled: false` in `opp-policy`).
 * The `regional-dr` application runs with both `ramen.resourcesEnabled` and `ramen.infrastructureEnabled` set to `false`. No DRPolicy, DRClusters, S3 profile work, or DRPC/VM workloads are deployed.

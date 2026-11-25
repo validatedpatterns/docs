@@ -16,7 +16,7 @@ The pattern executes the following steps on the cluster. Hub and spoke chart val
 link:#variant-installation-differences[Variant installation differences].
 
 . Apply Subscriptions and Applications to the hub cluster.
-. Install {rh-rhacm-first}, {ocp-data-short}, and the {ocp-data-short} Multicluster Orchestrator on the hub cluster for the `odf` variant. Partner variants install {rh-rhacm-first}, Multicluster Orchestrator (Ramen), {VirtProductName}, and OADP without ODF StorageSystem or MirrorPeer.
+. Install {rh-rhacm-first}, {ocp-data-short}, and the {ocp-data-short} Multicluster Orchestrator on the hub cluster for the `odf` and `techdemo` variants. The `techdemo` variant also installs {ansible}. Partner variants install {rh-rhacm-first}, Multicluster Orchestrator (Ramen), {VirtProductName}, and OADP without ODF StorageSystem or MirrorPeer.
 . Build managed clusters (`ocp-primary` and `ocp-secondary`) with Hive.
 .. The managed clusters have identical subscription and application configuration, so they are both in the `resilient` cluster group.
 . The `opp-policy` application is responsible for copying CA certificates to the following places:
@@ -24,11 +24,11 @@ link:#variant-installation-differences[Variant installation differences].
 .. Assigning this ConfigMap to the proxy cluster resource.
 .. Adding the certificate material to the `ramen-dr-cluster-operator` config in `openshift-dr-system`.
 . The `regional-dr` application is responsible for:
-.. Ensuring ODF is set up properly (`odf` variant).
-.. Installing Submariner add-ons on managed clusters (`odf` variant; disabled for partner variants).
-.. Creating DRPolicy, MirrorPeer, DRPC, and Placement objects for RamenDR (`odf` variant).
+.. Ensuring ODF is set up properly (`odf` and `techdemo` variants).
+.. Installing Submariner add-ons on managed clusters (`odf` and `techdemo` variants; disabled for partner variants).
+.. Creating DRPolicy, MirrorPeer, DRPC, and Placement objects for RamenDR (`odf` and `techdemo` variants).
 .. Creating DRClusters and hub `s3StoreProfiles` without DRPC or VMs (`drpartner-s4` variant).
-.. Installing the VM workload on the primary cluster (`odf` variant).
+.. Installing the VM workload on the primary cluster (`odf` variant: default RHEL VMs; `techdemo` variant: Redis RHEL VM, Windows desktop VM, and Boutique).
 .. Disabling sync on the `regional-dr` application after settlement to prevent potential conflicts later.
 
 [id="variant-installation-differences"]
@@ -60,16 +60,17 @@ See link:/patterns/ramendr-starter-kit/getting-started/#using-byoc[Using bring y
 [id="variant-component-differences"]
 === Variant component differences
 
-[cols="1,1,1,1",options="header"]
+[cols="1,1,1,1,1",options="header"]
 |===
-| Component | `odf` | `drpartner-s4` | `drpartner-minimal`
-| Hub DRClusters | MirrorPeer / Multicluster Orchestrator | `regional-dr` (`ramen.infrastructureEnabled`) | none
-| Hub `s3StoreProfiles` | MirrorPeer / Multicluster Orchestrator | `regional-dr` upsert (`ensureBuckets: false`) | none
-| S3 buckets | ODF | `vp-s4-storage` (`s4Role.buckets`) | none
-| CA on profiles | `opp-policy` `s3CaInjector` | `opp-policy` `s3CaInjector` | n/a
-| Submariner | enabled | disabled | disabled
-| DRPolicy / DRPC / VMs | `2m-vm` DRPolicy, DRPC, VMs | `2m-novm` only; no DRPC or VMs | none
-| `odf-dr` application | yes | no | no
+| Component | `odf` | `techdemo` | `drpartner-s4` | `minimal`
+| Hub DRClusters | MirrorPeer / Multicluster Orchestrator | same as `odf` | `regional-dr` (`ramen.infrastructureEnabled`) | none
+| Hub `s3StoreProfiles` | MirrorPeer / Multicluster Orchestrator | same as `odf` | `regional-dr` upsert (`ensureBuckets: false`) | none
+| S3 buckets | ODF | ODF | `vp-s4-storage` (`s4Role.buckets`) | none
+| CA on profiles | `opp-policy` `s3CaInjector` | `opp-policy` `s3CaInjector` | `opp-policy` `s3CaInjector` | n/a
+| Submariner | enabled | enabled | disabled | disabled
+| DRPolicy / DRPC / VMs | `2m-vm` DRPolicy, DRPC, VMs | `2m-vm` DRPolicy, DRPC, Redis + Windows VMs, Boutique | `2m-novm` only; no DRPC or VMs | none
+| {ansible} / Boutique | no | AAP + `aap-config` + Boutique | no | no
+| `odf-dr` application | yes | yes | no | no
 |===
 
 [id="variant-layout"]
@@ -82,13 +83,19 @@ variants/
   odf/
     values-odf.yaml
     values-resilient.yaml              # full ODF spoke BOM
+  techdemo/
+    values-techdemo.yaml               # ODF hub BOM + AAP + aap-config
+    values-resilient.yaml              # ODF spoke BOM + Boutique namespace
+    values-egv-dr.yaml                 # Redis VM, Windows VM, Boutique overrides
+    values-aap-config-rdr.yaml
+    values-console-plugins-*.yaml
   drpartner-s4/
     values-drpartner-s4.yaml
     values-resilient.yaml              # partner spoke BOM (no ODF)
     values-regional-dr.yaml            # infrastructureEnabled: DRClusters + 2m-novm only + hub s3StoreProfiles
     values-console-plugins-*.yaml
-  drpartner-minimal/
-    values-drpartner-minimal.yaml      # no vp-s4-storage
+  minimal/
+    values-minimal.yaml                # no vp-s4-storage
     values-resilient.yaml
     values-regional-dr.yaml            # resourcesEnabled + infrastructureEnabled false
     values-opp-policy.yaml             # submariner.enabled: false
@@ -113,7 +120,7 @@ Chart overrides live in the pattern repository. For TLS/CA roles and certificate
 
 Designed to be run when you need to manually clean up resources from a "failed" cluster.
 Intended to be run with the kubeconfig from the hub cluster; it will determine where to
-delete resources based on the current DRPC state. Applies to the `odf` variant.
+delete resources based on the current DRPC state. Applies to the `odf` and `techdemo` variants.
 
 * `scripts/download-kubeconfigs.sh`
 
@@ -148,7 +155,7 @@ ODF PVC replication to work.
 
 Deploys the VM workload to the primary cluster. It uses the Validated Patterns Helm chart but
 is not an ArgoCD application to avoid starting up resources on clusters where you do not want them running.
-Thus it runs from the hub cluster. Applies to the `odf` variant.
+Thus it runs from the hub cluster. Applies to the `odf` and `techdemo` variants (`techdemo` uses `variants/techdemo/values-egv-dr.yaml`).
 
 * `charts/hub/rdr/scripts/drpc-health-check-argocd-sync-disable.sh`
 
