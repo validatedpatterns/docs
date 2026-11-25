@@ -196,7 +196,7 @@ var CI_PATTERN_DOC_SLUG = {
   patternsoperator: '/learn/using-validated-pattern-operator',
   portworx: 'portworx-dr',
   ragllm: 'rag-llm-gitops',
-  ramendr: 'ramendr-starter-kit',
+  ramen: 'ramendr-starter-kit',
   retail: 'retail',
   telco: 'telco-hub',
   telcohub: 'telco-hub',
@@ -356,6 +356,9 @@ function stringForKey(key) {
   }
   if (key == 'nutanix') {
     return 'Nutanix'
+  }
+  if (key == 'ramen') {
+    return 'RamenDR Starter Kit'
   }
   if (key == 'rhoso-gitops') {
     return 'RHOSO GitOps'
@@ -886,7 +889,7 @@ function renderDashboardTableRow(badge) {
 function isProductionSite() {
   var host = window.location.hostname
   return host === 'validatedpatterns.io' ||
-    host === 'netlify.app' ||
+    host.endsWith('patternsdocs-pr.netlify.app') ||
     host === 'localhost' ||
     host === '127.0.0.1'
 }

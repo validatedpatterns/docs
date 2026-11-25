@@ -1,7 +1,7 @@
 ---
 title: Ansible GitOps Framework
 date: 2024-06-13
-tier: sandbox
+tier: maintained
 summary: This variant of the Validated Patterns framework exists to support GitOps outside of Kubernetes.
 rh_products:
 - Red Hat Ansible Automation Platform
@@ -17,6 +17,7 @@ links:
   install: https://github.com/validatedpatterns/agof/?tab=readme-ov-file#11-installation
   bugs: https://github.com/validatedpatterns/agof/issues
   feedback: https://docs.google.com/forms/d/e/1FAIpQLScI76b6tD1WyPu2-d_9CCVDr3Fu5jYERthqLKJDUGwqBg7Vcg/viewform
+ci: agof
 ---
 
 # Ansible GitOps Framework
