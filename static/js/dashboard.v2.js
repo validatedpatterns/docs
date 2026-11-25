@@ -357,6 +357,9 @@ function stringForKey(key) {
   if (key == 'nutanix') {
     return 'Nutanix'
   }
+  if (key == 'ramen') {
+    return 'RamenDR Starter Kit'
+  }
   if (key == 'rhoso-gitops') {
     return 'RHOSO GitOps'
   }
