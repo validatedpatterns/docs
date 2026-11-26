@@ -126,7 +126,7 @@ function isTrustedPatternRepo(repoUrl) {
 
 // Only the old bucket uses filename parsing, new CI badge bucket / external raw badges — hydrate metadata from JSON, not filename.
 function usesJsonMetadata(base) {
-  if (base == null || base === '' || String(base).indexOf('storage.googleapis.com/vp-results') !== -1 ) {
+  if (base == null || base === '' || String(base).indexOf('storage.googleapis.com/vp-results') !== -1) {
     return false
   }
   return true
@@ -269,6 +269,9 @@ function ciPatternIdFromJson(json, key) {
   if (name === 'ansibleedgegitops' || name === 'ansible-edge' || name === 'aegitops') {
     return 'aegitops'
   }
+  if (name === 'oper') {
+    return 'patternsoperator'
+  }
   return name
 }
 
@@ -316,13 +319,13 @@ function stringForKey(key) {
     return 'IndustrialEdge'
   }
   if (key == 'mcgitops') {
-    return 'Core GitOps'
+    return 'Multicloud GitOps'
   }
   if (key == 'mcgitopshcp') {
-    return 'MultiCloudGitopsHypershift'
+    return 'Multicloud GitOps (on Hypershift cluster)'
   }
   if (key == 'mcgitopsstandalone') {
-    return 'MultiCloudGitopsStandalone'
+    return 'Multicloud GitOps (Standalone cluster)'
   }
   if (key == 'ragllm') {
     return 'RAG-LLM'
